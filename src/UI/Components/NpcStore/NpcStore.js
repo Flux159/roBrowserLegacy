@@ -441,10 +441,20 @@ NpcStore.setList = function setList(items) {
 				if (!('index' in items[i])) {
 					items[i].index = i;
 				}
-				items[i].count = items[i].count || Infinity;
+				// Market shops send their remaining stock as `qty`. Without this the
+				// amount column stays blank, because addItem only prints a finite count,
+				// and nothing caps the purchase. A qty of 0 means sold out.
+				if (_type === NpcStore.Type.MARKETSHOP && typeof items[i].qty === 'number') {
+					items[i].count = items[i].qty;
+				} else {
+					items[i].count = items[i].count || Infinity;
+				}
 				items[i].IsIdentified = true;
 				out = Object.assign({}, items[i]);
 				out.count = 0;
+				if (isFinite(items[i].count)) {
+					out.maxCount = items[i].count;
+				}
 
 				addItem(content, items[i]);
 
