@@ -7137,6 +7137,16 @@ function loadLuaValue(file_path, variable_name, callback, onEnd) {
 					onEnd.call();
 				}
 			}
+		},
+		// Without this the failure is dropped, onEnd never runs, and the whole
+		// database stays "loading" forever -- stranding the player at character
+		// select with no way to reach the map server.
+		function () {
+			console.error(`(${file_path}) could not be read; skipping`);
+			callback.call(null, null);
+			if (onEnd) {
+				onEnd.call();
+			}
 		});
 	} catch (e) {
 		console.error('error: ', e);
