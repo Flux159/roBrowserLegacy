@@ -842,6 +842,11 @@ export function createEquipment({
 				}
 			}
 		}
+		// preventDefault, not `return false`: a drop only fires on a target
+		// whose dragover cancelled the event, and a falsy return from an
+		// addEventListener callback cancels nothing. Without this the window
+		// is never a drop target and onDrop below never runs.
+		event.preventDefault();
 		event.stopImmediatePropagation();
 		return false;
 	}
