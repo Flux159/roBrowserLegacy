@@ -6093,6 +6093,10 @@ function loadHatEffectInfo(onEnd) {
 				await LoadHatEffectInfo();
 			} catch (e) {
 				console.error('[HatEffect] ID load error', e);
+				// Returning without this leaves the database loading forever.
+				if (typeof onEnd === 'function') {
+					onEnd();
+				}
 				return;
 			} finally {
 				lua.unmountFile('hateffectids.lub');
