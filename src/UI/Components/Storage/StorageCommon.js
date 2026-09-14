@@ -424,6 +424,14 @@ export function createStorage(config) {
 				_openFilters[ItemType.SEARCH].setItems('Search', filteredItems, ItemType.SEARCH);
 			}
 		};
+
+		// Enter in the search box is routed through this hook by the key handler
+		// above, which skips it unless it is a function. Nothing ever defined it,
+		// so pressing Enter did nothing at all. Default it to the search, the way
+		// onClosePressed is defaulted below; an override can still replace it.
+		Component.onEnterPressed = function onEnterPressed() {
+			Component.onSearch();
+		};
 	}
 
 	function onResize() {
