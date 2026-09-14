@@ -5102,6 +5102,15 @@ function loadItemInfo(filename, callback, onEnd) {
 				console.log('Loading file "' + filename + '"...');
 				// check if file is ArrayBuffer and convert to Uint8Array if necessary
 				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
+				// A table saved as UTF-8 -- what a text editor writes -- rather than in
+				// the client's codepage. Decided once for the whole file: a table in
+				// the codepage almost never survives strict UTF-8 decoding, while one
+				// short string easily could.
+				const utf8 = isUtf8Table(buffer);
+				const displayText = bytes =>
+					utf8 ? userStringDecoder.decode(bytes, 'utf-8') : userStringDecoder.decode(bytes, userCharpage);
+				const resourceText = bytes =>
+					utf8 ? userStringDecoder.decode(utf8ResourceBytes(bytes)) : userStringDecoder.decode(bytes);
 				// get context, a proxy. It will be used to interact with lua conveniently
 				const ctx = lua.ctx;
 
@@ -5117,10 +5126,10 @@ function loadItemInfo(filename, callback, onEnd) {
 				) => {
 					ItemTable[ItemID] = {
 						...(typeof ItemTable[ItemID] === 'object' && ItemTable[ItemID]),
-						unidentifiedDisplayName: userStringDecoder.decode(unidentifiedDisplayName, userCharpage),
-						unidentifiedResourceName: userStringDecoder.decode(unidentifiedResourceName),
-						identifiedDisplayName: userStringDecoder.decode(identifiedDisplayName, userCharpage),
-						identifiedResourceName: userStringDecoder.decode(identifiedResourceName),
+						unidentifiedDisplayName: displayText(unidentifiedDisplayName),
+						unidentifiedResourceName: resourceText(unidentifiedResourceName),
+						identifiedDisplayName: displayText(identifiedDisplayName),
+						identifiedResourceName: resourceText(identifiedResourceName),
 						unidentifiedDescriptionName: [],
 						identifiedDescriptionName: [],
 						EffectID: null,
@@ -5132,11 +5141,11 @@ function loadItemInfo(filename, callback, onEnd) {
 					return 1;
 				};
 				ctx.AddItemUnidentifiedDesc = (ItemID, v) => {
-					ItemTable[ItemID].unidentifiedDescriptionName.push(userStringDecoder.decode(v, userCharpage));
+					ItemTable[ItemID].unidentifiedDescriptionName.push(displayText(v));
 					return 1;
 				};
 				ctx.AddItemIdentifiedDesc = (ItemID, v) => {
-					ItemTable[ItemID].identifiedDescriptionName.push(userStringDecoder.decode(v, userCharpage));
+					ItemTable[ItemID].identifiedDescriptionName.push(displayText(v));
 					return 1;
 				};
 				ctx.AddItemEffectInfo = (ItemID, EffectID) => {
@@ -5151,6 +5160,9 @@ function loadItemInfo(filename, callback, onEnd) {
 					ItemTable[ItemID].PackageID = PackageID;
 					return 1;
 				};
+				// A table is what this file defines, not what the previous one left
+				// behind. Empty rather than nil, so `tbl[30000] = {...}` still works.
+				lua.doStringSync('tbl = {} tbl_custom = {} tbl_override = {}');
 				// mount file
 				lua.mountFile(filename, buffer);
 				// execute file
@@ -5160,43 +5172,61 @@ function loadItemInfo(filename, callback, onEnd) {
 				// doing this way we avoid to have to load the other file
 				// on my tests dont care if the main() is on itemInfo.lub or itemInfo_f.lub the content is always the same
 				lua.doStringSync(`
+						function item_is_described(DESC)
+							if type(DESC) ~= "table" then
+								return false
+							end
+							if type(DESC.identifiedDescriptionName) == "table" and #DESC.identifiedDescriptionName > 0 then
+								return true
+							end
+							return type(DESC.identifiedDisplayName) == "string" and DESC.identifiedDisplayName ~= ""
+						end
 						function main_item()
-							_processedItems = _processedItems or {} 
-							for ItemID, DESC in pairs(tbl) do
-								if not _processedItems[ItemID] and #DESC.identifiedDescriptionName > 0 then
-									_processedItems[ItemID] = true 
-									result, msg = AddItem(ItemID, DESC.unidentifiedDisplayName, DESC.unidentifiedResourceName, DESC.identifiedDisplayName, DESC.identifiedResourceName, DESC.slotCount, DESC.ClassNum)
-									if not result then
-										return false, msg
-									end
-									for k, v in pairs(DESC.unidentifiedDescriptionName) do
-										result, msg = AddItemUnidentifiedDesc(ItemID, v)
-										if not result then
-											return false, msg
-										end
-									end
-									for k, v in pairs(DESC.identifiedDescriptionName) do
-										result, msg = AddItemIdentifiedDesc(ItemID, v)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.EffectID then
-										result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.costume then
-										result, msg = AddItemIsCostume(ItemID, DESC.costume)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.PackageID then
-										result, msg = AddItemPackageID(ItemID, DESC.PackageID)
-										if not result then
-											return false, msg
+							_processedItems = _processedItems or {}
+							-- tbl_custom and tbl_override are the custom item tables official
+							-- clients and translations write (itemInfo_C.lua). An override
+							-- is read first so it wins over the entry it replaces.
+							local sources = { tbl_override, tbl, tbl_custom }
+							for s = 1, 3 do
+								local source = sources[s]
+								if type(source) == "table" then
+									for ItemID, DESC in pairs(source) do
+										if not _processedItems[ItemID] and item_is_described(DESC) then
+											_processedItems[ItemID] = true
+											result, msg = AddItem(ItemID, DESC.unidentifiedDisplayName or "", DESC.unidentifiedResourceName or "", DESC.identifiedDisplayName or "", DESC.identifiedResourceName or "", DESC.slotCount, DESC.ClassNum)
+											if not result then
+												return false, msg
+											end
+											for k, v in pairs(DESC.unidentifiedDescriptionName or {}) do
+												result, msg = AddItemUnidentifiedDesc(ItemID, v)
+												if not result then
+													return false, msg
+												end
+											end
+											for k, v in pairs(DESC.identifiedDescriptionName or {}) do
+												result, msg = AddItemIdentifiedDesc(ItemID, v)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.EffectID then
+												result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.costume then
+												result, msg = AddItemIsCostume(ItemID, DESC.costume)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.PackageID then
+												result, msg = AddItemPackageID(ItemID, DESC.PackageID)
+												if not result then
+													return false, msg
+												end
+											end
 										end
 									end
 								end
@@ -5220,6 +5250,48 @@ function loadItemInfo(filename, callback, onEnd) {
 				onEnd(false);
 			}
 		});
+}
+
+/**
+ * Whether an item table is UTF-8 text with something beyond ASCII in it.
+ *
+ * @param {Uint8Array} bytes
+ * @returns {boolean}
+ */
+function isUtf8Table(bytes) {
+	if (!bytes.some(b => b > 0x7f)) {
+		return false;
+	}
+	try {
+		new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
+/**
+ * The bytes a resource name from a UTF-8 item table stands for.
+ *
+ * Resource names become file paths, and the client's files are named in its
+ * codepage read one byte to a character. So Hangul is put back into CP949, and
+ * a character below U+0100 -- a name already spelled the way paths appear on
+ * disk, as in `»¡°£Æ÷¼Ç` -- is the byte it already represents.
+ *
+ * @param {Uint8Array} bytes - UTF-8 encoded resource name
+ * @returns {Uint8Array}
+ */
+function utf8ResourceBytes(bytes) {
+	const out = [];
+	for (const ch of userStringDecoder.decode(bytes, 'utf-8')) {
+		const code = ch.codePointAt(0);
+		if (code < 0x100) {
+			out.push(code);
+		} else {
+			out.push(...userStringDecoder.encode(ch, 'windows-949'));
+		}
+	}
+	return Uint8Array.from(out);
 }
 
 /**
