@@ -5102,6 +5102,15 @@ function loadItemInfo(filename, callback, onEnd) {
 				console.log('Loading file "' + filename + '"...');
 				// check if file is ArrayBuffer and convert to Uint8Array if necessary
 				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
+				// A table saved as UTF-8 -- what a text editor writes -- rather than in
+				// the client's codepage. Decided once for the whole file: a table in
+				// the codepage almost never survives strict UTF-8 decoding, while one
+				// short string easily could.
+				const utf8 = isUtf8Table(buffer);
+				const displayText = bytes =>
+					utf8 ? userStringDecoder.decode(bytes, 'utf-8') : userStringDecoder.decode(bytes, userCharpage);
+				const resourceText = bytes =>
+					utf8 ? userStringDecoder.decode(utf8ResourceBytes(bytes)) : userStringDecoder.decode(bytes);
 				// get context, a proxy. It will be used to interact with lua conveniently
 				const ctx = lua.ctx;
 
@@ -5117,10 +5126,10 @@ function loadItemInfo(filename, callback, onEnd) {
 				) => {
 					ItemTable[ItemID] = {
 						...(typeof ItemTable[ItemID] === 'object' && ItemTable[ItemID]),
-						unidentifiedDisplayName: userStringDecoder.decode(unidentifiedDisplayName, userCharpage),
-						unidentifiedResourceName: userStringDecoder.decode(unidentifiedResourceName),
-						identifiedDisplayName: userStringDecoder.decode(identifiedDisplayName, userCharpage),
-						identifiedResourceName: userStringDecoder.decode(identifiedResourceName),
+						unidentifiedDisplayName: displayText(unidentifiedDisplayName),
+						unidentifiedResourceName: resourceText(unidentifiedResourceName),
+						identifiedDisplayName: displayText(identifiedDisplayName),
+						identifiedResourceName: resourceText(identifiedResourceName),
 						unidentifiedDescriptionName: [],
 						identifiedDescriptionName: [],
 						EffectID: null,
@@ -5132,11 +5141,11 @@ function loadItemInfo(filename, callback, onEnd) {
 					return 1;
 				};
 				ctx.AddItemUnidentifiedDesc = (ItemID, v) => {
-					ItemTable[ItemID].unidentifiedDescriptionName.push(userStringDecoder.decode(v, userCharpage));
+					ItemTable[ItemID].unidentifiedDescriptionName.push(displayText(v));
 					return 1;
 				};
 				ctx.AddItemIdentifiedDesc = (ItemID, v) => {
-					ItemTable[ItemID].identifiedDescriptionName.push(userStringDecoder.decode(v, userCharpage));
+					ItemTable[ItemID].identifiedDescriptionName.push(displayText(v));
 					return 1;
 				};
 				ctx.AddItemEffectInfo = (ItemID, EffectID) => {
@@ -5241,6 +5250,48 @@ function loadItemInfo(filename, callback, onEnd) {
 				onEnd(false);
 			}
 		});
+}
+
+/**
+ * Whether an item table is UTF-8 text with something beyond ASCII in it.
+ *
+ * @param {Uint8Array} bytes
+ * @returns {boolean}
+ */
+function isUtf8Table(bytes) {
+	if (!bytes.some(b => b > 0x7f)) {
+		return false;
+	}
+	try {
+		new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
+/**
+ * The bytes a resource name from a UTF-8 item table stands for.
+ *
+ * Resource names become file paths, and the client's files are named in its
+ * codepage read one byte to a character. So Hangul is put back into CP949, and
+ * a character below U+0100 -- a name already spelled the way paths appear on
+ * disk, as in `»¡°£Æ÷¼Ç` -- is the byte it already represents.
+ *
+ * @param {Uint8Array} bytes - UTF-8 encoded resource name
+ * @returns {Uint8Array}
+ */
+function utf8ResourceBytes(bytes) {
+	const out = [];
+	for (const ch of userStringDecoder.decode(bytes, 'utf-8')) {
+		const code = ch.codePointAt(0);
+		if (code < 0x100) {
+			out.push(code);
+		} else {
+			out.push(...userStringDecoder.encode(ch, 'windows-949'));
+		}
+	}
+	return Uint8Array.from(out);
 }
 
 /**
