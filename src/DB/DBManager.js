@@ -331,14 +331,22 @@ class DB {
 			true
 		);
 		const loadmsg = onLoad();
+		const readMsgString = (_index, val) => {
+			MsgStringTable[_index] = val;
+		};
+		const loadMsgStringCSV = () =>
+			loadCSV('data/msgstringtable.csv', MsgStringTable, 0, 1, loadmsg);
 		loadTable(
 			'data/msgstringtable.txt',
 			'#',
 			1,
-			(_index, val) => {
-				MsgStringTable[_index] = val;
-			},
-			() => loadCSV('data/msgstringtable.csv', MsgStringTable, 0, 1, loadmsg),
+			readMsgString,
+			// An empty msgstringtable.txt is a miss, not an answer: newer clients
+			// keep the file and put the table under a second name.
+			() =>
+				MsgStringTable.length
+					? loadMsgStringCSV()
+					: loadTable('data/msgstringtablel.txt', '#', 1, readMsgString, loadMsgStringCSV, true),
 			true
 		);
 
