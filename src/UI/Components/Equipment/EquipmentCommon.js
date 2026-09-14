@@ -128,6 +128,9 @@ export function createEquipment({
 	Component.init = function init() {
 		const root = Component.getRoot();
 		const canvases = root.querySelectorAll('canvas');
+		// init() can run more than once; without this the contexts accumulate
+		// and the character is drawn once per stale entry.
+		_ctx.length = 0;
 		if (canvases[0]) _ctx.push(canvases[0].getContext('2d'));
 		if (canvases[1]) _ctx.push(canvases[1].getContext('2d'));
 
