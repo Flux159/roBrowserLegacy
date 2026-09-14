@@ -94,7 +94,12 @@ CartItems.init = function Init() {
 
 	// on drop item
 	this._host.addEventListener('drop', onDrop);
-	this._host.addEventListener('dragover', e => e.stopImmediatePropagation());
+	this._host.addEventListener('dragover', e => {
+		e.stopImmediatePropagation();
+		// A drop only fires on a target whose dragover cancelled the event.
+		// Without this the cart is never a drop target and onDrop never runs.
+		e.preventDefault();
+	});
 
 	// Items event (delegation)
 	const content = root.querySelector('.container .content');
