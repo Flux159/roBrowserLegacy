@@ -375,11 +375,14 @@ function onEntityVanish(pkt) {
 
 		const deathDelay = isSyncedDeath ? entity._deathSyncTick - Renderer.tick + C_DEATH_SYNC_OFFSET : 0;
 
-		// Free the GID immediately so it can be reused; removeGID only drops the
-		// lookup entry and keeps the entity in the render list, so the death /
-		// fade-out animation continues independently. Deferring removeGID would
-		// leave the GID mapped to a dying entity and let a reused GID collide.
-		EntityManager.removeGID(pkt.GID);
+		// A dead PC remains a server-side actor and may be resurrected with the
+		// same GID. Keep that lookup until a later EXIT/TELEPORT/OUTOFSIGHT packet
+		// truly removes it; otherwise ZC_RESURRECTION cannot find the corpse and a
+		// subsequent movement/spawn packet creates a second visual actor. Mobs and
+		// other entity types still free their reusable GID immediately.
+		if (pkt.type !== Entity.VT.DEAD || entity.objecttype !== Entity.TYPE_PC) {
+			EntityManager.removeGID(pkt.GID);
+		}
 
 		const playDeath = () => {
 			entity.remove(pkt.type);
