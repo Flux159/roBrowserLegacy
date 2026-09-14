@@ -405,7 +405,9 @@ class DB {
 				function (json) {
 					Object.assign(HatTable, json);
 				},
-				onLoad()
+				onLoad(),
+				null,
+				true
 			);
 			loadLuaTable(
 				[DB.LUA_PATH + 'datainfo/spriterobeid.lub', DB.LUA_PATH + 'datainfo/spriterobename.lub'],
@@ -413,7 +415,9 @@ class DB {
 				function (json) {
 					Object.assign(RobeTable, json);
 				},
-				onLoad()
+				onLoad(),
+				null,
+				true
 			);
 
 			if (PACKETVER.value >= 20141008) {
@@ -6945,7 +6949,7 @@ function loadStateIconInfo(basePath, callback, onEnd) {
  *
  * @author alisonrag
  */
-function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
+function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isResourceTable = false) {
 	const id_filename = file_list[0];
 	const value_table_filename = file_list[1];
 
@@ -6991,7 +6995,12 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
 
 			// create context function
 			ctx.addKeyAndValueToTable = (key, value) => {
-				table[key] = userStringDecoder.decode(value, userCharpage);
+				// Resource-name tables (accname, robename) hold GRF sprite filenames, not
+				// display text. They must stay as raw EUC-KR byte-strings so the paths built
+				// in getHatPath/getRobePath match the files -- decoding with the charpage
+				// turns them into Unicode Hangul and every sprite request 404s. Display
+				// tables (job names, skill descriptions...) still decode with the charpage.
+				table[key] = userStringDecoder.decode(value, isResourceTable ? null : userCharpage);
 				return 1;
 			};
 
