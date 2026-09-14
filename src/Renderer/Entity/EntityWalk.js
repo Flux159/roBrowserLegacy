@@ -76,7 +76,10 @@ function estimatePathDuration(path, total, baseSpeed, startPos) {
  * the walk based on latency.
  */
 function computeWalkStartTick(nowTick, moveStartTime, pathDuration, maxClamp) {
-	if (!moveStartTime || !Session || !Session.serverTick) {
+	// Not `!Session.serverTick`: that is non-zero from the first frame, because
+	// it counts from the renderer starting. Until a pong lands it is not the
+	// server's clock, and subtracting a server tick from it is meaningless.
+	if (!moveStartTime || !Session || !Session.serverTickSynced) {
 		return nowTick;
 	}
 

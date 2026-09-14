@@ -81,6 +81,10 @@ export default {
 	},
 
 	serverTick: 0,
+	/// Whether a pong has put `serverTick` on the server's clock. Until one
+	/// has, it counts from the renderer starting and means nothing next to a
+	/// tick the server sent.
+	serverTickSynced: false,
 
 	mapState: {
 		property: 0,

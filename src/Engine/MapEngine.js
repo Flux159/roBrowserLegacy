@@ -215,6 +215,8 @@ class MapEngine {
 					ping = new PACKET.CZ.REQUEST_TIME();
 				}
 				const startTick = Date.now();
+				// A new connection makes any previous correction meaningless.
+				Session.serverTickSynced = false;
 				Network.setPing(() => {
 					if (is_sec_hbt) {
 						Network.sendPacket(hbt);
@@ -226,6 +228,10 @@ class MapEngine {
 						console.warn('[Network] The server did not answer the previous PING!');
 					}
 					SP.pingTime = ping.clientTime;
+					// The base pingTime is measured from, so the pong can be put on
+					// the same clock and subtracted. Without it there is nothing here
+					// for a pong to be compared against.
+					SP.epoch = startTick;
 					SP.returned = false;
 
 					Network.sendPacket(ping);
@@ -467,10 +473,14 @@ function onPong(pkt) {
 	const SP = Session.ping;
 
 	SP.returned = true;
-	SP.pongTime = 0;
+	// On the same clock as pingTime, so the subtraction below is the round
+	// trip it reads as. It used to be assigned 0 first, which made `value`
+	// minus the age of the session.
+	SP.pongTime = SP.epoch ? Date.now() - SP.epoch : SP.pingTime;
 	SP.value = SP.pongTime - SP.pingTime;
 
 	Session.serverTick = pkt.time + SP.value / 2; // Adjust with half ping
+	Session.serverTickSynced = true;
 }
 
 /**
