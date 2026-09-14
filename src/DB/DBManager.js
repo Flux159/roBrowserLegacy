@@ -5151,6 +5151,9 @@ function loadItemInfo(filename, callback, onEnd) {
 					ItemTable[ItemID].PackageID = PackageID;
 					return 1;
 				};
+				// A table is what this file defines, not what the previous one left
+				// behind. Empty rather than nil, so `tbl[30000] = {...}` still works.
+				lua.doStringSync('tbl = {} tbl_custom = {} tbl_override = {}');
 				// mount file
 				lua.mountFile(filename, buffer);
 				// execute file
@@ -5160,43 +5163,61 @@ function loadItemInfo(filename, callback, onEnd) {
 				// doing this way we avoid to have to load the other file
 				// on my tests dont care if the main() is on itemInfo.lub or itemInfo_f.lub the content is always the same
 				lua.doStringSync(`
+						function item_is_described(DESC)
+							if type(DESC) ~= "table" then
+								return false
+							end
+							if type(DESC.identifiedDescriptionName) == "table" and #DESC.identifiedDescriptionName > 0 then
+								return true
+							end
+							return type(DESC.identifiedDisplayName) == "string" and DESC.identifiedDisplayName ~= ""
+						end
 						function main_item()
-							_processedItems = _processedItems or {} 
-							for ItemID, DESC in pairs(tbl) do
-								if not _processedItems[ItemID] and #DESC.identifiedDescriptionName > 0 then
-									_processedItems[ItemID] = true 
-									result, msg = AddItem(ItemID, DESC.unidentifiedDisplayName, DESC.unidentifiedResourceName, DESC.identifiedDisplayName, DESC.identifiedResourceName, DESC.slotCount, DESC.ClassNum)
-									if not result then
-										return false, msg
-									end
-									for k, v in pairs(DESC.unidentifiedDescriptionName) do
-										result, msg = AddItemUnidentifiedDesc(ItemID, v)
-										if not result then
-											return false, msg
-										end
-									end
-									for k, v in pairs(DESC.identifiedDescriptionName) do
-										result, msg = AddItemIdentifiedDesc(ItemID, v)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.EffectID then
-										result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.costume then
-										result, msg = AddItemIsCostume(ItemID, DESC.costume)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.PackageID then
-										result, msg = AddItemPackageID(ItemID, DESC.PackageID)
-										if not result then
-											return false, msg
+							_processedItems = _processedItems or {}
+							-- tbl_custom and tbl_override are the custom item tables official
+							-- clients and translations write (itemInfo_C.lua). An override
+							-- is read first so it wins over the entry it replaces.
+							local sources = { tbl_override, tbl, tbl_custom }
+							for s = 1, 3 do
+								local source = sources[s]
+								if type(source) == "table" then
+									for ItemID, DESC in pairs(source) do
+										if not _processedItems[ItemID] and item_is_described(DESC) then
+											_processedItems[ItemID] = true
+											result, msg = AddItem(ItemID, DESC.unidentifiedDisplayName or "", DESC.unidentifiedResourceName or "", DESC.identifiedDisplayName or "", DESC.identifiedResourceName or "", DESC.slotCount, DESC.ClassNum)
+											if not result then
+												return false, msg
+											end
+											for k, v in pairs(DESC.unidentifiedDescriptionName or {}) do
+												result, msg = AddItemUnidentifiedDesc(ItemID, v)
+												if not result then
+													return false, msg
+												end
+											end
+											for k, v in pairs(DESC.identifiedDescriptionName or {}) do
+												result, msg = AddItemIdentifiedDesc(ItemID, v)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.EffectID then
+												result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.costume then
+												result, msg = AddItemIsCostume(ItemID, DESC.costume)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.PackageID then
+												result, msg = AddItemPackageID(ItemID, DESC.PackageID)
+												if not result then
+													return false, msg
+												end
+											end
 										end
 									end
 								end
