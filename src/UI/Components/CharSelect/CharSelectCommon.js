@@ -118,6 +118,11 @@ export function createCharSelect(config) {
 	Component.init = function init() {
 		const root = this.getRoot();
 
+		// init() runs again every time character select is re-entered; without
+		// this the contexts accumulate and each character is drawn once per
+		// stale entry.
+		_ctx.length = 0;
+
 		if (gridLayout) {
 			// Bind buttons
 			root.querySelector('.ok').addEventListener('click', connect);
