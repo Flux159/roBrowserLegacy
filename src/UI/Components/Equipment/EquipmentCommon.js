@@ -236,8 +236,11 @@ export function createEquipment({
 		this._host.addEventListener('dragleave', onDragLeave);
 		this._host.addEventListener('drop', onDrop);
 
-		const content = root.querySelector('.content');
-		if (content) {
+		// Every tab is its own .content table: general, costume, and on some
+		// versions title and damage skin. querySelector bound only the first, so
+		// costume and shadow gear ignored double-click, right-click and hover,
+		// and nothing could take a costume off.
+		root.querySelectorAll('.content').forEach(content => {
 			content.addEventListener('contextmenu', e => {
 				e.preventDefault();
 				const item = e.target.closest('.item');
@@ -255,7 +258,14 @@ export function createEquipment({
 				const btn = e.target.closest('button');
 				if (btn) onEquipmentOut();
 			});
-		}
+			content.addEventListener('dragstart', e => {
+				const item = e.target.closest('.item');
+				if (item) onEquipmentDragStart.call(item, e);
+			});
+			content.addEventListener('dragend', e => {
+				if (e.target.closest('.item')) onEquipmentDragEnd();
+			});
+		});
 
 		this.draggable('.titlebar');
 
@@ -550,7 +560,7 @@ export function createEquipment({
 			cell.innerHTML =
 				'<div class="item" data-index="' +
 				item.index +
-				'">' +
+				'" draggable="true">' +
 				'<button>' +
 				gradeInner +
 				'</button>' +
@@ -870,6 +880,16 @@ export function createEquipment({
 			return false;
 		}
 
+		// Already worn: a drag that started here and ended here changes nothing.
+		if (data && data.type === 'item' && data.from === 'Equipment') {
+			Component.getRoot()
+				.querySelectorAll('td')
+				.forEach(td => {
+					td.style.backgroundImage = 'none';
+				});
+			return false;
+		}
+
 		if (data && data.type === 'item') {
 			item = data.data;
 			if (
@@ -915,6 +935,39 @@ export function createEquipment({
 		const root = Component.getRoot();
 		const overlay = root.querySelector('.overlay');
 		if (overlay) overlay.style.display = 'none';
+	}
+
+	// Dragging a worn item onto the inventory takes it off, as double-clicking
+	// does; the inventory's onDrop recognises `from: 'Equipment'`. Same payload
+	// and drag image as an inventory item, so drop targets read it the same way.
+	function onEquipmentDragStart(event) {
+		const index = parseInt(this.getAttribute('data-index'), 10);
+		const item = _list[index];
+		if (!item) return;
+
+		const img = new Image();
+		const btn = this.querySelector('button');
+		const url = btn ? btn.style.backgroundImage.match(/\((.*?)\)/)?.[1]?.replace(/('|")/g, '') : '';
+		img.decoding = 'async';
+		img.src = url || '';
+
+		event.dataTransfer.setDragImage(img, 12, 12);
+		event.dataTransfer.setData(
+			'Text',
+			JSON.stringify(
+				(window._OBJ_DRAG_ = {
+					type: 'item',
+					from: 'Equipment',
+					data: item
+				})
+			)
+		);
+
+		onEquipmentOut();
+	}
+
+	function onEquipmentDragEnd() {
+		delete window._OBJ_DRAG_;
 	}
 
 	function onEquipmentOver() {

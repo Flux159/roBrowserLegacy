@@ -1101,6 +1101,13 @@ export function createInventory(config) {
 			return false;
 		}
 
+		// Dragged off the equipment window: take it off. Ahead of the quantity
+		// prompt below, because equipped ammunition is a stack and comes off whole.
+		if (data.type === 'item' && data.from === 'Equipment') {
+			Equipment.getUI().onUnEquip(item.index);
+			return false;
+		}
+
 		if (
 			data.type !== 'item' ||
 			(data.from !== 'Storage' && data.from !== 'CartItems' && data.from !== 'Mail' && data.from !== 'WriteRodex')
