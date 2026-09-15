@@ -131,6 +131,20 @@ export function createStorage(config) {
 				searchBtn.addEventListener('mousedown', e => e.stopImmediatePropagation());
 				searchBtn.addEventListener('click', () => Component.onSearch());
 			}
+
+			// Enter is handled on the input itself, not in onKeyDown: that listener is
+			// on window and sees every Enter while the window is open, and ChatBox's
+			// runs first and takes focus to open the chat. Stopping here keeps both off it.
+			const searchInput = root.querySelector('#storage-search-input');
+			if (searchInput) {
+				searchInput.addEventListener('keydown', e => {
+					if (e.which === KEYS.ENTER || e.key === 'Enter') {
+						e.preventDefault();
+						e.stopPropagation();
+						Component.onEnterPressed();
+					}
+				});
+			}
 		}
 
 		if (hasOrderBy) {
@@ -383,12 +397,6 @@ export function createStorage(config) {
 				Component.onClosePressed();
 			}
 		}
-
-		if (hasSearch && (event.which === KEYS.ENTER || event.key === 'Enter')) {
-			if (typeof Component.onEnterPressed === 'function') {
-				Component.onEnterPressed();
-			}
-		}
 	};
 
 	if (hasSearch) {
@@ -425,9 +433,8 @@ export function createStorage(config) {
 			}
 		};
 
-		// Enter in the search box is routed through this hook by the key handler
-		// above, which skips it unless it is a function. Nothing ever defined it,
-		// so pressing Enter did nothing at all. Default it to the search, the way
+		// Enter in the search box calls this hook. Nothing ever defined it, so
+		// pressing Enter did nothing at all. Default it to the search, the way
 		// onClosePressed is defaulted below; an override can still replace it.
 		Component.onEnterPressed = function onEnterPressed() {
 			Component.onSearch();
