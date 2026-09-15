@@ -152,6 +152,18 @@
 	right: 76px;
 	text-align: right;
 }
+/*
+ * An item name is free to overflow its box, which was harmless while nothing
+ * sat to its right. Beside a stock column it runs under the number, so in a
+ * market shop the name is cut to its box with an ellipsis and keeps a small
+ * gutter. The amount comes immediately before the name in the markup.
+ */
+#NpcStore .content .item .amountStock + .name {
+	box-sizing: border-box;
+	padding-right: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 #NpcStore .content .item .name {
 	position: absolute;
 	top: 13px;
