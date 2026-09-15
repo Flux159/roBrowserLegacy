@@ -110,11 +110,11 @@ const { default: ItemType } = await import('DB/Items/ItemType.js');
 const POTION = 0;
 const DAGGER = 1;
 
-function openMarketShop() {
+function openMarketShop(stock = STOCK) {
 	NpcStore.setType(NpcStore.Type.MARKETSHOP);
 	NpcStore.setList([
-		{ ITID: 501, type: ItemType.HEALING, price: PRICE, qty: STOCK, weight: 70 },
-		{ ITID: 1201, type: ItemType.WEAPON, price: PRICE, qty: STOCK, weight: 400 }
+		{ ITID: 501, type: ItemType.HEALING, price: PRICE, qty: stock, weight: 70 },
+		{ ITID: 1201, type: ItemType.WEAPON, price: PRICE, qty: stock, weight: 400 }
 	]);
 
 	return NpcStore.getRoot();
@@ -176,6 +176,22 @@ describe('NpcStore market shop quantities', () => {
 
 		expect(amountOf(root, 'OutputWindow', POTION)).toBe(String(STOCK));
 		expect(amountOf(root, 'InputWindow', POTION)).toBe('0');
+	});
+
+	it('charges for the stock it can supply, not for the whole request', () => {
+		const SHORT_STOCK = 6;
+		const root = openMarketShop(SHORT_STOCK);
+
+		// Enough for every potion the stall holds, nowhere near enough for the 99
+		// that were asked for. Pricing the request rather than the six that would
+		// actually move turned away a purchase the player could afford.
+		mocks.session.zeny = PRICE * SHORT_STOCK * 2;
+
+		doubleClick(root, 'InputWindow', POTION);
+		mocks.inputBox.onSubmitRequest(99);
+
+		expect(mocks.chatBox.addText).not.toHaveBeenCalled();
+		expect(amountOf(root, 'OutputWindow', POTION)).toBe(String(SHORT_STOCK));
 	});
 
 	it('leaves the amount column blank for a shop with no stock limit', () => {

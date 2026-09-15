@@ -952,6 +952,23 @@ const transferItem = (function () {
 		const root = NpcStore.getRoot();
 
 		if (isAdding) {
+			// A market shop's `count` is infinite, so the stall size is the real cap.
+			const available =
+				_type === NpcStore.Type.MARKETSHOP && typeof inputItem.maxCount === 'number'
+					? Math.min(inputItem.count, inputItem.maxCount)
+					: inputItem.count;
+
+			// Asking for more than the shop has moves what it has, so the cost check
+			// below has to price the amount that will actually move. Pricing the whole
+			// request turns away a purchase the player can afford.
+			if (isFinite(available)) {
+				count = Math.min(count, available - outputItem.count);
+			}
+
+			if (count < 1) {
+				return;
+			}
+
 			if (
 				(_type === NpcStore.Type.BUY ||
 					_type === NpcStore.Type.VENDING_STORE ||
@@ -963,11 +980,6 @@ const transferItem = (function () {
 			}
 
 			const originalCount = outputItem.count;
-			// A market shop's `count` is infinite, so the stall size is the real cap.
-			const available =
-				_type === NpcStore.Type.MARKETSHOP && typeof inputItem.maxCount === 'number'
-					? Math.min(inputItem.count, inputItem.maxCount)
-					: inputItem.count;
 			outputItem.count = Math.min(outputItem.count + count, available);
 
 			if (_type === NpcStore.Type.BARTER_MARKET) {
