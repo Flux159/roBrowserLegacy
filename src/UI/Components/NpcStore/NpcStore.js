@@ -443,8 +443,13 @@ NpcStore.setList = function setList(items) {
 				}
 				// Market shops send their remaining stock as `qty`. Without this the
 				// amount column stays blank, because addItem only prints a finite count,
-				// and nothing caps the purchase. A qty of 0 means sold out.
-				if (_type === NpcStore.Type.MARKETSHOP && typeof items[i].qty === 'number') {
+				// and transferItem caps a purchase at `count`. A qty of 0 means sold out;
+				// rAthena sends -1 for unlimited stock, which reads back as 0xFFFFFFFF.
+				if (
+					_type === NpcStore.Type.MARKETSHOP &&
+					typeof items[i].qty === 'number' &&
+					items[i].qty !== 0xffffffff
+				) {
 					items[i].count = items[i].qty;
 				} else {
 					items[i].count = items[i].count || Infinity;
@@ -452,9 +457,6 @@ NpcStore.setList = function setList(items) {
 				items[i].IsIdentified = true;
 				out = Object.assign({}, items[i]);
 				out.count = 0;
-				if (isFinite(items[i].count)) {
-					out.maxCount = items[i].count;
-				}
 
 				addItem(content, items[i]);
 
