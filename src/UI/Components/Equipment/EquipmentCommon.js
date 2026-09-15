@@ -236,8 +236,11 @@ export function createEquipment({
 		this._host.addEventListener('dragleave', onDragLeave);
 		this._host.addEventListener('drop', onDrop);
 
-		const content = root.querySelector('.content');
-		if (content) {
+		// Every tab is its own .content table: general, costume, and on some
+		// versions title and damage skin. querySelector bound only the first, so
+		// costume and shadow gear ignored double-click, right-click and hover,
+		// and nothing could take a costume off.
+		root.querySelectorAll('.content').forEach(content => {
 			content.addEventListener('contextmenu', e => {
 				e.preventDefault();
 				const item = e.target.closest('.item');
@@ -255,7 +258,7 @@ export function createEquipment({
 				const btn = e.target.closest('button');
 				if (btn) onEquipmentOut();
 			});
-		}
+		});
 
 		this.draggable('.titlebar');
 
