@@ -139,6 +139,16 @@
 	text-shadow: -1px -1px white;
 	color: red;
 }
+/*
+ * A market shop's stock can run to five digits, which does not fit over the
+ * 24px icon. Pin the right edge just left of the name column so a long number
+ * grows away from the item name instead of running across it.
+ */
+#NpcStore .content .item .amountStock {
+	left: auto;
+	right: calc(100% - 30px);
+	text-align: right;
+}
 #NpcStore .content .item .name {
 	position: absolute;
 	top: 13px;
