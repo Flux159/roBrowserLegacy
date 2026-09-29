@@ -214554,29 +214554,15 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GN_ILLUSIONDOPING] = { effectId: 1049 };
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH_WATER] = { hitEffectId: "ef_dragonbreath_water" };
 	SkillEffect[SkillConst_default.RK_LUXANIMA] = { effectId: 1044 };
-	SkillEffect[SkillConst_default.NC_MAGMA_ERUPTION] = { effectId: 1050 };
-	SkillEffect[SkillConst_default.WM_FRIGG_SONG] = { effectId: "ef_frigg_song" };
-	SkillEffect[SkillConst_default.SO_ELEMENTAL_SHIELD] = { effectId: 1046 };
-	SkillEffect[SkillConst_default.SR_FLASHCOMBO] = { effectId: 1043 };
-	SkillEffect[SkillConst_default.SC_ESCAPE] = {};
-	SkillEffect[SkillConst_default.AB_OFFERTORIUM] = { effectId: 1047 };
-	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
-	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
-	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
-	SkillEffect[SkillConst_default.DK_MADNESS_CRUSHER] = { effectId: "ef_madness_crusher" };
 	SkillEffect[SkillConst_default.DK_SERVANTWEAPON] = {
 		effectId: "ef_dk_servantweapon",
 		effectIdOnCaster: "ef_dk_servantweapon_cast",
 		hitEffectId: "ef_dk_servantweapon_hit"
 	};
-	SkillEffect[SkillConst_default.DK_SERVANTWEAPON_ATK] = {
-		effectId: "ef_dk_servantweapon_atk",
-		effectIdOnCaster: "ef_dk_servantweapon_atk_cast",
-		hitEffectId: "ef_dk_servantweapon_atk_hit"
-	};
+	SkillEffect[SkillConst_default.DK_SERVANTWEAPON_ATK] = { effectId: "ef_dk_servantweapon_atk" };
 	SkillEffect[SkillConst_default.DK_SERVANT_W_SIGN] = { effectId: "ef_dk_servant_w_sign" };
 	SkillEffect[SkillConst_default.DK_SERVANT_W_PHANTOM] = { effectId: "ef_dk_servant_w_phantom" };
-	SkillEffect[SkillConst_default.DK_SERVANT_W_DEMOL] = { effectId: "ef_dk_servant_w_demol" };
+	SkillEffect[SkillConst_default.DK_SERVANT_W_DEMOL] = { hitEffectId: "ef_dk_servant_w_demol_hit" };
 	SkillEffect[SkillConst_default.DK_CHARGINGPIERCE] = {
 		effectIdOnCaster: "ef_dk_chargingpierce_cast",
 		hitEffectId: "ef_dk_chargingpierce_hit"
@@ -214585,11 +214571,9 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_dk_hackandslasher",
 		hitEffectId: "ef_dk_hackandslasher_hit"
 	};
-	SkillEffect[SkillConst_default.DK_HACKANDSLASHER_ATK] = {
-		effectId: "ef_dk_hackandslasher_atk",
-		hitEffectId: "ef_dk_hackandslasher_atk_hit"
-	};
+	SkillEffect[SkillConst_default.DK_HACKANDSLASHER_ATK] = { effectId: "ef_dk_hackandslasher_atk" };
 	SkillEffect[SkillConst_default.DK_DRAGONIC_AURA] = { effectIdOnCaster: "ef_dk_dragonic_aura" };
+	SkillEffect[SkillConst_default.DK_MADNESS_CRUSHER] = { effectId: "ef_dk_madness_crusher" };
 	SkillEffect[SkillConst_default.DK_VIGOR] = {
 		effectId: "ef_dk_vigor",
 		effectIdOnCaster: "ef_dk_vigor_cast"
@@ -214599,6 +214583,20 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_dk_dragonic_breath",
 		hitEffectId: "ef_dk_dragonic_breath_hit"
 	};
+	SkillEffect[6502] = {
+		effectId: "ef_dk_dragonic_pierce",
+		effectIdOnCaster: "ef_dk_dragonic_pierce_cast",
+		hitEffectId: "ef_dk_dragonic_pierce_hit"
+	};
+	SkillEffect[SkillConst_default.NC_MAGMA_ERUPTION] = { effectId: 1050 };
+	SkillEffect[SkillConst_default.WM_FRIGG_SONG] = { effectId: "ef_frigg_song" };
+	SkillEffect[SkillConst_default.SO_ELEMENTAL_SHIELD] = { effectId: 1046 };
+	SkillEffect[SkillConst_default.SR_FLASHCOMBO] = { effectId: 1043 };
+	SkillEffect[SkillConst_default.SC_ESCAPE] = {};
+	SkillEffect[SkillConst_default.AB_OFFERTORIUM] = { effectId: 1047 };
+	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
+	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
+	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
 	SkillEffect[SkillConst_default.SU_BITE] = {};
 	SkillEffect[SkillConst_default.SU_HIDE] = {};
 	SkillEffect[SkillConst_default.SU_SCRATCH] = {};
@@ -274847,53 +274845,32 @@ var init_EffectTable = __esmMin((() => {
 			wav: "dragon_breath",
 			attachedEntity: true
 		}],
-		ef_madness_crusher: [{
-			type: "STR",
-			file: "madness_crusher/madness_crusher/madness_crusher",
-			min: "madness_crusher/madness_crusher/min_madness_crusher",
-			texturePath: "madness_crusher/madness_crusher/",
-			wav: "effect/dk_madness_crusher"
-		}, {
-			type: "STR",
-			file: "madness_crusher/madness_crusher_bottom/madness_crusher_bottom",
-			min: "madness_crusher/madness_crusher_bottom/min_madness_crusher_bottom",
-			texturePath: "madness_crusher/madness_crusher_bottom/",
-			renderBeforeEntities: true
-		}],
 		ef_dk_servantweapon: [{
 			type: "STR",
-			file: "new_servantweapon/new_servantweapon/new_servantweapon",
-			texturePath: "new_servantweapon/new_servantweapon/",
+			file: "dragon_knight/dk_servantweapon/servantweapon/servantweapon",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon/",
+			min: "dragon_knight/dk_servantweapon/servantweapon/min_servantweapon",
 			wav: "effect/dk_servantweapon"
 		}],
 		ef_dk_servantweapon_cast: [{
 			type: "STR",
-			file: "new_servantweapon/new_servantweapon_cast/new_servantweapon_cast",
-			texturePath: "new_servantweapon/new_servantweapon_cast/"
+			file: "dragon_knight/dk_servantweapon/servantweapon_cast/servantweapon_cast",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon_cast/",
+			min: "dragon_knight/dk_servantweapon/servantweapon_cast/min_servantweapon_cast"
 		}],
 		ef_dk_servantweapon_hit: [{
 			type: "STR",
-			file: "new_servantweapon/new_servantweapon_hit/new_servantweapon_hit",
-			texturePath: "new_servantweapon/new_servantweapon_hit/",
-			min: "new_servantweapon/new_servantweapon_hit/min_new_servantweapon_hit"
+			file: "dragon_knight/dk_servantweapon/servantweapon_hit/servantweapon_hit",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon_hit/",
+			min: "dragon_knight/dk_servantweapon/servantweapon_hit/min_servantweapon_hit"
 		}, {
 			type: "STR",
-			file: "new_servantweapon/new_servantweapon_hit_bottom/new_servantweapon_hit_bottom",
-			texturePath: "new_servantweapon/new_servantweapon_hit_bottom/",
-			min: "new_servantweapon/new_servantweapon_hit_bottom/min_new_servantweapon_hit_bottom",
+			file: "dragon_knight/dk_servantweapon/servantweapon_hit_bottom/servantweapon_hit_bottom",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon_hit_bottom/",
+			min: "dragon_knight/dk_servantweapon/servantweapon_hit_bottom/min_servantweapon_hit_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_dk_servantweapon_atk: [{
-			type: "STR",
-			file: "new_servantweapon/new_servantweapon/new_servantweapon",
-			texturePath: "new_servantweapon/new_servantweapon/"
-		}],
-		ef_dk_servantweapon_atk_cast: [{
-			type: "STR",
-			file: "new_servantweapon/new_servantweapon_cast/new_servantweapon_cast",
-			texturePath: "new_servantweapon/new_servantweapon_cast/"
-		}],
-		ef_dk_servantweapon_atk_hit: [{
 			type: "STR",
 			file: "new_servantweapon/new_servantweapon_hit/new_servantweapon_hit",
 			texturePath: "new_servantweapon/new_servantweapon_hit/",
@@ -274906,69 +274883,75 @@ var init_EffectTable = __esmMin((() => {
 			renderBeforeEntities: true
 		}],
 		ef_dk_servant_w_sign: [{
-			wav: "effect/dk_servant_w_sign",
-			attachedEntity: true
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_sign/servant_sign/servant_sign",
+			texturePath: "dragon_knight/dk_servant_w_sign/servant_sign/",
+			min: "dragon_knight/dk_servant_w_sign/servant_sign/min_servant_sign",
+			wav: "effect/dk_servant_w_sign"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_sign/servant_sign_bottom/servant_sign_bottom",
+			texturePath: "dragon_knight/dk_servant_w_sign/servant_sign_bottom/",
+			min: "dragon_knight/dk_servant_w_sign/servant_sign_bottom/min_servant_sign_bottom",
+			renderBeforeEntities: true
 		}],
 		ef_dk_servant_w_phantom: [{
-			wav: "effect/dk_servant_w_phantom",
-			attachedEntity: true
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/servant_phantom_sub",
+			texturePath: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/",
+			min: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/min_servant_phantom_sub",
+			wav: "effect/dk_servant_w_phantom"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/servant_phantom_sub_bottom",
+			texturePath: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/",
+			min: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/min_servant_phantom_sub_bottom",
+			renderBeforeEntities: true
 		}],
-		ef_dk_servant_w_demol: [{
-			wav: "effect/dk_servant_w_demol",
-			attachedEntity: true
+		ef_dk_servant_w_demol_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_demol/servant_demolition_hit/servant_demolition_hit",
+			texturePath: "dragon_knight/dk_servant_w_demol/servant_demolition_hit/",
+			min: "dragon_knight/dk_servant_w_demol/servant_demolition_hit/min_servant_demolition_hit",
+			wav: "effect/dk_servant_w_demol"
 		}],
 		ef_dk_chargingpierce_cast: [{
 			type: "STR",
-			file: "new_chargingpierce/new_chargingpierce_cast/new_chargingpierce_cast",
-			min: "new_chargingpierce/new_chargingpierce_cast/min_new_chargingpierce_cast",
-			texturePath: "new_chargingpierce/new_chargingpierce_cast/",
+			file: "dragon_knight/dk_chargingpierce/chargingpierce_cast/chargingpierce_cast",
+			texturePath: "dragon_knight/dk_chargingpierce/chargingpierce_cast/",
 			wav: "effect/dk_chargingpierce1"
 		}, {
 			type: "STR",
-			file: "new_chargingpierce/new_chargingpierce_cast_bottom/new_chargingpierce_cast_bottom",
-			min: "new_chargingpierce/new_chargingpierce_cast_bottom/min_new_chargingpierce_cast_bottom",
-			texturePath: "new_chargingpierce/new_chargingpierce_cast_bottom/",
+			file: "dragon_knight/dk_chargingpierce/chargingpierce_cast_bottom/chargingpierce_cast_bottom",
+			texturePath: "dragon_knight/dk_chargingpierce/chargingpierce_cast_bottom/",
 			renderBeforeEntities: true
 		}],
 		ef_dk_chargingpierce_hit: [{
 			type: "STR",
-			file: "new_chargingpierce/new_chargingpierce_hit/new_chargingpierce_hit",
-			min: "new_chargingpierce/new_chargingpierce_hit/min_new_chargingpierce_hit",
-			texturePath: "new_chargingpierce/new_chargingpierce_hit/",
+			file: "dragon_knight/dk_chargingpierce/chargingpierce_hit/chargingpierce_hit",
+			texturePath: "dragon_knight/dk_chargingpierce/chargingpierce_hit/",
 			wav: "effect/dk_chargingpierce2"
 		}],
 		ef_dk_hackandslasher: [{
 			type: "STR",
-			file: "hackandslash/hackandslash/hackandslash",
-			texturePath: "hackandslash/hackandslash/",
-			min: "hackandslash/hackandslash/min_hackandslash",
+			file: "dragon_knight/dk_hackandslasher/hackandslash/hackandslash",
+			texturePath: "dragon_knight/dk_hackandslasher/hackandslash/",
+			min: "dragon_knight/dk_hackandslasher/hackandslash/min_hackandslash",
 			wav: "effect/dk_hackandslasher"
 		}, {
 			type: "STR",
-			file: "hackandslash/hackandslash_bottom/hackandslash_bottom",
-			texturePath: "hackandslash/hackandslash_bottom/",
-			min: "hackandslash/hackandslash_bottom/min_hackandslash_bottom",
+			file: "dragon_knight/dk_hackandslasher/hackandslash_bottom/hackandslash_bottom",
+			texturePath: "dragon_knight/dk_hackandslasher/hackandslash_bottom/",
+			min: "dragon_knight/dk_hackandslasher/hackandslash_bottom/min_hackandslash_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_dk_hackandslasher_hit: [{
 			type: "STR",
-			file: "hackandslash/hackandslash_hit/hackandslash_hit",
-			texturePath: "hackandslash/hackandslash_hit/",
-			min: "hackandslash/hackandslash_hit/min_hackandslash_hit"
+			file: "dragon_knight/dk_hackandslasher/hackandslash_hit/hackandslash_hit",
+			texturePath: "dragon_knight/dk_hackandslasher/hackandslash_hit/",
+			min: "dragon_knight/dk_hackandslasher/hackandslash_hit/min_hackandslash_hit"
 		}],
 		ef_dk_hackandslasher_atk: [{
-			type: "STR",
-			file: "hackandslash/hackandslash/hackandslash",
-			texturePath: "hackandslash/hackandslash/",
-			min: "hackandslash/hackandslash/min_hackandslash"
-		}, {
-			type: "STR",
-			file: "hackandslash/hackandslash_bottom/hackandslash_bottom",
-			texturePath: "hackandslash/hackandslash_bottom/",
-			min: "hackandslash/hackandslash_bottom/min_hackandslash_bottom",
-			renderBeforeEntities: true
-		}],
-		ef_dk_hackandslasher_atk_hit: [{
 			type: "STR",
 			file: "hackandslash/hackandslash_hit/hackandslash_hit",
 			texturePath: "hackandslash/hackandslash_hit/",
@@ -274978,43 +274961,84 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/dk_dragonic_aura1",
 			attachedEntity: true
 		}],
+		ef_dk_madness_crusher: [{
+			type: "STR",
+			file: "dragon_knight/dk_madness_crusher/madness_crusher/madness_crusher",
+			texturePath: "dragon_knight/dk_madness_crusher/madness_crusher/",
+			min: "dragon_knight/dk_madness_crusher/madness_crusher/min_madness_crusher",
+			wav: "effect/dk_madness_crusher"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_madness_crusher/madness_crusher_bottom/madness_crusher_bottom",
+			texturePath: "dragon_knight/dk_madness_crusher/madness_crusher_bottom/",
+			min: "dragon_knight/dk_madness_crusher/madness_crusher_bottom/min_madness_crusher_bottom",
+			renderBeforeEntities: true
+		}],
 		ef_dk_vigor: [{
 			type: "STR",
-			file: "new_vigor/new_vigor_buff/new_vigor_buff",
-			texturePath: "new_vigor/new_vigor_buff/",
+			file: "dragon_knight/dk_vigor/vigor_buff/vigor_buff",
+			texturePath: "dragon_knight/dk_vigor/vigor_buff/",
+			min: "dragon_knight/dk_vigor/vigor_buff/min_vigor_buff",
 			wav: "effect/dk_vigor"
 		}],
 		ef_dk_vigor_cast: [{
 			type: "STR",
-			file: "new_vigor/new_vigor_cast/new_vigor_cast",
-			texturePath: "new_vigor/new_vigor_cast/"
+			file: "dragon_knight/dk_vigor/vigor_cast/vigor_cast",
+			texturePath: "dragon_knight/dk_vigor/vigor_cast/",
+			min: "dragon_knight/dk_vigor/vigor_cast/min_vigor_cast"
 		}],
 		ef_dk_stormslash_hit: [{
 			type: "STR",
-			file: "stormslash/stormslash/stormslash_%d",
-			min: "stormslash/stormslash/min_stormslash_%d",
+			file: "dragon_knight/dk_stormslash/stormslash/stormslash_%d",
+			min: "dragon_knight/dk_stormslash/stormslash/min_stormslash_%d",
 			rand: [1, 5],
-			texturePath: "stormslash/stormslash/",
+			texturePath: "dragon_knight/dk_stormslash/stormslash/",
 			wav: "effect/dk_stormslash1"
 		}],
 		ef_dk_dragonic_breath: [{
 			type: "STR",
-			file: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath/dragonic_breath",
-			texturePath: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath/",
-			min: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath/min_dragonic_breath",
+			file: "dragon_knight/dragonic_breath/dragonic_breath/dragonic_breath",
+			texturePath: "dragon_knight/dragonic_breath/dragonic_breath/",
+			min: "dragon_knight/dragonic_breath/dragonic_breath/min_dragonic_breath",
 			wav: "effect/dk_dragonic_breath"
 		}, {
 			type: "STR",
-			file: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath_bottom/dragonic_breath_bottom",
-			texturePath: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath_bottom/",
-			min: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath_bottom/min_dragonic_breath_bottom",
+			file: "dragon_knight/dragonic_breath/dragonic_breath_bottom/dragonic_breath_bottom",
+			texturePath: "dragon_knight/dragonic_breath/dragonic_breath_bottom/",
+			min: "dragon_knight/dragonic_breath/dragonic_breath_bottom/min_dragonic_breath_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_dk_dragonic_breath_hit: [{
 			type: "STR",
-			file: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath_hit/dragonic_breath_hit",
-			texturePath: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath_hit/",
-			min: "DRAGON_KNIGHT/DRAGONIC_BREATH/dragonic_breath_hit/min_dragonic_breath_hit"
+			file: "dragon_knight/dragonic_breath/dragonic_breath_hit/dragonic_breath_hit",
+			texturePath: "dragon_knight/dragonic_breath/dragonic_breath_hit/",
+			min: "dragon_knight/dragonic_breath/dragonic_breath_hit/min_dragonic_breath_hit"
+		}],
+		ef_dk_dragonic_pierce: [{
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/dragonic_pierce_bottom",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/min_dragonic_pierce_bottom",
+			renderBeforeEntities: true,
+			wav: "effect/dk_dragonic_pierce"
+		}],
+		ef_dk_dragonic_pierce_cast: [{
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/dragonic_pierce_cast",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/min_dragonic_pierce_cast"
+		}],
+		ef_dk_dragonic_pierce_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/dragonic_pierce_hit",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/min_dragonic_pierce_hit"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/dragonic_pierce_hit_bottom",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/min_dragonic_pierce_hit_bottom",
+			renderBeforeEntities: true
 		}],
 		ef_hallucinationwalk: [{
 			wav: "effect/hallucinationwalk",
