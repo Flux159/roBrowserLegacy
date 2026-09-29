@@ -214594,6 +214594,16 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.ABC_CHAIN_REACTION_SHOT_ATK] = { effectId: "ef_abc_chain_reaction_shot_atk" };
 	SkillEffect[SkillConst_default.ABC_FROM_THE_ABYSS_ATK] = { effectId: "ef_abc_from_the_abyss_atk" };
+	SkillEffect[6513] = { effectId: "ef_abc_chasing_break" };
+	SkillEffect[6514] = {
+		effectIdOnCaster: "ef_abc_chasing_shot_cast",
+		hitEffectId: "ef_abc_chasing_shot_hit"
+	};
+	SkillEffect[6515] = {
+		effectId: "ef_abc_abyss_flame",
+		effectIdOnCaster: "ef_abc_abyss_flame_cast",
+		hitEffectId: "ef_abc_abyss_flame_hit"
+	};
 	SkillEffect[SkillConst_default.AB_OFFERTORIUM] = { effectId: 1047 };
 	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
 	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
@@ -274909,7 +274919,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "abyss_dagger/abyss_dagger/abyss_dagger",
 			texturePath: "abyss_dagger/abyss_dagger/",
 			min: "abyss_dagger/abyss_dagger/min_abyss_dagger",
-			wav: "effect/ABC_ABYSS_DAGGER"
+			wav: "effect/abc_abyss_dagger"
 		}],
 		ef_abc_abyss_dagger_hit: [{
 			type: "STR",
@@ -274922,7 +274932,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "unlucky_rush/unlucky_rush/unlucky_rush",
 			texturePath: "unlucky_rush/unlucky_rush/",
 			min: "unlucky_rush/unlucky_rush/min_unlucky_rush",
-			wav: "effect/ABC_UNLUCKY_RUSH"
+			wav: "effect/abc_unlucky_rush"
 		}],
 		ef_abc_unlucky_rush_cast: [{
 			type: "STR",
@@ -274941,7 +274951,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "chain_reaction_shot/chain_reaction_shot/chain_reaction_shot",
 			texturePath: "chain_reaction_shot/chain_reaction_shot/",
 			min: "chain_reaction_shot/chain_reaction_shot/min_chain_reaction_shot",
-			wav: "effect/ABC_CHAIN_REACTION_SHOT"
+			wav: "effect/abc_chain_reaction_shot"
 		}],
 		ef_abc_chain_reaction_shot_cast: [{
 			type: "STR",
@@ -274965,14 +274975,14 @@ var init_EffectTable = __esmMin((() => {
 			type: "STR",
 			file: "from_the_abyss/from_the_abyss_attack/from_the_abyss_attack",
 			texturePath: "from_the_abyss/from_the_abyss_attack/",
-			wav: "effect/ABC_FROM_THE_ABYSS"
+			wav: "effect/abc_from_the_abyss"
 		}],
 		ef_abc_abyss_slayer: [{
 			type: "STR",
 			file: "4abc_abyss_slayer/abyss_slayer/abyss_slayer",
 			texturePath: "4abc_abyss_slayer/abyss_slayer/",
 			min: "4abc_abyss_slayer/abyss_slayer/min_abyss_slayer",
-			wav: "effect/ABC_ABYSS_SLAYER"
+			wav: "effect/abc_abyss_slayer"
 		}],
 		ef_abc_abyss_slayer_cast: [{
 			type: "STR",
@@ -274991,7 +275001,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "abyss_strike/abyss_strike/abyss_strike",
 			texturePath: "abyss_strike/abyss_strike/",
 			min: "abyss_strike/abyss_strike/min_abyss_strike",
-			wav: "effect/ABC_ABYSS_STRIKE"
+			wav: "effect/abc_abyss_strike"
 		}, {
 			type: "STR",
 			file: "abyss_strike/abyss_strike_bottom/abyss_strike_bottom",
@@ -275028,7 +275038,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "abyss_square/abyss_square/abyss_square",
 			texturePath: "abyss_square/abyss_square/",
 			min: "abyss_square/abyss_square/min_abyss_square",
-			wav: "effect/ABC_ABYSS_SQUARE"
+			wav: "effect/abc_abyss_square"
 		}, {
 			type: "STR",
 			file: "abyss_square/abyss_square_bottom/abyss_square_bottom",
@@ -275046,7 +275056,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "frenzy_shot/frenzy_shot/frenzy_shot",
 			texturePath: "frenzy_shot/frenzy_shot/",
 			min: "frenzy_shot/frenzy_shot/min_frenzy_shot",
-			wav: "effect/ABC_FRENZY_SHOT"
+			wav: "effect/abc_frenzy_shot"
 		}],
 		ef_abc_frenzy_shot_hit: [{
 			type: "STR",
@@ -275064,6 +275074,57 @@ var init_EffectTable = __esmMin((() => {
 			type: "STR",
 			file: "from_the_abyss/from_the_abyss_attack/from_the_abyss_attack",
 			texturePath: "from_the_abyss/from_the_abyss_attack/"
+		}],
+		ef_abc_chasing_break: [{
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_break/chasing_break/chasing_break",
+			texturePath: "abyss_chaser/abc_chasing_break/chasing_break/",
+			min: "abyss_chaser/abc_chasing_break/chasing_break/min_chasing_break",
+			wav: "effect/abc_chasing_break"
+		}],
+		ef_abc_chasing_shot_cast: [{
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_shot/chasing_shot_cast/chasing_shot_cast",
+			texturePath: "abyss_chaser/abc_chasing_shot/chasing_shot_cast/",
+			min: "abyss_chaser/abc_chasing_shot/chasing_shot_cast/min_chasing_shot_cast",
+			wav: "effect/abc_chasing_shot"
+		}, {
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/chasing_shot_cast_bottom",
+			texturePath: "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/",
+			min: "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/min_chasing_shot_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_chasing_shot_hit: [{
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_shot/chasing_shot_hit/chasing_shot_hit",
+			texturePath: "abyss_chaser/abc_chasing_shot/chasing_shot_hit/",
+			min: "abyss_chaser/abc_chasing_shot/chasing_shot_hit/min_chasing_shot_hit"
+		}],
+		ef_abc_abyss_flame: [{
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame/abyss_flame",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame/min_abyss_flame",
+			wav: "effect/abc_abyss_flame"
+		}],
+		ef_abc_abyss_flame_cast: [{
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame_cast/abyss_flame_cast",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame_cast/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame_cast/min_abyss_flame_cast"
+		}, {
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/abyss_flame_cast_bottom",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/min_abyss_flame_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_abyss_flame_hit: [{
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame_hit/abyss_flame_hit",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame_hit/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame_hit/min_abyss_flame_hit"
 		}],
 		ef_arrow_shower_projectile: [{
 			type: "3D",
