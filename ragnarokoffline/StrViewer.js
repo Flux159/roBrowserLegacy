@@ -309752,7 +309752,6 @@ function render$6(modelView, projection) {
 function renderWaterDepth$1() {
 	const frame = this.waterDepthFrame;
 	if (!frame || this.hideEntity || !this.effectColor[3]) return;
-	if (!Water_default.isSubmerged(this.position[0], this.position[1])) return;
 	const self = this;
 	const rect = this.boundingRect;
 	const x1 = rect.x1, y1 = rect.y1, x2 = rect.x2, y2 = rect.y2;
@@ -310050,7 +310049,6 @@ var init_EntityRender = __esmMin((() => {
 	init_SpriteRenderer();
 	init_Ground();
 	init_Altitude();
-	init_Water();
 	init_SessionStorage();
 	init_DBManager();
 	init_Graphics();
