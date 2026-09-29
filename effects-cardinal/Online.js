@@ -214372,6 +214372,11 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.CD_PETITIO] = { effectId: "ef_cd_petitio" };
 	SkillEffect[SkillConst_default.CD_FRAMEN] = { effectId: "ef_cd_framen" };
+	SkillEffect[6518] = {
+		effectId: "ef_cd_divinus_flos",
+		effectIdOnCaster: "ef_cd_divinus_flos_cast",
+		hitEffectId: "ef_cd_divinus_flos_hit"
+	};
 	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
 	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
 	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
@@ -274634,7 +274639,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "medialevotum/medialevotum/medialevotum",
 			texturePath: "medialevotum/medialevotum/",
 			min: "medialevotum/medialevotum/min_medialevotum",
-			wav: "effect/CD_MEDIALE_VOTUM"
+			wav: "effect/cd_mediale_votum"
 		}],
 		ef_cd_mediale_votum_cast: [{
 			type: "STR",
@@ -274647,7 +274652,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "argutusvita/argutusvita/argutusvita",
 			texturePath: "argutusvita/argutusvita/",
 			min: "argutusvita/argutusvita/min_argutusvita",
-			wav: "effect/CD_ARGUTUS_VITA"
+			wav: "effect/cd_argutus_vita"
 		}],
 		ef_cd_argutus_vita_cast: [{
 			type: "STR",
@@ -274672,7 +274677,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "arbitrium/arbitrium/arbitrium",
 			texturePath: "arbitrium/arbitrium/",
 			min: "arbitrium/arbitrium/min_arbitrium",
-			wav: "effect/CD_ARBITRIUM"
+			wav: "effect/cd_arbitrium"
 		}, {
 			type: "STR",
 			file: "arbitrium/arbitrium_bottom/arbitrium_bottom",
@@ -274709,7 +274714,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "presensacies/presensacies/presensacies",
 			texturePath: "presensacies/presensacies/",
 			min: "presensacies/presensacies/min_presensacies",
-			wav: "effect/CD_PRESENS_ACIES"
+			wav: "effect/cd_presens_acies"
 		}],
 		ef_cd_presens_acies_cast: [{
 			type: "STR",
@@ -274722,7 +274727,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "effligo/effligo/effligo",
 			texturePath: "effligo/effligo/",
 			min: "effligo/effligo/min_effligo",
-			wav: "effect/CD_EFFLIGO"
+			wav: "effect/cd_effligo"
 		}, {
 			type: "STR",
 			file: "effligo/effligo_bottom/effligo_bottom",
@@ -274741,7 +274746,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "competentia/competentia/competentia",
 			texturePath: "competentia/competentia/",
 			min: "competentia/competentia/min_competentia",
-			wav: "effect/CD_COMPETENTIA"
+			wav: "effect/cd_competentia"
 		}, {
 			type: "STR",
 			file: "competentia/competentia_bottom/competentia_bottom",
@@ -274758,7 +274763,7 @@ var init_EffectTable = __esmMin((() => {
 			type: "STR",
 			file: "new_pneumaticusprocella/new_pneumaticusprocella/new_pneumaticusprocella",
 			texturePath: "new_pneumaticusprocella/new_pneumaticusprocella/",
-			wav: "effect/CD_PNEUMATICUS_PROCELLA"
+			wav: "effect/cd_pneumaticus_procella"
 		}],
 		ef_cd_pneumaticus_procella_cast: [{
 			type: "STR",
@@ -274770,7 +274775,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "new_dilectioheal/new_dilectioheal/new_dilectioheal",
 			texturePath: "new_dilectioheal/new_dilectioheal/",
 			min: "new_dilectioheal/new_dilectioheal/min_new_dilectioheal",
-			wav: "effect/CD_DILECTIO_HEAL"
+			wav: "effect/cd_dilectio_heal"
 		}],
 		ef_cd_dilectio_heal_cast: [{
 			type: "STR",
@@ -274789,7 +274794,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "religio/religio/religio",
 			texturePath: "religio/religio/",
 			min: "religio/religio/min_religio",
-			wav: "effect/CD_RELIGIO"
+			wav: "effect/cd_religio"
 		}],
 		ef_cd_religio_cast: [{
 			type: "STR",
@@ -274802,7 +274807,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "benedictum/benedictum/benedictum",
 			texturePath: "benedictum/benedictum/",
 			min: "benedictum/benedictum/min_benedictum",
-			wav: "effect/CD_BENEDICTUM"
+			wav: "effect/cd_benedictum"
 		}],
 		ef_cd_benedictum_cast: [{
 			type: "STR",
@@ -274821,7 +274826,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "petitio/petitio/petitio",
 			texturePath: "petitio/petitio/",
 			min: "petitio/petitio/min_petitio",
-			wav: "effect/CD_PETITIO"
+			wav: "effect/cd_petitio"
 		}, {
 			type: "STR",
 			file: "petitio/petitio_bottom/petitio_bottom",
@@ -274830,8 +274835,39 @@ var init_EffectTable = __esmMin((() => {
 			renderBeforeEntities: true
 		}],
 		ef_cd_framen: [{
-			wav: "effect/CD_FRAMEN",
+			wav: "effect/cd_framen",
 			attachedEntity: true
+		}],
+		ef_cd_divinus_flos: [{
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos/divinus_flos",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos/",
+			min: "cardinal/cd_divinus_flos/divinus_flos/min_divinus_flos",
+			wav: "effect/cd_divinus_flos"
+		}, {
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_bottom/divinus_flos_bottom",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_bottom/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_bottom/min_divinus_flos_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_divinus_flos_cast: [{
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_cast/divinus_flos_cast",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_cast/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_cast/min_divinus_flos_cast"
+		}, {
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/divinus_flos_cast_bottom",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/min_divinus_flos_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_divinus_flos_hit: [{
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_hit/divinus_flos_hit",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_hit/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_hit/min_divinus_flos_hit"
 		}],
 		ef_wugbite: [{
 			wav: "wug_bite",
