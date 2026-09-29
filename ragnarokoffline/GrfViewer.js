@@ -309787,6 +309787,8 @@ function renderWaterDepth$1() {
 	if (!frame || this.hideEntity || !this.effectColor[3]) return;
 	if (!Water_default.isSubmerged(this.position[0], this.position[1])) return;
 	const self = this;
+	const rect = this.boundingRect;
+	const x1 = rect.x1, y1 = rect.y1, x2 = rect.x2, y2 = rect.y2;
 	SpriteRenderer.position.set(this.position);
 	SpriteRenderer.position[2] = SpriteRenderer.position[2] + .2;
 	SpriteRenderer.zIndex = 150;
@@ -309794,6 +309796,10 @@ function renderWaterDepth$1() {
 		for (let i = 0, count = frame.layers.length; i < count; ++i) self.renderLayer(frame.layers[i], frame.spr, frame.pal, frame.size, frame.position, "body", false);
 	});
 	SpriteRenderer.zIndex = 1;
+	rect.x1 = x1;
+	rect.y1 = y1;
+	rect.x2 = x2;
+	rect.y2 = y2;
 }
 /**
 * Render second body (BL_DOUBLE_BODY + EF_MAKEBLUR)
