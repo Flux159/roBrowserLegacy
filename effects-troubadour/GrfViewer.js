@@ -214602,6 +214602,11 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_tr_pron_march",
 		effectIdOnCaster: "ef_tr_pron_march_cast"
 	};
+	SkillEffect[6521] = {
+		effectId: "ef_tr_rhythmical_wave",
+		effectIdOnCaster: "ef_tr_rhythmical_wave_cast",
+		hitEffectId: "ef_tr_rhythmical_wave_hit"
+	};
 	SkillEffect[SkillConst_default.SO_ELEMENTAL_SHIELD] = { effectId: 1046 };
 	SkillEffect[SkillConst_default.SR_FLASHCOMBO] = { effectId: 1043 };
 	SkillEffect[SkillConst_default.SC_ESCAPE] = {};
@@ -275013,26 +275018,18 @@ var init_EffectTable = __esmMin((() => {
 			min: "roki_capriccio/roki_capriccio/min_roki_capriccio",
 			wav: "effect/tr_roki_capriccio"
 		}],
-		ef_tr_roki_capriccio_cast: [
-			{
-				type: "STR",
-				file: "roki_capriccio/roki_capriccio_cast/roki_capriccio_cast",
-				texturePath: "roki_capriccio/roki_capriccio_cast/",
-				min: "roki_capriccio/roki_capriccio_cast/min_roki_capriccio_cast"
-			},
-			{
-				type: "STR",
-				file: "roki_capriccio/roki_capriccio_cast/rokicapriccio_cast",
-				texturePath: "roki_capriccio/roki_capriccio_cast/"
-			},
-			{
-				type: "STR",
-				file: "roki_capriccio/roki_capriccio_cast_bottom/roki_capriccio_cast_bottom",
-				texturePath: "roki_capriccio/roki_capriccio_cast_bottom/",
-				min: "roki_capriccio/roki_capriccio_cast_bottom/min_roki_capriccio_cast_bottom",
-				renderBeforeEntities: true
-			}
-		],
+		ef_tr_roki_capriccio_cast: [{
+			type: "STR",
+			file: "roki_capriccio/roki_capriccio_cast/roki_capriccio_cast",
+			texturePath: "roki_capriccio/roki_capriccio_cast/",
+			min: "roki_capriccio/roki_capriccio_cast/min_roki_capriccio_cast"
+		}, {
+			type: "STR",
+			file: "roki_capriccio/roki_capriccio_cast_bottom/roki_capriccio_cast_bottom",
+			texturePath: "roki_capriccio/roki_capriccio_cast_bottom/",
+			min: "roki_capriccio/roki_capriccio_cast_bottom/min_roki_capriccio_cast_bottom",
+			renderBeforeEntities: true
+		}],
 		ef_tr_ain_rhapsody: [{
 			type: "STR",
 			file: "ain_rhapsody/ain_rhapsody/ain_rhapsody",
@@ -275109,6 +275106,36 @@ var init_EffectTable = __esmMin((() => {
 			texturePath: "pronmarch/pronmarch_cast_bottom/",
 			min: "pronmarch/pronmarch_cast_bottom/min_pronmarch_cast_bottom",
 			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmical_wave: [{
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/rhythmical_wave",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/min_rhythmical_wave"
+		}, {
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/rhythmical_wave_bottom",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/min_rhythmical_wave_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmical_wave_cast: [{
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/rhythmical_wave_cast",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/min_rhythmical_wave_cast"
+		}, {
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/rhythmical_wave_cast_bottom",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/min_rhythmical_wave_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmical_wave_hit: [{
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/rhythmical_wave_hit",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/min_rhythmical_wave_hit"
 		}],
 		ef_harmonize: [{
 			wav: "effect/ÇÏ¸ð³ªÀÌÁî",
