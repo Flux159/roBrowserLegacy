@@ -213576,6 +213576,19 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.AS_SPLASHER] = { effectId: 129 };
 	SkillEffect[SkillConst_default.NV_FIRSTAID] = { effectId: 309 };
 	SkillEffect[SkillConst_default.NV_TRICKDEAD] = {};
+	SkillEffect[SkillConst_default.HN_DOUBLEBOWLINGBASH] = { effectId: "ef_hn_doublebowlingbash" };
+	SkillEffect[SkillConst_default.HN_MEGA_SONIC_BLOW] = { effectId: "ef_hn_mega_sonic_blow" };
+	SkillEffect[SkillConst_default.HN_SHIELD_CHAIN_RUSH] = { effectId: "ef_hn_shield_chain_rush" };
+	SkillEffect[SkillConst_default.HN_SPIRAL_PIERCE_MAX] = { effectId: "ef_hn_spiral_pierce_max" };
+	SkillEffect[SkillConst_default.HN_METEOR_STORM_BUSTER] = { effectId: "ef_hn_meteor_storm_buster" };
+	SkillEffect[SkillConst_default.HN_JUPITEL_THUNDER_STORM] = { effectId: "ef_hn_jupitel_thunder_storm" };
+	SkillEffect[SkillConst_default.HN_JACK_FROST_NOVA] = { effectId: "ef_hn_jack_frost_nova" };
+	SkillEffect[SkillConst_default.HN_HELLS_DRIVE] = { effectId: "ef_hn_hells_drive" };
+	SkillEffect[SkillConst_default.HN_GROUND_GRAVITATION] = { effectId: "ef_hn_ground_gravitation" };
+	SkillEffect[SkillConst_default.HN_NAPALM_VULCAN_STRIKE] = { effectId: "ef_hn_napalm_vulcan_strike" };
+	SkillEffect[SkillConst_default.HN_BREAKINGLIMIT] = { effectId: "ef_hn_breakinglimit" };
+	SkillEffect[SkillConst_default.HN_RULEBREAK] = { effectId: "ef_hn_rulebreak" };
+	SkillEffect[5505] = { effectId: "ef_hn_overcoming_crisis" };
 	SkillEffect[SkillConst_default.SM_AUTOBERSERK] = {};
 	SkillEffect[SkillConst_default.AC_MAKINGARROW] = {};
 	SkillEffect[SkillConst_default.AC_CHARGEARROW] = {
@@ -214560,13 +214573,81 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.KO_ZENKAI] = {};
 	SkillEffect[SkillConst_default.KO_GENWAKU] = {};
 	SkillEffect[SkillConst_default.KO_IZAYOI] = {};
+	SkillEffect[SkillConst_default.SS_TOKEDASU] = { effectId: "ef_ss_tokedasu" };
+	SkillEffect[SkillConst_default.SS_SHIMIRU] = { effectId: "ef_ss_shimiru" };
+	SkillEffect[SkillConst_default.SS_AKUMUKESU] = { effectId: "ef_ss_akumukesu" };
+	SkillEffect[SkillConst_default.SS_KAGEGARI] = { effectId: "ef_ss_kagegari" };
+	SkillEffect[SkillConst_default.SS_KAGENOMAI] = { effectId: "ef_ss_kagenomai" };
+	SkillEffect[SkillConst_default.SS_KAGEGISSEN] = {
+		effectId: "ef_ss_kagegissen",
+		hitEffectId: "ef_ss_kagegissen_hit"
+	};
+	SkillEffect[SkillConst_default.SS_FUUMASHOUAKU] = { effectId: "ef_ss_fuumashouaku" };
+	SkillEffect[SkillConst_default.SS_FUUMAKOUCHIKU] = { effectId: "ef_ss_fuumakouchiku" };
+	SkillEffect[SkillConst_default.SS_KUNAIWAIKYOKU] = { effectId: "ef_ss_kunaiwaikyoku" };
+	SkillEffect[SkillConst_default.SS_KUNAIKAITEN] = { effectId: "ef_ss_kunaikaiten" };
+	SkillEffect[SkillConst_default.SS_KUNAIKUSSETSU] = { effectId: "ef_ss_kunaikussetsu" };
+	SkillEffect[SkillConst_default.SS_SEKIENHOU] = { effectId: "ef_ss_sekienhou" };
+	SkillEffect[SkillConst_default.SS_REIKETSUHOU] = { effectId: "ef_ss_reiketsuhou" };
+	SkillEffect[SkillConst_default.SS_RAIDENPOU] = {
+		effectId: "ef_ss_raidenpou",
+		effectIdOnCaster: "ef_ss_raidenpou_cast",
+		hitEffectId: "ef_ss_raidenpou_hit"
+	};
+	SkillEffect[SkillConst_default.SS_KINRYUUHOU] = {
+		effectId: "ef_ss_kinryuuhou",
+		hitEffectId: "ef_ss_kinryuuhou_hit"
+	};
+	SkillEffect[SkillConst_default.SS_ANTENPOU] = { effectId: "ef_ss_antenpou" };
+	SkillEffect[SkillConst_default.SS_KAGEAKUMU] = { effectId: "ef_ss_kageakumu" };
+	SkillEffect[SkillConst_default.SS_HITOUAKUMU] = { effectId: "ef_ss_hitouakumu" };
+	SkillEffect[SkillConst_default.SS_ANKOKURYUUAKUMU] = { effectId: "ef_ss_ankokuryuuakumu" };
+	SkillEffect[5499] = { effectId: "ef_ss_four_charm" };
 	SkillEffect[SkillConst_default.KG_KAGEHUMI] = {};
 	SkillEffect[SkillConst_default.KG_KYOMU] = {};
 	SkillEffect[SkillConst_default.KG_KAGEMUSYA] = {};
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_PROTECTION] = { effectId: "ef_soa_talisman_of_protection" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_WARRIOR] = { effectId: "ef_soa_talisman_of_warrior" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_MAGICIAN] = { effectId: "ef_soa_talisman_of_magician" };
+	SkillEffect[SkillConst_default.SOA_SOUL_GATHERING] = { effectId: "ef_soa_soul_gathering" };
+	SkillEffect[SkillConst_default.SOA_TOTEM_OF_TUTELARY] = { effectId: "ef_soa_totem_of_tutelary" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_FIVE_ELEMENTS] = { effectId: "ef_soa_talisman_of_five_elements" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_SOUL_STEALING] = { effectId: "ef_soa_talisman_of_soul_stealing" };
+	SkillEffect[SkillConst_default.SOA_EXORCISM_OF_MALICIOUS_SOUL] = { effectId: "ef_soa_exorcism_of_malicious_soul" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_BLUE_DRAGON] = { effectId: "ef_soa_talisman_of_blue_dragon" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_WHITE_TIGER] = { effectId: "ef_soa_talisman_of_white_tiger" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_RED_PHOENIX] = { effectId: "ef_soa_talisman_of_red_phoenix" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_BLACK_TORTOISE] = { effectId: "ef_soa_talisman_of_black_tortoise" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_FOUR_BEARING_GOD] = { effectId: "ef_soa_talisman_of_four_bearing_god" };
+	SkillEffect[SkillConst_default.SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS] = { effectId: "ef_soa_circle_of_directions_and_elementals" };
+	SkillEffect[SkillConst_default.SOA_SOUL_OF_HEAVEN_AND_EARTH] = { effectId: "ef_soa_soul_of_heaven_and_earth" };
 	SkillEffect[SkillConst_default.OB_ZANGETSU] = {};
 	SkillEffect[SkillConst_default.OB_OBOROGENSOU] = {};
 	SkillEffect[SkillConst_default.OB_OBOROGENSOU_TRANSITION_ATK] = {};
 	SkillEffect[SkillConst_default.OB_AKAITSUKI] = {};
+	SkillEffect[SkillConst_default.SKE_RISING_SUN] = { effectId: "ef_ske_rising_sun" };
+	SkillEffect[SkillConst_default.SKE_NOON_BLAST] = { effectId: "ef_ske_noon_blast" };
+	SkillEffect[SkillConst_default.SKE_SUNSET_BLAST] = { effectId: "ef_ske_sunset_blast" };
+	SkillEffect[SkillConst_default.SKE_MIDNIGHT_KICK] = { effectId: "ef_ske_midnight_kick" };
+	SkillEffect[SkillConst_default.SKE_DAWN_BREAK] = { effectId: "ef_ske_dawn_break" };
+	SkillEffect[SkillConst_default.SKE_TWINKLING_GALAXY] = { effectId: "ef_ske_twinkling_galaxy" };
+	SkillEffect[SkillConst_default.SKE_STAR_BURST] = { effectId: "ef_ske_star_burst" };
+	SkillEffect[SkillConst_default.SKE_STAR_CANNON] = { effectId: "ef_ske_star_cannon" };
+	SkillEffect[SkillConst_default.SKE_ALL_IN_THE_SKY] = { effectId: "ef_ske_all_in_the_sky" };
+	SkillEffect[SkillConst_default.SKE_ENCHANTING_SKY] = { effectId: "ef_ske_enchanting_sky" };
+	SkillEffect[5502] = {
+		effectId: "ef_ske_sky_sun",
+		hitEffectId: "ef_ske_sky_sun_hit"
+	};
+	SkillEffect[5503] = {
+		effectId: "ef_ske_sky_moon",
+		effectIdOnCaster: "ef_ske_sky_moon_cast",
+		hitEffectId: "ef_ske_sky_moon_hit"
+	};
+	SkillEffect[5504] = {
+		effectId: "ef_ske_star_light_kick",
+		hitEffectId: "ef_ske_star_light_kick_hit"
+	};
 	SkillEffect[SkillConst_default.ECL_SNOWFLIP] = {};
 	SkillEffect[SkillConst_default.ECL_PEONYMAMY] = {};
 	SkillEffect[SkillConst_default.ECL_SADAGUI] = {};
@@ -215210,6 +215291,28 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SU_SHRIMPARTY] = {};
 	SkillEffect[SkillConst_default.SU_MEOWMEOW] = {};
 	SkillEffect[SkillConst_default.SU_CHATTERING] = {};
+	SkillEffect[SkillConst_default.SH_CHUL_HO_SONIC_CLAW] = { effectId: "ef_sh_chul_ho_sonic_claw" };
+	SkillEffect[SkillConst_default.SH_HOWLING_OF_CHUL_HO] = { effectId: "ef_sh_howling_of_chul_ho" };
+	SkillEffect[SkillConst_default.SH_HOGOGONG_STRIKE] = { effectId: "ef_sh_hogogong_strike" };
+	SkillEffect[SkillConst_default.SH_KI_SUL_WATER_SPRAYING] = { effectId: "ef_sh_ki_sul_water_spraying" };
+	SkillEffect[SkillConst_default.SH_MARINE_FESTIVAL_OF_KI_SUL] = { effectId: "ef_sh_marine_festival_of_ki_sul" };
+	SkillEffect[SkillConst_default.SH_SANDY_FESTIVAL_OF_KI_SUL] = { effectId: "ef_sh_sandy_festival_of_ki_sul" };
+	SkillEffect[SkillConst_default.SH_KI_SUL_RAMPAGE] = { effectId: "ef_sh_ki_sul_rampage" };
+	SkillEffect[SkillConst_default.SH_COLORS_OF_HYUN_ROK] = { effectId: "ef_sh_colors_of_hyun_rok" };
+	SkillEffect[SkillConst_default.SH_HYUN_ROKS_BREEZE] = { effectId: "ef_sh_hyun_roks_breeze" };
+	SkillEffect[SkillConst_default.SH_HYUN_ROK_CANNON] = { effectId: "ef_sh_hyun_rok_cannon" };
+	SkillEffect[SkillConst_default.SH_TEMPORARY_COMMUNION] = { effectId: "ef_sh_temporary_communion" };
+	SkillEffect[SkillConst_default.SH_BLESSING_OF_MYSTICAL_CREATURES] = { effectId: "ef_sh_blessing_of_mystical_creatures" };
+	SkillEffect[5506] = {
+		effectId: "ef_sh_chul_ho_battering",
+		effectIdOnCaster: "ef_sh_chul_ho_battering_cast",
+		hitEffectId: "ef_sh_chul_ho_battering_hit"
+	};
+	SkillEffect[5507] = {
+		effectId: "ef_sh_hyun_rok_spirit_power",
+		effectIdOnCaster: "ef_sh_hyun_rok_spirit_power_cast",
+		hitEffectId: "ef_sh_hyun_rok_spirit_power_hit"
+	};
 	SkillEffect[SkillConst_default.WE_CALLALLFAMILY] = {};
 	SkillEffect[SkillConst_default.WE_ONEFOREVER] = {};
 	SkillEffect[SkillConst_default.WE_CHEERUP] = {};
@@ -268352,6 +268455,103 @@ var init_EffectTable = __esmMin((() => {
 			posz: 2,
 			wav: "_heal_effect"
 		}],
+		ef_hn_doublebowlingbash: [{
+			type: "STR",
+			file: "hyper_novice/hn_doublebowlingbash/double_bowlingbash",
+			texturePath: "hyper_novice/hn_doublebowlingbash/",
+			wav: "effect/hyper_novice/hn_double_bowlingbash"
+		}],
+		ef_hn_mega_sonic_blow: [{
+			type: "STR",
+			file: "hyper_novice/hn_mega_sonic_blow/mega_sonic_blow",
+			texturePath: "hyper_novice/hn_mega_sonic_blow/",
+			wav: "effect/hyper_novice/hn_mega_sonic_blow"
+		}],
+		ef_hn_shield_chain_rush: [{
+			type: "STR",
+			file: "hyper_novice/hn_shield_chain_rush/shield_chain_rush",
+			texturePath: "hyper_novice/hn_shield_chain_rush/",
+			wav: "effect/hyper_novice/hn_shield_chain_rush"
+		}],
+		ef_hn_spiral_pierce_max: [{
+			type: "STR",
+			file: "hyper_novice/hn_spiral_pierce_max/spiral_pierce_max",
+			texturePath: "hyper_novice/hn_spiral_pierce_max/",
+			wav: "effect/hyper_novice/hn_spiral_pierce_max"
+		}],
+		ef_hn_meteor_storm_buster: [{
+			type: "STR",
+			file: "hyper_novice/hn_meteor_storm_buster/meteor_storm_buster",
+			texturePath: "hyper_novice/hn_meteor_storm_buster/",
+			wav: "effect/hyper_novice/hn_meteor_storm_buster"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_meteor_storm_buster/meteor_storm_buster_bottom",
+			texturePath: "hyper_novice/hn_meteor_storm_buster/",
+			renderBeforeEntities: true
+		}],
+		ef_hn_jupitel_thunder_storm: [{
+			type: "STR",
+			file: "hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm_ball/jupitel_thunder_storm_ball",
+			texturePath: "hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm_ball/"
+		}],
+		ef_hn_jack_frost_nova: [{
+			type: "STR",
+			file: "hyper_novice/hn_jack_frost_nova/jack_frost_nova_end/jack_frost_nova_end",
+			texturePath: "hyper_novice/hn_jack_frost_nova/jack_frost_nova_end/",
+			wav: "effect/hyper_novice/hn_jack_frost_nova"
+		}],
+		ef_hn_hells_drive: [{
+			type: "STR",
+			file: "hyper_novice/hn_hells_drive/hells_drive_bottom",
+			texturePath: "hyper_novice/hn_hells_drive/",
+			renderBeforeEntities: true
+		}],
+		ef_hn_ground_gravitation: [{
+			type: "STR",
+			file: "hyper_novice/hn_ground_gravitation/ground_gravitation_loop",
+			texturePath: "hyper_novice/hn_ground_gravitation/",
+			wav: "effect/hyper_novice/hn_ground_gravitation"
+		}],
+		ef_hn_napalm_vulcan_strike: [{
+			type: "STR",
+			file: "hyper_novice/hn_napalm_vulcan_strike/napalm_vulcan_strike",
+			texturePath: "hyper_novice/hn_napalm_vulcan_strike/",
+			wav: "effect/hyper_novice/hn_napalm_vulcan_strike"
+		}],
+		ef_hn_breakinglimit: [{
+			type: "STR",
+			file: "hyper_novice/hn_breakinglimit/breakinglimit/breakinglimit",
+			texturePath: "hyper_novice/hn_breakinglimit/breakinglimit/",
+			wav: "effect/hyper_novice/hn_breakinglimit"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_breakinglimit/breakinglimit_buff/breakinglimit_buff",
+			texturePath: "hyper_novice/hn_breakinglimit/breakinglimit_buff/"
+		}],
+		ef_hn_rulebreak: [{
+			type: "STR",
+			file: "hyper_novice/hn_rulebreak/rulebreak/rulebreak",
+			texturePath: "hyper_novice/hn_rulebreak/rulebreak/",
+			wav: "effect/hyper_novice/hn_rulebreak"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_rulebreak/rulebreak_buff/rulebreak_buff",
+			texturePath: "hyper_novice/hn_rulebreak/rulebreak_buff/"
+		}],
+		ef_hn_overcoming_crisis: [{
+			type: "STR",
+			file: "hyper_novice/hn_overcoming_crisis/overcoming_crisis/overcoming_crisis",
+			texturePath: "hyper_novice/hn_overcoming_crisis/overcoming_crisis/",
+			min: "hyper_novice/hn_overcoming_crisis/overcoming_crisis/min_overcoming_crisis",
+			wav: "effect/hyper_novice/hn_overcoming_crisis"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/overcoming_crisis_bottom",
+			texturePath: "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/",
+			min: "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/min_overcoming_crisis_bottom",
+			renderBeforeEntities: true
+		}],
 		311: [{
 			type: "STR",
 			file: "loud",
@@ -271466,6 +271666,185 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/assasin_cloaking",
 			attachedEntity: true
 		}],
+		ef_sh_chul_ho_sonic_claw: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/chul_ho_sonic_claw",
+			texturePath: "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/",
+			min: "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/min_chul_ho_sonic_claw",
+			wav: "effect/spirit_handler/sh_chul_ho_sonic_claw"
+		}],
+		ef_sh_howling_of_chul_ho: [{
+			type: "STR",
+			file: "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/howling_of_chul_ho",
+			texturePath: "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/",
+			min: "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/min_howling_of_chul_ho",
+			wav: "effect/spirit_handler/sh_howling_of_chul_ho"
+		}],
+		ef_sh_hogogong_strike: [{
+			type: "STR",
+			file: "spirit_handler/sh_hogogong_strike/hogogong_strike",
+			texturePath: "spirit_handler/sh_hogogong_strike/",
+			min: "spirit_handler/sh_hogogong_strike/min_hogogong_strike",
+			wav: "effect/spirit_handler/sh_hogogong_strike"
+		}],
+		ef_sh_ki_sul_water_spraying: [{
+			type: "STR",
+			file: "spirit_handler/sh_ki_sul_water_spraying/ki_sul_water_spraying",
+			texturePath: "spirit_handler/sh_ki_sul_water_spraying/",
+			min: "spirit_handler/sh_ki_sul_water_spraying/min_ki_sul_water_spraying",
+			wav: "effect/spirit_handler/sh_ki_sul_water_spraying"
+		}],
+		ef_sh_marine_festival_of_ki_sul: [{
+			type: "STR",
+			file: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/marine_festival_of_ki_sul",
+			texturePath: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/",
+			min: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/min_marine_festival_of_ki_sul",
+			wav: "effect/spirit_handler/sh_marine_festival_of_ki_sul"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/marine_festival_of_ki_sul_bottom",
+			texturePath: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/",
+			min: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/min_marine_festival_of_ki_sul_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_sandy_festival_of_ki_sul: [{
+			type: "STR",
+			file: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/sandy_festival_of_ki_sul",
+			texturePath: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/",
+			min: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/min_sandy_festival_of_ki_sul",
+			wav: "effect/spirit_handler/sh_sandy_festival_of_ki_sul"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/sandy_festival_of_ki_sul_bottom",
+			texturePath: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/",
+			min: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/min_sandy_festival_of_ki_sul_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_ki_sul_rampage: [{
+			type: "STR",
+			file: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/ki_sul_rampage",
+			texturePath: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/",
+			min: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/min_ki_sul_rampage",
+			wav: "effect/spirit_handler/sh_ki_sul_rampage"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/ki_sul_rampage_bottom",
+			texturePath: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/",
+			min: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/min_ki_sul_rampage_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_colors_of_hyun_rok: [{
+			type: "STR",
+			file: "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/colors_of_hyun_rok_fire",
+			texturePath: "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/",
+			min: "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/min_colors_of_hyun_rok_fire",
+			wav: "effect/spirit_handler/sh_colors_of_hyun_rok"
+		}],
+		ef_sh_hyun_roks_breeze: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/hyun_roks_breeze",
+			texturePath: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/",
+			min: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/min_hyun_roks_breeze",
+			wav: "effect/spirit_handler/sh_hyun_roks_breeze"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/hyun_roks_breeze_bottom",
+			texturePath: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/",
+			min: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/min_hyun_roks_breeze_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_hyun_rok_cannon: [{
+			type: "STR",
+			file: "spirit_handler/skid_sh_hyun_rok_cannon/hyun_rok_cannon",
+			texturePath: "spirit_handler/skid_sh_hyun_rok_cannon/",
+			min: "spirit_handler/skid_sh_hyun_rok_cannon/min_hyun_rok_cannon",
+			wav: "effect/spirit_handler/sh_hyun_rok_cannon"
+		}],
+		ef_sh_temporary_communion: [
+			{
+				type: "STR",
+				file: "spirit_handler/sh_temporary_communion/temporary_communion/temporary_communion",
+				texturePath: "spirit_handler/sh_temporary_communion/temporary_communion/",
+				min: "spirit_handler/sh_temporary_communion/temporary_communion/min_temporary_communion",
+				wav: "effect/spirit_handler/sh_temporary_communion"
+			},
+			{
+				type: "STR",
+				file: "spirit_handler/sh_temporary_communion/temporary_communion_buff/temporary_communion_buff",
+				texturePath: "spirit_handler/sh_temporary_communion/temporary_communion_buff/",
+				min: "spirit_handler/sh_temporary_communion/temporary_communion_buff/min_temporary_communion_buff"
+			},
+			{
+				type: "STR",
+				file: "spirit_handler/sh_temporary_communion/temporary_communion_buff_bottom/temporary_communion_buff_bottom",
+				texturePath: "spirit_handler/sh_temporary_communion/temporary_communion_buff_bottom/",
+				min: "spirit_handler/sh_temporary_communion/temporary_communion_buff_bottom/min_temporary_communion_buff_bottom",
+				renderBeforeEntities: true
+			}
+		],
+		ef_sh_blessing_of_mystical_creatures: [{
+			type: "STR",
+			file: "spirit_handler/sh_blessing_of_mystical_creatures/blessing_of_mystical_creatures",
+			texturePath: "spirit_handler/sh_blessing_of_mystical_creatures/",
+			min: "spirit_handler/sh_blessing_of_mystical_creatures/min_blessing_of_mystical_creatures",
+			wav: "effect/spirit_handler/sh_blessing_of_mystical_creatures"
+		}],
+		ef_sh_chul_ho_battering: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering/chul_ho_battering",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering/min_chul_ho_battering",
+			wav: "effect/spirit_handler/sh_chul_ho_battering"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/chul_ho_battering_bottom",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/min_chul_ho_battering_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_chul_ho_battering_cast: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/chul_ho_battering_cast",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/min_chul_ho_battering_cast"
+		}],
+		ef_sh_chul_ho_battering_hit: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/chul_ho_battering_hit",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/min_chul_ho_battering_hit"
+		}],
+		ef_sh_hyun_rok_spirit_power: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/hyun_rok_spirit_power",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/min_hyun_rok_spirit_power",
+			wav: "effect/spirit_handler/sh_hyun_rok_spirit_power"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/hyun_rok_spirit_power_bottom",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/min_hyun_rok_spirit_power_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_hyun_rok_spirit_power_cast: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/hyun_rok_spirit_power_cast",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/min_hyun_rok_spirit_power_cast"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/hyun_rok_spirit_power_cast_bottom",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/min_hyun_rok_spirit_power_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_hyun_rok_spirit_power_hit: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/hyun_rok_spirit_power_hit",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/min_hyun_rok_spirit_power_hit"
+		}],
 		"496_beforecast": [{
 			type: "FUNC",
 			attachedEntity: true,
@@ -272218,6 +272597,137 @@ var init_EffectTable = __esmMin((() => {
 			file: "food_luk",
 			attachedEntity: true
 		}],
+		ef_ske_rising_sun: [{
+			type: "STR",
+			file: "sky_emperor/ske_rising_sun/ske_rising_sun",
+			texturePath: "sky_emperor/ske_rising_sun/"
+		}],
+		ef_ske_noon_blast: [{
+			type: "STR",
+			file: "sky_emperor/ske_noon_blast/ske_noon_blast",
+			texturePath: "sky_emperor/ske_noon_blast/",
+			min: "sky_emperor/ske_noon_blast/min_ske_noon_blast",
+			wav: "effect/sky_emperor/ske_noon_blast"
+		}],
+		ef_ske_sunset_blast: [{
+			type: "STR",
+			file: "sky_emperor/ske_sunset_blast/sunset_blast",
+			texturePath: "sky_emperor/ske_sunset_blast/",
+			min: "sky_emperor/ske_sunset_blast/min_sunset_blast",
+			wav: "effect/sky_emperor/ske_sunset_blast"
+		}],
+		ef_ske_midnight_kick: [{
+			type: "STR",
+			file: "sky_emperor/ske_midnight_kick/ske_midnight_kick",
+			texturePath: "sky_emperor/ske_midnight_kick/",
+			min: "sky_emperor/ske_midnight_kick/min_ske_midnight_kick",
+			wav: "effect/sky_emperor/ske_midnight_kick"
+		}],
+		ef_ske_dawn_break: [{
+			type: "STR",
+			file: "sky_emperor/ske_dawn_break/ske_dawn_break",
+			texturePath: "sky_emperor/ske_dawn_break/",
+			min: "sky_emperor/ske_dawn_break/min_ske_dawn_break",
+			wav: "effect/sky_emperor/ske_dawn_break"
+		}],
+		ef_ske_twinkling_galaxy: [{
+			type: "STR",
+			file: "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/ske_twinkling_galaxy_bottom",
+			texturePath: "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/",
+			min: "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/min_ske_twinkling_galaxy_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_star_burst: [{
+			wav: "effect/sky_emperor/ske_star_burst",
+			attachedEntity: true
+		}],
+		ef_ske_star_cannon: [{
+			type: "STR",
+			file: "sky_emperor/ske_star_cannon/star_cannon/ske_star_cannon",
+			texturePath: "sky_emperor/ske_star_cannon/star_cannon/",
+			min: "sky_emperor/ske_star_cannon/star_cannon/min_ske_star_cannon",
+			wav: "effect/sky_emperor/ske_star_cannon"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_star_cannon/star_cannon_bottom/ske_star_cannon_bottom",
+			texturePath: "sky_emperor/ske_star_cannon/star_cannon_bottom/",
+			min: "sky_emperor/ske_star_cannon/star_cannon_bottom/min_ske_star_cannon_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_all_in_the_sky: [{
+			type: "STR",
+			file: "sky_emperor/ske_all_in_the_sky/ske_all_in_the_sky",
+			texturePath: "sky_emperor/ske_all_in_the_sky/",
+			min: "sky_emperor/ske_all_in_the_sky/min_ske_all_in_the_sky",
+			wav: "effect/sky_emperor/ske_all_in_the_sky"
+		}],
+		ef_ske_enchanting_sky: [{
+			wav: "effect/sky_emperor/ske_enchanting_sky",
+			attachedEntity: true
+		}],
+		ef_ske_sky_sun: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_sun/sky_sun/sky_sun",
+			texturePath: "sky_emperor/ske_sky_sun/sky_sun/",
+			min: "sky_emperor/ske_sky_sun/sky_sun/min_sky_sun",
+			wav: "effect/sky_emperor/ske_sky_sun"
+		}],
+		ef_ske_sky_sun_hit: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_sun/sky_sun_hit/sky_sun_hit",
+			texturePath: "sky_emperor/ske_sky_sun/sky_sun_hit/",
+			min: "sky_emperor/ske_sky_sun/sky_sun_hit/min_sky_sun_hit"
+		}],
+		ef_ske_sky_moon: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon/sky_moon",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon/",
+			min: "sky_emperor/ske_sky_moon/sky_moon/min_sky_moon",
+			wav: "effect/sky_emperor/ske_sky_moon"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_bottom/sky_moon_bottom",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_bottom/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_bottom/min_sky_moon_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_sky_moon_cast: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_cast/sky_moon_cast",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_cast/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_cast/min_sky_moon_cast"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/sky_moon_cast_bottom",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/min_sky_moon_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_sky_moon_hit: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_hit/sky_moon_hit",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_hit/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_hit/min_sky_moon_hit"
+		}],
+		ef_ske_star_light_kick: [{
+			type: "STR",
+			file: "sky_emperor/ske_star_light_kick/star_light_kick/star_light_kick",
+			texturePath: "sky_emperor/ske_star_light_kick/star_light_kick/",
+			min: "sky_emperor/ske_star_light_kick/star_light_kick/min_star_light_kick",
+			wav: "effect/sky_emperor/ske_star_light_kick"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_star_light_kick/star_light_kick_bottom/star_light_kick_bottom",
+			texturePath: "sky_emperor/ske_star_light_kick/star_light_kick_bottom/",
+			min: "sky_emperor/ske_star_light_kick/star_light_kick_bottom/min_star_light_kick_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_star_light_kick_hit: [{
+			type: "STR",
+			file: "sky_emperor/ske_star_light_kick/star_light_kick_hit/star_light_kick_hit",
+			texturePath: "sky_emperor/ske_star_light_kick/star_light_kick_hit/",
+			min: "sky_emperor/ske_star_light_kick/star_light_kick_hit/min_star_light_kick_hit"
+		}],
 		600: [{
 			type: "3D",
 			alphaMax: 1,
@@ -272693,6 +273203,129 @@ var init_EffectTable = __esmMin((() => {
 			file: "storm_min",
 			wav: "effect/wizard_stormgust",
 			attachedEntity: true
+		}],
+		ef_soa_talisman_of_protection: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_protection/talisman_of_protection",
+			texturePath: "soul_ascetic/soa_talisman_of_protection/",
+			min: "soul_ascetic/soa_talisman_of_protection/min_talisman_of_protection",
+			wav: "effect/soul_ascetic/soa_talisman_of_protection"
+		}],
+		ef_soa_talisman_of_warrior: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_warrior/talisman_of_warrior",
+			texturePath: "soul_ascetic/soa_talisman_of_warrior/",
+			min: "soul_ascetic/soa_talisman_of_warrior/min_talisman_of_warrior",
+			wav: "effect/soul_ascetic/soa_talisman_of_warrior"
+		}],
+		ef_soa_talisman_of_magician: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/talisman_of_magician",
+			texturePath: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/",
+			min: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/min_talisman_of_magician"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/talisman_of_magician_bottom",
+			texturePath: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/",
+			min: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/min_talisman_of_magician_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_soa_soul_gathering: [{
+			type: "STR",
+			file: "soul_ascetic/soa_soul_gathering/soul_gathering",
+			texturePath: "soul_ascetic/soa_soul_gathering/",
+			min: "soul_ascetic/soa_soul_gathering/min_soul_gathering",
+			wav: "effect/soul_ascetic/soa_soul_gathering"
+		}],
+		ef_soa_totem_of_tutelary: [{
+			type: "STR",
+			file: "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/totem_of_tutelary_end",
+			texturePath: "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/",
+			min: "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/min_totem_of_tutelary_end"
+		}],
+		ef_soa_talisman_of_five_elements: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_five_elements/talisman_of_the_five_elements",
+			texturePath: "soul_ascetic/soa_talisman_of_five_elements/",
+			min: "soul_ascetic/soa_talisman_of_five_elements/min_talisman_of_the_five_elements"
+		}],
+		ef_soa_talisman_of_soul_stealing: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_soul_stealing/talisman_of_soul_stealing",
+			texturePath: "soul_ascetic/soa_talisman_of_soul_stealing/",
+			min: "soul_ascetic/soa_talisman_of_soul_stealing/min_talisman_of_soul_stealing",
+			wav: "effect/soul_ascetic/soa_talisman_of_soul_stealing"
+		}],
+		ef_soa_exorcism_of_malicious_soul: [{
+			type: "STR",
+			file: "soul_ascetic/soa_exorcism_of_malicious_soul/exorcism_of_malicuous_soul",
+			texturePath: "soul_ascetic/soa_exorcism_of_malicious_soul/",
+			min: "soul_ascetic/soa_exorcism_of_malicious_soul/min_exorcism_of_malicuous_soul"
+		}],
+		ef_soa_talisman_of_blue_dragon: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_blue_dragon/talisman_of_blue_dragon",
+			texturePath: "soul_ascetic/soa_talisman_of_blue_dragon/",
+			min: "soul_ascetic/soa_talisman_of_blue_dragon/min_talisman_of_blue_dragon",
+			wav: "effect/soul_ascetic/soa_talisman_of_blue_dragon"
+		}],
+		ef_soa_talisman_of_white_tiger: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_white_tiger/talisman_of_white_tiger",
+			texturePath: "soul_ascetic/soa_talisman_of_white_tiger/",
+			min: "soul_ascetic/soa_talisman_of_white_tiger/min_talisman_of_white_tiger",
+			wav: "effect/soul_ascetic/soa_talisman_of_white_tiger"
+		}],
+		ef_soa_talisman_of_red_phoenix: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/talisman_of_red_phoenix",
+			texturePath: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/",
+			min: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/min_talisman_of_red_phoenix",
+			wav: "effect/soul_ascetic/soa_talisman_of_red_phoenix"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/talisman_of_red_phoenix_bottom",
+			texturePath: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/",
+			min: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/min_talisman_of_red_phoenix_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_soa_talisman_of_black_tortoise: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/talisman_of_black_tortoise",
+			texturePath: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/",
+			min: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/min_talisman_of_black_tortoise",
+			wav: "effect/soul_ascetic/soa_talisman_of_black_tortoise"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/talisman_of_black_tortoise_bottom",
+			texturePath: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/",
+			min: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/min_talisman_of_black_tortoise_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_soa_talisman_of_four_bearing_god: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_four_bearing_god/talisman_of_four_bearing_god",
+			texturePath: "soul_ascetic/soa_talisman_of_four_bearing_god/",
+			min: "soul_ascetic/soa_talisman_of_four_bearing_god/min_talisman_of_four_bearing_god",
+			wav: "effect/soul_ascetic/soa_talisman_of_four_bearing_god"
+		}],
+		ef_soa_circle_of_directions_and_elementals: [{
+			type: "STR",
+			file: "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/circle_directions_elements",
+			texturePath: "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/",
+			min: "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/min_circle_directions_elements"
+		}],
+		ef_soa_soul_of_heaven_and_earth: [{
+			type: "STR",
+			file: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/soul_of_heaven_and_earth",
+			texturePath: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/",
+			min: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/min_soul_of_heaven_and_earth",
+			wav: "effect/soul_ascetic/soa_soul_of_heaven_and_earth"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth_buff/soul_of_heaven_and_earth_buff",
+			texturePath: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth_buff/",
+			min: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth_buff/min_soul_of_heaven_and_earth_buff"
 		}],
 		709: [{
 			type: "STR",
@@ -274173,6 +274806,210 @@ var init_EffectTable = __esmMin((() => {
 			posz: .5,
 			repeat: true
 		}, { wav: "effect/³ª¶ôÀÇ³ë·¡" }],
+		ef_ss_tokedasu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_tokedasu/tokedasu/tokedasu",
+			texturePath: "shinkiro_shiranui/ss_tokedasu/tokedasu/",
+			min: "shinkiro_shiranui/ss_tokedasu/tokedasu/min_tokedasu",
+			wav: "effect/shinkiro_shiranui/ss_tokedasu"
+		}],
+		ef_ss_shimiru: [{
+			wav: "effect/shinkiro_shiranui/ss_shimiru",
+			attachedEntity: true
+		}],
+		ef_ss_akumukesu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_akumukesu/akumukesu",
+			texturePath: "shinkiro_shiranui/ss_akumukesu/",
+			min: "shinkiro_shiranui/ss_akumukesu/min_akumukesu",
+			wav: "effect/shinkiro_shiranui/ss_akumukesu"
+		}],
+		ef_ss_kagegari: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kagegari/kagegari",
+			texturePath: "shinkiro_shiranui/ss_kagegari/",
+			min: "shinkiro_shiranui/ss_kagegari/min_kagegari",
+			wav: "effect/shinkiro_shiranui/ss_kagegari"
+		}],
+		ef_ss_kagenomai: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kagenomai/kagenomai",
+			texturePath: "shinkiro_shiranui/ss_kagenomai/",
+			min: "shinkiro_shiranui/ss_kagenomai/min_kagenomai"
+		}],
+		ef_ss_kagegissen: [
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_kagegissen/kagegissen",
+				texturePath: "shinkiro_shiranui/ss_kagegissen/",
+				min: "shinkiro_shiranui/ss_kagegissen/min_kagegissen",
+				wav: "effect/shinkiro_shiranui/ss_kagegissen"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_kagegissen/new_kagegissen/new_kagegissen",
+				texturePath: "shinkiro_shiranui/ss_kagegissen/new_kagegissen/"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_bottom/new_kagegissen_bottom",
+				texturePath: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_bottom/",
+				renderBeforeEntities: true
+			}
+		],
+		ef_ss_kagegissen_hit: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_hit/new_kagegissen_hit",
+			texturePath: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_hit/"
+		}],
+		ef_ss_fuumashouaku: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/fuumashouaku",
+			texturePath: "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/",
+			min: "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/min_fuumashouaku",
+			wav: "effect/shinkiro_shiranui/ss_fuumashouaku"
+		}],
+		ef_ss_fuumakouchiku: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_fuumakouchiku/fuumakouchiku/fuumakouchiku",
+			texturePath: "shinkiro_shiranui/ss_fuumakouchiku/fuumakouchiku/",
+			min: "shinkiro_shiranui/ss_fuumakouchiku/fuumakouchiku/min_fuumakouchiku",
+			wav: "effect/shinkiro_shiranui/ss_fuumakouchiku"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_fuumakouchiku/new_fuumakouchiku/new_fuumakouchiku",
+			texturePath: "shinkiro_shiranui/ss_fuumakouchiku/new_fuumakouchiku/",
+			min: "shinkiro_shiranui/ss_fuumakouchiku/new_fuumakouchiku/min_new_fuumakouchiku"
+		}],
+		ef_ss_kunaiwaikyoku: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaiwaikyoku/kunaiwaikyoku",
+			texturePath: "shinkiro_shiranui/ss_kunaiwaikyoku/",
+			min: "shinkiro_shiranui/ss_kunaiwaikyoku/min_kunaiwaikyoku",
+			wav: "effect/shinkiro_shiranui/ss_kunaiwaikyoku"
+		}],
+		ef_ss_kunaikaiten: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/kunaikaiten_bottom",
+			texturePath: "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/",
+			min: "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/min_kunaikaiten_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ss_kunaikussetsu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/kunaikussetsu",
+			texturePath: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/",
+			min: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/min_kunaikussetsu",
+			wav: "effect/shinkiro_shiranui/ss_kunaikussetsu"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/kunaikussetsu_bottom",
+			texturePath: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ss_sekienhou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_sekienhou/sekienhou",
+			texturePath: "shinkiro_shiranui/ss_sekienhou/",
+			min: "shinkiro_shiranui/ss_sekienhou/min_sekienhou",
+			wav: "effect/shinkiro_shiranui/ss_sekienhou"
+		}],
+		ef_ss_reiketsuhou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/reiketsuhou",
+			texturePath: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/",
+			min: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/min_reiketsuhou",
+			wav: "effect/shinkiro_shiranui/ss_reiketsuhou"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/reiketsuhou_bottom",
+			texturePath: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/",
+			min: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/min_reiketsuhou_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ss_raidenpou: [
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou/new_raidenpou",
+				texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou/",
+				min: "shinkiro_shiranui/ss_raidenpou/new_raidenpou/min_new_raidenpou",
+				wav: "effect/shinkiro_shiranui/ss_raidenpou"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_raidenpou/raidenpou",
+				texturePath: "shinkiro_shiranui/ss_raidenpou/",
+				min: "shinkiro_shiranui/ss_raidenpou/min_raidenpou"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_bottom/new_raidenpou_bottom",
+				texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_bottom/",
+				renderBeforeEntities: true
+			}
+		],
+		ef_ss_raidenpou_cast: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/new_raidenpou_cast",
+			texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/",
+			min: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/min_new_raidenpou_cast"
+		}],
+		ef_ss_raidenpou_hit: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/new_raidenpou_hit",
+			texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/",
+			min: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/min_new_raidenpou_hit"
+		}],
+		ef_ss_kinryuuhou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/kinryuuhou",
+			texturePath: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/",
+			min: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/min_kinryuuhou",
+			wav: "effect/shinkiro_shiranui/ss_kinryuuhou"
+		}],
+		ef_ss_kinryuuhou_hit: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/kinryuuhou_hit",
+			texturePath: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/",
+			min: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/min_kinryuuhou_hit"
+		}],
+		ef_ss_antenpou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_antenpou/antenpou",
+			texturePath: "shinkiro_shiranui/ss_antenpou/",
+			min: "shinkiro_shiranui/ss_antenpou/min_antenpou",
+			wav: "effect/shinkiro_shiranui/ss_antenpou"
+		}],
+		ef_ss_kageakumu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kageakumu/kageakumu",
+			texturePath: "shinkiro_shiranui/ss_kageakumu/",
+			min: "shinkiro_shiranui/ss_kageakumu/min_kageakumu"
+		}],
+		ef_ss_hitouakumu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/hitouakumu",
+			texturePath: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/",
+			min: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/min_hitouakumu",
+			wav: "effect/shinkiro_shiranui/ss_hitouakumu"
+		}],
+		ef_ss_ankokuryuuakumu: [{
+			wav: "effect/shinkiro_shiranui/ss_ankokuryuuakumu",
+			attachedEntity: true
+		}],
+		ef_ss_four_charm: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_four_charm/four_charm_ice/four_charm_ice",
+			texturePath: "shinkiro_shiranui/ss_four_charm/four_charm_ice/",
+			min: "shinkiro_shiranui/ss_four_charm/four_charm_ice/min_four_charm_ice",
+			wav: "effect/shinkiro_shiranui/ss_four_charm"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/four_charm_ice_bottom",
+			texturePath: "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/",
+			min: "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/min_four_charm_ice_bottom",
+			renderBeforeEntities: true
+		}],
 		861: [{ wav: "effect/¼øÈ¯ÇÏ´ÂÀÚ¿¬ÀÇ¼Ò¸®" }],
 		862: [
 			{
