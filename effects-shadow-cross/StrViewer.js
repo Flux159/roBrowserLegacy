@@ -214513,14 +214513,8 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.ECL_SEQUOIADUST] = {};
 	SkillEffect[SkillConst_default.ECLAGE_RECALL] = {};
 	SkillEffect[SkillConst_default.GC_DARKCROW] = { effectId: 1040 };
-	SkillEffect[SkillConst_default.SHC_SHADOW_EXCEED] = {
-		effectId: "ef_shc_shadow_exceed",
-		effectIdOnCaster: "ef_shc_shadow_exceed_cast"
-	};
-	SkillEffect[SkillConst_default.SHC_DANCING_KNIFE] = {
-		effectIdOnCaster: "ef_shc_dancing_knife_cast",
-		hitEffectId: "ef_shc_dancing_knife_hit"
-	};
+	SkillEffect[SkillConst_default.SHC_SHADOW_EXCEED] = { effectIdOnCaster: "ef_shc_shadow_exceed_cast" };
+	SkillEffect[SkillConst_default.SHC_DANCING_KNIFE] = { effectIdOnCaster: "ef_shc_dancing_knife_cast" };
 	SkillEffect[SkillConst_default.SHC_SAVAGE_IMPACT] = {
 		effectId: "ef_shc_savage_impact",
 		hitEffectId: "ef_shc_savage_impact_hit"
@@ -214535,10 +214529,12 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_shc_impact_crater",
 		hitEffectId: "ef_shc_impact_crater_hit"
 	};
+	SkillEffect[SkillConst_default.SHC_ENCHANTING_SHADOW] = { effectId: "ef_shc_enchanting_shadow" };
 	SkillEffect[SkillConst_default.SHC_FATAL_SHADOW_CROW] = {
 		effectId: "ef_shc_fatal_shadow_crow",
 		hitEffectId: "ef_shc_fatal_shadow_crow_hit"
 	};
+	SkillEffect[6511] = { effectId: "ef_shc_cross_slash" };
 	SkillEffect[SkillConst_default.RA_UNLIMIT] = {};
 	SkillEffect[SkillConst_default.GN_ILLUSIONDOPING] = { effectId: 1049 };
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH_WATER] = { hitEffectId: "ef_dragonbreath_water" };
@@ -274804,47 +274800,30 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/hallucinationwalk",
 			attachedEntity: true
 		}],
-		ef_shc_shadow_exceed: [{
-			type: "STR",
-			file: "shadow_exceed/shadow_exceed/shadow_exceed",
-			texturePath: "shadow_exceed/shadow_exceed/",
-			wav: "effect/SHC_SHADOW_EXCEED"
-		}, {
-			type: "STR",
-			file: "shadow_exceed/shadow_exceed_bottom/shadow_exceed_bottom",
-			texturePath: "shadow_exceed/shadow_exceed_bottom/",
-			renderBeforeEntities: true
-		}],
 		ef_shc_shadow_exceed_cast: [{
 			type: "STR",
-			file: "shadow_exceed/shadow_exceed_cast/shadow_exceed_cast",
-			texturePath: "shadow_exceed/shadow_exceed_cast/",
-			min: "shadow_exceed/shadow_exceed_cast/min_shadow_exceed_cast"
+			file: "shadow_cross/shc_shadow_exceed/shadow_exceed_cast/shadow_exceed_cast",
+			texturePath: "shadow_cross/shc_shadow_exceed/shadow_exceed_cast/",
+			min: "shadow_cross/shc_shadow_exceed/shadow_exceed_cast/min_shadow_exceed_cast",
+			wav: "effect/shc_shadow_exceed"
 		}],
 		ef_shc_dancing_knife_cast: [{
 			type: "STR",
-			file: "dancing_knife/dancing_knife_cast/dancing_knife_cast",
-			texturePath: "dancing_knife/dancing_knife_cast/",
-			min: "dancing_knife/dancing_knife_cast/min_dancing_knife_cast",
-			wav: "effect/SHC_DANCING_KNIFE"
+			file: "shadow_cross/shc_dancing_knife/dancing_knife_cast/dancing_knife_cast",
+			texturePath: "shadow_cross/shc_dancing_knife/dancing_knife_cast/",
+			wav: "effect/shc_dancing_knife"
 		}, {
 			type: "STR",
-			file: "dancing_knife/dancing_knife_cast_bottom/dancing_knife_cast_bottom",
-			texturePath: "dancing_knife/dancing_knife_cast_bottom/",
-			min: "dancing_knife/dancing_knife_cast_bottom/min_dancing_knife_cast_bottom",
+			file: "shadow_cross/shc_dancing_knife/dancing_knife_cast_bottom/dancing_knife_cast_bottom",
+			texturePath: "shadow_cross/shc_dancing_knife/dancing_knife_cast_bottom/",
 			renderBeforeEntities: true
-		}],
-		ef_shc_dancing_knife_hit: [{
-			type: "STR",
-			file: "dancing_knife/dancing_knife_hit/dancing_knife_hit",
-			texturePath: "dancing_knife/dancing_knife_hit/"
 		}],
 		ef_shc_savage_impact: [{
 			type: "STR",
 			file: "savage_impact/savage_impact/savage_impact",
 			texturePath: "savage_impact/savage_impact/",
 			min: "savage_impact/savage_impact/min_savage_impact",
-			wav: "effect/SHC_SAVAGE_IMPACT"
+			wav: "effect/shc_savage_impact"
 		}],
 		ef_shc_savage_impact_hit: [{
 			type: "STR",
@@ -274857,7 +274836,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "eternal_slash/eternal_slash/eternal_slash",
 			texturePath: "eternal_slash/eternal_slash/",
 			min: "eternal_slash/eternal_slash/min_eternal_slash",
-			wav: "effect/SHC_ETERNAL_SLASH"
+			wav: "effect/shc_eternal_slash"
 		}, {
 			type: "STR",
 			file: "eternal_slash/eternal_slash_bottom/eternal_slash_bottom",
@@ -274876,40 +274855,51 @@ var init_EffectTable = __esmMin((() => {
 			file: "new_potent_venom/new_potent_venom",
 			texturePath: "new_potent_venom/",
 			min: "new_potent_venom/min_new_potent_venom",
-			wav: "effect/SHC_POTENT_VENOM"
+			wav: "effect/shc_potent_venom"
 		}],
 		ef_shc_shadow_stab: [{
 			type: "STR",
-			file: "shadow_stab/shadow_stab/shadow_stab",
-			texturePath: "shadow_stab/shadow_stab/",
-			min: "shadow_stab/shadow_stab/min_shadow_stab",
-			wav: "effect/SHC_SHADOW_STAB"
+			file: "shadow_cross/shc_shadow_stab/shadow_stab/shadow_stab",
+			texturePath: "shadow_cross/shc_shadow_stab/shadow_stab/",
+			wav: "effect/shc_shadow_stab"
 		}],
 		ef_shc_impact_crater: [{
 			type: "STR",
-			file: "impact_crater/impact_crater/impact_crater",
-			texturePath: "impact_crater/impact_crater/",
-			min: "impact_crater/impact_crater/min_impact_crater",
-			wav: "effect/SHC_IMPACT_CRATER"
+			file: "shadow_cross/shc_impact_crater/impact_crater/impact_crater",
+			texturePath: "shadow_cross/shc_impact_crater/impact_crater/",
+			min: "shadow_cross/shc_impact_crater/impact_crater/min_impact_crater",
+			wav: "effect/shc_impact_crater"
 		}, {
 			type: "STR",
-			file: "impact_crater/impact_crater_bottom/impact_crater_bottom",
-			texturePath: "impact_crater/impact_crater_bottom/",
-			min: "impact_crater/impact_crater_bottom/min_impact_crater_bottom",
+			file: "shadow_cross/shc_impact_crater/impact_crater_bottom/impact_crater_bottom",
+			texturePath: "shadow_cross/shc_impact_crater/impact_crater_bottom/",
+			min: "shadow_cross/shc_impact_crater/impact_crater_bottom/min_impact_crater_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_shc_impact_crater_hit: [{
 			type: "STR",
-			file: "impact_crater/impact_crater_hit/impact_crater_hit",
-			texturePath: "impact_crater/impact_crater_hit/",
-			min: "impact_crater/impact_crater_hit/min_impact_crater_hit"
+			file: "shadow_cross/shc_impact_crater/impact_crater_hit/impact_crater_hit",
+			texturePath: "shadow_cross/shc_impact_crater/impact_crater_hit/",
+			min: "shadow_cross/shc_impact_crater/impact_crater_hit/min_impact_crater_hit"
+		}],
+		ef_shc_enchanting_shadow: [{
+			type: "STR",
+			file: "shadow_cross/shc_enchanting_shadow/enchanting_shadow/enchanting_shadow",
+			texturePath: "shadow_cross/shc_enchanting_shadow/enchanting_shadow/",
+			min: "shadow_cross/shc_enchanting_shadow/enchanting_shadow/min_enchanting_shadow"
+		}, {
+			type: "STR",
+			file: "shadow_cross/shc_enchanting_shadow/enchanting_shadow_bottom/enchanting_shadow_bottom",
+			texturePath: "shadow_cross/shc_enchanting_shadow/enchanting_shadow_bottom/",
+			min: "shadow_cross/shc_enchanting_shadow/enchanting_shadow_bottom/min_enchanting_shadow_bottom",
+			renderBeforeEntities: true
 		}],
 		ef_shc_fatal_shadow_crow: [{
 			type: "STR",
 			file: "fatal_shadow_crow/fatal_shadow_crow/fatal_shadow_crow",
 			texturePath: "fatal_shadow_crow/fatal_shadow_crow/",
 			min: "fatal_shadow_crow/fatal_shadow_crow/min_fatal_shadow_crow",
-			wav: "effect/SHC_FATAL_SHADOW_CROW"
+			wav: "effect/shc_fatal_shadow_crow"
 		}, {
 			type: "STR",
 			file: "fatal_shadow_crow/fatal_shadow_crow_bottom/fatal_shadow_crow_bottom",
@@ -274922,6 +274912,13 @@ var init_EffectTable = __esmMin((() => {
 			file: "fatal_shadow_crow/fatal_shadow_crow_hit/fatal_shadow_crow_hit",
 			texturePath: "fatal_shadow_crow/fatal_shadow_crow_hit/",
 			min: "fatal_shadow_crow/fatal_shadow_crow_hit/min_fatal_shadow_crow_hit"
+		}],
+		ef_shc_cross_slash: [{
+			type: "STR",
+			file: "shadow_cross/shc_cross_slash/cross_slash/cross_slash",
+			texturePath: "shadow_cross/shc_cross_slash/cross_slash/",
+			min: "shadow_cross/shc_cross_slash/cross_slash/min_cross_slash",
+			wav: "effect/shc_cross_slash"
 		}],
 		ef_s_storm: [{
 			type: "STR",
