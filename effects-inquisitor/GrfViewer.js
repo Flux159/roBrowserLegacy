@@ -214591,6 +214591,11 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_iq_third_exor_flame",
 		effectIdOnCaster: "ef_iq_third_exor_flame_cast"
 	};
+	SkillEffect[6519] = {
+		effectId: "ef_iq_blazing_flame_blast",
+		effectIdOnCaster: "ef_iq_blazing_flame_blast_cast",
+		hitEffectId: "ef_iq_blazing_flame_blast_hit"
+	};
 	SkillEffect[SkillConst_default.SC_ESCAPE] = {};
 	SkillEffect[SkillConst_default.AB_OFFERTORIUM] = { effectId: 1047 };
 	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
@@ -274785,7 +274790,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4ig_oleumsanctum/oleumsanctum/oleumsanctum",
 			texturePath: "4ig_oleumsanctum/oleumsanctum/",
 			min: "4ig_oleumsanctum/oleumsanctum/min_oleumsanctum",
-			wav: "effect/IQ_OLEUM_SANCTUM"
+			wav: "effect/iq_oleum_sanctum"
 		}, {
 			type: "STR",
 			file: "4ig_oleumsanctum/oleumsanctum_bottom/oleumsanctum_bottom",
@@ -274816,7 +274821,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4iq_massivefblaster/massivefblaster/massivefblaster",
 			texturePath: "4iq_massivefblaster/massivefblaster/",
 			min: "4iq_massivefblaster/massivefblaster/min_massivefblaster",
-			wav: "effect/IQ_MASSIVE_F_BLASTER"
+			wav: "effect/iq_massive_f_blaster"
 		}],
 		ef_iq_massive_f_blaster_hit: [{
 			type: "STR",
@@ -274835,7 +274840,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4ig_explosionblaster/explosionblaster/explosionblaster",
 			texturePath: "4ig_explosionblaster/explosionblaster/",
 			min: "4ig_explosionblaster/explosionblaster/min_explosionblaster",
-			wav: "effect/IQ_EXPOSION_BLASTER"
+			wav: "effect/iq_exposion_blaster"
 		}, {
 			type: "STR",
 			file: "4ig_explosionblaster/explosionblaster_bottom/explosionblaster_bottom",
@@ -274854,7 +274859,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4ig_firstbrand/firstbrand/firstbrand",
 			texturePath: "4ig_firstbrand/firstbrand/",
 			min: "4ig_firstbrand/firstbrand/min_firstbrand",
-			wav: "effect/IQ_FIRST_BRAND"
+			wav: "effect/iq_first_brand"
 		}],
 		ef_iq_first_brand_hit: [{
 			type: "STR",
@@ -274867,7 +274872,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4ig_firstfaithpower/firstfaithpower/firstfaithpower",
 			texturePath: "4ig_firstfaithpower/firstfaithpower/",
 			min: "4ig_firstfaithpower/firstfaithpower/min_firstfaithpower",
-			wav: "effect/IQ_FIRST_FAITH_POWER"
+			wav: "effect/iq_first_faith_power"
 		}],
 		ef_iq_first_faith_power_cast: [{
 			type: "STR",
@@ -274880,7 +274885,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4ig_judge/judge/judge",
 			texturePath: "4ig_judge/judge/",
 			min: "4ig_judge/judge/min_judge",
-			wav: "effect/IQ_JUDGE"
+			wav: "effect/iq_judge"
 		}],
 		ef_iq_judge_cast: [{
 			type: "STR",
@@ -274893,7 +274898,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4iq_secondflame/secondflame/secondflame",
 			texturePath: "4iq_secondflame/secondflame/",
 			min: "4iq_secondflame/secondflame/min_secondflame",
-			wav: "effect/IQ_SECOND_FLAME"
+			wav: "effect/iq_second_flame"
 		}, {
 			type: "STR",
 			file: "4iq_secondflame/secondflame_bottom/secondflame_bottom",
@@ -274902,7 +274907,7 @@ var init_EffectTable = __esmMin((() => {
 			renderBeforeEntities: true
 		}],
 		ef_iq_second_faith: [{
-			wav: "effect/IQ_SECOND_FAITH",
+			wav: "effect/iq_second_faith",
 			attachedEntity: true
 		}],
 		ef_iq_second_judgement: [{
@@ -274910,14 +274915,14 @@ var init_EffectTable = __esmMin((() => {
 			file: "4iq_secondjudgement/secondjudgement/secondjudgement",
 			texturePath: "4iq_secondjudgement/secondjudgement/",
 			min: "4iq_secondjudgement/secondjudgement/min_secondjudgement",
-			wav: "effect/IQ_SECOND_JUDGEMENT"
+			wav: "effect/iq_second_judgement"
 		}],
 		ef_iq_third_punish: [{
 			type: "STR",
 			file: "4iq_thirdpunish/thirdpunish/thirdpunish",
 			texturePath: "4iq_thirdpunish/thirdpunish/",
 			min: "4iq_thirdpunish/thirdpunish/min_thirdpunish",
-			wav: "effect/IQ_THIRD_PUNISH"
+			wav: "effect/iq_third_punish"
 		}, {
 			type: "STR",
 			file: "4iq_thirdpunish/thirdpunish_bottom/thirdpunish_bottom",
@@ -274930,7 +274935,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4iq_thirdflamebomb/thirdflamebomb/thirdflamebomb",
 			texturePath: "4iq_thirdflamebomb/thirdflamebomb/",
 			min: "4iq_thirdflamebomb/thirdflamebomb/min_thirdflamebomb",
-			wav: "effect/IQ_THIRD_FLAME_BOMB"
+			wav: "effect/iq_third_flame_bomb"
 		}, {
 			type: "STR",
 			file: "4iq_thirdflamebomb/thirdflamebomb_bottom/thirdflamebomb_bottom",
@@ -274943,7 +274948,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "4iq_thirdconsecration/thirdconsecration/thirdconsecration",
 			texturePath: "4iq_thirdconsecration/thirdconsecration/",
 			min: "4iq_thirdconsecration/thirdconsecration/min_thirdconsecration",
-			wav: "effect/IQ_THIRD_CONSECRATION"
+			wav: "effect/iq_third_consecration"
 		}, {
 			type: "STR",
 			file: "4iq_thirdconsecration/thirdconsecration_bottom/thirdconsecration_bottom",
@@ -274956,13 +274961,38 @@ var init_EffectTable = __esmMin((() => {
 			file: "4ig_thirdexorflame/thirdexorflame/thirdexorflame",
 			texturePath: "4ig_thirdexorflame/thirdexorflame/",
 			min: "4ig_thirdexorflame/thirdexorflame/min_thirdexorflame",
-			wav: "effect/IQ_THIRD_EXOR_FLAME"
+			wav: "effect/iq_third_exor_flame"
 		}],
 		ef_iq_third_exor_flame_cast: [{
 			type: "STR",
 			file: "4ig_thirdexorflame/thirdexorflame_cast/thirdexorflame_cast",
 			texturePath: "4ig_thirdexorflame/thirdexorflame_cast/",
 			min: "4ig_thirdexorflame/thirdexorflame_cast/min_thirdexorflame_cast"
+		}],
+		ef_iq_blazing_flame_blast: [{
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/blazing_flame_blast",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/min_blazing_flame_blast",
+			wav: "effect/iq_blazing_flame_blast"
+		}],
+		ef_iq_blazing_flame_blast_cast: [{
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/blazing_flame_blast_cast",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/min_blazing_flame_blast_cast"
+		}, {
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/blazing_flame_blast_cast_bottom",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/min_blazing_flame_blast_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_blazing_flame_blast_hit: [{
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/blazing_flame_blast_hit",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/min_blazing_flame_blast_hit"
 		}],
 		ef_jackfrost: [{
 			wav: "effect/wl_jackfrost",
