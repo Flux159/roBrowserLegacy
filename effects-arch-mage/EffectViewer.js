@@ -214603,7 +214603,11 @@ var init_SkillEffect = __esmMin((() => {
 		effectIdOnCaster: "ef_ag_frozen_slash_cast",
 		hitEffectId: "ef_ag_frozen_slash_hit"
 	};
-	SkillEffect[SkillConst_default.AG_DESTRUCTIVE_HURRICANE_CLIMAX] = { effectId: "ef_ag_destructive_hurricane_climax" };
+	SkillEffect[5306] = { effectId: "ef_ag_destructive_hurricane_climax" };
+	SkillEffect[6516] = {
+		effectId: "ef_ag_energy_conversion",
+		effectIdOnCaster: "ef_ag_energy_conversion_cast"
+	};
 	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
 	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
 	SkillEffect[SkillConst_default.SU_BITE] = {};
@@ -275280,6 +275284,25 @@ var init_EffectTable = __esmMin((() => {
 			file: "destructive_hurricane/destructive_hurricane_climax/destructive_hurricane_climax",
 			texturePath: "destructive_hurricane/destructive_hurricane_climax/",
 			min: "destructive_hurricane/destructive_hurricane_climax/min_destructive_hurricane_climax"
+		}],
+		ef_ag_energy_conversion: [{
+			type: "STR",
+			file: "archmage/ag_energy_conversion/energy_conversion/energy_conversion",
+			texturePath: "archmage/ag_energy_conversion/energy_conversion/",
+			min: "archmage/ag_energy_conversion/energy_conversion/min_energy_conversion",
+			wav: "effect/ag_energy_conversion"
+		}],
+		ef_ag_energy_conversion_cast: [{
+			type: "STR",
+			file: "archmage/ag_energy_conversion/energy_conversion_cast/energy_conversion_cast",
+			texturePath: "archmage/ag_energy_conversion/energy_conversion_cast/",
+			min: "archmage/ag_energy_conversion/energy_conversion_cast/min_energy_conversion_cast"
+		}, {
+			type: "STR",
+			file: "archmage/ag_energy_conversion/energy_conversion_cast_bottom/energy_conversion_cast_bottom",
+			texturePath: "archmage/ag_energy_conversion/energy_conversion_cast_bottom/",
+			min: "archmage/ag_energy_conversion/energy_conversion_cast_bottom/min_energy_conversion_cast_bottom",
+			renderBeforeEntities: true
 		}],
 		ef_frigg_song: [{
 			wav: "effect/wm_frigg_song",
