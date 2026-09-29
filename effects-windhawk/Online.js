@@ -214313,7 +214313,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RA_UNLIMIT] = {};
 	SkillEffect[SkillConst_default.WH_WIND_SIGN] = { effectId: "ef_wh_wind_sign" };
 	SkillEffect[SkillConst_default.WH_HAWKRUSH] = { effectId: "ef_wh_hawkrush" };
-	SkillEffect[SkillConst_default.WH_CALAMITYGALE] = { effectId: "ef_wh_calamitygale" };
+	SkillEffect[SkillConst_default.WH_CALAMITYGALE] = { effectIdOnCaster: "ef_wh_calamitygale_cast" };
 	SkillEffect[SkillConst_default.WH_HAWKBOOMERANG] = { effectId: "ef_wh_hawkboomerang" };
 	SkillEffect[SkillConst_default.WH_GALESTORM] = {
 		effectId: "ef_wh_galestorm",
@@ -214344,6 +214344,11 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_wh_flametrap",
 		effectIdOnCaster: "ef_wh_flametrap_cast",
 		hitEffectId: "ef_wh_flametrap_hit"
+	};
+	SkillEffect[6520] = {
+		effectId: "ef_wh_wild_walk",
+		effectIdOnCaster: "ef_wh_wild_walk_cast",
+		hitEffectId: "ef_wh_wild_walk_hit"
 	};
 	SkillEffect[SkillConst_default.GN_ILLUSIONDOPING] = { effectId: 1049 };
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH_WATER] = { hitEffectId: "ef_dragonbreath_water" };
@@ -274668,20 +274673,23 @@ var init_EffectTable = __esmMin((() => {
 			file: "windsign/windsign/windsign",
 			texturePath: "windsign/windsign/",
 			min: "windsign/windsign/min_windsign",
-			wav: "effect/WH_WIND_SIGN"
+			wav: "effect/wh_wind_sign"
 		}],
 		ef_wh_hawkrush: [{
 			type: "STR",
 			file: "hawkrush/hawkrush/hawkrush",
 			texturePath: "hawkrush/hawkrush/",
-			wav: "effect/WH_HAWKRUSH"
+			wav: "effect/wh_hawkrush"
 		}],
-		ef_wh_calamitygale: [{
-			wav: "effect/WH_CALAMITYGALE",
-			attachedEntity: true
+		ef_wh_calamitygale_cast: [{
+			type: "STR",
+			file: "windhawk/calamitygale/calumitygale_cast/calumitygale_cast",
+			texturePath: "windhawk/calamitygale/calumitygale_cast/",
+			min: "windhawk/calamitygale/calumitygale_cast/min_calumitygale_cast",
+			wav: "effect/wh_calamitygale"
 		}],
 		ef_wh_hawkboomerang: [{
-			wav: "effect/WH_HAWKBOOMERANG",
+			wav: "effect/wh_hawkboomerang",
 			attachedEntity: true
 		}],
 		ef_wh_galestorm: [{
@@ -274689,7 +274697,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "galestorm/galestorm/galestorm",
 			texturePath: "galestorm/galestorm/",
 			min: "galestorm/galestorm/min_galestorm",
-			wav: "effect/WH_GALESTORM"
+			wav: "effect/wh_galestorm"
 		}],
 		ef_wh_galestorm_cast: [{
 			type: "STR",
@@ -274786,7 +274794,7 @@ var init_EffectTable = __esmMin((() => {
 			file: "crescivebolt/crescivebolt/crescivebolt",
 			texturePath: "crescivebolt/crescivebolt/",
 			min: "crescivebolt/crescivebolt/min_crescivebolt",
-			wav: "effect/WH_CRESCIVE_BOLT"
+			wav: "effect/wh_crescive_bolt"
 		}],
 		ef_wh_crescive_bolt_cast: [{
 			type: "STR",
@@ -274823,6 +274831,31 @@ var init_EffectTable = __esmMin((() => {
 			file: "flametrap/flametrap_hit/flametrap_hit",
 			texturePath: "flametrap/flametrap_hit/",
 			min: "flametrap/flametrap_hit/min_flametrap_hit"
+		}],
+		ef_wh_wild_walk: [{
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk/wild_walk",
+			texturePath: "windhawk/wh_wild_walk/wild_walk/",
+			min: "windhawk/wh_wild_walk/wild_walk/min_wild_walk",
+			wav: "effect/wh_wild_walk"
+		}],
+		ef_wh_wild_walk_cast: [{
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk_cast/wild_walk_cast",
+			texturePath: "windhawk/wh_wild_walk/wild_walk_cast/",
+			min: "windhawk/wh_wild_walk/wild_walk_cast/min_wild_walk_cast"
+		}, {
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk_cast_bottom/wild_walk_cast_bottom",
+			texturePath: "windhawk/wh_wild_walk/wild_walk_cast_bottom/",
+			min: "windhawk/wh_wild_walk/wild_walk_cast_bottom/min_wild_walk_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_wild_walk_hit: [{
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk_hit/wild_walk_hit",
+			texturePath: "windhawk/wh_wild_walk/wild_walk_hit/",
+			min: "windhawk/wh_wild_walk/wild_walk_hit/min_wild_walk_hit"
 		}],
 		ef_arrow_shower_projectile: [{
 			type: "3D",
