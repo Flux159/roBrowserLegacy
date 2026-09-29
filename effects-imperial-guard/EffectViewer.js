@@ -214549,7 +214549,8 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.IG_JUDGEMENT_CROSS] = {
 		effectId: "ef_ig_judgement_cross",
-		effectIdOnCaster: "ef_ig_judgement_cross_cast"
+		effectIdOnCaster: "ef_ig_judgement_cross_cast",
+		hitEffectId: "ef_ig_judgement_cross_hit"
 	};
 	SkillEffect[SkillConst_default.IG_SHIELD_SHOOTING] = {
 		effectId: "ef_ig_shield_shooting",
@@ -214564,6 +214565,13 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.IG_CROSS_RAIN] = {
 		effectId: "ef_ig_cross_rain",
 		effectIdOnCaster: "ef_ig_cross_rain_cast"
+	};
+	SkillEffect[6503] = { effectIdOnCaster: "ef_ig_radiant_spear_cast" };
+	SkillEffect[6504] = { effectId: "ef_ig_imperial_cross" };
+	SkillEffect[6505] = {
+		effectId: "ef_ig_imperial_pressure",
+		effectIdOnCaster: "ef_ig_imperial_pressure_cast",
+		hitEffectId: "ef_ig_imperial_pressure_hit"
 	};
 	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
 	SkillEffect[SkillConst_default.SU_BITE] = {};
@@ -274665,160 +274673,176 @@ var init_EffectTable = __esmMin((() => {
 		}],
 		ef_ig_guard_stance: [{
 			type: "STR",
-			file: "guard_stance/guard_stance/guard_stance",
-			texturePath: "guard_stance/guard_stance/",
-			min: "guard_stance/guard_stance/min_guard_stance",
-			wav: "effect/IG_GUARD_STANCE"
+			file: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance/new_guard_stance",
+			texturePath: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance/",
+			wav: "effect/ig_guard_stance"
 		}],
 		ef_ig_guard_stance_cast: [{
 			type: "STR",
-			file: "guard_stance/guard_stance_cast/guard_stance_cast",
-			texturePath: "guard_stance/guard_stance_cast/",
-			min: "guard_stance/guard_stance_cast/min_guard_stance_cast"
+			file: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast/new_guard_stance_cast",
+			texturePath: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast/",
+			min: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast/min_new_guard_stance_cast"
 		}, {
 			type: "STR",
-			file: "guard_stance/guard_stance_cast_bottom/guard_stance_cast_bottom",
-			texturePath: "guard_stance/guard_stance_cast_bottom/",
-			min: "guard_stance/guard_stance_cast_bottom/min_guard_stance_cast_bottom",
+			file: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast_bottom/new_guard_stance_cast_bottom",
+			texturePath: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast_bottom/",
+			min: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast_bottom/min_new_guard_stance_cast_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_guardian_shield: [{
 			type: "STR",
-			file: "guardianshield/guardianshield/guardianshield",
-			texturePath: "guardianshield/guardianshield/",
-			min: "guardianshield/guardianshield/min_guardianshield",
-			wav: "effect/IG_GUARDIAN_SHIELD"
+			file: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/guardianshield",
+			texturePath: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/",
+			min: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/min_guardianshield",
+			wav: "effect/ig_guardian_shield"
 		}, {
 			type: "STR",
-			file: "guardianshield/guardianshield_bottom/guardianshield_bottom",
-			texturePath: "guardianshield/guardianshield_bottom/",
-			min: "guardianshield/guardianshield_bottom/min_guardianshield_bottom",
+			file: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/guardianshield_bottom",
+			texturePath: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/",
+			min: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/min_guardianshield_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_rebound_shield: [{
 			type: "STR",
-			file: "rebound_shield/rebound_shield/rebound_shield",
-			texturePath: "rebound_shield/rebound_shield/",
-			min: "rebound_shield/rebound_shield/min_rebound_shield",
-			wav: "effect/IG_REBOUND_SHIELD"
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield/new_rebound_shield",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield/min_new_rebound_shield",
+			wav: "effect/ig_rebound_shield"
 		}, {
 			type: "STR",
-			file: "rebound_shield/rebound_shield_bottom/rebound_shield_bottom",
-			texturePath: "rebound_shield/rebound_shield_bottom/",
-			min: "rebound_shield/rebound_shield_bottom/min_rebound_shield_bottom",
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield_bottom/new_rebound_shield_bottom",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield_bottom/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield_bottom/min_new_rebound_shield_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_rebound_shield_cast: [{
 			type: "STR",
-			file: "rebound_shield/rebound_shield_cast/rebound_shield_cast",
-			texturePath: "rebound_shield/rebound_shield_cast/",
-			min: "rebound_shield/rebound_shield_cast/min_rebound_shield_cast"
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast/rebound_shield_cast",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast/min_rebound_shield_cast"
 		}, {
 			type: "STR",
-			file: "rebound_shield/rebound_shield_cast_bottom/rebound_shield_cast_bottom",
-			texturePath: "rebound_shield/rebound_shield_cast_bottom/",
-			min: "rebound_shield/rebound_shield_cast_bottom/min_rebound_shield_cast_bottom",
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast_bottom/rebound_shield_cast_bottom",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast_bottom/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast_bottom/min_rebound_shield_cast_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_attack_stance: [{
 			type: "STR",
-			file: "attack_stance/attack_stance/attack_stance",
-			texturePath: "attack_stance/attack_stance/",
-			min: "attack_stance/attack_stance/min_attack_stance"
+			file: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance/new_attack_stance",
+			texturePath: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance/"
 		}],
 		ef_ig_attack_stance_cast: [{
 			type: "STR",
-			file: "attack_stance/attack_stance_cast/attack_stance_cast",
-			texturePath: "attack_stance/attack_stance_cast/",
-			min: "attack_stance/attack_stance_cast/min_attack_stance_cast"
+			file: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast/new_attack_stance_cast",
+			texturePath: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast/",
+			min: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast/min_new_attack_stance_cast"
 		}, {
 			type: "STR",
-			file: "attack_stance/attack_stance_cast_bottom/attack_stance_cast_bottom",
-			texturePath: "attack_stance/attack_stance_cast_bottom/",
-			min: "attack_stance/attack_stance_cast_bottom/min_attack_stance_cast_bottom",
+			file: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast_bottom/new_attack_stance_cast_bottom",
+			texturePath: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast_bottom/",
+			min: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast_bottom/min_new_attack_stance_cast_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_ultimate_sacrifice: [{
-			wav: "effect/IG_ULTIMATE_SACRIFICE",
-			attachedEntity: true
+			type: "STR",
+			file: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice/ultimatesacrifice",
+			texturePath: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice/",
+			min: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice/min_ultimatesacrifice",
+			wav: "effect/ig_ultimate_sacrifice"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice_bottom/ultimatesacrifice_bottom",
+			texturePath: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice_bottom/",
+			min: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice_bottom/min_ultimatesacrifice_bottom",
+			renderBeforeEntities: true
 		}],
 		ef_ig_holy_shield: [{
 			type: "STR",
-			file: "holy_shield/holy_shield/holy_shield",
-			texturePath: "holy_shield/holy_shield/",
-			min: "holy_shield/holy_shield/min_holy_shield"
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield/new_holy_shield",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield/min_new_holy_shield"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_bottom/new_holy_shield_bottom",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_bottom/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_bottom/min_new_holy_shield_bottom",
+			renderBeforeEntities: true
 		}],
 		ef_ig_holy_shield_cast: [{
 			type: "STR",
-			file: "holy_shield/holy_shield_cast/holy_shield_cast",
-			texturePath: "holy_shield/holy_shield_cast/",
-			min: "holy_shield/holy_shield_cast/min_holy_shield_cast"
-		}],
-		ef_ig_grand_judgement: [
-			{
-				type: "STR",
-				file: "grand_judgement/grand_judgement/grand_judgement",
-				texturePath: "grand_judgement/grand_judgement/",
-				min: "grand_judgement/grand_judgement/min_grand_judgement",
-				wav: "effect/IG_GRAND_JUDGEMENT"
-			},
-			{
-				type: "STR",
-				file: "grand_judgement/grand_judgement_buff/grand_judgement_buff",
-				texturePath: "grand_judgement/grand_judgement_buff/",
-				min: "grand_judgement/grand_judgement_buff/min_grand_judgement_buff"
-			},
-			{
-				type: "STR",
-				file: "grand_judgement/grand_judgement_bottom/grand_judgement_bottom",
-				texturePath: "grand_judgement/grand_judgement_bottom/",
-				min: "grand_judgement/grand_judgement_bottom/min_grand_judgement_bottom",
-				renderBeforeEntities: true
-			}
-		],
-		ef_ig_grand_judgement_cast: [{
-			type: "STR",
-			file: "grand_judgement/grand_judgement_cast/grand_judgement_cast",
-			texturePath: "grand_judgement/grand_judgement_cast/",
-			min: "grand_judgement/grand_judgement_cast/min_grand_judgement_cast"
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast/new_holy_shield_cast",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast/min_new_holy_shield_cast"
 		}, {
 			type: "STR",
-			file: "grand_judgement/grand_judgement_cast_bottom/grand_judgement_cast_bottom",
-			texturePath: "grand_judgement/grand_judgement_cast_bottom/",
-			min: "grand_judgement/grand_judgement_cast_bottom/min_grand_judgement_cast_bottom",
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast_bottom/new_holy_shield_cast_bottom",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast_bottom/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast_bottom/min_new_holy_shield_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ig_grand_judgement: [{
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement/new_grand_judgement",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement/min_new_grand_judgement",
+			wav: "effect/ig_grand_judgement"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement_bottom/new_grand_judgement_bottom",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement_bottom/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement_bottom/min_new_grand_judgement_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ig_grand_judgement_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast/grand_judgement_cast",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast/min_grand_judgement_cast"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast_bottom/grand_judgement_cast_bottom",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast_bottom/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast_bottom/min_grand_judgement_cast_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_judgement_cross: [{
 			type: "STR",
-			file: "judgement_cross/judgement_cross/judgement_cross",
-			texturePath: "judgement_cross/judgement_cross/",
-			min: "judgement_cross/judgement_cross/min_judgement_cross",
-			wav: "effect/IG_JUDGEMENT_CROSS"
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross/new_judgement_cross",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross/min_new_judgement_cross",
+			wav: "effect/ig_judgement_cross"
 		}, {
 			type: "STR",
-			file: "judgement_cross/judgement_cross_bottom/judgement_cross_bottom",
-			texturePath: "judgement_cross/judgement_cross_bottom/",
-			min: "judgement_cross/judgement_cross_bottom/min_judgement_cross_bottom",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_bottom/new_judgement_cross_bottom",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_bottom/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_bottom/min_new_judgement_cross_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_judgement_cross_cast: [{
 			type: "STR",
-			file: "judgement_cross/judgement_cross_cast/judgement_cross_cast",
-			texturePath: "judgement_cross/judgement_cross_cast/",
-			min: "judgement_cross/judgement_cross_cast/min_judgement_cross_cast"
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast/new_judgement_cross_cast",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast/min_new_judgement_cross_cast"
 		}, {
 			type: "STR",
-			file: "judgement_cross/judgement_cross_cast_bottom/judgement_cross_cast_bottom",
-			texturePath: "judgement_cross/judgement_cross_cast_bottom/",
-			min: "judgement_cross/judgement_cross_cast_bottom/min_judgement_cross_cast_bottom",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast_bottom/new_judgement_cross_cast_bottom",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast_bottom/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast_bottom/min_new_judgement_cross_cast_bottom",
 			renderBeforeEntities: true
+		}],
+		ef_ig_judgement_cross_hit: [{
+			type: "STR",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_hit/new_judgement_cross_hit",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_hit/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_hit/min_new_judgement_cross_hit"
 		}],
 		ef_ig_shield_shooting: [{
 			type: "STR",
 			file: "shield_shooting/shield_shooting/shield_shooting",
 			texturePath: "shield_shooting/shield_shooting/",
 			min: "shield_shooting/shield_shooting/min_shield_shooting",
-			wav: "effect/IG_SHIELD_SHOOTING"
+			wav: "effect/ig_shield_shooting"
 		}],
 		ef_ig_shield_shooting_cast: [{
 			type: "STR",
@@ -274834,52 +274858,90 @@ var init_EffectTable = __esmMin((() => {
 		}],
 		ef_ig_overslash: [{
 			type: "STR",
-			file: "overslash/overslash/overslash",
-			texturePath: "overslash/overslash/",
-			min: "overslash/overslash/min_overslash",
-			wav: "effect/IG_OVERSLASH"
+			file: "imperial_guard/ig_overslash/new_overslash/new_overslash/new_overslash",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/new_overslash/",
+			wav: "effect/ig_overslash"
 		}, {
 			type: "STR",
-			file: "overslash/overslash_bottom/overslash_bottom",
-			texturePath: "overslash/overslash_bottom/",
+			file: "imperial_guard/ig_overslash/new_overslash/new_overslash_bottom/new_overslash_bottom",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/new_overslash_bottom/",
+			min: "imperial_guard/ig_overslash/new_overslash/new_overslash_bottom/min_new_overslash_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_overslash_cast: [{
 			type: "STR",
-			file: "overslash/overslash_cast/overslash_cast",
-			texturePath: "overslash/overslash_cast/",
-			min: "overslash/overslash_cast/min_overslash_cast"
+			file: "imperial_guard/ig_overslash/new_overslash/overslash_cast/overslash_cast",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/overslash_cast/",
+			min: "imperial_guard/ig_overslash/new_overslash/overslash_cast/min_overslash_cast"
 		}],
 		ef_ig_overslash_hit: [{
 			type: "STR",
-			file: "overslash/overslash_hit/overslash_hit",
-			texturePath: "overslash/overslash_hit/",
-			min: "overslash/overslash_hit/min_overslash_hit"
+			file: "imperial_guard/ig_overslash/new_overslash/new_overslash_hit/new_overslash_hit",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/new_overslash_hit/",
+			min: "imperial_guard/ig_overslash/new_overslash/new_overslash_hit/min_new_overslash_hit"
 		}],
 		ef_ig_cross_rain: [{
 			type: "STR",
-			file: "crossrain/cross_rain/cross_rain",
-			texturePath: "crossrain/cross_rain/",
-			min: "crossrain/cross_rain/min_cross_rain",
-			wav: "effect/IG_CROSS_RAIN"
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain/new_cross_rain",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain/min_new_cross_rain",
+			wav: "effect/ig_cross_rain"
 		}, {
 			type: "STR",
-			file: "crossrain/cross_rain_bottom/cross_rain_bottom",
-			texturePath: "crossrain/cross_rain_bottom/",
-			min: "crossrain/cross_rain_bottom/min_cross_rain_bottom",
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_bottom/new_cross_rain_bottom",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_bottom/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_bottom/min_new_cross_rain_bottom",
 			renderBeforeEntities: true
 		}],
 		ef_ig_cross_rain_cast: [{
 			type: "STR",
-			file: "crossrain/cross_rain_cast/cross_rain_cast",
-			texturePath: "crossrain/cross_rain_cast/",
-			min: "crossrain/cross_rain_cast/min_cross_rain_cast"
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast/new_cross_rain_cast",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast/min_new_cross_rain_cast"
 		}, {
 			type: "STR",
-			file: "crossrain/cross_rain_cast_bottom/cross_rain_cast_bottom",
-			texturePath: "crossrain/cross_rain_cast_bottom/",
-			min: "crossrain/cross_rain_cast_bottom/min_cross_rain_cast_bottom",
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast_bottom/new_cross_rain_cast_bottom",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast_bottom/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast_bottom/min_new_cross_rain_cast_bottom",
 			renderBeforeEntities: true
+		}],
+		ef_ig_radiant_spear_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_radiant_spear/radiant_spear_cast/radiant_spear_cast",
+			texturePath: "imperial_guard/ig_radiant_spear/radiant_spear_cast/",
+			min: "imperial_guard/ig_radiant_spear/radiant_spear_cast/min_radiant_spear_cast"
+		}],
+		ef_ig_imperial_cross: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_cross/imperial_cross/imperial_cross",
+			texturePath: "imperial_guard/ig_imperial_cross/imperial_cross/",
+			min: "imperial_guard/ig_imperial_cross/imperial_cross/min_imperial_cross",
+			wav: "effect/ig_imperial_cross"
+		}],
+		ef_ig_imperial_pressure: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/imperal_pressure/imperal_pressure",
+			texturePath: "imperial_guard/ig_imperial_pressure/imperal_pressure/",
+			min: "imperial_guard/ig_imperial_pressure/imperal_pressure/min_imperal_pressure",
+			wav: "effect/ig_imperial_pressure"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/imperal_pressure_bottom",
+			texturePath: "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/",
+			min: "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/min_imperal_pressure_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ig_imperial_pressure_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/imperal_pressure_cast",
+			texturePath: "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/",
+			min: "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/min_imperal_pressure_cast"
+		}],
+		ef_ig_imperial_pressure_hit: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/new_rayofgenesis_hit",
+			texturePath: "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/",
+			min: "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/min_new_rayofgenesis_hit"
 		}],
 		ef_crescentelbow: [{
 			wav: "effect/sr_crescentelbow",
