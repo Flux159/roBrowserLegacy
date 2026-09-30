@@ -302194,7 +302194,7 @@ function loadSignBoardData(filename, callback, onEnd) {
 			const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 			const ctx = lua.ctx;
 			ctx.AddSignBoardData = (key, translation) => {
-				const decoded_key = key && key.length > 1 ? userStringDecoder.decode(key) : null;
+				const decoded_key = key && key.length > 1 ? userStringDecoder.decode(key, userCharpage) : null;
 				const decoded_translation = translation && translation.length > 1 ? userStringDecoder.decode(translation) : null;
 				SignBoardTranslatedTable[decoded_key] = decoded_translation;
 				return 1;
