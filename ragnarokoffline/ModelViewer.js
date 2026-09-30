@@ -303495,8 +303495,10 @@ var init_DBManager = __esmMin((() => {
 				});
 				if (Configs.get("enableCheckAttendance") && PacketVerManager_default.value >= 20180307) loadAttendanceFile("System/CheckAttendance.lub", null, onLoad());
 				const onQuestEnd = onLoad();
+				const customQuestInfo = Configs.get("customQuestInfo", []);
+				const loadCustomQuestInfo = (index = 0) => index < customQuestInfo.length ? loadQuestInfo(customQuestInfo[index], null, () => loadCustomQuestInfo(index + 1)) : onQuestEnd();
 				tryLoadLuaAliases(loadQuestInfo, getSystemAliases("System/OngoingQuestInfoList.lub"), null, () => {
-					loadQuestInfo("SystemEN/OngoingQuests.lub", null, onQuestEnd);
+					loadQuestInfo("SystemEN/OngoingQuests.lub", null, () => loadCustomQuestInfo());
 				});
 				if (Configs.get("enableAchievements") && PacketVerManager_default.value >= 20150513) loadLuaValue("System/achievement_list.lub", "achievement_tbl", function(json) {
 					if (json) Object.assign(AchievementTable, json);
