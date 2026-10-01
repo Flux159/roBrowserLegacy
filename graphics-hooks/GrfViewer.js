@@ -208104,6 +208104,124 @@ var init_SpriteRenderer = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/Renderer/Map/SceneCopy.js
+function isWebGL2(gl) {
+	return typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
+}
+function target(gl, old, w, h, internal, format, type, attachment, filter) {
+	if (old && old.w === w && old.h === h) return old;
+	if (old) {
+		gl.deleteFramebuffer(old.fbo);
+		gl.deleteTexture(old.texture);
+	}
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(gl.TEXTURE_2D, 0, internal, w, h, 0, format, type, null);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	const fbo = gl.createFramebuffer();
+	gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+	gl.framebufferTexture2D(gl.FRAMEBUFFER, attachment, gl.TEXTURE_2D, texture, 0);
+	if (attachment === gl.DEPTH_ATTACHMENT) {
+		gl.drawBuffers([gl.NONE]);
+		gl.readBuffer(gl.NONE);
+	}
+	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
+	return {
+		fbo,
+		texture,
+		w,
+		h
+	};
+}
+function blit(gl, into, bits) {
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const vp = gl.getParameter(gl.VIEWPORT);
+	gl.getError();
+	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, current);
+	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, into.fbo);
+	gl.blitFramebuffer(vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], 0, 0, into.w, into.h, bits, gl.NEAREST);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
+	return gl.getError() === gl.NO_ERROR ? into.texture : null;
+}
+/**
+* The depth drawn so far, as a texture, or null. Only when drawing into a
+* framebuffer (the post-processing target): the screen's own cannot be read.
+*/
+function depth(gl) {
+	if (!isWebGL2(gl) || !gl.getParameter(gl.FRAMEBUFFER_BINDING)) return null;
+	const vp = gl.getParameter(gl.VIEWPORT);
+	_depth = target(gl, _depth, vp[2], vp[3], gl.DEPTH_COMPONENT24, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, gl.DEPTH_ATTACHMENT, gl.NEAREST);
+	return blit(gl, _depth, gl.DEPTH_BUFFER_BIT);
+}
+/** The colour drawn so far, as a texture, or null. */
+function color(gl) {
+	if (!isWebGL2(gl) || !gl.getParameter(gl.FRAMEBUFFER_BINDING)) return null;
+	const vp = gl.getParameter(gl.VIEWPORT);
+	_color$1 = target(gl, _color$1, vp[2], vp[3], gl.RGB8, gl.RGB, gl.UNSIGNED_BYTE, gl.COLOR_ATTACHMENT0, gl.LINEAR);
+	return blit(gl, _color$1, gl.COLOR_BUFFER_BIT);
+}
+/** Put the depth from the last depth() back, undoing what was drawn since. */
+function restoreDepth(gl) {
+	if (!_depth) return;
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const vp = gl.getParameter(gl.VIEWPORT);
+	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, _depth.fbo);
+	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, current);
+	gl.blitFramebuffer(0, 0, _depth.w, _depth.h, vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], gl.DEPTH_BUFFER_BIT, gl.NEAREST);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
+}
+var _depth, _color$1, SceneCopy_default;
+var init_SceneCopy = __esmMin((() => {
+	_depth = null;
+	_color$1 = null;
+	SceneCopy_default = {
+		depth,
+		color,
+		restoreDepth
+	};
+}));
+//#endregion
+//#region src/Renderer/Effects/Enhancements.js
+var Enhancements;
+var init_Enhancements = __esmMin((() => {
+	Enhancements = {
+		/**
+		* Water mirrors the scene above it: 0 off .. 1 full. Costs a second
+		* render of the ground and models, at half resolution, on maps with water.
+		*/
+		waterReflection: 0,
+		/**
+		* Grass on grass tiles (Renderer/Map/Grass.js), or null for none:
+		* { textures: ['풀', 'grass', ...] -- substrings of the ground texture
+		*   names that are grass, density 0..1, height, width, wind 0..1,
+		*   distance (fade), tint [r,g,b] }
+		*/
+		grass: null,
+		/**
+		* Real-time shadows from buildings and trees onto the ground
+		* (Renderer/Map/Shadows.js): 0 off .. 1 full. On top of the shadows the
+		* map's lightmap already bakes in.
+		*/
+		shadows: 0,
+		/**
+		* Rain on the water: rings where drops land, and a duller surface.
+		* 0 dry .. 1 pouring.
+		*/
+		rain: 0,
+		/**
+		* The map's sun and sky, replaced, or null for the map's own:
+		* { ambient: [r,g,b], diffuse: [r,g,b] }, each 0..1 (diffuse may go a
+		* little over). A warmer sun, a cooler sky. The lightmap baked into the
+		* map is not changed.
+		*/
+		light: null
+	};
+}));
+//#endregion
 //#region src/Renderer/Map/Water.vs?raw
 var Water_default$2;
 var init_Water$2 = __esmMin((() => {
@@ -208113,7 +208231,7 @@ var init_Water$2 = __esmMin((() => {
 //#region src/Renderer/Map/Water.fs?raw
 var Water_default$1;
 var init_Water$1 = __esmMin((() => {
-	Water_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nin vec3 vEye;\r\nin vec3 vWorld;\r\nout vec4 fragColor;\r\n\r\n// Planar reflection (WaterReflection.js), off when uReflect is 0.\r\nuniform float     uReflect;\r\nuniform sampler2D uReflection;\r\nuniform vec2      uScreen;\r\nuniform float     uTime;\r\nuniform vec3      uEyeNormal;\r\nuniform vec3      uEyeSun;\r\n\r\nuniform sampler2D uDiffuse;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nuniform vec3  uLightAmbient;\r\nuniform vec3  uLightDiffuse;\r\nuniform float uLightOpacity;\r\n\r\nuniform float uOpacity;\r\n\r\nvoid main(void) {\r\n    \r\n    vec4 textureSample = texture( uDiffuse,  vTextureCoord.st );\r\n    textureSample.a = uOpacity;\r\n    \r\n    if (textureSample.a == 0.0) {\r\n        discard;\r\n    }\r\n    \r\n    textureSample.a *= uOpacity;\r\n\r\n    if (uReflect > 0.0) {\r\n        // The mirrored scene at this pixel, rippled a little.\r\n        vec2 ripple = vec2(sin(vWorld.x * 1.7 + uTime * 1.3), cos(vWorld.z * 1.5 + uTime * 1.1)) * 0.004;\r\n        vec3 reflection = texture(uReflection, gl_FragCoord.xy / uScreen + ripple).rgb;\r\n        // More mirror at a glancing angle, more water looking straight down.\r\n        vec3 view = normalize(-vEye);\r\n        float facing = clamp(abs(dot(view, uEyeNormal)), 0.0, 1.0);\r\n        float fresnel = 0.15 + 0.75 * pow(1.0 - facing, 3.0);\r\n        textureSample.rgb = mix(textureSample.rgb, reflection, fresnel * uReflect);\r\n        // The sun on the surface.\r\n        float sun = pow(max(dot(reflect(-normalize(uEyeSun), uEyeNormal), view), 0.0), 80.0);\r\n        textureSample.rgb += uLightDiffuse * sun * 0.5 * uReflect;\r\n        textureSample.a = mix(textureSample.a, 0.95, fresnel * uReflect);\r\n    }\r\n\r\n    fragColor   = textureSample;\r\n\r\n    if (uFogUse) {\r\n        float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n        float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n        fragColor    = mix( fragColor, vec4( uFogColor, fragColor.w ), fogFactor );\r\n    }\r\n}";
+	Water_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nin vec3 vEye;\r\nin vec3 vWorld;\r\nout vec4 fragColor;\r\n\r\n// Planar reflection (WaterReflection.js), off when uReflect is 0.\r\nuniform float     uReflect;\r\nuniform sampler2D uReflection;\r\nuniform vec2      uScreen;\r\nuniform float     uTime;\r\nuniform vec3      uEyeNormal;\r\nuniform vec3      uEyeSun;\r\n// The scene's depth before the water (Water.js), to know how deep it is here.\r\nuniform bool      uHasDepth;\r\nuniform sampler2D uSceneDepth;\r\nuniform vec2      uProj;   // projection[10], projection[14]\r\nuniform float     uRain;   // 0 dry .. 1 pouring: rings where drops land\r\n\r\nuniform sampler2D uDiffuse;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nuniform vec3  uLightAmbient;\r\nuniform vec3  uLightDiffuse;\r\nuniform float uLightOpacity;\r\n\r\nuniform float uOpacity;\r\n\r\nvoid main(void) {\r\n    \r\n    vec4 textureSample = texture( uDiffuse,  vTextureCoord.st );\r\n    textureSample.a = uOpacity;\r\n    \r\n    if (textureSample.a == 0.0) {\r\n        discard;\r\n    }\r\n    \r\n    textureSample.a *= uOpacity;\r\n\r\n    if (uReflect > 0.0) {\r\n        // Smooth, slow swell: a few long waves across the world, no texture.\r\n        vec2 p = vWorld.xz;\r\n        float t = uTime;\r\n        vec2 swell = vec2(\r\n            sin(p.x * 0.35 + p.y * 0.12 + t * 0.9) + 0.6 * sin(p.x * 0.9 - p.y * 0.55 + t * 1.7) + 0.3 * sin(p.y * 1.9 + t * 2.3),\r\n            cos(p.y * 0.31 - p.x * 0.15 + t * 0.8) + 0.6 * cos(p.y * 0.85 + p.x * 0.6 + t * 1.5) + 0.3 * cos(p.x * 2.1 - t * 2.1));\r\n        vec2 ripple = swell * 0.006;\r\n\r\n        // Rain: expanding rings where drops land, a few per cell of a grid\r\n        // in world space, each on its own clock.\r\n        float rings = 0.0;\r\n        vec2 ringSlope = vec2(0.0);\r\n        if (uRain > 0.0) {\r\n            for (int k = 0; k < 2; k++) {\r\n                vec2 q = vWorld.xz * (k == 0 ? 0.3 : 0.45) + float(k) * 17.3;\r\n                vec2 cell = floor(q);\r\n                float seed = fract(sin(dot(cell, vec2(127.1, 311.7))) * 43758.5453);\r\n                float life = fract(t * 0.9 + seed);\r\n                vec2 centre = cell + 0.25 + 0.5 * vec2(fract(seed * 7.3), fract(seed * 13.1));\r\n                vec2 d = q - centre;\r\n                float dist = length(d);\r\n                float radius = life * 0.5;\r\n                float ring = exp(-pow((dist - radius) * 16.0, 2.0)) * (1.0 - life) * step(seed, uRain * 0.9);\r\n                rings += ring;\r\n                ringSlope += normalize(d + 1e-4) * ring;\r\n            }\r\n            ripple += ringSlope * 0.004;\r\n        }\r\n\r\n        // How much water the eye looks through here.\r\n        float thick = 40.0;\r\n        if (uHasDepth) {\r\n            float zn = texture(uSceneDepth, gl_FragCoord.xy / uScreen).r * 2.0 - 1.0;\r\n            float behind = uProj.y / (zn + uProj.x);\r\n            thick = max(behind - (-vEye.z), 0.0);\r\n        }\r\n        float clear = exp(-thick * 0.9);            // 1 right at the shore .. 0 a little out\r\n\r\n        // Mostly a mirror of what stands above it, darkened, with a deep\r\n        // navy where nothing does; a teal see-through band at the shore.\r\n        vec3 reflection = texture(uReflection, gl_FragCoord.xy / uScreen + ripple).rgb;\r\n        // Water darkens and cools what it reflects; reflected sky reads as\r\n        // deep navy, the way still water looks from above.\r\n        float rl = dot(reflection, vec3(0.299, 0.587, 0.114));\r\n        vec3 mirror = reflection * vec3(0.42, 0.56, 0.62);\r\n        vec3 navy = vec3(0.03, 0.07, 0.15);\r\n        mirror = mix(mirror, navy, smoothstep(0.6, 0.85, rl));\r\n        mirror = mix(navy, mirror, smoothstep(0.0, 0.04, rl));  // nothing above: navy\r\n        vec3 body = vec3(0.03, 0.16, 0.19) * clamp(uLightAmbient + uLightDiffuse, 0.4, 1.2);\r\n        vec3 color = mix(mirror, body, 0.18);\r\n        // Light scattered in the water near the rock: a broad teal glow\r\n        // along the shore, the rock just visible through the narrowest band.\r\n        float glow = exp(-thick * 0.12);\r\n        color = mix(color, vec3(0.12, 0.42, 0.42), glow * 0.55);\r\n        float alpha = mix(0.95, 0.55, clear);\r\n        vec3 view = normalize(-vEye);\r\n        vec3 n = normalize(uEyeNormal + vec3(swell.x, 0.0, swell.y) * 0.08);\r\n        float sun = pow(max(dot(reflect(-normalize(uEyeSun), n), view), 0.0), 60.0);\r\n        color += uLightDiffuse * sun * 0.35;\r\n        color += vec3(0.4, 0.5, 0.55) * rings * 0.5 * uRain;\r\n        color *= mix(1.0, 0.85, uRain);  // overcast\r\n        // A line of light where it meets the shore.\r\n        color += vec3(0.35, 0.45, 0.42) * smoothstep(0.8, 0.0, thick) * (0.7 + 0.3 * sin(t * 2.0 + vWorld.x + vWorld.z));\r\n        textureSample = vec4(color, mix(textureSample.a, alpha, uReflect));\r\n    }\r\n\r\n    fragColor   = textureSample;\r\n\r\n    if (uFogUse) {\r\n        float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n        float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n        fragColor    = mix( fragColor, vec4( uFogColor, fragColor.w ), fogFactor );\r\n    }\r\n}";
 }));
 //#endregion
 //#region src/Renderer/Map/Water.js
@@ -208183,6 +208301,7 @@ function render$13(gl, modelView, projection, fog, light, tick) {
 	gl.activeTexture(gl.TEXTURE0);
 	gl.uniform1i(uniform.uDiffuse, 0);
 	const reflect = _reflection && _reflection.texture ? _reflection.strength : 0;
+	const sceneDepth = reflect > 0 ? SceneCopy_default.depth(gl) : null;
 	gl.uniform1f(uniform.uReflect, reflect);
 	if (reflect > 0) {
 		const viewport = gl.getParameter(gl.VIEWPORT);
@@ -208192,6 +208311,15 @@ function render$13(gl, modelView, projection, fog, light, tick) {
 		gl.activeTexture(gl.TEXTURE0);
 		gl.uniform2f(uniform.uScreen, viewport[2], viewport[3]);
 		gl.uniform1f(uniform.uTime, tick / 1e3);
+		gl.uniform1i(uniform.uHasDepth, sceneDepth ? 1 : 0);
+		if (sceneDepth) {
+			gl.activeTexture(gl.TEXTURE2);
+			gl.bindTexture(gl.TEXTURE_2D, sceneDepth);
+			gl.uniform1i(uniform.uSceneDepth, 2);
+			gl.activeTexture(gl.TEXTURE0);
+		}
+		gl.uniform2f(uniform.uProj, projection[10], projection[14]);
+		gl.uniform1f(uniform.uRain, Math.min(1, Math.max(0, Number(Enhancements.rain) || 0)));
 		const n = [
 			-modelView[4],
 			-modelView[5],
@@ -208269,6 +208397,8 @@ var init_Water = __esmMin((() => {
 	init_WebGL();
 	init_SpriteRenderer();
 	init_Altitude();
+	init_SceneCopy();
+	init_Enhancements();
 	init_Water$2();
 	init_Water$1();
 	_program$25 = null;
@@ -256865,9 +256995,9 @@ function init$9(gl, mapname) {
 		_display = false;
 		return;
 	}
-	_color$1 = Weather.sky[mapname].cloudColor;
+	_color = Weather.sky[mapname].cloudColor;
 	const color = Weather.sky[mapname].skyColor;
-	if (_color$1) _display = true;
+	if (_color) _display = true;
 	else _display = false;
 	gl.clearColor(color[0], color[1], color[2], color[3]);
 	if (!_textures.length && _display) {
@@ -256936,7 +257066,7 @@ function render$8(gl, modelView, projection, fog, tick) {
 	if (!_display) return;
 	let i, cloud, opacity;
 	SpriteRenderer.bind3DContext(gl, modelView, projection, fog);
-	SpriteRenderer.color.set(_color$1);
+	SpriteRenderer.color.set(_color);
 	SpriteRenderer.shadow = 1;
 	SpriteRenderer.angle = 0;
 	SpriteRenderer.size[0] = 500;
@@ -256964,7 +257094,7 @@ function render$8(gl, modelView, projection, fog, tick) {
 	}
 	SpriteRenderer.unbind(gl);
 }
-var MAX_CLOUDS, _clouds, _textures, _color$1, _display, Sky_default;
+var MAX_CLOUDS, _clouds, _textures, _color, _display, Sky_default;
 var init_Sky = __esmMin((() => {
 	init_WebGL();
 	init_WeatherEffect();
@@ -256975,7 +257105,7 @@ var init_Sky = __esmMin((() => {
 	MAX_CLOUDS = 150;
 	_clouds = new Array(MAX_CLOUDS);
 	_textures = [];
-	_color$1 = null;
+	_color = null;
 	_display = true;
 	Sky_default = {
 		init: init$9,
@@ -258804,31 +258934,6 @@ var init_JoystickUI = __esmMin((() => {
 	JoystickUI_default = UIManager.addComponent(JoystickUI);
 }));
 //#endregion
-//#region src/Renderer/Effects/Enhancements.js
-var Enhancements;
-var init_Enhancements = __esmMin((() => {
-	Enhancements = {
-		/**
-		* Water mirrors the scene above it: 0 off .. 1 full. Costs a second
-		* render of the ground and models, at half resolution, on maps with water.
-		*/
-		waterReflection: 0,
-		/**
-		* Grass on grass tiles (Renderer/Map/Grass.js), or null for none:
-		* { textures: ['풀', 'grass', ...] -- substrings of the ground texture
-		*   names that are grass, density 0..1, height, width, wind 0..1,
-		*   distance (fade), tint [r,g,b] }
-		*/
-		grass: null,
-		/**
-		* Real-time shadows from buildings and trees onto the ground
-		* (Renderer/Map/Shadows.js): 0 off .. 1 full. On top of the shadows the
-		* map's lightmap already bakes in.
-		*/
-		shadows: 0
-	};
-}));
-//#endregion
 //#region src/Renderer/Map/WaterReflection.js
 /** Column-major 4x4 multiply: a * b. */
 function multiply(a, b) {
@@ -258969,7 +259074,11 @@ function render$7(gl, modelView, projection, level, draw) {
 	gl.viewport(0, 0, width, height);
 	gl.clearColor(0, 0, 0, 0);
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	const depthTest = gl.isEnabled(gl.DEPTH_TEST);
+	gl.enable(gl.DEPTH_TEST);
+	gl.depthMask(true);
 	draw(view, clipped);
+	if (!depthTest) gl.disable(gl.DEPTH_TEST);
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	return _fbo.texture;
 }
@@ -258988,87 +259097,6 @@ var init_WaterReflection = __esmMin((() => {
 		render: render$7,
 		free: free$2,
 		mirrored
-	};
-}));
-//#endregion
-//#region src/Renderer/Map/SceneCopy.js
-function isWebGL2(gl) {
-	return typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
-}
-function target(gl, old, w, h, internal, format, type, attachment, filter) {
-	if (old && old.w === w && old.h === h) return old;
-	if (old) {
-		gl.deleteFramebuffer(old.fbo);
-		gl.deleteTexture(old.texture);
-	}
-	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-	const texture = gl.createTexture();
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.texImage2D(gl.TEXTURE_2D, 0, internal, w, h, 0, format, type, null);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	const fbo = gl.createFramebuffer();
-	gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-	gl.framebufferTexture2D(gl.FRAMEBUFFER, attachment, gl.TEXTURE_2D, texture, 0);
-	if (attachment === gl.DEPTH_ATTACHMENT) {
-		gl.drawBuffers([gl.NONE]);
-		gl.readBuffer(gl.NONE);
-	}
-	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
-	return {
-		fbo,
-		texture,
-		w,
-		h
-	};
-}
-function blit(gl, into, bits) {
-	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-	const vp = gl.getParameter(gl.VIEWPORT);
-	gl.getError();
-	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, current);
-	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, into.fbo);
-	gl.blitFramebuffer(vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], 0, 0, into.w, into.h, bits, gl.NEAREST);
-	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
-	return gl.getError() === gl.NO_ERROR ? into.texture : null;
-}
-/**
-* The depth drawn so far, as a texture, or null. Only when drawing into a
-* framebuffer (the post-processing target): the screen's own cannot be read.
-*/
-function depth(gl) {
-	if (!isWebGL2(gl) || !gl.getParameter(gl.FRAMEBUFFER_BINDING)) return null;
-	const vp = gl.getParameter(gl.VIEWPORT);
-	_depth = target(gl, _depth, vp[2], vp[3], gl.DEPTH_COMPONENT24, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, gl.DEPTH_ATTACHMENT, gl.NEAREST);
-	return blit(gl, _depth, gl.DEPTH_BUFFER_BIT);
-}
-/** The colour drawn so far, as a texture, or null. */
-function color(gl) {
-	if (!isWebGL2(gl) || !gl.getParameter(gl.FRAMEBUFFER_BINDING)) return null;
-	const vp = gl.getParameter(gl.VIEWPORT);
-	_color = target(gl, _color, vp[2], vp[3], gl.RGB8, gl.RGB, gl.UNSIGNED_BYTE, gl.COLOR_ATTACHMENT0, gl.LINEAR);
-	return blit(gl, _color, gl.COLOR_BUFFER_BIT);
-}
-/** Put the depth from the last depth() back, undoing what was drawn since. */
-function restoreDepth(gl) {
-	if (!_depth) return;
-	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-	const vp = gl.getParameter(gl.VIEWPORT);
-	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, _depth.fbo);
-	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, current);
-	gl.blitFramebuffer(0, 0, _depth.w, _depth.h, vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], gl.DEPTH_BUFFER_BIT, gl.NEAREST);
-	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
-}
-var _depth, _color, SceneCopy_default;
-var init_SceneCopy = __esmMin((() => {
-	_depth = null;
-	_color = null;
-	SceneCopy_default = {
-		depth,
-		color,
-		restoreDepth
 	};
 }));
 //#endregion
@@ -260173,6 +260201,27 @@ function onWorldComplete(data) {
 	this.light.direction[2] = -dirVec[2];
 }
 /**
+* The map's light, or a mod's replacement for its sun and sky
+* (Enhancements.light). Direction and opacity always stay the map's.
+*/
+function effectiveLight(light) {
+	const over = Enhancements.light;
+	if (!light || !over || typeof over !== "object") return light;
+	const pick = (value, fallback) => Array.isArray(value) && value.length === 3 && value.every((v) => Number.isFinite(v)) ? value : fallback;
+	const ambient = pick(over.ambient, light.ambient);
+	const diffuse = pick(over.diffuse, light.diffuse);
+	for (let i = 0; i < 3; i++) {
+		_lit.ambient[i] = ambient[i];
+		_lit.diffuse[i] = diffuse[i];
+		_lit.env[i] = 1 - (1 - Math.min(1, diffuse[i])) * (1 - Math.min(1, ambient[i]));
+	}
+	if (_litFor !== light) {
+		_litFor = light;
+		_litView = Object.assign(Object.create(light), _lit);
+	}
+	return _litView;
+}
+/**
 * Received ground data from Thread
 */
 function onGroundComplete(data) {
@@ -260291,7 +260340,7 @@ function onMapComplete(success, error) {
 		Mouse.intersect = true;
 	});
 }
-var mat4$11, _pos$6, MapRenderer;
+var mat4$11, _pos$6, MapRenderer, _lit, _litFor, _litView;
 var init_MapRenderer = __esmMin((() => {
 	init_Thread();
 	init_SoundManager();
@@ -260474,7 +260523,7 @@ var init_MapRenderer = __esmMin((() => {
 			PostProcess.prepare(gl);
 			const fog = MapRenderer.fog;
 			fog.use = Map_default.fog;
-			const light = MapRenderer.light;
+			const light = effectiveLight(MapRenderer.light);
 			let x, y;
 			Mouse.world.x = -1;
 			Mouse.world.y = -1;
@@ -260571,6 +260620,13 @@ var init_MapRenderer = __esmMin((() => {
 		*/
 		static onLoad() {}
 	};
+	_lit = {
+		ambient: /* @__PURE__ */ new Float32Array(3),
+		diffuse: /* @__PURE__ */ new Float32Array(3),
+		env: /* @__PURE__ */ new Float32Array(3)
+	};
+	_litFor = null;
+	_litView = null;
 }));
 //#endregion
 //#region src/Renderer/Camera.js
