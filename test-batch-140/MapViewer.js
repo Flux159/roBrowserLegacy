@@ -207535,6 +207535,24 @@ function mapFree(gl) {
 	}
 	_map$1 = null;
 }
+function modelKey(name) {
+	return String(name).replace(/\\/g, "/").replace(/^data\/model\//i, "").toLowerCase();
+}
+/** Every model some hook draws itself, for the map loader. */
+function modelNames() {
+	const names = /* @__PURE__ */ new Set();
+	for (const hook of _hooks) if (Array.isArray(hook.replacesModels)) hook.replacesModels.forEach((name) => names.add(modelKey(name)));
+	return Array.from(names);
+}
+/** The map's replaced models are loaded: each hook gets its own. */
+function modelsReady(gl, list) {
+	for (const hook of _hooks.slice()) {
+		if (typeof hook.models !== "function" || !Array.isArray(hook.replacesModels)) continue;
+		const mine = new Set(hook.replacesModels.map(modelKey));
+		const models = list.filter((model) => mine.has(model.name));
+		if (models.length) call(hook, "models", gl, models);
+	}
+}
 /** Run a stage. For 'water', only the hooks that replace it. */
 function stage(name, ctx) {
 	for (const hook of _hooks.slice()) {
@@ -207593,7 +207611,9 @@ var init_MapHooks = __esmMin((() => {
 		mapFree,
 		stage,
 		replaces,
-		light
+		light,
+		modelNames,
+		modelsReady
 	};
 }));
 //#endregion
@@ -259365,6 +259385,7 @@ function onGroundComplete(data) {
 		cellHeights: data.cellHeights,
 		cellUv: data.cellUv,
 		textureNames: data.textureNames || [],
+		textureUrls: Array.isArray(data.textures) ? data.textures.slice() : [],
 		groundTextures: () => Ground_default.textures(),
 		water: () => Water_default.state(),
 		lights: this.lights,
@@ -259590,8 +259611,10 @@ var init_MapRenderer = __esmMin((() => {
 					Thread.hook("MAP_ALTITUDE", onAltitudeComplete.bind(MapRenderer));
 					Thread.hook("MAP_MODELS", onModelsComplete.bind(MapRenderer));
 					Thread.hook("MAP_ANIMATED_MODEL", onAnimatedModelComplete.bind(MapRenderer));
+					Thread.hook("MAP_REPLACED_MODELS", (models) => MapHooks_default.modelsReady(Renderer.getContext(), models));
 					MapRenderer.free();
 					Renderer.remove();
+					Thread.send("MAP_REPLACE_MODELS", MapHooks_default.modelNames());
 					Thread.send("LOAD_MAP", filename, onMapComplete.bind(MapRenderer));
 				});
 				return;

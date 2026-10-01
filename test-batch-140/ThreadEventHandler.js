@@ -19034,6 +19034,18 @@ var Loader = class Loader {
 	}
 };
 /**
+* A file name as read from a map: CP949 bytes in a binary string. As text,
+* for comparing with the names mods give (MapHooks).
+*/
+function decodeName(name) {
+	const text = String(name || "");
+	try {
+		return new TextDecoder("euc-kr").decode(Uint8Array.from(text, (c) => c.charCodeAt(0) & 255));
+	} catch {
+		return text;
+	}
+}
+/**
 * MapLoader constructor
 *
 * @param {string} mapname
@@ -19192,8 +19204,23 @@ var MapLoader = class {
 		const progress = this.progress;
 		const models = [];
 		const animatedModels = [];
+		const replaced = [];
+		const replace = this.replaceModels;
 		bufferSize = 0;
 		for (i = 0, count = objects.length; i < count; ++i) {
+			const name = decodeName(objects[i].filename).replace(/^data\\model\\/i, "").replace(/\\/g, "/").toLowerCase();
+			if (replace && replace.has(name)) {
+				const box = objects[i].box;
+				replaced.push({
+					name,
+					instances: objects[i].instances.map((matrix) => Array.from(matrix)),
+					height: box.max[1] - box.min[1],
+					width: box.range[0] * 2,
+					depth: box.range[2] * 2
+				});
+				this.setProgress(progress + (100 - progress) / count * (i + 1) / 2);
+				continue;
+			}
 			if (objects[i].hasAnimation && objects[i].hasAnimation()) {
 				animatedModels.push(objects[i]);
 				this.setProgress(progress + (100 - progress) / count * (i + 1) / 2);
@@ -19215,6 +19242,7 @@ var MapLoader = class {
 			this.setProgress(progress + (100 - progress) / count * (i + 1) / 2);
 		}
 		this._animatedModels = animatedModels;
+		if (replaced.length) this.ondata("MAP_REPLACED_MODELS", replaced);
 		this.mergeMeshes(models, bufferSize);
 	}
 	/**
@@ -19374,6 +19402,11 @@ function sendLog() {
 *
 * @param {object} event - EventHandler
 */
+/**
+* Map models a hook draws in the client's place (MapHooks), for the next map:
+* lower-case names under data/model/, with forward slashes.
+*/
+var _replaceModels = /* @__PURE__ */ new Set();
 onmessage = function receive(event) {
 	const msg = event.data;
 	switch (msg.type) {
@@ -19450,8 +19483,12 @@ onmessage = function receive(event) {
 				]
 			});
 			break;
+		case "MAP_REPLACE_MODELS":
+			_replaceModels = new Set(Array.isArray(msg.data) ? msg.data : []);
+			break;
 		case "LOAD_MAP": {
 			const map = new MapLoader();
+			map.replaceModels = _replaceModels;
 			map.onprogress = function(progress) {
 				postMessage({
 					type: "MAP_PROGRESS",
