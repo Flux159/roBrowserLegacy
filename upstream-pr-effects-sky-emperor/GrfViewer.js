@@ -214584,61 +214584,28 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.OB_OBOROGENSOU] = {};
 	SkillEffect[SkillConst_default.OB_OBOROGENSOU_TRANSITION_ATK] = {};
 	SkillEffect[SkillConst_default.OB_AKAITSUKI] = {};
-	SkillEffect[SkillConst_default.SKE_RISING_SUN] = {
-		effectId: "ef_ske_rising_sun",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_NOON_BLAST] = {
-		effectId: "ef_ske_noon_blast",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_SUNSET_BLAST] = {
-		effectId: "ef_ske_sunset_blast",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_MIDNIGHT_KICK] = {
-		effectId: "ef_ske_midnight_kick",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_DAWN_BREAK] = {
-		effectId: "ef_ske_dawn_break",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_TWINKLING_GALAXY] = {
-		effectId: "ef_ske_twinkling_galaxy",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_STAR_BURST] = {
-		effectId: "ef_ske_star_burst",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_STAR_CANNON] = {
-		effectId: "ef_ske_star_cannon",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_ALL_IN_THE_SKY] = {
-		effectId: "ef_ske_all_in_the_sky",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SKE_ENCHANTING_SKY] = {
-		effectId: "ef_ske_enchanting_sky",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SKE_RISING_SUN] = { effectId: "ef_ske_rising_sun" };
+	SkillEffect[SkillConst_default.SKE_NOON_BLAST] = { effectId: "ef_ske_noon_blast" };
+	SkillEffect[SkillConst_default.SKE_SUNSET_BLAST] = { effectId: "ef_ske_sunset_blast" };
+	SkillEffect[SkillConst_default.SKE_MIDNIGHT_KICK] = { effectId: "ef_ske_midnight_kick" };
+	SkillEffect[SkillConst_default.SKE_DAWN_BREAK] = { effectId: "ef_ske_dawn_break" };
+	SkillEffect[SkillConst_default.SKE_TWINKLING_GALAXY] = { effectId: "ef_ske_twinkling_galaxy" };
+	SkillEffect[SkillConst_default.SKE_STAR_BURST] = { effectId: "ef_ske_star_burst" };
+	SkillEffect[SkillConst_default.SKE_STAR_CANNON] = { effectId: "ef_ske_star_cannon" };
+	SkillEffect[SkillConst_default.SKE_ALL_IN_THE_SKY] = { effectId: "ef_ske_all_in_the_sky" };
+	SkillEffect[SkillConst_default.SKE_ENCHANTING_SKY] = { effectId: "ef_ske_enchanting_sky" };
 	SkillEffect[5502] = {
 		effectId: "ef_ske_sky_sun",
-		hitEffectId: "ef_ske_sky_sun_hit",
-		ez2: false
+		hitEffectId: "ef_ske_sky_sun_hit"
 	};
 	SkillEffect[5503] = {
 		effectId: "ef_ske_sky_moon",
-		hitEffectId: "ef_ske_sky_moon_hit",
-		beginCastEffectId: "ef_ske_sky_moon_cast",
-		ez2: false
+		effectIdOnCaster: "ef_ske_sky_moon_cast",
+		hitEffectId: "ef_ske_sky_moon_hit"
 	};
 	SkillEffect[5504] = {
 		effectId: "ef_ske_star_light_kick",
-		hitEffectId: "ef_ske_star_light_kick_hit",
-		ez2: false
+		hitEffectId: "ef_ske_star_light_kick_hit"
 	};
 	SkillEffect[SkillConst_default.ECL_SNOWFLIP] = {};
 	SkillEffect[SkillConst_default.ECL_PEONYMAMY] = {};
