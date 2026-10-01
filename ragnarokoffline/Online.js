@@ -315309,9 +315309,8 @@ var init_SoundManager = __esmMin((() => {
 		* @param {optional|number} vol (volume)
 		*/
 		static play(filename, vol) {
-			let volume;
-			if (vol) volume = vol * this.volume;
-			else volume = this.volume;
+			const relativeVolume = typeof vol === "number" && Number.isFinite(vol) ? Math.max(vol, 0) : 1;
+			const volume = relativeVolume * this.volume;
 			if (volume <= 0 || !Audio_default.Sound.play) return;
 			if (!(filename in _sounds)) {
 				_sounds[filename] = {};
@@ -315321,7 +315320,7 @@ var init_SoundManager = __esmMin((() => {
 			const sound = getSoundFromCache(filename);
 			if (sound) {
 				sound.volume = Math.min(volume, 1);
-				sound._volume = volume;
+				sound._volume = relativeVolume;
 				const playPromise = sound.play();
 				if (playPromise) playPromise.catch((err) => {
 					if (err.name === "NotSupportedError" || err.name === "AbortError") {
@@ -315347,7 +315346,7 @@ var init_SoundManager = __esmMin((() => {
 				audio.filename = filename;
 				audio.src = url;
 				audio.volume = Math.min(volume, 1);
-				audio._volume = volume;
+				audio._volume = relativeVolume;
 				audio.addEventListener("error", onSoundError, false);
 				audio.addEventListener("ended", onSoundEnded, false);
 				audio.play().catch((err) => {
