@@ -232685,6 +232685,34 @@ function _escapeHTML$2(text) {
 function _isNumeric(val) {
 	return !isNaN(parseFloat(val)) && isFinite(val);
 }
+/**
+* The skill-constant names for an id, built once on the first miss: a skill
+* tree refresh loads every row's icon, and almost all of them hit on Name.
+*/
+function skillConstNames(skillId) {
+	if (!_skillConstNames) {
+		_skillConstNames = /* @__PURE__ */ new Map();
+		for (const [name, id] of Object.entries(SkillConst_default)) {
+			if (!_skillConstNames.has(id)) _skillConstNames.set(id, []);
+			_skillConstNames.get(id).push(name);
+		}
+	}
+	return _skillConstNames.get(Number(skillId)) || [];
+}
+function loadSkillIcon(skill, skillId, onload) {
+	const primary = skill?.Name;
+	let names = null;
+	const load = (index) => {
+		if (index >= names.length) return;
+		Client.loadFile(`${DB.INTERFACE_PATH}item/${names[index]}.bmp`, onload, () => load(index + 1));
+	};
+	const fallback = () => {
+		names = skillConstNames(skillId).filter((name) => name !== primary);
+		load(0);
+	};
+	if (primary) Client.loadFile(`${DB.INTERFACE_PATH}item/${primary}.bmp`, onload, fallback);
+	else fallback();
+}
 function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnMiniHover = false, guardMissingJob = false, readdSkillOnUpdate = false, listOnly = false, dragFrom = null, titlebarText = null, containerSelector = null, preferenceDefaults = {
 	x: 100,
 	y: 200,
@@ -233110,7 +233138,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 								miniTr.setAttribute("data-index", key);
 								miniTr.innerHTML = `<td class="icon"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="24" height="24" /></td><td class="levelupcontainer"></td><td class="selectable"><div class="name">${_escapeHTML$2(sk.SkillName)}<br/><span class="level">Lv : <span class="current">0</span></span></div></td><td class="selectable type"><div class="consume">Passive</div></td>`;
 								miniBox.appendChild(miniTr);
-								Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, (data) => {
+								loadSkillIcon(sk, key, (data) => {
 									const img = miniTr.querySelector(".icon img");
 									if (img) img.src = data;
 								});
@@ -233118,7 +233146,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 						}
 					}
 				}
-				Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, (data) => {
+				loadSkillIcon(sk, key, (data) => {
 					const img = element.querySelector(".icon img");
 					if (img) img.src = data;
 				});
@@ -233198,7 +233226,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 				}
 			}
 		}
-		Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, (data) => {
+		loadSkillIcon(sk, skill.SKID, (data) => {
 			const img = element.querySelector(".icon img");
 			if (img) img.src = data;
 		});
@@ -233245,7 +233273,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 			if (table) table.appendChild(tr);
 		}
 		this.parseHTML.call(levelup);
-		Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, (data) => {
+		loadSkillIcon(sk, skill.SKID, (data) => {
 			const img = tr.querySelector(".icon img");
 			if (img) img.src = data;
 		});
@@ -233500,6 +233528,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 	Component.getSkillById = getSkillById;
 	return UIManager.addComponent(Component);
 }
+var _skillConstNames;
 var init_SkillListCommon = __esmMin((() => {
 	init_Elements();
 	init_Client();
@@ -233511,11 +233540,13 @@ var init_SkillListCommon = __esmMin((() => {
 	init_SessionStorage();
 	init_SkillDescription();
 	init_SkillInfo();
+	init_SkillConst();
 	init_SkillTargetSelection();
 	init_SkillTreeView();
 	init_TouchDrag();
 	init_SkillRequirements();
 	init_UIManager();
+	_skillConstNames = null;
 }));
 //#endregion
 //#region src/UI/Components/SkillList/SkillList/SkillList.html?raw
@@ -238334,6 +238365,17 @@ var init_StrEffect = __esmMin((() => {
 		free(gl) {
 			this.ready = false;
 		}
+		/** Advance expiration even when distance culling skips drawing. */
+		updateLifetime(tick) {
+			if (this.needCleanUp || this.persistent || tick < this.startTick) return;
+			const endTick = this._Params?.Inst?.endTick;
+			if (endTick > 0 && tick >= endTick) {
+				this.needCleanUp = true;
+				return;
+			}
+			const strFile = Client.loadFile(this.filename, null, null, { texturePath: this.texturePath });
+			if (strFile && tick >= this.startTick + strFile.maxKey / strFile.fps * 1e3) this.needCleanUp = true;
+		}
 		/**
 		* Render in 3D effect
 		*
@@ -238341,6 +238383,8 @@ var init_StrEffect = __esmMin((() => {
 		* @param {number} tick
 		*/
 		render(gl, tick) {
+			this.updateLifetime(tick);
+			if (this.needCleanUp || tick < this.startTick) return;
 			let layer;
 			let i, keyIndex;
 			if (this.ownerEntity && this.ownerEntity.position) {
@@ -255313,7 +255357,7 @@ function clean(name, AID, effectID) {
 function cleanRepeat(name, AID, effectID) {
 	const effectIdList = Array.isArray(effectID) ? effectID : [effectID];
 	_list$3[name].forEach((item) => {
-		if ((!AID || item._Params.Init.ownerAID === AID) && (!effectID || effectIdList.includes(item.effectID))) {
+		if ((!AID || item._Params.Init.ownerAID === AID) && (!effectID || effectIdList.includes(item._Params.Inst.effectID))) {
 			if (item._Params.Inst.persistent) item._Params.Inst.persistent = false;
 			if (item._Params.Inst.repeatEnd) item._Params.Inst.repeatEnd = false;
 		}
@@ -255464,13 +255508,14 @@ var init_EffectManager = __esmMin((() => {
 					for (j = 0, size = list.length; j < size; ++j) {
 						if (!!list[j].renderBeforeEntities !== renderBeforeEntities) continue;
 						const effect = list[j];
+						if (effect.updateLifetime) effect.updateLifetime(tick);
 						const pos = effect._Params && effect._Params.Inst ? effect._Params.Inst.position : null;
 						let culled = false;
 						if (pos) {
 							if ((pos[0] - center[0]) * (pos[0] - center[0]) + (pos[1] - center[1]) * (pos[1] - center[1]) > cullDistanceSq) {
 								let shouldRemove = false;
 								if (effect._Params.Inst.duration > 0 && effect._Params.Inst.endTick > 0 && tick > effect._Params.Inst.endTick) shouldRemove = true;
-								if (shouldRemove) {
+								if (shouldRemove || effect.needCleanUp) {
 									effect.needCleanUp = true;
 									culled = true;
 								} else {
@@ -255479,7 +255524,7 @@ var init_EffectManager = __esmMin((() => {
 								}
 							}
 						}
-						if (!culled) {
+						if (!culled && !effect.needCleanUp) {
 							if (!effect.ready && effect.needInit) {
 								effect.init(gl);
 								effect.needInit = false;
@@ -310240,33 +310285,48 @@ function render$7(modelView, projection) {
 	this.boundingRect.y1 = -Infinity;
 	this.boundingRect.x2 = -Infinity;
 	this.boundingRect.y2 = Infinity;
+	this.waterDepthAttachments = this._waterDepthAttachments || (this._waterDepthAttachments = []);
+	this.waterDepthAttachments.length = 0;
 	if (this.effectColor[3]) {
 		this.renderEntity();
 		this.attachments.render(Date.now());
 	}
 	renderGUI(this, modelView, projection);
 }
-/**
-* Depth-only redraw of the body for entities standing in water, so the water
-* pass (drawn after entities, depth tested) covers only the submerged part.
-* Runs after every entity has been drawn, with colour writes disabled by the
-* caller, so the written depth cannot hide other sprites. Replays the exact
-* layers the colour pass drew this frame (`waterDepthFrame`), so no animation,
-* sound or trail state is touched. Only set for the non-player body pass;
-* entity types that already write depth never get a frame.
-*/
 function renderWaterDepth$1() {
 	const frame = this.waterDepthFrame;
-	if (!frame || this.hideEntity || !this.effectColor[3]) return;
+	const attachments = this.waterDepthAttachments;
+	if (this.hideEntity || !this.effectColor[3] || !frame && !(attachments && attachments.length)) return;
 	const self = this;
 	const rect = this.boundingRect;
 	const x1 = rect.x1, y1 = rect.y1, x2 = rect.x2, y2 = rect.y2;
-	SpriteRenderer.position.set(this.position);
-	SpriteRenderer.position[2] = SpriteRenderer.position[2] + .2;
-	SpriteRenderer.zIndex = 150;
-	SpriteRenderer.runWithDepth(true, true, false, function() {
-		for (let i = 0, count = frame.layers.length; i < count; ++i) self.renderLayer(frame.layers[i], frame.spr, frame.pal, frame.size, frame.position, "body", false);
-	});
+	if (frame) {
+		SpriteRenderer.position.set(this.position);
+		SpriteRenderer.position[2] = SpriteRenderer.position[2] + .2;
+		SpriteRenderer.zIndex = 150;
+		SpriteRenderer.runWithDepth(true, true, false, function() {
+			for (let i = 0, count = frame.layers.length; i < count; ++i) self.renderLayer(frame.layers[i], frame.spr, frame.pal, frame.size, frame.position, "body", false);
+		});
+	}
+	if (attachments && attachments.length) {
+		const alpha = this.effectColor[3];
+		for (let a = 0; a < attachments.length; ++a) {
+			const item = attachments[a];
+			SpriteRenderer.position[0] = item.position[0];
+			SpriteRenderer.position[1] = item.position[1];
+			SpriteRenderer.position[2] = item.position[2];
+			SpriteRenderer.depth = item.depth;
+			SpriteRenderer.zIndex = item.zIndex;
+			this.effectColor[3] = item.opacity;
+			_attachmentPosition[0] = item.x;
+			_attachmentPosition[1] = item.y;
+			SpriteRenderer.runWithDepth(true, true, false, function() {
+				for (let i = 0, count = item.layers.length; i < count; ++i) self.renderLayer(item.layers[i], item.spr, item.spr, 1, _attachmentPosition, false);
+			});
+		}
+		this.effectColor[3] = alpha;
+		SpriteRenderer.depth = 0;
+	}
 	SpriteRenderer.zIndex = 1;
 	rect.x1 = x1;
 	rect.y1 = y1;
@@ -310546,7 +310606,7 @@ function Init$3() {
 	this.waterDepthFrame = void 0;
 	this._waterDepthFrameBuffer = null;
 }
-var WALK_DIST_TO_MOTION, renderGUI, SPRITE_LIFT, calculateBoundingRect, renderEntity, renderElement;
+var WALK_DIST_TO_MOTION, renderGUI, SPRITE_LIFT, calculateBoundingRect, renderEntity, _attachmentPosition, renderElement;
 var init_EntityRender = __esmMin((() => {
 	init_gl_matrix();
 	init_Camera();
@@ -310816,6 +310876,7 @@ var init_EntityRender = __esmMin((() => {
 			SpriteRenderer.zIndex = 1;
 		};
 	})();
+	_attachmentPosition = /* @__PURE__ */ new Int32Array(2);
 	renderElement = (function renderElementClosure() {
 		const _position = /* @__PURE__ */ new Int32Array(2);
 		return function _renderElement(entity, files, type, position, is_main) {
@@ -311581,7 +311642,7 @@ var init_EntityAttachments = __esmMin((() => {
 			if (attachment.uid && !attachment.stackable) this.remove(attachment.uid);
 			attachment.startTick = Date.now();
 			attachment.opacity = !isNaN(attachment.opacity) ? attachment.opacity : 1;
-			attachment.direction = attachment.hasOwnProperty("frame") ? false : true;
+			if (typeof attachment.direction !== "boolean") attachment.direction = !attachment.hasOwnProperty("frame");
 			attachment.frame = attachment.frame || 0;
 			attachment.depth = attachment.depth || 0;
 			attachment.head = attachment.head || false;
@@ -311706,6 +311767,7 @@ var init_EntityAttachments = __esmMin((() => {
 		*/
 		renderAttachment(attachment, tick) {
 			if (attachment.startTick > tick) return;
+			if (attachment.duration > 0 && tick - attachment.startTick >= attachment.duration) return true;
 			if (attachment.isStr && attachment.strEffect) {
 				const strEffect = attachment.strEffect;
 				const gl = Renderer.gl;
@@ -311757,6 +311819,21 @@ var init_EntityAttachments = __esmMin((() => {
 			}
 			const self = this;
 			const zIdx = attachment.renderBefore ? 1 : 500;
+			const recorded = this.entity.waterDepthAttachments;
+			if (recorded) recorded.push({
+				layers,
+				spr,
+				x: _position[0],
+				y: _position[1],
+				depth: SpriteRenderer.depth,
+				zIndex: zIdx,
+				opacity: attachment.opacity,
+				position: [
+					SpriteRenderer.position[0],
+					SpriteRenderer.position[1],
+					SpriteRenderer.position[2]
+				]
+			});
 			SpriteRenderer.runWithDepth(true, false, false, function() {
 				SpriteRenderer.zIndex = zIdx;
 				for (i = 0, count = layers.length; i < count; ++i) self.entity.renderLayer(layers[i], spr, spr, 1, _position, false);
