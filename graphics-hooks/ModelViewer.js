@@ -259054,106 +259054,117 @@ function random(i, k) {
 	return x - Math.floor(x);
 }
 /**
-* The plants, painted once into a texture. Two painted plants side by side: a clump of grass blades (left) and a
-// fern (right). R is how lit the paint is, G a per-blade number for hue,
-// B marks the fern, A coverage. Each stroke has a thin dark rim, the
-// inked edge that makes it read as painted, like RO's own foliage.
-const size = 128;
-const canvas = document.createElement("canvas");
-canvas.width = size * 2;
-canvas.height = size;
-const g = canvas.getContext("2d");
-let seed = 11;
-const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
-const paint = (r, id, fern) => `rgb(${Math.max(0, Math.min(255, Math.round(r)))},${Math.round(id * 255)},${fern ? 255 : 0})`;
-g.lineJoin = "round";
-// Grass.
-const blades = [];
-for (let b = 0; b < 15; b++) blades.push({ base: size * (.5 + (rnd() - .5) * .45), lean: (rnd() - .5) * size * .85, tall: size * (.45 + rnd() * .52), width: size * (.045 + rnd() * .04), shade: .7 + rnd() * .3, id: rnd() });
-blades.sort((a, b) => a.tall - b.tall);
-g.filter = "blur(0.7px)";
-const stroke = (blade, side, from, to) => {
-const tipX = blade.base + blade.lean, tipY = size - blade.tall;
-const ctrlX = blade.base + blade.lean * .1, ctrlY = size - blade.tall * .65;
-g.beginPath();
-if (side <= 0) {
-g.moveTo(blade.base - blade.width, size);
-g.quadraticCurveTo(ctrlX - blade.width * .6, ctrlY, tipX, tipY);
-g.quadraticCurveTo(ctrlX, ctrlY, blade.base, size);
-} else {
-g.moveTo(blade.base, size);
-g.quadraticCurveTo(ctrlX, ctrlY, tipX, tipY);
-g.quadraticCurveTo(ctrlX + blade.width * .6, ctrlY, blade.base + blade.width, size);
-}
-g.closePath();
-const grad = g.createLinearGradient(0, size, 0, tipY);
-const id = Math.round(blade.id * 255);
-grad.addColorStop(0, `rgb(${Math.round(from * .25 * blade.shade)},${id},0)`);
-grad.addColorStop(.5, `rgb(${Math.round(from * blade.shade)},${id},0)`);
-grad.addColorStop(1, `rgb(${Math.round(to * blade.shade)},${id},0)`);
-g.fillStyle = grad;
-g.fill();
-};
-for (const blade of blades) {
-const lit = blade.lean < 0 ? 1 : -1;  // the side toward the light
-stroke(blade, -lit, 120, 170);
-stroke(blade, lit, 190, 255);
-}
-// A fern.
-g.save();
-g.translate(size, 0);
-const fronds = [];
-for (let f = 0; f < 7; f++) fronds.push({ angle: (f / 6 - .5) * 2.3 + (rnd() - .5) * .25, length: size * (.55 + rnd() * .4), shade: .7 + rnd() * .3, id: rnd() });
-fronds.sort((a, b) => Math.abs(b.angle) - Math.abs(a.angle));
-for (const frond of fronds) {
-const root = [size * .5, size * .98];
-const dir = [Math.sin(frond.angle), -Math.cos(frond.angle)];
-// The frond arches: up and out, then droops.
-const at = (t) => [root[0] + dir[0] * frond.length * t, root[1] + dir[1] * frond.length * t + frond.length * .45 * t * t * Math.abs(dir[0])];
-for (let t = .08; t < 1; t += .075) {
-const p = at(t), q = at(Math.min(1, t + .01));
-const tangent = Math.atan2(q[1] - p[1], q[0] - p[0]);
-const len = size * .12 * (1 - t * .8) + 2;
-for (const s of [-1, 1]) {
-g.save();
-g.translate(p[0], p[1]);
-g.rotate(tangent + s * 1.05);
-g.beginPath();
-g.ellipse(len * .5, 0, len * .55, len * .2, 0, 0, Math.PI * 2);
-const lg = g.createLinearGradient(0, 0, len, 0);
-lg.addColorStop(0, paint(60 * frond.shade, frond.id, true));
-lg.addColorStop(1, paint((120 + 110 * t) * frond.shade, frond.id, true));
-g.fillStyle = lg;
-g.fill();
-g.strokeStyle = paint(6, frond.id, true);
-g.lineWidth = .7;
-g.stroke();
-g.restore();
-}
-}
-g.beginPath();
-g.moveTo(root[0], root[1]);
-for (let t = .05; t <= 1; t += .05) g.lineTo(...at(t));
-g.strokeStyle = paint(50 * frond.shade, frond.id, true);
-g.lineWidth = 1.2;
-g.stroke();
-}
-g.restore();
-const texture = gl.createTexture();
-const flip = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
-const premultiply = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
-gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
-gl.bindTexture(gl.TEXTURE_2D, texture);
-gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
-gl.generateMipmap(gl.TEXTURE_2D);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, flip);
-gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultiply);
-return texture;
+* The plants, painted once into a texture: a clump of grass blades (left)
+* and a fern (right). R is how lit the paint is, G a per-blade number for
+* hue, B marks the fern, A coverage. Each blade is two soft strokes, a shaded
+* side and a lit one, like RO's own painted foliage.
+*/
+function bladeTexture(gl) {
+	const size = 128;
+	const canvas = document.createElement("canvas");
+	canvas.width = 256;
+	canvas.height = size;
+	const g = canvas.getContext("2d");
+	let seed = 11;
+	const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+	const paint = (r, id, fern) => `rgb(${Math.max(0, Math.min(255, Math.round(r)))},${Math.round(id * 255)},${fern ? 255 : 0})`;
+	g.lineJoin = "round";
+	const blades = [];
+	for (let b = 0; b < 15; b++) blades.push({
+		base: size * (.5 + (rnd() - .5) * .45),
+		lean: (rnd() - .5) * size * .85,
+		tall: size * (.45 + rnd() * .52),
+		width: size * (.045 + rnd() * .04),
+		shade: .7 + rnd() * .3,
+		id: rnd()
+	});
+	blades.sort((a, b) => a.tall - b.tall);
+	g.filter = "blur(0.7px)";
+	const stroke = (blade, side, from, to) => {
+		const tipX = blade.base + blade.lean, tipY = size - blade.tall;
+		const ctrlX = blade.base + blade.lean * .1, ctrlY = size - blade.tall * .65;
+		g.beginPath();
+		if (side <= 0) {
+			g.moveTo(blade.base - blade.width, size);
+			g.quadraticCurveTo(ctrlX - blade.width * .6, ctrlY, tipX, tipY);
+			g.quadraticCurveTo(ctrlX, ctrlY, blade.base, size);
+		} else {
+			g.moveTo(blade.base, size);
+			g.quadraticCurveTo(ctrlX, ctrlY, tipX, tipY);
+			g.quadraticCurveTo(ctrlX + blade.width * .6, ctrlY, blade.base + blade.width, size);
+		}
+		g.closePath();
+		const grad = g.createLinearGradient(0, size, 0, tipY);
+		const id = Math.round(blade.id * 255);
+		grad.addColorStop(0, `rgb(${Math.round(from * .25 * blade.shade)},${id},0)`);
+		grad.addColorStop(.5, `rgb(${Math.round(from * blade.shade)},${id},0)`);
+		grad.addColorStop(1, `rgb(${Math.round(to * blade.shade)},${id},0)`);
+		g.fillStyle = grad;
+		g.fill();
+	};
+	for (const blade of blades) {
+		const lit = blade.lean < 0 ? 1 : -1;
+		stroke(blade, -lit, 120, 170);
+		stroke(blade, lit, 190, 255);
+	}
+	g.save();
+	g.translate(size, 0);
+	const fronds = [];
+	for (let f = 0; f < 7; f++) fronds.push({
+		angle: (f / 6 - .5) * 2.3 + (rnd() - .5) * .25,
+		length: size * (.55 + rnd() * .4),
+		shade: .7 + rnd() * .3,
+		id: rnd()
+	});
+	fronds.sort((a, b) => Math.abs(b.angle) - Math.abs(a.angle));
+	for (const frond of fronds) {
+		const root = [size * .5, size * .98];
+		const dir = [Math.sin(frond.angle), -Math.cos(frond.angle)];
+		const at = (t) => [root[0] + dir[0] * frond.length * t, root[1] + dir[1] * frond.length * t + frond.length * .45 * t * t * Math.abs(dir[0])];
+		for (let t = .08; t < 1; t += .075) {
+			const p = at(t), q = at(Math.min(1, t + .01));
+			const tangent = Math.atan2(q[1] - p[1], q[0] - p[0]);
+			const len = size * .12 * (1 - t * .8) + 2;
+			for (const s of [-1, 1]) {
+				g.save();
+				g.translate(p[0], p[1]);
+				g.rotate(tangent + s * 1.05);
+				g.beginPath();
+				g.ellipse(len * .5, 0, len * .55, len * .2, 0, 0, Math.PI * 2);
+				const lg = g.createLinearGradient(0, 0, len, 0);
+				lg.addColorStop(0, paint(60 * frond.shade, frond.id, true));
+				lg.addColorStop(1, paint((120 + 110 * t) * frond.shade, frond.id, true));
+				g.fillStyle = lg;
+				g.fill();
+				g.strokeStyle = paint(6, frond.id, true);
+				g.lineWidth = .7;
+				g.stroke();
+				g.restore();
+			}
+		}
+		g.beginPath();
+		g.moveTo(root[0], root[1]);
+		for (let t = .05; t <= 1; t += .05) g.lineTo(...at(t));
+		g.strokeStyle = paint(50 * frond.shade, frond.id, true);
+		g.lineWidth = 1.2;
+		g.stroke();
+	}
+	g.restore();
+	const texture = gl.createTexture();
+	const flip = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
+	const premultiply = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
+	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+	gl.generateMipmap(gl.TEXTURE_2D);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, flip);
+	gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultiply);
+	return texture;
 }
 /**
 * Where the clumps go, for these settings: grass tiles, on open ground.
@@ -259218,7 +259229,13 @@ function init$7(gl, data) {
 function render$7(gl, modelView, projection, fog, light, tick, lightmapOn) {
 	const settings = Enhancements.grass;
 	if (!settings || !_data$1 || typeof WebGL2RenderingContext === "undefined" || !(gl instanceof WebGL2RenderingContext)) return;
-	if (settings !== _builtFor) build(gl, settings);
+	if (settings !== _builtFor) try {
+		build(gl, settings);
+	} catch (error) {
+		console.error("[Grass] could not build, grass is off for this map", error);
+		_builtFor = settings;
+		_count = 0;
+	}
 	if (!_count || !_program$15) return;
 	const textures = Ground_default.textures();
 	const uniform = _program$15.uniform;
