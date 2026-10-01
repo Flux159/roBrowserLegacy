@@ -213402,10 +213402,7 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: 104
 	};
 	SkillEffect[SkillConst_default.HT_SKIDTRAP] = { effectId: 69 };
-	SkillEffect[SkillConst_default.HT_LANDMINE] = {
-		effectId: "ef_ht_landmine",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.HT_LANDMINE] = { effectId: "ef_ht_landmine" };
 	SkillEffect[SkillConst_default.HT_ANKLESNARE] = { groundEffectId: "ef_anklesnare" };
 	SkillEffect[SkillConst_default.HT_SHOCKWAVE] = {
 		effectId: 145,
@@ -213617,10 +213614,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SA_QUESTION] = {};
 	SkillEffect[SkillConst_default.SA_GRAVITY] = {};
 	SkillEffect[SkillConst_default.SA_LEVELUP] = {};
-	SkillEffect[SkillConst_default.SA_INSTANTDEATH] = {
-		effectId: "ef_sa_instantdeath",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SA_INSTANTDEATH] = { effectId: "ef_sa_instantdeath" };
 	SkillEffect[SkillConst_default.SA_FULLRECOVERY] = {};
 	SkillEffect[SkillConst_default.SA_COMA] = {};
 	SkillEffect[SkillConst_default.BD_ADAPTATION] = {};
@@ -213842,10 +213836,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.TK_READYTURN] = {};
 	SkillEffect[SkillConst_default.TK_TURNKICK] = { effectId: 414 };
 	SkillEffect[SkillConst_default.TK_READYCOUNTER] = {};
-	SkillEffect[SkillConst_default.TK_COUNTER] = {
-		effectId: "ef_tk_counter",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.TK_COUNTER] = { effectId: "ef_tk_counter" };
 	SkillEffect[SkillConst_default.TK_DODGE] = {};
 	SkillEffect[SkillConst_default.TK_JUMPKICK] = {
 		effectId: 439,
@@ -213878,10 +213869,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SL_KAUPE] = { effectId: 546 };
 	SkillEffect[SkillConst_default.SL_KAITE] = { effectId: 419 };
 	SkillEffect[SkillConst_default.SL_STIN] = { effectId: 547 };
-	SkillEffect[SkillConst_default.SL_STUN] = {
-		effectId: [555, "ef_sl_stun"],
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SL_STUN] = { effectId: [555, "ef_sl_stun"] };
 	SkillEffect[SkillConst_default.SL_SMA] = {
 		effectId: 553,
 		successEffectId: 425
@@ -213939,8 +213927,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GS_ADJUSTMENT] = { effectId: 626 };
 	SkillEffect[SkillConst_default.GS_INCREASING] = {
 		effectId: [456, "ef_gs_increasing"],
-		effectIdOnCaster: "ef_gs_increasing_cast",
-		ez2: false
+		effectIdOnCaster: "ef_gs_increasing_cast"
 	};
 	SkillEffect[SkillConst_default.GS_MAGICALBULLET] = { effectId: 644 };
 	SkillEffect[SkillConst_default.GS_CRACKER] = {};
@@ -214055,10 +214042,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RK_SONICWAVE] = { effectId: 832 };
 	SkillEffect[SkillConst_default.RK_DEATHBOUND] = {};
 	SkillEffect[SkillConst_default.RK_HUNDREDSPEAR] = { effectId: 723 };
-	SkillEffect[SkillConst_default.RK_WINDCUTTER] = {
-		effectId: "ef_rk_windcutter",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RK_WINDCUTTER] = { effectId: "ef_rk_windcutter" };
 	SkillEffect[SkillConst_default.RK_IGNITIONBREAK] = { effectIdOnCaster: 722 };
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH] = { hitEffectId: 587 };
 	SkillEffect[SkillConst_default.RK_DRAGONHOWLING] = { effectId: 731 };
@@ -214074,9 +214058,8 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RK_PHANTOMTHRUST] = {};
 	SkillEffect[SkillConst_default.WL_WHITEIMPRISON] = { effectId: 802 };
 	SkillEffect[SkillConst_default.WL_SOULEXPANSION] = {
-		hitEffectId: "ef_wl_soulexpansion_hit",
-		beginCastEffectId: "ef_wl_soulexpansion_cast",
-		ez2: false
+		effectIdOnCaster: "ef_wl_soulexpansion_cast",
+		hitEffectId: "ef_wl_soulexpansion_hit"
 	};
 	SkillEffect[SkillConst_default.WL_FROSTMISTY] = { effectId: 726 };
 	SkillEffect[SkillConst_default.WL_JACKFROST] = {
@@ -214092,44 +214075,27 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.WL_HELLINFERNO] = {
 		groundEffectId: 728,
 		effectId: "ef_wl_hellinferno",
-		beginCastEffectId: "ef_wl_hellinferno_cast",
-		ez2: false
+		effectIdOnCaster: "ef_wl_hellinferno_cast"
 	};
 	SkillEffect[SkillConst_default.WL_COMET] = {
 		effectId: "ef_wl_comet",
-		beginCastEffectId: "ef_wl_comet_cast",
-		ez2: false
+		effectIdOnCaster: "ef_wl_comet_cast"
 	};
-	SkillEffect[SkillConst_default.WL_CHAINLIGHTNING] = {
-		beginCastEffectId: "ef_wl_chainlightning_cast",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.WL_CHAINLIGHTNING] = { effectIdOnCaster: "ef_wl_chainlightning_cast" };
 	SkillEffect[SkillConst_default.WL_CHAINLIGHTNING_ATK] = { effectId: 734 };
 	SkillEffect[SkillConst_default.WL_EARTHSTRAIN] = { groundEffectId: 732 };
 	SkillEffect[SkillConst_default.WL_TETRAVORTEX] = {
 		effectId: 804,
 		beginCastEffectId: 805
 	};
-	SkillEffect[SkillConst_default.WL_TETRAVORTEX_FIRE] = {
-		effectId: "ef_wl_tetravortex_fire",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WATER] = {
-		effectId: "ef_wl_tetravortex_water",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WIND] = {
-		effectId: "ef_wl_tetravortex_wind",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.WL_TETRAVORTEX_FIRE] = { effectId: "ef_wl_tetravortex_fire" };
+	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WATER] = { effectId: "ef_wl_tetravortex_water" };
+	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WIND] = { effectId: "ef_wl_tetravortex_wind" };
 	SkillEffect[SkillConst_default.WL_TETRAVORTEX_GROUND] = {};
 	SkillEffect[SkillConst_default.WL_SUMMONFB] = {};
 	SkillEffect[SkillConst_default.WL_SUMMONBL] = {};
 	SkillEffect[SkillConst_default.WL_SUMMONWB] = {};
-	SkillEffect[SkillConst_default.WL_SUMMON_ATK_FIRE] = {
-		effectId: "ef_wl_summon_atk_fire",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.WL_SUMMON_ATK_FIRE] = { effectId: "ef_wl_summon_atk_fire" };
 	SkillEffect[SkillConst_default.WL_SUMMON_ATK_WIND] = {};
 	SkillEffect[SkillConst_default.WL_SUMMON_ATK_WATER] = {};
 	SkillEffect[SkillConst_default.WL_SUMMON_ATK_GROUND] = {};
@@ -214137,36 +214103,21 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.WL_RELEASE] = { effectId: 751 };
 	SkillEffect[SkillConst_default.WL_READING_SB] = {};
 	SkillEffect[SkillConst_default.GC_VENOMIMPRESS] = { effectId: 788 };
-	SkillEffect[SkillConst_default.GC_CROSSIMPACT] = {
-		effectId: "ef_gc_crossimpact",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GC_CROSSIMPACT] = { effectId: "ef_gc_crossimpact" };
 	SkillEffect[SkillConst_default.GC_DARKILLUSION] = {};
 	SkillEffect[SkillConst_default.GC_CREATENEWPOISON] = {};
 	SkillEffect[SkillConst_default.GC_ANTIDOTE] = {};
-	SkillEffect[SkillConst_default.GC_POISONINGWEAPON] = {
-		effectId: "ef_gc_poisoningweapon",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GC_POISONINGWEAPON] = { effectId: "ef_gc_poisoningweapon" };
 	SkillEffect[SkillConst_default.GC_WEAPONBLOCKING] = {};
-	SkillEffect[SkillConst_default.GC_COUNTERSLASH] = {
-		effectId: "ef_gc_counterslash",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GC_COUNTERSLASH] = { effectId: "ef_gc_counterslash" };
 	SkillEffect[SkillConst_default.GC_WEAPONCRUSH] = {};
 	SkillEffect[SkillConst_default.GC_VENOMPRESSURE] = {};
-	SkillEffect[SkillConst_default.GC_POISONSMOKE] = {
-		effectId: "ef_gc_poisonsmoke",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GC_POISONSMOKE] = { effectId: "ef_gc_poisonsmoke" };
 	SkillEffect[SkillConst_default.GC_CLOAKINGEXCEED] = {};
 	SkillEffect[SkillConst_default.GC_PHANTOMMENACE] = {};
 	SkillEffect[SkillConst_default.GC_HALLUCINATIONWALK] = { effectId: "ef_hallucinationwalk" };
 	SkillEffect[SkillConst_default.GC_ROLLINGCUTTER] = { effectId: 775 };
-	SkillEffect[SkillConst_default.GC_CROSSRIPPERSLASHER] = {
-		effectId: "ef_gc_crossripperslasher",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GC_CROSSRIPPERSLASHER] = { effectId: "ef_gc_crossripperslasher" };
 	SkillEffect[SkillConst_default.AB_JUDEX] = {
 		effectId: 718,
 		hitEffectId: 152
@@ -214195,15 +214146,9 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.AB_DUPLELIGHT_MELEE] = {};
 	SkillEffect[SkillConst_default.AB_DUPLELIGHT_MAGIC] = {};
 	SkillEffect[SkillConst_default.AB_SILENTIUM] = {};
-	SkillEffect[SkillConst_default.AB_SECRAMENT] = {
-		effectId: "ef_ab_secrament",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.AB_SECRAMENT] = { effectId: "ef_ab_secrament" };
 	SkillEffect[SkillConst_default.RA_ARROWSTORM] = { effectId: 746 };
-	SkillEffect[SkillConst_default.RA_FEARBREEZE] = {
-		effectId: "ef_ra_fearbreeze",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RA_FEARBREEZE] = { effectId: "ef_ra_fearbreeze" };
 	SkillEffect[SkillConst_default.RA_AIMEDBOLT] = {
 		effectId: 745,
 		beforeHitEffectId: "ef_arrow_projectile"
@@ -214226,16 +214171,10 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RA_ICEBOUNDTRAP] = {};
 	SkillEffect[SkillConst_default.NC_BOOSTKNUCKLE] = {};
 	SkillEffect[SkillConst_default.NC_PILEBUNKER] = {};
-	SkillEffect[SkillConst_default.NC_VULCANARM] = {
-		effectId: "ef_nc_vulcanarm",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.NC_VULCANARM] = { effectId: "ef_nc_vulcanarm" };
 	SkillEffect[SkillConst_default.NC_FLAMELAUNCHER] = { effectId: 787 };
 	SkillEffect[SkillConst_default.NC_COLDSLOWER] = {};
-	SkillEffect[SkillConst_default.NC_ARMSCANNON] = {
-		beginCastEffectId: "ef_nc_armscannon_cast",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.NC_ARMSCANNON] = { effectIdOnCaster: "ef_nc_armscannon_cast" };
 	SkillEffect[SkillConst_default.NC_ACCELERATION] = {};
 	SkillEffect[SkillConst_default.NC_HOVERING] = {};
 	SkillEffect[SkillConst_default.NC_F_SIDESLIDE] = {};
@@ -214248,37 +214187,23 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.NC_MAGNETICFIELD] = { effectId: 781 };
 	SkillEffect[SkillConst_default.NC_NEUTRALBARRIER] = {};
 	SkillEffect[SkillConst_default.NC_STEALTHFIELD] = {};
-	SkillEffect[SkillConst_default.NC_REPAIR] = {
-		effectId: "ef_nc_repair",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.NC_REPAIR] = { effectId: "ef_nc_repair" };
 	SkillEffect[SkillConst_default.NC_AXEBOOMERANG] = {
 		effectId: "ef_nc_axeboomerang",
 		effectIdOnCaster: "ef_nc_axeboomerang_cast",
-		hitEffectId: "ef_nc_axeboomerang_hit",
-		ez2: false
+		hitEffectId: "ef_nc_axeboomerang_hit"
 	};
 	SkillEffect[SkillConst_default.NC_POWERSWING] = { effectId: 795 };
-	SkillEffect[SkillConst_default.NC_AXETORNADO] = {
-		effectId: "ef_nc_axetornado",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.NC_AXETORNADO] = { effectId: "ef_nc_axetornado" };
 	SkillEffect[SkillConst_default.NC_SILVERSNIPER] = {};
 	SkillEffect[SkillConst_default.NC_MAGICDECOY] = {};
 	SkillEffect[SkillConst_default.NC_DISJOINT] = {};
 	SkillEffect[SkillConst_default.SC_FATALMENACE] = {
 		effectId: "ef_sc_fatalmenace",
-		effectIdOnCaster: "ef_sc_fatalmenace_cast",
-		ez2: false
+		effectIdOnCaster: "ef_sc_fatalmenace_cast"
 	};
-	SkillEffect[SkillConst_default.SC_REPRODUCE] = {
-		effectId: "ef_sc_reproduce",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SC_AUTOSHADOWSPELL] = {
-		effectId: "ef_sc_autoshadowspell",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SC_REPRODUCE] = { effectId: "ef_sc_reproduce" };
+	SkillEffect[SkillConst_default.SC_AUTOSHADOWSPELL] = { effectId: "ef_sc_autoshadowspell" };
 	SkillEffect[SkillConst_default.SC_SHADOWFORM] = {};
 	SkillEffect[SkillConst_default.SC_TRIANGLESHOT] = { beforeHitEffectId: "ef_arrow_projectile" };
 	SkillEffect[SkillConst_default.SC_BODYPAINT] = { effectId: 811 };
@@ -214300,14 +214225,10 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SC_MAELSTROM] = { groundEffectId: 828 };
 	SkillEffect[SkillConst_default.SC_BLOODYLUST] = { groundEffectId: 829 };
 	SkillEffect[SkillConst_default.SC_FEINTBOMB] = {};
-	SkillEffect[SkillConst_default.LG_CANNONSPEAR] = {
-		effectId: ["ef_cannonspear", "ef_lg_cannonspear"],
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.LG_CANNONSPEAR] = { effectId: ["ef_cannonspear", "ef_lg_cannonspear"] };
 	SkillEffect[SkillConst_default.LG_BANISHINGPOINT] = {
 		effectId: "ef_banishingpoint",
-		effectIdOnCaster: "ef_lg_banishingpoint_cast",
-		ez2: false
+		effectIdOnCaster: "ef_lg_banishingpoint_cast"
 	};
 	SkillEffect[SkillConst_default.LG_TRAMPLE] = { effectId: "ef_trample" };
 	SkillEffect[SkillConst_default.LG_SHIELDPRESS] = { beforeHitEffectId: 906 };
@@ -214319,58 +214240,41 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.LG_EXEEDBREAK] = { effectId: "ef_exceedbreak" };
 	SkillEffect[SkillConst_default.LG_OVERBRAND] = {
 		effectId: "ef_overbrand",
-		hitEffectId: "ef_lg_overbrand_hit",
-		beginCastEffectId: "ef_lg_overbrand_cast",
-		ez2: false
+		effectIdOnCaster: "ef_lg_overbrand_cast",
+		hitEffectId: "ef_lg_overbrand_hit"
 	};
 	SkillEffect[SkillConst_default.LG_PRESTIGE] = { effectId: 908 };
 	SkillEffect[SkillConst_default.LG_BANDING] = { effectId: 909 };
 	SkillEffect[SkillConst_default.LG_MOONSLASHER] = { effectId: "ef_moonslasher" };
 	SkillEffect[SkillConst_default.LG_RAYOFGENESIS] = {
 		effectId: ["ef_rayofgenesis", "ef_lg_rayofgenesis"],
-		hitEffectId: "ef_lg_rayofgenesis_hit",
-		beginCastEffectId: "ef_lg_rayofgenesis_cast",
-		ez2: false
+		effectIdOnCaster: "ef_lg_rayofgenesis_cast",
+		hitEffectId: "ef_lg_rayofgenesis_hit"
 	};
 	SkillEffect[SkillConst_default.LG_PIETY] = { effectId: "ef_piety" };
-	SkillEffect[SkillConst_default.LG_EARTHDRIVE] = {
-		effectId: ["ef_earthdrive", "ef_lg_earthdrive"],
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.LG_EARTHDRIVE] = { effectId: ["ef_earthdrive", "ef_lg_earthdrive"] };
 	SkillEffect[SkillConst_default.LG_HESPERUSLIT] = { effectId: "ef_hesperuslit" };
 	SkillEffect[SkillConst_default.LG_INSPIRATION] = { effectId: 910 };
 	SkillEffect[2519] = {
 		effectIdOnCaster: "ef_lg_overbrand_brandish_cast",
-		hitEffectId: "ef_lg_overbrand_brandish_hit",
-		ez2: false
+		hitEffectId: "ef_lg_overbrand_brandish_hit"
 	};
 	SkillEffect[2520] = {
 		effectIdOnCaster: "ef_lg_overbrand_plusatk_cast",
-		hitEffectId: "ef_lg_overbrand_plusatk_hit",
-		ez2: false
+		hitEffectId: "ef_lg_overbrand_plusatk_hit"
 	};
 	SkillEffect[SkillConst_default.SR_DRAGONCOMBO] = { effectId: "ef_dragoncombo" };
 	SkillEffect[SkillConst_default.SR_SKYNETBLOW] = { effectId: "ef_skynetblow" };
 	SkillEffect[SkillConst_default.SR_EARTHSHAKER] = { effectId: 888 };
 	SkillEffect[SkillConst_default.SR_FALLENEMPIRE] = {
 		effectId: ["ef_fallenempire", "ef_sr_fallenempire"],
-		hitEffectId: "ef_sr_fallenempire_hit",
-		ez2: false
+		hitEffectId: "ef_sr_fallenempire_hit"
 	};
-	SkillEffect[SkillConst_default.SR_TIGERCANNON] = {
-		effectId: ["ef_tigercannon", "ef_sr_tigercannon"],
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SR_RAMPAGEBLASTER] = {
-		effectId: ["ef_rampageblaster", "ef_sr_rampageblaster"],
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SR_TIGERCANNON] = { effectId: ["ef_tigercannon", "ef_sr_tigercannon"] };
+	SkillEffect[SkillConst_default.SR_RAMPAGEBLASTER] = { effectId: ["ef_rampageblaster", "ef_sr_rampageblaster"] };
 	SkillEffect[SkillConst_default.SR_CRESCENTELBOW] = { effectId: "ef_crescentelbow" };
 	SkillEffect[SkillConst_default.SR_CURSEDCIRCLE] = { effectId: "ef_cursedcircle" };
-	SkillEffect[SkillConst_default.SR_LIGHTNINGWALK] = {
-		effectId: ["ef_lightningwalk", "ef_sr_lightningwalk"],
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SR_LIGHTNINGWALK] = { effectId: ["ef_lightningwalk", "ef_sr_lightningwalk"] };
 	SkillEffect[SkillConst_default.SR_KNUCKLEARROW] = { effectId: "ef_knucklearrow" };
 	SkillEffect[SkillConst_default.SR_WINDMILL] = { effectId: "ef_windmill" };
 	SkillEffect[SkillConst_default.SR_RAISINGDRAGON] = { effectId: "ef_raisingdragon" };
@@ -214379,8 +214283,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SR_CRESCENTELBOW_AUTOSPELL] = {};
 	SkillEffect[SkillConst_default.SR_GATEOFHELL] = {
 		effectId: "ef_gateofhell",
-		beginCastEffectId: "ef_sr_gateofhell_cast",
-		ez2: false
+		effectIdOnCaster: "ef_sr_gateofhell_cast"
 	};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_QUIET] = {};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_CURE] = {};
@@ -214389,9 +214292,8 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_REVITALIZE] = {};
 	SkillEffect[SkillConst_default.SR_HOWLINGOFLION] = {
 		effectId: ["ef_howlingoflion", "ef_sr_howlingoflion"],
-		hitEffectId: "ef_sr_howlingoflion_hit",
-		beginCastEffectId: "ef_sr_howlingoflion_cast",
-		ez2: false
+		effectIdOnCaster: "ef_sr_howlingoflion_cast",
+		hitEffectId: "ef_sr_howlingoflion_hit"
 	};
 	SkillEffect[SkillConst_default.SR_RIDEINLIGHTNING] = { effectId: "ef_rideinlightning" };
 	SkillEffect[SkillConst_default.WA_SWING_DANCE] = { effectId: "ef_swing_dance" };
@@ -214402,20 +214304,15 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.MI_HARMONIZE] = { effectId: "ef_harmonize" };
 	SkillEffect[SkillConst_default.WM_METALICSOUND] = {
 		effectId: ["ef_metalicsound", "ef_wm_metalicsound"],
-		hitEffectId: "ef_wm_metalicsound_hit",
-		ez2: false
+		hitEffectId: "ef_wm_metalicsound_hit"
 	};
 	SkillEffect[SkillConst_default.WM_REVERBERATION] = { groundEffectId: 856 };
 	SkillEffect[SkillConst_default.WM_REVERBERATION_MELEE] = { effectId: 860 };
-	SkillEffect[SkillConst_default.WM_REVERBERATION_MAGIC] = {
-		hitEffectId: "ef_wm_reverberation_magic_hit",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.WM_REVERBERATION_MAGIC] = { hitEffectId: "ef_wm_reverberation_magic_hit" };
 	SkillEffect[SkillConst_default.WM_DOMINION_IMPULSE] = { effectId: 863 };
 	SkillEffect[SkillConst_default.WM_SEVERE_RAINSTORM] = {
 		effectId: [857, "ef_wm_severe_rainstorm"],
-		beginCastEffectId: "ef_wm_severe_rainstorm_cast",
-		ez2: false
+		effectIdOnCaster: "ef_wm_severe_rainstorm_cast"
 	};
 	SkillEffect[SkillConst_default.WM_POEMOFNETHERWORLD] = { groundEffectId: 860 };
 	SkillEffect[SkillConst_default.WM_VOICEOFSIREN] = { groundEffectId: 879 };
@@ -214435,8 +214332,7 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.WM_SOUND_OF_DESTRUCTION] = {
 		effectId: "ef_sound_of_destruction",
-		beginCastEffectId: "ef_wm_sound_of_destruction_cast",
-		ez2: false
+		effectIdOnCaster: "ef_wm_sound_of_destruction_cast"
 	};
 	SkillEffect[SkillConst_default.WM_SATURDAY_NIGHT_FEVER] = {
 		groundEffectId: 870,
@@ -214456,35 +214352,27 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.WM_UNLIMITED_HUMMING_VOICE] = {
 		groundEffectId: 878,
-		effectId: "ef_wm_unlimited_humming_voice",
-		ez2: false
+		effectId: "ef_wm_unlimited_humming_voice"
 	};
 	SkillEffect[SkillConst_default.WM_SEVERE_RAINSTORM_MELEE] = {
 		effectId: "ef_wm_severe_rainstorm_melee",
-		effectIdOnCaster: "ef_wm_severe_rainstorm_melee_cast",
-		ez2: false
+		effectIdOnCaster: "ef_wm_severe_rainstorm_melee_cast"
 	};
 	SkillEffect[SkillConst_default.SO_FIREWALK] = { groundEffectId: 920 };
 	SkillEffect[SkillConst_default.SO_ELECTRICWALK] = { groundEffectId: 926 };
 	SkillEffect[SkillConst_default.SO_SPELLFIST] = {};
 	SkillEffect[SkillConst_default.SO_EARTHGRAVE] = {
 		effectId: "ef_so_earthgrave",
-		hitEffectId: "ef_so_earthgrave_hit",
-		ez2: false
+		hitEffectId: "ef_so_earthgrave_hit"
 	};
 	SkillEffect[SkillConst_default.SO_DIAMONDDUST] = {
 		effectId: [928, "ef_so_diamonddust"],
-		beginCastEffectId: "ef_so_diamonddust_cast",
-		ez2: false
+		effectIdOnCaster: "ef_so_diamonddust_cast"
 	};
-	SkillEffect[SkillConst_default.SO_POISON_BUSTER] = {
-		effectId: "ef_so_poison_buster",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SO_POISON_BUSTER] = { effectId: "ef_so_poison_buster" };
 	SkillEffect[SkillConst_default.SO_PSYCHIC_WAVE] = {
 		effectId: [922, "ef_so_psychic_wave"],
-		beginCastEffectId: "ef_so_psychic_wave_cast",
-		ez2: false
+		effectIdOnCaster: "ef_so_psychic_wave_cast"
 	};
 	SkillEffect[SkillConst_default.SO_CLOUD_KILL] = {};
 	SkillEffect[SkillConst_default.SO_STRIKING] = {};
@@ -214499,34 +214387,21 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SO_SUMMON_TERA] = {};
 	SkillEffect[SkillConst_default.SO_EL_ACTION] = {};
 	SkillEffect[SkillConst_default.SO_EL_ANALYSIS] = {};
-	SkillEffect[SkillConst_default.SO_EL_CURE] = {
-		effectId: "ef_so_el_cure",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SO_EL_CURE] = { effectId: "ef_so_el_cure" };
 	SkillEffect[SkillConst_default.SO_FIRE_INSIGNIA] = {};
 	SkillEffect[SkillConst_default.SO_WATER_INSIGNIA] = {};
 	SkillEffect[SkillConst_default.SO_WIND_INSIGNIA] = {};
 	SkillEffect[SkillConst_default.SO_EARTH_INSIGNIA] = {};
-	SkillEffect[SkillConst_default.GN_CART_TORNADO] = {
-		effectId: "ef_gn_cart_tornado",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GN_CART_TORNADO] = { effectId: "ef_gn_cart_tornado" };
 	SkillEffect[SkillConst_default.GN_CARTCANNON] = {
 		effectId: "ef_gn_cartcannon",
-		beginCastEffectId: "ef_gn_cartcannon_cast",
-		ez2: false
+		effectIdOnCaster: "ef_gn_cartcannon_cast"
 	};
-	SkillEffect[SkillConst_default.GN_CARTBOOST] = {
-		effectId: "ef_gn_cartboost",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GN_CARTBOOST] = { effectId: "ef_gn_cartboost" };
 	SkillEffect[SkillConst_default.GN_THORNS_TRAP] = { effectId: "ef_thorntrap" };
 	SkillEffect[SkillConst_default.GN_BLOOD_SUCKER] = {};
 	SkillEffect[SkillConst_default.GN_SPORE_EXPLOSION] = {};
-	SkillEffect[SkillConst_default.GN_WALLOFTHORN] = {
-		beginCastEffectId: "ef_gn_wallofthorn_cast",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GN_WALLOFTHORN] = { effectIdOnCaster: "ef_gn_wallofthorn_cast" };
 	SkillEffect[SkillConst_default.GN_CRAZYWEED] = { effectId: 915 };
 	SkillEffect[SkillConst_default.GN_CRAZYWEED_ATK] = {};
 	SkillEffect[SkillConst_default.GN_DEMONIC_FIRE] = { effectId: 916 };
@@ -214538,14 +214413,10 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GN_HELLS_PLANT_ATK] = {};
 	SkillEffect[SkillConst_default.GN_MANDRAGORA] = {
 		effectId: "ef_gn_mandragora",
-		beginCastEffectId: "ef_gn_mandragora_cast",
-		ez2: false
+		effectIdOnCaster: "ef_gn_mandragora_cast"
 	};
 	SkillEffect[SkillConst_default.GN_SLINGITEM] = {};
-	SkillEffect[SkillConst_default.GN_CHANGEMATERIAL] = {
-		effectId: "ef_gn_changematerial",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.GN_CHANGEMATERIAL] = { effectId: "ef_gn_changematerial" };
 	SkillEffect[SkillConst_default.GN_MIX_COOKING] = {};
 	SkillEffect[SkillConst_default.GN_MAKEBOMB] = {};
 	SkillEffect[SkillConst_default.GN_S_PHARMACY] = {};
@@ -214562,57 +214433,24 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RL_B_TRAP] = {};
 	SkillEffect[SkillConst_default.RL_FLICKER] = {};
 	SkillEffect[SkillConst_default.RL_S_STORM] = { effectId: "ef_s_storm" };
-	SkillEffect[SkillConst_default.RL_E_CHAIN] = {
-		effectId: "ef_rl_e_chain",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RL_E_CHAIN] = { effectId: "ef_rl_e_chain" };
 	SkillEffect[SkillConst_default.RL_QD_SHOT] = {};
 	SkillEffect[SkillConst_default.RL_C_MARKER] = { successEffectId: "ef_c_marker1" };
-	SkillEffect[SkillConst_default.RL_FIREDANCE] = {
-		effectId: "ef_rl_firedance",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.RL_H_MINE] = {
-		effectId: "ef_rl_h_mine",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.RL_P_ALTER] = {
-		effectId: "ef_rl_p_alter",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.RL_FALLEN_ANGEL] = {
-		effectId: "ef_rl_fallen_angel",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RL_FIREDANCE] = { effectId: "ef_rl_firedance" };
+	SkillEffect[SkillConst_default.RL_H_MINE] = { effectId: "ef_rl_h_mine" };
+	SkillEffect[SkillConst_default.RL_P_ALTER] = { effectId: "ef_rl_p_alter" };
+	SkillEffect[SkillConst_default.RL_FALLEN_ANGEL] = { effectId: "ef_rl_fallen_angel" };
 	SkillEffect[SkillConst_default.RL_R_TRIP] = {};
-	SkillEffect[SkillConst_default.RL_D_TAIL] = {
-		effectId: "ef_rl_d_tail",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.RL_FIRE_RAIN] = {
-		effectId: "ef_rl_fire_rain",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.RL_HEAT_BARREL] = {
-		effectId: "ef_rl_heat_barrel",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RL_D_TAIL] = { effectId: "ef_rl_d_tail" };
+	SkillEffect[SkillConst_default.RL_FIRE_RAIN] = { effectId: "ef_rl_fire_rain" };
+	SkillEffect[SkillConst_default.RL_HEAT_BARREL] = { effectId: "ef_rl_heat_barrel" };
 	SkillEffect[SkillConst_default.RL_AM_BLAST] = {};
-	SkillEffect[SkillConst_default.RL_SLUGSHOT] = {
-		effectId: "ef_rl_slugshot",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RL_SLUGSHOT] = { effectId: "ef_rl_slugshot" };
 	SkillEffect[SkillConst_default.RL_HAMMER_OF_GOD] = {};
 	SkillEffect[SkillConst_default.RL_R_TRIP_PLUSATK] = {};
 	SkillEffect[SkillConst_default.KO_YAMIKUMO] = {};
-	SkillEffect[SkillConst_default.KO_JYUMONJIKIRI] = {
-		effectId: "ef_ko_jyumonjikiri",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.KO_SETSUDAN] = {
-		effectId: "ef_ko_setsudan",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.KO_JYUMONJIKIRI] = { effectId: "ef_ko_jyumonjikiri" };
+	SkillEffect[SkillConst_default.KO_SETSUDAN] = { effectId: "ef_ko_setsudan" };
 	SkillEffect[SkillConst_default.KO_BAKURETSU] = {};
 	SkillEffect[SkillConst_default.KO_HAPPOKUNAI] = {};
 	SkillEffect[SkillConst_default.KO_MUCHANAGE] = {};
@@ -214643,10 +214481,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.ECL_SEQUOIADUST] = {};
 	SkillEffect[SkillConst_default.ECLAGE_RECALL] = {};
 	SkillEffect[SkillConst_default.GC_DARKCROW] = { effectId: 1040 };
-	SkillEffect[SkillConst_default.RA_UNLIMIT] = {
-		effectId: "ef_ra_unlimit",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.RA_UNLIMIT] = { effectId: "ef_ra_unlimit" };
 	SkillEffect[SkillConst_default.GN_ILLUSIONDOPING] = { effectId: 1049 };
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH_WATER] = { hitEffectId: "ef_dragonbreath_water" };
 	SkillEffect[SkillConst_default.RK_LUXANIMA] = { effectId: 1044 };
@@ -214659,79 +214494,34 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
 	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
 	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
-	SkillEffect[SkillConst_default.SU_BITE] = {
-		effectId: "ef_su_bite",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_BITE] = { effectId: "ef_su_bite" };
 	SkillEffect[SkillConst_default.SU_HIDE] = {};
-	SkillEffect[SkillConst_default.SU_SCRATCH] = {
-		effectId: "ef_su_scratch",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_SCRATCH] = { effectId: "ef_su_scratch" };
 	SkillEffect[SkillConst_default.SU_STOOP] = {};
 	SkillEffect[SkillConst_default.SU_LOPE] = {};
-	SkillEffect[SkillConst_default.SU_SV_STEMSPEAR] = {
-		effectId: "ef_su_sv_stemspear",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_SV_STEMSPEAR] = { effectId: "ef_su_sv_stemspear" };
 	SkillEffect[SkillConst_default.SU_CN_POWDERING] = {};
 	SkillEffect[SkillConst_default.SU_CN_METEOR] = {};
 	SkillEffect[SkillConst_default.SU_SV_ROOTTWIST] = {};
 	SkillEffect[SkillConst_default.SU_SV_ROOTTWIST_ATK] = {};
-	SkillEffect[SkillConst_default.SU_SCAROFTAROU] = {
-		effectId: "ef_su_scaroftarou",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_PICKYPECK] = {
-		effectId: "ef_su_pickypeck",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_SCAROFTAROU] = { effectId: "ef_su_scaroftarou" };
+	SkillEffect[SkillConst_default.SU_PICKYPECK] = { effectId: "ef_su_pickypeck" };
 	SkillEffect[SkillConst_default.SU_PICKYPECK_DOUBLE_ATK] = {};
-	SkillEffect[SkillConst_default.SU_ARCLOUSEDASH] = {
-		effectId: "ef_su_arclousedash",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_ARCLOUSEDASH] = { effectId: "ef_su_arclousedash" };
 	SkillEffect[SkillConst_default.SU_LUNATICCARROTBEAT] = {};
-	SkillEffect[SkillConst_default.SU_TUNABELLY] = {
-		effectId: "ef_su_tunabelly",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_TUNABELLY] = { effectId: "ef_su_tunabelly" };
 	SkillEffect[SkillConst_default.SU_TUNAPARTY] = {};
-	SkillEffect[SkillConst_default.SU_BUNCHOFSHRIMP] = {
-		effectId: "ef_su_bunchofshrimp",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_FRESHSHRIMP] = {
-		effectId: "ef_su_freshshrimp",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_POWEROFFLOCK] = {
-		effectId: "ef_su_powerofflock",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_SVG_SPIRIT] = {
-		effectId: "ef_su_svg_spirit",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_HISS] = {
-		effectId: "ef_su_hiss",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_NYANGGRASS] = {
-		effectId: "ef_su_nyanggrass",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SU_GROOMING] = {
-		effectId: "ef_su_grooming",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_BUNCHOFSHRIMP] = { effectId: "ef_su_bunchofshrimp" };
+	SkillEffect[SkillConst_default.SU_FRESHSHRIMP] = { effectId: "ef_su_freshshrimp" };
+	SkillEffect[SkillConst_default.SU_POWEROFFLOCK] = { effectId: "ef_su_powerofflock" };
+	SkillEffect[SkillConst_default.SU_SVG_SPIRIT] = { effectId: "ef_su_svg_spirit" };
+	SkillEffect[SkillConst_default.SU_HISS] = { effectId: "ef_su_hiss" };
+	SkillEffect[SkillConst_default.SU_NYANGGRASS] = { effectId: "ef_su_nyanggrass" };
+	SkillEffect[SkillConst_default.SU_GROOMING] = { effectId: "ef_su_grooming" };
 	SkillEffect[SkillConst_default.SU_PURRING] = {};
 	SkillEffect[SkillConst_default.SU_SHRIMPARTY] = {};
 	SkillEffect[SkillConst_default.SU_MEOWMEOW] = {};
-	SkillEffect[SkillConst_default.SU_CHATTERING] = {
-		effectId: "ef_su_chattering",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SU_CHATTERING] = { effectId: "ef_su_chattering" };
 	SkillEffect[SkillConst_default.WE_CALLALLFAMILY] = {};
 	SkillEffect[SkillConst_default.WE_ONEFOREVER] = {};
 	SkillEffect[SkillConst_default.WE_CHEERUP] = {};
@@ -214861,63 +214651,20 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GD_RESTORE] = {};
 	SkillEffect[SkillConst_default.GD_EMERGENCYCALL] = {};
 	SkillEffect[SkillConst_default.GD_ITEMEMERGENCYCALL] = {};
-	SkillEffect[SkillConst_default.SL_ASSASIN] = {
-		effectId: "ef_sl_assasin",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.BS_ADRENALINE2] = {
-		beginCastEffectId: "98_beforecast",
-		effectId: [98, "ef_bs_adrenaline2"],
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SL_HUNTER] = {
-		effectId: "ef_sl_hunter",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_FULLMOONKICK] = {
-		effectId: "ef_sj_fullmoonkick",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_NEWMOONKICK] = {
-		effectId: "ef_sj_newmoonkick",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_FLASHKICK] = {
-		effectId: "ef_sj_flashkick",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_FALLINGSTAR] = {
-		effectId: "ef_sj_fallingstar",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_DOCUMENT] = {
-		effectId: "ef_sj_document",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_SOLARBURST] = {
-		effectId: "ef_sj_solarburst",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SJ_PROMINENCEKICK] = {
-		effectId: "ef_sj_prominencekick",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SP_SOULGOLEM] = {
-		effectId: "ef_sp_soulgolem",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SP_SOULCURSE] = {
-		effectId: "ef_sp_soulcurse",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.SP_SOULREVOLVE] = {
-		effectId: "ef_sp_soulrevolve",
-		ez2: false
-	};
-	SkillEffect[SkillConst_default.NV_HELPANGEL] = {
-		effectId: "ef_nv_helpangel",
-		ez2: false
-	};
+	SkillEffect[SkillConst_default.SL_ASSASIN] = { effectId: "ef_sl_assasin" };
+	SkillEffect[SkillConst_default.BS_ADRENALINE2] = { effectId: "ef_bs_adrenaline2" };
+	SkillEffect[SkillConst_default.SL_HUNTER] = { effectId: "ef_sl_hunter" };
+	SkillEffect[SkillConst_default.SJ_FULLMOONKICK] = { effectId: "ef_sj_fullmoonkick" };
+	SkillEffect[SkillConst_default.SJ_NEWMOONKICK] = { effectId: "ef_sj_newmoonkick" };
+	SkillEffect[SkillConst_default.SJ_FLASHKICK] = { effectId: "ef_sj_flashkick" };
+	SkillEffect[SkillConst_default.SJ_FALLINGSTAR] = { effectId: "ef_sj_fallingstar" };
+	SkillEffect[SkillConst_default.SJ_DOCUMENT] = { effectId: "ef_sj_document" };
+	SkillEffect[SkillConst_default.SJ_SOLARBURST] = { effectId: "ef_sj_solarburst" };
+	SkillEffect[SkillConst_default.SJ_PROMINENCEKICK] = { effectId: "ef_sj_prominencekick" };
+	SkillEffect[SkillConst_default.SP_SOULGOLEM] = { effectId: "ef_sp_soulgolem" };
+	SkillEffect[SkillConst_default.SP_SOULCURSE] = { effectId: "ef_sp_soulcurse" };
+	SkillEffect[SkillConst_default.SP_SOULREVOLVE] = { effectId: "ef_sp_soulrevolve" };
+	SkillEffect[SkillConst_default.NV_HELPANGEL] = { effectId: "ef_nv_helpangel" };
 }));
 //#endregion
 //#region src/DB/Skills/SkillUnitConst.js
