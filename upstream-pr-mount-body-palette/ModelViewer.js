@@ -298970,7 +298970,8 @@ var init_DBManager = __esmMin((() => {
 		*/
 		static getBodyPalPath(id, pal, sex) {
 			if (id === 0 || !(id in PalNameTable)) return null;
-			return "data/palette/¸ö/" + PalNameTable[id] + "_" + SexTable[sex] + "_" + pal + ".pal";
+			const costume = String(PalNameTable[id]).startsWith("costume_1/") ? "_1" : "";
+			return "data/palette/¸ö/" + PalNameTable[id] + "_" + SexTable[sex] + "_" + pal + costume + ".pal";
 		}
 		/**
 		* @return {string} path to head sprite/action
@@ -303654,6 +303655,7 @@ function UpdateBody(job) {
 	let baseJob;
 	const transformationSeq = this._transformationSeq || 0;
 	if (job < 0) return;
+	this._bodyStyleJob = null;
 	const isTransformation = hasTransformation.call(this);
 	for (baseJob in MountTable) if (MountTable[baseJob] === job) {
 		this.costume = job;
@@ -303886,6 +303888,8 @@ function UpdateBodyStyle(look) {
 			}
 		}
 		path = this.isAdmin ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex, look, cashMountCostume);
+		const styled = PacketVerManager_default.value > 20141022 && look > 0 && look !== job && !cashMountCostume;
+		this._bodyStyleJob = styled ? look : null;
 		Entity = this.constructor;
 		Client.loadFile(path + ".act");
 		Client.loadFile(path + ".spr", function() {
@@ -303909,7 +303913,8 @@ function UpdateBodyPalette(pal) {
 		return;
 	}
 	if (this._job === -1) return;
-	this.files.body.pal = DB.getBodyPalPath(getEffectiveJob.call(this), this._bodypalette, this._sex);
+	const job = this._bodyStyleJob && !hasTransformation.call(this) ? this._bodyStyleJob : getEffectiveJob.call(this);
+	this.files.body.pal = DB.getBodyPalPath(job, this._bodypalette, this._sex);
 }
 /**
 * Update head
