@@ -77796,17 +77796,20 @@ var init_PacketLength = __esmMin((() => {
 }));
 //#endregion
 //#region \0vite/preload-helper.js
-var scriptRel, assetsURL, seen, __vitePreload;
+var scriptRel, assetsURL, seen, isCssPreloadUrl, __vitePreload;
 var init_preload_helper = __esmMin((() => {
 	scriptRel = "modulepreload";
 	assetsURL = function(dep, importerUrl) {
 		return new URL(dep, importerUrl).href;
 	};
 	seen = {};
+	isCssPreloadUrl = function isCssPreloadUrl(url) {
+		return url.pathname.endsWith(".css");
+	};
 	__vitePreload = function preload(baseModule, deps, importerUrl) {
 		let promise = Promise.resolve();
 		if (deps && deps.length > 0) {
-			const links = document.getElementsByTagName("link");
+			let preloadedHrefs;
 			const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
 			const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
 			function allSettled(promises) {
@@ -77819,28 +77822,37 @@ var init_preload_helper = __esmMin((() => {
 				}))));
 			}
 			function importMetaResolve(specifier) {
-				if (import.meta.resolve) return import.meta.resolve(specifier);
+				if (import.meta.resolve) return new URL(import.meta.resolve(specifier));
 				return new URL(
 					specifier,
 					/** #__KEEP__ */
 					import.meta.url
-				).href;
+				);
 			}
-			promise = allSettled(deps.map((dep) => {
-				dep = assetsURL(dep, importerUrl);
-				dep = importMetaResolve(dep);
-				if (dep in seen) return;
-				seen[dep] = true;
-				const isCss = dep.endsWith(".css");
-				for (let i = links.length - 1; i >= 0; i--) {
-					const link = links[i];
-					if (link.href === dep && (!isCss || link.rel === "stylesheet")) return;
+			promise = allSettled(deps.map((depString) => {
+				depString = assetsURL(depString, importerUrl);
+				const dep = importMetaResolve(depString);
+				if (dep.href in seen) return;
+				seen[dep.href] = true;
+				const isCss = isCssPreloadUrl(dep);
+				if (preloadedHrefs === void 0) {
+					preloadedHrefs = {
+						all: /* @__PURE__ */ new Set(),
+						styles: /* @__PURE__ */ new Set()
+					};
+					const links = document.getElementsByTagName("link");
+					for (let i = links.length - 1; i >= 0; i--) {
+						const link = links[i];
+						preloadedHrefs.all.add(link.href);
+						if (link.rel === "stylesheet") preloadedHrefs.styles.add(link.href);
+					}
 				}
+				if ((isCss ? preloadedHrefs.styles : preloadedHrefs.all).has(dep.href)) return;
 				const link = document.createElement("link");
 				link.rel = isCss ? "stylesheet" : scriptRel;
 				if (!isCss) link.as = "script";
 				link.crossOrigin = "";
-				link.href = dep;
+				link.href = dep.href;
 				if (cspNonce) link.setAttribute("nonce", cspNonce);
 				document.head.appendChild(link);
 				if (isCss) return new Promise((res, rej) => {
@@ -83378,14 +83390,25 @@ var init_WebGL = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/PostProcess.js
-var _effects, _activeEffects, _readFbo, _writeFbo, PostProcess;
+var _effects, _activeEffects, _external, _externalAt, _gl$4, _sceneDepth, _inPasses, _readFbo, _writeFbo, PostProcess;
 var init_PostProcess = __esmMin((() => {
 	init_Graphics();
 	_effects = [];
 	_activeEffects = [];
+	_external = [];
+	_externalAt = -1;
+	_gl$4 = null;
+	_sceneDepth = null;
+	_inPasses = false;
 	_readFbo = null;
 	_writeFbo = null;
 	PostProcess = class PostProcess {
+		/**
+		* What the frame being drawn looks like, for passes that need more than
+		* the image: { modelView, projection, light, lights, tick, near, far }.
+		* Set by MapRenderer before render().
+		*/
+		static scene = null;
 		/**
 		* Register module in pass priority order and init
 		* @param {ShaderModule} module - Post Process Modular effect.
@@ -83396,8 +83419,59 @@ var init_PostProcess = __esmMin((() => {
 				console.error("[PostProcess] Incorrect modular Post-Process format registered - please Fix");
 				return;
 			}
+			_gl$4 = gl;
 			_effects.push(module);
 			module.init(gl);
+		}
+		/**
+		* Register the external passes here, in the order they were added.
+		* @param {WebGLRenderingContext} gl - The WebGL context.
+		*/
+		static registerExternal(gl) {
+			_gl$4 = gl;
+			_externalAt = _effects.length;
+			_external.forEach((module) => {
+				_effects.push(module);
+				module.init(gl);
+			});
+		}
+		/**
+		* Add a pass from outside the renderer -- a client plugin. Same module
+		* format as register(); it runs where registerExternal was called, and
+		* stays across map changes until removeExternal.
+		* @param {ShaderModule} module
+		*/
+		static addExternal(module) {
+			if (!module || !module.program || !module.isActive || !module.init || !module.render || !module.clean) {
+				console.error("[PostProcess] Incorrect modular Post-Process format added - please Fix");
+				return;
+			}
+			if (_external.includes(module)) return;
+			_external.push(module);
+			if (_gl$4 && _externalAt >= 0) {
+				_effects.splice(_externalAt + _external.length - 1, 0, module);
+				module.init(_gl$4);
+			}
+		}
+		/**
+		* Remove a pass added with addExternal.
+		* @param {ShaderModule} module
+		*/
+		static removeExternal(module) {
+			_external = _external.filter((m) => m !== module);
+			const index = _effects.indexOf(module);
+			if (index >= 0) {
+				_effects.splice(index, 1);
+				if (_gl$4) module.clean(_gl$4);
+			}
+		}
+		/**
+		* The scene's depth buffer as a texture, for a pass that needs distance
+		* (fog, depth of field). Null outside the passes, or on WebGL 1.
+		* @return {WebGLTexture|null}
+		*/
+		static sceneDepth() {
+			return _sceneDepth;
 		}
 		/**
 		* Prepare the pipeline for the scene rendering.
@@ -83417,6 +83491,10 @@ var init_PostProcess = __esmMin((() => {
 		static render(gl) {
 			if (_activeEffects.length === 0) return;
 			this.swapBuffers();
+			_sceneDepth = _readFbo ? _readFbo.depthTexture || null : null;
+			_inPasses = true;
+			const depthTest = gl.isEnabled(gl.DEPTH_TEST);
+			gl.disable(gl.DEPTH_TEST);
 			for (let i = 0; i < _activeEffects.length; i++) {
 				const effect = _activeEffects[i];
 				const isLast = i === _activeEffects.length - 1;
@@ -83424,6 +83502,9 @@ var init_PostProcess = __esmMin((() => {
 				effect.render(gl, _readFbo.texture, targetFbo);
 				if (!isLast) this.swapBuffers();
 			}
+			_inPasses = false;
+			_sceneDepth = null;
+			if (depthTest) gl.enable(gl.DEPTH_TEST);
 		}
 		/**
 		* Set up the FBO and viewport for the next render pass
@@ -83438,7 +83519,7 @@ var init_PostProcess = __esmMin((() => {
 				gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 				gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 			}
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+			gl.clear(_inPasses ? gl.COLOR_BUFFER_BIT : gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		}
 		/**
 		* Cleans up bindings
@@ -83481,11 +83562,13 @@ var init_PostProcess = __esmMin((() => {
 			if (_readFbo) {
 				if (gl.isTexture(_readFbo.texture)) gl.deleteTexture(_readFbo.texture);
 				if (gl.isRenderbuffer(_readFbo.rbo)) gl.deleteRenderbuffer(_readFbo.rbo);
+				if (_readFbo.depthTexture && gl.isTexture(_readFbo.depthTexture)) gl.deleteTexture(_readFbo.depthTexture);
 				if (gl.isFramebuffer(_readFbo.framebuffer)) gl.deleteFramebuffer(_readFbo.framebuffer);
 			}
 			if (_writeFbo) {
 				if (gl.isTexture(_writeFbo.texture)) gl.deleteTexture(_writeFbo.texture);
 				if (gl.isRenderbuffer(_writeFbo.rbo)) gl.deleteRenderbuffer(_writeFbo.rbo);
+				if (_writeFbo.depthTexture && gl.isTexture(_writeFbo.depthTexture)) gl.deleteTexture(_writeFbo.depthTexture);
 				if (gl.isFramebuffer(_writeFbo.framebuffer)) gl.deleteFramebuffer(_writeFbo.framebuffer);
 			}
 			_readFbo = null;
@@ -83511,14 +83594,17 @@ var init_PostProcess = __esmMin((() => {
 			_effects.forEach((module) => module.clean(gl));
 			_effects = [];
 			_activeEffects = [];
+			_externalAt = -1;
 			if (_readFbo) {
 				if (gl.isTexture(_readFbo.texture)) gl.deleteTexture(_readFbo.texture);
 				if (gl.isRenderbuffer(_readFbo.rbo)) gl.deleteRenderbuffer(_readFbo.rbo);
+				if (_readFbo.depthTexture && gl.isTexture(_readFbo.depthTexture)) gl.deleteTexture(_readFbo.depthTexture);
 				if (gl.isFramebuffer(_readFbo.framebuffer)) gl.deleteFramebuffer(_readFbo.framebuffer);
 			}
 			if (_writeFbo) {
 				if (gl.isTexture(_writeFbo.texture)) gl.deleteTexture(_writeFbo.texture);
 				if (gl.isRenderbuffer(_writeFbo.rbo)) gl.deleteRenderbuffer(_writeFbo.rbo);
+				if (_writeFbo.depthTexture && gl.isTexture(_writeFbo.depthTexture)) gl.deleteTexture(_writeFbo.depthTexture);
 				if (gl.isFramebuffer(_writeFbo.framebuffer)) gl.deleteFramebuffer(_writeFbo.framebuffer);
 			}
 			_readFbo = null;
@@ -83558,6 +83644,7 @@ var init_PostProcess = __esmMin((() => {
 				if (oldfbo) {
 					if (gl.isTexture(oldfbo.texture)) gl.deleteTexture(oldfbo.texture);
 					if (gl.isRenderbuffer(oldfbo.rbo)) gl.deleteRenderbuffer(oldfbo.rbo);
+					if (oldfbo.depthTexture && gl.isTexture(oldfbo.depthTexture)) gl.deleteTexture(oldfbo.depthTexture);
 					if (gl.isFramebuffer(oldfbo.framebuffer)) gl.deleteFramebuffer(oldfbo.framebuffer);
 				}
 				const fbo = gl.createFramebuffer();
@@ -83570,10 +83657,23 @@ var init_PostProcess = __esmMin((() => {
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 				gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-				const rbo = gl.createRenderbuffer();
-				gl.bindRenderbuffer(gl.RENDERBUFFER, rbo);
-				gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
-				gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, rbo);
+				let rbo = null;
+				let depthTexture = null;
+				if (typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext) {
+					depthTexture = gl.createTexture();
+					gl.bindTexture(gl.TEXTURE_2D, depthTexture);
+					gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, width, height, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+					gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+					gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, depthTexture, 0);
+				} else {
+					rbo = gl.createRenderbuffer();
+					gl.bindRenderbuffer(gl.RENDERBUFFER, rbo);
+					gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+					gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, rbo);
+				}
 				const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
 				if (status !== gl.FRAMEBUFFER_COMPLETE) throw new Error("WebGL::createFramebuffer() - Incomplete Framebuffer! Status: " + status);
 				gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -83583,6 +83683,7 @@ var init_PostProcess = __esmMin((() => {
 					framebuffer: fbo,
 					texture,
 					rbo,
+					depthTexture,
 					width,
 					height
 				};
@@ -207032,11 +207133,13 @@ var init_Map = __esmMin((() => {
 		*/
 		lightmap: true,
 		/**
-		* Posterize lightmap ?
+		* How the map's baked light is drawn: 0 posterized into 16 steps, as the
+		* original client does (visible bands across lit floors); 1 smooth;
+		* 2 smooth with a slight gamma curve.
 		*
-		* Toggle using "/smoothlight" in the chatbox
+		* Set in Graphics Settings, or cycle with "/smoothlight" in the chatbox.
 		*/
-		smoothlight: 0,
+		smoothlight: 1,
 		/**
 		* Display effects ?
 		*
@@ -207318,6 +207421,19 @@ function getShadowFactor(x, y) {
 	for (y = -3; y < 3; ++y) for (x = -3; x < 3; ++x) factor += _shadowMap[_x + x + (_y + y) * _width * 8];
 	return factor / 36 / 255;
 }
+/**
+* Export
+*/
+/**
+* The ground's texture atlas and lightmap, for things drawn on the ground
+* that should take its colour and its light (MapHooks).
+*/
+function textures() {
+	return {
+		atlas: _textureAtlas,
+		lightmap: _lightmap
+	};
+}
 var procCanvas$2, procCtx$2, _program$26, _buffer$19, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
 var init_Ground = __esmMin((() => {
 	init_WebGL();
@@ -207340,7 +207456,139 @@ var init_Ground = __esmMin((() => {
 		init: init$12,
 		free: free$7,
 		render: render$13,
-		getShadowFactor
+		getShadowFactor,
+		textures
+	};
+}));
+//#endregion
+//#region src/Renderer/MapHooks.js
+function fail$1(hook, what, error) {
+	console.error(`[MapHooks] ${hook.name || "a hook"} failed in ${what}, and is switched off:`, error);
+	remove$1(hook);
+}
+function call(hook, what, ...args) {
+	try {
+		return hook[what](...args);
+	} catch (error) {
+		fail$1(hook, what, error);
+		return;
+	}
+}
+function remove$1(hook) {
+	const index = _hooks$1.indexOf(hook);
+	if (index < 0) return;
+	_hooks$1.splice(index, 1);
+	if (_map$1 && typeof hook.free === "function") try {
+		hook.free(_gl$3);
+	} catch (error) {
+		console.error(`[MapHooks] ${hook.name || "a hook"} failed to free:`, error);
+	}
+}
+/**
+* Add a hook. If a map is up, its init runs now. Returns a function that
+* takes it out again (and frees it).
+*/
+function register$1(hook) {
+	if (!hook || typeof hook !== "object") throw new Error("MapHooks.register takes an object");
+	_hooks$1.push(hook);
+	if (_map$1 && typeof hook.init === "function") call(hook, "init", _gl$3, _map$1);
+	return () => remove$1(hook);
+}
+/** The map's ground is ready: init every hook. */
+function mapReady(gl, map) {
+	_gl$3 = gl;
+	_map$1 = map;
+	for (const hook of _hooks$1.slice()) if (typeof hook.init === "function") call(hook, "init", gl, map);
+}
+/** The map is going away: free every hook. */
+function mapFree(gl) {
+	if (!_map$1) return;
+	for (const hook of _hooks$1.slice()) if (typeof hook.free === "function") try {
+		hook.free(gl);
+	} catch (error) {
+		console.error(`[MapHooks] ${hook.name || "a hook"} failed to free:`, error);
+	}
+	_map$1 = null;
+}
+function modelKey(name) {
+	return String(name).replace(/\\/g, "/").replace(/^data\/model\//i, "").toLowerCase();
+}
+/** Every model some hook draws itself, for the map loader. */
+function modelNames() {
+	const names = /* @__PURE__ */ new Set();
+	for (const hook of _hooks$1) if (Array.isArray(hook.replacesModels)) hook.replacesModels.forEach((name) => names.add(modelKey(name)));
+	return Array.from(names);
+}
+/** The map's replaced models are loaded: each hook gets its own. */
+function modelsReady(gl, list) {
+	for (const hook of _hooks$1.slice()) {
+		if (typeof hook.models !== "function" || !Array.isArray(hook.replacesModels)) continue;
+		const mine = new Set(hook.replacesModels.map(modelKey));
+		const models = list.filter((model) => mine.has(model.name));
+		if (models.length) call(hook, "models", gl, models);
+	}
+}
+/** Run a stage. For 'water', only the hooks that replace it. */
+function stage(name, ctx) {
+	for (const hook of _hooks$1.slice()) {
+		if (typeof hook.render !== "function") continue;
+		const replacing = Array.isArray(hook.replaces) && hook.replaces.includes(name);
+		if (name === "water" ? replacing : true) call(hook, "render", name, ctx);
+	}
+}
+/** Whether some hook draws `name` in the client's place. */
+function replaces(name) {
+	return _hooks$1.some((hook) => Array.isArray(hook.replaces) && hook.replaces.includes(name));
+}
+function rgb(value) {
+	return Array.isArray(value) || ArrayBuffer.isView(value) ? value.length === 3 && Array.from(value).every((v) => Number.isFinite(v)) : false;
+}
+/**
+* The light to draw with: the map's, or the last hook's that gives one.
+* Direction and opacity always stay the map's.
+*/
+function light(mapLight) {
+	if (!mapLight) return mapLight;
+	let over = null;
+	for (const hook of _hooks$1.slice()) if (typeof hook.light === "function") {
+		const value = call(hook, "light", mapLight);
+		if (value && typeof value === "object") over = value;
+	}
+	if (!over) return mapLight;
+	const ambient = rgb(over.ambient) ? over.ambient : mapLight.ambient;
+	const diffuse = rgb(over.diffuse) ? over.diffuse : mapLight.diffuse;
+	for (let i = 0; i < 3; i++) {
+		_lit.ambient[i] = ambient[i];
+		_lit.diffuse[i] = diffuse[i];
+		_lit.env[i] = 1 - (1 - Math.min(1, diffuse[i])) * (1 - Math.min(1, ambient[i]));
+	}
+	if (_litFor !== mapLight) {
+		_litFor = mapLight;
+		_litView = Object.assign(Object.create(mapLight), _lit);
+	}
+	return _litView;
+}
+var _hooks$1, _gl$3, _map$1, _lit, _litFor, _litView, MapHooks_default;
+var init_MapHooks = __esmMin((() => {
+	_hooks$1 = [];
+	_gl$3 = null;
+	_map$1 = null;
+	_lit = {
+		ambient: /* @__PURE__ */ new Float32Array(3),
+		diffuse: /* @__PURE__ */ new Float32Array(3),
+		env: /* @__PURE__ */ new Float32Array(3)
+	};
+	_litFor = null;
+	_litView = null;
+	MapHooks_default = {
+		register: register$1,
+		mapReady,
+		mapFree,
+		stage,
+		replaces,
+		light,
+		modelNames,
+		modelsReady
 	};
 }));
 //#endregion
@@ -207853,6 +208101,28 @@ function isSubmerged(x, y) {
 function hasWater() {
 	return _vertCount > 0;
 }
+/**
+* Export
+*/
+/**
+* The water as the client has it, for a hook that draws water in its place
+* (MapHooks): the mesh (x, y, z, u, v per vertex), the 32 animation frames,
+* and the map's wave settings. Null with no water.
+*/
+function state() {
+	if (!_vertCount) return null;
+	return {
+		buffer: _buffer$17,
+		vertCount: _vertCount,
+		textures: _textures$1,
+		level: _waterLevel,
+		waveHeight: _waveHeight,
+		waveSpeed: _waveSpeed,
+		wavePitch: _wavePitch,
+		animSpeed: _animSpeed,
+		opacity: _waterOpacity
+	};
+}
 var _program$24, _buffer$17, _vertCount, _textures$1, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, Water_default;
 var init_Water = __esmMin((() => {
 	init_WebGL();
@@ -207875,7 +208145,8 @@ var init_Water = __esmMin((() => {
 		free: free$6,
 		render: render$12,
 		isSubmerged,
-		hasWater
+		hasWater,
+		state
 	};
 }));
 //#endregion
@@ -208247,6 +208518,24 @@ function unbind(gl) {
 * @param {object} fog structure
 * @param {object} light structure
 */
+/**
+* Draw the models with someone else's program bound -- a hook's shadow map
+* (Renderer/MapHooks.js): the same buffer and batches, position and texture
+* coordinates only.
+*/
+function renderDepth(gl, program) {
+	if (!_buffer$16 || !_objects.length) return;
+	const attribute = program.attribute;
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
+	gl.enableVertexAttribArray(attribute.aPosition);
+	gl.enableVertexAttribArray(attribute.aTextureCoord);
+	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 36, 0);
+	gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 36, 24);
+	gl.activeTexture(gl.TEXTURE0);
+	drawMeshes(gl);
+	gl.disableVertexAttribArray(attribute.aPosition);
+	gl.disableVertexAttribArray(attribute.aTextureCoord);
+}
 function render$11(gl, modelView, projection, normalMat, fog, light) {
 	bind$1(gl, modelView, projection, fog, light);
 	OccluderFade.renderOpaque(gl, _program$23.uniform, () => drawMeshes(gl));
@@ -208307,6 +208596,7 @@ var init_Models = __esmMin((() => {
 		init: init$10,
 		render: render$11,
 		renderFaded: renderFaded$1,
+		renderDepth,
 		free: free$5
 	};
 }));
@@ -210158,7 +210448,7 @@ function Ot(e, t, n, r, i, a) {
 }
 function kt(e, t, n) {
 	let r = Z(e, n + 1);
-	for (let i = 0; i < n; i++) an(e, n) >= r ? (t[i] = 1, on(e, r, n - r, n)) : (t[i] = 0, on(e, 0, r, n));
+	for (let i = 0; i < n; i++) an(e, n) >= r ? (t[i] = 1, on$1(e, r, n - r, n)) : (t[i] = 0, on$1(e, 0, r, n));
 }
 function At(e, t, n, r, i, a, o) {
 	if (H(t)) {
@@ -210693,7 +210983,7 @@ function Z(e, t) {
 function an(e, t) {
 	return q ? q.bitsGet(e, t) : ct(e, t);
 }
-function on(e, t, n, r) {
+function on$1(e, t, n, r) {
 	q ? q.bitsRemove(e, t, n, r) : lt(e, t, n, r);
 }
 function sn(e, t, n, r) {
@@ -230681,6 +230971,44 @@ var init_Bank$1 = __esmMin((() => {
 	Bank_default = UIManager.addComponent(Bank);
 }));
 //#endregion
+//#region src/UI/ExitHooks.js
+/**
+* Be told when the player asks to leave. Returns a function that stops it.
+*/
+function on(listener) {
+	if (typeof listener !== "function") throw new Error("ExitHooks.on takes a function");
+	_listeners.push(listener);
+	return () => {
+		const index = _listeners.indexOf(listener);
+		if (index > -1) _listeners.splice(index, 1);
+	};
+}
+/**
+* The player chose to leave. Called by the window that owns the button,
+* before it acts. A listener that throws is reported and the rest still run.
+*/
+function emit(to, from) {
+	const event = Object.freeze({
+		to,
+		from
+	});
+	_listeners.slice().forEach((listener) => {
+		try {
+			listener(event);
+		} catch (error) {
+			console.error("[ExitHooks] a listener failed:", error);
+		}
+	});
+}
+var _listeners, ExitHooks_default;
+var init_ExitHooks = __esmMin((() => {
+	_listeners = [];
+	ExitHooks_default = {
+		on,
+		emit
+	};
+}));
+//#endregion
 //#region src/UI/Components/SoundOption/SoundOption.html?raw
 var SoundOption_default$2;
 var init_SoundOption$2 = __esmMin((() => {
@@ -230970,7 +231298,7 @@ var init_Context = __esmMin((() => {
 //#region src/UI/Components/GraphicsOption/GraphicsOption.html?raw
 var GraphicsOption_default$2;
 var init_GraphicsOption$2 = __esmMin((() => {
-	GraphicsOption_default$2 = "<div id=\"GraphicsOption\">\r\n	<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n		<div class=\"left\">\r\n			<button\r\n				class=\"base\"\r\n				data-background=\"basic_interface/sys_base_off.bmp\"\r\n				data-hover=\"basic_interface/sys_base_on.bmp\"\r\n			></button>\r\n			<span class=\"text\" data-text=\"1484\">Graphics Settings</span>\r\n		</div>\r\n		<div class=\"right\">\r\n			<button\r\n				class=\"base close\"\r\n				data-background=\"basic_interface/sys_close_off.bmp\"\r\n				data-hover=\"basic_interface/sys_close_on.bmp\"\r\n			></button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n\r\n	<div class=\"tabs-container\">\r\n		<div class=\"tabs\">\r\n			<button class=\"tab-button selected\" data-tab=\"basic\">Basic</button>\r\n			<button class=\"tab-button\" data-tab=\"advanced\">Advanced</button>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"panel\">\r\n		<div class=\"tab-content selected\" id=\"basic\">\r\n			<table>\r\n				<tr>\r\n					<td>Details</td>\r\n					<td style=\"display: inline-block; width: 260px\">\r\n						<input\r\n							class=\"details\"\r\n							type=\"range\"\r\n							value=\"100\"\r\n							max=\"100\"\r\n							min=\"25\"\r\n							step=\"5\"\r\n							style=\"width: 90%\"\r\n						/>\r\n					</td>\r\n				</tr>\r\n				<tr class=\"resolution\">\r\n					<td>Resolution</td>\r\n					<td>\r\n						<select class=\"screensize\">\r\n							<option value=\"650x480\">640 x 480</option>\r\n							<option value=\"800x600\">800 x 600</option>\r\n							<option value=\"1024x768\">1024 x 768</option>\r\n							<option value=\"1280x800\">1280 x 800</option>\r\n							<option value=\"1400x900\">1400 x 900</option>\r\n							<option value=\"1680x1050\">1680 x 1050</option>\r\n							<option value=\"full\">Full Screen</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>Cursor</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"cursor-option\" type=\"checkbox\" />\r\n							Show official cursor\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Limit</td>\r\n					<td>\r\n						<select class=\"fpslimit\">\r\n							<option value=\"-1\">Unlimited</option>\r\n							<option value=\"30\">30</option>\r\n							<option value=\"60\">60</option>\r\n							<option value=\"90\">90</option>\r\n							<option value=\"120\">120</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Display</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"fps\" type=\"checkbox\" />\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n		</div>\r\n\r\n		<div class=\"tab-content\" id=\"advanced\">\r\n			<table>\r\n				<tr>\r\n					<td title=\"Force nearest neighbor filtering for pixel-perfect sprite rendering\">\r\n						Pixel Perfect Sprites\r\n					</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"pixel-perfect\" type=\"checkbox\" />\r\n							Force nearest neighbor filtering\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Add a glowing bloom effect to bright areas\">Bloom</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"bloom\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"bloom-intensity\"\r\n								type=\"range\"\r\n								value=\"0.5\"\r\n								min=\"0.1\"\r\n								max=\"3.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Apply a blur effect to the screen\">Blur</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"blur\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Intensity:\r\n							<input\r\n								class=\"blur-intensity\"\r\n								type=\"range\"\r\n								value=\"3.0\"\r\n								min=\"2.0\"\r\n								max=\"10.0\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Area:\r\n							<input\r\n								class=\"blur-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"3.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Contrast Adaptive Sharpening for enhanced details\">Contr. Adapt. Sharp. (CAS)</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"casEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Contrast:\r\n							<input\r\n								class=\"casContrast\"\r\n								type=\"range\"\r\n								value=\"0.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Sharpening:\r\n							<input\r\n								class=\"casSharpening\"\r\n								type=\"range\"\r\n								value=\"1.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Fast Approximate Anti-Aliasing for smoother edges\">FXAA</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"fxaaEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Subpix:\r\n							<input\r\n								class=\"fxaaSubpix\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Threshold:\r\n							<input\r\n								class=\"fxaaEdgeThreshold\"\r\n								type=\"range\"\r\n								value=\"0.125\"\r\n								min=\"0.063\"\r\n								max=\"0.333\"\r\n								step=\"0.03\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Cartoon rendering effect for stylized visuals\">Cartoon</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"cartoonEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Power:\r\n							<input\r\n								class=\"cartoonPower\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"0.1\"\r\n								max=\"9.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Slope:\r\n							<input\r\n								class=\"cartoonEdgeSlope\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"1.5\"\r\n								max=\"5.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Increase color intensity and saturation\">Vibrance</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"vibranceEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"vibrance\"\r\n								type=\"range\"\r\n								value=\"0.15\"\r\n								min=\"-0.9\"\r\n								max=\"0.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Hide objects outside the viewing area, enable downsampling rendering and others to improve performance\"\r\n					>\r\n						Performance Mode\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"performanceMode\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Culling Area:\r\n							<input\r\n								class=\"view-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"4.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Make buildings and trees blocking the view of your character see-through (not in first person). Dither is cheaper, Alpha looks smoother.\"\r\n					>\r\n						See-through Occluders\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<select class=\"occluderFade\">\r\n								<option value=\"off\">Off</option>\r\n								<option value=\"dither\">Dither (fast)</option>\r\n								<option value=\"alpha\">Alpha (smooth)</option>\r\n							</select>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Opacity:\r\n							<input\r\n								class=\"occluderFadeOpacity\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"0.8\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Area:\r\n							<input\r\n								class=\"occluderFadeRadius\"\r\n								type=\"range\"\r\n								value=\"5.0\"\r\n								min=\"1.5\"\r\n								max=\"12.5\"\r\n								step=\"0.5\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n\r\n			<div class=\"reset-section\">\r\n				<button class=\"reset-button\">Reset to Default Values</button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	GraphicsOption_default$2 = "<div id=\"GraphicsOption\">\r\n	<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n		<div class=\"left\">\r\n			<button\r\n				class=\"base\"\r\n				data-background=\"basic_interface/sys_base_off.bmp\"\r\n				data-hover=\"basic_interface/sys_base_on.bmp\"\r\n			></button>\r\n			<span class=\"text\" data-text=\"1484\">Graphics Settings</span>\r\n		</div>\r\n		<div class=\"right\">\r\n			<button\r\n				class=\"base close\"\r\n				data-background=\"basic_interface/sys_close_off.bmp\"\r\n				data-hover=\"basic_interface/sys_close_on.bmp\"\r\n			></button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n\r\n	<div class=\"tabs-container\">\r\n		<div class=\"tabs\">\r\n			<button class=\"tab-button selected\" data-tab=\"basic\">Basic</button>\r\n			<button class=\"tab-button\" data-tab=\"advanced\">Advanced</button>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"panel\">\r\n		<div class=\"tab-content selected\" id=\"basic\">\r\n			<table>\r\n				<tr>\r\n					<td>Details</td>\r\n					<td style=\"display: inline-block; width: 260px\">\r\n						<input\r\n							class=\"details\"\r\n							type=\"range\"\r\n							value=\"100\"\r\n							max=\"100\"\r\n							min=\"25\"\r\n							step=\"5\"\r\n							style=\"width: 90%\"\r\n						/>\r\n					</td>\r\n				</tr>\r\n				<tr class=\"resolution\">\r\n					<td>Resolution</td>\r\n					<td>\r\n						<select class=\"screensize\">\r\n							<option value=\"650x480\">640 x 480</option>\r\n							<option value=\"800x600\">800 x 600</option>\r\n							<option value=\"1024x768\">1024 x 768</option>\r\n							<option value=\"1280x800\">1280 x 800</option>\r\n							<option value=\"1400x900\">1400 x 900</option>\r\n							<option value=\"1680x1050\">1680 x 1050</option>\r\n							<option value=\"full\">Full Screen</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>Cursor</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"cursor-option\" type=\"checkbox\" />\r\n							Show official cursor\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Limit</td>\r\n					<td>\r\n						<select class=\"fpslimit\">\r\n							<option value=\"-1\">Unlimited</option>\r\n							<option value=\"30\">30</option>\r\n							<option value=\"60\">60</option>\r\n							<option value=\"90\">90</option>\r\n							<option value=\"120\">120</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Display</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"fps\" type=\"checkbox\" />\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n		</div>\r\n\r\n		<div class=\"tab-content\" id=\"advanced\">\r\n			<table>\r\n				<tr>\r\n					<td title=\"Force nearest neighbor filtering for pixel-perfect sprite rendering\">\r\n						Pixel Perfect Sprites\r\n					</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"pixel-perfect\" type=\"checkbox\" />\r\n							Force nearest neighbor filtering\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Add a glowing bloom effect to bright areas\">Bloom</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"bloom\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"bloom-intensity\"\r\n								type=\"range\"\r\n								value=\"0.5\"\r\n								min=\"0.1\"\r\n								max=\"3.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"How the map's baked light is drawn. Original keeps the classic client's 16 visible steps.\">Lighting</td>\r\n					<td>\r\n						<select class=\"smoothlight\">\r\n							<option value=\"1\">Smooth</option>\r\n							<option value=\"2\">Smooth (gamma)</option>\r\n							<option value=\"0\">Original (banded)</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Apply a blur effect to the screen\">Blur</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"blur\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Intensity:\r\n							<input\r\n								class=\"blur-intensity\"\r\n								type=\"range\"\r\n								value=\"3.0\"\r\n								min=\"2.0\"\r\n								max=\"10.0\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Area:\r\n							<input\r\n								class=\"blur-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"3.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Contrast Adaptive Sharpening for enhanced details\">Contr. Adapt. Sharp. (CAS)</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"casEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Contrast:\r\n							<input\r\n								class=\"casContrast\"\r\n								type=\"range\"\r\n								value=\"0.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Sharpening:\r\n							<input\r\n								class=\"casSharpening\"\r\n								type=\"range\"\r\n								value=\"1.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Fast Approximate Anti-Aliasing for smoother edges\">FXAA</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"fxaaEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Subpix:\r\n							<input\r\n								class=\"fxaaSubpix\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Threshold:\r\n							<input\r\n								class=\"fxaaEdgeThreshold\"\r\n								type=\"range\"\r\n								value=\"0.125\"\r\n								min=\"0.063\"\r\n								max=\"0.333\"\r\n								step=\"0.03\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Cartoon rendering effect for stylized visuals\">Cartoon</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"cartoonEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Power:\r\n							<input\r\n								class=\"cartoonPower\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"0.1\"\r\n								max=\"9.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Slope:\r\n							<input\r\n								class=\"cartoonEdgeSlope\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"1.5\"\r\n								max=\"5.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Increase color intensity and saturation\">Vibrance</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"vibranceEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"vibrance\"\r\n								type=\"range\"\r\n								value=\"0.15\"\r\n								min=\"-0.9\"\r\n								max=\"0.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Hide objects outside the viewing area, enable downsampling rendering and others to improve performance\"\r\n					>\r\n						Performance Mode\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"performanceMode\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Culling Area:\r\n							<input\r\n								class=\"view-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"4.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Make buildings and trees blocking the view of your character see-through (not in first person). Dither is cheaper, Alpha looks smoother.\"\r\n					>\r\n						See-through Occluders\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<select class=\"occluderFade\">\r\n								<option value=\"off\">Off</option>\r\n								<option value=\"dither\">Dither (fast)</option>\r\n								<option value=\"alpha\">Alpha (smooth)</option>\r\n							</select>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Opacity:\r\n							<input\r\n								class=\"occluderFadeOpacity\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"0.8\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Area:\r\n							<input\r\n								class=\"occluderFadeRadius\"\r\n								type=\"range\"\r\n								value=\"5.0\"\r\n								min=\"1.5\"\r\n								max=\"12.5\"\r\n								step=\"0.5\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n\r\n			<div class=\"reset-section\">\r\n				<button class=\"reset-button\">Reset to Default Values</button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/GraphicsOption/GraphicsOption.css?raw
@@ -231037,6 +231365,14 @@ function onToggleBloom() {
 function onUpdateBloomIntensity() {
 	GraphicsSettings.bloomIntensity = parseFloat(this.value);
 	GraphicsSettings.save();
+}
+/**
+* Lighting: the same setting /smoothlight cycles. The ground shader reads it
+* every frame, so it applies at once.
+*/
+function onUpdateSmoothLight() {
+	Map_default.smoothlight = parseInt(this.value, 10) || 0;
+	Map_default.save();
 }
 function onToggleBlur() {
 	GraphicsSettings.blur = !!this.checked;
@@ -231175,6 +231511,7 @@ var init_GraphicsOption = __esmMin((() => {
 	init_Context();
 	init_Preferences$1();
 	init_Graphics();
+	init_Map();
 	init_Renderer();
 	init_UIManager();
 	init_GUIComponent();
@@ -231227,6 +231564,7 @@ var init_GraphicsOption = __esmMin((() => {
 		bindChange(".pixel-perfect", onTogglePixelPerfect);
 		bindChange(".bloom", onToggleBloom);
 		bindChange(".bloom-intensity", onUpdateBloomIntensity);
+		bindChange(".smoothlight", onUpdateSmoothLight);
 		bindChange(".blur", onToggleBlur);
 		bindChange(".blur-intensity", onUpdateBlurIntensity);
 		bindChange(".blur-area", onUpdateBlurArea);
@@ -231263,6 +231601,7 @@ var init_GraphicsOption = __esmMin((() => {
 		root.querySelector(".pixel-perfect").checked = GraphicsSettings.pixelPerfectSprites;
 		root.querySelector(".bloom").checked = GraphicsSettings.bloom;
 		root.querySelector(".bloom-intensity").value = GraphicsSettings.bloomIntensity;
+		root.querySelector(".smoothlight").value = String(Map_default.smoothlight);
 		root.querySelector(".blur").checked = GraphicsSettings.blur;
 		root.querySelector(".blur-area").value = GraphicsSettings.blurArea;
 		root.querySelector(".blur-intensity").value = GraphicsSettings.blurIntensity;
@@ -231701,6 +232040,7 @@ var init_Escape = __esmMin((() => {
 	init_Renderer();
 	init_UIManager();
 	init_GUIComponent();
+	init_ExitHooks();
 	init_SoundOption();
 	init_GraphicsOption();
 	init_ShortCutOption();
@@ -231740,10 +232080,12 @@ var init_Escape = __esmMin((() => {
 			Escape.onReturnSavePointRequest();
 		});
 		root.querySelector(".charselect").addEventListener("click", function() {
+			ExitHooks_default.emit("charSelect", "escape");
 			Escape.onCharSelectionRequest();
 		});
 		root.querySelector(".hotkey").addEventListener("click", onToggleShortcutUI);
 		root.querySelector(".exit").addEventListener("click", function() {
+			ExitHooks_default.emit("login", "escape");
 			Escape.onExitRequest();
 		});
 		root.querySelector(".cancel").addEventListener("click", function() {
@@ -257053,7 +257395,7 @@ function setupUIHide() {
 		const deltaX = Math.abs(event.clientX - lastMouseX);
 		const deltaY = Math.abs(event.clientY - lastMouseY);
 		if ((deltaX > 5 || deltaY > 5) && Controls_default.joyAutoHide) {
-			hide();
+			hide$1();
 			JoystickInputService_default.active = false;
 		}
 		lastMouseX = event.clientX;
@@ -257150,14 +257492,14 @@ function updateVisuals(buttons) {
 		if (active) active.classList.add("active");
 	}
 }
-function show() {
+function show$1() {
 	if (ui && !_isVisible()) ui.show();
 }
-function hide() {
+function hide$1() {
 	if (ui && _isVisible()) ui.hide();
 }
 function dispose() {
-	hide();
+	hide$1();
 	if (_mouseMoveHandler) {
 		document.removeEventListener("mousemove", _mouseMoveHandler);
 		_mouseMoveHandler = null;
@@ -257186,8 +257528,8 @@ var init_JoystickUIRenderer = __esmMin((() => {
 		updateByIndex,
 		updateSetIndicator,
 		updateVisuals,
-		show,
-		hide
+		show: show$1,
+		hide: hide$1
 	};
 }));
 //#endregion
@@ -258978,6 +259320,7 @@ function onWorldComplete(data) {
 	this.water = data.water;
 	this.sounds = data.sound;
 	this.effects = data.effect;
+	this.lights = data.lights || [];
 	this.diffuse = new Float32Array(this.light.diffuse);
 	this.light.env = new Float32Array([
 		1 - (1 - this.light.diffuse[0]) * (1 - this.light.ambient[0]),
@@ -258999,6 +259342,34 @@ function onWorldComplete(data) {
 	this.light.direction[1] = -dirVec[1];
 	this.light.direction[2] = -dirVec[2];
 }
+function hookContext(gl, modelView, projection, normalMat, fog, light, tick) {
+	const ctx = _hookContext;
+	ctx.gl = gl;
+	ctx.modelView = modelView;
+	ctx.projection = projection;
+	ctx.normalMat = normalMat;
+	ctx.fog = fog;
+	ctx.light = light;
+	ctx.tick = tick;
+	ctx.lightmap = Map_default.lightmap;
+	ctx.player = SessionStorage_default.Entity ? SessionStorage_default.Entity.position : null;
+	if (!ctx.drawScene) {
+		ctx.drawScene = (view, proj) => {
+			const depthTest = gl.isEnabled(gl.DEPTH_TEST);
+			gl.enable(gl.DEPTH_TEST);
+			gl.depthMask(true);
+			Sky_default.render(gl, view, proj, ctx.fog, ctx.tick);
+			Ground_default.render(gl, view, proj, ctx.normalMat, ctx.fog, ctx.light);
+			Models_default.render(gl, view, proj, ctx.normalMat, ctx.fog, ctx.light);
+			AnimatedModels_default.render(gl, view, proj, ctx.normalMat, ctx.fog, ctx.light, ctx.tick);
+			if (!depthTest) gl.disable(gl.DEPTH_TEST);
+		};
+		ctx.drawModelsDepth = (program) => Models_default.renderDepth(gl, program);
+		ctx.restoreTarget = () => PostProcess.prepare(gl);
+		ctx.createProgram = (vertex, fragment) => WebGL_default.createShaderProgram(gl, vertex, fragment);
+	}
+	return ctx;
+}
 /**
 * Received ground data from Thread
 */
@@ -259008,6 +259379,40 @@ function onGroundComplete(data) {
 	this.water.vertCount = data.waterVertCount;
 	Ground_default.init(gl, data);
 	Water_default.init(gl, this.water);
+	const asFloat = (value) => new Float32Array(Int32Array.of(value).buffer)[0];
+	this.lights.forEach((light) => {
+		light.world = [
+			light.pos[0] + data.width,
+			light.pos[1],
+			light.pos[2] + data.height
+		];
+		const color = light.color.map((v) => Math.abs(v) > 65535 ? asFloat(v) : v);
+		const scale = Math.max(color[0], color[1], color[2]) > 1 ? 255 : 1;
+		light.rgb = color.map((v) => Math.min(Math.max(v / scale, 0), 1));
+		light.radius = light.range * .2;
+	});
+	MapHooks_default.mapReady(gl, {
+		name: stripMapExtension(this.currentMap),
+		width: data.width,
+		height: data.height,
+		cellTexture: data.cellTexture,
+		cellHeights: data.cellHeights,
+		cellUv: data.cellUv,
+		cellAtlas: data.cellAtlas,
+		cellLight: data.cellLight,
+		textureNames: data.textureNames || [],
+		textureUrls: Array.isArray(data.textures) ? data.textures.slice() : [],
+		groundTextures: () => Ground_default.textures(),
+		water: () => Water_default.state(),
+		lights: this.lights,
+		altitude: {
+			TYPE: Altitude.TYPE,
+			width: () => Altitude.width,
+			height: () => Altitude.height,
+			cellType: (x, y) => Altitude.getCellType(x, y),
+			cellHeight: (x, y) => Altitude.getCellHeight(x, y)
+		}
+	});
 	this.sounds.forEach((sound) => {
 		const tmp = -sound.pos[1];
 		sound.pos[0] += data.width;
@@ -259057,6 +259462,7 @@ function registerPostProcessModules(gl) {
 	if (WebGL_default.detectBadWebGL(gl)) GraphicsSettings.bloom = false;
 	else PostProcess.register(Bloom, gl);
 	PostProcess.register(GaussianBlur, gl);
+	PostProcess.registerExternal(gl);
 	PostProcess.register(FXAA, gl);
 	PostProcess.register(CAS, gl);
 	PostProcess.register(Cartoon, gl);
@@ -259102,7 +259508,7 @@ function onMapComplete(success, error) {
 		Mouse.intersect = true;
 	});
 }
-var mat4$11, _pos$6, MapRenderer;
+var mat4$11, _pos$6, MapRenderer, _hookContext;
 var init_MapRenderer = __esmMin((() => {
 	init_Thread();
 	init_SoundManager();
@@ -259120,6 +259526,7 @@ var init_MapRenderer = __esmMin((() => {
 	init_GridSelector();
 	init_Ground();
 	init_Altitude();
+	init_MapHooks();
 	init_Water();
 	init_Models();
 	init_AnimatedModels();
@@ -259168,6 +259575,7 @@ var init_MapRenderer = __esmMin((() => {
 		* @var {array} Sounds object list
 		*/
 		static sounds = null;
+		static lights = [];
 		/**
 		* @var {array} Effects object list
 		*/
@@ -259219,8 +259627,10 @@ var init_MapRenderer = __esmMin((() => {
 					Thread.hook("MAP_ALTITUDE", onAltitudeComplete.bind(MapRenderer));
 					Thread.hook("MAP_MODELS", onModelsComplete.bind(MapRenderer));
 					Thread.hook("MAP_ANIMATED_MODEL", onAnimatedModelComplete.bind(MapRenderer));
+					Thread.hook("MAP_REPLACED_MODELS", (models) => MapHooks_default.modelsReady(Renderer.getContext(), models));
 					MapRenderer.free();
 					Renderer.remove();
+					Thread.send("MAP_REPLACE_MODELS", MapHooks_default.modelNames());
 					Thread.send("LOAD_MAP", filename, onMapComplete.bind(MapRenderer));
 				});
 				return;
@@ -259248,6 +259658,7 @@ var init_MapRenderer = __esmMin((() => {
 			GridSelector_default.free(gl);
 			Sounds_default.free();
 			Effects_default.free();
+			MapHooks_default.mapFree(gl);
 			Ground_default.free(gl);
 			Water_default.free(gl);
 			Models_default.free(gl);
@@ -259264,6 +259675,7 @@ var init_MapRenderer = __esmMin((() => {
 			this.light = null;
 			this.water = null;
 			this.sounds = null;
+			this.lights = [];
 			this.effects = null;
 		}
 		/**
@@ -259276,7 +259688,7 @@ var init_MapRenderer = __esmMin((() => {
 			PostProcess.prepare(gl);
 			const fog = MapRenderer.fog;
 			fog.use = Map_default.fog;
-			const light = MapRenderer.light;
+			const light = MapHooks_default.light(MapRenderer.light);
 			let x, y;
 			Mouse.world.x = -1;
 			Mouse.world.y = -1;
@@ -259285,7 +259697,10 @@ var init_MapRenderer = __esmMin((() => {
 			const modelView = Camera.modelView;
 			const projection = Camera.projection;
 			const normalMat = Camera.normalMat;
+			const hooks = hookContext(gl, modelView, projection, normalMat, fog, light, tick);
+			MapHooks_default.stage("begin", hooks);
 			Ground_default.render(gl, modelView, projection, normalMat, fog, light);
+			MapHooks_default.stage("ground", hooks);
 			Effects_default.spam(SessionStorage_default.Entity.position, tick);
 			if (Mouse.intersect && Altitude.intersect(modelView, projection, _pos$6)) {
 				x = _pos$6[0];
@@ -259313,11 +259728,13 @@ var init_MapRenderer = __esmMin((() => {
 			Models_default.render(gl, modelView, projection, normalMat, fog, light);
 			AnimatedModels_default.render(gl, modelView, projection, normalMat, fog, light, tick);
 			GR2ModelRenderer_default.render(gl, modelView, projection, normalMat, fog, light, tick);
+			MapHooks_default.stage("models", hooks);
 			ScreenEffectManager.render(gl, modelView, projection, fog, tick, true);
 			EffectManager.render(gl, modelView, projection, fog, tick, true);
 			EntityManager.render(gl, modelView, projection, fog, false);
 			EntityManager.renderWaterDepth(gl, modelView, projection, fog);
-			Water_default.render(gl, modelView, projection, fog, light, tick);
+			if (MapHooks_default.replaces("water")) MapHooks_default.stage("water", hooks);
+			else Water_default.render(gl, modelView, projection, fog, light, tick);
 			Models_default.renderFaded(gl, modelView, projection, normalMat, fog, light);
 			AnimatedModels_default.renderFaded(gl, modelView, projection, normalMat, fog, light);
 			EffectManager.render(gl, modelView, projection, fog, tick, false);
@@ -259331,6 +259748,16 @@ var init_MapRenderer = __esmMin((() => {
 				EntityManager.setOverEntity(entity);
 			}
 			MemoryManager.clean(gl, tick);
+			MapHooks_default.stage("end", hooks);
+			PostProcess.scene = {
+				modelView,
+				projection,
+				light,
+				lights: MapRenderer.lights,
+				tick,
+				near: 1,
+				far: 1e3
+			};
 			PostProcess.render(gl);
 		}
 		/**
@@ -259338,6 +259765,7 @@ var init_MapRenderer = __esmMin((() => {
 		*/
 		static onLoad() {}
 	};
+	_hookContext = {};
 }));
 //#endregion
 //#region src/Renderer/Camera.js
@@ -302784,9 +303212,69 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 	}
 	loadNext(0);
 }
-function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isResourceTable = false) {
+/**
+* customLuaTables: tables a mod adds rows to, instead of replacing the whole
+* file. `Configs.get('customLuaTables')` is an object of lists:
+*
+*   accessory: [[idfile, namefile], ...]   headgear looks   (accessoryid / accname)
+*   robe:      [[idfile, namefile], ...]   garment looks    (spriterobeid / spriterobename)
+*   monster:   [[idfile, namefile], ...]   monster sprites  (npcidentity / jobname)
+*   weapon:    [file, ...]                 weapon looks     (weapontable)
+*
+* Each is loaded after the base table, in order, and merged over it by id --
+* the counterpart of customItemInfo and customQuestInfo for the view tables.
+*
+* @param {string} key
+* @return {Array}
+*/
+function customLuaTables(key) {
+	const all = Configs.get("customLuaTables", {});
+	const list = all && typeof all === "object" ? all[key] : null;
+	return Array.isArray(list) ? list : [];
+}
+/**
+* loadLuaTable, then each customLuaTables[key] pair after it.
+*
+* A mod's rows must land after the base's, or the base would overwrite them,
+* so each table starts when the one before it has been parsed or has failed.
+* `onEnd` waits for the whole chain: loadLuaTable on its own calls onEnd as
+* soon as it has *started*, which let the game place the player before a
+* mod's headgear row existed -- the look was looked up, not found, and never
+* shown. A table that fails says so in the console and the chain goes on.
+*/
+function loadLuaTableWithCustom(file_list, table_name, key, callback, onEnd, contextFunc, isResourceTable = false) {
+	const custom = customLuaTables(key);
+	const next = (index) => {
+		if (index >= custom.length) {
+			onEnd.call();
+			return;
+		}
+		const advance = once(() => next(index + 1));
+		loadLuaTable(custom[index], table_name, function(json) {
+			callback.call(null, json);
+			advance();
+		}, function() {}, null, isResourceTable, advance);
+	};
+	const start = once(() => next(0));
+	loadLuaTable(file_list, table_name, function(json) {
+		callback.call(null, json);
+		start();
+	}, function() {}, contextFunc, isResourceTable, start);
+}
+/** fn, callable once; later calls do nothing. */
+function once(fn) {
+	let called = false;
+	return (...args) => {
+		if (!called) {
+			called = true;
+			fn(...args);
+		}
+	};
+}
+function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isResourceTable = false, onError = null) {
 	const id_filename = file_list[0];
 	const value_table_filename = file_list[1];
+	const fail = typeof onError === "function" ? onError : function() {};
 	try {
 		console.log("Loading file \"" + id_filename + "\"...");
 		Client.loadFile(id_filename, async function(file) {
@@ -302797,8 +303285,9 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 				loadValueTable();
 			} catch (hException) {
 				console.error(`(${id_filename}) error: `, hException);
+				fail(hException);
 			}
-		});
+		}, () => fail(/* @__PURE__ */ new Error(`${id_filename} not found`)));
 		function loadValueTable() {
 			console.log("Loading file \"" + value_table_filename + "\"...");
 			Client.loadFile(value_table_filename, async function(file) {
@@ -302809,8 +303298,9 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 					parseTable();
 				} catch (hException) {
 					console.error(`(${value_table_filename}) error: `, hException);
+					fail(hException);
 				}
-			});
+			}, () => fail(/* @__PURE__ */ new Error(`${value_table_filename} not found`)));
 		}
 		function parseTable() {
 			const table = {};
@@ -302849,6 +303339,7 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 		}
 	} catch (e) {
 		console.error("error: ", e);
+		fail(e);
 	} finally {
 		onEnd.call();
 	}
@@ -303410,27 +303901,30 @@ var init_DBManager = __esmMin((() => {
 					iteminfoNames = iteminfoNames.concat(getSystemAliases("System/itemInfo.lub"));
 					tryLoadLuaAliases(loadItemInfo, iteminfoNames, null, onLoad());
 				}
-				loadLuaTable([DB.LUA_PATH + "datainfo/accessoryid.lub", DB.LUA_PATH + "datainfo/accname.lub"], "AccNameTable", function(json) {
+				loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/accessoryid.lub", DB.LUA_PATH + "datainfo/accname.lub"], "AccNameTable", "accessory", function(json) {
 					Object.assign(HatTable_default, json);
 				}, onLoad(), null, true);
-				loadLuaTable([DB.LUA_PATH + "datainfo/spriterobeid.lub", DB.LUA_PATH + "datainfo/spriterobename.lub"], "RobeNameTable", function(json) {
+				loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/spriterobeid.lub", DB.LUA_PATH + "datainfo/spriterobename.lub"], "RobeNameTable", "robe", function(json) {
 					Object.assign(RobeTable_default, json);
 				}, onLoad(), null, true);
-				if (PacketVerManager_default.value >= 20141008) loadLuaTable([DB.LUA_PATH + "datainfo/npcidentity.lub", DB.LUA_PATH + "datainfo/jobname.lub"], "JobNameTable", function(json) {
+				if (PacketVerManager_default.value >= 20141008) loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/npcidentity.lub", DB.LUA_PATH + "datainfo/jobname.lub"], "JobNameTable", "monster", function(json) {
 					Object.assign(MonsterTable_default, json);
 				}, onLoad(), function() {
 					loadPetInfo(DB.LUA_PATH + "datainfo/petinfo.lub", null, function() {
 						tryLoadLuaAliases(loadPetEvolution, getSystemAliases("System/PetEvolutionCln.lub"), null, onLoad());
 					});
 				});
-				else loadLuaTable([DB.LUA_PATH + "datainfo/npcidentity.lub", DB.LUA_PATH + "datainfo/jobname.lub"], "JobNameTable", function(json) {
+				else loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/npcidentity.lub", DB.LUA_PATH + "datainfo/jobname.lub"], "JobNameTable", "monster", function(json) {
 					Object.assign(MonsterTable_default, json);
 				}, onLoad());
 				loadLuaTable([DB.LUA_PATH + "datainfo/enumvar.lub", DB.LUA_PATH + "datainfo/addrandomoptionnametable.lub"], "NameTable_VAR", function(json) {
 					Object.assign(ItemRandomOptionTable_default, json);
 				}, onLoad());
 				loadItemDBTable(DB.LUA_PATH + "ItemDBNameTbl.lub", null, onLoad());
-				loadWeaponTable(DB.LUA_PATH + "datainfo/weapontable.lub", null, onLoad());
+				const onWeaponEnd = onLoad();
+				const customWeapons = customLuaTables("weapon");
+				const loadCustomWeapon = (index = 0) => index < customWeapons.length ? loadWeaponTable(customWeapons[index], null, () => loadCustomWeapon(index + 1)) : onWeaponEnd();
+				loadWeaponTable(DB.LUA_PATH + "datainfo/weapontable.lub", null, () => loadCustomWeapon());
 				if (PacketVerManager_default.value >= 20170208) loadTitleTable(DB.LUA_PATH + "datainfo/titletable.lub", null, onLoad());
 				const onSkillEnd = onLoad();
 				loadLuaValue(DB.LUA_PATH + "skillinfoz/skillid.lub", "SKID", (json) => {
@@ -338021,6 +338515,143 @@ var init_CharSelect$2 = __esmMin((() => {
 	CharSelect_default$1 = ":host {\r\n	width: 576px;\r\n	height: 342px;\r\n}\r\n\r\n#charselect {\r\n	position: absolute;\r\n	width: 576px;\r\n	height: 342px;\r\n}\r\n\r\n/** Box **/\r\n#charselect .box_select {\r\n	position: absolute;\r\n	width: 139px;\r\n	height: 144px;\r\n	top: 40px;\r\n	margin-left: -5px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#charselect canvas {\r\n	position: absolute;\r\n	top: 44px;\r\n}\r\n#charselect .slot1 {\r\n	left: 60px;\r\n}\r\n#charselect .slot2 {\r\n	left: 224px;\r\n}\r\n#charselect .slot3 {\r\n	left: 386px;\r\n}\r\n\r\n/** Arrow **/\r\n#charselect .arrow {\r\n	position: absolute;\r\n	top: 105px;\r\n	width: 13px;\r\n	height: 13px;\r\n}\r\n#charselect .arrow.left {\r\n	left: 40px;\r\n}\r\n#charselect .arrow.right {\r\n	right: 40px;\r\n}\r\n\r\n/** Slot info **/\r\n#charselect .slotinfo {\r\n	position: absolute;\r\n	top: 195px;\r\n	right: 10px;\r\n	height: 20px;\r\n	display: block;\r\n	border: 1px solid #c6cee7;\r\n	border-radius: 4px;\r\n	padding-left: 10px;\r\n	padding-right: 10px;\r\n}\r\n#charselect .slotinfo .number {\r\n	color: #58709e;\r\n	font-weight: bold;\r\n	margin-right: 10px;\r\n}\r\n#charselect .slotinfo .content {\r\n	color: #555;\r\n	top: 6px;\r\n	right: 8px;\r\n}\r\n\r\n/** Page info **/\r\n#charselect .pageinfo {\r\n	position: absolute;\r\n	left: 275px;\r\n	top: 185px;\r\n	font-weight: bold;\r\n	color: #646464;\r\n}\r\n#charselect .pageinfo .current {\r\n	color: #fe3b7d;\r\n}\r\n\r\n/** Characters infos **/\r\n#charselect .charinfo {\r\n	position: absolute;\r\n	width: 285px;\r\n	top: 204px;\r\n	left: 16px;\r\n}\r\n#charselect .charinfo div {\r\n	position: absolute;\r\n	width: 90px;\r\n	height: 13px;\r\n}\r\n#charselect .charinfo .name {\r\n	left: 52px;\r\n	top: 2px;\r\n	white-space: nowrap;\r\n}\r\n#charselect .charinfo .job {\r\n	left: 52px;\r\n	top: 18px;\r\n}\r\n#charselect .charinfo .lvl {\r\n	left: 52px;\r\n	top: 34px;\r\n}\r\n#charselect .charinfo .exp {\r\n	left: 52px;\r\n	top: 50px;\r\n}\r\n#charselect .charinfo .hp {\r\n	left: 52px;\r\n	top: 66px;\r\n}\r\n#charselect .charinfo .sp {\r\n	left: 52px;\r\n	top: 82px;\r\n}\r\n#charselect .charinfo .map {\r\n	left: 52px;\r\n	top: 98px;\r\n	width: 238px;\r\n}\r\n#charselect .charinfo .str {\r\n	left: 200px;\r\n	top: 2px;\r\n}\r\n#charselect .charinfo .agi {\r\n	left: 200px;\r\n	top: 18px;\r\n}\r\n#charselect .charinfo .vit {\r\n	left: 200px;\r\n	top: 34px;\r\n}\r\n#charselect .charinfo .int {\r\n	left: 200px;\r\n	top: 50px;\r\n}\r\n#charselect .charinfo .dex {\r\n	left: 200px;\r\n	top: 66px;\r\n}\r\n#charselect .charinfo .luk {\r\n	left: 200px;\r\n	top: 82px;\r\n}\r\n\r\n/** Buttons **/\r\n#charselect .btns {\r\n	position: absolute;\r\n	bottom: 4px;\r\n	width: 100%;\r\n	height: 20px;\r\n}\r\n#charselect .btn {\r\n	position: absolute;\r\n	width: 42px;\r\n	height: 20px;\r\n}\r\n\r\n#charselect .ok,\r\n#charselect .make {\r\n	right: 50px;\r\n}\r\n#charselect .cancel {\r\n	right: 4px;\r\n}\r\n#charselect .delete {\r\n	left: 4px;\r\n}\r\n";
 }));
 //#endregion
+//#region src/UI/ScreenHooks.js
+function check(screen) {
+	if (!SCREENS.includes(screen)) throw new Error(`ScreenHooks: unknown screen '${screen}'`);
+}
+function current(screen) {
+	const list = _hooks[screen];
+	return list && list.length ? list[list.length - 1] : null;
+}
+function setHidden(host, hidden) {
+	if (host && host.style) host.style.display = hidden ? "none" : "";
+}
+/** Take a hook out after it threw, and give the screen back. */
+function fail(screen, hook, what, error) {
+	console.error(`[ScreenHooks] ${hook.name || "a hook"} failed in ${what} for ${screen}, and is switched off:`, error);
+	const list = _hooks[screen] || [];
+	const index = list.indexOf(hook);
+	if (index > -1) list.splice(index, 1);
+	const open = _open[screen];
+	if (open && open.hook === hook) {
+		open.hook = null;
+		if (what !== "hide") quietHide(screen, hook);
+		take(screen);
+	}
+}
+function quietHide(screen, hook) {
+	if (typeof hook.hide !== "function") return;
+	try {
+		hook.hide();
+	} catch (error) {
+		console.error(`[ScreenHooks] ${hook.name || "a hook"} failed to hide ${screen}:`, error);
+	}
+}
+/** Give an open screen to its current hook, or to the client's window. */
+function take(screen) {
+	const open = _open[screen];
+	if (!open) return;
+	const hook = current(screen);
+	open.hook = hook;
+	setHidden(open.host, Boolean(hook));
+	if (hook && typeof hook.show === "function") try {
+		hook.show(open.ctx);
+	} catch (error) {
+		fail(screen, hook, "show", error);
+	}
+}
+/**
+* Add a hook for a screen. If that screen is open, the hook takes it now.
+* Returns a function that takes the hook out again.
+*/
+function register(screen, hook) {
+	check(screen);
+	if (!hook || typeof hook !== "object") throw new Error("ScreenHooks.register takes a screen name and an object");
+	(_hooks[screen] = _hooks[screen] || []).push(hook);
+	const open = _open[screen];
+	if (open) {
+		if (open.hook) quietHide(screen, open.hook);
+		take(screen);
+	}
+	return () => unregister(screen, hook);
+}
+function unregister(screen, hook) {
+	const list = _hooks[screen] || [];
+	const index = list.indexOf(hook);
+	if (index < 0) return;
+	list.splice(index, 1);
+	const open = _open[screen];
+	if (open && open.hook === hook) {
+		open.hook = null;
+		quietHide(screen, hook);
+		take(screen);
+	}
+}
+/**
+* A window opened. Returns whether a hook draws it (the window is then
+* hidden). `host` is the element to hide.
+*/
+function show(screen, ctx, host) {
+	check(screen);
+	if (_open[screen]) hide(screen);
+	_open[screen] = {
+		ctx,
+		host,
+		hook: null
+	};
+	take(screen);
+	return Boolean(_open[screen] && _open[screen].hook);
+}
+/** Something the screen's ctx reports changed. */
+function update(screen) {
+	const open = _open[screen];
+	if (!open || !open.hook || typeof open.hook.update !== "function") return;
+	const hook = open.hook;
+	try {
+		hook.update(open.ctx);
+	} catch (error) {
+		fail(screen, hook, "update", error);
+	}
+}
+/** A window closed. */
+function hide(screen) {
+	const open = _open[screen];
+	if (!open) return;
+	delete _open[screen];
+	setHidden(open.host, false);
+	if (open.hook) {
+		const hook = open.hook;
+		if (typeof hook.hide === "function") try {
+			hook.hide();
+		} catch (error) {
+			fail(screen, hook, "hide", error);
+		}
+	}
+}
+/** Whether a hook is drawing this screen now. */
+function active(screen) {
+	return Boolean(_open[screen] && _open[screen].hook);
+}
+var SCREENS, _hooks, _open, ScreenHooks_default;
+var init_ScreenHooks = __esmMin((() => {
+	SCREENS = [
+		"login",
+		"serverList",
+		"charSelect",
+		"charCreate"
+	];
+	_hooks = {};
+	_open = {};
+	ScreenHooks_default = {
+		SCREENS,
+		register,
+		show,
+		update,
+		hide,
+		active
+	};
+}));
+//#endregion
 //#region src/UI/Components/CharSelect/CharSelectCommon.js
 function createCharSelect(config) {
 	const { name, htmlText, cssText, gridLayout = false, hostHeight = 342, defaultMaxSlots = 27, deleteReservation = false, packetverGatedDelete = false, pageBalls = false } = config;
@@ -338071,7 +338702,39 @@ function createCharSelect(config) {
 	let countdownInterval;
 	let _bgInterval = null;
 	const render = gridLayout ? renderGrid : renderPaginated;
-	const moveCursorTo = gridLayout ? moveCursorToGrid : moveCursorToPaginated;
+	const moveCursorTo = (index) => {
+		(gridLayout ? moveCursorToGrid : moveCursorToPaginated)(index);
+		ScreenHooks_default.update("charSelect");
+	};
+	/**
+	* What a plugin drawing this screen sees (UI/ScreenHooks.js). The
+	* actions are the window's own buttons, acting on the selected slot.
+	*/
+	const _screen = {
+		get characters() {
+			return _list.slice();
+		},
+		get maxSlots() {
+			return _maxSlots;
+		},
+		get index() {
+			return _index;
+		},
+		get sex() {
+			return _sex;
+		},
+		get enabled() {
+			return !_disable_UI;
+		},
+		deleteReservation: deleteReservation && (!packetverGatedDelete || PacketVerManager_default.value >= 20100803),
+		select: (slot) => moveCursorTo(slot),
+		play: () => connect(),
+		create: () => create(),
+		requestDelete: () => _screen.deleteReservation ? reserve() : suppress(),
+		cancelDelete: () => _screen.deleteReservation && removedelete(),
+		confirmDelete: () => suppress(),
+		exit: () => cancel()
+	};
 	/**
 	* Initialize UI
 	*/
@@ -338152,6 +338815,7 @@ function createCharSelect(config) {
 			moveCursorTo(_index);
 			_bgInterval = setInterval(changeBackgroundEverySecond, 250);
 			Renderer.render(render);
+			ScreenHooks_default.show("charSelect", _screen, this._host);
 			return;
 		}
 		const root = this.getRoot();
@@ -338162,11 +338826,13 @@ function createCharSelect(config) {
 		if (!pageBalls) root.querySelector(".pageinfo .count").textContent = _maxSlots / 3;
 		moveCursorTo(_index);
 		Renderer.render(render);
+		ScreenHooks_default.show("charSelect", _screen, this._host);
 	};
 	/**
 	* Stop rendering
 	*/
 	Component.onRemove = function onRemove() {
+		ScreenHooks_default.hide("charSelect");
 		if (gridLayout) {
 			if (_bgInterval) {
 				clearInterval(_bgInterval);
@@ -338361,6 +339027,7 @@ function createCharSelect(config) {
 			_entitySlots[character.CharNum].effectState = _entitySlots[character.CharNum]._effectState & ~StatusState_default.EffectState.INVISIBLE;
 			_entitySlots[character.CharNum].hideShadow = true;
 			Component.updateCharSlot(character.CharNum);
+			ScreenHooks_default.update("charSelect");
 			return;
 		}
 		if (deleteReservation && character.DeleteDate) {
@@ -338391,6 +339058,7 @@ function createCharSelect(config) {
 				});
 			}
 		}
+		ScreenHooks_default.update("charSelect");
 	};
 	/**
 	* Disable or Enable the UI.
@@ -338399,6 +339067,7 @@ function createCharSelect(config) {
 	*/
 	Component.setUIEnabled = function setUIEnabled(value) {
 		_disable_UI = !value;
+		ScreenHooks_default.update("charSelect");
 	};
 	/**
 	* Callback to use
@@ -338443,11 +339112,13 @@ function createCharSelect(config) {
 		if (_disable_UI === false) {
 			if (gridLayout) {
 				UIManager.showPromptBox(DB.getMessage(17), "ok", "cancel", () => {
+					ExitHooks_default.emit("login", "charSelect");
 					Component.onExitRequest();
 					Component.clearAllSlots();
 				}, null);
 				stopCountdownInterval();
 			} else UIManager.showPromptBox(DB.getMessage(17), "ok", "cancel", () => {
+				ExitHooks_default.emit("login", "charSelect");
 				Component.onExitRequest();
 			}, null);
 		}
@@ -338554,6 +339225,7 @@ function createCharSelect(config) {
 	*/
 	function requestdelete(index, timer) {
 		const root = Component.getRoot();
+		ScreenHooks_default.update("charSelect");
 		if (gridLayout) {
 			_entitySlots[index].action = 2;
 			const countdown = root.querySelector(`.timedelete.slot${index}`);
@@ -338598,6 +339270,7 @@ function createCharSelect(config) {
 		if (_slots[_index]) {
 			const root = Component.getRoot();
 			_slots[_index].DeleteDate = 0;
+			ScreenHooks_default.update("charSelect");
 			if (gridLayout) {
 				_entitySlots[_index].action = 0;
 				render();
@@ -339008,6 +339681,8 @@ var init_CharSelectCommon = __esmMin((() => {
 	init_Camera();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
+	init_ExitHooks();
 	init_Elements();
 	init_PacketVerManager();
 }));
@@ -339197,6 +339872,76 @@ function createCharCreate(config) {
 	let _curcolor = 0;
 	const render = hasRace ? renderRace : renderLegacy;
 	/**
+	* What a plugin drawing this screen sees (UI/ScreenHooks.js).
+	* create() goes the way the Make button does.
+	*/
+	const _screen = {
+		get sex() {
+			return _accountSex;
+		},
+		get races() {
+			return raceOptions();
+		},
+		chooseSex: hasRace,
+		hasStats,
+		create(look) {
+			const stats = look && look.stats || {};
+			const stat = (key) => hasStats ? parseInt(stats[key], 10) || 1 : 1;
+			const args = [
+				String(look && look.name || ""),
+				stat("str"),
+				stat("agi"),
+				stat("vit"),
+				stat("int"),
+				stat("dex"),
+				stat("luk"),
+				look.hair,
+				look.hairColor
+			];
+			if (hasRace) args.push(look.job, look.sex);
+			Component.onCharCreationRequest(...args);
+		},
+		exit: () => cancel()
+	};
+	/**
+	* The jobs a character can start as, and the hair each can have.
+	*/
+	function raceOptions() {
+		if (!hasRace) return [{
+			job: 0,
+			hair: {
+				min: 2,
+				max: 26
+			},
+			hairColor: {
+				min: 0,
+				max: 9
+			}
+		}];
+		const root = Component.getRoot && Component.__loaded ? Component.getRoot() : null;
+		return [["human", RACE.HUMAN], ["doram", RACE.DORAM]].map(([race, job]) => {
+			const cap = CAP[job];
+			let hairMax = cap.HEAD.MAX;
+			let colorMax = cap.HEADPALETTE.MAX;
+			if (gridHairstyle && root) {
+				hairMax = root.querySelectorAll(`[id$="_${race}_male"]`).length || hairMax;
+				colorMax = root.querySelectorAll("[id$=\"_color\"]").length - 1;
+				if (colorMax < 0) colorMax = cap.HEADPALETTE.MAX;
+			}
+			return {
+				job,
+				hair: {
+					min: cap.HEAD.MIN,
+					max: hairMax
+				},
+				hairColor: {
+					min: cap.HEADPALETTE.MIN,
+					max: colorMax
+				}
+			};
+		});
+	}
+	/**
 	* Initialize UI
 	*/
 	Component.init = function init() {
@@ -339302,12 +340047,14 @@ function createCharCreate(config) {
 		}
 		Renderer.render(render);
 		if (hasStats) updateGraphic();
+		ScreenHooks_default.show("charCreate", _screen, this._host);
 	};
 	/**
 	* Remove component from HTML
 	* Stop rendering
 	*/
 	Component.onRemove = function onRemove() {
+		ScreenHooks_default.hide("charCreate");
 		Renderer.stop(render);
 	};
 	/**
@@ -339842,6 +340589,7 @@ var init_CharCreateCommon = __esmMin((() => {
 	init_Client();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
 	init_Elements();
 	TYPE = {
 		RACE: 1,
@@ -340697,17 +341445,37 @@ var init_WinList$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/WinList/WinList.js
-var WinList, WinList_default;
+var WinList, _screen, WinList_default;
 var init_WinList = __esmMin((() => {
 	init_Renderer();
 	init_KeyEventHandler();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
 	init_Elements();
 	init_WinList$2();
 	init_WinList$1();
 	WinList = new GUIComponent("WinList", WinList_default$1);
 	WinList.render = () => WinList_default$2;
+	_screen = {
+		get servers() {
+			return WinList.list ? WinList.list.slice() : [];
+		},
+		get index() {
+			return WinList.index;
+		},
+		select(index) {
+			WinList.setIndex(index);
+			WinList.selectIndex();
+		},
+		exit: () => WinList.exit()
+	};
+	/**
+	* Once in the page: a plugin may draw this screen instead
+	*/
+	WinList.onAppend = function onAppend() {
+		ScreenHooks_default.show("serverList", _screen, this._host);
+	};
 	/**
 	* Initialize UI
 	*/
@@ -340745,6 +341513,7 @@ var init_WinList = __esmMin((() => {
 			this._listEl.appendChild(node);
 		}
 		this.setIndex(0);
+		ScreenHooks_default.update("serverList");
 	};
 	/**
 	*  Cancel window
@@ -340768,6 +341537,7 @@ var init_WinList = __esmMin((() => {
 			if (nodes[this.index]) nodes[this.index].style.backgroundColor = "transparent";
 			if (nodes[id]) nodes[id].style.backgroundColor = "#cde0ff";
 			this.index = id;
+			ScreenHooks_default.update("serverList");
 		}
 	};
 	/**
@@ -340802,6 +341572,7 @@ var init_WinList = __esmMin((() => {
 	* Free variables once removed from HTML
 	*/
 	WinList.onRemove = function onRemove() {
+		ScreenHooks_default.hide("serverList");
 		this._listEl.innerHTML = "";
 		this.list = null;
 		this.index = 0;
@@ -345019,6 +345790,25 @@ function createWinLogin({ name, htmlText, cssText }) {
 	let _inputUsername;
 	let _inputPassword;
 	let _buttonSave;
+	/**
+	* What a plugin drawing this screen sees (UI/ScreenHooks.js). login()
+	* goes the way the Connect button does, so a different sign-in -- a
+	* token in place of a password -- reaches the server the same way.
+	*/
+	const _screen = {
+		get savedId() {
+			return _preferences.saveID ? _preferences.ID : "";
+		},
+		get saveId() {
+			return Boolean(_preferences.saveID);
+		},
+		login(user, pass, saveId) {
+			if (typeof saveId === "boolean") _preferences.saveID = saveId;
+			submit(String(user), String(pass));
+		},
+		signup: () => signup(),
+		exit: () => exit()
+	};
 	Component.init = function init() {
 		this.draggable();
 		const root = this.getRoot();
@@ -345068,6 +345858,10 @@ function createWinLogin({ name, htmlText, cssText }) {
 		if (_preferences.ID.length) _inputPassword.focus();
 		else _inputUsername.focus();
 		Component.placeOnTop();
+		ScreenHooks_default.show("login", _screen, this._host);
+	};
+	Component.onRemove = function onRemove() {
+		ScreenHooks_default.hide("login");
 	};
 	Component.onKeyDown = function onKeyDown(event) {
 		if (this._host.style.display === "none") return true;
@@ -345101,8 +345895,10 @@ function createWinLogin({ name, htmlText, cssText }) {
 		return false;
 	}
 	function connect() {
-		const user = _inputUsername.value;
-		const pass = _inputPassword.value;
+		submit(_inputUsername.value, _inputPassword.value);
+		return false;
+	}
+	function submit(user, pass) {
 		if (_preferences.saveID) {
 			_preferences.saveID = true;
 			_preferences.ID = user;
@@ -345112,7 +345908,6 @@ function createWinLogin({ name, htmlText, cssText }) {
 		}
 		_preferences.save();
 		Component.onConnectionRequest(user, pass);
-		return false;
 	}
 	async function loadReplay(file) {
 		try {
@@ -345148,6 +345943,7 @@ var init_WinLoginCommon = __esmMin((() => {
 	init_KeyEventHandler();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
 	init_Elements();
 	init_preload_helper();
 }));
@@ -345204,12 +346000,14 @@ var init_WinLoginV3 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/WinLogin/WinLogin.js
-var publicName, versionInfo, Controller;
+var publicName, versionInfo, Controller, REDESIGN_BACKGROUND, _hasRedesignArt;
 var init_WinLogin = __esmMin((() => {
 	init_WinLogin$1();
 	init_WinLoginV2();
 	init_WinLoginV3();
 	init_UIVersionManager();
+	init_Client();
+	init_DBManager();
 	publicName = "WinLogin";
 	versionInfo = {
 		default: WinLogin_default,
@@ -345221,6 +346019,38 @@ var init_WinLogin = __esmMin((() => {
 		prere: {}
 	};
 	Controller = UIVersionManager.getUIController(publicName, versionInfo);
+	REDESIGN_BACKGROUND = "login_interface/bg_login.tga";
+	_hasRedesignArt = null;
+	/**
+	* Settle on a login window the client data can draw, then call back.
+	*
+	* Call after selectUIVersion(). The result is remembered: a file that failed
+	* to load does not always report the failure to a second listener.
+	*
+	* @param {function} callback
+	*/
+	Controller.selectUIVersionForData = function selectUIVersionForData(callback) {
+		const useClassic = () => {
+			Controller.selectSpecificUIVersion(0);
+			callback();
+		};
+		if (Controller.getUI() === WinLogin_default || _hasRedesignArt === true) {
+			callback();
+			return;
+		}
+		if (_hasRedesignArt === false) {
+			useClassic();
+			return;
+		}
+		Client.loadFile(DB.INTERFACE_PATH + REDESIGN_BACKGROUND, () => {
+			_hasRedesignArt = true;
+			callback();
+		}, () => {
+			_hasRedesignArt = false;
+			console.warn("%c[UIVersion] WinLogin: " + REDESIGN_BACKGROUND + " is not in the client data, using the classic window", "color:#007000");
+			useClassic();
+		});
+	};
 }));
 //#endregion
 //#region src/Engine/LoginEngine.js
@@ -345923,7 +346753,11 @@ var init_LoginEngine = __esmMin((() => {
 				onConnectionRequest.apply(null, autoLogin);
 				Configs.set("autoLogin", null);
 			} else q.add(function() {
-				Controller.getUI().append();
+				Controller.selectUIVersionForData(() => {
+					Controller.getUI().onConnectionRequest = onConnectionRequest;
+					Controller.getUI().onExitRequest = onExitRequest;
+					Controller.getUI().append();
+				});
 			});
 			if (PacketVerManager_default.value < 20170315) Network.hookPacket(PACKET.AC.ACCEPT_LOGIN, onConnectionAccepted);
 			else Network.hookPacket(PACKET.AC.ACCEPT_LOGIN3, onConnectionAccepted);
