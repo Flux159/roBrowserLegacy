@@ -61,7 +61,7 @@ const FogEffects = SongEffects.FogEffects;
 const GravityEffects = SongEffects.GravityEffects;
 const EvillandEffects = SongEffects.EvillandEffects;
 
-export default {
+const EffectTable = {
 	/// Common parameters
 	///
 	/// - duration:
@@ -23848,3 +23848,13185 @@ export default {
 		}
 	],
 };
+
+export default EffectTable;
+
+// Community review overlay: preserve upstream entries and apply local repairs.
+Object.assign(EffectTable, {
+	"32": [
+		{
+			"wav": "effect/EF_NapalmBeat",
+			"attachedEntity": true
+		}
+	],
+	"125": [
+		{
+			"type": "STR",
+			"file": "venomsplasher_1st",
+			"attachedEntity": true
+		}
+	],
+	"128": [
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"duration": 800,
+			"size": 60,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"red": 1,
+			"green": 0.3,
+			"blue": 0.3,
+			"zOffset": 2
+		},
+		{
+			"wav": "effect/black_overthrust",
+			"attachedEntity": true
+		}
+	],
+	"143": [
+		{
+			"type": "STR",
+			"file": "sonicblow",
+			"wav": "effect/assasin_sonicblow",
+			"attachedEntity": true
+		}
+	],
+	"145": [
+		{
+			"type": "STR",
+			"file": "shockwave",
+			"wav": "effect/hunter_shockwavetrap",
+			"attachedEntity": true
+		}
+	],
+	"257": [
+		{
+			"type": "STR",
+			"file": "enc_wind",
+			"wav": "_enemy_hit_wind1",
+			"attachedEntity": true
+		}
+	],
+	"316": [
+		{
+			"alphaMax": 0.4,
+			"animation": 4,
+			"attachedEntity": true,
+			"blendMode": 2,
+			"renderBeforeEntities": true,
+			"blue": 1,
+			"bottomSize": 2.4,
+			"duration": 500,
+			"fadeOut": true,
+			"green": 0.6,
+			"height": 0.1,
+			"posZ": 0.1,
+			"red": 0.6,
+			"rotate": true,
+			"textureName": "ring_blue",
+			"repeat": true,
+			"repeatDelay": -300,
+			"topSize": 3.9,
+			"type": "CYLINDER"
+		},
+		{
+			"wav": "effect/ef_readyportal",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"317": [
+		{
+			"alphaMax": 0.4,
+			"animation": 4,
+			"attachedEntity": true,
+			"blendMode": 2,
+			"renderBeforeEntities": true,
+			"blue": 1,
+			"bottomSize": 2.4,
+			"duration": 500,
+			"fadeOut": true,
+			"green": 0.6,
+			"height": 0.1,
+			"posZ": 0.1,
+			"red": 0.6,
+			"rotate": true,
+			"textureName": "ring_blue",
+			"repeat": true,
+			"repeatDelay": -300,
+			"topSize": 3.9,
+			"type": "CYLINDER"
+		},
+		{
+			"alphaMax": 0.3,
+			"animation": 0,
+			"attachedEntity": true,
+			"blendMode": 2,
+			"blue": 1,
+			"bottomSize": 0.6,
+			"duration": 25000,
+			"fade": true,
+			"green": 0.6,
+			"height": 15,
+			"red": 0.6,
+			"rotate": true,
+			"textureName": "ring_blue",
+			"topSize": 0.6,
+			"type": "CYLINDER"
+		},
+		{
+			"alphaMax": 0.3,
+			"animation": 0,
+			"attachedEntity": true,
+			"blendMode": 2,
+			"blue": 1,
+			"bottomSize": 0.8,
+			"duration": 25000,
+			"fade": true,
+			"green": 0.6,
+			"height": 13,
+			"red": 0.6,
+			"rotate": true,
+			"textureName": "ring_blue",
+			"topSize": 0.8,
+			"type": "CYLINDER"
+		},
+		{
+			"alphaMax": 0.5,
+			"animation": 0,
+			"attachedEntity": true,
+			"blendMode": 2,
+			"blue": 1,
+			"bottomSize": 1,
+			"duration": 25000,
+			"fade": true,
+			"green": 0.6,
+			"height": 1,
+			"posZ": 2,
+			"red": 0.6,
+			"rotate": true,
+			"totalCircleSides": 20,
+			"circleSides": 10,
+			"repeatTextureX": 2,
+			"textureName": "alpha1",
+			"topSize": 1,
+			"type": "CYLINDER"
+		},
+		{
+			"wav": "effect/ef_portal",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"338": [
+		{
+			"type": "STR",
+			"file": "angel_2nd",
+			"wav": "levelup",
+			"attachedEntity": true,
+			"celebrationGroup": "npc-achievement",
+			"celebrationCooldown": 3000
+		}
+	],
+	"366": [
+		{
+			"wav": "effect/¼¼Å©¸®ÆÄÀÌ½º",
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const entity = Params.Init.ownerEntity;
+				entity.animations.add(function (tick) {
+					// Official: Halo (Double Body) is active between tick 20 and 40.
+					entity._enableHalo = tick >= 150 && tick <= 450;
+
+					if (tick >= 150 && tick <= 450) {
+						// SetArgb(-1, 255, 200, 200) -> Light Red
+						entity._flashColor[0] = 1.0;
+						entity._flashColor[1] = 0.78;
+						entity._flashColor[2] = 0.78;
+						entity._flashColor[3] = 1.0;
+						entity.recalculateBlendingColor();
+					} else {
+						entity._flashColor[0] = 1.0;
+						entity._flashColor[1] = 1.0;
+						entity._flashColor[2] = 1.0;
+						entity._flashColor[3] = 1.0;
+						entity.recalculateBlendingColor();
+					}
+					return tick > 500;
+				});
+			}
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "alpha_center",
+			"alphaMax": 0.6,
+			"duration": 175,
+			"delayStart": 200,
+			"duplicate": 5,
+			"timeBetweenDupli": 0,
+			"totalCircleSides": 30,
+			"circleSides": 1,
+			"fade": true,
+			"angleX": -90,
+			"angleZRandom": 360,
+			"fixedPerspective": true,
+			"posZ": 1.5,
+			"height": 0,
+			"bottomSize": 0.01,
+			"topSize": 4.5,
+			"animation": 2,
+			"zIndex": 1.1,
+			"attachedEntity": true
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "alpha_center",
+			"alphaMax": 0.6,
+			"duration": 175,
+			"duplicate": 5,
+			"delayStart": 200,
+			"timeBetweenDupli": 0,
+			"totalCircleSides": 30,
+			"circleSides": 1,
+			"fade": true,
+			"angleX": -90,
+			"angleZRandom": 360,
+			"fixedPerspective": true,
+			"posZ": 1.5,
+			"height": 0,
+			"bottomSize": 0.01,
+			"topSize": 7.2,
+			"animation": 2,
+			"zIndex": 1.2,
+			"attachedEntity": true
+		}
+	],
+	"367": [
+		{
+			"wav": "effect/¿À¶ó ºí·¹ÀÌµå",
+			"attachedEntity": true
+		},
+		{
+			"topSize": 1,
+			"bottomSize": 1,
+			"height": 6,
+			"animation": 1,
+			"type": "CYLINDER",
+			"textureName": "ring_white",
+			"attachedEntity": true,
+			"duration": 1400,
+			"posZ": 0,
+			"alphaMax": 0.35,
+			"fade": true,
+			"rotate": true,
+			"blendMode": 2
+		},
+		{
+			"topSize": 1.25,
+			"bottomSize": 1,
+			"height": 1,
+			"animation": 1,
+			"type": "CYLINDER",
+			"textureName": "ring_white",
+			"attachedEntity": true,
+			"duration": 1400,
+			"posZ": 0,
+			"alphaMax": 0.35,
+			"fade": true,
+			"rotate": true,
+			"blendMode": 2
+		},
+		{
+			"topSize": 3,
+			"bottomSize": 1,
+			"height": 2,
+			"animation": 2,
+			"type": "CYLINDER",
+			"textureName": "ring_white",
+			"attachedEntity": true,
+			"duration": 1400,
+			"posZ": 0,
+			"alphaMax": 0.35,
+			"fade": true,
+			"rotate": true,
+			"blendMode": 2
+		},
+		{
+			"topSize": 1,
+			"bottomSize": 1,
+			"height": 6,
+			"animation": 1,
+			"type": "CYLINDER",
+			"textureName": "ring_yellow",
+			"attachedEntity": true,
+			"duration": 1400,
+			"posZ": 0.1,
+			"alphaMax": 0.35,
+			"fade": true,
+			"rotate": true,
+			"blendMode": 2
+		},
+		{
+			"topSize": 1.25,
+			"bottomSize": 1,
+			"height": 1,
+			"animation": 1,
+			"type": "CYLINDER",
+			"textureName": "ring_yellow",
+			"attachedEntity": true,
+			"duration": 1400,
+			"posZ": 0.1,
+			"alphaMax": 0.35,
+			"fade": true,
+			"rotate": true,
+			"blendMode": 2
+		},
+		{
+			"topSize": 3,
+			"bottomSize": 1,
+			"height": 2,
+			"animation": 2,
+			"type": "CYLINDER",
+			"textureName": "ring_yellow",
+			"attachedEntity": true,
+			"duration": 1400,
+			"posZ": 0.1,
+			"alphaMax": 0.35,
+			"fade": true,
+			"rotate": true,
+			"blendMode": 2
+		}
+	],
+	"390": [
+		{
+			"type": "STR",
+			"file": "melt",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/black_overthrust",
+			"attachedEntity": true
+		}
+	],
+	"394": [
+		{
+			"wav": "effect/´Þºû¼¼·¹³ªµ¥",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"493": [
+		{
+			"wav": "effect/assasin_enchantpoison",
+			"attachedEntity": true
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-493', [1, 0, 1], 0, 81);
+	}
+		}
+	],
+	"495": [
+		{
+			"wav": "effect/strip",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"505": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-505', [0.9803921568627451, 0.9803921568627451, 0.39215686274509803], 10, 36);
+	}
+		}
+	],
+	"518": [
+		{
+			"type": "3D",
+			"file": "effect/whitelight.tga",
+			"duration": 300,
+			"size": 60,
+			"fadeOut": true,
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/wizard_fire_pillar_b",
+			"attachedEntity": true
+		}
+	],
+	"521": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-521', [1, 0, 0], 10, 51);
+	}
+		}
+	],
+	"541": [
+
+	],
+	"628": [
+		{
+			"wav": "effect/´õ½ºÆ®¼¦",
+			"attachedEntity": true
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "alpha_center",
+			"alphaMax": 0.6,
+			"duration": 175,
+			"duplicate": 6,
+			"timeBetweenDupli": 0,
+			"totalCircleSides": 30,
+			"circleSides": 1,
+			"fade": true,
+			"angleX": -90,
+			"angleZRandom": 360,
+			"fixedPerspective": true,
+			"posZ": 1.5,
+			"height": 0,
+			"bottomSize": 0.01,
+			"topSize": 4.5,
+			"animation": 2,
+			"zIndex": 1.1,
+			"attachedEntity": true
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "alpha_center",
+			"alphaMax": 0.6,
+			"duration": 175,
+			"duplicate": 6,
+			"timeBetweenDupli": 0,
+			"totalCircleSides": 30,
+			"circleSides": 1,
+			"fade": true,
+			"angleX": -90,
+			"angleZRandom": 360,
+			"fixedPerspective": true,
+			"posZ": 1.5,
+			"height": 0,
+			"bottomSize": 0.01,
+			"topSize": 7.2,
+			"animation": 2,
+			"zIndex": 1.2,
+			"attachedEntity": true
+		}
+	],
+	"683": [
+		{
+			"type": "SPR",
+			"file": "ÆøÁ×_È­ÀÌÆ®µ¥ÀÌ",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "itempokjuk",
+			"wav": "effect/itempokjuk",
+			"attachedEntity": true
+		}
+	],
+	"719": [
+		{
+			"wav": "effect/ab_renovatio"
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "cloud11",
+			"attachedEntity": true,
+			"topSize": 1,
+			"bottomSize": 0.1,
+			"height": 15,
+			"totalCircleSides": 20,
+			"duration": 1000,
+			"alphaMax": 0.18,
+			"fade": true,
+			"animation": 1,
+			"blendMode": 2
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "cloud11",
+			"attachedEntity": true,
+			"topSize": 1.5,
+			"bottomSize": 0.15000000000000002,
+			"height": 15,
+			"totalCircleSides": 20,
+			"duration": 1000,
+			"alphaMax": 0.18,
+			"fade": true,
+			"animation": 1,
+			"blendMode": 2
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "cloud11",
+			"attachedEntity": true,
+			"topSize": 2,
+			"bottomSize": 0.2,
+			"height": 15,
+			"totalCircleSides": 20,
+			"duration": 1000,
+			"alphaMax": 0.18,
+			"fade": true,
+			"animation": 1,
+			"blendMode": 2
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "cloud11",
+			"attachedEntity": true,
+			"topSize": 1,
+			"bottomSize": 0.1,
+			"height": 15,
+			"totalCircleSides": 20,
+			"duration": 1000,
+			"alphaMax": 0.18,
+			"fade": true,
+			"animation": 1,
+			"blendMode": 2
+		}
+	],
+	"723": [
+		{
+			"type": "SPR",
+			"file": "Çåµå·¹µå½ºÇÇ¾î",
+			"direction": true,
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"wav": "hundred",
+			"attachedEntity": true
+		}
+	],
+	"727": [
+		{
+			"type": "STR",
+			"file": "crimson_r",
+			"wav": "crimson_r",
+			"attachedEntity": true
+		}
+	],
+	"734": [
+		{
+			"type": "STR",
+			"file": "chainlight",
+			"wav": "chainlight",
+			"attachedEntity": true
+		}
+	],
+	"747": [
+		{
+			"type": "STR",
+			"file": "laulamus",
+			"attachedEntity": true,
+			"wav": "lauagnus"
+		}
+	],
+	"748": [
+		{
+			"type": "STR",
+			"file": "lauagnus",
+			"attachedEntity": true,
+			"wav": "lauagnus"
+		}
+	],
+	"768": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-768', [1, 0, 1], 0, 31);
+	}
+		}
+	],
+	"769": [
+		{
+			"wav": "effect/T_³¯¶óÂ÷±â",
+			"attachedEntity": true
+		}
+	],
+	"775": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const entity = Params.Init.ownerEntity;
+				const duration = 500;
+				const count = 8;
+				const delay = duration / count;
+
+				for (let i = 0; i < count; i++) {
+					const delta = 1;
+
+					Events.setTimeout(function () {
+						entity.direction = Math.floor(entity.direction + delta) % 8;
+					}, delay * i);
+				}
+			}
+		},
+		{
+			"wav": "effect/EF_BeginSpell",
+			"attachedEntity": true
+		}
+	],
+	"885": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const entity = Params.Init.ownerEntity;
+				entity.animations.add(function (tick) {
+					// Halo (Double Body) - Blue variant
+					entity._enableHalo = tick >= 150 && tick <= 450;
+
+					if (tick >= 150 && tick <= 450) {
+						// Blue tint
+						entity._flashColor[0] = 0.5;
+						entity._flashColor[1] = 0.5;
+						entity._flashColor[2] = 1.0;
+						entity._flashColor[3] = 1.0;
+						entity.recalculateBlendingColor();
+					} else {
+						entity._flashColor[0] = 1.0;
+						entity._flashColor[1] = 1.0;
+						entity._flashColor[2] = 1.0;
+						entity._flashColor[3] = 1.0;
+						entity.recalculateBlendingColor();
+					}
+					return tick > 500;
+				});
+			}
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "alpha_center",
+			"alphaMax": 0.6,
+			"duration": 175,
+			"delayStart": 200,
+			"duplicate": 5,
+			"timeBetweenDupli": 0,
+			"totalCircleSides": 30,
+			"circleSides": 1,
+			"fade": true,
+			"angleX": -90,
+			"angleZRandom": 360,
+			"fixedPerspective": true,
+			"posZ": 1.5,
+			"height": 0,
+			"bottomSize": 0.01,
+			"topSize": 4.5,
+			"animation": 2,
+			"zIndex": 1.1,
+			"red": 0.3,
+			"green": 0.5,
+			"blue": 1,
+			"attachedEntity": true
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "alpha_center",
+			"alphaMax": 0.6,
+			"duration": 175,
+			"duplicate": 5,
+			"delayStart": 200,
+			"timeBetweenDupli": 0,
+			"totalCircleSides": 30,
+			"circleSides": 1,
+			"fade": true,
+			"angleX": -90,
+			"angleZRandom": 360,
+			"fixedPerspective": true,
+			"posZ": 1.5,
+			"height": 0,
+			"bottomSize": 0.01,
+			"topSize": 7.2,
+			"animation": 2,
+			"zIndex": 1.2,
+			"red": 0.3,
+			"green": 0.5,
+			"blue": 1,
+			"attachedEntity": true
+		}
+	],
+	"927": [
+		{
+			"type": "STR",
+			"file": "new_earthgrave/new_earthgrave/new_earthgrave",
+			"texturePath": "new_earthgrave/new_earthgrave/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "new_earthgrave/new_earthgrave_bottom/new_earthgrave_bottom",
+			"texturePath": "new_earthgrave/new_earthgrave_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"1094": [
+		{
+			"type": "STR",
+			"file": "ach_complete/ppring3",
+			"texturePath": "ach_complete/",
+			"wav": "complete",
+			"celebrationGroup": "npc-achievement",
+			"celebrationCooldown": 3000,
+			"attachedEntity": true
+		}
+	],
+	"1133": [
+		{
+			"type": "STR",
+			"file": "rl_fire_dance/firedance",
+			"texturePath": "rl_fire_dance/",
+			"attachedEntity": false
+		}
+	],
+	"1235": [
+		{
+			"type": "STR",
+			"file": "new_axe_stomp/new_axe_stomp/new_axe_stomp",
+			"texturePath": "new_axe_stomp/new_axe_stomp/",
+			"attachedEntity": false,
+			"wav": "effect/mt_axe_stomp"
+		},
+		{
+			"type": "STR",
+			"file": "new_axe_stomp/new_axe_stomp_bottom/new_axe_stomp_bottom",
+			"texturePath": "new_axe_stomp/new_axe_stomp_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"1929": [
+		{
+			"type": "STR",
+			"file": "new_pramen/new_pramen_bottom/new_pramen_bottom",
+			"min": "new_pramen/new_pramen_bottom/min_new_pramen_bottom",
+			"texturePath": "new_pramen/new_pramen_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true,
+			"repeat": false,
+			"wav": "effect/cd_framen"
+		}
+	],
+	"1930": [
+		{
+			"type": "STR",
+			"file": "new_pramen/new_pramen_cast/new_pramen_cast",
+			"min": "new_pramen/new_pramen_cast/min_new_pramen_cast",
+			"texturePath": "new_pramen/new_pramen_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"1931": [
+		{
+			"type": "STR",
+			"file": "new_pramen/new_pramen/new_pramen",
+			"min": "new_pramen/new_pramen/min_new_pramen",
+			"texturePath": "new_pramen/new_pramen/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"pending_resolution_audio_tortoise": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_black_tortoise",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"pending_resolution_audio_meteor": [
+		{
+			"wav": "effect/hyper_novice/hn_meteor_storm_buster",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"pending_resolution_violent_quake_rock": [
+		{
+			"type": "STR",
+			"file": "violentquake/violentquake/violentquake_01",
+			"texturePath": "violentquake/violentquake/",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "violentquake/violentquake_bottom/vlolentquake_bottom_01",
+			"texturePath": "violentquake/violentquake_bottom/",
+			"attachedEntity": false,
+			"repeat": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"394_ground": [
+		{
+			"type": "FUNC",
+			"attachedEntity": false,
+			"repeat": false,
+			"renderBeforeEntities": true,
+			"func": function (Params) { const MoonlitTile = FlatColorTile('salmon', { r: 1, g: 138 / 255, b: 187 / 255, a: 0.6 }); this.add(new MoonlitTile(Params.Inst.position, Params.Inst.startTick), Params); }
+		}
+	],
+	"original_completion_ag_rain_of_crystal_ground": [
+		{
+			"type": "STR",
+			"file": "rain_of_crystal/rain_of_crystal_attack/rain_of_crystal_attack",
+			"texturePath": "rain_of_crystal/rain_of_crystal_attack/",
+			"attachedEntity": false,
+			"repeat": true
+		},
+		{
+			"type": "STR",
+			"file": "rain_of_crystal/rain_of_crystal_attack_bottom/rain_of_crystal_attack_bottom",
+			"texturePath": "rain_of_crystal/rain_of_crystal_attack_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true
+		},
+		{
+			"wav": "effect/ag_rain_of_crystal",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_ag_violent_quake_ground": [
+		{
+			"type": "STR",
+			"file": "violentquake/violentquake_bottom/violentquake_bottom",
+			"texturePath": "violentquake/violentquake_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true
+		},
+		{
+			"wav": "effect/ag_violent_quake",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_em_venom_swamp_ground": [
+		{
+			"type": "STR",
+			"file": "venom_swamp/venom_swamp_bottom/venom_swamp_bottom",
+			"texturePath": "venom_swamp/venom_swamp_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true
+		},
+		{
+			"wav": "effect/em_venom_swamp",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_em_venom_swamp_hit": [
+		{
+			"type": "STR",
+			"file": "venom_swamp/venom_swamp_hit/venom_swamp_hit",
+			"texturePath": "venom_swamp/venom_swamp_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_ag_violent_quake_atk_hit": [
+		{
+			"type": "STR",
+			"file": "violentquake/violentquake_hit/violentquake_hit",
+			"texturePath": "violentquake/violentquake_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_bo_acidified_zone_fire_ground": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_a_start/acidified_zone_fire_a_start",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_a_start/",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_a_start_bottom/acidified_zone_fire_a_start_bottom",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_a_start_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_a_loop/acidified_zone_fire_a_loop",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_a_loop/",
+			"attachedEntity": false,
+			"repeat": true,
+			"delayStart": 83.33333333333333
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_a_loop_bottom/acidified_zone_fire_a_loop_bottom",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_a_loop_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true,
+			"delayStart": 83.33333333333333
+		},
+		{
+			"wav": "effect/bo_acidified_zone_fire",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_bo_acidified_zone_fire_hit": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_hit/acidified_zone_fire_hit",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_bo_acidified_zone_water_ground": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_a_start/acidified_zone_water_a_start",
+			"texturePath": "acidified_zone_water/acidified_zone_water_a_start/",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_a_start_bottom/acidified_zone_water_a_start_bottom",
+			"texturePath": "acidified_zone_water/acidified_zone_water_a_start_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_a_loop/acidified_zone_water_a_loop",
+			"texturePath": "acidified_zone_water/acidified_zone_water_a_loop/",
+			"attachedEntity": false,
+			"repeat": true,
+			"delayStart": 200
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_a_loop_bottom/acidified_zone_water_a_loop_bottom",
+			"texturePath": "acidified_zone_water/acidified_zone_water_a_loop_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true,
+			"delayStart": 200
+		},
+		{
+			"wav": "effect/bo_acidified_zone_water",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_bo_acidified_zone_water_hit": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_hit/acidified_zone_water_hit",
+			"texturePath": "acidified_zone_water/acidified_zone_water_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_bo_acidified_zone_ground_ground": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_a_start/acidified_zone_ground_a_start",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_a_start/",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_a_start_bottom/acidified_zone_ground_a_start_bottom",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_a_start_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_a_loop/acidified_zone_ground_a_loop",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_a_loop/",
+			"attachedEntity": false,
+			"repeat": true,
+			"delayStart": 250
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_a_loop_bottom/acidified_zone_ground_a_loop_bottom",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_a_loop_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true,
+			"delayStart": 250
+		},
+		{
+			"wav": "effect/bo_acidified_zone_ground",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_bo_acidified_zone_ground_hit": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_hit/acidified_zone_ground_hit",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_bo_acidified_zone_wind_ground": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_a_start/acidified_zone_wind_a_start",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_a_start/",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_a_start_bottom/acidified_zone_wind_a_start_bottom",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_a_start_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_a_loop/acidified_zone_wind_a_loop",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_a_loop/",
+			"attachedEntity": false,
+			"repeat": true,
+			"delayStart": 166.66666666666666
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_a_loop_bottom/acidified_zone_wind_a_loop_bottom",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_a_loop_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true,
+			"repeat": true,
+			"delayStart": 166.66666666666666
+		},
+		{
+			"wav": "effect/bo_acidified_zone_wind",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_bo_acidified_zone_wind_hit": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_hit/acidified_zone_wind_hit",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_em_elemental_buster_fire_main": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_fire/elemental_buster_fire",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_fire/",
+			"attachedEntity": true,
+			"wav": "effect/em_elemetal_buster_fire"
+		},
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_fire_bottom/elemental_buster_fire_bottom",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_fire_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_completion_em_elemental_buster_fire_hit": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster_hit/elemental_buster_fire_hit/elemental_buster_fire_hit",
+			"texturePath": "elemental_buster/elemental_buster_hit/elemental_buster_fire_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_em_elemental_buster_water_main": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_water/elemental_buster_water",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_water/",
+			"attachedEntity": true,
+			"wav": "effect/em_elemetal_buster_water"
+		},
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_water_bottom/elemental_buster_water_bottom",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_water_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_completion_em_elemental_buster_water_hit": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster_hit/elemental_buster_water_hit/elemental_buster_water_hit",
+			"texturePath": "elemental_buster/elemental_buster_hit/elemental_buster_water_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_em_elemental_buster_wind_main": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_wind/elemental_buster_wind",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_wind/",
+			"attachedEntity": true,
+			"wav": "effect/em_elemetal_buster_wind"
+		},
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_wind_bottom/elemental_buster_wind_bottom",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_wind_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_completion_em_elemental_buster_wind_hit": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster_hit/elemental_buster_wind_hit/elemental_buster_wind_hit",
+			"texturePath": "elemental_buster/elemental_buster_hit/elemental_buster_wind_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_em_elemental_buster_ground_main": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_land/elemental_buster_land",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_land/",
+			"attachedEntity": true,
+			"wav": "effect/em_elemetal_buster_ground"
+		},
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_land_bottom/elemental_buster_land_bottom",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_land_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_completion_em_elemental_buster_ground_hit": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster_hit/elemental_buster_land_hit/elemental_buster_land_hit",
+			"texturePath": "elemental_buster/elemental_buster_hit/elemental_buster_land_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_em_elemental_buster_poison_main": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_poison/elemental_buster_poison",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_poison/",
+			"attachedEntity": true,
+			"wav": "effect/em_elemetal_buster_poison"
+		},
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster/elemental_buster_poison_bottom/elemental_buster_poison_bottom",
+			"texturePath": "elemental_buster/elemental_buster/elemental_buster_poison_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_completion_em_elemental_buster_poison_hit": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster_hit/elemental_buster_poison_hit/elemental_buster_poison_hit",
+			"texturePath": "elemental_buster/elemental_buster_hit/elemental_buster_poison_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_completion_audio_rl_b_trap": [
+		{
+			"wav": "effect/rl_b_trap",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_rl_fire_rain": [
+		{
+			"wav": "effect/rl_fire_rain",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_bo_wooden_attack": [
+		{
+			"wav": "effect/bo_wooden_attack",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_bo_hell_howling": [
+		{
+			"wav": "effect/bo_hell_howling",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_bo_fairy_dusty": [
+		{
+			"wav": "effect/bo_fairy_dusty",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_chul_ho_sonic_claw": [
+		{
+			"wav": "effect/spirit_handler/sh_chul_ho_sonic_claw",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_howling_of_chul_ho": [
+		{
+			"wav": "effect/spirit_handler/sh_howling_of_chul_ho",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_hogogong_strike": [
+		{
+			"wav": "effect/spirit_handler/sh_hogogong_strike",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_ki_sul_water_spraying": [
+		{
+			"wav": "effect/spirit_handler/sh_ki_sul_water_spraying",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_marine_festival_of_ki_sul": [
+		{
+			"wav": "effect/spirit_handler/sh_marine_festival_of_ki_sul",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_sandy_festival_of_ki_sul": [
+		{
+			"wav": "effect/spirit_handler/sh_sandy_festival_of_ki_sul",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_ki_sul_rampage": [
+		{
+			"wav": "effect/spirit_handler/sh_ki_sul_rampage",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_colors_of_hyun_rok": [
+		{
+			"wav": "effect/spirit_handler/sh_colors_of_hyun_rok",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_hyun_roks_breeze": [
+		{
+			"wav": "effect/spirit_handler/sh_hyun_roks_breeze",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/hyun_roks_breeze_bottom",
+			"texturePath": "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/min_hyun_roks_breeze_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/hyun_roks_breeze",
+			"texturePath": "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/min_hyun_roks_breeze"
+		}
+	],
+	"original_completion_audio_sh_hyun_rok_cannon": [
+		{
+			"wav": "effect/spirit_handler/sh_hyun_rok_cannon",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_temporary_communion": [
+		{
+			"wav": "effect/spirit_handler/sh_temporary_communion",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_sh_blessing_of_mystical_creatures": [
+		{
+			"wav": "effect/spirit_handler/sh_blessing_of_mystical_creatures",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_intensive_aim": [
+		{
+			"wav": "effect/night_watch/nw_intensive_aim",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_only_one_bullet": [
+		{
+			"wav": "effect/night_watch/nw_only_one_bullet",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_spiral_shooting": [
+		{
+			"wav": "effect/night_watch/nw_spiral_shooting",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_magazine_for_one": [
+		{
+			"wav": "effect/night_watch/nw_magazine_for_one",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_wild_fire": [
+		{
+			"wav": "effect/night_watch/nw_wild_fire",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_basic_grenade": [
+		{
+			"wav": "effect/night_watch/nw_basic_grenade",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_auto_firing_launcher": [
+		{
+			"wav": "effect/night_watch/nw_auto_firing_launcher",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_hidden_card": [
+		{
+			"wav": "effect/night_watch/nw_hidden_card",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_nw_mission_bombard": [
+		{
+			"wav": "effect/night_watch/nw_mission_bombard",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_protection": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_protection",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_warrior": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_warrior",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_soul_gathering": [
+		{
+			"wav": "effect/soul_ascetic/soa_soul_gathering",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_soul_stealing": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_soul_stealing",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_blue_dragon": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_blue_dragon",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_white_tiger": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_white_tiger",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_red_phoenix": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_red_phoenix",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_talisman_of_four_bearing_god": [
+		{
+			"wav": "effect/soul_ascetic/soa_talisman_of_four_bearing_god",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_soa_soul_of_heaven_and_earth": [
+		{
+			"wav": "effect/soul_ascetic/soa_soul_of_heaven_and_earth",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_hn_mega_sonic_blow": [
+		{
+			"wav": "effect/hyper_novice/hn_mega_sonic_blow",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_hn_shield_chain_rush": [
+		{
+			"wav": "effect/hyper_novice/hn_shield_chain_rush",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_hn_spiral_pierce_max": [
+		{
+			"wav": "effect/hyper_novice/hn_spiral_pierce_max",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_hn_jack_frost_nova": [
+		{
+			"wav": "effect/hyper_novice/hn_jack_frost_nova",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/jack_frost_nova_loop_bottom",
+			"texturePath": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/",
+			"repeat": true,
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/jack_frost_nova_loop",
+			"texturePath": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/",
+			"repeat": true,
+			"attachedEntity": false
+		}
+	],
+	"original_completion_audio_hn_ground_gravitation": [
+		{
+			"wav": "effect/hyper_novice/hn_ground_gravitation",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_ground_gravitation/ground_gravitation_bottom_loop",
+			"texturePath": "hyper_novice/hn_ground_gravitation/",
+			"repeat": true,
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_ground_gravitation/ground_gravitation_loop",
+			"texturePath": "hyper_novice/hn_ground_gravitation/",
+			"repeat": true,
+			"attachedEntity": false
+		}
+	],
+	"original_completion_audio_hn_napalm_vulcan_strike": [
+		{
+			"wav": "effect/hyper_novice/hn_napalm_vulcan_strike",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_hn_breakinglimit": [
+		{
+			"wav": "effect/hyper_novice/hn_breakinglimit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_hn_rulebreak": [
+		{
+			"wav": "effect/hyper_novice/hn_rulebreak",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_noon_blast": [
+		{
+			"wav": "effect/sky_emperor/ske_noon_blast",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_sunset_blast": [
+		{
+			"wav": "effect/sky_emperor/ske_sunset_blast",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_midnight_kick": [
+		{
+			"wav": "effect/sky_emperor/ske_midnight_kick",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_dawn_break": [
+		{
+			"wav": "effect/sky_emperor/ske_dawn_break",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_star_burst": [
+		{
+			"wav": "effect/sky_emperor/ske_star_burst",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_star_cannon": [
+		{
+			"wav": "effect/sky_emperor/ske_star_cannon",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_star_cannon/star_cannon/ske_star_cannon",
+			"texturePath": "sky_emperor/ske_star_cannon/star_cannon/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "sky_emperor/ske_star_cannon/star_cannon/min_ske_star_cannon"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_star_cannon/star_cannon_bottom/ske_star_cannon_bottom",
+			"texturePath": "sky_emperor/ske_star_cannon/star_cannon_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "sky_emperor/ske_star_cannon/star_cannon_bottom/min_ske_star_cannon_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"original_completion_audio_ske_all_in_the_sky": [
+		{
+			"wav": "effect/sky_emperor/ske_all_in_the_sky",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ske_enchanting_sky": [
+		{
+			"wav": "effect/sky_emperor/ske_enchanting_sky",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_tokedasu": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_tokedasu",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_shimiru": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_shimiru",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_akumukesu": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_akumukesu",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_kagegari": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_kagegari",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_kagegissen": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_kagegissen",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_fuumashouaku": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_fuumashouaku",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_fuumakouchiku": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_fuumakouchiku",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_kunaiwaikyoku": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_kunaiwaikyoku",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kunaiwaikyoku/kunaiwaikyoku",
+			"texturePath": "shinkiro_shiranui/ss_kunaiwaikyoku/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_kunaiwaikyoku/min_kunaiwaikyoku"
+		}
+	],
+	"original_completion_audio_ss_kunaikussetsu": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_kunaikussetsu",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_sekienhou": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_sekienhou",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_reiketsuhou": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_reiketsuhou",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_raidenpou": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_raidenpou",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_kinryuuhou": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_kinryuuhou",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_antenpou": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_antenpou",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_hitouakumu": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_hitouakumu",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_completion_audio_ss_ankokuryuuakumu": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_ankokuryuuakumu",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_quick_ag_deadly_projection_cast": [
+		{
+			"type": "STR",
+			"file": "deadly_projection/deadly_projection_cast/deadly_projection_cast",
+			"texturePath": "deadly_projection/deadly_projection_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "deadly_projection/deadly_projection_cast_bottom/deadly_projection_cast_bottom",
+			"texturePath": "deadly_projection/deadly_projection_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_ag_deadly_projection_hit": [
+		{
+			"type": "STR",
+			"file": "deadly_projection/deadly_projection_hit/deadly_projection_hit",
+			"texturePath": "deadly_projection/deadly_projection_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_quick_ag_soul_vc_strike_cast": [
+		{
+			"type": "STR",
+			"file": "soul_vc_strike/soul_vc_strike_cast/soul_vc_strike_cast",
+			"texturePath": "soul_vc_strike/soul_vc_strike_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "soul_vc_strike/soul_vc_strike_cast_bottom/soul_vc_strike_cast_bottom",
+			"texturePath": "soul_vc_strike/soul_vc_strike_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_ag_soul_vc_strike_hit": [
+		{
+			"type": "STR",
+			"file": "soul_vc_strike/soul_vc_strike_hit/soul_vc_strike_hit",
+			"texturePath": "soul_vc_strike/soul_vc_strike_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_quick_nc_armscannon_cast": [
+		{
+			"type": "STR",
+			"file": "new_armscannon/new_armscannon_cast/new_armscannon_cast",
+			"texturePath": "new_armscannon/new_armscannon_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_armscannon/new_armscannon_cast_bottom/new_armscannon_cast_bottom",
+			"texturePath": "new_armscannon/new_armscannon_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_nc_armscannon_hit": [
+		{
+			"type": "STR",
+			"file": "new_armscannon/new_armscannon_explosion/new_armscannon_explosion",
+			"texturePath": "new_armscannon/new_armscannon_explosion/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_armscannon/new_armscannon_explosion_bottom/new_armscannon_explosion_bottom",
+			"texturePath": "new_armscannon/new_armscannon_explosion_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_ag_rain_of_crystal_cast": [
+		{
+			"type": "STR",
+			"file": "rain_of_crystal/rain_of_crystal_casting/rain_of_crystal_casting",
+			"texturePath": "rain_of_crystal/rain_of_crystal_casting/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "rain_of_crystal/rain_of_crystal_casting_bottom/rain_of_crystal_casting_bottom",
+			"texturePath": "rain_of_crystal/rain_of_crystal_casting_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_ag_violent_quake_cast": [
+		{
+			"type": "STR",
+			"file": "violentquake/violentquake_cast/violentquake_cast",
+			"texturePath": "violentquake/violentquake_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "violentquake/violentquake_cast_bottom/violentquake_cast_bottom",
+			"texturePath": "violentquake/violentquake_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_em_venom_swamp_cast": [
+		{
+			"type": "STR",
+			"file": "venom_swamp/venom_swamp_cast/venom_swamp_cast",
+			"texturePath": "venom_swamp/venom_swamp_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "venom_swamp/venom_swamp_cast_bottom/venom_swamp_cast_bottom",
+			"texturePath": "venom_swamp/venom_swamp_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_em_elemental_buster_cast": [
+		{
+			"type": "STR",
+			"file": "elemental_buster/elemental_buster_cast/elemental_buster_cast",
+			"texturePath": "elemental_buster/elemental_buster_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_quick_gn_wallofthorn_cast": [
+		{
+			"type": "STR",
+			"file": "new_wallofthorn/new_wallofthorn_cast/new_wallofthorn_cast",
+			"texturePath": "new_wallofthorn/new_wallofthorn_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_wallofthorn/new_wallofthorn_cast_bottom/new_wallofthorn_cast_bottom",
+			"texturePath": "new_wallofthorn/new_wallofthorn_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_bo_acidified_zone_fire_cast": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_cast/acidified_zone_fire_cast",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_cast_bottom/acidified_zone_fire_cast_bottom",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_bo_acidified_zone_water_cast": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_cast/acidified_zone_water_cast",
+			"texturePath": "acidified_zone_water/acidified_zone_water_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_cast_bottom/acidified_zone_water_cast_bottom",
+			"texturePath": "acidified_zone_water/acidified_zone_water_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_bo_acidified_zone_ground_cast": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_cast/acidified_zone_ground_cast",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_cast_bottom/acidified_zone_ground_cast_bottom",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_quick_bo_acidified_zone_wind_cast": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_cast/acidified_zone_wind_cast",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_cast_bottom/acidified_zone_wind_cast_bottom",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_audio_abc_abyss_dagger": [
+		{
+			"wav": "effect/abc_abyss_dagger",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_abc_abyss_slayer": [
+		{
+			"wav": "effect/abc_abyss_slayer",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_abc_abyss_strike": [
+		{
+			"wav": "effect/abc_abyss_strike",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_abc_chain_reaction_shot": [
+		{
+			"wav": "effect/abc_chain_reaction_shot",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_abc_frenzy_shot": [
+		{
+			"wav": "effect/abc_frenzy_shot",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_abc_from_the_abyss": [
+		{
+			"wav": "effect/abc_from_the_abyss",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_abc_unlucky_rush": [
+		{
+			"wav": "effect/abc_unlucky_rush",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ab_renovatio": [
+		{
+			"wav": "effect/ab_renovatio",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_climax": [
+		{
+			"wav": "effect/ag_climax",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_crystal_impact": [
+		{
+			"wav": "effect/ag_crystal_impact",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_deadly_projection": [
+		{
+			"wav": "effect/ag_deadly_projection",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_destructive_hurricane": [
+		{
+			"wav": "effect/ag_destructive_hurricane",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_frozen_slash": [
+		{
+			"wav": "effect/ag_frozen_slash",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_rock_down": [
+		{
+			"wav": "effect/ag_rock_down",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ag_storm_cannon": [
+		{
+			"wav": "effect/ag_storm_cannon",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_bo_advance_protection": [
+		{
+			"wav": "effect/bo_advance_protection",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_bo_researchreport": [
+		{
+			"wav": "effect/bo_researchreport",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_arbitrium": [
+		{
+			"wav": "effect/cd_arbitrium",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_argutus_vita": [
+		{
+			"wav": "effect/cd_argutus_vita",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_benedictum": [
+		{
+			"wav": "effect/cd_benedictum",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_competentia": [
+		{
+			"wav": "effect/cd_competentia",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_dilectio_heal": [
+		{
+			"wav": "effect/cd_dilectio_heal",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_effligo": [
+		{
+			"wav": "effect/cd_effligo",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_framen": [
+		{
+			"wav": "effect/cd_framen",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_mediale_votum": [
+		{
+			"wav": "effect/cd_mediale_votum",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_petitio": [
+		{
+			"wav": "effect/cd_petitio",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_presens_acies": [
+		{
+			"wav": "effect/cd_presens_acies",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_cd_religio": [
+		{
+			"wav": "effect/cd_religio",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_dk_servant_w_phantom": [
+		{
+			"wav": "effect/dk_servant_w_phantom",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_em_activity_burn": [
+		{
+			"wav": "effect/em_activity_burn",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_em_diamond_storm": [
+		{
+			"wav": "effect/em_diamond_storm",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_em_increasing_activity": [
+		{
+			"wav": "effect/em_increasing_activity",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_em_spell_enchanting": [
+		{
+			"wav": "effect/em_spell_enchanting",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_em_terra_drive": [
+		{
+			"wav": "effect/em_terra_drive",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_ig_shield_shooting": [
+		{
+			"wav": "effect/ig_shield_shooting",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_exposion_blaster": [
+		{
+			"wav": "effect/iq_exposion_blaster",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_first_brand": [
+		{
+			"wav": "effect/iq_first_brand",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_first_faith_power": [
+		{
+			"wav": "effect/iq_first_faith_power",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_judge": [
+		{
+			"wav": "effect/iq_judge",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_massive_f_blaster": [
+		{
+			"wav": "effect/iq_massive_f_blaster",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_oleum_sanctum": [
+		{
+			"wav": "effect/iq_oleum_sanctum",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_second_faith": [
+		{
+			"wav": "effect/iq_second_faith",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_second_flame": [
+		{
+			"wav": "effect/iq_second_flame",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_second_judgement": [
+		{
+			"wav": "effect/iq_second_judgement",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_third_consecration": [
+		{
+			"wav": "effect/iq_third_consecration",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_third_exor_flame": [
+		{
+			"wav": "effect/iq_third_exor_flame",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_third_flame_bomb": [
+		{
+			"wav": "effect/iq_third_flame_bomb",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_iq_third_punish": [
+		{
+			"wav": "effect/iq_third_punish",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_mt_a_machine": [
+		{
+			"wav": "effect/mt_a_machine",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_mt_d_machine": [
+		{
+			"wav": "effect/mt_d_machine",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_mt_rush_quake": [
+		{
+			"wav": "effect/mt_rush_quake",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_mt_summon_abr_battle_warior": [
+		{
+			"wav": "effect/mt_summon_abr_battle_warior",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_mt_summon_abr_dual_cannon": [
+		{
+			"wav": "effect/mt_summon_abr_dual_cannon",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_mt_summon_abr_infinity": [
+		{
+			"wav": "effect/mt_summon_abr_infinity",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_am_blast": [
+		{
+			"wav": "effect/rl_am_blast",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_banishing_buster": [
+		{
+			"wav": "effect/rl_banishing_buster",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_d_tail": [
+		{
+			"wav": "effect/rl_d_tail",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_flicker": [
+		{
+			"wav": "effect/rl_flicker",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_hammer_of_god": [
+		{
+			"wav": "effect/rl_hammer_of_god",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_h_mine": [
+		{
+			"wav": "effect/rl_h_mine",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_rl_slugshot": [
+		{
+			"wav": "effect/rl_slugshot",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_shc_eternal_slash": [
+		{
+			"wav": "effect/shc_eternal_slash",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_shc_fatal_shadow_crow": [
+		{
+			"wav": "effect/shc_fatal_shadow_crow",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_shc_potent_venom": [
+		{
+			"wav": "effect/shc_potent_venom",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_shc_savage_impact": [
+		{
+			"wav": "effect/shc_savage_impact",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_bunchofshrimp": [
+		{
+			"wav": "effect/su_brunchofshrimp",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_chattering": [
+		{
+			"wav": "effect/su_chattering",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_grooming": [
+		{
+			"wav": "effect/su_grooming",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_hiss": [
+		{
+			"wav": "effect/su_hiss",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_meowmeow": [
+		{
+			"wav": "effect/su_meowmeow",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_pickypeck": [
+		{
+			"wav": "effect/su_pickypeck",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_powerofflock": [
+		{
+			"wav": "effect/su_powerofflock",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_purring": [
+		{
+			"wav": "effect/su_purring",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_scaroftarou": [
+		{
+			"wav": "effect/su_scaroftarou",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_scratch": [
+		{
+			"wav": "effect/su_scratch",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_shrimparty": [
+		{
+			"wav": "effect/su_shrimpparty",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_svg_spirit": [
+		{
+			"wav": "effect/su_svg_spirit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_su_tunabelly": [
+		{
+			"wav": "effect/su_tunabelly",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_tr_metalic_fury": [
+		{
+			"wav": "effect/tr_metalic_fury",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_tr_musical_interlude": [
+		{
+			"wav": "effect/tr_musical_interlude",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_tr_nipelheim_requiem": [
+		{
+			"wav": "effect/tr_nipelheim_requiem",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_wh_galestorm": [
+		{
+			"wav": "effect/wh_galestorm",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_wh_hawkboomerang": [
+		{
+			"wav": "effect/wh_hawkboomerang",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_wh_hawkrush": [
+		{
+			"wav": "effect/wh_hawkrush",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_audio_wh_wind_sign": [
+		{
+			"wav": "effect/wh_wind_sign",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"original_feintbomb_explosion": [
+		{
+			"type": "STR",
+			"file": "new_peintbomb/new_peintbomb/new_peintbomb",
+			"texturePath": "new_peintbomb/new_peintbomb/",
+			"attachedEntity": false,
+			"wav": "effect/feintbomb"
+		},
+		{
+			"type": "STR",
+			"file": "new_peintbomb/new_peintbomb_bottom/new_peintbomb_bottom",
+			"texturePath": "new_peintbomb/new_peintbomb_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_abc_abyss_square_main": [
+		{
+			"type": "STR",
+			"file": "abyss_square/abyss_square/abyss_square",
+			"texturePath": "abyss_square/abyss_square/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_abc_abyss_square_hit": [
+		{
+			"type": "STR",
+			"file": "abyss_square/abyss_square_hit/abyss_square_hit",
+			"texturePath": "abyss_square/abyss_square_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_abc_abyss_square_bottom": [
+		{
+			"type": "STR",
+			"file": "abyss_square/abyss_square_bottom/abyss_square_bottom",
+			"texturePath": "abyss_square/abyss_square_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_abc_abyss_square_ground": [
+		{
+			"type": "STR",
+			"file": "abyss_square/abyss_square/abyss_square",
+			"texturePath": "abyss_square/abyss_square/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "abyss_square/abyss_square_bottom/abyss_square_bottom",
+			"texturePath": "abyss_square/abyss_square_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/abc_abyss_square",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_abc_abyss_strike_main": [
+		{
+			"type": "STR",
+			"file": "abyss_strike/abyss_strike/abyss_strike",
+			"texturePath": "abyss_strike/abyss_strike/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_abc_abyss_strike_cast": [
+		{
+			"type": "STR",
+			"file": "abyss_strike/abyss_strike_cast/abyss_strike_cast",
+			"texturePath": "abyss_strike/abyss_strike_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_abc_abyss_strike_hit": [
+		{
+			"type": "STR",
+			"file": "abyss_strike/abyss_strike_hit/abyss_strike_hit",
+			"texturePath": "abyss_strike/abyss_strike_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_abc_abyss_strike_bottom": [
+		{
+			"type": "STR",
+			"file": "abyss_strike/abyss_strike_bottom/abyss_strike_bottom",
+			"texturePath": "abyss_strike/abyss_strike_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ab_secrament_main": [
+		{
+			"type": "STR",
+			"file": "new_secrament/new_secrament/new_secrament",
+			"texturePath": "new_secrament/new_secrament/",
+			"attachedEntity": true,
+			"wav": "effect/priest_suffragium"
+		}
+	],
+	"original_all_ag_all_bloom_main": [
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom/allbloom",
+			"texturePath": "allbloom/allbloom/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_all_bloom_cast": [
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom_cast/allbloom_cast",
+			"texturePath": "allbloom/allbloom_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_ag_all_bloom_hit": [
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom_hit/allbloom_hit",
+			"texturePath": "allbloom/allbloom_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_all_bloom_bottom": [
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom_bottom/allbloom_bottom",
+			"texturePath": "allbloom/allbloom_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_all_bloom_ground": [
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom/allbloom",
+			"texturePath": "allbloom/allbloom/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom_bottom/allbloom_bottom",
+			"texturePath": "allbloom/allbloom_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ag_all_bloom",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_ag_astral_strike_main": [
+		{
+			"type": "STR",
+			"file": "astralstrike/astralstrike/astralstrike",
+			"texturePath": "astralstrike/astralstrike/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_astral_strike_cast": [
+		{
+			"type": "STR",
+			"file": "astralstrike/astralstrike_cast/astralstrike_cast",
+			"texturePath": "astralstrike/astralstrike_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_ag_astral_strike_bottom": [
+		{
+			"type": "STR",
+			"file": "astralstrike/astralstrike_bottom/astralstrike_bottom",
+			"texturePath": "astralstrike/astralstrike_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_astral_strike_ground": [
+		{
+			"type": "STR",
+			"file": "astralstrike/astralstrike/astralstrike",
+			"texturePath": "astralstrike/astralstrike/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "astralstrike/astralstrike_bottom/astralstrike_bottom",
+			"texturePath": "astralstrike/astralstrike_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_mystery_illusion_main": [
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion/mystery_illusion",
+			"texturePath": "mystery_illusion/mystery_illusion/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_mystery_illusion_cast": [
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion_cast/mystery_illusion_cast",
+			"texturePath": "mystery_illusion/mystery_illusion_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_ag_mystery_illusion_hit": [
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion_hit/mystery_illusion_hit",
+			"texturePath": "mystery_illusion/mystery_illusion_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_mystery_illusion_bottom": [
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion_bottom/mystery_illusion_bottom",
+			"texturePath": "mystery_illusion/mystery_illusion_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_mystery_illusion_ground": [
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion/mystery_illusion",
+			"texturePath": "mystery_illusion/mystery_illusion/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion_bottom/mystery_illusion_bottom",
+			"texturePath": "mystery_illusion/mystery_illusion_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ag_mystery_illusion",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_ag_strantum_tremor_main": [
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor/new_strantumtremor",
+			"texturePath": "new_strantumtremor/new_strantumtremor/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_strantum_tremor_cast": [
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor_cast/new_strantumtremor_cast",
+			"texturePath": "new_strantumtremor/new_strantumtremor_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_ag_strantum_tremor_hit": [
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor_hit/new_strantumtremor_hit",
+			"texturePath": "new_strantumtremor/new_strantumtremor_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_strantum_tremor_bottom": [
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor_bottom/new_strantumtremor_bottom",
+			"texturePath": "new_strantumtremor/new_strantumtremor_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_strantum_tremor_ground": [
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor/new_strantumtremor",
+			"texturePath": "new_strantumtremor/new_strantumtremor/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor_bottom/new_strantumtremor_bottom",
+			"texturePath": "new_strantumtremor/new_strantumtremor_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_tornado_storm_main": [
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm/new_tornadostorm",
+			"texturePath": "new_tornadostorm/new_tornadostorm/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_tornado_storm_cast": [
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm_cast/new_tornadostorm_cast",
+			"texturePath": "new_tornadostorm/new_tornadostorm_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_ag_tornado_storm_hit": [
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm_hit/new_tornadostorm_hit",
+			"texturePath": "new_tornadostorm/new_tornadostorm_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ag_tornado_storm_bottom": [
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm_bottom/new_tornadostorm_bottom",
+			"texturePath": "new_tornadostorm/new_tornadostorm_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ag_tornado_storm_ground": [
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm/new_tornadostorm",
+			"texturePath": "new_tornadostorm/new_tornadostorm/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm_bottom/new_tornadostorm_bottom",
+			"texturePath": "new_tornadostorm/new_tornadostorm_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ag_tornado_storm",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_cd_dilectio_heal_main": [
+		{
+			"type": "STR",
+			"file": "new_dilectioheal/new_dilectioheal/new_dilectioheal",
+			"texturePath": "new_dilectioheal/new_dilectioheal/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_dilectio_heal_cast": [
+		{
+			"type": "STR",
+			"file": "new_dilectioheal/new_dilectioheal_cast/new_dilectioheal_cast",
+			"texturePath": "new_dilectioheal/new_dilectioheal_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_dilectio_heal_hit": [
+		{
+			"type": "STR",
+			"file": "new_dilectioheal/new_dilectioheal_target/new_dilectioheal_target",
+			"texturePath": "new_dilectioheal/new_dilectioheal_target/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_pneumaticus_procella_main": [
+		{
+			"type": "STR",
+			"file": "new_pneumaticusprocella/new_pneumaticusprocella/new_pneumaticusprocella",
+			"texturePath": "new_pneumaticusprocella/new_pneumaticusprocella/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_cd_pneumaticus_procella_cast": [
+		{
+			"type": "STR",
+			"file": "new_pneumaticusprocella/new_pneumaticusprocella_cast/new_pneumaticusprocella_cast",
+			"texturePath": "new_pneumaticusprocella/new_pneumaticusprocella_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_pneumaticus_procella_hit": [
+		{
+			"type": "STR",
+			"file": "new_pneumaticusprocella/new_pneumaticusprocella_target/new_pneumaticusprocella_target",
+			"texturePath": "new_pneumaticusprocella/new_pneumaticusprocella_target/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_cd_pneumaticus_procella_ground": [
+		{
+			"type": "STR",
+			"file": "new_pneumaticusprocella/new_pneumaticusprocella/new_pneumaticusprocella",
+			"texturePath": "new_pneumaticusprocella/new_pneumaticusprocella/",
+			"attachedEntity": false
+		},
+		{
+			"wav": "effect/cd_pneumaticus_procella",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_cd_reparatio_main": [
+		{
+			"type": "STR",
+			"file": "new_reparatio/new_reparatio/new_reparatio",
+			"texturePath": "new_reparatio/new_reparatio/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_reparatio_cast": [
+		{
+			"type": "STR",
+			"file": "new_reparatio/new_reparatio_cast/new_reparatio_cast",
+			"texturePath": "new_reparatio/new_reparatio_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_reparatio_hit": [
+		{
+			"type": "STR",
+			"file": "new_reparatio/new_reparatio_target/new_reparatio_target",
+			"texturePath": "new_reparatio/new_reparatio_target/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_cd_reparatio_bottom": [
+		{
+			"type": "STR",
+			"file": "new_reparatio/new_reparatio_bottom/new_reparatio_bottom",
+			"texturePath": "new_reparatio/new_reparatio_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_em_conflagration_main": [
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration/conflagration",
+			"texturePath": "conflagration/conflagration/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_conflagration_cast": [
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration_cast/conflagration_cast",
+			"texturePath": "conflagration/conflagration_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_em_conflagration_hit": [
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration_hit/conflagration_hit",
+			"texturePath": "conflagration/conflagration_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_conflagration_bottom": [
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration_bottom/conflagration_bottom",
+			"texturePath": "conflagration/conflagration_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_em_conflagration_ground": [
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration/conflagration",
+			"texturePath": "conflagration/conflagration/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration_bottom/conflagration_bottom",
+			"texturePath": "conflagration/conflagration_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/em_conflagration",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_em_diamond_storm_main": [
+		{
+			"type": "STR",
+			"file": "diamond_storm/diamond_storm/diamond_storm",
+			"texturePath": "diamond_storm/diamond_storm/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_diamond_storm_cast": [
+		{
+			"type": "STR",
+			"file": "diamond_storm/diamond_storm_cast/diamond_storm_cast",
+			"texturePath": "diamond_storm/diamond_storm_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_em_diamond_storm_hit": [
+		{
+			"type": "STR",
+			"file": "diamond_storm/diamond_storm_hit/diamond_storm_hit",
+			"texturePath": "diamond_storm/diamond_storm_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_diamond_storm_bottom": [
+		{
+			"type": "STR",
+			"file": "diamond_storm/diamond_storm_bottom/diamond_storm_bottom",
+			"texturePath": "diamond_storm/diamond_storm_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_em_lightning_land_main": [
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land/lightning_land",
+			"texturePath": "lightning_land/lightning_land/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_lightning_land_cast": [
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land_cast/lightning_land_cast",
+			"texturePath": "lightning_land/lightning_land_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_em_lightning_land_hit": [
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land_hit/lightning_land_hit",
+			"texturePath": "lightning_land/lightning_land_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_lightning_land_bottom": [
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land_bottom/lightning_land_bottom",
+			"texturePath": "lightning_land/lightning_land_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_em_lightning_land_ground": [
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land/lightning_land",
+			"texturePath": "lightning_land/lightning_land/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land_bottom/lightning_land_bottom",
+			"texturePath": "lightning_land/lightning_land_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/em_lightning_land",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_em_terra_drive_main": [
+		{
+			"type": "STR",
+			"file": "terradrive/terradrive/terradrive",
+			"texturePath": "terradrive/terradrive/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_terra_drive_cast": [
+		{
+			"type": "STR",
+			"file": "terradrive/terradrive_cast/terradrive_cast",
+			"texturePath": "terradrive/terradrive_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_em_terra_drive_hit": [
+		{
+			"type": "STR",
+			"file": "terradrive/terradrive_hit/terradrive_hit",
+			"texturePath": "terradrive/terradrive_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_em_terra_drive_bottom": [
+		{
+			"type": "STR",
+			"file": "terradrive/terradrive_bottom/terradrive_bottom",
+			"texturePath": "terradrive/terradrive_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_gc_counterslash_main": [
+		{
+			"type": "STR",
+			"file": "new_counter_slash/new_counter_slash/new_counter_slash",
+			"texturePath": "new_counter_slash/new_counter_slash/",
+			"attachedEntity": true,
+			"wav": "effect/mon_¸Í·æ°ú°­"
+		}
+	],
+	"original_all_gc_counterslash_bottom": [
+		{
+			"type": "STR",
+			"file": "new_counter_slash/new_counter_slash_bottom/new_counter_slash_bottom",
+			"texturePath": "new_counter_slash/new_counter_slash_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_gc_crossimpact_main": [
+		{
+			"type": "STR",
+			"file": "new_crossimpact/new_crossimpact/new_crossimpact",
+			"texturePath": "new_crossimpact/new_crossimpact/",
+			"attachedEntity": false,
+			"wav": "effect/EF_StoneCurse"
+		}
+	],
+	"original_all_gc_crossimpact_hit": [
+		{
+			"type": "STR",
+			"file": "new_crossimpact/new_crossimpact_target/new_crossimpact_target",
+			"texturePath": "new_crossimpact/new_crossimpact_target/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_gn_cart_tornado_main": [
+		{
+			"type": "STR",
+			"file": "new_cart_tornado/new_cart_tornado/new_cart_tornado",
+			"texturePath": "new_cart_tornado/new_cart_tornado/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_gn_cart_tornado_bottom": [
+		{
+			"type": "STR",
+			"file": "new_cart_tornado/new_cart_tornado_bottom/new_cart_tornado_bottom",
+			"texturePath": "new_cart_tornado/new_cart_tornado_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_gn_mandragora_main": [
+		{
+			"type": "STR",
+			"file": "new_mandragora/new_mandragora/new_mandragora",
+			"texturePath": "new_mandragora/new_mandragora/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_gn_mandragora_cast": [
+		{
+			"type": "STR",
+			"file": "new_mandragora/new_mandragora_cast/new_mandragora_cast",
+			"texturePath": "new_mandragora/new_mandragora_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_gn_mandragora_bottom": [
+		{
+			"type": "STR",
+			"file": "new_mandragora/new_mandragora_bottom/new_mandragora_bottom",
+			"texturePath": "new_mandragora/new_mandragora_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_iq_exposion_blaster_main": [
+		{
+			"type": "STR",
+			"file": "4ig_explosionblaster/explosionblaster/explosionblaster",
+			"texturePath": "4ig_explosionblaster/explosionblaster/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_iq_exposion_blaster_hit": [
+		{
+			"type": "STR",
+			"file": "4ig_explosionblaster/explosionblaster_hit/explosionblaster_hit",
+			"texturePath": "4ig_explosionblaster/explosionblaster_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_iq_exposion_blaster_bottom": [
+		{
+			"type": "STR",
+			"file": "4ig_explosionblaster/explosionblaster_bottom/explosionblaster_bottom",
+			"texturePath": "4ig_explosionblaster/explosionblaster_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ko_jyumonjikiri_main": [
+		{
+			"type": "STR",
+			"file": "jyumonjikiri",
+			"texturePath": "",
+			"attachedEntity": false
+		}
+	],
+	"original_all_ko_setsudan_main": [
+		{
+			"type": "STR",
+			"file": "setsudan",
+			"texturePath": "",
+			"attachedEntity": false
+		}
+	],
+	"original_all_mt_a_machine_main": [
+		{
+			"type": "STR",
+			"file": "new_a_machine/new_a_machine/new_a_machine",
+			"texturePath": "new_a_machine/new_a_machine/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_mt_a_machine_cast": [
+		{
+			"type": "STR",
+			"file": "new_a_machine/new_a_machine_cast/new_a_machine_cast",
+			"texturePath": "new_a_machine/new_a_machine_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_mt_a_machine_hit": [
+		{
+			"type": "STR",
+			"file": "new_a_machine/new_a_machine_hit/new_a_machine_hit",
+			"texturePath": "new_a_machine/new_a_machine_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_mt_d_machine_main": [
+		{
+			"type": "STR",
+			"file": "new_d_machine/new_d_machine/new_d_machine",
+			"texturePath": "new_d_machine/new_d_machine/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_mt_d_machine_cast": [
+		{
+			"type": "STR",
+			"file": "new_d_machine/new_d_machine_cast/new_d_machine_cast",
+			"texturePath": "new_d_machine/new_d_machine_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_mt_rush_quake_main": [
+		{
+			"type": "STR",
+			"file": "new_rush_quake/new_rush_quake/new_rush_quake",
+			"texturePath": "new_rush_quake/new_rush_quake/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_mt_rush_quake_hit": [
+		{
+			"type": "STR",
+			"file": "new_rush_quake/new_rush_quake_hit/new_rush_quake_hit",
+			"texturePath": "new_rush_quake/new_rush_quake_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_mt_summon_abr_infinity_main": [
+		{
+			"type": "STR",
+			"file": "new_abr_infinity/new_abr_infinity/new_abr_infinity",
+			"texturePath": "new_abr_infinity/new_abr_infinity/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_mt_summon_abr_infinity_cast": [
+		{
+			"type": "STR",
+			"file": "new_abr_infinity/new_abr_infinity_cast/new_abr_infinity_cast",
+			"texturePath": "new_abr_infinity/new_abr_infinity_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_mt_summon_abr_infinity_hit": [
+		{
+			"type": "STR",
+			"file": "new_abr_infinity/new_abr_infinity_hit/new_abr_infinity_hit",
+			"texturePath": "new_abr_infinity/new_abr_infinity_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_mt_summon_abr_infinity_bottom": [
+		{
+			"type": "STR",
+			"file": "new_abr_infinity/new_abr_infinity_bottom/new_abr_infinity_bottom",
+			"texturePath": "new_abr_infinity/new_abr_infinity_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_nc_axetornado_main": [
+		{
+			"type": "STR",
+			"file": "new_axetornado/new_axetornado/new_axetornado",
+			"texturePath": "new_axetornado/new_axetornado/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_nc_axetornado_bottom": [
+		{
+			"type": "STR",
+			"file": "new_axetornado/new_axetornado_bottom/new_axetornado_bottom",
+			"texturePath": "new_axetornado/new_axetornado_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_nc_vulcanarm_main": [
+		{
+			"type": "STR",
+			"file": "new_vulcanarm/new_vulcanarm/new_vulcanarm",
+			"texturePath": "new_vulcanarm/new_vulcanarm/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_nc_vulcanarm_bottom": [
+		{
+			"type": "STR",
+			"file": "new_vulcanarm/new_vulcanarm_bottom/new_vulcanarm_bottom",
+			"texturePath": "new_vulcanarm/new_vulcanarm_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_nv_helpangel_main": [
+		{
+			"type": "STR",
+			"file": "help_angel/help_angel/help_angel",
+			"texturePath": "help_angel/help_angel/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_nv_helpangel_bottom": [
+		{
+			"type": "STR",
+			"file": "help_angel/help_angel_bottom/help_angel_bottom",
+			"texturePath": "help_angel/help_angel_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_ra_fearbreeze_main": [
+		{
+			"type": "STR",
+			"file": "new_fearbreeze/new_fearbreeze",
+			"texturePath": "new_fearbreeze/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rk_windcutter_main": [
+		{
+			"type": "STR",
+			"file": "new_windcutter/new_windcutter/new_windcutter",
+			"texturePath": "new_windcutter/new_windcutter/",
+			"attachedEntity": true,
+			"wav": "effect/wl_siennaexecrate"
+		}
+	],
+	"original_all_rk_windcutter_hit": [
+		{
+			"type": "STR",
+			"file": "new_windcutter/new_windcutter_target/new_windcutter_target",
+			"texturePath": "new_windcutter/new_windcutter_target/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rl_fire_rain_main": [
+		{
+			"type": "STR",
+			"file": "rl_fire_rain/fire_rain",
+			"texturePath": "rl_fire_rain/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_sc_autoshadowspell_main": [
+		{
+			"type": "STR",
+			"file": "new_autoshadowspell/new_autoshadowspell/new_autoshadowspell",
+			"texturePath": "new_autoshadowspell/new_autoshadowspell/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sc_autoshadowspell_bottom": [
+		{
+			"type": "STR",
+			"file": "new_autoshadowspell/new_autoshadowspell_bottom/new_autoshadowspell_bottom",
+			"texturePath": "new_autoshadowspell/new_autoshadowspell_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_sc_fatalmenace_main": [
+		{
+			"type": "STR",
+			"file": "new_fatal_menace/new_fatal_menace/new_fatal_menace",
+			"texturePath": "new_fatal_menace/new_fatal_menace/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_sc_fatalmenace_cast": [
+		{
+			"type": "STR",
+			"file": "new_fatal_menace/new_fatal_menace_cast/new_fatal_menace_cast",
+			"texturePath": "new_fatal_menace/new_fatal_menace_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sc_fatalmenace_bottom": [
+		{
+			"type": "STR",
+			"file": "new_fatal_menace/new_fatal_menace_bottom/new_fatal_menace_bottom",
+			"texturePath": "new_fatal_menace/new_fatal_menace_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_sc_reproduce_main": [
+		{
+			"type": "STR",
+			"file": "new_reproduce/new_reproduce/new_reproduce",
+			"texturePath": "new_reproduce/new_reproduce/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sc_reproduce_bottom": [
+		{
+			"type": "STR",
+			"file": "new_reproduce/new_reproduce_bottom/new_reproduce_bottom",
+			"texturePath": "new_reproduce/new_reproduce_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_shc_potent_venom_main": [
+		{
+			"type": "STR",
+			"file": "new_potent_venom/new_potent_venom",
+			"texturePath": "new_potent_venom/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sj_document_main": [
+		{
+			"type": "STR",
+			"file": "sj_document/sj_document",
+			"texturePath": "sj_document/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sj_fallingstar_main": [
+		{
+			"type": "STR",
+			"file": "falling_star/falling_star",
+			"texturePath": "falling_star/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sj_flashkick_main": [
+		{
+			"type": "STR",
+			"file": "flash_kick/flash_kick",
+			"texturePath": "flash_kick/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_sj_fullmoonkick_main": [
+		{
+			"type": "STR",
+			"file": "fullmoon_kick/fullmoon_kick",
+			"texturePath": "fullmoon_kick/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sj_newmoonkick_main": [
+		{
+			"type": "STR",
+			"file": "newmoon_kick/newmoon_kick",
+			"texturePath": "newmoon_kick/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sj_prominencekick_main": [
+		{
+			"type": "STR",
+			"file": "prominence_kick/prominence_kick",
+			"texturePath": "prominence_kick/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_sj_solarburst_main": [
+		{
+			"type": "STR",
+			"file": "solar_burst/solar_burst",
+			"texturePath": "solar_burst/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sp_soulcurse_main": [
+		{
+			"type": "STR",
+			"file": "soul_curse/soul_curse",
+			"texturePath": "soul_curse/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sp_soulgolem_main": [
+		{
+			"type": "STR",
+			"file": "soul_golem/soul_golem",
+			"texturePath": "soul_golem/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_sp_soulrevolve_main": [
+		{
+			"type": "STR",
+			"file": "soul_revolve/soul_revolve",
+			"texturePath": "soul_revolve/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_arclousedash_main": [
+		{
+			"type": "STR",
+			"file": "su_arclousedash/su_arclousedash",
+			"texturePath": "su_arclousedash/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_bite_main": [
+		{
+			"type": "STR",
+			"file": "su_bite/su_bite",
+			"texturePath": "su_bite/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_bunchofshrimp_main": [
+		{
+			"type": "STR",
+			"file": "su_bunchofshrimp/su_bunchofshrimp",
+			"texturePath": "su_bunchofshrimp/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_chattering_main": [
+		{
+			"type": "STR",
+			"file": "su_chattering/su_chattering",
+			"texturePath": "su_chattering/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_freshshrimp_main": [
+		{
+			"type": "STR",
+			"file": "su_freshshrimp/su_freshshrimp",
+			"texturePath": "su_freshshrimp/",
+			"attachedEntity": true,
+			"wav": "effect/su_shrimpparty"
+		}
+	],
+	"original_all_su_grooming_main": [
+		{
+			"type": "STR",
+			"file": "su_grooming/su_grooming",
+			"texturePath": "su_grooming/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_hiss_main": [
+		{
+			"type": "STR",
+			"file": "su_hiss/su_hiss",
+			"texturePath": "su_hiss/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_lunaticcarrotbeat_main": [
+		{
+			"type": "STR",
+			"file": "su_lunaticcarrotbeat/su_lunaticcarrotbeat",
+			"texturePath": "su_lunaticcarrotbeat/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_nyanggrass_main": [
+		{
+			"type": "STR",
+			"file": "su_nyanggrass/su_nyanggrass",
+			"texturePath": "su_nyanggrass/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_nyanggrass_ground": [
+		{
+			"type": "STR",
+			"file": "su_nyanggrass/su_nyanggrass",
+			"texturePath": "su_nyanggrass/",
+			"attachedEntity": false
+		},
+		{
+			"wav": "effect/su_nyanggrass",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"original_all_su_pickypeck_main": [
+		{
+			"type": "STR",
+			"file": "su_pickypeck/su_pickypeck",
+			"texturePath": "su_pickypeck/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_powerofflock_main": [
+		{
+			"type": "STR",
+			"file": "su_powerofflock/su_powerofflock",
+			"texturePath": "su_powerofflock/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_su_scaroftarou_main": [
+		{
+			"type": "STR",
+			"file": "su_scaroftarou/su_scaroftarou",
+			"texturePath": "su_scaroftarou/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_scratch_main": [
+		{
+			"type": "STR",
+			"file": "su_scratch/su_scratch",
+			"texturePath": "su_scratch/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_svg_spirit_main": [
+		{
+			"type": "STR",
+			"file": "su_svg_spirit/su_svg_spirit",
+			"texturePath": "su_svg_spirit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_su_sv_stemspear_main": [
+		{
+			"type": "STR",
+			"file": "su_sv_stemspear/su_sv_stemspear",
+			"texturePath": "su_sv_stemspear/",
+			"attachedEntity": false,
+			"wav": "effect/su_stemspear"
+		}
+	],
+	"original_all_su_tunabelly_main": [
+		{
+			"type": "STR",
+			"file": "su_tunabelly/su_tunabelly",
+			"texturePath": "su_tunabelly/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_we_cheerup_main": [
+		{
+			"type": "STR",
+			"file": "we_cheerup/we_cheerup",
+			"texturePath": "we_cheerup/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wh_deepblindtrap_main": [
+		{
+			"type": "STR",
+			"file": "deepblindtrap/deepblindtrap/deepblindtrap",
+			"texturePath": "deepblindtrap/deepblindtrap/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_deepblindtrap_cast": [
+		{
+			"type": "STR",
+			"file": "deepblindtrap/deepblindtrap_cast/deepblindtrap_cast",
+			"texturePath": "deepblindtrap/deepblindtrap_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wh_deepblindtrap_hit": [
+		{
+			"type": "STR",
+			"file": "deepblindtrap/deepblindtrap_hit/deepblindtrap_hit",
+			"texturePath": "deepblindtrap/deepblindtrap_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_deepblindtrap_bottom": [
+		{
+			"type": "STR",
+			"file": "deepblindtrap/deepblindtrap_bottom/deepblindtrap_bottom",
+			"texturePath": "deepblindtrap/deepblindtrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_deepblindtrap_ground": [
+		{
+			"type": "STR",
+			"file": "deepblindtrap/deepblindtrap/deepblindtrap",
+			"texturePath": "deepblindtrap/deepblindtrap/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "deepblindtrap/deepblindtrap_bottom/deepblindtrap_bottom",
+			"texturePath": "deepblindtrap/deepblindtrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_flametrap_main": [
+		{
+			"type": "STR",
+			"file": "flametrap/flametrap/flametrap",
+			"texturePath": "flametrap/flametrap/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_flametrap_cast": [
+		{
+			"type": "STR",
+			"file": "flametrap/flametrap_cast/flametrap_cast",
+			"texturePath": "flametrap/flametrap_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wh_flametrap_hit": [
+		{
+			"type": "STR",
+			"file": "flametrap/flametrap_hit/flametrap_hit",
+			"texturePath": "flametrap/flametrap_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_flametrap_bottom": [
+		{
+			"type": "STR",
+			"file": "flametrap/flametrap_bottom/flametrap_bottom",
+			"texturePath": "flametrap/flametrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_flametrap_ground": [
+		{
+			"type": "STR",
+			"file": "flametrap/flametrap/flametrap",
+			"texturePath": "flametrap/flametrap/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "flametrap/flametrap_bottom/flametrap_bottom",
+			"texturePath": "flametrap/flametrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_solidtrap_main": [
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap/solidtrap",
+			"texturePath": "solidtrap/solidtrap/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_solidtrap_cast": [
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap_cast/solidtrap_cast",
+			"texturePath": "solidtrap/solidtrap_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wh_solidtrap_hit": [
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap_hit/solidtrap_hit",
+			"texturePath": "solidtrap/solidtrap_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_solidtrap_bottom": [
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap_bottom/solidtrap_bottom",
+			"texturePath": "solidtrap/solidtrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_solidtrap_ground": [
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap/solidtrap",
+			"texturePath": "solidtrap/solidtrap/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap_bottom/solidtrap_bottom",
+			"texturePath": "solidtrap/solidtrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_swifttrap_main": [
+		{
+			"type": "STR",
+			"file": "swifttrap/swifttrap/swifttrap",
+			"texturePath": "swifttrap/swifttrap/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_swifttrap_cast": [
+		{
+			"type": "STR",
+			"file": "swifttrap/swifttrap_cast/swifttrap_cast",
+			"texturePath": "swifttrap/swifttrap_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wh_swifttrap_hit": [
+		{
+			"type": "STR",
+			"file": "swifttrap/swifttrap_hit/swifttrap_hit",
+			"texturePath": "swifttrap/swifttrap_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wh_swifttrap_bottom": [
+		{
+			"type": "STR",
+			"file": "swifttrap/swifttrap_bottom/swifttrap_bottom",
+			"texturePath": "swifttrap/swifttrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wh_swifttrap_ground": [
+		{
+			"type": "STR",
+			"file": "swifttrap/swifttrap/swifttrap",
+			"texturePath": "swifttrap/swifttrap/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "swifttrap/swifttrap_bottom/swifttrap_bottom",
+			"texturePath": "swifttrap/swifttrap_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wl_comet_main": [
+		{
+			"type": "STR",
+			"file": "new_comet/new_comet/new_comet",
+			"texturePath": "new_comet/new_comet/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wl_comet_cast": [
+		{
+			"type": "STR",
+			"file": "new_comet/new_comet_cast/new_comet_cast",
+			"texturePath": "new_comet/new_comet_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wl_comet_bottom": [
+		{
+			"type": "STR",
+			"file": "new_comet/new_comet_bottom/new_comet_bottom",
+			"texturePath": "new_comet/new_comet_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_rl_am_blast_main": [
+		{
+			"type": "STR",
+			"file": "rl_anti_material/anti",
+			"texturePath": "rl_anti_material/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_banishing_buster_main": [
+		{
+			"type": "STR",
+			"file": "rl_banishing_buster/vanishing1",
+			"texturePath": "rl_banishing_buster/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_d_tail_main": [
+		{
+			"type": "STR",
+			"file": "rl_d_tail/dtdt",
+			"texturePath": "rl_d_tail/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_e_chain_main": [
+		{
+			"type": "STR",
+			"file": "rl_e_chain/eternal",
+			"texturePath": "rl_e_chain/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rl_fallen_angel_main": [
+		{
+			"type": "STR",
+			"file": "rl_fallen_angel/penne",
+			"texturePath": "rl_fallen_angel/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_h_mine_main": [
+		{
+			"type": "STR",
+			"file": "rl_h_mine/mine",
+			"texturePath": "rl_h_mine/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_hammer_of_god_main": [
+		{
+			"type": "STR",
+			"file": "rl_hamer_god/hogg",
+			"texturePath": "rl_hamer_god/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_heat_barrel_main": [
+		{
+			"type": "STR",
+			"file": "rl_heat_barrel/htb",
+			"texturePath": "rl_heat_barrel/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rl_mass_spiral_main": [
+		{
+			"type": "STR",
+			"file": "rl_mess_spiral/s5",
+			"texturePath": "rl_mess_spiral/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_rl_p_alter_main": [
+		{
+			"type": "STR",
+			"file": "rl_p_alter/platinum",
+			"texturePath": "rl_p_alter/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rl_qd_shot_main": [
+		{
+			"type": "STR",
+			"file": "rl_quick_draw/qd2",
+			"texturePath": "rl_quick_draw/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rl_richs_coin_main": [
+		{
+			"type": "STR",
+			"file": "rl_richs_coin_a/reachs",
+			"texturePath": "rl_richs_coin_a/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_rl_slugshot_main": [
+		{
+			"type": "STR",
+			"file": "rl_slugshot/slug",
+			"texturePath": "rl_slugshot/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wl_soulexpansion_main": [
+		{
+			"type": "STR",
+			"file": "new_soulexpansion/new_soulexpansion_hit/new_soulexpansion_hit",
+			"texturePath": "new_soulexpansion/new_soulexpansion_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original_all_wl_soulexpansion_bottom": [
+		{
+			"type": "STR",
+			"file": "new_soulexpansion/new_soulexpansion_hit_bottom/new_soulexpansion_hit_bottom",
+			"texturePath": "new_soulexpansion/new_soulexpansion_hit_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_all_wl_chainlightning_main": [
+		{
+			"type": "STR",
+			"file": "new_chainlightning/new_chainlightning_cast/new_chainlightning_cast",
+			"texturePath": "new_chainlightning/new_chainlightning_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original_all_wl_chainlightning_bottom": [
+		{
+			"type": "STR",
+			"file": "new_chainlightning/new_chainlightning_cast_bottom/new_chainlightning_cast_bottom",
+			"texturePath": "new_chainlightning/new_chainlightning_cast_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_abc_abyss_dagger_main": [
+		{
+			"type": "STR",
+			"file": "abyss_dagger/abyss_dagger/abyss_dagger",
+			"texturePath": "abyss_dagger/abyss_dagger/",
+			"attachedEntity": true
+		}
+	],
+	"original4_abc_abyss_dagger_hit": [
+		{
+			"type": "STR",
+			"file": "abyss_dagger/abyss_dagger_hit/abyss_dagger_hit",
+			"texturePath": "abyss_dagger/abyss_dagger_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original4_abc_abyss_slayer_main": [
+		{
+			"type": "STR",
+			"file": "4abc_abyss_slayer/abyss_slayer/abyss_slayer",
+			"texturePath": "4abc_abyss_slayer/abyss_slayer/",
+			"attachedEntity": true
+		}
+	],
+	"original4_abc_abyss_slayer_cast": [
+		{
+			"type": "STR",
+			"file": "4abc_abyss_slayer/abyss_slayer_cast/abyss_slayer_cast",
+			"texturePath": "4abc_abyss_slayer/abyss_slayer_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_abc_chain_reaction_shot_main": [
+		{
+			"type": "STR",
+			"file": "chain_reaction_shot/chain_reaction_shot/chain_reaction_shot",
+			"texturePath": "chain_reaction_shot/chain_reaction_shot/",
+			"attachedEntity": false
+		}
+	],
+	"original4_abc_chain_reaction_shot_cast": [
+		{
+			"type": "STR",
+			"file": "chain_reaction_shot/chain_reaction_shot_cast/chain_reaction_shot_cast",
+			"texturePath": "chain_reaction_shot/chain_reaction_shot_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_abc_chain_reaction_shot_hit": [
+		{
+			"type": "STR",
+			"file": "chain_reaction_shot/chain_reaction_shot_hit/chain_reaction_shot_hit",
+			"texturePath": "chain_reaction_shot/chain_reaction_shot_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_abc_deft_stab_main": [
+		{
+			"type": "STR",
+			"file": "deft_stab/deft_stab/deft_stab",
+			"texturePath": "deft_stab/deft_stab/",
+			"attachedEntity": false
+		}
+	],
+	"original4_abc_frenzy_shot_main": [
+		{
+			"type": "STR",
+			"file": "frenzy_shot/frenzy_shot/frenzy_shot",
+			"texturePath": "frenzy_shot/frenzy_shot/",
+			"attachedEntity": false
+		}
+	],
+	"original4_abc_frenzy_shot_hit": [
+		{
+			"type": "STR",
+			"file": "frenzy_shot/frenzy_shot_hit/frenzy_shot_hit",
+			"texturePath": "frenzy_shot/frenzy_shot_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_abc_unlucky_rush_main": [
+		{
+			"type": "STR",
+			"file": "unlucky_rush/unlucky_rush/unlucky_rush",
+			"texturePath": "unlucky_rush/unlucky_rush/",
+			"attachedEntity": false
+		}
+	],
+	"original4_abc_unlucky_rush_cast": [
+		{
+			"type": "STR",
+			"file": "unlucky_rush/unlucky_rush_cast/unlucky_rush_cast",
+			"texturePath": "unlucky_rush/unlucky_rush_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_abc_unlucky_rush_hit": [
+		{
+			"type": "STR",
+			"file": "unlucky_rush/unlucky_rush_hit/unlucky_rush_hit",
+			"texturePath": "unlucky_rush/unlucky_rush_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ag_climax_main": [
+		{
+			"type": "STR",
+			"file": "climax/climax/climax",
+			"texturePath": "climax/climax/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_climax_cast": [
+		{
+			"type": "STR",
+			"file": "climax/climax_cast/climax_cast",
+			"texturePath": "climax/climax_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_crimson_arrow_main": [
+		{
+			"type": "STR",
+			"file": "crimsonarrow/crimsonarrow/crimsonarrow",
+			"texturePath": "crimsonarrow/crimsonarrow/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ag_crimson_arrow_cast": [
+		{
+			"type": "STR",
+			"file": "crimsonarrow/crimsonarrow_cast/crimsonarrow_cast",
+			"texturePath": "crimsonarrow/crimsonarrow_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_crimson_arrow_hit": [
+		{
+			"type": "STR",
+			"file": "crimsonarrow/crimsonarrow_hit/crimsonarrow_hit",
+			"texturePath": "crimsonarrow/crimsonarrow_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ag_crystal_impact_main": [
+		{
+			"type": "STR",
+			"file": "crystal_impact/crystal_impact/crystal_impact",
+			"texturePath": "crystal_impact/crystal_impact/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_crystal_impact_cast": [
+		{
+			"type": "STR",
+			"file": "crystal_impact/crystal_impact_cast/crystal_impact_cast",
+			"texturePath": "crystal_impact/crystal_impact_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_crystal_impact_hit": [
+		{
+			"type": "STR",
+			"file": "crystal_impact/crystal_impact_hit/crystal_impact_hit",
+			"texturePath": "crystal_impact/crystal_impact_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_crystal_impact_bottom": [
+		{
+			"type": "STR",
+			"file": "crystal_impact/crystal_impact_bottom/crystal_impact_bottom",
+			"texturePath": "crystal_impact/crystal_impact_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_ag_destructive_hurricane_main": [
+		{
+			"type": "STR",
+			"file": "destructive_hurricane/destructive_hurricane/destructive_hurricane",
+			"texturePath": "destructive_hurricane/destructive_hurricane/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_destructive_hurricane_cast": [
+		{
+			"type": "STR",
+			"file": "destructive_hurricane/destructive_hurricane_cast/destructive_hurricane_cast",
+			"texturePath": "destructive_hurricane/destructive_hurricane_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_destructive_hurricane_hit": [
+		{
+			"type": "STR",
+			"file": "destructive_hurricane/destructive_hurricane_hit/destructive_hurricane_hit",
+			"texturePath": "destructive_hurricane/destructive_hurricane_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_destructive_hurricane_bottom": [
+		{
+			"type": "STR",
+			"file": "destructive_hurricane/destructive_hurricane_bottom/destructive_hurricane_bottom",
+			"texturePath": "destructive_hurricane/destructive_hurricane_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_ag_frozen_slash_main": [
+		{
+			"type": "STR",
+			"file": "frozen_slash/frozen_slash/frozen_slash",
+			"texturePath": "frozen_slash/frozen_slash/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_frozen_slash_hit": [
+		{
+			"type": "STR",
+			"file": "frozen_slash/frozen_slash_hit/frozen_slash_hit",
+			"texturePath": "frozen_slash/frozen_slash_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_rock_down_main": [
+		{
+			"type": "STR",
+			"file": "rockdown/rockdown/rockdown",
+			"texturePath": "rockdown/rockdown/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ag_rock_down_cast": [
+		{
+			"type": "STR",
+			"file": "rockdown/rockdown_cast/rockdown_cast",
+			"texturePath": "rockdown/rockdown_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ag_rock_down_hit": [
+		{
+			"type": "STR",
+			"file": "rockdown/rockdown_hit/rockdown_hit",
+			"texturePath": "rockdown/rockdown_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ag_rock_down_bottom": [
+		{
+			"type": "STR",
+			"file": "rockdown/rockdown_bottom/rockdown_bottom",
+			"texturePath": "rockdown/rockdown_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_ag_storm_cannon_main": [
+		{
+			"type": "STR",
+			"file": "stormcannon/stormcannon/stormcannon",
+			"texturePath": "stormcannon/stormcannon/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ag_storm_cannon_bottom": [
+		{
+			"type": "STR",
+			"file": "stormcannon/stormcannon_bottom/stormcannon_bottom",
+			"texturePath": "stormcannon/stormcannon_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_bo_researchreport_main": [
+		{
+			"type": "STR",
+			"file": "research_report/researchreport/researchreport",
+			"texturePath": "research_report/researchreport/",
+			"attachedEntity": true
+		}
+	],
+	"original4_bo_researchreport_cast": [
+		{
+			"type": "STR",
+			"file": "research_report/researchreport_cast/researchreport_cast",
+			"texturePath": "research_report/researchreport_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_arbitrium_main": [
+		{
+			"type": "STR",
+			"file": "arbitrium/arbitrium/arbitrium",
+			"texturePath": "arbitrium/arbitrium/",
+			"attachedEntity": false
+		}
+	],
+	"original4_cd_arbitrium_cast": [
+		{
+			"type": "STR",
+			"file": "arbitrium/arbitrium_cast/arbitrium_cast",
+			"texturePath": "arbitrium/arbitrium_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_arbitrium_hit": [
+		{
+			"type": "STR",
+			"file": "arbitrium/arbitrium_hit/arbitrium_hit",
+			"texturePath": "arbitrium/arbitrium_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_cd_arbitrium_bottom": [
+		{
+			"type": "STR",
+			"file": "arbitrium/arbitrium_bottom/arbitrium_bottom",
+			"texturePath": "arbitrium/arbitrium_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_cd_argutus_telum_main": [
+		{
+			"type": "STR",
+			"file": "argutustelum/argutustelum/argutustelum",
+			"texturePath": "argutustelum/argutustelum/",
+			"attachedEntity": true,
+			"wav": "effect/cd_argutus_vita"
+		}
+	],
+	"original4_cd_argutus_telum_cast": [
+		{
+			"type": "STR",
+			"file": "argutustelum/argutustelum_cast/argutustelum_cast",
+			"texturePath": "argutustelum/argutustelum_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_argutus_vita_main": [
+		{
+			"type": "STR",
+			"file": "argutusvita/argutusvita/argutusvita",
+			"texturePath": "argutusvita/argutusvita/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_argutus_vita_cast": [
+		{
+			"type": "STR",
+			"file": "argutusvita/argutusvita_cast/argutusvita_cast",
+			"texturePath": "argutusvita/argutusvita_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_benedictum_main": [
+		{
+			"type": "STR",
+			"file": "benedictum/benedictum/benedictum",
+			"texturePath": "benedictum/benedictum/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_benedictum_cast": [
+		{
+			"type": "STR",
+			"file": "benedictum/benedictum_cast/benedictum_cast",
+			"texturePath": "benedictum/benedictum_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_competentia_main": [
+		{
+			"type": "STR",
+			"file": "competentia/competentia/competentia",
+			"texturePath": "competentia/competentia/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_competentia_cast": [
+		{
+			"type": "STR",
+			"file": "competentia/competentia_cast/competentia_cast",
+			"texturePath": "competentia/competentia_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_competentia_bottom": [
+		{
+			"type": "STR",
+			"file": "competentia/competentia_bottom/competentia_bottom",
+			"texturePath": "competentia/competentia_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_cd_effligo_main": [
+		{
+			"type": "STR",
+			"file": "effligo/effligo/effligo",
+			"texturePath": "effligo/effligo/",
+			"attachedEntity": false
+		}
+	],
+	"original4_cd_effligo_hit": [
+		{
+			"type": "STR",
+			"file": "effligo/effligo_hit/effligo_hit",
+			"texturePath": "effligo/effligo_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_cd_effligo_bottom": [
+		{
+			"type": "STR",
+			"file": "effligo/effligo_bottom/effligo_bottom",
+			"texturePath": "effligo/effligo_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_cd_mediale_votum_main": [
+		{
+			"type": "STR",
+			"file": "medialevotum/medialevotum/medialevotum",
+			"texturePath": "medialevotum/medialevotum/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_mediale_votum_cast": [
+		{
+			"type": "STR",
+			"file": "medialevotum/medialevotum_cast/medialevotum_cast",
+			"texturePath": "medialevotum/medialevotum_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_petitio_main": [
+		{
+			"type": "STR",
+			"file": "petitio/petitio/petitio",
+			"texturePath": "petitio/petitio/",
+			"attachedEntity": false
+		}
+	],
+	"original4_cd_petitio_bottom": [
+		{
+			"type": "STR",
+			"file": "petitio/petitio_bottom/petitio_bottom",
+			"texturePath": "petitio/petitio_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_cd_presens_acies_main": [
+		{
+			"type": "STR",
+			"file": "presensacies/presensacies/presensacies",
+			"texturePath": "presensacies/presensacies/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_presens_acies_cast": [
+		{
+			"type": "STR",
+			"file": "presensacies/presensacies_cast/presensacies_cast",
+			"texturePath": "presensacies/presensacies_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_religio_main": [
+		{
+			"type": "STR",
+			"file": "religio/religio/religio",
+			"texturePath": "religio/religio/",
+			"attachedEntity": true
+		}
+	],
+	"original4_cd_religio_cast": [
+		{
+			"type": "STR",
+			"file": "religio/religio_cast/religio_cast",
+			"texturePath": "religio/religio_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_em_activity_burn_main": [
+		{
+			"type": "STR",
+			"file": "activity_burn/activity_burn/activity_burn",
+			"texturePath": "activity_burn/activity_burn/",
+			"attachedEntity": true
+		}
+	],
+	"original4_em_activity_burn_cast": [
+		{
+			"type": "STR",
+			"file": "activity_burn/activity_burn_cast/activity_burn_cast",
+			"texturePath": "activity_burn/activity_burn_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_em_increasing_activity_main": [
+		{
+			"type": "STR",
+			"file": "increasing_activity/increasing_activity/increasing_activity",
+			"texturePath": "increasing_activity/increasing_activity/",
+			"attachedEntity": true
+		}
+	],
+	"original4_em_increasing_activity_cast": [
+		{
+			"type": "STR",
+			"file": "increasing_activity/increasing_activity_cast/increasing_activity_cast",
+			"texturePath": "increasing_activity/increasing_activity_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_em_spell_enchanting_main": [
+		{
+			"type": "STR",
+			"file": "spell_enchanting/spell_enchanting/spell_enchanting",
+			"texturePath": "spell_enchanting/spell_enchanting/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ig_shield_shooting_main": [
+		{
+			"type": "STR",
+			"file": "shield_shooting/shield_shooting/shield_shooting",
+			"texturePath": "shield_shooting/shield_shooting/",
+			"attachedEntity": false
+		}
+	],
+	"original4_ig_shield_shooting_cast": [
+		{
+			"type": "STR",
+			"file": "shield_shooting/shield_shooting_cast/shield_shooting_cast",
+			"texturePath": "shield_shooting/shield_shooting_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_ig_shield_shooting_hit": [
+		{
+			"type": "STR",
+			"file": "shield_shooting/shield_shooting_hit/shield_shooting_hit",
+			"texturePath": "shield_shooting/shield_shooting_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_firm_faith_main": [
+		{
+			"type": "STR",
+			"file": "firmfaith/firmfaith/firmfaith",
+			"texturePath": "firmfaith/firmfaith/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_first_brand_main": [
+		{
+			"type": "STR",
+			"file": "4ig_firstbrand/firstbrand/firstbrand",
+			"texturePath": "4ig_firstbrand/firstbrand/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_first_brand_hit": [
+		{
+			"type": "STR",
+			"file": "4ig_firstbrand/firstbrand_hit/firstbrand_hit",
+			"texturePath": "4ig_firstbrand/firstbrand_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_first_faith_power_main": [
+		{
+			"type": "STR",
+			"file": "4ig_firstfaithpower/firstfaithpower/firstfaithpower",
+			"texturePath": "4ig_firstfaithpower/firstfaithpower/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_first_faith_power_cast": [
+		{
+			"type": "STR",
+			"file": "4ig_firstfaithpower/firstfaithpower_cast/firstfaithpower_cast",
+			"texturePath": "4ig_firstfaithpower/firstfaithpower_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_judge_main": [
+		{
+			"type": "STR",
+			"file": "4ig_judge/judge/judge",
+			"texturePath": "4ig_judge/judge/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_judge_cast": [
+		{
+			"type": "STR",
+			"file": "4ig_judge/judge_cast/judge_cast",
+			"texturePath": "4ig_judge/judge_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_massive_f_blaster_main": [
+		{
+			"type": "STR",
+			"file": "4iq_massivefblaster/massivefblaster/massivefblaster",
+			"texturePath": "4iq_massivefblaster/massivefblaster/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_massive_f_blaster_hit": [
+		{
+			"type": "STR",
+			"file": "4iq_massivefblaster/massivefblaster_hit/massivefblaster_hit",
+			"texturePath": "4iq_massivefblaster/massivefblaster_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_oleum_sanctum_main": [
+		{
+			"type": "STR",
+			"file": "4ig_oleumsanctum/oleumsanctum/oleumsanctum",
+			"texturePath": "4ig_oleumsanctum/oleumsanctum/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_oleum_sanctum_hit": [
+		{
+			"type": "STR",
+			"file": "4ig_oleumsanctum/oleumsanctum_hit/oleumsanctum_hit",
+			"texturePath": "4ig_oleumsanctum/oleumsanctum_hit/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_oleum_sanctum_bottom": [
+		{
+			"type": "STR",
+			"file": "4ig_oleumsanctum/oleumsanctum_bottom/oleumsanctum_bottom",
+			"texturePath": "4ig_oleumsanctum/oleumsanctum_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_iq_powerful_faith_main": [
+		{
+			"type": "STR",
+			"file": "powerfulfaith/powerfulfaith/powerfulfaith",
+			"texturePath": "powerfulfaith/powerfulfaith/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_second_flame_main": [
+		{
+			"type": "STR",
+			"file": "4iq_secondflame/secondflame/secondflame",
+			"texturePath": "4iq_secondflame/secondflame/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_second_flame_bottom": [
+		{
+			"type": "STR",
+			"file": "4iq_secondflame/secondflame_bottom/secondflame_bottom",
+			"texturePath": "4iq_secondflame/secondflame_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_iq_second_judgement_main": [
+		{
+			"type": "STR",
+			"file": "4iq_secondjudgement/secondjudgement/secondjudgement",
+			"texturePath": "4iq_secondjudgement/secondjudgement/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_sincere_faith_main": [
+		{
+			"type": "STR",
+			"file": "sincerefaith/sincerefaith/sincerefaith",
+			"texturePath": "sincerefaith/sincerefaith/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_sincere_faith_bottom": [
+		{
+			"type": "STR",
+			"file": "sincerefaith/sincerefaith_bottom/sincerefaith_bottom",
+			"texturePath": "sincerefaith/sincerefaith_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_iq_third_consecration_main": [
+		{
+			"type": "STR",
+			"file": "4iq_thirdconsecration/thirdconsecration/thirdconsecration",
+			"texturePath": "4iq_thirdconsecration/thirdconsecration/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_third_consecration_bottom": [
+		{
+			"type": "STR",
+			"file": "4iq_thirdconsecration/thirdconsecration_bottom/thirdconsecration_bottom",
+			"texturePath": "4iq_thirdconsecration/thirdconsecration_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_iq_third_exor_flame_main": [
+		{
+			"type": "STR",
+			"file": "4ig_thirdexorflame/thirdexorflame/thirdexorflame",
+			"texturePath": "4ig_thirdexorflame/thirdexorflame/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_third_exor_flame_cast": [
+		{
+			"type": "STR",
+			"file": "4ig_thirdexorflame/thirdexorflame_cast/thirdexorflame_cast",
+			"texturePath": "4ig_thirdexorflame/thirdexorflame_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_iq_third_flame_bomb_main": [
+		{
+			"type": "STR",
+			"file": "4iq_thirdflamebomb/thirdflamebomb/thirdflamebomb",
+			"texturePath": "4iq_thirdflamebomb/thirdflamebomb/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_third_flame_bomb_bottom": [
+		{
+			"type": "STR",
+			"file": "4iq_thirdflamebomb/thirdflamebomb_bottom/thirdflamebomb_bottom",
+			"texturePath": "4iq_thirdflamebomb/thirdflamebomb_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_iq_third_punish_main": [
+		{
+			"type": "STR",
+			"file": "4iq_thirdpunish/thirdpunish/thirdpunish",
+			"texturePath": "4iq_thirdpunish/thirdpunish/",
+			"attachedEntity": false
+		}
+	],
+	"original4_iq_third_punish_bottom": [
+		{
+			"type": "STR",
+			"file": "4iq_thirdpunish/thirdpunish_bottom/thirdpunish_bottom",
+			"texturePath": "4iq_thirdpunish/thirdpunish_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_shc_eternal_slash_main": [
+		{
+			"type": "STR",
+			"file": "eternal_slash/eternal_slash/eternal_slash",
+			"texturePath": "eternal_slash/eternal_slash/",
+			"attachedEntity": false
+		}
+	],
+	"original4_shc_eternal_slash_hit": [
+		{
+			"type": "STR",
+			"file": "eternal_slash/eternal_slash_hit/eternal_slash_hit",
+			"texturePath": "eternal_slash/eternal_slash_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_shc_eternal_slash_bottom": [
+		{
+			"type": "STR",
+			"file": "eternal_slash/eternal_slash_bottom/eternal_slash_bottom",
+			"texturePath": "eternal_slash/eternal_slash_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_shc_fatal_shadow_crow_main": [
+		{
+			"type": "STR",
+			"file": "fatal_shadow_crow/fatal_shadow_crow/fatal_shadow_crow",
+			"texturePath": "fatal_shadow_crow/fatal_shadow_crow/",
+			"attachedEntity": false
+		}
+	],
+	"original4_shc_fatal_shadow_crow_hit": [
+		{
+			"type": "STR",
+			"file": "fatal_shadow_crow/fatal_shadow_crow_hit/fatal_shadow_crow_hit",
+			"texturePath": "fatal_shadow_crow/fatal_shadow_crow_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_shc_fatal_shadow_crow_bottom": [
+		{
+			"type": "STR",
+			"file": "fatal_shadow_crow/fatal_shadow_crow_bottom/fatal_shadow_crow_bottom",
+			"texturePath": "fatal_shadow_crow/fatal_shadow_crow_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original4_shc_savage_impact_main": [
+		{
+			"type": "STR",
+			"file": "savage_impact/savage_impact/savage_impact",
+			"texturePath": "savage_impact/savage_impact/",
+			"attachedEntity": false
+		}
+	],
+	"original4_shc_savage_impact_hit": [
+		{
+			"type": "STR",
+			"file": "savage_impact/savage_impact_hit/savage_impact_hit",
+			"texturePath": "savage_impact/savage_impact_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_tr_metalic_fury_main": [
+		{
+			"type": "STR",
+			"file": "metalicfury/metalicfury/metalicfury",
+			"texturePath": "metalicfury/metalicfury/",
+			"attachedEntity": false
+		}
+	],
+	"original4_tr_musical_interlude_main": [
+		{
+			"type": "STR",
+			"file": "musical_interlude/musical_interlude/musical_interlude",
+			"texturePath": "musical_interlude/musical_interlude/",
+			"attachedEntity": true
+		}
+	],
+	"original4_tr_musical_interlude_cast": [
+		{
+			"type": "STR",
+			"file": "musical_interlude/musical_interlude_cast/musical_interlude_cast",
+			"texturePath": "musical_interlude/musical_interlude_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_tr_soundblend_main": [
+		{
+			"type": "STR",
+			"file": "soundblend/soundblend/soundblend",
+			"texturePath": "soundblend/soundblend/",
+			"attachedEntity": true
+		}
+	],
+	"original4_tr_soundblend_cast": [
+		{
+			"type": "STR",
+			"file": "soundblend/soundblend_cast/soundblend_cast",
+			"texturePath": "soundblend/soundblend_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_wh_galestorm_main": [
+		{
+			"type": "STR",
+			"file": "galestorm/galestorm/galestorm",
+			"texturePath": "galestorm/galestorm/",
+			"attachedEntity": false
+		}
+	],
+	"original4_wh_galestorm_cast": [
+		{
+			"type": "STR",
+			"file": "galestorm/galestorm_cast/galestorm_cast",
+			"texturePath": "galestorm/galestorm_cast/",
+			"attachedEntity": true
+		}
+	],
+	"original4_wh_galestorm_hit": [
+		{
+			"type": "STR",
+			"file": "galestorm/galestorm_hit/galestorm_hit",
+			"texturePath": "galestorm/galestorm_hit/",
+			"attachedEntity": false
+		}
+	],
+	"original4_wh_hawkrush_main": [
+		{
+			"type": "STR",
+			"file": "hawkrush/hawkrush/hawkrush",
+			"texturePath": "hawkrush/hawkrush/",
+			"attachedEntity": false
+		}
+	],
+	"original4_wh_wind_sign_main": [
+		{
+			"type": "STR",
+			"file": "windsign/windsign/windsign",
+			"texturePath": "windsign/windsign/",
+			"attachedEntity": true
+		}
+	],
+	"original_cartcannon_cast": [
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_cast/new_cart_cannon_cast",
+			"texturePath": "new_cart_cannon/new_cart_cannon_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_cast_bottom/new_cart_cannon_cast_bottom",
+			"texturePath": "new_cart_cannon/new_cart_cannon_cast_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_cartcannon_fire": [
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_fire/new_cart_cannon_fire",
+			"texturePath": "new_cart_cannon/new_cart_cannon_fire/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_fire_bottom/new_cart_cannon_fire_bottom",
+			"texturePath": "new_cart_cannon/new_cart_cannon_fire_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_cartcannon_hit": [
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_explosion/new_cart_cannon_explosion",
+			"texturePath": "new_cart_cannon/new_cart_cannon_explosion/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_explosion_bottom/new_cart_cannon_explosion_bottom",
+			"texturePath": "new_cart_cannon/new_cart_cannon_explosion_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_cartboost": [
+		{
+			"type": "STR",
+			"file": "new_cartboost/new_cartboost/new_cartboost",
+			"texturePath": "new_cartboost/new_cartboost/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_cartboost/new_cartboost_bottom/new_cartboost_bottom",
+			"texturePath": "new_cartboost/new_cartboost_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"original_earthgrave_hit": [
+		{
+			"type": "STR",
+			"file": "new_earthgrave/new_earthgrave_hit/new_earthgrave_hit",
+			"texturePath": "new_earthgrave/new_earthgrave_hit/",
+			"attachedEntity": true
+		}
+	],
+	"ef_axe_stomp_hit": [
+		{
+			"type": "STR",
+			"file": "new_axe_stomp/new_axe_stomp_hit/new_axe_stomp_hit",
+			"texturePath": "new_axe_stomp/new_axe_stomp_hit/",
+			"attachedEntity": true
+		}
+	],
+	"ef_thorntrap": [
+		{
+			"wav": "effect/g°¡½Ã³ª¹«µ£",
+			"attachedEntity": true
+		}
+	],
+	"ef_exceedbreak": [
+		{
+			"wav": "effect/lg_exeedbreak",
+			"attachedEntity": true
+		}
+	],
+	"ef_odium_attack": [
+		{
+			"type": "SPR",
+			"file": "../¸ó½ºÅÍ/tha_odium_ef",
+			"attachedEntity": false
+		}
+	],
+	"ef_drosera_attack": [
+		{
+			"type": "SPR",
+			"file": "../¸ó½ºÅÍ/drosera_bullet",
+			"attachedEntity": false
+		}
+	],
+	"ef_mavka_attack": [
+		{
+			"type": "SPR",
+			"file": "../¸ó½ºÅÍ/mavka_bullet",
+			"attachedEntity": false
+		}
+	],
+	"ef_entweihen_attack": [
+		{
+			"type": "SPR",
+			"file": "../¸ó½ºÅÍ/entweihen_bullet",
+			"attachedEntity": false
+		}
+	],
+	"ef_c_marker1": [
+		{
+			"type": "STR",
+			"file": "RL_C_MAKER/deffender",
+			"texturePath": "RL_C_MAKER/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "RL_C_MAKER/cm",
+			"texturePath": "RL_C_MAKER/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/RL_C_MARKER"
+		}
+	],
+	"ef_": [
+
+	],
+	"kro_original_abc_abyss_flame_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/abyss_flame_cast_bottom",
+			"texturePath": "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/min_abyss_flame_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_abyss_flame/abyss_flame_cast/abyss_flame_cast",
+			"texturePath": "abyss_chaser/abc_abyss_flame/abyss_flame_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_abyss_flame/abyss_flame_cast/min_abyss_flame_cast"
+		}
+	],
+	"kro_original_abc_abyss_flame_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_abyss_flame/abyss_flame_target/abyss_flame_target",
+			"texturePath": "abyss_chaser/abc_abyss_flame/abyss_flame_target/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_abyss_flame/abyss_flame_target/min_abyss_flame_target"
+		},
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_abyss_flame/abyss_flame_hit/abyss_flame_hit",
+			"texturePath": "abyss_chaser/abc_abyss_flame/abyss_flame_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_abyss_flame/abyss_flame_hit/min_abyss_flame_hit"
+		}
+	],
+	"kro_original_abc_abyss_flame_effectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_abyss_flame/abyss_flame/abyss_flame",
+			"texturePath": "abyss_chaser/abc_abyss_flame/abyss_flame/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_abyss_flame/abyss_flame/min_abyss_flame"
+		}
+	],
+	"kro_original_abc_chasing_break_effectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_chasing_break/chasing_break/chasing_break",
+			"texturePath": "abyss_chaser/abc_chasing_break/chasing_break/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_chasing_break/chasing_break/min_chasing_break"
+		}
+	],
+	"kro_original_abc_chasing_shot_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/chasing_shot_cast_bottom",
+			"texturePath": "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/min_chasing_shot_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_chasing_shot/chasing_shot_cast/chasing_shot_cast",
+			"texturePath": "abyss_chaser/abc_chasing_shot/chasing_shot_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_chasing_shot/chasing_shot_cast/min_chasing_shot_cast"
+		}
+	],
+	"kro_original_abc_chasing_shot_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_chasing_shot/chasing_shot_hitsub/chasing_shot_hitsub",
+			"texturePath": "abyss_chaser/abc_chasing_shot/chasing_shot_hitsub/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_chasing_shot/chasing_shot_hitsub/min_chasing_shot_hitsub"
+		},
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_chasing_shot/chasing_shot_hit/chasing_shot_hit",
+			"texturePath": "abyss_chaser/abc_chasing_shot/chasing_shot_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_chasing_shot/chasing_shot_hit/min_chasing_shot_hit"
+		}
+	],
+	"kro_original_abc_chasing_shot_effectid": [
+		{
+			"type": "STR",
+			"file": "abyss_chaser/abc_chasing_shot/chasing_shot_single/chasing_shot_single",
+			"texturePath": "abyss_chaser/abc_chasing_shot/chasing_shot_single/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "abyss_chaser/abc_chasing_shot/chasing_shot_single/min_chasing_shot_single"
+		}
+	],
+	"kro_original_ag_energy_conversion_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "archmage/ag_energy_conversion/energy_conversion_cast_bottom/energy_conversion_cast_bottom",
+			"texturePath": "archmage/ag_energy_conversion/energy_conversion_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "archmage/ag_energy_conversion/energy_conversion_cast_bottom/min_energy_conversion_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "archmage/ag_energy_conversion/energy_conversion_cast/energy_conversion_cast",
+			"texturePath": "archmage/ag_energy_conversion/energy_conversion_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "archmage/ag_energy_conversion/energy_conversion_cast/min_energy_conversion_cast"
+		}
+	],
+	"kro_original_ag_energy_conversion_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "archmage/ag_energy_conversion/energy_conversion/energy_conversion",
+			"texturePath": "archmage/ag_energy_conversion/energy_conversion/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "archmage/ag_energy_conversion/energy_conversion/min_energy_conversion"
+		}
+	],
+	"kro_original_bo_dust_explosion_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_dust_explosion/dust_explosion_hit_bottom/dust_explosion_hit_bottom",
+			"texturePath": "biolo/bo_dust_explosion/dust_explosion_hit_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_dust_explosion/dust_explosion_hit_bottom/min_dust_explosion_hit_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "biolo/bo_dust_explosion/dust_explosion_hit/dust_explosion_hit",
+			"texturePath": "biolo/bo_dust_explosion/dust_explosion_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_dust_explosion/dust_explosion_hit/min_dust_explosion_hit"
+		}
+	],
+	"kro_original_bo_dust_explosion_effectid": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_dust_explosion/dust_explosion/dust_explosion",
+			"texturePath": "biolo/bo_dust_explosion/dust_explosion/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_dust_explosion/dust_explosion/min_dust_explosion"
+		}
+	],
+	"kro_original_bo_explosive_powder_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "biolo/explosive_powder/explosive_powder/explosive_powder",
+			"texturePath": "biolo/explosive_powder/explosive_powder/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/explosive_powder/explosive_powder/min_explosive_powder"
+		}
+	],
+	"kro_original_bo_mayhemic_thorns_effectid": [
+		{
+			"type": "STR",
+			"file": "biolo/mayhemic_thorns/mayhemic_thorns/mayhemic_thorns",
+			"texturePath": "biolo/mayhemic_thorns/mayhemic_thorns/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/mayhemic_thorns/mayhemic_thorns/min_mayhemic_thorns"
+		},
+		{
+			"type": "STR",
+			"file": "biolo/mayhemic_thorns/mayhemic_thorns_bottom/mayhemic_thorns_bottom",
+			"texturePath": "biolo/mayhemic_thorns/mayhemic_thorns_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/mayhemic_thorns/mayhemic_thorns_bottom/min_mayhemic_thorns_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_cd_divinus_flos_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/divinus_flos_cast_bottom",
+			"texturePath": "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/min_divinus_flos_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "cardinal/cd_divinus_flos/divinus_flos_cast/divinus_flos_cast",
+			"texturePath": "cardinal/cd_divinus_flos/divinus_flos_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "cardinal/cd_divinus_flos/divinus_flos_cast/min_divinus_flos_cast"
+		}
+	],
+	"kro_original_cd_divinus_flos_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "cardinal/cd_divinus_flos/divinus_flos_hit/divinus_flos_hit",
+			"texturePath": "cardinal/cd_divinus_flos/divinus_flos_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "cardinal/cd_divinus_flos/divinus_flos_hit/min_divinus_flos_hit"
+		}
+	],
+	"kro_original_cd_divinus_flos_effectid": [
+		{
+			"type": "STR",
+			"file": "cardinal/cd_divinus_flos/divinus_flos_bottom/divinus_flos_bottom",
+			"texturePath": "cardinal/cd_divinus_flos/divinus_flos_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "cardinal/cd_divinus_flos/divinus_flos_bottom/min_divinus_flos_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "cardinal/cd_divinus_flos/divinus_flos/divinus_flos",
+			"texturePath": "cardinal/cd_divinus_flos/divinus_flos/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "cardinal/cd_divinus_flos/divinus_flos/min_divinus_flos"
+		}
+	],
+	"kro_original_dk_dragonic_breath_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dragonic_breath/dragonic_breath_hit/dragonic_breath_hit",
+			"texturePath": "dragon_knight/dragonic_breath/dragonic_breath_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "dragon_knight/dragonic_breath/dragonic_breath_hit/min_dragonic_breath_hit"
+		}
+	],
+	"kro_original_dk_dragonic_breath_effectid": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dragonic_breath/dragonic_breath/dragonic_breath",
+			"texturePath": "dragon_knight/dragonic_breath/dragonic_breath/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "dragon_knight/dragonic_breath/dragonic_breath/min_dragonic_breath"
+		},
+		{
+			"type": "STR",
+			"file": "dragon_knight/dragonic_breath/dragonic_breath_bottom/dragonic_breath_bottom",
+			"texturePath": "dragon_knight/dragonic_breath/dragonic_breath_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "dragon_knight/dragonic_breath/dragonic_breath_bottom/min_dragonic_breath_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_em_psychic_stream_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "elemental_master/em_psychic_stream/psychic_stream_cast/psychic_stream_cast",
+			"texturePath": "elemental_master/em_psychic_stream/psychic_stream_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "elemental_master/em_psychic_stream/psychic_stream_cast/min_psychic_stream_cast"
+		}
+	],
+	"kro_original_em_psychic_stream_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "elemental_master/em_psychic_stream/psychic_stream_hit/psychic_stream_hit",
+			"texturePath": "elemental_master/em_psychic_stream/psychic_stream_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "elemental_master/em_psychic_stream/psychic_stream_hit/min_psychic_stream_hit"
+		}
+	],
+	"kro_original_em_psychic_stream_effectid": [
+		{
+			"type": "STR",
+			"file": "elemental_master/em_psychic_stream/psychic_stream/psychic_stream",
+			"texturePath": "elemental_master/em_psychic_stream/psychic_stream/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "elemental_master/em_psychic_stream/psychic_stream/min_psychic_stream"
+		},
+		{
+			"type": "STR",
+			"file": "elemental_master/em_psychic_stream/psychic_stream_bottom/psychic_stream_bottom",
+			"texturePath": "elemental_master/em_psychic_stream/psychic_stream_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "elemental_master/em_psychic_stream/psychic_stream_bottom/min_psychic_stream_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_hn_breakinglimit_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_breakinglimit/breakinglimit/breakinglimit",
+			"texturePath": "hyper_novice/hn_breakinglimit/breakinglimit/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_hn_doublebowlingbash_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_doublebowlingbash/double_bowlingbash",
+			"texturePath": "hyper_novice/hn_doublebowlingbash/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_hn_ground_gravitation_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_ground_gravitation/ground_gravitation_bottom_start",
+			"texturePath": "hyper_novice/hn_ground_gravitation/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_ground_gravitation/ground_gravitation_start",
+			"texturePath": "hyper_novice/hn_ground_gravitation/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_hn_jack_frost_nova_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/jack_frost_nova_start",
+			"texturePath": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/",
+			"repeat": false,
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/jack_frost_nova_start_bottom",
+			"texturePath": "hyper_novice/hn_jack_frost_nova/jack_frost_nova/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_hn_mega_sonic_blow_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_mega_sonic_blow/mega_sonic_blow",
+			"texturePath": "hyper_novice/hn_mega_sonic_blow/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_hn_napalm_vulcan_strike_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_napalm_vulcan_strike/napalm_vulcan_strike",
+			"texturePath": "hyper_novice/hn_napalm_vulcan_strike/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_hn_overcoming_crisis_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_overcoming_crisis/overcoming_crisis/overcoming_crisis",
+			"texturePath": "hyper_novice/hn_overcoming_crisis/overcoming_crisis/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "hyper_novice/hn_overcoming_crisis/overcoming_crisis/min_overcoming_crisis"
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/overcoming_crisis_bottom",
+			"texturePath": "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/min_overcoming_crisis_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_hn_rulebreak_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_rulebreak/rulebreak/rulebreak",
+			"texturePath": "hyper_novice/hn_rulebreak/rulebreak/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_hn_shield_chain_rush_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_shield_chain_rush/shield_chain_rush",
+			"texturePath": "hyper_novice/hn_shield_chain_rush/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_ig_imperial_cross_effectid": [
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_imperial_cross/imperial_cross/imperial_cross",
+			"texturePath": "imperial_guard/ig_imperial_cross/imperial_cross/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "imperial_guard/ig_imperial_cross/imperial_cross/min_imperial_cross"
+		}
+	],
+	"kro_original_ig_imperial_pressure_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/imperal_pressure_cast",
+			"texturePath": "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/min_imperal_pressure_cast"
+		}
+	],
+	"kro_original_ig_imperial_pressure_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/new_rayofgenesis_hit",
+			"texturePath": "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/min_new_rayofgenesis_hit"
+		}
+	],
+	"kro_original_ig_imperial_pressure_effectid": [
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/imperal_pressure_bottom",
+			"texturePath": "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/min_imperal_pressure_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_imperial_pressure/imperal_pressure/imperal_pressure",
+			"texturePath": "imperial_guard/ig_imperial_pressure/imperal_pressure/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "imperial_guard/ig_imperial_pressure/imperal_pressure/min_imperal_pressure"
+		}
+	],
+	"kro_original_iq_blazing_flame_blast_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/blazing_flame_blast_cast",
+			"texturePath": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/min_blazing_flame_blast_cast"
+		},
+		{
+			"type": "STR",
+			"file": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/blazing_flame_blast_cast_bottom",
+			"texturePath": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/min_blazing_flame_blast_cast_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_iq_blazing_flame_blast_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/blazing_flame_blast_hit",
+			"texturePath": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/min_blazing_flame_blast_hit"
+		}
+	],
+	"kro_original_iq_blazing_flame_blast_effectid": [
+		{
+			"type": "STR",
+			"file": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/blazing_flame_blast",
+			"texturePath": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/min_blazing_flame_blast"
+		}
+	],
+	"kro_original_mt_energy_cannonade_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "meister/mt_energy_cannonade/energy_cannonade_cast_bottom/energy_cannonade_cast_bottom",
+			"texturePath": "meister/mt_energy_cannonade/energy_cannonade_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_energy_cannonade/energy_cannonade_cast_bottom/min_energy_cannonade_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "meister/mt_energy_cannonade/energy_cannonade_cast/energy_cannonade_cast",
+			"texturePath": "meister/mt_energy_cannonade/energy_cannonade_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_energy_cannonade/energy_cannonade_cast/min_energy_cannonade_cast"
+		}
+	],
+	"kro_original_mt_energy_cannonade_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "meister/mt_energy_cannonade/energy_cannonade_hit/energy_cannonade_hit",
+			"texturePath": "meister/mt_energy_cannonade/energy_cannonade_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_energy_cannonade/energy_cannonade_hit/min_energy_cannonade_hit"
+		}
+	],
+	"kro_original_mt_energy_cannonade_effectid": [
+		{
+			"type": "STR",
+			"file": "meister/mt_energy_cannonade/energy_cannonade/energy_cannonade",
+			"texturePath": "meister/mt_energy_cannonade/energy_cannonade/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_energy_cannonade/energy_cannonade/min_energy_cannonade"
+		}
+	],
+	"kro_original_mt_mighty_smash_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "meister/mighty_smash/mighty_smash/mighty_smash",
+			"texturePath": "meister/mighty_smash/mighty_smash/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mighty_smash/mighty_smash/min_mighty_smash"
+		}
+	],
+	"kro_original_mt_powerful_swing_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "meister/mt_powerful_swing/powerful_swing_hit/powerful_swing_hit",
+			"texturePath": "meister/mt_powerful_swing/powerful_swing_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_powerful_swing/powerful_swing_hit/min_powerful_swing_hit"
+		}
+	],
+	"kro_original_mt_powerful_swing_effectid": [
+		{
+			"type": "STR",
+			"file": "meister/mt_powerful_swing/powerful_swing/powerful_swing",
+			"texturePath": "meister/mt_powerful_swing/powerful_swing/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_powerful_swing/powerful_swing/min_powerful_swing"
+		},
+		{
+			"type": "STR",
+			"file": "meister/mt_powerful_swing/powerful_swing_bottom/powerful_swing_bottom",
+			"texturePath": "meister/mt_powerful_swing/powerful_swing_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_mt_rush_strike_effectid": [
+		{
+			"type": "STR",
+			"file": "meister/mt_rush_strike/rush_strike_bottom/rush_strike_bottom",
+			"texturePath": "meister/mt_rush_strike/rush_strike_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_rush_strike/rush_strike_bottom/min_rush_strike_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "meister/mt_rush_strike/rush_strike/rush_strike",
+			"texturePath": "meister/mt_rush_strike/rush_strike/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/mt_rush_strike/rush_strike/min_rush_strike"
+		}
+	],
+	"kro_original_mt_spark_blaster_effectid": [
+		{
+			"type": "STR",
+			"file": "meister/spark_blaster/spark_blaster/spark_blaster",
+			"texturePath": "meister/spark_blaster/spark_blaster/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/spark_blaster/spark_blaster/min_spark_blaster"
+		},
+		{
+			"type": "STR",
+			"file": "meister/spark_blaster/spark_blaster_bottom/spark_blaster_bottom",
+			"texturePath": "meister/spark_blaster/spark_blaster_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/spark_blaster/spark_blaster_bottom/min_spark_blaster_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_mt_triple_laser_effectid": [
+		{
+			"type": "STR",
+			"file": "meister/triple_laser/triple_laser/triple_laser",
+			"texturePath": "meister/triple_laser/triple_laser/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "meister/triple_laser/triple_laser/min_triple_laser"
+		}
+	],
+	"kro_original_nw_auto_firing_launcher_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_auto_firing_launcher/auto_firing_launcher_bottom/auto_firing_launcher_bottom",
+			"texturePath": "night_watch/nw_auto_firing_launcher/auto_firing_launcher_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_auto_firing_launcher/auto_firing_launcher_bottom/min_auto_firing_launcher_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_auto_firing_launcher/auto_firing_launcher/auto_firing_launcher",
+			"texturePath": "night_watch/nw_auto_firing_launcher/auto_firing_launcher/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_auto_firing_launcher/auto_firing_launcher/min_auto_firing_launcher"
+		}
+	],
+	"kro_original_nw_magazine_for_one_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_magazine_for_one/magazine_for_one",
+			"texturePath": "night_watch/nw_magazine_for_one/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_magazine_for_one/min_magazine_for_one"
+		}
+	],
+	"kro_original_nw_midnight_fallen_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_midnight_fallen/midnight_fallen_cast_bottom/midnight_fallen_cast_bottom",
+			"texturePath": "night_watch/nw_midnight_fallen/midnight_fallen_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_midnight_fallen/midnight_fallen_cast_bottom/min_midnight_fallen_cast_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_nw_only_one_bullet_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_only_one_bullet/only_one_bullet_hit/only_one_bullet_hit",
+			"texturePath": "night_watch/nw_only_one_bullet/only_one_bullet_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_only_one_bullet/only_one_bullet_hit/min_only_one_bullet_hit"
+		},
+		{
+			"wav": "effect/night_watch/nw_only_one_bullet_hit",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_original_nw_only_one_bullet_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_only_one_bullet/only_one_bullet/only_one_bullet",
+			"texturePath": "night_watch/nw_only_one_bullet/only_one_bullet/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_only_one_bullet/only_one_bullet/min_only_one_bullet"
+		}
+	],
+	"kro_original_nw_spiral_shooting_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_spiral_shooting/spiral_shooting",
+			"texturePath": "night_watch/nw_spiral_shooting/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_spiral_shooting/min_spiral_shooting"
+		}
+	],
+	"kro_original_nw_the_vigilante_at_night_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_the_vigilante_at_night/the_vigilante_at_night_bottom/the_vigilante_at_night_bottom",
+			"texturePath": "night_watch/nw_the_vigilante_at_night/the_vigilante_at_night_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_the_vigilante_at_night/the_vigilante_at_night_bottom/min_the_vigilante_at_night_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_nw_wild_shot_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_wild_shot/wild_shot_cast/wild_shot_cast",
+			"texturePath": "night_watch/nw_wild_shot/wild_shot_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_wild_shot/wild_shot_cast/min_wild_shot_cast"
+		}
+	],
+	"kro_original_nw_wild_shot_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_wild_shot/wild_shot_hit/wild_shot_hit",
+			"texturePath": "night_watch/nw_wild_shot/wild_shot_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_wild_shot/wild_shot_hit/min_wild_shot_hit"
+		}
+	],
+	"kro_original_nw_wild_shot_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_wild_shot/wild_shot/wild_shot",
+			"texturePath": "night_watch/nw_wild_shot/wild_shot/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_wild_shot/wild_shot/min_wild_shot"
+		}
+	],
+	"kro_original_sh_blessing_of_mystical_creatures_effectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_blessing_of_mystical_creatures/blessing_of_mystical_creatures",
+			"texturePath": "spirit_handler/sh_blessing_of_mystical_creatures/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_blessing_of_mystical_creatures/min_blessing_of_mystical_creatures"
+		}
+	],
+	"kro_original_sh_hogogong_strike_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hogogong_strike/hogogong_strike",
+			"texturePath": "spirit_handler/sh_hogogong_strike/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_hogogong_strike/min_hogogong_strike"
+		}
+	],
+	"kro_original_sh_howling_of_chul_ho_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/howling_of_chul_ho",
+			"texturePath": "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/min_howling_of_chul_ho"
+		}
+	],
+	"kro_original_sh_hyun_rok_cannon_effectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/skid_sh_hyun_rok_cannon/hyun_rok_cannon",
+			"texturePath": "spirit_handler/skid_sh_hyun_rok_cannon/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/skid_sh_hyun_rok_cannon/min_hyun_rok_cannon"
+		}
+	],
+	"kro_original_sh_hyun_rok_spirit_power_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/hyun_rok_spirit_power_cast_bottom",
+			"texturePath": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/min_hyun_rok_spirit_power_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/hyun_rok_spirit_power_cast",
+			"texturePath": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/min_hyun_rok_spirit_power_cast"
+		}
+	],
+	"kro_original_sh_hyun_rok_spirit_power_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/hyun_rok_spirit_power_hit",
+			"texturePath": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/min_hyun_rok_spirit_power_hit"
+		}
+	],
+	"kro_original_sh_hyun_rok_spirit_power_effectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/hyun_rok_spirit_power",
+			"texturePath": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/min_hyun_rok_spirit_power"
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/hyun_rok_spirit_power_bottom",
+			"texturePath": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/min_hyun_rok_spirit_power_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_sh_ki_sul_rampage_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/ki_sul_rampage",
+			"texturePath": "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/min_ki_sul_rampage"
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/ki_sul_rampage_bottom",
+			"texturePath": "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/min_ki_sul_rampage_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_sh_ki_sul_water_spraying_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_ki_sul_water_spraying/ki_sul_water_spraying",
+			"texturePath": "spirit_handler/sh_ki_sul_water_spraying/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_ki_sul_water_spraying/min_ki_sul_water_spraying"
+		}
+	],
+	"kro_original_sh_marine_festival_of_ki_sul_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/marine_festival_of_ki_sul",
+			"texturePath": "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/min_marine_festival_of_ki_sul"
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/marine_festival_of_ki_sul_bottom",
+			"texturePath": "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/min_marine_festival_of_ki_sul_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_sh_sandy_festival_of_ki_sul_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/sandy_festival_of_ki_sul_bottom",
+			"texturePath": "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/min_sandy_festival_of_ki_sul_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/sandy_festival_of_ki_sul",
+			"texturePath": "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/min_sandy_festival_of_ki_sul"
+		}
+	],
+	"kro_original_sh_temporary_communion_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_temporary_communion/temporary_communion/temporary_communion",
+			"texturePath": "spirit_handler/sh_temporary_communion/temporary_communion/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_temporary_communion/temporary_communion/min_temporary_communion"
+		}
+	],
+	"kro_original_ske_all_in_the_sky_effectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_all_in_the_sky/ske_all_in_the_sky",
+			"texturePath": "sky_emperor/ske_all_in_the_sky/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_all_in_the_sky/min_ske_all_in_the_sky"
+		}
+	],
+	"kro_original_ske_dawn_break_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_dawn_break/ske_dawn_break",
+			"texturePath": "sky_emperor/ske_dawn_break/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_dawn_break/min_ske_dawn_break"
+		}
+	],
+	"kro_original_ske_midnight_kick_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_midnight_kick/ske_midnight_kick",
+			"texturePath": "sky_emperor/ske_midnight_kick/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_midnight_kick/min_ske_midnight_kick"
+		}
+	],
+	"kro_original_ske_noon_blast_effectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_noon_blast/ske_noon_blast",
+			"texturePath": "sky_emperor/ske_noon_blast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_noon_blast/min_ske_noon_blast"
+		}
+	],
+	"kro_original_ske_sky_moon_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/sky_moon_cast_bottom",
+			"texturePath": "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/min_sky_moon_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_moon/sky_moon_cast/sky_moon_cast",
+			"texturePath": "sky_emperor/ske_sky_moon/sky_moon_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_sky_moon/sky_moon_cast/min_sky_moon_cast"
+		}
+	],
+	"kro_original_ske_sky_moon_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_moon/sky_moon_hit/sky_moon_hit",
+			"texturePath": "sky_emperor/ske_sky_moon/sky_moon_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_sky_moon/sky_moon_hit/min_sky_moon_hit"
+		}
+	],
+	"kro_original_ske_sky_sun_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_sun/sky_sun_hit/sky_sun_hit",
+			"texturePath": "sky_emperor/ske_sky_sun/sky_sun_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_sky_sun/sky_sun_hit/min_sky_sun_hit"
+		}
+	],
+	"kro_original_ske_sky_sun_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_sun/sky_sun/sky_sun",
+			"texturePath": "sky_emperor/ske_sky_sun/sky_sun/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_sky_sun/sky_sun/min_sky_sun"
+		}
+	],
+	"kro_original_ske_star_light_kick_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_star_light_kick/star_light_kick_hit/star_light_kick_hit",
+			"texturePath": "sky_emperor/ske_star_light_kick/star_light_kick_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_star_light_kick/star_light_kick_hit/min_star_light_kick_hit"
+		}
+	],
+	"kro_original_ske_star_light_kick_effectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_star_light_kick/star_light_kick/star_light_kick",
+			"texturePath": "sky_emperor/ske_star_light_kick/star_light_kick/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_star_light_kick/star_light_kick/min_star_light_kick"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_star_light_kick/star_light_kick_bottom/star_light_kick_bottom",
+			"texturePath": "sky_emperor/ske_star_light_kick/star_light_kick_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_star_light_kick/star_light_kick_bottom/min_star_light_kick_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_ske_sunset_blast_effectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sunset_blast/sunset_blast",
+			"texturePath": "sky_emperor/ske_sunset_blast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_sunset_blast/min_sunset_blast"
+		}
+	],
+	"kro_original_soa_exorcism_of_malicious_soul_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_exorcism_of_malicious_soul/exorcism_of_malicuous_soul",
+			"texturePath": "soul_ascetic/soa_exorcism_of_malicious_soul/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_exorcism_of_malicious_soul/min_exorcism_of_malicuous_soul"
+		}
+	],
+	"kro_original_soa_soul_gathering_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_soul_gathering/soul_gathering",
+			"texturePath": "soul_ascetic/soa_soul_gathering/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_soul_gathering/min_soul_gathering"
+		}
+	],
+	"kro_original_soa_soul_of_heaven_and_earth_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/soul_of_heaven_and_earth",
+			"texturePath": "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/min_soul_of_heaven_and_earth"
+		}
+	],
+	"kro_original_soa_talisman_of_blue_dragon_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_blue_dragon/talisman_of_blue_dragon",
+			"texturePath": "soul_ascetic/soa_talisman_of_blue_dragon/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_blue_dragon/min_talisman_of_blue_dragon"
+		}
+	],
+	"kro_original_soa_talisman_of_five_elements_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_five_elements/talisman_of_the_five_elements",
+			"texturePath": "soul_ascetic/soa_talisman_of_five_elements/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_five_elements/min_talisman_of_the_five_elements"
+		}
+	],
+	"kro_original_soa_talisman_of_four_bearing_god_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_four_bearing_god/talisman_of_four_bearing_god",
+			"texturePath": "soul_ascetic/soa_talisman_of_four_bearing_god/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_four_bearing_god/min_talisman_of_four_bearing_god"
+		}
+	],
+	"kro_original_soa_talisman_of_magician_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/talisman_of_magician",
+			"texturePath": "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/min_talisman_of_magician"
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/talisman_of_magician_bottom",
+			"texturePath": "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/min_talisman_of_magician_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_soa_talisman_of_protection_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_protection/talisman_of_protection",
+			"texturePath": "soul_ascetic/soa_talisman_of_protection/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_protection/min_talisman_of_protection"
+		}
+	],
+	"kro_original_soa_talisman_of_red_phoenix_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/talisman_of_red_phoenix_bottom",
+			"texturePath": "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/min_talisman_of_red_phoenix_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/talisman_of_red_phoenix",
+			"texturePath": "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/min_talisman_of_red_phoenix"
+		}
+	],
+	"kro_original_soa_talisman_of_soul_stealing_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_soul_stealing/talisman_of_soul_stealing",
+			"texturePath": "soul_ascetic/soa_talisman_of_soul_stealing/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_soul_stealing/min_talisman_of_soul_stealing"
+		}
+	],
+	"kro_original_soa_talisman_of_warrior_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_warrior/talisman_of_warrior",
+			"texturePath": "soul_ascetic/soa_talisman_of_warrior/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_warrior/min_talisman_of_warrior"
+		}
+	],
+	"kro_original_soa_talisman_of_white_tiger_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_white_tiger/talisman_of_white_tiger",
+			"texturePath": "soul_ascetic/soa_talisman_of_white_tiger/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_talisman_of_white_tiger/min_talisman_of_white_tiger"
+		}
+	],
+	"kro_original_ss_akumukesu_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_akumukesu/akumukesu",
+			"texturePath": "shinkiro_shiranui/ss_akumukesu/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_akumukesu/min_akumukesu"
+		}
+	],
+	"kro_original_ss_antenpou_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_antenpou/antenpou",
+			"texturePath": "shinkiro_shiranui/ss_antenpou/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_antenpou/min_antenpou"
+		}
+	],
+	"kro_original_ss_kageakumu_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kageakumu/kageakumu",
+			"texturePath": "shinkiro_shiranui/ss_kageakumu/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_kageakumu/min_kageakumu"
+		}
+	],
+	"kro_original_ss_kagenomai_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kagenomai/kagenomai",
+			"texturePath": "shinkiro_shiranui/ss_kagenomai/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_kagenomai/min_kagenomai"
+		}
+	],
+	"kro_original_ss_kinryuuhou_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/kinryuuhou_hit",
+			"texturePath": "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/min_kinryuuhou_hit"
+		}
+	],
+	"kro_original_ss_kinryuuhou_effectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/kinryuuhou",
+			"texturePath": "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/min_kinryuuhou"
+		}
+	],
+	"kro_original_ss_sekienhou_effectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_sekienhou/sekienhou",
+			"texturePath": "shinkiro_shiranui/ss_sekienhou/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_sekienhou/min_sekienhou"
+		}
+	],
+	"kro_original_tr_rhythmical_wave_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/rhythmical_wave_cast",
+			"texturePath": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/min_rhythmical_wave_cast"
+		},
+		{
+			"type": "STR",
+			"file": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/rhythmical_wave_cast_bottom",
+			"texturePath": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/min_rhythmical_wave_cast_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_original_tr_rhythmical_wave_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/rhythmical_wave_hit",
+			"texturePath": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/min_rhythmical_wave_hit"
+		}
+	],
+	"kro_original_wh_wild_walk_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "windhawk/wh_wild_walk/wild_walk_cast_bottom/wild_walk_cast_bottom",
+			"texturePath": "windhawk/wh_wild_walk/wild_walk_cast_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "windhawk/wh_wild_walk/wild_walk_cast_bottom/min_wild_walk_cast_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "windhawk/wh_wild_walk/wild_walk_cast/wild_walk_cast",
+			"texturePath": "windhawk/wh_wild_walk/wild_walk_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "windhawk/wh_wild_walk/wild_walk_cast/min_wild_walk_cast"
+		}
+	],
+	"kro_original_wh_wild_walk_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "windhawk/wh_wild_walk/wild_walk_hit/wild_walk_hit",
+			"texturePath": "windhawk/wh_wild_walk/wild_walk_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "windhawk/wh_wild_walk/wild_walk_hit/min_wild_walk_hit"
+		}
+	],
+	"kro_original_wh_wild_walk_effectid": [
+		{
+			"type": "STR",
+			"file": "windhawk/wh_wild_walk/wild_walk/wild_walk",
+			"texturePath": "windhawk/wh_wild_walk/wild_walk/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "windhawk/wh_wild_walk/wild_walk/min_wild_walk"
+		}
+	],
+	"kro_phase_nw_basic_grenade_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_basic_grenade/basic_grenade/basic_grenade",
+			"texturePath": "night_watch/nw_basic_grenade/basic_grenade/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_basic_grenade/basic_grenade/min_basic_grenade"
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_basic_grenade/basic_grenade_bottom/basic_grenade_bottom",
+			"texturePath": "night_watch/nw_basic_grenade/basic_grenade_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_basic_grenade/basic_grenade_bottom/min_basic_grenade_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_nw_wild_fire_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_wild_fire/wild_fire/wild_fire",
+			"texturePath": "night_watch/nw_wild_fire/wild_fire/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_wild_fire/wild_fire/min_wild_fire"
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_wild_fire/wild_fire_bottom/wild_fire_bottom",
+			"texturePath": "night_watch/nw_wild_fire/wild_fire_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_wild_fire/wild_fire_bottom/min_wild_fire_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_ss_reiketsuhou_effectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/reiketsuhou",
+			"texturePath": "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/min_reiketsuhou"
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/reiketsuhou_bottom",
+			"texturePath": "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/min_reiketsuhou_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_ss_kagegari_effectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kagegari/kagegari",
+			"texturePath": "shinkiro_shiranui/ss_kagegari/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_kagegari/min_kagegari"
+		}
+	],
+	"kro_phase_nw_midnight_fallen_effectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_midnight_fallen/midnight_fallen_bottom/midnight_fallen_bottom",
+			"texturePath": "night_watch/nw_midnight_fallen/midnight_fallen_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_midnight_fallen/midnight_fallen_bottom/min_midnight_fallen_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_soa_talisman_of_black_tortoise_effectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/talisman_of_black_tortoise_bottom",
+			"texturePath": "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/min_talisman_of_black_tortoise_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/talisman_of_black_tortoise",
+			"texturePath": "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/min_talisman_of_black_tortoise"
+		}
+	],
+	"kro_phase_hn_meteor_storm_buster_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_meteor_storm_buster/meteor_storm_buster_meteor",
+			"texturePath": "hyper_novice/hn_meteor_storm_buster/",
+			"repeat": false,
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_meteor_storm_buster/meteor_storm_buster_meteor_bottom",
+			"texturePath": "hyper_novice/hn_meteor_storm_buster/",
+			"repeat": false,
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_soa_totem_of_tutelary_unit": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/totem_of_tutelary_bottom_start",
+			"texturePath": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/min_totem_of_tutelary_bottom_start",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/totem_of_tutelary_start",
+			"texturePath": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/min_totem_of_tutelary_start"
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/totem_of_tutelary_bottom_loop",
+			"texturePath": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/min_totem_of_tutelary_bottom_loop",
+			"renderBeforeEntities": true,
+			"delayStart": 183
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/totem_of_tutelary_loop",
+			"texturePath": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/min_totem_of_tutelary_loop",
+			"delayStart": 183
+		}
+	],
+	"kro_phase_soa_totem_of_tutelary_unit_end": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/totem_of_tutelary_end",
+			"texturePath": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/min_totem_of_tutelary_end"
+		},
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/totem_of_tutelary_bottom_end",
+			"texturePath": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary_bottom/min_totem_of_tutelary_bottom_end",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_hn_jack_frost_nova_end": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_jack_frost_nova/jack_frost_nova_end/jack_frost_nova_end",
+			"texturePath": "hyper_novice/hn_jack_frost_nova/jack_frost_nova_end/",
+			"repeat": false,
+			"attachedEntity": false
+		}
+	],
+	"kro_phase_nw_grenades_dropping_unit": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenades_dropping/grenades_dropping_bottom/grenades_dropping_bottom",
+			"texturePath": "night_watch/nw_grenades_dropping/grenades_dropping_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_grenades_dropping/grenades_dropping_bottom/min_grenades_dropping_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenades_dropping/grenades_dropping/grenades_dropping",
+			"texturePath": "night_watch/nw_grenades_dropping/grenades_dropping/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_grenades_dropping/grenades_dropping/min_grenades_dropping"
+		}
+	],
+	"kro_phase_nw_mission_bombard_unit": [
+		{
+			"wav": "effect/night_watch/nw_mission_bombard",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_mission_bombard/mission_bombard/mission_bombard",
+			"texturePath": "night_watch/nw_mission_bombard/mission_bombard/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "night_watch/nw_mission_bombard/mission_bombard/min_mission_bombard"
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_mission_bombard/mission_bombard_fire_bottom/mission_bombard_fire_bottom",
+			"texturePath": "night_watch/nw_mission_bombard/mission_bombard_fire_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "night_watch/nw_mission_bombard/mission_bombard_fire_bottom/min_mission_bombard_fire_bottom",
+			"renderBeforeEntities": true,
+			"delayStart": 1117
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_mission_bombard/mission_bombard_fire/mission_bombard_fire",
+			"texturePath": "night_watch/nw_mission_bombard/mission_bombard_fire/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "night_watch/nw_mission_bombard/mission_bombard_fire/min_mission_bombard_fire",
+			"delayStart": 1117
+		}
+	],
+	"kro_phase_nw_mission_bombard_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_mission_bombard/mission_bombard/mission_bombard_hit",
+			"texturePath": "night_watch/nw_mission_bombard/mission_bombard/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_mission_bombard/mission_bombard/min_mission_bombard_hit"
+		}
+	],
+	"kro_phase_ske_twinkling_galaxy_unit": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/ske_twinkling_galaxy_bottom",
+			"texturePath": "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/min_ske_twinkling_galaxy_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_dk_dragonic_pierce_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/dragonic_pierce_cast",
+			"texturePath": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/min_dragonic_pierce_cast"
+		}
+	],
+	"kro_phase_dk_dragonic_pierce_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/dragonic_pierce_hit_bottom",
+			"texturePath": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/min_dragonic_pierce_hit_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/dragonic_pierce_hit",
+			"texturePath": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/min_dragonic_pierce_hit"
+		}
+	],
+	"kro_phase_ig_radiant_spear_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_radiant_spear/radiant_spear_cast/radiant_spear_cast",
+			"texturePath": "imperial_guard/ig_radiant_spear/radiant_spear_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "imperial_guard/ig_radiant_spear/radiant_spear_cast/min_radiant_spear_cast"
+		}
+	],
+	"kro_phase_sh_chul_ho_battering_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/chul_ho_battering_cast",
+			"texturePath": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/min_chul_ho_battering_cast"
+		}
+	],
+	"kro_phase_sh_chul_ho_battering_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/chul_ho_battering_hit",
+			"texturePath": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/min_chul_ho_battering_hit"
+		}
+	],
+	"kro_phase_ss_raidenpou_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/new_raidenpou_cast",
+			"texturePath": "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/min_new_raidenpou_cast"
+		}
+	],
+	"kro_phase_ss_raidenpou_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/new_raidenpou_hit",
+			"texturePath": "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/min_new_raidenpou_hit"
+		}
+	],
+	"kro_phase_ss_kagegissen_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kagegissen/new_kagegissen_hit/new_kagegissen_hit",
+			"texturePath": "shinkiro_shiranui/ss_kagegissen/new_kagegissen_hit/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_phase_hn_spiral_pierce_max_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_spiral_pierce_max/spiral_pierce_max",
+			"texturePath": "hyper_novice/hn_spiral_pierce_max/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"kro_phase_sh_chul_ho_sonic_claw_effectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/chul_ho_sonic_claw",
+			"texturePath": "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/min_chul_ho_sonic_claw"
+		}
+	],
+	"kro_phase_nw_hidden_card_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_hidden_card/hidden_card/hiddencard",
+			"texturePath": "night_watch/nw_hidden_card/hidden_card/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_hidden_card/hidden_card/min_hiddencard"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_grenade_fragment_1": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_water/grenade_fragment_water",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_water/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_water/min_grenade_fragment_water"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_grenade_fragment_2": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_wind/grenade_fragment_wind",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_wind/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_wind/min_grenade_fragment_wind"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_grenade_fragment_3": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_earth/grenade_fragment_earth",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_earth/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_earth/min_grenade_fragment_earth"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_grenade_fragment_4": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_fire/grenade_fragment_fire",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_fire/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_fire/min_grenade_fragment_fire"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_grenade_fragment_5": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_darkness/grenade_fragment_darkness",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_darkness/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_darkness/min_grenade_fragment_darkness"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_grenade_fragment_6": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_saint/grenade_fragment_saint",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_saint/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_saint/min_grenade_fragment_saint"
+		}
+	],
+	"kro_phase_nw_grenade_fragment_reset": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_reset/grenade_fragment_reset",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_reset/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_reset/min_grenade_fragment_reset"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_1": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_water/colors_of_hyun_rok_water",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_water/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_water/min_colors_of_hyun_rok_water"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_2": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_wind/colors_of_hyun_rok_wind",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_wind/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_wind/min_colors_of_hyun_rok_wind"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_3": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_earth/colors_of_hyun_rok_earth",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_earth/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_earth/min_colors_of_hyun_rok_earth"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_4": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/colors_of_hyun_rok_fire",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/min_colors_of_hyun_rok_fire"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_5": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_darkness/colors_of_hyun_rok_darkness",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_darkness/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_darkness/min_colors_of_hyun_rok_darkness"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_6": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_saint/colors_of_hyun_rok_saint",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_saint/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_saint/min_colors_of_hyun_rok_saint"
+		}
+	],
+	"kro_phase_sh_colors_of_hyun_rok_reset": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_reset/colors_of_hyun_rok_reset",
+			"texturePath": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_reset/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_reset/min_colors_of_hyun_rok_reset"
+		}
+	],
+	"kro_phase_ss_four_charm_fire_charm_power": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_fire/four_charm_fire",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_fire/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_fire/min_four_charm_fire"
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_fire_bottom/four_charm_fire_bottom",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_fire_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_fire_bottom/min_four_charm_fire_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_ss_four_charm_water_charm_power": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_ice/four_charm_ice",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_ice/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_ice/min_four_charm_ice"
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/four_charm_ice_bottom",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/min_four_charm_ice_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_ss_four_charm_wind_charm_power": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_wind/four_charm_wind",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_wind/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_wind/min_four_charm_wind"
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_wind_bottom/four_charm_wind_bottom",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_wind_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_wind_bottom/min_four_charm_wind_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"kro_phase_ss_four_charm_ground_charm_power": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_earth_bottom/four_charm_earth_bottom",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_earth_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_earth_bottom/min_four_charm_earth_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_four_charm/four_charm_earth/four_charm_earth",
+			"texturePath": "shinkiro_shiranui/ss_four_charm/four_charm_earth/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "shinkiro_shiranui/ss_four_charm/four_charm_earth/min_four_charm_earth"
+		}
+	],
+	"kro_phase_bo_mystery_powder_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_mystery_powder/mistery_powder/mistery_powder",
+			"texturePath": "biolo/bo_mystery_powder/mistery_powder/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_mystery_powder/mistery_powder/min_mistery_powder"
+		}
+	],
+	"kro_phase_bo_mystery_powder_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_mystery_powder/mistery_powder_hit/mistery_powder_hit",
+			"texturePath": "biolo/bo_mystery_powder/mistery_powder_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_mystery_powder/mistery_powder_hit/min_mistery_powder_hit"
+		}
+	],
+	"kro_phase_bo_mystery_powder_mystery_powder": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_mystery_powder/mistery_powder_loop_bottom/mistery_powder_loop_bottom",
+			"texturePath": "biolo/bo_mystery_powder/mistery_powder_loop_bottom/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "biolo/bo_mystery_powder/mistery_powder_loop_bottom/min_mistery_powder_loop_bottom",
+			"renderBeforeEntities": true,
+			"delayStart": 1000
+		},
+		{
+			"type": "STR",
+			"file": "biolo/bo_mystery_powder/mistery_powder_loop/mistery_powder_loop",
+			"texturePath": "biolo/bo_mystery_powder/mistery_powder_loop/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "biolo/bo_mystery_powder/mistery_powder_loop/min_mistery_powder_loop",
+			"delayStart": 1000
+		}
+	],
+	"kro_phase_soa_circle_of_directions_and_elementals_successeffectid": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/circle_directions_elements",
+			"texturePath": "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/min_circle_directions_elements"
+		}
+	],
+	"kro_phase_soa_circle_of_directions_and_elementals_t_fiveth_god": [
+		{
+			"type": "STR",
+			"file": "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements_loop/circle_directions_elements_loop",
+			"texturePath": "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements_loop/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements_loop/min_circle_directions_elements_loop"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_0": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_00",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_00"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_1": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_01",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_01"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_2": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_02",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_02"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_3": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_03",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_03"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_4": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_04",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_04"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_5": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_05",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_05"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_6": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_06",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_06"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_7": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_07",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_07"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_8": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_08",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_08"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_9": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_09",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_09"
+		}
+	],
+	"kro_phase_nw_intensive_aim_count_10": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim/intensive_aim_10",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim/min_intensive_aim_10"
+		},
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim_full/intensiveaim_full",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim_full/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim_full/min_intensiveaim_full"
+		}
+	],
+	"kro_phase_nw_intensive_aim_intensive_aim": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_intensive_aim/intensive_aim_helix/intensiveaim_helix",
+			"texturePath": "night_watch/nw_intensive_aim/intensive_aim_helix/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_intensive_aim/intensive_aim_helix/min_intensiveaim_helix"
+		}
+	],
+	"kro_phase_sh_howling_of_chul_ho_hogogong": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho_scared/howling_of_chul_ho_scared",
+			"texturePath": "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho_scared/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho_scared/min_howling_of_chul_ho_scared"
+		}
+	],
+	"fidelity_ss_kunaikaiten_unit": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_00/kunaikaiten_00",
+			"texturePath": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_00/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_00/min_kunaikaiten_00"
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_01/kunaikaiten_01",
+			"texturePath": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_01/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_01/min_kunaikaiten_01",
+			"delayStart": 650
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/kunaikaiten_bottom",
+			"texturePath": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/min_kunaikaiten_bottom",
+			"renderBeforeEntities": true
+		}
+	],
+	"fidelity_ss_fuumashouaku_unit": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_fuumashouaku",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/fuumashouaku",
+			"texturePath": "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/min_fuumashouaku"
+		}
+	],
+	"fidelity_hn_spiral_pierce_max_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_spiral_pierce_max/spiral_pierce_max_aura",
+			"texturePath": "hyper_novice/hn_spiral_pierce_max/",
+			"repeat": false,
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_spiral_pierce_max/spiral_pierce_max_aura_bottom",
+			"texturePath": "hyper_novice/hn_spiral_pierce_max/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"fidelity_ske_enchanting_sky_buff": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_enchanting_sky/ske_enchanting_sky_00",
+			"texturePath": "sky_emperor/ske_enchanting_sky/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_enchanting_sky/min_ske_enchanting_sky_00"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_enchanting_sky/ske_enchanting_sky_01",
+			"texturePath": "sky_emperor/ske_enchanting_sky/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_enchanting_sky/min_ske_enchanting_sky_01",
+			"delayStart": 333
+		}
+	],
+	"fidelity_ske_rising_moon_rising_moon": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_moon/ske_rising_moon_00",
+			"texturePath": "sky_emperor/ske_rising_moon/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_moon/min_ske_rising_moon_00"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_moon/ske_rising_moon_01",
+			"texturePath": "sky_emperor/ske_rising_moon/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_moon/min_ske_rising_moon_01",
+			"delayStart": 317
+		}
+	],
+	"fidelity_ske_rising_moon_midnight_moon": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_moon/ske_rising_moon_02",
+			"texturePath": "sky_emperor/ske_rising_moon/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_moon/min_ske_rising_moon_02"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_moon/ske_rising_moon_03",
+			"texturePath": "sky_emperor/ske_rising_moon/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_moon/min_ske_rising_moon_03",
+			"delayStart": 983
+		}
+	],
+	"fidelity_ske_rising_moon_dawn_moon": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_moon/ske_rising_moon_04",
+			"texturePath": "sky_emperor/ske_rising_moon/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_moon/min_ske_rising_moon_04"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_moon/ske_rising_moon_05",
+			"texturePath": "sky_emperor/ske_rising_moon/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_moon/min_ske_rising_moon_05",
+			"delayStart": 983
+		}
+	],
+	"fidelity_ske_rising_sun_rising_sun": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_sun/ske_rising_sun_00",
+			"texturePath": "sky_emperor/ske_rising_sun/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_sun/min_ske_rising_sun_00"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_sun/ske_rising_sun_01",
+			"texturePath": "sky_emperor/ske_rising_sun/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_sun/min_ske_rising_sun_01",
+			"delayStart": 317
+		}
+	],
+	"fidelity_ske_rising_sun_noon_sun": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_sun/ske_rising_sun_02",
+			"texturePath": "sky_emperor/ske_rising_sun/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_sun/min_ske_rising_sun_02"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_sun/ske_rising_sun_03",
+			"texturePath": "sky_emperor/ske_rising_sun/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_sun/min_ske_rising_sun_03",
+			"delayStart": 650
+		}
+	],
+	"fidelity_ske_rising_sun_sunset_sun": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_sun/ske_rising_sun_04",
+			"texturePath": "sky_emperor/ske_rising_sun/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_sun/min_ske_rising_sun_04"
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_rising_sun/ske_rising_sun_05",
+			"texturePath": "sky_emperor/ske_rising_sun/",
+			"repeat": true,
+			"attachedEntity": true,
+			"min": "sky_emperor/ske_rising_sun/min_ske_rising_sun_05",
+			"delayStart": 650
+		}
+	],
+	"fidelity_ss_tokedasu_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_tokedasu/tokedasu/tokedasu",
+			"texturePath": "shinkiro_shiranui/ss_tokedasu/tokedasu/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_tokedasu/tokedasu/min_tokedasu"
+		}
+	],
+	"combined_upstream_lg_overbrand_brandish_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_cast/new_overbrand_cast",
+			"texturePath": "new_overbrand/new_overbrand_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_cast_bottom/new_overbrand_cast_bottom",
+			"texturePath": "new_overbrand/new_overbrand_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_overbrand_brandish_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_hit/new_overbrand_hit",
+			"texturePath": "new_overbrand/new_overbrand_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_overbrand_plusatk_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_cast/new_overbrand_cast",
+			"texturePath": "new_overbrand/new_overbrand_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_cast_bottom/new_overbrand_cast_bottom",
+			"texturePath": "new_overbrand/new_overbrand_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_overbrand_plusatk_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_hit/new_overbrand_hit",
+			"texturePath": "new_overbrand/new_overbrand_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ske_sky_moon_effectid": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_moon/sky_moon/sky_moon",
+			"texturePath": "sky_emperor/ske_sky_moon/sky_moon/",
+			"min": "sky_emperor/ske_sky_moon/sky_moon/min_sky_moon",
+			"wav": "effect/sky_emperor/ske_sky_moon",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_sky_moon/sky_moon_bottom/sky_moon_bottom",
+			"texturePath": "sky_emperor/ske_sky_moon/sky_moon_bottom/",
+			"min": "sky_emperor/ske_sky_moon/sky_moon_bottom/min_sky_moon_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sh_chul_ho_battering_effectid": [
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_chul_ho_battering/chul_ho_battering/chul_ho_battering",
+			"texturePath": "spirit_handler/sh_chul_ho_battering/chul_ho_battering/",
+			"min": "spirit_handler/sh_chul_ho_battering/chul_ho_battering/min_chul_ho_battering",
+			"wav": "effect/spirit_handler/sh_chul_ho_battering",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/chul_ho_battering_bottom",
+			"texturePath": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/",
+			"min": "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/min_chul_ho_battering_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_dk_dragonic_pierce_effectid": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/dragonic_pierce_bottom",
+			"texturePath": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/",
+			"min": "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/min_dragonic_pierce_bottom",
+			"renderBeforeEntities": true,
+			"wav": "effect/dk_dragonic_pierce",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_tr_rhythmical_wave_effectid": [
+		{
+			"type": "STR",
+			"file": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/rhythmical_wave",
+			"texturePath": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/",
+			"min": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/min_rhythmical_wave",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/rhythmical_wave_bottom",
+			"texturePath": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/",
+			"min": "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/min_rhythmical_wave_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_hn_jupitel_thunder_storm_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm_ball/jupitel_thunder_storm_ball",
+			"texturePath": "hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm_ball/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_hn_hells_drive_effectid": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_hells_drive/hells_drive_bottom",
+			"texturePath": "hyper_novice/hn_hells_drive/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sa_instantdeath_effectid": [
+		{
+			"type": "STR",
+			"file": "suicide",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_tk_counter_effectid": [
+		{
+			"type": "STR",
+			"file": "new_counter_slash/new_counter_slash/new_counter_slash",
+			"texturePath": "new_counter_slash/new_counter_slash/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_counter_slash/new_counter_slash_bottom/new_counter_slash_bottom",
+			"texturePath": "new_counter_slash/new_counter_slash_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sl_assasin_effectid": [
+		{
+			"type": "STR",
+			"file": "assasin_poisonreact",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "assasin_poisonreact_1st",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_bs_adrenaline2_effectid": [
+		{
+			"type": "STR",
+			"file": "adrenaline",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sl_hunter_effectid": [
+		{
+			"type": "STR",
+			"file": "hunter_loud",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "hunter_poison",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "hunter_shockwave_blue",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sl_stun_effectid": [
+		{
+			"type": "STR",
+			"file": "stun",
+			"texturePath": "",
+			"wav": "effect/_stun",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_gs_increasing_effectid": [
+		{
+			"type": "STR",
+			"file": "increasing_activity/increasing_activity/increasing_activity",
+			"texturePath": "increasing_activity/increasing_activity/",
+			"min": "increasing_activity/increasing_activity/min_increasing_activity",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_gs_increasing_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "increasing_activity/increasing_activity_cast/increasing_activity_cast",
+			"texturePath": "increasing_activity/increasing_activity_cast/",
+			"min": "increasing_activity/increasing_activity_cast/min_increasing_activity_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "increasing_activity/increasing_activity_cast_bottom/increasing_activity_cast_bottom",
+			"texturePath": "increasing_activity/increasing_activity_cast_bottom/",
+			"min": "increasing_activity/increasing_activity_cast_bottom/min_increasing_activity_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_soulexpansion_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_soulexpansion/new_soulexpansion_cast/new_soulexpansion_cast",
+			"texturePath": "new_soulexpansion/new_soulexpansion_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_soulexpansion/new_soulexpansion_cast_bottom/new_soulexpansion_cast_bottom",
+			"texturePath": "new_soulexpansion/new_soulexpansion_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_hellinferno_effectid": [
+		{
+			"type": "STR",
+			"file": "new_hellinferno/new_hellinferno/new_hellinferno",
+			"texturePath": "new_hellinferno/new_hellinferno/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_hellinferno/new_hellinferno_bottom/new_hellinferno_bottom",
+			"texturePath": "new_hellinferno/new_hellinferno_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_hellinferno_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_hellinferno/new_hellinferno_cast_bottom/new_hellinferno_cast_bottom",
+			"texturePath": "new_hellinferno/new_hellinferno_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_comet_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_comet/new_comet_cast_bottom/new_comet_cast_bottom",
+			"texturePath": "new_comet/new_comet_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_tetravortex_fire_effectid": [
+		{
+			"type": "STR",
+			"file": "mineffect/new_tetravortex/new_tetravortex_fire/new_tetravortex_fire",
+			"texturePath": "mineffect/new_tetravortex/new_tetravortex_fire/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_tetravortex_water_effectid": [
+		{
+			"type": "STR",
+			"file": "mineffect/new_tetravortex/new_tetravortex_water/new_tetravortex_water",
+			"texturePath": "mineffect/new_tetravortex/new_tetravortex_water/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_tetravortex_wind_effectid": [
+		{
+			"type": "STR",
+			"file": "mineffect/new_tetravortex/new_tetravortex_wind/new_tetravortex_wind",
+			"texturePath": "mineffect/new_tetravortex/new_tetravortex_wind/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wl_summon_atk_fire_effectid": [
+		{
+			"type": "STR",
+			"file": "fire",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_gc_poisoningweapon_effectid": [
+		{
+			"type": "STR",
+			"file": "poison",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false,
+			"wav": "effect/assasin_enchantpoison"
+		}
+	],
+	"combined_upstream_gc_crossripperslasher_effectid": [
+		{
+			"type": "STR",
+			"file": "new_crossripperslasher/new_crossripperslasher/new_crossripperslasher",
+			"texturePath": "new_crossripperslasher/new_crossripperslasher/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_nc_repair_effectid": [
+		{
+			"type": "STR",
+			"file": "repair weapon",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "repairweapon",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_nc_axeboomerang_effectid": [
+		{
+			"type": "STR",
+			"file": "new_axeboomerang/new_axeboomerang/new_axeboomerang",
+			"texturePath": "new_axeboomerang/new_axeboomerang/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_nc_axeboomerang_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_axeboomerang/new_axeboomerang_cast/new_axeboomerang_cast",
+			"texturePath": "new_axeboomerang/new_axeboomerang_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_axeboomerang/new_axeboomerang_cast_bottom/new_axeboomerang_cast_bottom",
+			"texturePath": "new_axeboomerang/new_axeboomerang_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_nc_axeboomerang_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_axeboomerang/new_axeboomerang_hit/new_axeboomerang_hit",
+			"texturePath": "new_axeboomerang/new_axeboomerang_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sc_fatalmenace_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_fatal_menace/new_fatal_menace_cast_bottom/new_fatal_menace_cast_bottom",
+			"texturePath": "new_fatal_menace/new_fatal_menace_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_cannonspear_effectid": [
+		{
+			"type": "STR",
+			"file": "new_cannon_spear/new_cannon_spear_bottom/new_cannon_spear_bottom",
+			"texturePath": "new_cannon_spear/new_cannon_spear_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_banishingpoint_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_banishingpoint/new_banishingpoint_cast/new_banishingpoint_cast",
+			"texturePath": "new_banishingpoint/new_banishingpoint_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_banishingpoint/new_banishingpoint_cast_bottom/new_banishingpoint_cast_bottom",
+			"texturePath": "new_banishingpoint/new_banishingpoint_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_overbrand_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_cast/new_overbrand_cast",
+			"texturePath": "new_overbrand/new_overbrand_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_cast_bottom/new_overbrand_cast_bottom",
+			"texturePath": "new_overbrand/new_overbrand_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_overbrand_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_overbrand/new_overbrand_hit/new_overbrand_hit",
+			"texturePath": "new_overbrand/new_overbrand_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_rayofgenesis_effectid": [
+		{
+			"type": "STR",
+			"file": "new_rayofgenesis/new_rayofgenesis/new_rayofgenesis",
+			"texturePath": "new_rayofgenesis/new_rayofgenesis/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_rayofgenesis_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_rayofgenesis/new_rayofgenesis_cast/new_rayofgenesis_cast",
+			"texturePath": "new_rayofgenesis/new_rayofgenesis_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_rayofgenesis/new_rayofgenesis_cast_bottom/new_rayofgenesis_cast_bottom",
+			"texturePath": "new_rayofgenesis/new_rayofgenesis_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_rayofgenesis_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_rayofgenesis/new_rayofgenesis_hit/new_rayofgenesis_hit",
+			"texturePath": "new_rayofgenesis/new_rayofgenesis_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_lg_earthdrive_effectid": [
+		{
+			"type": "STR",
+			"file": "new_earthdrive/new_earthdrive/new_earthdrive",
+			"texturePath": "new_earthdrive/new_earthdrive/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_earthdrive/new_earthdrive_bottom/new_earthdrive_bottom",
+			"texturePath": "new_earthdrive/new_earthdrive_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_fallenempire_effectid": [
+		{
+			"type": "STR",
+			"file": "new_fallenempire/new_fallenempire/new_fallenempire",
+			"texturePath": "new_fallenempire/new_fallenempire/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_fallenempire/new_fallenempire_bottom/new_fallenempire_bottom",
+			"texturePath": "new_fallenempire/new_fallenempire_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_fallenempire_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_fallenempire/new_fallenempire_hit/new_fallenempire_hit",
+			"texturePath": "new_fallenempire/new_fallenempire_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_tigercannon_effectid": [
+		{
+			"type": "STR",
+			"file": "new_tigercannon/new_tigercannon",
+			"texturePath": "new_tigercannon/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_rampageblaster_effectid": [
+		{
+			"type": "STR",
+			"file": "new_rampageblaster/new_rampageblaster/new_rampageblaster",
+			"texturePath": "new_rampageblaster/new_rampageblaster/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_rampageblaster/new_rampageblaster_bottom/new_rampageblaster_bottom",
+			"texturePath": "new_rampageblaster/new_rampageblaster_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_lightningwalk_effectid": [
+		{
+			"type": "STR",
+			"file": "lightning",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_gateofhell_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_gateofhell/new_gateofhell_cast/new_gateofhell_cast",
+			"texturePath": "new_gateofhell/new_gateofhell_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_howlingoflion_effectid": [
+		{
+			"type": "STR",
+			"file": "new_howlingoflion/new_howlingoflion/new_howlingoflion",
+			"texturePath": "new_howlingoflion/new_howlingoflion/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_howlingoflion/new_howlingoflion_bottom/new_howlingoflion_bottom",
+			"texturePath": "new_howlingoflion/new_howlingoflion_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_howlingoflion_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_howlingoflion/new_howlingoflion_cast/new_howlingoflion_cast",
+			"texturePath": "new_howlingoflion/new_howlingoflion_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_howlingoflion/new_howlingoflion_cast_bottom/new_howlingoflion_cast_bottom",
+			"texturePath": "new_howlingoflion/new_howlingoflion_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_sr_howlingoflion_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_howlingoflion/new_howlingoflion_hit/new_howlingoflion_hit",
+			"texturePath": "new_howlingoflion/new_howlingoflion_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_metalicsound_effectid": [
+		{
+			"type": "STR",
+			"file": "new_metalicsound/new_metalicsound/new_metalicsound",
+			"texturePath": "new_metalicsound/new_metalicsound/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_metalicsound/new_metalicsound_bottom/new_metalicsound_bottom",
+			"texturePath": "new_metalicsound/new_metalicsound_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_metalicsound_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_metalicsound/new_metalicsound_hit/new_metalicsound_hit",
+			"texturePath": "new_metalicsound/new_metalicsound_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_reverberation_magic_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "new_reverberation/new_reverberation_hit/new_reverberation_hit",
+			"texturePath": "new_reverberation/new_reverberation_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_severe_rainstorm_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_severerainstorm/new_severerainstorm_cast/new_severerainstorm_cast",
+			"texturePath": "new_severerainstorm/new_severerainstorm_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_sound_of_destruction_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_soundofdestruction/new_soundofdestruction_cast/new_soundofdestruction_cast",
+			"texturePath": "new_soundofdestruction/new_soundofdestruction_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_soundofdestruction/new_soundofdestruction_cast_bottom/new_soundofdestruction_cast_bottom",
+			"texturePath": "new_soundofdestruction/new_soundofdestruction_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_unlimited_humming_voice_effectid": [
+		{
+			"type": "STR",
+			"file": "new_unlimit/new_unlimit/new_unlimit",
+			"texturePath": "new_unlimit/new_unlimit/",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_unlimit/new_unlimit_bottom/new_unlimit_bottom",
+			"texturePath": "new_unlimit/new_unlimit_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_severe_rainstorm_melee_effectid": [
+		{
+			"type": "STR",
+			"file": "new_severerainstorm/new_severerainstorm/new_severerainstorm",
+			"texturePath": "new_severerainstorm/new_severerainstorm/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wm_severe_rainstorm_melee_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_severerainstorm/new_severerainstorm_cast/new_severerainstorm_cast",
+			"texturePath": "new_severerainstorm/new_severerainstorm_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_so_diamonddust_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_diamonddust/new_diamonddust_cast/new_diamonddust_cast",
+			"texturePath": "new_diamonddust/new_diamonddust_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_so_poison_buster_effectid": [
+		{
+			"type": "STR",
+			"file": "poison",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_so_psychic_wave_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_psychicwave/new_psychicwave_cast/new_psychicwave_cast",
+			"texturePath": "new_psychicwave/new_psychicwave_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_so_el_cure_effectid": [
+		{
+			"type": "STR",
+			"file": "cure",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_gn_changematerial_effectid": [
+		{
+			"type": "STR",
+			"file": "changematerial_fa",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "changematerial_su",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_wh_solidtrap_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "solidtrap/solidtrap_cast_bottom/solidtrap_cast_bottom",
+			"texturePath": "solidtrap/solidtrap_cast_bottom/",
+			"min": "solidtrap/solidtrap_cast_bottom/min_solidtrap_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_bo_woodenwarrior_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "wooden_warrior/wooden_warrior_cast/wooden_warrior_cast",
+			"texturePath": "wooden_warrior/wooden_warrior_cast/",
+			"min": "wooden_warrior/wooden_warrior_cast/min_wooden_warrior_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "wooden_warrior/wooden_warrior_cast_bottom/wooden_warrior_cast_bottom",
+			"texturePath": "wooden_warrior/wooden_warrior_cast_bottom/",
+			"min": "wooden_warrior/wooden_warrior_cast_bottom/min_wooden_warrior_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_bo_woodenwarrior_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "wooden_warrior/throwrock/throwrock_hit/throwrock_hit",
+			"texturePath": "wooden_warrior/throwrock/throwrock_hit/",
+			"min": "wooden_warrior/throwrock/throwrock_hit/min_throwrock_hit",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "wooden_warrior/wooden_attack/wooden_attack/wooden_attack",
+			"texturePath": "wooden_warrior/wooden_attack/wooden_attack/",
+			"min": "wooden_warrior/wooden_attack/wooden_attack/min_wooden_attack",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "wooden_warrior/wooden_attack/wooden_attack_hit/wooden_attack_hit",
+			"texturePath": "wooden_warrior/wooden_attack/wooden_attack_hit/",
+			"min": "wooden_warrior/wooden_attack/wooden_attack_hit/min_wooden_attack_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_bo_wooden_fairy_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "wooden_fairy/wooden_cast/wooden_cast",
+			"texturePath": "wooden_fairy/wooden_cast/",
+			"min": "wooden_fairy/wooden_cast/min_wooden_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "wooden_fairy/wooden_cast_bottom/wooden_cast_bottom",
+			"texturePath": "wooden_fairy/wooden_cast_bottom/",
+			"min": "wooden_fairy/wooden_cast_bottom/min_wooden_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_bo_researchreport_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "research_report/researchreport_cast_bottom/researchreport_cast_bottom",
+			"texturePath": "research_report/researchreport_cast_bottom/",
+			"min": "research_report/researchreport_cast_bottom/min_researchreport_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_bo_helltree_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "helltree/helltree_cast/helltree_cast",
+			"texturePath": "helltree/helltree_cast/",
+			"min": "helltree/helltree_cast/min_helltree_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "helltree/helltree_cast_bottom/helltree_cast_bottom",
+			"texturePath": "helltree/helltree_cast_bottom/",
+			"min": "helltree/helltree_cast_bottom/min_helltree_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_dk_servantweapon_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_servantweapon/servantweapon_cast/servantweapon_cast",
+			"texturePath": "dragon_knight/dk_servantweapon/servantweapon_cast/",
+			"min": "dragon_knight/dk_servantweapon/servantweapon_cast/min_servantweapon_cast",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_dk_servantweapon_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "new_servantweapon/new_servantweapon_hit/new_servantweapon_hit",
+			"texturePath": "new_servantweapon/new_servantweapon_hit/",
+			"min": "new_servantweapon/new_servantweapon_hit/min_new_servantweapon_hit",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "new_servantweapon/new_servantweapon_hit_bottom/new_servantweapon_hit_bottom",
+			"texturePath": "new_servantweapon/new_servantweapon_hit_bottom/",
+			"min": "new_servantweapon/new_servantweapon_hit_bottom/min_new_servantweapon_hit_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_dk_servant_w_phantom_effectid": [
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/servant_phantom_sub",
+			"texturePath": "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/",
+			"min": "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/min_servant_phantom_sub",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/servant_phantom_sub_bottom",
+			"texturePath": "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/",
+			"min": "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/min_servant_phantom_sub_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_dk_hackandslasher_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "hackandslash/hackandslash_hit/hackandslash_hit",
+			"texturePath": "hackandslash/hackandslash_hit/",
+			"min": "hackandslash/hackandslash_hit/min_hackandslash_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_mt_a_machine_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_a_machine/new_a_machine_cast_bottom/new_a_machine_cast_bottom",
+			"texturePath": "new_a_machine/new_a_machine_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_mt_d_machine_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_d_machine/new_d_machine_cast_bottom/new_d_machine_cast_bottom",
+			"texturePath": "new_d_machine/new_d_machine_cast_bottom/",
+			"min": "new_d_machine/new_d_machine_cast_bottom/min_new_d_machine_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_tr_roseblossom_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "roseblossom/roseblossom_hit/roseblossom_hit",
+			"texturePath": "roseblossom/roseblossom_hit/",
+			"min": "roseblossom/roseblossom_hit/min_roseblossom_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_tr_soundblend_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "soundblend/soundblend_cast_bottom/soundblend_cast_bottom",
+			"texturePath": "soundblend/soundblend_cast_bottom/",
+			"min": "soundblend/soundblend_cast_bottom/min_soundblend_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_tr_nipelheim_requiem_effectid": [
+		{
+			"type": "STR",
+			"file": "nipelheim/nipelheim/nipelheim",
+			"texturePath": "nipelheim/nipelheim/",
+			"min": "nipelheim/nipelheim/min_nipelheim",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_tr_nipelheim_requiem_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "nipelheim/nipelheim_cast/nipelheim_cast",
+			"texturePath": "nipelheim/nipelheim_cast/",
+			"min": "nipelheim/nipelheim_cast/min_nipelheim_cast",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_activity_burn_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "activity_burn/activity_burn_cast_bottom/activity_burn_cast_bottom",
+			"texturePath": "activity_burn/activity_burn_cast_bottom/",
+			"min": "activity_burn/activity_burn_cast_bottom/min_activity_burn_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_increasing_activity_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "increasing_activity/increasing_activity_cast_bottom/increasing_activity_cast_bottom",
+			"texturePath": "increasing_activity/increasing_activity_cast_bottom/",
+			"min": "increasing_activity/increasing_activity_cast_bottom/min_increasing_activity_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_diamond_storm_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "diamond_storm/diamond_storm_cast_bottom/diamond_storm_cast_bottom",
+			"texturePath": "diamond_storm/diamond_storm_cast_bottom/",
+			"min": "diamond_storm/diamond_storm_cast_bottom/min_diamond_storm_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_lightning_land_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "lightning_land/lightning_land_cast_bottom/lightning_land_cast_bottom",
+			"texturePath": "lightning_land/lightning_land_cast_bottom/",
+			"min": "lightning_land/lightning_land_cast_bottom/min_lightning_land_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_conflagration_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "conflagration/conflagration_cast_bottom/conflagration_cast_bottom",
+			"texturePath": "conflagration/conflagration_cast_bottom/",
+			"min": "conflagration/conflagration_cast_bottom/min_conflagration_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_terra_drive_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "terradrive/terradrive_cast_bottom/terradrive_cast_bottom",
+			"texturePath": "terradrive/terradrive_cast_bottom/",
+			"min": "terradrive/terradrive_cast_bottom/min_terradrive_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_ardor_effectid": [
+		{
+			"type": "STR",
+			"file": "ardor/ardor/ardor",
+			"texturePath": "ardor/ardor/",
+			"min": "ardor/ardor/min_ardor",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "ardor/ardor_bottom/ardor_bottom",
+			"texturePath": "ardor/ardor_bottom/",
+			"min": "ardor/ardor_bottom/min_ardor_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_ardor_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "ardor/ardor_cast/ardor_cast",
+			"texturePath": "ardor/ardor_cast/",
+			"min": "ardor/ardor_cast/min_ardor_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "ardor/ardor_cast_bottom/ardor_cast_bottom",
+			"texturePath": "ardor/ardor_cast_bottom/",
+			"min": "ardor/ardor_cast_bottom/min_ardor_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_ardor_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "ardor/ardor_hit/ardor_hit",
+			"texturePath": "ardor/ardor_hit/",
+			"min": "ardor/ardor_hit/min_ardor_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_diluvio_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "diluvio/diluvio_cast/diluvio_cast",
+			"texturePath": "diluvio/diluvio_cast/",
+			"min": "diluvio/diluvio_cast/min_diluvio_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "diluvio/diluvio_cast_bottom/diluvio_cast_bottom",
+			"texturePath": "diluvio/diluvio_cast_bottom/",
+			"min": "diluvio/diluvio_cast_bottom/min_diluvio_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_diluvio_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "diluvio/diluvio_hit/diluvio_hit",
+			"texturePath": "diluvio/diluvio_hit/",
+			"min": "diluvio/diluvio_hit/min_diluvio_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_procella_effectid": [
+		{
+			"type": "STR",
+			"file": "procella/procella/procella",
+			"texturePath": "procella/procella/",
+			"min": "procella/procella/min_procella",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "procella/procella_bottom/procella_bottom",
+			"texturePath": "procella/procella_bottom/",
+			"min": "procella/procella_bottom/min_procella_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_procella_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "procella/procella_cast/procella_cast",
+			"texturePath": "procella/procella_cast/",
+			"min": "procella/procella_cast/min_procella_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "procella/procella_cast_bottom/procella_cast_bottom",
+			"texturePath": "procella/procella_cast_bottom/",
+			"min": "procella/procella_cast_bottom/min_procella_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_procella_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "procella/procella_hit/procella_hit",
+			"texturePath": "procella/procella_hit/",
+			"min": "procella/procella_hit/min_procella_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_terremotus_effectid": [
+		{
+			"type": "STR",
+			"file": "terremotus/terremotus/terremotus",
+			"texturePath": "terremotus/terremotus/",
+			"min": "terremotus/terremotus/min_terremotus",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_terremotus_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "terremotus/terremotus_cast/terremotus_cast",
+			"texturePath": "terremotus/terremotus_cast/",
+			"min": "terremotus/terremotus_cast/min_terremotus_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "terremotus/terremotus_cast_bottom/terremotus_cast_bottom",
+			"texturePath": "terremotus/terremotus_cast_bottom/",
+			"min": "terremotus/terremotus_cast_bottom/min_terremotus_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_terremotus_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "terremotus/terremotus_hit/terremotus_hit",
+			"texturePath": "terremotus/terremotus_hit/",
+			"min": "terremotus/terremotus_hit/min_terremotus_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_serpens_effectid": [
+		{
+			"type": "STR",
+			"file": "serpens/serpens_bottom/serpens_bottom",
+			"texturePath": "serpens/serpens_bottom/",
+			"min": "serpens/serpens_bottom/min_serpens_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_serpens_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "serpens/serpens_cast/serpens_cast",
+			"texturePath": "serpens/serpens_cast/",
+			"min": "serpens/serpens_cast/min_serpens_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "serpens/serpens_cast_bottom/serpens_cast_bottom",
+			"texturePath": "serpens/serpens_cast_bottom/",
+			"min": "serpens/serpens_cast_bottom/min_serpens_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_summon_elemental_serpens_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "serpens/serpens_hit/serpens_hit",
+			"texturePath": "serpens/serpens_hit/",
+			"min": "serpens/serpens_hit/min_serpens_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_flametechnic_effectid": [
+		{
+			"type": "STR",
+			"file": "ardor/ardor_flametechnic/ardor_flametechnic",
+			"texturePath": "ardor/ardor_flametechnic/",
+			"min": "ardor/ardor_flametechnic/min_ardor_flametechnic",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_flamearmor_effectid": [
+		{
+			"type": "STR",
+			"file": "ardor/ardor_flamearmor/ardor_flamearmor",
+			"texturePath": "ardor/ardor_flamearmor/",
+			"min": "ardor/ardor_flamearmor/min_ardor_flamearmor",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_cold_force_effectid": [
+		{
+			"type": "STR",
+			"file": "diluvio/diluvio_cold_force/diluvio_cold_force",
+			"texturePath": "diluvio/diluvio_cold_force/",
+			"min": "diluvio/diluvio_cold_force/min_diluvio_cold_force",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_grace_breeze_effectid": [
+		{
+			"type": "STR",
+			"file": "procella/procella_grace_breeze/procella_grace_breeze",
+			"texturePath": "procella/procella_grace_breeze/",
+			"min": "procella/procella_grace_breeze/min_procella_grace_breeze",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_earth_care_effectid": [
+		{
+			"type": "STR",
+			"file": "terremotus/terremotus_earth_care/terremotus_earth_care",
+			"texturePath": "terremotus/terremotus_earth_care/",
+			"min": "terremotus/terremotus_earth_care/min_terremotus_earth_care",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_deep_poisoning_effectid": [
+		{
+			"type": "STR",
+			"file": "serpens/serpens_deep_poisoning/serpens_deep_poisoning",
+			"texturePath": "serpens/serpens_deep_poisoning/",
+			"min": "serpens/serpens_deep_poisoning/min_serpens_deep_poisoning",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_em_el_deadly_poison_effectid": [
+		{
+			"type": "STR",
+			"file": "deadlypoison/deadlypoison",
+			"texturePath": "deadlypoison/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_abc_chain_reaction_shot_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "chain_reaction_shot/chain_reaction_shot_cast_bottom/chain_reaction_shot_cast_bottom",
+			"texturePath": "chain_reaction_shot/chain_reaction_shot_cast_bottom/",
+			"min": "chain_reaction_shot/chain_reaction_shot_cast_bottom/min_chain_reaction_shot_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_abc_from_the_abyss_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "from_the_abyss/from_the_abyss_attack/from_the_abyss_attack",
+			"texturePath": "from_the_abyss/from_the_abyss_attack/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_abc_abyss_slayer_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "4abc_abyss_slayer/abyss_slayer_cast_bottom/abyss_slayer_cast_bottom",
+			"texturePath": "4abc_abyss_slayer/abyss_slayer_cast_bottom/",
+			"min": "4abc_abyss_slayer/abyss_slayer_cast_bottom/min_abyss_slayer_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_abc_abyss_strike_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "abyss_strike/abyss_strike_cast_bottom/abyss_strike_cast_bottom",
+			"texturePath": "abyss_strike/abyss_strike_cast_bottom/",
+			"min": "abyss_strike/abyss_strike_cast_bottom/min_abyss_strike_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_abc_chain_reaction_shot_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "chain_reaction_shot/chain_reaction_shot_hit/chain_reaction_shot_hit",
+			"texturePath": "chain_reaction_shot/chain_reaction_shot_hit/",
+			"min": "chain_reaction_shot/chain_reaction_shot_hit/min_chain_reaction_shot_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_abc_from_the_abyss_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "from_the_abyss/from_the_abyss_attack/from_the_abyss_attack",
+			"texturePath": "from_the_abyss/from_the_abyss_attack/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_cd_reparatio_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_reparatio/new_reparatio_cast_bottom/new_reparatio_cast_bottom",
+			"texturePath": "new_reparatio/new_reparatio_cast_bottom/",
+			"min": "new_reparatio/new_reparatio_cast_bottom/min_new_reparatio_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_cd_arbitrium_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "arbitrium/arbitrium_cast_bottom/arbitrium_cast_bottom",
+			"texturePath": "arbitrium/arbitrium_cast_bottom/",
+			"min": "arbitrium/arbitrium_cast_bottom/min_arbitrium_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_cd_arbitrium_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "arbitrium/arbitrium_hit/arbitrium_hit",
+			"texturePath": "arbitrium/arbitrium_hit/",
+			"min": "arbitrium/arbitrium_hit/min_arbitrium_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_cd_dilectio_heal_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_dilectioheal/new_dilectioheal_cast_bottom/new_dilectioheal_cast_bottom",
+			"texturePath": "new_dilectioheal/new_dilectioheal_cast_bottom/",
+			"min": "new_dilectioheal/new_dilectioheal_cast_bottom/min_new_dilectioheal_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_cd_benedictum_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "benedictum/benedictum_cast_bottom/benedictum_cast_bottom",
+			"texturePath": "benedictum/benedictum_cast_bottom/",
+			"min": "benedictum/benedictum_cast_bottom/min_benedictum_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_destructive_hurricane_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "destructive_hurricane/destructive_hurricane_cast_bottom/destructive_hurricane_cast_bottom",
+			"texturePath": "destructive_hurricane/destructive_hurricane_cast_bottom/",
+			"min": "destructive_hurricane/destructive_hurricane_cast_bottom/min_destructive_hurricane_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_rain_of_crystal_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "rain_of_crystal/rain_of_crystal_attack/rain_of_crystal_attack",
+			"texturePath": "rain_of_crystal/rain_of_crystal_attack/",
+			"min": "rain_of_crystal/rain_of_crystal_attack/min_rain_of_crystal_attack",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "rain_of_crystal/rain_of_crystal_attack_bottom/rain_of_crystal_attack_bottom",
+			"texturePath": "rain_of_crystal/rain_of_crystal_attack_bottom/",
+			"min": "rain_of_crystal/rain_of_crystal_attack_bottom/min_rain_of_crystal_attack_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_mystery_illusion_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "mystery_illusion/mystery_illusion_cast_bottom/mystery_illusion_cast_bottom",
+			"texturePath": "mystery_illusion/mystery_illusion_cast_bottom/",
+			"min": "mystery_illusion/mystery_illusion_cast_bottom/min_mystery_illusion_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_strantum_tremor_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_strantumtremor/new_strantumtremor_cast_bottom/new_strantumtremor_cast_bottom",
+			"texturePath": "new_strantumtremor/new_strantumtremor_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_all_bloom_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "allbloom/allbloom_cast_bottom/allbloom_cast_bottom",
+			"texturePath": "allbloom/allbloom_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_crystal_impact_effectid": [
+		{
+			"type": "STR",
+			"file": "crystal_impact/crystal_impact_buff/crystal_impact_buff",
+			"texturePath": "crystal_impact/crystal_impact_buff/",
+			"min": "crystal_impact/crystal_impact_buff/min_crystal_impact_buff",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_crystal_impact_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "crystal_impact/crystal_impact_cast_bottom/crystal_impact_cast_bottom",
+			"texturePath": "crystal_impact/crystal_impact_cast_bottom/",
+			"min": "crystal_impact/crystal_impact_cast_bottom/min_crystal_impact_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_tornado_storm_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "new_tornadostorm/new_tornadostorm_cast_bottom/new_tornadostorm_cast_bottom",
+			"texturePath": "new_tornadostorm/new_tornadostorm_cast_bottom/",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_astral_strike_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "astralstrike/astralstrike_cast_bottom/astralstrike_cast_bottom",
+			"texturePath": "astralstrike/astralstrike_cast_bottom/",
+			"min": "astralstrike/astralstrike_cast_bottom/min_astralstrike_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_rock_down_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "rockdown/rockdown_cast_bottom/rockdown_cast_bottom",
+			"texturePath": "rockdown/rockdown_cast_bottom/",
+			"min": "rockdown/rockdown_cast_bottom/min_rockdown_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_crimson_arrow_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "crimsonarrow/crimsonarrow_cast_bottom/crimsonarrow_cast_bottom",
+			"texturePath": "crimsonarrow/crimsonarrow_cast_bottom/",
+			"min": "crimsonarrow/crimsonarrow_cast_bottom/min_crimsonarrow_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_crimson_arrow_atk_effectid": [
+		{
+			"type": "STR",
+			"file": "crimsonarrow/crimsonarrow_hit/crimsonarrow_hit",
+			"texturePath": "crimsonarrow/crimsonarrow_hit/",
+			"min": "crimsonarrow/crimsonarrow_hit/min_crimsonarrow_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_frozen_slash_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "frozen_slash/frozen_slash_casting/frozen_slash_cast",
+			"texturePath": "frozen_slash/frozen_slash_casting/",
+			"min": "frozen_slash/frozen_slash_casting/min_frozen_slash_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "frozen_slash/frozen_slash_casting_bottom/frozen_slash_cast_bottom",
+			"texturePath": "frozen_slash/frozen_slash_casting_bottom/",
+			"min": "frozen_slash/frozen_slash_casting_bottom/min_frozen_slash_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_ag_destructive_hurricane_climax_effectid": [
+		{
+			"type": "STR",
+			"file": "destructive_hurricane/destructive_hurricane_climax/destructive_hurricane_climax",
+			"texturePath": "destructive_hurricane/destructive_hurricane_climax/",
+			"min": "destructive_hurricane/destructive_hurricane_climax/min_destructive_hurricane_climax",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"combined_upstream_shc_cross_slash_effectid": [
+		{
+			"type": "STR",
+			"file": "shadow_cross/shc_cross_slash/cross_slash/cross_slash",
+			"texturePath": "shadow_cross/shc_cross_slash/cross_slash/",
+			"min": "shadow_cross/shc_cross_slash/cross_slash/min_cross_slash",
+			"wav": "effect/shc_cross_slash",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"complete_violent_hit": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/violentquake/violentquake_hit/violentquake_hit",
+			"texturePath": "fidelity_next/violentquake/violentquake_hit/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_dragonic_horizon": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/dragon_knight/dk_dragonic_pierce/dragonic_pierce_horizon/dragonic_pierce_horizon",
+			"texturePath": "fidelity_next/dragon_knight/dk_dragonic_pierce/dragonic_pierce_horizon/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/dragon_knight/dk_dragonic_pierce/dragonic_pierce_horizon/min_dragonic_pierce_horizon"
+		}
+	],
+	"complete_dragonic_vertical": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/dragon_knight/dk_dragonic_pierce/dragonic_pierce_vertical/dragonic_pierce_vertical",
+			"texturePath": "fidelity_next/dragon_knight/dk_dragonic_pierce/dragonic_pierce_vertical/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/dragon_knight/dk_dragonic_pierce/dragonic_pierce_vertical/min_dragonic_pierce_vertical"
+		}
+	],
+	"complete_radiant_leftdown": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_leftdown/radiant_spear_leftdown",
+			"texturePath": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_leftdown/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_leftdown/min_radiant_spear_leftdown"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_leftdown_bottom/radiant_spear_leftdown_bottom",
+			"texturePath": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_leftdown_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true,
+			"min": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_leftdown_bottom/min_radiant_spear_leftdown_bottom"
+		}
+	],
+	"complete_radiant_rightdown": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_rightdown/radiant_spear_rightdown",
+			"texturePath": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_rightdown/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_rightdown/min_radiant_spear_rightdown"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_rightdown_bottom/radiant_spear_rightdown_bottom",
+			"texturePath": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_rightdown_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true,
+			"min": "fidelity_next/imperial_guard/ig_radiant_spear/radiant_spear_rightdown_bottom/min_radiant_spear_rightdown_bottom"
+		}
+	],
+	"complete_chulho_left": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/chul_ho_battering_hit_left",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/min_chul_ho_battering_hit_left"
+		}
+	],
+	"complete_chulho_right": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/chul_ho_battering_hit_right",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/min_chul_ho_battering_hit_right"
+		}
+	],
+	"complete_claw_1": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_1",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_1"
+		}
+	],
+	"complete_claw_3": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_3",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_3"
+		}
+	],
+	"complete_claw_5": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_5",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_5"
+		}
+	],
+	"complete_claw_6": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_6",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_6"
+		}
+	],
+	"complete_claw_7": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_7",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_7"
+		}
+	],
+	"complete_claw_9": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_9",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_9"
+		}
+	],
+	"complete_claw_11": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_11",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_11"
+		}
+	],
+	"complete_claw_12": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/chul_ho_sonic_claw_wave_12",
+			"texturePath": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw_wave/min_chul_ho_sonic_claw_wave_12"
+		}
+	],
+	"complete_hell_rock_0": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/hyper_novice/hn_hells_drive/hells_drive_00",
+			"texturePath": "fidelity_next/hyper_novice/hn_hells_drive/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_hell_rock_1": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/hyper_novice/hn_hells_drive/hells_drive_01",
+			"texturePath": "fidelity_next/hyper_novice/hn_hells_drive/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_hell_rock_2": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/hyper_novice/hn_hells_drive/hells_drive_02",
+			"texturePath": "fidelity_next/hyper_novice/hn_hells_drive/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_melt_shadow": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_tokedasu/tokedasu_shadow/tokedasu_shadow",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_tokedasu/tokedasu_shadow/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/shinkiro_shiranui/ss_tokedasu/tokedasu_shadow/min_tokedasu_shadow"
+		}
+	],
+	"complete_refraction": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/kunaikussetsu",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/min_kunaikussetsu"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/kunaikussetsu_bottom",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"complete_refraction_end": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/kunaikussetsu_end",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/min_kunaikussetsu_end"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/kunaikussetsu_bottom_end",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"complete_hasty": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/hasty_fire_in_the_hole_5x5",
+			"texturePath": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/",
+			"repeat": false,
+			"attachedEntity": false,
+			"delayStart": 0,
+			"renderBeforeEntities": false,
+			"min": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/min_hasty_fire_in_the_hole_5x5"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/hasty_fire_in_the_hole_5x5",
+			"texturePath": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"delayStart": 0,
+			"renderBeforeEntities": true,
+			"min": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/min_hasty_fire_in_the_hole_5x5"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/hasty_fire_in_the_hole_7x7",
+			"texturePath": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/",
+			"repeat": false,
+			"attachedEntity": false,
+			"delayStart": 300,
+			"renderBeforeEntities": false,
+			"min": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/min_hasty_fire_in_the_hole_7x7"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/hasty_fire_in_the_hole_7x7",
+			"texturePath": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"delayStart": 300,
+			"renderBeforeEntities": true,
+			"min": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/min_hasty_fire_in_the_hole_7x7"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/hasty_fire_in_the_hole_9x9",
+			"texturePath": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/",
+			"repeat": false,
+			"attachedEntity": false,
+			"delayStart": 600,
+			"renderBeforeEntities": false,
+			"min": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/min_hasty_fire_in_the_hole_9x9"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/hasty_fire_in_the_hole_9x9",
+			"texturePath": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/",
+			"repeat": false,
+			"attachedEntity": false,
+			"delayStart": 600,
+			"renderBeforeEntities": true,
+			"min": "fidelity_next/night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/min_hasty_fire_in_the_hole_9x9"
+		},
+		{
+			"wav": "effect/night_watch/nw_hasty_fire_in_the_hole_0",
+			"delayWav": 0,
+			"repeat": false,
+			"attachedEntity": false
+		},
+		{
+			"wav": "effect/night_watch/nw_hasty_fire_in_the_hole_1",
+			"delayWav": 300,
+			"repeat": false,
+			"attachedEntity": false
+		},
+		{
+			"wav": "effect/night_watch/nw_hasty_fire_in_the_hole_2",
+			"delayWav": 600,
+			"repeat": false,
+			"attachedEntity": false
+		}
+	],
+	"complete_jupitel_0": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm/jupitel_thunder_storm_00",
+			"texturePath": "fidelity_next/hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_jupitel_1": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm/jupitel_thunder_storm_01",
+			"texturePath": "fidelity_next/hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_jupitel_2": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm/jupitel_thunder_storm_02",
+			"texturePath": "fidelity_next/hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm/",
+			"repeat": false,
+			"attachedEntity": true
+		}
+	],
+	"complete_dark_dragon": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_00/ankokuryuuakumu_00",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_00/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_00/min_ankokuryuuakumu_00"
+		}
+	],
+	"complete_kunai_nightmare": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_hitouakumu/hitouakumu/hitouakumu",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_hitouakumu/hitouakumu/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/shinkiro_shiranui/ss_hitouakumu/hitouakumu/min_hitouakumu"
+		}
+	],
+	"complete_raiden": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_raidenpou/new_raidenpou/new_raidenpou",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_raidenpou/new_raidenpou/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "fidelity_next/shinkiro_shiranui/ss_raidenpou/new_raidenpou/min_new_raidenpou"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_raidenpou/new_raidenpou_bottom/new_raidenpou_bottom",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_raidenpou/new_raidenpou_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"complete_grasp_open": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_fuumashouaku/fuumashouaku_00/fuumashouaku_00",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_fuumashouaku/fuumashouaku_00/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "fidelity_next/shinkiro_shiranui/ss_fuumashouaku/fuumashouaku_00/min_fuumashouaku_00"
+		}
+	],
+	"complete_grasp_unit": [
+		{
+			"wav": "effect/shinkiro_shiranui/ss_fuumashouaku",
+			"attachedEntity": false,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/fuumashouaku",
+			"texturePath": "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/min_fuumashouaku"
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/shinkiro_shiranui/ss_fuumashouaku/fuumashouaku_00/fuumashouaku_00",
+			"texturePath": "fidelity_next/shinkiro_shiranui/ss_fuumashouaku/fuumashouaku_00/",
+			"repeat": false,
+			"attachedEntity": false,
+			"min": "fidelity_next/shinkiro_shiranui/ss_fuumashouaku/fuumashouaku_00/min_fuumashouaku_00"
+		}
+	],
+	"complete_galaxy_0": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/ske_twinkling_galaxy00",
+			"texturePath": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/min_ske_twinkling_galaxy00"
+		}
+	],
+	"complete_galaxy_1": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/ske_twinkling_galaxy01",
+			"texturePath": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/min_ske_twinkling_galaxy01"
+		}
+	],
+	"complete_galaxy_2": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/ske_twinkling_galaxy02",
+			"texturePath": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/min_ske_twinkling_galaxy02"
+		}
+	],
+	"complete_galaxy_3": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/ske_twinkling_galaxy03",
+			"texturePath": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/min_ske_twinkling_galaxy03"
+		}
+	],
+	"complete_galaxy_unit": [
+		{
+			"type": "STR",
+			"file": "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/ske_twinkling_galaxy_bottom",
+			"texturePath": "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/min_ske_twinkling_galaxy_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"type": "STR",
+			"file": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/ske_twinkling_galaxy0%d",
+			"texturePath": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/",
+			"repeat": true,
+			"attachedEntity": false,
+			"min": "fidelity_next/sky_emperor/ske_twinkling_galaxy/twinkling_galaxy/min_ske_twinkling_galaxy0%d",
+			"rand": [
+				0,
+				3
+			]
+		}
+	],
+	"complete_storm_cast_circle": [
+		{
+			"type": "STR",
+			"file": "fidelity_next/stormcannon/cast_circle/cast_circle",
+			"texturePath": "fidelity_next/stormcannon/cast_circle/",
+			"repeat": false,
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"cardinal_reparatio_cast_audio": [
+		{
+			"wav": "effect/cd_reparatio1",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"cardinal_reparatio_success_audio": [
+		{
+			"wav": "effect/cd_reparatio2",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"ab_expiatio_original_audio": [
+		{
+			"wav": "effect/¹Ù½Ç¸®Ä«"
+		}
+	],
+	"doram_meowmeow_original": [
+		{
+			"type": "STR",
+			"file": "su_chattering/su_chattering",
+			"texturePath": "su_chattering/",
+			"wav": "effect/su_chattering",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"doram_tunaparty_original": [
+		{
+			"type": "SPR",
+			"file": "su_tunaparty/su_tunaparty",
+			"attachedEntity": true,
+			"frame": 0,
+			"repeat": true
+		}
+	],
+	"doram_roottwist_original": [
+		{
+			"type": "SPR",
+			"file": "su_sv_roottwist/su_sv_roottwist",
+			"attachedEntity": true,
+			"frame": 0,
+			"repeat": true
+		}
+	],
+	"doram_roottwist_audio": [
+		{
+			"wav": "effect/su_roottwist",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"doram_carrot_original": [
+		{
+			"type": "SPR",
+			"file": "su_lunaticcarrotbeat/su_lunaticcarrotbeat",
+			"attachedEntity": false,
+			"frame": 0,
+			"repeat": false
+		}
+	],
+	"doram_meteor_original": [
+		{
+			"type": "SPR",
+			"file": "su_cn_meteor/su_cn_meteor",
+			"attachedEntity": false,
+			"frame": 0,
+			"repeat": false
+		}
+	],
+	"doram_catnip_powder_audio": [
+		{
+			"wav": "effect/su_cn_powdering",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"five_enchantblade": [
+		{
+			"type": "3D",
+			"file": "effect/ac_center2.tga",
+			"duration": 800,
+			"size": 70,
+			"fadeOut": true,
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/´ÑÀÚ_´øÁö±â",
+			"attachedEntity": true
+		}
+	],
+	"five_deathbound": [
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 2,
+			"alphaMax": 0.5,
+			"fade": true,
+			"attachedEntity": true,
+			"blendMode": 2
+		},
+		{
+			"wav": "effect/EF_BeginSpell",
+			"attachedEntity": true
+		}
+	],
+	"five_napalmbeat": [
+		{
+			"type": "3D",
+			"file": "effect/Æø¹ß1.TGA",
+			"duration": 800,
+			"size": 70,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"fileList": [
+				"effect/Æø¹ß1.TGA",
+				"effect/Æø¹ß2.TGA",
+				"effect/Æø¹ß3.TGA",
+				"effect/Æø¹ß4.TGA",
+				"effect/Æø¹ß5.TGA",
+				"effect/Æø¹ß6.TGA",
+				"effect/Æø¹ß7.TGA",
+				"effect/Æø¹ß8.TGA"
+			],
+			"frameDelay": 100
+		}
+	],
+	"five_napalmvulcan": [
+		{
+			"type": "3D",
+			"file": "effect/lens1.tga",
+			"duration": 800,
+			"size": 70,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"duplicate": 5,
+			"delayOffset": 100
+		},
+		{
+			"type": "3D",
+			"file": "effect/lens2.tga",
+			"duration": 800,
+			"size": 70,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"duplicate": 5,
+			"delayOffset": 100
+		},
+		{
+			"wav": "effect/EF_NapalmBeat",
+			"attachedEntity": true
+		}
+	],
+	"five_oratio_cast": [
+		{
+			"type": "3D",
+			"file": "effect/fashasha.tga",
+			"duration": 800,
+			"size": 70,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"sizeStart": 20,
+			"sizeEnd": 150
+		},
+		{
+			"wav": "effect/priest_benedictio",
+			"attachedEntity": true
+		}
+	],
+	"five_oratio_status": [
+		{
+			"type": "3D",
+			"file": "effect/¸¶¹ýÁø1-3.bmp",
+			"duration": 1200,
+			"size": 50,
+			"fadeOut": false,
+			"attachedEntity": true,
+			"repeat": true,
+			"rotate": true,
+			"toAngle": 360,
+			"renderBeforeEntities": true
+		}
+	],
+	"five_venom_status": [
+		{
+			"type": "3D",
+			"file": "effect/º£³ð_»óÅÂ.bmp",
+			"duration": 1200,
+			"size": 50,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"zOffset": 3,
+			"repeat": true
+		}
+	],
+	"five_venomimpress": [
+		{
+			"wav": "effect/¼öµÐ",
+			"attachedEntity": true
+		}
+	],
+	"five_weaponblocking": [
+		{
+			"wav": "effect/t_³«¹ý",
+			"attachedEntity": true
+		}
+	],
+	"five_clearance": [
+		{
+			"type": "STR",
+			"file": "new_gateofhell/new_gateofhell_cast/new_gateofhell_cast",
+			"texturePath": "new_gateofhell/new_gateofhell_cast/",
+			"attachedEntity": true,
+			"wav": "effect/EF_BeginSpell"
+		},
+		{
+			"type": "STR",
+			"file": "new_gateofhell/new_gateofhell_target/new_gateofhell_target",
+			"texturePath": "new_gateofhell/new_gateofhell_target/",
+			"attachedEntity": true
+		}
+	],
+	"five_floral_cast": [
+		{
+			"type": "STR",
+			"file": "froral_flareroad/froral_flareroad_cast/froral_flareroad_cast",
+			"texturePath": "froral_flareroad/froral_flareroad_cast/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "froral_flareroad/froral_flareroad_cast_bottom/froral_flareroad_cast_bottom",
+			"texturePath": "froral_flareroad/froral_flareroad_cast_bottom/",
+			"attachedEntity": true,
+			"wav": "effect/EF_BeginSpell",
+			"renderBeforeEntities": true
+		}
+	],
+	"five_floral_hit": [
+		{
+			"type": "STR",
+			"file": "froral_flareroad/froral_flareroad_hit/froral_flareroad_hit",
+			"texturePath": "froral_flareroad/froral_flareroad_hit/",
+			"attachedEntity": true
+		}
+	],
+	"five_floral_unit": [
+		{
+			"type": "STR",
+			"file": "froral_flareroad/froral_flareroad/froral_flareroad",
+			"texturePath": "froral_flareroad/froral_flareroad/",
+			"attachedEntity": true,
+			"repeat": true
+		},
+		{
+			"type": "STR",
+			"file": "froral_flareroad/froral_flareroad_bottom/froral_flareroad_bottom",
+			"texturePath": "froral_flareroad/froral_flareroad_bottom/",
+			"attachedEntity": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		}
+	],
+	"five_poison_cast": [
+		{
+			"type": "3D",
+			"file": "effect/new_poisonsmoke/new_poisonsmoke_cast/poi_magic_circle_1.tga",
+			"duration": 800,
+			"size": 70,
+			"fadeOut": true,
+			"attachedEntity": true,
+			"sizeStart": 60,
+			"sizeEnd": 160,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/assasin_enchantpoison",
+			"attachedEntity": true
+		}
+	],
+	"five_poison_unit": [
+		{
+			"type": "STR",
+			"file": "new_poisonsmoke/new_poisonsmoke/new_poisonsmoke_1",
+			"texturePath": "new_poisonsmoke/new_poisonsmoke/",
+			"attachedEntity": true,
+			"repeat": true
+		},
+		{
+			"type": "STR",
+			"file": "new_poisonsmoke/new_poisonsmoke/new_poisonsmoke_2",
+			"texturePath": "new_poisonsmoke/new_poisonsmoke/",
+			"attachedEntity": true,
+			"repeat": true
+		}
+	],
+	"five_duplelight_status": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"duration": -1,
+			"func": function (params) {
+        const spheres = new SpiritSphere(params.Init.ownerEntity, 2, false, true);
+        this.add(spheres, params);
+    }
+		}
+	],
+	"four_ht_detecting_effectid": [
+		{
+			"wav": "effect/hunter_detecting",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/fashasha.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_sn_sight_effectid": [
+		{
+			"wav": "effect/hunter_detecting",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_sn_sharpshooting_hiteffectid": [
+		{
+			"wav": "effect/»þÇÁ½´ÆÃ",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"attachedEntity": true,
+			"duration": 350,
+			"size": 90,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_sn_windwalk_effectid": [
+		{
+			"wav": "effect/À©µå¿öÅ©",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/cloud11.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 95,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_cluster_impact": [
+		{
+			"type": "SPR",
+			"file": "fireball",
+			"attachedEntity": true,
+			"repeat": false,
+			"duration": 500
+		},
+		{
+			"wav": "effect/EF_FireBall",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_cr_devotion_effectid": [
+		{
+			"type": "STR",
+			"file": "devotion",
+			"attachedEntity": true
+		}
+	],
+	"four_cr_defender_effectid": [
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.6,
+			"animation": 1,
+			"blendMode": 8,
+			"bottomSize": 1.5,
+			"topSize": 1.5,
+			"duration": 3000,
+			"fade": true,
+			"height": 10,
+			"rotate": true,
+			"textureName": "ring_black",
+			"attachedEntity": true
+		}
+	],
+	"four_cr_reflectshield_effectid": [
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.6,
+			"animation": 1,
+			"blendMode": 8,
+			"bottomSize": 1.5,
+			"topSize": 1.5,
+			"duration": 3000,
+			"fade": true,
+			"height": 10,
+			"rotate": true,
+			"textureName": "ring_yellow",
+			"attachedEntity": true
+		}
+	],
+	"four_cr_shrink_effectid": [
+		{
+			"wav": "effect/EF_BeginSpell",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_lg_reflectdamage_effectid": [
+		{
+			"wav": "effect/lg_reflectdamage",
+			"attachedEntity": true
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		}
+	],
+	"four_lg_shieldspell_effectid": [
+		{
+			"wav": "effect/lg_shieldspell",
+			"attachedEntity": true
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		}
+	],
+	"four_lg_forceofvanguard_effectid": [
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		},
+		{
+			"wav": "effect/LG_REFLECTDAMAGE",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_lg_prestige_effectid": [
+		{
+			"wav": "effect/lg_prestige"
+		},
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 90,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_lg_banding_effectid": [
+		{
+			"wav": "effect/lg_banding"
+		},
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 90,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_lg_inspiration_effectid": [
+		{
+			"wav": "effect/lg_inspiration"
+		},
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 90,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_lg_trample_effectid": [
+		{
+			"wav": "effect/lg_trample",
+			"attachedEntity": true
+		}
+	],
+	"four_lg_piety_effectid": [
+		{
+			"wav": "effect/lg_piety",
+			"attachedEntity": true
+		}
+	],
+	"four_hawk_boomerang": [
+		{
+			"type": "STR",
+			"file": "hawkvumerang/hawkvumerang/hawkvumerang",
+			"texturePath": "hawkvumerang/hawkvumerang/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_hawk_cast": [
+		{
+			"type": "STR",
+			"file": "hawkvumerang/hawkvumerang_cast/hawkvumerang_cast",
+			"texturePath": "hawkvumerang/hawkvumerang_cast/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_hawk_hit": [
+		{
+			"type": "STR",
+			"file": "hawkvumerang/hawkvumerang_hit/hawkvumerang_hit",
+			"texturePath": "hawkvumerang/hawkvumerang_hit/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_lg_kings_grace_effectid": [
+		{
+			"wav": "effect/lg_kings_grace",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/lg_kings_grace.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 100,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_abc_from_the_abyss_successeffectidoncaster": [
+		{
+			"wav": "effect/abc_from_the_abyss",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "from_the_abyss/from_the_abyss_shadowball_create/from_the_abyss_shadowball_create",
+			"texturePath": "from_the_abyss/from_the_abyss_shadowball_create/",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_gn_crazyweed_effectid": [
+		{
+			"wav": "effect/GÅ©·¹ÀÌÁöÀ§µå",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_lg_moonslasher_effectid": [
+		{
+			"wav": "effect/lg_moonslasher",
+			"attachedEntity": true
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const entity = Params.Init.ownerEntity;
+				const duration = 500;
+				const count = 8;
+				const delay = duration / count;
+
+				for (let i = 0; i < count; i++) {
+					const delta = 1;
+
+					Events.setTimeout(function () {
+						entity.direction = Math.floor(entity.direction + delta) % 8;
+					}, delay * i);
+				}
+			}
+		}
+	],
+	"four_potion_projectile": [
+		{
+			"type": "3D",
+			"file": "À¯ÀúÀÎÅÍÆäÀÌ½º/item/ºóÆ÷¼Çº´.bmp",
+			"attachedEntity": true,
+			"toSrc": true,
+			"arc": 3,
+			"duration": 350,
+			"size": 30,
+			"repeat": false
+		}
+	],
+	"four_cr_aciddemonstration_effectid": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const start = Params.Inst.startTick + 200;
+				Camera.setQuake(start);
+			}
+		},
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_black",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		},
+		{
+			"wav": "effect/EF_FireWall",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_am_cp_weapon_effectid": [
+		{
+			"wav": "apocalips_attack"
+		},
+		{
+			"type": "3D",
+			"file": "effect/shockwave_c.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_am_cp_shield_effectid": [
+		{
+			"wav": "apocalips_attack"
+		},
+		{
+			"type": "3D",
+			"file": "effect/shockwave_c.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_am_cp_armor_effectid": [
+		{
+			"wav": "apocalips_attack"
+		},
+		{
+			"type": "3D",
+			"file": "effect/shockwave_c.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_am_cp_helm_effectid": [
+		{
+			"wav": "apocalips_attack"
+		},
+		{
+			"type": "3D",
+			"file": "effect/shockwave_c.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_am_twilight1": [
+		{
+			"type": "3D",
+			"file": "À¯ÀúÀÎÅÍÆäÀÌ½º/item/·¹µå½½¸²Æ÷¼Ç.bmp",
+			"attachedEntity": true,
+			"duration": 600,
+			"size": 35,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/bbbb.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_am_twilight2": [
+		{
+			"type": "3D",
+			"file": "À¯ÀúÀÎÅÍÆäÀÌ½º/item/¿»·Î¿ì½½¸²Æ÷¼Ç.bmp",
+			"attachedEntity": true,
+			"duration": 600,
+			"size": 35,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/bbbb.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_am_twilight3": [
+		{
+			"type": "3D",
+			"file": "À¯ÀúÀÎÅÍÆäÀÌ½º/item/È­ÀÌÆ®½½¸²Æ÷¼Ç.bmp",
+			"attachedEntity": true,
+			"duration": 600,
+			"size": 35,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/bbbb.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_gn_cart_tornado_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_cart_tornado/new_cart_tornado/new_cart_tornado",
+			"texturePath": "new_cart_tornado/new_cart_tornado/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_cart_tornado/new_cart_tornado_bottom/new_cart_tornado_bottom",
+			"texturePath": "new_cart_tornado/new_cart_tornado_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/GÄ«Æ®Åä³×ÀÌµµ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_gn_cartcannon_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_fire/new_cart_cannon_fire",
+			"texturePath": "new_cart_cannon/new_cart_cannon_fire/",
+			"attachedEntity": false
+		},
+		{
+			"type": "STR",
+			"file": "new_cart_cannon/new_cart_cannon_fire_bottom/new_cart_cannon_fire_bottom",
+			"texturePath": "new_cart_cannon/new_cart_cannon_fire_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/mon_Ä§Åõ°æ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_mystery_powder_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_mystery_powder/mistery_powder/mistery_powder",
+			"texturePath": "biolo/bo_mystery_powder/mistery_powder/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_mystery_powder/mistery_powder/min_mistery_powder"
+		},
+		{
+			"wav": "effect/bo_mystery_powder",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_explosive_powder_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "biolo/explosive_powder/explosive_powder/explosive_powder",
+			"texturePath": "biolo/explosive_powder/explosive_powder/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/explosive_powder/explosive_powder/min_explosive_powder"
+		},
+		{
+			"wav": "effect/bo_explosive_powder",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_gn_cartboost_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_cartboost/new_cartboost/new_cartboost",
+			"texturePath": "new_cartboost/new_cartboost/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_cartboost/new_cartboost_bottom/new_cartboost_bottom",
+			"texturePath": "new_cartboost/new_cartboost_bottom/",
+			"attachedEntity": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/GÄ«Æ®ºÎ½ºÆ®",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_gn_mandragora_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_mandragora/new_mandragora/new_mandragora",
+			"texturePath": "new_mandragora/new_mandragora/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_mandragora/new_mandragora_bottom/new_mandragora_bottom",
+			"texturePath": "new_mandragora/new_mandragora_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/GÇÏ¿ï¸µ¿Àºê¸¸µå¶ó°í¶ó",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_gn_blood_sucker_effectid": [
+		{
+			"wav": "effect/S¹ÙÅ¨ÀÍ½ºÆ®¸²",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_spore_projectile": [
+		{
+			"type": "3D",
+			"file": "À¯ÀúÀÎÅÍÆäÀÌ½º/item/ÆøÅº¹ö¼¸Æ÷ÀÚ.bmp",
+			"attachedEntity": true,
+			"toSrc": true,
+			"arc": 3,
+			"duration": 350,
+			"size": 35,
+			"repeat": false
+		}
+	],
+	"four_gn_spore_explosion_hiteffectid": [
+		{
+			"wav": "effect/G½ºÆ÷¾îÀÍ½ºÇÃ·ÎÁ¯",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_am_demonstration_unit": [
+		{
+			"type": "SPR",
+			"file": "µ¥¸ó½ºÆ®·¹ÀÌ¼Ç",
+			"attachedEntity": false,
+			"repeat": true
+		}
+	],
+	"four_gn_demonic_fire_unit": [
+		{
+			"type": "SPR",
+			"file": "µ¥¸ó½ºÆ®·¹ÀÌ¼Ç",
+			"attachedEntity": true,
+			"repeat": true
+		},
+		{
+			"wav": "effect/Gµ¥¸ð´ÐÈ­ÀÌ¾î",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_gn_demonic_fire_unit"
+		}
+	],
+	"four_sc_manhole_unit": [
+		{
+			"type": "3D",
+			"file": "effect/twirl.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 100,
+			"fadeOut": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/manhole",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_sc_manhole_unit"
+		}
+	],
+	"four_sc_dimensiondoor_unit": [
+		{
+			"type": "3D",
+			"file": "effect/cloud11.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 100,
+			"fadeOut": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/dimension",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_sc_dimensiondoor_unit"
+		}
+	],
+	"four_sc_chaospanic_unit": [
+		{
+			"type": "3D",
+			"file": "effect/ring_white.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 100,
+			"fadeOut": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/chaospanic",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_sc_chaospanic_unit"
+		}
+	],
+	"four_sc_maelstrom_unit": [
+		{
+			"type": "3D",
+			"file": "effect/bbbb.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 100,
+			"fadeOut": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/maelstrom",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_sc_maelstrom_unit"
+		}
+	],
+	"four_sc_bloodylust_unit": [
+		{
+			"type": "3D",
+			"file": "effect/ring_white.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 100,
+			"fadeOut": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/bloodylust",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_sc_bloodylust_unit"
+		}
+	],
+	"four_bo_advance_protection_successeffectidoncaster": [
+		{
+			"wav": "effect/bo_advance_protection",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_acidified_zone_water_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_water/acidified_zone_water_hit/acidified_zone_water_hit",
+			"texturePath": "acidified_zone_water/acidified_zone_water_hit/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/bo_acidified_zone_water",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_acidified_zone_ground_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_ground/acidified_zone_ground_hit/acidified_zone_ground_hit",
+			"texturePath": "acidified_zone_ground/acidified_zone_ground_hit/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/bo_acidified_zone_ground",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_acidified_zone_wind_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_wind/acidified_zone_wind_hit/acidified_zone_wind_hit",
+			"texturePath": "acidified_zone_wind/acidified_zone_wind_hit/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/bo_acidified_zone_wind",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_acidified_zone_fire_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "acidified_zone_fire/acidified_zone_fire_hit/acidified_zone_fire_hit",
+			"texturePath": "acidified_zone_fire/acidified_zone_fire_hit/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/bo_acidified_zone_fire",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_woodenwarrior_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "wooden_warrior/wooden_warrior_cast/wooden_warrior_cast",
+			"texturePath": "wooden_warrior/wooden_warrior_cast/",
+			"min": "wooden_warrior/wooden_warrior_cast/min_wooden_warrior_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "wooden_warrior/wooden_warrior_cast_bottom/wooden_warrior_cast_bottom",
+			"texturePath": "wooden_warrior/wooden_warrior_cast_bottom/",
+			"min": "wooden_warrior/wooden_warrior_cast_bottom/min_wooden_warrior_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/bo_wooden_attack",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_wooden_fairy_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "wooden_fairy/wooden_cast/wooden_cast",
+			"texturePath": "wooden_fairy/wooden_cast/",
+			"min": "wooden_fairy/wooden_cast/min_wooden_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "wooden_fairy/wooden_cast_bottom/wooden_cast_bottom",
+			"texturePath": "wooden_fairy/wooden_cast_bottom/",
+			"min": "wooden_fairy/wooden_cast_bottom/min_wooden_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/bo_fairy_dusty",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_helltree_effectidoncaster": [
+		{
+			"type": "STR",
+			"file": "helltree/helltree_cast/helltree_cast",
+			"texturePath": "helltree/helltree_cast/",
+			"min": "helltree/helltree_cast/min_helltree_cast",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "helltree/helltree_cast_bottom/helltree_cast_bottom",
+			"texturePath": "helltree/helltree_cast_bottom/",
+			"min": "helltree/helltree_cast_bottom/min_helltree_cast_bottom",
+			"renderBeforeEntities": true,
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/bo_hell_howling",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_mayhemic_thorns_effectid": [
+		{
+			"type": "STR",
+			"file": "biolo/mayhemic_thorns/mayhemic_thorns/mayhemic_thorns",
+			"texturePath": "biolo/mayhemic_thorns/mayhemic_thorns/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/mayhemic_thorns/mayhemic_thorns/min_mayhemic_thorns"
+		},
+		{
+			"type": "STR",
+			"file": "biolo/mayhemic_thorns/mayhemic_thorns_bottom/mayhemic_thorns_bottom",
+			"texturePath": "biolo/mayhemic_thorns/mayhemic_thorns_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/mayhemic_thorns/mayhemic_thorns_bottom/min_mayhemic_thorns_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/bo_mayhemic_thorns",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_bo_mystery_powder_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "biolo/bo_mystery_powder/mistery_powder_hit/mistery_powder_hit",
+			"texturePath": "biolo/bo_mystery_powder/mistery_powder_hit/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "biolo/bo_mystery_powder/mistery_powder_hit/min_mistery_powder_hit"
+		},
+		{
+			"wav": "effect/bo_mystery_powder_hit",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_rg_backstap_hiteffectid": [
+		{
+			"wav": "effect/rog_back stap",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/thunder_center.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_st_preserve_effectid": [
+		{
+			"wav": "effect/black_maximize_power_sword_bic"
+		},
+		{
+			"type": "3D",
+			"file": "effect/a01.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_st_fullstrip_successeffectid": [
+		{
+			"wav": "effect/strip",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/shield.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/sword.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_sc_reproduce_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_reproduce/new_reproduce/new_reproduce",
+			"texturePath": "new_reproduce/new_reproduce/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_reproduce/new_reproduce_bottom/new_reproduce_bottom",
+			"texturePath": "new_reproduce/new_reproduce_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/reproduce",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_autoshadowspell_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "new_autoshadowspell/new_autoshadowspell/new_autoshadowspell",
+			"texturePath": "new_autoshadowspell/new_autoshadowspell/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "new_autoshadowspell/new_autoshadowspell_bottom/new_autoshadowspell_bottom",
+			"texturePath": "new_autoshadowspell/new_autoshadowspell_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/autoshadow",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_shadowform_effectid": [
+		{
+			"type": "3D",
+			"file": "effect/cloud11.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/shadowform",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_bodypaint_effectid": [
+		{
+			"wav": "effect/bodypaint"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freezing_stick.bmp",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"four_sc_invisibility_effectid": [
+		{
+			"wav": "effect/invisibility",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_deadlyinfect_effectid": [
+		{
+			"wav": "effect/deadlyinfect",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_stripaccessary_effectid": [
+		{
+			"wav": "effect/strip",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_enervation_effectid": [
+		{
+			"type": "STR",
+			"file": "enervation",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/enervation",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_groomy_effectid": [
+		{
+			"type": "STR",
+			"file": "groomy",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/groomy",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_ignorance_effectid": [
+		{
+			"type": "STR",
+			"file": "ignorance",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/ignorance",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_laziness_effectid": [
+		{
+			"type": "STR",
+			"file": "laziness",
+			"wav": "effect/laziness",
+			"attachedEntity": true
+		}
+	],
+	"four_sc_unlucky_effectid": [
+		{
+			"type": "STR",
+			"file": "unlucky",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/unlucky",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_sc_weakness_effectid": [
+		{
+			"type": "STR",
+			"file": "weakness",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/weakness",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ra_camouflage_effectid": [
+		{
+			"wav": "effect/assasin_cloaking",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_rg_closeconfine_effectid": [
+		{
+			"wav": "effect/ef_hit6",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_guard_stance_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "guard_stance/guard_stance/guard_stance",
+			"texturePath": "guard_stance/guard_stance/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"wav": "effect/ig_guard_stance",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_guard_stance_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "guard_stance/guard_stance_cast/guard_stance_cast",
+			"texturePath": "guard_stance/guard_stance_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_rebound_shield_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "rebound_shield/rebound_shield/rebound_shield",
+			"texturePath": "rebound_shield/rebound_shield/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"wav": "effect/ig_rebound_shield",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_rebound_shield_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "rebound_shield/rebound_shield_cast/rebound_shield_cast",
+			"texturePath": "rebound_shield/rebound_shield_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_attack_stance_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "attack_stance/attack_stance/attack_stance",
+			"texturePath": "attack_stance/attack_stance/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_attack_stance_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "attack_stance/attack_stance_cast/attack_stance_cast",
+			"texturePath": "attack_stance/attack_stance_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_ultimate_sacrifice_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "ultimate_sacrifice/ultimatesacrifice/ultimatesacrifice",
+			"texturePath": "ultimate_sacrifice/ultimatesacrifice/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"wav": "effect/ig_ultimate_sacrifice",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_holy_shield_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "holy_shield/holy_shield/holy_shield",
+			"texturePath": "holy_shield/holy_shield/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_holy_shield_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "holy_shield/holy_shield_cast/holy_shield_cast",
+			"texturePath": "holy_shield/holy_shield_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_guardian_shield_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/guardianshield",
+			"texturePath": "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"type": "STR",
+			"file": "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/guardianshield_bottom",
+			"texturePath": "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ig_guardian_shield",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_grand_judgement_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "grand_judgement/grand_judgement_cast/grand_judgement_cast",
+			"texturePath": "grand_judgement/grand_judgement_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_grand_judgement_effectid": [
+		{
+			"type": "STR",
+			"file": "grand_judgement/grand_judgement/grand_judgement",
+			"texturePath": "grand_judgement/grand_judgement/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"type": "STR",
+			"file": "grand_judgement/grand_judgement_bottom/grand_judgement_bottom",
+			"texturePath": "grand_judgement/grand_judgement_bottom/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ig_grand_judgement",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_judgement_cross_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "judgement_cross/judgement_cross_cast/judgement_cross_cast",
+			"texturePath": "judgement_cross/judgement_cross_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_judgement_cross_effectid": [
+		{
+			"type": "STR",
+			"file": "judgement_cross/judgement_cross/judgement_cross",
+			"texturePath": "judgement_cross/judgement_cross/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"type": "STR",
+			"file": "judgement_cross/judgement_cross_bottom/judgement_cross_bottom",
+			"texturePath": "judgement_cross/judgement_cross_bottom/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ig_judgement_cross",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_overslash_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "overslash/overslash_cast/overslash_cast",
+			"texturePath": "overslash/overslash_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_overslash_effectid": [
+		{
+			"type": "STR",
+			"file": "overslash/overslash/overslash",
+			"texturePath": "overslash/overslash/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"type": "STR",
+			"file": "overslash/overslash_bottom/overslash_bottom",
+			"texturePath": "overslash/overslash_bottom/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ig_overslash",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_ig_overslash_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "overslash/overslash_hit/overslash_hit",
+			"texturePath": "overslash/overslash_hit/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_ig_cross_rain_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "crossrain/cross_rain_cast/cross_rain_cast",
+			"texturePath": "crossrain/cross_rain_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"type": "STR",
+			"file": "crossrain/cross_rain_cast_bottom/cross_rain_cast_bottom",
+			"texturePath": "crossrain/cross_rain_cast_bottom/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": true
+		}
+	],
+	"four_ig_cross_rain_unit": [
+		{
+			"type": "STR",
+			"file": "crossrain/cross_rain/cross_rain",
+			"texturePath": "crossrain/cross_rain/",
+			"attachedEntity": true,
+			"repeat": true
+		},
+		{
+			"type": "STR",
+			"file": "crossrain/cross_rain_bottom/cross_rain_bottom",
+			"texturePath": "crossrain/cross_rain_bottom/",
+			"attachedEntity": true,
+			"repeat": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/ig_cross_rain",
+			"attachedEntity": true,
+			"repeat": false,
+			"unitAudioKey": "four_ig_cross_rain_unit"
+		}
+	],
+	"four_wh_calamitygale_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "windhawk/calamitygale/calumitygale_cast/calumitygale_cast",
+			"texturePath": "windhawk/calamitygale/calumitygale_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_wh_calamitygale_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "windhawk/calamitygale/calumitygale/calumitygale",
+			"texturePath": "windhawk/calamitygale/calumitygale/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"wav": "effect/wh_calamitygale",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_wh_crescive_bolt_begincasteffectid": [
+		{
+			"type": "STR",
+			"file": "crescivebolt/crescivebolt_cast/crescivebolt_cast",
+			"texturePath": "crescivebolt/crescivebolt_cast/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"four_wh_crescive_bolt_effectid": [
+		{
+			"type": "STR",
+			"file": "crescivebolt/crescivebolt/crescivebolt",
+			"texturePath": "crescivebolt/crescivebolt/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		},
+		{
+			"wav": "effect/wh_crescive_bolt",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"four_wh_crescive_bolt_hiteffectid": [
+		{
+			"type": "STR",
+			"file": "crescivebolt/crescivebolt_hit/crescivebolt_hit",
+			"texturePath": "crescivebolt/crescivebolt_hit/",
+			"attachedEntity": true,
+			"repeat": false,
+			"renderBeforeEntities": false
+		}
+	],
+	"next_mg_energycoat_effectid": [
+		{
+			"type": "STR",
+			"file": "energycoat",
+			"attachedEntity": true
+		}
+	],
+	"next_pf_memorize_effectid": [
+
+	],
+	"next_pf_doublecasting_effectid": [
+
+	],
+	"next_mo_steelbody_effectid": [
+		{
+			"wav": "effect/mon_±Ý°­ºÒ±«"
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const start = Params.Inst.startTick;
+				Camera.setQuake(start);
+			}
+		}
+	],
+	"next_mo_explosionspirits_effectidoncaster": [
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.5,
+			"blendMode": 8,
+			"animation": 4,
+			"duplicate": 4,
+			"timeBetweenDupli": 100,
+			"bottomSize": 2,
+			"duration": 1500,
+			"fade": true,
+			"height": 2,
+			"rotate": true,
+			"textureName": "ring_yellow",
+			"topSize": 5,
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/mon_Æø±â",
+			"attachedEntity": true
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const start = Params.Inst.startTick;
+				Camera.setQuake(start);
+			}
+		}
+	],
+	"next_sg_feel_effectid": [
+
+	],
+	"next_sg_sun_comfort_effectid": [
+
+	],
+	"next_sg_moon_comfort_effectid": [
+
+	],
+	"next_sg_star_comfort_effectid": [
+
+	],
+	"next_sg_fusion_effectid": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const start = Params.Inst.startTick;
+				Camera.setQuake(start);
+			}
+		}
+	],
+	"next_cg_longingfreedom_effectid": [
+
+	],
+	"next_wa_swing_dance_effectid": [
+		{
+			"wav": "effect/½ºÀ®´í½º",
+			"attachedEntity": true
+		},
+		{
+			"alphaMax": 1,
+			"attachedEntity": true,
+			"duration": 1000,
+			"delayLate": 500,
+			"duplicate": 7,
+			"fadeOut": true,
+			"file": "effect/ac_center2.tga",
+			"red": 1,
+			"green": 0.1,
+			"blue": 0.5,
+			"posxRand": 1.5,
+			"posyRand": 1,
+			"poszEndRand": 1,
+			"poszEndRandMiddle": 6,
+			"poszStartRand": 1,
+			"poszStartRandMiddle": 1,
+			"sizeRandY": 15,
+			"sizeRandYMiddle": 45,
+			"sizeX": 2.5,
+			"type": "3D",
+			"zIndex": 0
+		},
+		{
+			"alphaMax": 0.75,
+			"attachedEntity": true,
+			"duration": 1000,
+			"delayOffset": 400,
+			"duplicate": 3,
+			"fadeOut": true,
+			"file": "effect/ac_center2.tga",
+			"posxRand": 1.5,
+			"posyRand": 1,
+			"poszEndRand": 1,
+			"poszEndRandMiddle": 6,
+			"poszStartRand": 1,
+			"poszStartRandMiddle": 1,
+			"sizeRandY": 15,
+			"sizeRandYMiddle": 45,
+			"sizeX": 2.5,
+			"type": "3D",
+			"zIndex": 0
+		},
+		{
+			"alphaMax": 1,
+			"attachedEntity": true,
+			"duration": 1000,
+			"duplicate": 10,
+			"fadeOut": true,
+			"file": "effect/ac_center2.tga",
+			"posxRand": 1.5,
+			"posyRand": 1,
+			"poszEndRand": 1,
+			"poszEndRandMiddle": 6,
+			"poszStartRand": 1,
+			"poszStartRandMiddle": 1,
+			"sizeRandY": 15,
+			"sizeRandYMiddle": 45,
+			"sizeX": 2.5,
+			"type": "3D",
+			"zIndex": 0
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function EffectBodyColor(Params) {
+				const entity = Params.Init.ownerEntity;
+
+				entity.animations.add(function (tick) {
+					if (tick < 500) {
+						if (tick % 2 == 0) {
+							entity._flashColor[0] = 1;
+							entity._flashColor[1] = 0.1;
+							entity._flashColor[2] = 0.5;
+							entity._flashColor[3] = 0.4;
+							entity.recalculateBlendingColor();
+						} else {
+							entity._flashColor[0] = 1;
+							entity._flashColor[1] = 1;
+							entity._flashColor[2] = 1;
+							entity._flashColor[3] = 1;
+							entity.recalculateBlendingColor();
+						}
+					} else {
+						entity._flashColor[0] = 1;
+						entity._flashColor[1] = 1;
+						entity._flashColor[2] = 1;
+						entity._flashColor[3] = 1;
+						entity.recalculateBlendingColor();
+						return true;
+					}
+				});
+			}
+		}
+	],
+	"next_wa_symphony_of_lover_effectid": [
+		{
+			"wav": "effect/¿¬ÀÎµéÀ»À§ÇÑ½ÉÆ÷´Ï",
+			"attachedEntity": true
+		}
+	],
+	"next_wa_moonlit_serenade_effectid": [
+		{
+			"wav": "effect/´Þºû¼¼·¹³ªµ¥",
+			"attachedEntity": true
+		}
+	],
+	"next_wm_lullaby_deepsleep_effectid": [
+		{
+			"wav": "effect/¾È½ÄÀÇÀÚÀå°¡"
+		}
+	],
+	"next_wm_sircleofnature_effectid": [
+		{
+			"wav": "effect/¼øÈ¯ÇÏ´ÂÀÚ¿¬ÀÇ¼Ò¸®"
+		}
+	],
+	"next_wm_gloomyday_effectid": [
+		{
+			"wav": "effect/¼öÁÝÀºÇÏ·çÀÇ¿ì¿ï"
+		}
+	],
+	"next_wm_frigg_song_effectid": [
+		{
+			"wav": "effect/wm_frigg_song",
+			"attachedEntity": true
+		}
+	],
+	"next_wm_deadhillhere_effectid": [
+		{
+			"wav": "effect/»ç¸ÁÀÇ°ñÂ¥±â¿¡¼­",
+			"attachedEntity": true
+		}
+	],
+	"next_sr_crescentelbow_effectid": [
+		{
+			"wav": "effect/sr_crescentelbow",
+			"attachedEntity": true
+		}
+	],
+	"next_sr_cursedcircle_effectid": [
+		{
+			"wav": "effect/sr_cursedcircle",
+			"attachedEntity": true
+		}
+	],
+	"next_sr_raisingdragon_effectid": [
+		{
+			"wav": "effect/sr_raisingdragon",
+			"attachedEntity": true
+		}
+	],
+	"next_sr_powervelocity_effectid": [
+		{
+			"wav": "effect/sr_powervelocity",
+			"attachedEntity": true
+		}
+	],
+	"next_so_elemental_shield_effectid": [
+		{
+			"type": "STR",
+			"file": "so_elemental_shield",
+			"wav": "effect/so_elemental_shield",
+			"attachedEntity": true
+		}
+	],
+	"next_pf_memorize_successeffectidoncaster": [
+		{
+			"wav": "effect/priest_suffragium",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_tk_dodge_successeffectidoncaster": [
+		{
+			"wav": "effect/T_³«¹ý",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_tk_sevenwind_successeffectidoncaster": [
+		{
+			"wav": "effect/T_¹Ù¶÷¹æÃâ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_hate_successeffectid": [
+		{
+			"wav": "effect/T_µî·Ï",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_tk_mission_successeffectidoncaster": [
+		{
+			"wav": "effect/T_ÇÇ¸µ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sr_gentletouch_cure_successeffectid": [
+		{
+			"wav": "_heal_effect",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sr_gentletouch_energygain_successeffectidoncaster": [
+		{
+			"wav": "effect/¼¼Å©¸®ÆÄÀÌ½º",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sr_gentletouch_change_successeffectidoncaster": [
+		{
+			"wav": "effect/»þÇÁ½´ÆÃ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sr_gentletouch_revitalize_successeffectidoncaster": [
+		{
+			"wav": "effect/mon_ÅºÁö½ÅÅë",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_so_striking_successeffectid": [
+		{
+			"wav": "effect/S½ºÆ®¶óÀÌÅ·",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_iq_oleum_sanctum_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "4ig_oleumsanctum/oleumsanctum/oleumsanctum",
+			"texturePath": "4ig_oleumsanctum/oleumsanctum/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "4ig_oleumsanctum/oleumsanctum_bottom/oleumsanctum_bottom",
+			"texturePath": "4ig_oleumsanctum/oleumsanctum_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/iq_oleum_sanctum",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_iq_massive_f_blaster_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "4iq_massivefblaster/massivefblaster/massivefblaster",
+			"texturePath": "4iq_massivefblaster/massivefblaster/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/iq_massive_f_blaster",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_iq_exposion_blaster_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "4ig_explosionblaster/explosionblaster/explosionblaster",
+			"texturePath": "4ig_explosionblaster/explosionblaster/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "4ig_explosionblaster/explosionblaster_bottom/explosionblaster_bottom",
+			"texturePath": "4ig_explosionblaster/explosionblaster_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/iq_exposion_blaster",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_ba_dissonance_effectid": [
+		{
+			"type": "3D",
+			"file": "effect/lens_w.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_ba_whistle_effectid": [
+		{
+			"wav": "effect/´Þºû¼¼·¹³ªµ¥",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/melody_b.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_ba_assassincross_effectid": [
+		{
+			"wav": "effect/¼®¾çÀÇ ¾î½Ø½Å",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/lens_r.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_ba_poembragi_effectid": [
+		{
+			"wav": "effect/ºê¶ó±âÀÇ ½Ã",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/melody_a.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_ba_appleidun_effectid": [
+		{
+			"wav": "effect/ÀÌµÐÀÇ »ç°ú",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/idun_apple.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_dc_uglydance_effectid": [
+		{
+			"type": "3D",
+			"file": "effect/lens_w.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_dc_humming_effectid": [
+		{
+			"wav": "effect/Èï¾ó°Å¸²",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/melody_a.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_dc_dontforgetme_effectid": [
+		{
+			"wav": "effect/³ª¸¦ÀØÁö¸»¾Æ¿ä",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/lens_g.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_dc_fortunekiss_effectid": [
+		{
+			"wav": "effect/Çà¿îÀÇ",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/heart_2.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_dc_serviceforyou_effectid": [
+		{
+			"wav": "effect/´ç½ÅÀ» À§ÇÑ ¼­ºñ½º",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/safeline.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_lullaby_effectid": [
+		{
+			"wav": "effect/ÀÚÀå°¡",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/zz.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_richmankim_effectid": [
+		{
+			"wav": "effect/±è¼­¹æµ·",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/pocket.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_eternalchaos_effectid": [
+		{
+			"wav": "effect/¿µ¿øÀÇ È¥µ·",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/lens_g.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_drumbattlefield_effectid": [
+		{
+			"wav": "effect/ÀüÀåÀÇ",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/melody_b.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_ringnibelungen_effectid": [
+		{
+			"wav": "effect/´Ïº§·î°ÕÀÇ ¹ÝÁö",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/twirl.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_rokisweil_effectid": [
+		{
+			"wav": "effect/·ÎÅ°",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/safeline.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_siegfried_effectid": [
+		{
+			"wav": "effect/ºÒ»ç½Å",
+			"attachedEntity": true
+		},
+		{
+			"type": "3D",
+			"file": "effect/lens_b.bmp",
+			"attachedEntity": true,
+			"duration": 900,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 90,
+			"posxRand": 1,
+			"posyRand": 1
+		}
+	],
+	"next_bd_intoabyss_effectid": [
+		{
+			"wav": "effect/½É¿¬¼ÓÀ¸·Î",
+			"attachedEntity": true
+		}
+	],
+	"next_cg_moonlit_effectid": [
+		{
+			"wav": "effect/´Þºû¼¼·¹³ªµ¥",
+			"attachedEntity": false,
+			"repeat": false
+		}
+	],
+	"next_cg_hermode_effectid": [
+		{
+			"wav": "effect/Çì¸£¸ðµåÀÇ ÁöÆÎÀÌ",
+			"attachedEntity": true
+		}
+	],
+	"next_wm_lullaby_deepsleep_successeffectidoncaster": [
+		{
+			"wav": "effect/¾È½ÄÀÇÀÚÀå°¡"
+		},
+		{
+			"type": "3D",
+			"file": "effect/melody_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 45,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 100
+		}
+	],
+	"next_wm_sircleofnature_successeffectidoncaster": [
+		{
+			"wav": "effect/¼øÈ¯ÇÏ´ÂÀÚ¿¬ÀÇ¼Ò¸®"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 45,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 100
+		}
+	],
+	"next_wm_voiceofsiren_groundeffectid": [
+		{
+			"wav": "effect/¼¼ÀÌ·»ÀÇ¸ñ¼Ò¸®"
+		},
+		{
+			"type": "3D",
+			"file": "effect/kiss2.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 45,
+			"fadeOut": true,
+			"repeat": false,
+			"duplicate": 4,
+			"timeBetweenDupli": 100
+		}
+	],
+	"next_wm_song_of_mana_groundeffectid": [
+		{
+			"wav": "effect/¸¶³ªÀÇ³ë·¡"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_wm_dance_with_wug_groundeffectid": [
+		{
+			"wav": "effect/¿ö±×¿ÍÇÔ²²ÃãÀ»"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_wm_saturday_night_fever_groundeffectid": [
+		{
+			"wav": "effect/»õÅÍµ¥ÀÌ³ªÀÌÆ®ÇÇ¹ö"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_wm_lerads_dew_groundeffectid": [
+		{
+			"wav": "effect/·¹¶óµåÀÇÀÌ½½"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_wm_melodyofsink_groundeffectid": [
+		{
+			"wav": "effect/¸á·Îµð¿Àºê½ÌÅ©"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_wm_beyond_of_warcry_groundeffectid": [
+		{
+			"wav": "effect/ºñ¿æµå¿Àºê¿öÅ©¶óÀÌ"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_wm_unlimited_humming_voice_groundeffectid": [
+		{
+			"wav": "effect/¾ð¸®¹ÌÆ¼µåÇã¹Öº¸ÀÌ½º"
+		},
+		{
+			"type": "3D",
+			"file": "effect/freeze_a.bmp",
+			"attachedEntity": true,
+			"duration": 1000,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_cg_marionette_hiteffectid": [
+
+	],
+	"next_cg_marionette_effectid": [
+		{
+			"type": "3D",
+			"file": "effect/alpha_center.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 45,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/¼Ò¿ï Ã¼ÀÎÁö",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_feel_successeffectidoncaster": [
+		{
+			"type": "3D",
+			"file": "effect/elec1.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/T_Àü±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_sun_comfort_successeffectidoncaster": [
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		},
+		{
+			"wav": "effect/EF_BeginSpell",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_moon_comfort_successeffectidoncaster": [
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		},
+		{
+			"wav": "effect/EF_BeginSpell",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_star_comfort_successeffectidoncaster": [
+		{
+			"type": "CYLINDER",
+			"textureName": "ring_blue",
+			"attachedEntity": true,
+			"duration": 900,
+			"topSize": 1.8,
+			"bottomSize": 1.8,
+			"height": 0.1,
+			"alphaMax": 0.55,
+			"fade": true,
+			"blendMode": 2,
+			"repeat": false
+		},
+		{
+			"wav": "effect/EF_BeginSpell",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_fusion_successeffectidoncaster": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const start = Params.Inst.startTick;
+				Camera.setQuake(start);
+			}
+		},
+		{
+			"wav": "effect/T_º¯½Å",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_sun_warm_effectid": [
+		{
+			"wav": "effect/T_¾È¶ôÇÑ¸¶¹ý",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_moon_warm_effectid": [
+		{
+			"wav": "effect/T_¾È¶ôÇÑ¸¶¹ý",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sg_star_warm_effectid": [
+		{
+			"wav": "effect/T_¾È¶ôÇÑ¸¶¹ý",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_tk_stormkick_effectid": [
+		{
+			"type": "3D",
+			"file": "effect/storm2.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/cloud11.tga",
+			"attachedEntity": true,
+			"duration": 800,
+			"size": 65,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"wav": "effect/T_È¸¿À¸®Â÷±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_tk_downkick_effectid": [
+		{
+			"wav": "effect/T_³»·ÁÂï±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_sr_earthshaker_effectid": [
+		{
+			"wav": "effect/sr_earthshaker"
+		},
+		{
+			"type": "3D",
+			"file": "effect/elec1.tga",
+			"attachedEntity": true,
+			"duration": 600,
+			"size": 85,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"next_so_firewalk_successeffectidoncaster": [
+		{
+			"wav": "effect/SÆÄÀÌ¾î¿öÅ©",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_so_electricwalk_successeffectidoncaster": [
+		{
+			"wav": "effect/SÀÏ·ºÆ®¸¯¿öÅ©",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"next_poem_unit": [
+		{
+			"type": "3D",
+			"file": "effect/melody_a.bmp",
+			"red": 0.6,
+			"green": 0.6,
+			"blue": 1,
+			"alphaMax": 0.6,
+			"attachedEntity": true,
+			"duration": 100,
+			"size": 50,
+			"posz": 0.5,
+			"repeat": true,
+			"wav": null
+		},
+		{
+			"wav": "effect/³ª¶ôÀÇ³ë·¡",
+			"repeat": false,
+			"unitAudioKey": "next_poem_unit"
+		}
+	],
+	"final_sl_kaizel_effectid": [
+		{
+			"wav": "effect/priest_resurrection"
+		}
+	],
+	"final_sl_kaahi_effectid": [
+		{
+			"wav": "effect/t_º¸Á¶¸¶¹ý"
+		}
+	],
+	"final_sl_kaupe_effectid": [
+		{
+			"wav": "effect/T_Ä¡À×",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sl_kaite_effectid": [
+		{
+			"wav": "effect/T_¸¶¹ý¹Ý»ç",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sl_ske_effectid": [
+		{
+			"wav": "effect/T_°ø°Ý·Â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sl_ska_effectid": [
+		{
+			"wav": "effect/mon_±Ý°­ºÒ±«"
+		},
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.5,
+			"blendMode": 8,
+			"animation": 4,
+			"duplicate": 4,
+			"timeBetweenDupli": 100,
+			"bottomSize": 2,
+			"duration": 1500,
+			"fade": true,
+			"height": 2,
+			"rotate": true,
+			"textureName": "ring_yellow",
+			"topSize": 5,
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/mon_Æø±â",
+			"attachedEntity": true
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+				const start = Params.Inst.startTick;
+				Camera.setQuake(start);
+			}
+		}
+	],
+	"final_gs_glittering_effectid": [
+		{
+			"wav": "effect/ÇÃ¸³",
+			"attachedEntity": true
+		}
+	],
+	"final_gs_cracker_effectid": [
+		{
+			"wav": "effect/Å©·¡Ä¿",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sl_swoo": [
+		{
+			"type": "SPR",
+			"file": "m_ef07",
+			"wav": null,
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/T_½´¿ô",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sl_kaahi_successeffectid": [
+		{
+			"wav": "effect/t_º¸Á¶¸¶¹ý"
+		},
+		{
+			"type": "3D",
+			"file": "effect/white02.bmp",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/pok1.tga",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 45,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/pok3.tga",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"final_sl_kaupe_successeffectid": [
+		{
+			"wav": "effect/T_Ä¡À×",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/white02.bmp",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/pok1.tga",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 45,
+			"fadeOut": true,
+			"repeat": false
+		},
+		{
+			"type": "3D",
+			"file": "effect/pok3.tga",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 40,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"final_sl_stin_effectid": [
+		{
+			"wav": "effect/t_¿¡³ÊÁö¹æÃâ"
+		},
+		{
+			"type": "3D",
+			"file": "effect/270¹Ù¶÷.tga",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 55,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"final_nj_huujin_effectid": [
+		{
+			"wav": "effect/Ç³ÀÎ"
+		},
+		{
+			"type": "3D",
+			"file": "effect/270¹Ù¶÷.tga",
+			"attachedEntity": true,
+			"duration": 650,
+			"size": 55,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"final_ko_jyumonjikiri_effectidoncaster": [
+		{
+			"wav": "effect/cru_holy cross",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_setsudan_effectid": [
+		{
+			"type": "STR",
+			"file": "setsudan",
+			"texturePath": "",
+			"attachedEntity": false
+		},
+		{
+			"wav": "effect/T_Àü±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_bakuretsu_effectidoncaster": [
+		{
+			"wav": "effect/´ÑÀÚ_´øÁö±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_happokunai_successeffectidoncaster": [
+		{
+			"wav": "effect/T_È¸¿À¸®Â÷±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_muchanage_effectidoncaster": [
+		{
+			"wav": "effect/´ÑÀÚ_´øÁö±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_huumaranka_groundeffectid": [
+		{
+			"wav": "effect/T_È¸¿À¸®Â÷±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_kaihou_effectidoncaster": [
+		{
+			"wav": "effect/´ÑÀÚ_´øÁö±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_izayoi_successeffectidoncaster": [
+		{
+			"wav": "effect/ab_renovatio",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "ez_cure",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_kg_kyomu_successeffectid": [
+		{
+			"wav": "effect/t_¿¡³ÊÁö¹æÃâ",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "Çã¹«ÀÇ±×¸²ÀÚ",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_kg_kagemusya_successeffectid": [
+		{
+			"wav": "effect/mon_±Ý°­ºÒ±«",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "energycoat",
+			"attachedEntity": true
+		}
+	],
+	"final_ob_zangetsu_successeffectid": [
+		{
+			"wav": "effect/t_µûµíÇÑ¸¶¹ý",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "ÃÊ½Â´Þ2",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ob_oborogensou_successeffectid": [
+		{
+			"wav": "effect/sign_up",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "Èå¸°´ÞºûÈ¯»ó2",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ob_akaitsuki_successeffectid": [
+		{
+			"wav": "effect/t_¿¡³ÊÁö¹æÃâ",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "STR",
+			"file": "ºÒ±æÇÑºÓÀº´Þºû",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sp_spa_effectidoncaster": [
+		{
+			"wav": "effect/t_¿¡³ÊÁö¹æÃâ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sp_souldivision_successeffectid": [
+		{
+			"wav": "effect/t_Ä¡À×",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sp_soulreaper_successeffectidoncaster": [
+		{
+			"wav": "effect/ef_signum",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sp_soulexplosion_effectid": [
+		{
+			"wav": "effect/hunter_landmine",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_rl_firedance_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "rl_fire_dance/firedance",
+			"texturePath": "rl_fire_dance/",
+			"attachedEntity": false
+		},
+		{
+			"wav": "effect/µ¥½ºÆä¶óµµ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_bakuretsu_effectid": [
+		{
+			"wav": "effect/Æø¿°·æ",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_ko_kaihou_effectid": [
+		{
+			"type": "STR",
+			"file": "¼ú½ÄÇØ¹æ",
+			"texturePath": "",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sl_kaizel_successeffectid": [
+		{
+			"wav": "effect/priest_resurrection"
+		},
+		{
+			"type": "3D",
+			"file": "effect/magic_blue.tga",
+			"attachedEntity": true,
+			"duration": 850,
+			"size": 60,
+			"fadeOut": true,
+			"repeat": false
+		}
+	],
+	"final_purring": [
+		{
+			"type": "STR",
+			"file": "su_grooming/su_grooming",
+			"texturePath": "su_grooming/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/su_grooming",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sp_kaute_successeffectid": [
+		{
+			"wav": "effect/Èí±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_sp_soulrevolve_successeffectid": [
+		{
+			"type": "STR",
+			"file": "soul_revolve/soul_revolve",
+			"texturePath": "soul_revolve/",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/t_¹æ¾îÇü",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_nv_helpangel_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "help_angel/help_angel/help_angel",
+			"texturePath": "help_angel/help_angel/",
+			"attachedEntity": true
+		},
+		{
+			"type": "STR",
+			"file": "help_angel/help_angel_bottom/help_angel_bottom",
+			"texturePath": "help_angel/help_angel_bottom/",
+			"attachedEntity": true,
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/priest_sanctuary",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_hn_overcoming_crisis_successeffectidoncaster": [
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_overcoming_crisis/overcoming_crisis/overcoming_crisis",
+			"texturePath": "hyper_novice/hn_overcoming_crisis/overcoming_crisis/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "hyper_novice/hn_overcoming_crisis/overcoming_crisis/min_overcoming_crisis"
+		},
+		{
+			"type": "STR",
+			"file": "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/overcoming_crisis_bottom",
+			"texturePath": "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/min_overcoming_crisis_bottom",
+			"renderBeforeEntities": true
+		},
+		{
+			"wav": "effect/hyper_novice/hn_overcoming_crisis",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_1": [
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_water",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_2": [
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_wind",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_3": [
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_earth",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_4": [
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_fire",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_5": [
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_darkness",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_6": [
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_saint",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"final_grenade_audio_7": [
+		{
+			"type": "STR",
+			"file": "night_watch/nw_grenade_fragment/grenade_fragment_reset/grenade_fragment_reset",
+			"texturePath": "night_watch/nw_grenade_fragment/grenade_fragment_reset/",
+			"repeat": false,
+			"attachedEntity": true,
+			"min": "night_watch/nw_grenade_fragment/grenade_fragment_reset/min_grenade_fragment_reset"
+		},
+		{
+			"wav": "effect/night_watch/nw_grenade_fragment_reset",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_pf_memorize": [
+		{
+			"wav": "effect/priest_suffragium",
+			"attachedEntity": true,
+			"repeat": false
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-505', [0.9803921568627451, 0.9803921568627451, 0.39215686274509803], 10, 36);
+	}
+		}
+	],
+	"closeout_pf_doublecasting": [
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-521', [1, 0, 0], 10, 51);
+	}
+		}
+	],
+	"closeout_gc_venomimpress": [
+		{
+			"wav": "effect/¼öµÐ",
+			"attachedEntity": true
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-768', [1, 0, 1], 0, 31);
+	}
+		}
+	],
+	"closeout_gc_antidote": [
+		{
+			"alphaMax": 1,
+			"attachedEntity": true,
+			"blue": 1,
+			"duration": 1000,
+			"duplicate": 10,
+			"fadeIn": true,
+			"fadeOut": true,
+			"file": "effect/pok1.tga",
+			"green": 1,
+			"posxRand": 1,
+			"posyRand": 1,
+			"poszEnd": 5,
+			"poszStart": 0,
+			"red": 0.7,
+			"size": 100,
+			"sizeRand": 20,
+			"type": "3D",
+			"zIndex": 1
+		},
+		{
+			"attachedEntity": true,
+			"wav": "effect/ef_detoxication"
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-768', [1, 0, 1], 0, 31);
+	}
+		}
+	],
+	"closeout_gc_weaponblocking": [
+		{
+			"wav": "effect/t_³«¹ý",
+			"attachedEntity": true
+		},
+		{
+			"type": "FUNC",
+			"attachedEntity": true,
+			"func": function (Params) {
+		Params.Init.ownerEntity.playOriginalColorPulse('native-768', [1, 0, 1], 0, 31);
+	}
+		}
+	],
+	"closeout_audio_rk_millenniumshield": [
+		{
+			"type": "STR",
+			"file": "mil_shield",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/ef_soulstrike",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_rk_refresh": [
+		{
+			"wav": "_heal_effect",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_rk_giantgrowth": [
+		{
+			"type": "STR",
+			"file": "¹ö¼­Å©",
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/´ÑÀÚ_´øÁö±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_rk_stormblast": [
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.7,
+			"animation": 4,
+			"attachedEntity": true,
+			"bottomSize": 4,
+			"duration": 300,
+			"fade": true,
+			"height": 1,
+			"rotate": true,
+			"textureName": "ring_yellow",
+			"topSize": 6
+		},
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.6,
+			"animation": 4,
+			"attachedEntity": true,
+			"bottomSize": 4,
+			"duration": 300,
+			"fade": true,
+			"height": 4,
+			"rotate": true,
+			"textureName": "´ëÆø¹ß",
+			"topSize": 1,
+			"wav": "effect/ef_magnumbreak"
+		},
+		{
+			"type": "CYLINDER",
+			"alphaMax": 0.3,
+			"blendMode": 8,
+			"animation": 4,
+			"duplicate": 4,
+			"timeBetweenDupli": 100,
+			"bottomSize": 3,
+			"duration": 1000,
+			"fade": true,
+			"height": 2,
+			"rotate": true,
+			"textureName": "ring_yellow",
+			"topSize": 6,
+			"attachedEntity": true
+		},
+		{
+			"wav": "effect/mon_¸Í·æ°ú°­",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_rk_abundance": [
+		{
+			"wav": "effect/Èí±â",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_nc_hovering": [
+		{
+			"wav": "effect/t_º¸Á¶¸¶¹ý"
+		},
+		{
+			"wav": "effect/HOVERING",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_nc_f_sideslide": [
+		{
+			"wav": "effect/F_SIDESLIDE",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_nc_b_sideslide": [
+		{
+			"wav": "effect/B_SIDESLIDE",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_nc_emergencycool": [
+		{
+			"wav": "effect/t_º¸Á¶¸¶¹ý"
+		},
+		{
+			"wav": "effect/ef_decagility",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_nc_neutralbarrier": [
+		{
+			"wav": "effect/mon_±Ý°­ºÒ±«",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_nc_stealthfield": [
+		{
+			"wav": "effect/t_µî·Ï",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	],
+	"closeout_audio_ra_wugmastery": [
+		{
+			"wav": "wolf_attack",
+			"attachedEntity": true,
+			"repeat": false
+		}
+	]
+});

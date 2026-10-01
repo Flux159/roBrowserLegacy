@@ -55,6 +55,10 @@ class Animations {
 	 */
 	free() {
 		this.list.length = 0;
+		if (this.entity._originalColorPulses) {
+			this.entity._originalColorPulses.clear();
+			this.entity.recalculateBlendingColor();
+		}
 	}
 }
 export default function init() {

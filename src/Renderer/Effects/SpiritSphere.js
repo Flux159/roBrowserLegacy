@@ -13,6 +13,7 @@ import _fragmentShader from './SpiritSphere.fs?raw';
  * @var {WebGLTexture}
  */
 let _texture;
+let _dupleTexture;
 
 /**
  * @var {WebGLProgram}
@@ -43,10 +44,11 @@ const _rotationMatrices = (function () {
 const _textureMatrix = mat4.create();
 
 class SpiritSphere {
-	constructor(entity, num, isCoin) {
+	constructor(entity, num, isCoin, isDupleLight = false) {
 		this.position = entity.position;
 		this.num = num;
 		this.isCoin = isCoin;
+		this.isDupleLight = isDupleLight;
 
 		this.initialAlpha = 0;
 	}
@@ -60,6 +62,11 @@ class SpiritSphere {
 	}
 
 	static init(gl) {
+		Client.loadFile('data/texture/effect/freeze_a.bmp', buffer => {
+			WebGL.texture(gl, buffer, texture => {
+				_dupleTexture = texture;
+			});
+		});
 		_program = WebGL.createShaderProgram(gl, _vertexShader, _fragmentShader);
 		_buffer = gl.createBuffer();
 
@@ -99,6 +106,10 @@ class SpiritSphere {
 	}
 
 	static free(gl) {
+		if (_dupleTexture) {
+			gl.deleteTexture(_dupleTexture);
+			_dupleTexture = null;
+		}
 		if (_texture) {
 			gl.deleteTexture(_texture);
 			_texture = null;
@@ -172,11 +183,19 @@ class SpiritSphere {
 		SpriteRenderer.runWithDepth(true, false, false, () => {
 			let _matrix;
 			for (let i = this.num; i > 0; i--) {
-				_matrix = _rotationMatrices[i % _rotationMatrices.length];
+				_matrix = _rotationMatrices[(this.isDupleLight ? (i === 1 ? 0 : 2) : i) % _rotationMatrices.length];
 
 				gl.uniformMatrix4fv(uniform.uTextureRotMat, false, _matrix.texMat);
 				gl.uniformMatrix4fv(uniform.uRotationMat, false, _matrix.posMat);
 
+				if (this.isDupleLight) {
+					gl.bindTexture(gl.TEXTURE_2D, i === 1 && _dupleTexture ? _dupleTexture : _texture);
+					gl.uniform1f(uniform.uSize, 0.25);
+					gl.uniform4fv(uniform.uColor, [1, 1, 1, this.initialAlpha]);
+					gl.uniform1f(uniform.uZIndex, 0.02);
+					gl.drawArrays(gl.TRIANGLES, 0, 6);
+					continue;
+				}
 				if (i > 10) {
 					if (this.isCoin) {
 						gl.uniform1f(uniform.uSize, 0.3);

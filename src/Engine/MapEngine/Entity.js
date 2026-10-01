@@ -1487,10 +1487,11 @@ function onEntityUseSkill(pkt) {
 			}
 		}
 
-		EffectManager.spamSkill(pkt.SKID, pkt.targetAID, null, null, pkt.srcAID);
+		if (pkt.SKID !== SkillId.SC_FEINTBOMB) EffectManager.spamSkill(pkt.SKID, pkt.targetAID, null, null, pkt.srcAID);
 
 		if (pkt.result == 1) {
 			EffectManager.spamSkillSuccess(pkt.SKID, pkt.targetAID, null, pkt.srcAID);
+			EffectManager.spamOriginalSkillVariant(pkt.SKID, pkt.level, pkt.srcAID);
 		}
 	}
 }
@@ -1514,6 +1515,7 @@ function onSkillDisapear(pkt) {
 	const entity = EntityManager.get(pkt.AID);
 	if (entity) {
 		entity.remove();
+		EffectManager.spamOriginalUnitEnd(entity);
 	}
 }
 
@@ -1705,7 +1707,8 @@ function onEntityUseSkillToAttack(pkt) {
 	if (srcEntity && dstEntity && pkt.action != SkillAction.SPLASH) {
 		// && pkt.action != SkillAction.MULTI_HIT
 		EffectManager.spamSkillRelease(pkt.SKID, pkt.targetID, Renderer.tick, pkt.AID);
-		EffectManager.spamSkill(pkt.SKID, pkt.targetID, null, Renderer.tick + pkt.attackMT, pkt.AID);
+		if (pkt.SKID !== SkillId.SC_FEINTBOMB)
+			EffectManager.spamSkill(pkt.SKID, pkt.targetID, null, Renderer.tick + pkt.attackMT, pkt.AID);
 	}
 }
 
@@ -1964,6 +1967,8 @@ function onEntityStatusChange(pkt) {
 		}
 		return;
 	}
+
+	EffectManager.spamOriginalStatus(pkt.index, pkt.AID, pkt.state, pkt.val);
 
 	// TODO: add other status
 	switch (pkt.index) {

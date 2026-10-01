@@ -1484,3 +1484,2999 @@ SkillEffect[SK.SP_SOULREVOLVE] = { effectId: 'ef_sp_soulrevolve' }; //Soul Revol
 SkillEffect[SK.NV_HELPANGEL] = { effectId: 'ef_nv_helpangel' }; //Help Angel
 
 export default SkillEffect;
+
+// Community review overlay: preserve upstream entries and apply local repairs.
+Object.assign(SkillEffect, {
+	"11": {
+		"hitEffectId": [
+			1,
+			"five_napalmbeat"
+		],
+		"effectId": 32
+	},
+	"111": {
+		"beginCastEffectId": "98_beforecast",
+		"effectId": [
+			98,
+			"combined_upstream_bs_adrenaline2_effectid"
+		]
+	},
+	"113": {
+		"successEffectIdOnCaster": 128
+	},
+	"116": {
+
+	},
+	"130": {
+		"successEffectIdOnCaster": "four_ht_detecting_effectid"
+	},
+	"141": {
+		"successEffectId": 125,
+		"hitEffectId": 129
+	},
+	"157": {
+		"successEffectIdOnCaster": "next_mg_energycoat_effectid"
+	},
+	"212": {
+		"hitEffectId": "four_rg_backstap_hiteffectid"
+	},
+	"229": {
+		"groundEffectId": "four_am_demonstration_unit"
+	},
+	"231": {
+		"successEffectId": "four_potion_projectile"
+	},
+	"234": {
+		"successEffectId": "four_am_cp_weapon_effectid"
+	},
+	"235": {
+		"successEffectId": "four_am_cp_shield_effectid"
+	},
+	"236": {
+		"successEffectId": "four_am_cp_armor_effectid"
+	},
+	"237": {
+		"successEffectId": "four_am_cp_helm_effectid"
+	},
+	"252": {
+		"successEffectIdOnCaster": "four_cr_reflectshield_effectid"
+	},
+	"255": {
+		"successEffectId": "four_cr_devotion_effectid"
+	},
+	"257": {
+		"successEffectIdOnCaster": "four_cr_defender_effectid"
+	},
+	"268": {
+		"successEffectIdOnCaster": "next_mo_steelbody_effectid"
+	},
+	"270": {
+		"beginCastEffectId": 12,
+		"successEffectIdOnCaster": "next_mo_explosionspirits_effectidoncaster"
+	},
+	"301": {
+		"effectId": [
+			"combined_upstream_sa_instantdeath_effectid"
+		]
+	},
+	"306": {
+		"groundEffectId": "278_ground",
+		"successEffectIdOnCaster": "next_bd_lullaby_effectid"
+	},
+	"307": {
+		"groundEffectId": "279_ground",
+		"successEffectIdOnCaster": "next_bd_richmankim_effectid"
+	},
+	"308": {
+		"groundEffectId": "280_ground",
+		"successEffectIdOnCaster": "next_bd_eternalchaos_effectid"
+	},
+	"309": {
+		"groundEffectId": "281_ground",
+		"successEffectIdOnCaster": "next_bd_drumbattlefield_effectid"
+	},
+	"310": {
+		"groundEffectId": "282_ground",
+		"successEffectIdOnCaster": "next_bd_ringnibelungen_effectid"
+	},
+	"311": {
+		"groundEffectId": "283_ground",
+		"successEffectIdOnCaster": "next_bd_rokisweil_effectid"
+	},
+	"312": {
+		"groundEffectId": "284_ground",
+		"successEffectIdOnCaster": "next_bd_intoabyss_effectid"
+	},
+	"313": {
+		"groundEffectId": "285_ground",
+		"successEffectIdOnCaster": "next_bd_siegfried_effectid"
+	},
+	"317": {
+		"groundEffectId": "277_ground",
+		"successEffectIdOnCaster": "next_ba_dissonance_effectid"
+	},
+	"319": {
+		"groundEffectId": "286_ground",
+		"successEffectIdOnCaster": "next_ba_whistle_effectid"
+	},
+	"320": {
+		"groundEffectId": "287_ground",
+		"successEffectIdOnCaster": "next_ba_assassincross_effectid"
+	},
+	"321": {
+		"groundEffectId": "288_ground",
+		"successEffectIdOnCaster": "next_ba_poembragi_effectid"
+	},
+	"322": {
+		"groundEffectId": "289_ground",
+		"successEffectIdOnCaster": "next_ba_appleidun_effectid"
+	},
+	"325": {
+		"groundEffectId": "290_ground",
+		"successEffectIdOnCaster": "next_dc_uglydance_effectid"
+	},
+	"327": {
+		"groundEffectId": "291_ground",
+		"successEffectIdOnCaster": "next_dc_humming_effectid"
+	},
+	"328": {
+		"groundEffectId": "292_ground",
+		"successEffectIdOnCaster": "next_dc_dontforgetme_effectid"
+	},
+	"329": {
+		"groundEffectId": "293_ground",
+		"successEffectIdOnCaster": "next_dc_fortunekiss_effectid"
+	},
+	"330": {
+		"groundEffectId": "294_ground",
+		"successEffectIdOnCaster": "next_dc_serviceforyou_effectid"
+	},
+	"355": {
+		"successEffectId": 367
+	},
+	"378": {
+		"successEffectIdOnCaster": 493
+	},
+	"380": {
+		"successEffectIdOnCaster": "four_sn_sight_effectid"
+	},
+	"382": {
+		"hitEffectId": "four_sn_sharpshooting_hiteffectid",
+		"beforeHitEffectId": "ef_arrow_projectile",
+		"beginCastEffectId": "496_beforecast"
+	},
+	"383": {
+		"successEffectIdOnCaster": "four_sn_windwalk_effectid"
+	},
+	"384": {
+		"successEffectIdOnCaster": 390
+	},
+	"395": {
+		"successEffectIdOnCaster": "next_cg_moonlit_effectid"
+	},
+	"396": {
+		"successEffectId": "next_cg_marionette_hiteffectid",
+		"successEffectIdOnCaster": "next_cg_marionette_effectid"
+	},
+	"400": {
+		"effectId": "five_napalmvulcan"
+	},
+	"403": {
+		"successEffectIdOnCaster": "closeout_pf_memorize"
+	},
+	"413": {
+		"effectId": "next_tk_stormkick_effectid"
+	},
+	"415": {
+		"effectId": "next_tk_downkick_effectid"
+	},
+	"419": {
+		"effectId": [
+			415,
+			"combined_upstream_tk_counter_effectid"
+		]
+	},
+	"420": {
+		"successEffectIdOnCaster": "next_tk_dodge_successeffectidoncaster"
+	},
+	"425": {
+		"successEffectIdOnCaster": "next_tk_sevenwind_successeffectidoncaster"
+	},
+	"427": {
+		"successEffectIdOnCaster": "next_sg_feel_successeffectidoncaster"
+	},
+	"428": {
+		"successEffectIdOnCaster": "next_sg_sun_warm_effectid"
+	},
+	"429": {
+		"successEffectIdOnCaster": "next_sg_moon_warm_effectid"
+	},
+	"430": {
+		"successEffectIdOnCaster": "next_sg_star_warm_effectid"
+	},
+	"431": {
+		"successEffectIdOnCaster": "next_sg_sun_comfort_successeffectidoncaster"
+	},
+	"432": {
+		"successEffectIdOnCaster": "next_sg_moon_comfort_successeffectidoncaster"
+	},
+	"433": {
+		"successEffectIdOnCaster": "next_sg_star_comfort_successeffectidoncaster"
+	},
+	"434": {
+		"successEffectId": "next_sg_hate_successeffectid"
+	},
+	"444": {
+		"successEffectIdOnCaster": "next_sg_fusion_successeffectidoncaster"
+	},
+	"445": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"446": {
+		"effectId": 220
+	},
+	"447": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"448": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"449": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"450": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"451": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"452": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"453": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"454": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"455": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"456": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"457": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"458": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_assasin_effectid"
+		]
+	},
+	"459": {
+		"beginCastEffectId": "98_beforecast",
+		"effectId": [
+			98,
+			"combined_upstream_bs_adrenaline2_effectid"
+		]
+	},
+	"460": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_hunter_effectid"
+		]
+	},
+	"461": {
+		"effectId": [
+			424,
+			503,
+			"combined_upstream_sl_hunter_effectid"
+		]
+	},
+	"462": {
+		"successEffectId": "final_sl_kaizel_successeffectid"
+	},
+	"463": {
+		"successEffectId": "final_sl_kaahi_successeffectid"
+	},
+	"464": {
+		"successEffectId": "final_sl_kaupe_successeffectid"
+	},
+	"465": {
+		"successEffectId": "final_sl_kaite_effectid"
+	},
+	"467": {
+		"effectId": "final_sl_stin_effectid"
+	},
+	"468": {
+		"effectId": [
+			555,
+			"combined_upstream_sl_stun_effectid"
+		]
+	},
+	"470": {
+		"successEffectId": "final_sl_swoo"
+	},
+	"471": {
+		"successEffectId": "final_sl_ske_effectid"
+	},
+	"472": {
+		"successEffectId": "final_sl_ska_effectid"
+	},
+	"475": {
+		"beginCastEffectId": "496_beforecast",
+		"successEffectIdOnCaster": "four_st_preserve_effectid"
+	},
+	"476": {
+		"successEffectId": "four_st_fullstrip_successeffectid"
+	},
+	"482": {
+		"successEffectIdOnCaster": "closeout_pf_doublecasting"
+	},
+	"486": {
+		"successEffectIdOnCaster": 128
+	},
+	"487": {
+		"successEffectIdOnCaster": "next_cg_longingfreedom_effectid"
+	},
+	"488": {
+		"groundEffectId": 517,
+		"successEffectIdOnCaster": "next_cg_hermode_effectid"
+	},
+	"489": {
+
+	},
+	"490": {
+		"effectId": "four_cr_aciddemonstration_effectid"
+	},
+	"493": {
+		"successEffectIdOnCaster": "next_tk_mission_successeffectidoncaster"
+	},
+	"496": {
+		"successEffectIdOnCaster": "four_am_twilight1"
+	},
+	"497": {
+		"successEffectIdOnCaster": "four_am_twilight2"
+	},
+	"498": {
+		"successEffectIdOnCaster": "four_am_twilight3"
+	},
+	"500": {
+		"successEffectId": "final_gs_glittering_effectid"
+	},
+	"506": {
+		"effectId": [
+			456,
+			"combined_upstream_gs_increasing_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_gs_increasing_effectidoncaster"
+		]
+	},
+	"508": {
+		"successEffectId": "final_gs_cracker_effectid"
+	},
+	"540": {
+		"effectId": "final_nj_huujin_effectid"
+	},
+	"1002": {
+		"successEffectIdOnCaster": "four_cr_shrink_effectid"
+	},
+	"1005": {
+		"groundEffectId": 604,
+		"successEffectIdOnCaster": "four_rg_closeconfine_effectid"
+	},
+	"2001": {
+		"successEffectIdOnCaster": "five_enchantblade"
+	},
+	"2003": {
+		"successEffectIdOnCaster": "five_deathbound"
+	},
+	"2005": {
+		"effectIdOnCaster": "original_all_rk_windcutter_main",
+		"hitEffectId": "original_all_rk_windcutter_hit"
+	},
+	"2011": {
+		"successEffectIdOnCaster": "closeout_audio_rk_millenniumshield"
+	},
+	"2013": {
+		"successEffectIdOnCaster": "closeout_audio_rk_refresh"
+	},
+	"2014": {
+		"successEffectIdOnCaster": "closeout_audio_rk_giantgrowth"
+	},
+	"2017": {
+		"successEffectIdOnCaster": "closeout_audio_rk_stormblast"
+	},
+	"2019": {
+		"successEffectIdOnCaster": "closeout_audio_rk_abundance"
+	},
+	"2021": {
+		"successEffectId": "closeout_gc_venomimpress"
+	},
+	"2022": {
+		"hitEffectId": "original_all_gc_crossimpact_hit",
+		"effectId": "original_all_gc_crossimpact_main"
+	},
+	"2026": {
+		"successEffectId": "closeout_gc_antidote"
+	},
+	"2027": {
+		"successEffectIdOnCaster": "combined_upstream_gc_poisoningweapon_effectid"
+	},
+	"2028": {
+		"successEffectIdOnCaster": "closeout_gc_weaponblocking"
+	},
+	"2029": {
+		"effectIdOnCaster": [
+			"original_all_gc_counterslash_main",
+			"original_all_gc_counterslash_bottom"
+		]
+	},
+	"2032": {
+		"effectIdOnCaster": "five_poison_cast"
+	},
+	"2037": {
+		"effectId": [
+			769,
+			"combined_upstream_gc_crossripperslasher_effectid"
+		]
+	},
+	"2041": {
+		"successEffectId": 42
+	},
+	"2042": {
+		"successEffectId": 37
+	},
+	"2045": {
+		"successEffectId": 112
+	},
+	"2046": {
+		"successEffectIdOnCaster": "five_oratio_cast"
+	},
+	"2047": {
+		"successEffectId": 748
+	},
+	"2048": {
+		"successEffectId": 747
+	},
+	"2050": {
+		"successEffectIdOnCaster": [
+
+		],
+		"successEffectId": [
+			719
+		]
+	},
+	"2052": {
+		"successEffectId": "five_clearance"
+	},
+	"2053": {
+		"successEffectIdOnCaster": "ab_expiatio_original_audio"
+	},
+	"2202": {
+		"effectId": [
+			"original_all_wl_soulexpansion_main",
+			"original_all_wl_soulexpansion_bottom"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_wl_soulexpansion_effectidoncaster"
+		]
+	},
+	"2212": {
+		"groundEffectId": 728,
+		"effectId": [
+			800,
+			"combined_upstream_wl_hellinferno_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_wl_hellinferno_effectidoncaster"
+		]
+	},
+	"2213": {
+		"beginCastEffectId": [
+			"original_all_wl_comet_cast",
+			"combined_upstream_wl_comet_begincasteffectid"
+		],
+		"effectId": [
+			"original_all_wl_comet_main",
+			"original_all_wl_comet_bottom"
+		]
+	},
+	"2214": {
+		"successEffectIdOnCaster": [
+			"original_all_wl_chainlightning_main",
+			"original_all_wl_chainlightning_bottom"
+		]
+	},
+	"2218": {
+		"effectId": [
+			"combined_upstream_wl_tetravortex_fire_effectid"
+		]
+	},
+	"2219": {
+		"effectId": [
+			"combined_upstream_wl_tetravortex_water_effectid"
+		]
+	},
+	"2220": {
+		"effectId": [
+			"combined_upstream_wl_tetravortex_wind_effectid"
+		]
+	},
+	"2225": {
+		"effectId": [
+			"combined_upstream_wl_summon_atk_fire_effectid"
+		]
+	},
+	"2234": {
+		"successEffectIdOnCaster": "original_all_ra_fearbreeze_main"
+	},
+	"2239": {
+		"hitEffectId": "four_cluster_impact"
+	},
+	"2240": {
+		"successEffectIdOnCaster": "closeout_audio_ra_wugmastery"
+	},
+	"2247": {
+		"successEffectIdOnCaster": "four_ra_camouflage_effectid"
+	},
+	"2258": {
+		"effectId": [
+			"original_all_nc_vulcanarm_main",
+			"original_all_nc_vulcanarm_bottom"
+		]
+	},
+	"2261": {
+		"beginCastEffectId": "original_quick_nc_armscannon_cast",
+		"hitEffectId": "original_quick_nc_armscannon_hit"
+	},
+	"2263": {
+		"successEffectIdOnCaster": "closeout_audio_nc_hovering"
+	},
+	"2264": {
+		"successEffectIdOnCaster": "closeout_audio_nc_f_sideslide"
+	},
+	"2265": {
+		"successEffectIdOnCaster": "closeout_audio_nc_b_sideslide"
+	},
+	"2269": {
+		"successEffectIdOnCaster": "closeout_audio_nc_emergencycool"
+	},
+	"2273": {
+		"successEffectIdOnCaster": "closeout_audio_nc_neutralbarrier"
+	},
+	"2274": {
+		"successEffectIdOnCaster": "closeout_audio_nc_stealthfield"
+	},
+	"2275": {
+		"effectId": [
+			785,
+			"combined_upstream_nc_repair_effectid"
+		]
+	},
+	"2278": {
+		"effectId": [
+			774,
+			"combined_upstream_nc_axeboomerang_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_nc_axeboomerang_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_nc_axeboomerang_hiteffectid"
+		]
+	},
+	"2280": {
+		"successEffectIdOnCaster": [
+			"original_all_nc_axetornado_main",
+			"original_all_nc_axetornado_bottom"
+		]
+	},
+	"2284": {
+		"beginCastEffectId": [
+			"original_all_sc_fatalmenace_cast",
+			"combined_upstream_sc_fatalmenace_begincasteffectid"
+		],
+		"effectId": [
+			"original_all_sc_fatalmenace_main",
+			"original_all_sc_fatalmenace_bottom"
+		]
+	},
+	"2285": {
+		"successEffectIdOnCaster": "four_sc_reproduce_successeffectidoncaster"
+	},
+	"2286": {
+		"successEffectIdOnCaster": "four_sc_autoshadowspell_successeffectidoncaster"
+	},
+	"2287": {
+		"successEffectId": "four_sc_shadowform_effectid"
+	},
+	"2289": {
+		"successEffectIdOnCaster": "four_sc_bodypaint_effectid"
+	},
+	"2290": {
+		"successEffectIdOnCaster": "four_sc_invisibility_effectid"
+	},
+	"2291": {
+		"successEffectIdOnCaster": "four_sc_deadlyinfect_effectid"
+	},
+	"2292": {
+		"successEffectId": "four_sc_enervation_effectid"
+	},
+	"2293": {
+		"successEffectId": "four_sc_groomy_effectid"
+	},
+	"2294": {
+		"successEffectId": "four_sc_ignorance_effectid"
+	},
+	"2295": {
+		"successEffectId": "four_sc_laziness_effectid"
+	},
+	"2296": {
+		"successEffectId": "four_sc_unlucky_effectid"
+	},
+	"2297": {
+		"successEffectId": "four_sc_weakness_effectid"
+	},
+	"2298": {
+		"successEffectId": "four_sc_stripaccessary_effectid"
+	},
+	"2299": {
+		"groundEffectId": "four_sc_manhole_unit",
+		"successEffectId": 823
+	},
+	"2300": {
+		"groundEffectId": "four_sc_dimensiondoor_unit"
+	},
+	"2301": {
+		"groundEffectId": "four_sc_chaospanic_unit"
+	},
+	"2302": {
+		"groundEffectId": "four_sc_maelstrom_unit"
+	},
+	"2303": {
+		"groundEffectId": "four_sc_bloodylust_unit"
+	},
+	"2304": {
+		"effectId": "original_feintbomb_explosion"
+	},
+	"2307": {
+		"effectId": [
+			"ef_cannonspear",
+			"combined_upstream_lg_cannonspear_effectid"
+		]
+	},
+	"2308": {
+		"effectId": "ef_banishingpoint",
+		"effectIdOnCaster": [
+			"combined_upstream_lg_banishingpoint_effectidoncaster"
+		]
+	},
+	"2309": {
+		"successEffectIdOnCaster": "four_lg_trample_effectid"
+	},
+	"2311": {
+		"successEffectIdOnCaster": "four_lg_reflectdamage_effectid"
+	},
+	"2313": {
+		"successEffectIdOnCaster": "four_lg_forceofvanguard_effectid"
+	},
+	"2315": {
+		"successEffectIdOnCaster": "four_lg_shieldspell_effectid"
+	},
+	"2317": {
+		"effectId": "ef_overbrand",
+		"effectIdOnCaster": [
+			"combined_upstream_lg_overbrand_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_lg_overbrand_hiteffectid"
+		]
+	},
+	"2318": {
+		"successEffectIdOnCaster": "four_lg_prestige_effectid"
+	},
+	"2319": {
+		"successEffectIdOnCaster": "four_lg_banding_effectid"
+	},
+	"2320": {
+		"effectIdOnCaster": "four_lg_moonslasher_effectid"
+	},
+	"2321": {
+		"effectId": [
+			"ef_rayofgenesis",
+			"combined_upstream_lg_rayofgenesis_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_lg_rayofgenesis_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_lg_rayofgenesis_hiteffectid"
+		]
+	},
+	"2322": {
+		"successEffectId": "four_lg_piety_effectid"
+	},
+	"2323": {
+		"effectId": [
+			"ef_earthdrive",
+			"combined_upstream_lg_earthdrive_effectid"
+		]
+	},
+	"2325": {
+		"successEffectIdOnCaster": "four_lg_inspiration_effectid"
+	},
+	"2328": {
+		"effectId": "next_sr_earthshaker_effectid"
+	},
+	"2329": {
+		"effectId": [
+			"ef_fallenempire",
+			"combined_upstream_sr_fallenempire_effectid"
+		],
+		"hitEffectId": [
+			"combined_upstream_sr_fallenempire_hiteffectid"
+		]
+	},
+	"2330": {
+		"effectId": [
+			"ef_tigercannon",
+			"combined_upstream_sr_tigercannon_effectid"
+		]
+	},
+	"2332": {
+		"effectId": [
+			"ef_rampageblaster",
+			"combined_upstream_sr_rampageblaster_effectid"
+		]
+	},
+	"2333": {
+		"successEffectIdOnCaster": "next_sr_crescentelbow_effectid"
+	},
+	"2334": {
+		"successEffectIdOnCaster": "next_sr_cursedcircle_effectid"
+	},
+	"2335": {
+		"effectId": [
+			"ef_lightningwalk",
+			"combined_upstream_sr_lightningwalk_effectid"
+		]
+	},
+	"2338": {
+		"successEffectIdOnCaster": "next_sr_raisingdragon_effectid"
+	},
+	"2341": {
+		"successEffectIdOnCaster": "next_sr_powervelocity_effectid"
+	},
+	"2343": {
+		"effectId": "ef_gateofhell",
+		"effectIdOnCaster": [
+			"combined_upstream_sr_gateofhell_effectidoncaster"
+		]
+	},
+	"2345": {
+		"successEffectId": "next_sr_gentletouch_cure_successeffectid"
+	},
+	"2346": {
+		"successEffectIdOnCaster": "next_sr_gentletouch_energygain_successeffectidoncaster"
+	},
+	"2347": {
+		"successEffectIdOnCaster": "next_sr_gentletouch_change_successeffectidoncaster"
+	},
+	"2348": {
+		"successEffectIdOnCaster": "next_sr_gentletouch_revitalize_successeffectidoncaster"
+	},
+	"2350": {
+		"successEffectIdOnCaster": "next_wa_swing_dance_effectid"
+	},
+	"2351": {
+		"successEffectIdOnCaster": "next_wa_symphony_of_lover_effectid"
+	},
+	"2352": {
+		"successEffectIdOnCaster": "next_wa_moonlit_serenade_effectid"
+	},
+	"2413": {
+		"effectId": [
+			"ef_metalicsound",
+			"combined_upstream_wm_metalicsound_effectid"
+		],
+		"hitEffectId": [
+			"combined_upstream_wm_metalicsound_hiteffectid"
+		]
+	},
+	"2416": {
+		"hitEffectId": [
+			"combined_upstream_wm_reverberation_magic_hiteffectid"
+		]
+	},
+	"2418": {
+		"effectId": 857,
+		"effectIdOnCaster": [
+			"combined_upstream_wm_severe_rainstorm_effectidoncaster"
+		]
+	},
+	"2419": {
+		"groundEffectId": "next_poem_unit"
+	},
+	"2420": {
+		"successEffectIdOnCaster": "next_wm_voiceofsiren_groundeffectid"
+	},
+	"2421": {
+		"successEffectId": "next_wm_deadhillhere_effectid"
+	},
+	"2422": {
+		"successEffectIdOnCaster": "next_wm_lullaby_deepsleep_successeffectidoncaster"
+	},
+	"2423": {
+		"successEffectIdOnCaster": "next_wm_sircleofnature_successeffectidoncaster"
+	},
+	"2425": {
+		"successEffectIdOnCaster": "next_wm_gloomyday_effectid"
+	},
+	"2427": {
+		"successEffectIdOnCaster": "next_wm_song_of_mana_groundeffectid"
+	},
+	"2428": {
+		"successEffectIdOnCaster": "next_wm_dance_with_wug_groundeffectid"
+	},
+	"2429": {
+		"effectId": "ef_sound_of_destruction",
+		"effectIdOnCaster": [
+			"combined_upstream_wm_sound_of_destruction_effectidoncaster"
+		]
+	},
+	"2430": {
+		"successEffectIdOnCaster": "next_wm_saturday_night_fever_groundeffectid"
+	},
+	"2431": {
+		"successEffectIdOnCaster": "next_wm_lerads_dew_groundeffectid"
+	},
+	"2432": {
+		"successEffectIdOnCaster": "next_wm_melodyofsink_groundeffectid"
+	},
+	"2433": {
+		"successEffectIdOnCaster": "next_wm_beyond_of_warcry_groundeffectid"
+	},
+	"2434": {
+		"effectId": [
+			"combined_upstream_wm_unlimited_humming_voice_effectid"
+		],
+		"successEffectIdOnCaster": "next_wm_unlimited_humming_voice_groundeffectid"
+	},
+	"2443": {
+		"groundEffectId": 920,
+		"successEffectIdOnCaster": "next_so_firewalk_successeffectidoncaster"
+	},
+	"2444": {
+		"groundEffectId": 926,
+		"successEffectIdOnCaster": "next_so_electricwalk_successeffectidoncaster"
+	},
+	"2446": {
+		"effectId": 927,
+		"hitEffectId": "original_earthgrave_hit"
+	},
+	"2447": {
+		"effectId": 928,
+		"effectIdOnCaster": [
+			"combined_upstream_so_diamonddust_effectidoncaster"
+		]
+	},
+	"2448": {
+		"effectId": [
+			923,
+			"combined_upstream_so_poison_buster_effectid"
+		]
+	},
+	"2449": {
+		"effectId": 922,
+		"effectIdOnCaster": [
+			"combined_upstream_so_psychic_wave_effectidoncaster"
+		]
+	},
+	"2451": {
+		"successEffectId": "next_so_striking_successeffectid"
+	},
+	"2464": {
+		"effectId": [
+			"combined_upstream_so_el_cure_effectid"
+		]
+	},
+	"2476": {
+		"effectIdOnCaster": "four_gn_cart_tornado_successeffectidoncaster"
+	},
+	"2477": {
+		"beginCastEffectId": "original_cartcannon_cast",
+		"hitEffectId": "original_cartcannon_hit",
+		"effectIdOnCaster": "four_gn_cartcannon_successeffectidoncaster"
+	},
+	"2478": {
+		"successEffectIdOnCaster": "four_gn_cartboost_successeffectidoncaster"
+	},
+	"2480": {
+		"successEffectId": [
+			"four_gn_blood_sucker_effectid",
+			216
+		]
+	},
+	"2481": {
+		"beforeHitEffectId": "four_spore_projectile",
+		"hitEffectId": "four_gn_spore_explosion_hiteffectid"
+	},
+	"2482": {
+		"groundEffectId": 912,
+		"beginCastEffectId": "original_quick_gn_wallofthorn_cast"
+	},
+	"2483": {
+		"effectId": "four_gn_crazyweed_effectid"
+	},
+	"2485": {
+		"groundEffectId": "four_gn_demonic_fire_unit"
+	},
+	"2492": {
+		"beginCastEffectId": "original_all_gn_mandragora_cast",
+		"successEffectIdOnCaster": "four_gn_mandragora_successeffectidoncaster"
+	},
+	"2494": {
+		"effectId": [
+			"combined_upstream_gn_changematerial_effectid"
+		]
+	},
+	"2515": {
+		"successEffectId": "original_all_ab_secrament_main"
+	},
+	"2516": {
+		"effectId": [
+			"combined_upstream_wm_severe_rainstorm_melee_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_wm_severe_rainstorm_melee_effectidoncaster"
+		]
+	},
+	"2517": {
+		"effectId": [
+			"ef_howlingoflion",
+			"combined_upstream_sr_howlingoflion_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_sr_howlingoflion_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_sr_howlingoflion_hiteffectid"
+		]
+	},
+	"2519": {
+		"effectIdOnCaster": [
+			"combined_upstream_lg_overbrand_brandish_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_lg_overbrand_brandish_hiteffectid"
+		]
+	},
+	"2520": {
+		"effectIdOnCaster": [
+			"combined_upstream_lg_overbrand_plusatk_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_lg_overbrand_plusatk_hiteffectid"
+		]
+	},
+	"2552": {
+		"successEffectIdOnCaster": "original_all_rl_richs_coin_main"
+	},
+	"2553": {
+		"effectId": "original_all_rl_mass_spiral_main"
+	},
+	"2554": {
+		"effectId": [
+			"original_all_rl_banishing_buster_main",
+			"original_audio_rl_banishing_buster"
+		]
+	},
+	"2556": {
+		"successEffectIdOnCaster": [
+			"original_audio_rl_flicker"
+		]
+	},
+	"2558": {
+		"successEffectIdOnCaster": "original_all_rl_e_chain_main"
+	},
+	"2559": {
+		"successEffectIdOnCaster": "original_all_rl_qd_shot_main"
+	},
+	"2561": {
+		"successEffectIdOnCaster": "final_rl_firedance_successeffectidoncaster"
+	},
+	"2562": {
+		"effectId": [
+			"original_all_rl_h_mine_main",
+			"original_audio_rl_h_mine"
+		]
+	},
+	"2563": {
+		"successEffectIdOnCaster": "original_all_rl_p_alter_main"
+	},
+	"2564": {
+		"effectId": "original_all_rl_fallen_angel_main"
+	},
+	"2566": {
+		"effectId": [
+			"original_all_rl_d_tail_main",
+			"original_audio_rl_d_tail"
+		]
+	},
+	"2567": {
+		"effectId": "original_all_rl_fire_rain_main"
+	},
+	"2568": {
+		"successEffectIdOnCaster": "original_all_rl_heat_barrel_main"
+	},
+	"2569": {
+		"effectId": [
+			"original_all_rl_am_blast_main",
+			"original_audio_rl_am_blast"
+		]
+	},
+	"2570": {
+		"effectId": [
+			"original_all_rl_slugshot_main",
+			"original_audio_rl_slugshot"
+		]
+	},
+	"2571": {
+		"effectId": [
+			"original_all_rl_hammer_of_god_main",
+			"original_audio_rl_hammer_of_god"
+		]
+	},
+	"2576": {
+		"successEffectIdOnCaster": "original_all_sj_fullmoonkick_main"
+	},
+	"2579": {
+		"successEffectIdOnCaster": "original_all_sj_newmoonkick_main"
+	},
+	"2580": {
+		"effectId": "original_all_sj_flashkick_main"
+	},
+	"2584": {
+		"successEffectIdOnCaster": "original_all_sj_fallingstar_main"
+	},
+	"2588": {
+		"successEffectIdOnCaster": "original_all_sj_document_main"
+	},
+	"2592": {
+		"successEffectIdOnCaster": "original_all_sj_solarburst_main"
+	},
+	"2593": {
+		"effectId": "original_all_sj_prominencekick_main"
+	},
+	"2596": {
+		"successEffectId": "original_all_sp_soulgolem_main"
+	},
+	"2601": {
+		"successEffectId": "original_all_sp_soulcurse_main"
+	},
+	"2602": {
+		"effectIdOnCaster": "final_sp_spa_effectidoncaster"
+	},
+	"2603": {
+		"effectId": "final_sl_stin_effectid"
+	},
+	"2606": {
+		"successEffectId": "final_sp_souldivision_successeffectid"
+	},
+	"2607": {
+		"successEffectIdOnCaster": "final_sp_soulreaper_successeffectidoncaster"
+	},
+	"2608": {
+		"successEffectId": "final_sp_soulrevolve_successeffectid"
+	},
+	"2610": {
+		"effectId": "final_sp_soulexplosion_effectid"
+	},
+	"2612": {
+		"successEffectId": "final_sp_kaute_successeffectid"
+	},
+	"3004": {
+		"effectId": "original_all_ko_jyumonjikiri_main",
+		"effectIdOnCaster": "final_ko_jyumonjikiri_effectidoncaster"
+	},
+	"3005": {
+		"effectId": "final_ko_setsudan_effectid"
+	},
+	"3006": {
+		"effectIdOnCaster": "final_ko_bakuretsu_effectidoncaster",
+		"effectId": "final_ko_bakuretsu_effectid"
+	},
+	"3007": {
+		"successEffectIdOnCaster": "final_ko_happokunai_successeffectidoncaster"
+	},
+	"3008": {
+		"effectIdOnCaster": "final_ko_muchanage_effectidoncaster"
+	},
+	"3009": {
+		"groundEffectId": "final_ko_huumaranka_groundeffectid"
+	},
+	"3011": {
+		"beginCastEffectId": 57
+	},
+	"3013": {
+		"beginCastEffectId": 59
+	},
+	"3014": {
+		"beginCastEffectId": 54
+	},
+	"3015": {
+		"beginCastEffectId": 55
+	},
+	"3017": {
+		"beginCastEffectId": 56
+	},
+	"3018": {
+		"beginCastEffectId": 12
+	},
+	"3019": {
+		"effectIdOnCaster": "final_ko_kaihou_effectidoncaster",
+		"effectId": "final_ko_kaihou_effectid"
+	},
+	"3021": {
+		"beginCastEffectId": 55
+	},
+	"3022": {
+		"successEffectIdOnCaster": "final_ko_izayoi_successeffectidoncaster"
+	},
+	"3024": {
+		"successEffectId": "final_kg_kyomu_successeffectid"
+	},
+	"3025": {
+		"successEffectId": "final_kg_kagemusya_successeffectid"
+	},
+	"3026": {
+		"successEffectId": "final_ob_zangetsu_successeffectid",
+		"beginCastEffectId": 12
+	},
+	"3027": {
+		"successEffectId": "final_ob_oborogensou_successeffectid"
+	},
+	"3029": {
+		"successEffectId": "final_ob_akaitsuki_successeffectid",
+		"beginCastEffectId": 55
+	},
+	"5002": {
+
+	},
+	"5007": {
+		"successEffectIdOnCaster": "next_wm_frigg_song_effectid"
+	},
+	"5008": {
+		"successEffectIdOnCaster": "next_so_elemental_shield_effectid"
+	},
+	"5013": {
+		"successEffectId": "four_lg_kings_grace_effectid"
+	},
+	"5019": {
+		"effectId": "original_all_su_bite_main"
+	},
+	"5021": {
+		"effectId": [
+			"original_all_su_scratch_main",
+			"original_audio_su_scratch"
+		]
+	},
+	"5026": {
+		"effectId": "original_all_su_sv_stemspear_main"
+	},
+	"5027": {
+		"groundEffectId": "doram_catnip_powder_audio"
+	},
+	"5028": {
+		"effectId": "doram_meteor_original"
+	},
+	"5029": {
+		"successEffectId": "doram_roottwist_audio"
+	},
+	"5032": {
+		"effectId": [
+			"original_all_su_scaroftarou_main",
+			"original_audio_su_scaroftarou"
+		]
+	},
+	"5033": {
+		"effectId": [
+			"original_all_su_pickypeck_main",
+			"original_audio_su_pickypeck"
+		]
+	},
+	"5035": {
+		"successEffectId": "original_all_su_arclousedash_main"
+	},
+	"5036": {
+		"effectId": "doram_carrot_original"
+	},
+	"5038": {
+		"successEffectId": [
+			"original_all_su_tunabelly_main",
+			"original_audio_su_tunabelly"
+		]
+	},
+	"5040": {
+		"successEffectIdOnCaster": [
+			"original_all_su_bunchofshrimp_main",
+			"original_audio_su_bunchofshrimp"
+		]
+	},
+	"5041": {
+		"successEffectId": "original_all_su_freshshrimp_main"
+	},
+	"5042": {
+		"effectId": "doram_meteor_original"
+	},
+	"5043": {
+		"effectId": "doram_carrot_original"
+	},
+	"5045": {
+		"successEffectIdOnCaster": [
+			"original_all_su_powerofflock_main",
+			"original_audio_su_powerofflock"
+		]
+	},
+	"5046": {
+		"effectId": [
+			"original_all_su_svg_spirit_main",
+			"original_audio_su_svg_spirit"
+		]
+	},
+	"5047": {
+		"successEffectIdOnCaster": [
+			"original_all_su_hiss_main",
+			"original_audio_su_hiss"
+		]
+	},
+	"5048": {
+
+	},
+	"5049": {
+		"successEffectIdOnCaster": [
+			"original_all_su_grooming_main",
+			"original_audio_su_grooming"
+		]
+	},
+	"5050": {
+		"successEffectId": "final_purring"
+	},
+	"5051": {
+		"successEffectIdOnCaster": [
+			"original_audio_su_shrimparty"
+		]
+	},
+	"5053": {
+		"successEffectId": "doram_meowmeow_original"
+	},
+	"5055": {
+		"successEffectIdOnCaster": [
+			"original_all_su_chattering_main",
+			"original_audio_su_chattering"
+		]
+	},
+	"5065": {
+		"successEffectIdOnCaster": "original_all_we_cheerup_main"
+	},
+	"5072": {
+		"successEffectId": 85
+	},
+	"5076": {
+		"successEffectIdOnCaster": "final_nv_helpangel_successeffectidoncaster"
+	},
+	"5201": {
+		"effectIdOnCaster": [
+			"combined_upstream_dk_servantweapon_effectidoncaster"
+		]
+	},
+	"5202": {
+		"effectId": [
+			"combined_upstream_dk_servantweapon_atk_effectid"
+		]
+	},
+	"5204": {
+		"effectId": [
+			"original_audio_dk_servant_w_phantom",
+			"combined_upstream_dk_servant_w_phantom_effectid"
+		]
+	},
+	"5209": {
+		"effectId": [
+			"combined_upstream_dk_hackandslasher_atk_effectid"
+		]
+	},
+	"5214": {
+		"effectId": [
+			"original_audio_ag_deadly_projection"
+		],
+		"beginCastEffectId": "original_quick_ag_deadly_projection_cast",
+		"hitEffectId": "original_quick_ag_deadly_projection_hit"
+	},
+	"5215": {
+		"beginCastEffectId": [
+			"original4_ag_destructive_hurricane_cast",
+			"combined_upstream_ag_destructive_hurricane_begincasteffectid"
+		],
+		"hitEffectId": "original4_ag_destructive_hurricane_hit",
+		"successEffectIdOnCaster": [
+			"original4_ag_destructive_hurricane_main",
+			"original4_ag_destructive_hurricane_bottom",
+			"original_audio_ag_destructive_hurricane"
+		]
+	},
+	"5216": {
+		"beginCastEffectId": "original_quick_ag_rain_of_crystal_cast",
+		"hitEffectId": [
+			"combined_upstream_ag_rain_of_crystal_hiteffectid"
+		]
+	},
+	"5217": {
+		"beginCastEffectId": [
+			"original_all_ag_mystery_illusion_cast",
+			"combined_upstream_ag_mystery_illusion_begincasteffectid"
+		],
+		"hitEffectId": "original_all_ag_mystery_illusion_hit"
+	},
+	"5218": {
+		"beginCastEffectId": "original_quick_ag_violent_quake_cast",
+		"hitEffectId": [
+			"complete_violent_hit"
+		]
+	},
+	"5219": {
+		"hitEffectId": [
+			"original_completion_ag_violent_quake_atk_hit"
+		],
+		"effectId": [
+			"pending_resolution_violent_quake_rock"
+		]
+	},
+	"5220": {
+		"beginCastEffectId": "original_quick_ag_soul_vc_strike_cast",
+		"hitEffectId": "original_quick_ag_soul_vc_strike_hit"
+	},
+	"5221": {
+		"beginCastEffectId": [
+			"original_all_ag_strantum_tremor_cast",
+			"combined_upstream_ag_strantum_tremor_begincasteffectid"
+		],
+		"hitEffectId": "original_all_ag_strantum_tremor_hit"
+	},
+	"5222": {
+		"beginCastEffectId": [
+			"original_all_ag_all_bloom_cast",
+			"combined_upstream_ag_all_bloom_begincasteffectid"
+		],
+		"hitEffectId": "original_all_ag_all_bloom_hit"
+	},
+	"5225": {
+		"beginCastEffectId": [
+			"original4_ag_crystal_impact_cast",
+			"combined_upstream_ag_crystal_impact_begincasteffectid"
+		],
+		"hitEffectId": "original4_ag_crystal_impact_hit",
+		"successEffectIdOnCaster": [
+			"original4_ag_crystal_impact_main",
+			"original4_ag_crystal_impact_bottom",
+			"original_audio_ag_crystal_impact"
+		],
+		"effectId": [
+			"combined_upstream_ag_crystal_impact_effectid"
+		]
+	},
+	"5227": {
+		"beginCastEffectId": [
+			"original_all_ag_tornado_storm_cast",
+			"combined_upstream_ag_tornado_storm_begincasteffectid"
+		],
+		"hitEffectId": "original_all_ag_tornado_storm_hit"
+	},
+	"5229": {
+		"effectIdOnCaster": "five_floral_cast",
+		"hitEffectId": "five_floral_hit"
+	},
+	"5230": {
+		"beginCastEffectId": [
+			"original_all_ag_astral_strike_cast",
+			"combined_upstream_ag_astral_strike_begincasteffectid"
+		]
+	},
+	"5232": {
+		"beginCastEffectId": "original4_ag_climax_cast",
+		"successEffectIdOnCaster": [
+			"original4_ag_climax_main",
+			"original_audio_ag_climax"
+		]
+	},
+	"5233": {
+		"beginCastEffectId": [
+			"original4_ag_rock_down_cast",
+			"combined_upstream_ag_rock_down_begincasteffectid"
+		],
+		"hitEffectId": "original4_ag_rock_down_hit",
+		"effectId": [
+			"original4_ag_rock_down_main",
+			"original4_ag_rock_down_bottom",
+			"original_audio_ag_rock_down"
+		]
+	},
+	"5234": {
+		"effectId": [
+			"original4_ag_storm_cannon_main",
+			"original4_ag_storm_cannon_bottom",
+			"original_audio_ag_storm_cannon"
+		],
+		"beginCastEffectId": [
+			"complete_storm_cast_circle"
+		]
+	},
+	"5235": {
+		"beginCastEffectId": [
+			"original4_ag_crimson_arrow_cast",
+			"combined_upstream_ag_crimson_arrow_begincasteffectid"
+		],
+		"hitEffectId": "original4_ag_crimson_arrow_hit",
+		"effectId": "original4_ag_crimson_arrow_main"
+	},
+	"5236": {
+		"effectId": [
+			"combined_upstream_ag_crimson_arrow_atk_effectid"
+		]
+	},
+	"5237": {
+		"hitEffectId": "original4_ag_frozen_slash_hit",
+		"successEffectIdOnCaster": [
+			"original4_ag_frozen_slash_main",
+			"original_audio_ag_frozen_slash"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_ag_frozen_slash_effectidoncaster"
+		]
+	},
+	"5238": {
+		"successEffectIdOnCaster": "original4_iq_powerful_faith_main"
+	},
+	"5239": {
+		"successEffectIdOnCaster": "original4_iq_firm_faith_main"
+	},
+	"5241": {
+		"hitEffectId": "original4_iq_oleum_sanctum_hit",
+		"effectIdOnCaster": "next_iq_oleum_sanctum_successeffectidoncaster"
+	},
+	"5242": {
+		"successEffectIdOnCaster": [
+			"original4_iq_sincere_faith_main",
+			"original4_iq_sincere_faith_bottom"
+		]
+	},
+	"5243": {
+		"hitEffectId": "original4_iq_massive_f_blaster_hit",
+		"effectIdOnCaster": "next_iq_massive_f_blaster_successeffectidoncaster"
+	},
+	"5244": {
+		"hitEffectId": "original_all_iq_exposion_blaster_hit",
+		"effectIdOnCaster": "next_iq_exposion_blaster_successeffectidoncaster"
+	},
+	"5245": {
+		"hitEffectId": "original4_iq_first_brand_hit",
+		"effectId": [
+			"original4_iq_first_brand_main",
+			"original_audio_iq_first_brand"
+		]
+	},
+	"5246": {
+		"beginCastEffectId": "original4_iq_first_faith_power_cast",
+		"successEffectIdOnCaster": [
+			"original4_iq_first_faith_power_main",
+			"original_audio_iq_first_faith_power"
+		]
+	},
+	"5247": {
+		"beginCastEffectId": "original4_iq_judge_cast",
+		"successEffectIdOnCaster": [
+			"original4_iq_judge_main",
+			"original_audio_iq_judge"
+		]
+	},
+	"5248": {
+		"effectId": [
+			"original4_iq_second_flame_main",
+			"original4_iq_second_flame_bottom",
+			"original_audio_iq_second_flame"
+		]
+	},
+	"5249": {
+		"effectId": [
+			"original_audio_iq_second_faith"
+		]
+	},
+	"5250": {
+		"effectId": [
+			"original4_iq_second_judgement_main",
+			"original_audio_iq_second_judgement"
+		]
+	},
+	"5251": {
+		"effectId": [
+			"original4_iq_third_punish_main",
+			"original4_iq_third_punish_bottom",
+			"original_audio_iq_third_punish"
+		]
+	},
+	"5252": {
+		"effectId": [
+			"original4_iq_third_flame_bomb_main",
+			"original4_iq_third_flame_bomb_bottom",
+			"original_audio_iq_third_flame_bomb"
+		]
+	},
+	"5253": {
+		"effectId": [
+			"original4_iq_third_consecration_main",
+			"original4_iq_third_consecration_bottom",
+			"original_audio_iq_third_consecration"
+		]
+	},
+	"5254": {
+		"beginCastEffectId": "original4_iq_third_exor_flame_cast",
+		"successEffectIdOnCaster": [
+			"original4_iq_third_exor_flame_main",
+			"original_audio_iq_third_exor_flame"
+		]
+	},
+	"5255": {
+		"successEffectIdOnCaster": "four_ig_guard_stance_successeffectidoncaster",
+		"beginCastEffectId": "four_ig_guard_stance_begincasteffectid"
+	},
+	"5256": {
+		"successEffectIdOnCaster": "four_ig_guardian_shield_successeffectidoncaster"
+	},
+	"5257": {
+		"successEffectIdOnCaster": "four_ig_rebound_shield_successeffectidoncaster",
+		"beginCastEffectId": "four_ig_rebound_shield_begincasteffectid"
+	},
+	"5260": {
+		"successEffectIdOnCaster": "four_ig_attack_stance_successeffectidoncaster",
+		"beginCastEffectId": "four_ig_attack_stance_begincasteffectid"
+	},
+	"5261": {
+		"successEffectIdOnCaster": "four_ig_ultimate_sacrifice_successeffectidoncaster"
+	},
+	"5262": {
+		"successEffectIdOnCaster": "four_ig_holy_shield_successeffectidoncaster",
+		"beginCastEffectId": "four_ig_holy_shield_begincasteffectid"
+	},
+	"5263": {
+		"beginCastEffectId": "four_ig_grand_judgement_begincasteffectid",
+		"effectId": "four_ig_grand_judgement_effectid"
+	},
+	"5264": {
+		"beginCastEffectId": "four_ig_judgement_cross_begincasteffectid",
+		"effectId": "four_ig_judgement_cross_effectid"
+	},
+	"5265": {
+		"beginCastEffectId": "original4_ig_shield_shooting_cast",
+		"hitEffectId": "original4_ig_shield_shooting_hit",
+		"effectId": [
+			"original4_ig_shield_shooting_main",
+			"original_audio_ig_shield_shooting"
+		]
+	},
+	"5266": {
+		"beginCastEffectId": "four_ig_overslash_begincasteffectid",
+		"effectId": "four_ig_overslash_effectid",
+		"hitEffectId": "four_ig_overslash_hiteffectid"
+	},
+	"5267": {
+		"beginCastEffectId": "four_ig_cross_rain_begincasteffectid",
+		"groundEffectId": "four_ig_cross_rain_unit"
+	},
+	"5268": {
+		"beginCastEffectId": [
+			"original_all_cd_reparatio_cast",
+			"combined_upstream_cd_reparatio_begincasteffectid",
+			"cardinal_reparatio_cast_audio"
+		],
+		"hitEffectId": "original_all_cd_reparatio_hit",
+		"successEffectId": [
+			"original_all_cd_reparatio_main",
+			"original_all_cd_reparatio_bottom",
+			"cardinal_reparatio_success_audio"
+		]
+	},
+	"5269": {
+		"beginCastEffectId": "original4_cd_mediale_votum_cast",
+		"successEffectId": [
+			"original4_cd_mediale_votum_main",
+			"original_audio_cd_mediale_votum"
+		]
+	},
+	"5271": {
+		"beginCastEffectId": "original4_cd_argutus_vita_cast",
+		"successEffectId": [
+			"original4_cd_argutus_vita_main",
+			"original_audio_cd_argutus_vita"
+		]
+	},
+	"5272": {
+		"beginCastEffectId": "original4_cd_argutus_telum_cast",
+		"successEffectId": "original4_cd_argutus_telum_main"
+	},
+	"5273": {
+		"beginCastEffectId": [
+			"original4_cd_arbitrium_cast",
+			"combined_upstream_cd_arbitrium_begincasteffectid"
+		],
+		"hitEffectId": "original4_cd_arbitrium_hit",
+		"effectId": [
+			"original4_cd_arbitrium_main",
+			"original4_cd_arbitrium_bottom",
+			"original_audio_cd_arbitrium"
+		]
+	},
+	"5274": {
+		"effectId": [
+			"combined_upstream_cd_arbitrium_atk_effectid"
+		]
+	},
+	"5275": {
+		"beginCastEffectId": "original4_cd_presens_acies_cast",
+		"successEffectId": [
+			"original4_cd_presens_acies_main",
+			"original_audio_cd_presens_acies"
+		]
+	},
+	"5277": {
+		"hitEffectId": "original4_cd_effligo_hit",
+		"effectId": [
+			"original4_cd_effligo_main",
+			"original4_cd_effligo_bottom",
+			"original_audio_cd_effligo"
+		]
+	},
+	"5278": {
+		"beginCastEffectId": "original4_cd_competentia_cast",
+		"successEffectIdOnCaster": [
+			"original4_cd_competentia_main",
+			"original4_cd_competentia_bottom",
+			"original_audio_cd_competentia"
+		]
+	},
+	"5279": {
+		"beginCastEffectId": "original_all_cd_pneumaticus_procella_cast",
+		"hitEffectId": "original_all_cd_pneumaticus_procella_hit"
+	},
+	"5280": {
+		"beginCastEffectId": [
+			"original_all_cd_dilectio_heal_cast",
+			"combined_upstream_cd_dilectio_heal_begincasteffectid"
+		],
+		"hitEffectId": "original_all_cd_dilectio_heal_hit",
+		"successEffectId": [
+			"original_all_cd_dilectio_heal_main",
+			"original_audio_cd_dilectio_heal"
+		]
+	},
+	"5281": {
+		"beginCastEffectId": "original4_cd_religio_cast",
+		"successEffectId": [
+			"original4_cd_religio_main",
+			"original_audio_cd_religio"
+		]
+	},
+	"5282": {
+		"beginCastEffectId": [
+			"original4_cd_benedictum_cast",
+			"combined_upstream_cd_benedictum_begincasteffectid"
+		],
+		"successEffectId": [
+			"original4_cd_benedictum_main",
+			"original_audio_cd_benedictum"
+		]
+	},
+	"5283": {
+		"effectId": [
+			"original4_cd_petitio_main",
+			"original4_cd_petitio_bottom",
+			"original_audio_cd_petitio"
+		]
+	},
+	"5284": {
+		"successEffectId": 1930,
+		"hitEffectId": [
+			1929,
+			1931
+		]
+	},
+	"5287": {
+		"hitEffectId": "original4_shc_savage_impact_hit",
+		"effectId": [
+			"original4_shc_savage_impact_main",
+			"original_audio_shc_savage_impact"
+		]
+	},
+	"5289": {
+		"hitEffectId": "original4_shc_eternal_slash_hit",
+		"effectId": [
+			"original4_shc_eternal_slash_main",
+			"original4_shc_eternal_slash_bottom",
+			"original_audio_shc_eternal_slash"
+		]
+	},
+	"5290": {
+		"successEffectIdOnCaster": [
+			"original_all_shc_potent_venom_main",
+			"original_audio_shc_potent_venom"
+		]
+	},
+	"5294": {
+		"hitEffectId": "original4_shc_fatal_shadow_crow_hit",
+		"effectId": [
+			"original4_shc_fatal_shadow_crow_main",
+			"original4_shc_fatal_shadow_crow_bottom",
+			"original_audio_shc_fatal_shadow_crow"
+		]
+	},
+	"5295": {
+		"successEffectIdOnCaster": 1235,
+		"hitEffectId": "ef_axe_stomp_hit"
+	},
+	"5296": {
+		"hitEffectId": "original_all_mt_rush_quake_hit",
+		"effectId": [
+			"original_all_mt_rush_quake_main",
+			"original_audio_mt_rush_quake"
+		]
+	},
+	"5298": {
+		"beginCastEffectId": [
+			"original_all_mt_a_machine_cast",
+			"combined_upstream_mt_a_machine_begincasteffectid"
+		],
+		"hitEffectId": "original_all_mt_a_machine_hit",
+		"effectId": [
+			"original_all_mt_a_machine_main",
+			"original_audio_mt_a_machine"
+		]
+	},
+	"5299": {
+		"beginCastEffectId": [
+			"original_all_mt_d_machine_cast",
+			"combined_upstream_mt_d_machine_begincasteffectid"
+		],
+		"successEffectId": [
+			"original_all_mt_d_machine_main",
+			"original_audio_mt_d_machine"
+		]
+	},
+	"5302": {
+		"successEffectIdOnCaster": [
+			"original_audio_mt_summon_abr_battle_warior"
+		]
+	},
+	"5303": {
+		"successEffectIdOnCaster": [
+			"original_audio_mt_summon_abr_dual_cannon"
+		]
+	},
+	"5305": {
+		"beginCastEffectId": "original_all_mt_summon_abr_infinity_cast",
+		"hitEffectId": "original_all_mt_summon_abr_infinity_hit",
+		"successEffectIdOnCaster": [
+			"original_all_mt_summon_abr_infinity_main",
+			"original_all_mt_summon_abr_infinity_bottom",
+			"original_audio_mt_summon_abr_infinity"
+		]
+	},
+	"5306": {
+		"effectId": [
+			"combined_upstream_ag_destructive_hurricane_climax_effectid"
+		]
+	},
+	"5314": {
+		"hitEffectId": "original4_abc_abyss_dagger_hit",
+		"successEffectIdOnCaster": [
+			"original4_abc_abyss_dagger_main",
+			"original_audio_abc_abyss_dagger"
+		]
+	},
+	"5315": {
+		"beginCastEffectId": "original4_abc_unlucky_rush_cast",
+		"hitEffectId": "original4_abc_unlucky_rush_hit",
+		"effectId": [
+			"original4_abc_unlucky_rush_main",
+			"original_audio_abc_unlucky_rush"
+		]
+	},
+	"5316": {
+		"beginCastEffectId": [
+			"original4_abc_chain_reaction_shot_cast",
+			"combined_upstream_abc_chain_reaction_shot_begincasteffectid"
+		],
+		"hitEffectId": "original4_abc_chain_reaction_shot_hit",
+		"effectId": [
+			"original4_abc_chain_reaction_shot_main",
+			"original_audio_abc_chain_reaction_shot"
+		]
+	},
+	"5317": {
+		"successEffectIdOnCaster": "four_abc_from_the_abyss_successeffectidoncaster",
+		"hitEffectId": [
+			"combined_upstream_abc_from_the_abyss_hiteffectid"
+		]
+	},
+	"5318": {
+		"beginCastEffectId": [
+			"original4_abc_abyss_slayer_cast",
+			"combined_upstream_abc_abyss_slayer_begincasteffectid"
+		],
+		"successEffectIdOnCaster": [
+			"original4_abc_abyss_slayer_main",
+			"original_audio_abc_abyss_slayer"
+		]
+	},
+	"5319": {
+		"beginCastEffectId": [
+			"original_all_abc_abyss_strike_cast",
+			"combined_upstream_abc_abyss_strike_begincasteffectid"
+		],
+		"hitEffectId": "original_all_abc_abyss_strike_hit",
+		"effectId": [
+			"original_all_abc_abyss_strike_main",
+			"original_all_abc_abyss_strike_bottom",
+			"original_audio_abc_abyss_strike"
+		]
+	},
+	"5320": {
+		"effectId": "original4_abc_deft_stab_main"
+	},
+	"5321": {
+		"hitEffectId": "original_all_abc_abyss_square_hit"
+	},
+	"5322": {
+		"hitEffectId": "original4_abc_frenzy_shot_hit",
+		"effectId": [
+			"original4_abc_frenzy_shot_main",
+			"original_audio_abc_frenzy_shot"
+		]
+	},
+	"5324": {
+		"successEffectId": [
+			"original4_wh_wind_sign_main",
+			"original_audio_wh_wind_sign"
+		]
+	},
+	"5326": {
+		"effectId": [
+			"original4_wh_hawkrush_main",
+			"original_audio_wh_hawkrush"
+		]
+	},
+	"5328": {
+		"beginCastEffectId": "four_wh_calamitygale_begincasteffectid",
+		"successEffectIdOnCaster": "four_wh_calamitygale_successeffectidoncaster"
+	},
+	"5329": {
+		"effectId": [
+			"four_hawk_boomerang",
+			"original_audio_wh_hawkboomerang"
+		],
+		"beginCastEffectId": "four_hawk_cast",
+		"hitEffectId": "four_hawk_hit"
+	},
+	"5330": {
+		"beginCastEffectId": "original4_wh_galestorm_cast",
+		"hitEffectId": "original4_wh_galestorm_hit",
+		"effectId": [
+			"original4_wh_galestorm_main",
+			"original_audio_wh_galestorm"
+		]
+	},
+	"5331": {
+		"beginCastEffectId": "original_all_wh_deepblindtrap_cast",
+		"hitEffectId": "original_all_wh_deepblindtrap_hit"
+	},
+	"5332": {
+		"beginCastEffectId": [
+			"original_all_wh_solidtrap_cast",
+			"combined_upstream_wh_solidtrap_begincasteffectid"
+		],
+		"hitEffectId": "original_all_wh_solidtrap_hit"
+	},
+	"5333": {
+		"beginCastEffectId": "original_all_wh_swifttrap_cast",
+		"hitEffectId": "original_all_wh_swifttrap_hit"
+	},
+	"5334": {
+		"beginCastEffectId": "four_wh_crescive_bolt_begincasteffectid",
+		"effectId": "four_wh_crescive_bolt_effectid",
+		"hitEffectId": "four_wh_crescive_bolt_hiteffectid"
+	},
+	"5335": {
+		"beginCastEffectId": "original_all_wh_flametrap_cast",
+		"hitEffectId": "original_all_wh_flametrap_hit"
+	},
+	"5339": {
+		"successEffectId": [
+			"original_audio_bo_advance_protection"
+		],
+		"successEffectIdOnCaster": "four_bo_advance_protection_successeffectidoncaster"
+	},
+	"5340": {
+		"beginCastEffectId": "original_quick_bo_acidified_zone_water_cast",
+		"hitEffectId": "four_bo_acidified_zone_water_hiteffectid"
+	},
+	"5341": {
+		"beginCastEffectId": "original_quick_bo_acidified_zone_ground_cast",
+		"hitEffectId": "four_bo_acidified_zone_ground_hiteffectid"
+	},
+	"5342": {
+		"beginCastEffectId": "original_quick_bo_acidified_zone_wind_cast",
+		"hitEffectId": "four_bo_acidified_zone_wind_hiteffectid"
+	},
+	"5343": {
+		"beginCastEffectId": "original_quick_bo_acidified_zone_fire_cast",
+		"hitEffectId": "four_bo_acidified_zone_fire_hiteffectid"
+	},
+	"5344": {
+		"hitEffectId": [
+			"combined_upstream_bo_woodenwarrior_hiteffectid"
+		],
+		"successEffectIdOnCaster": "four_bo_woodenwarrior_effectidoncaster"
+	},
+	"5345": {
+		"successEffectIdOnCaster": "four_bo_wooden_fairy_effectidoncaster"
+	},
+	"5347": {
+		"beginCastEffectId": [
+			"original4_bo_researchreport_cast",
+			"combined_upstream_bo_researchreport_begincasteffectid"
+		],
+		"successEffectIdOnCaster": [
+			"original4_bo_researchreport_main",
+			"original_audio_bo_researchreport"
+		]
+	},
+	"5348": {
+		"successEffectIdOnCaster": "four_bo_helltree_effectidoncaster"
+	},
+	"5354": {
+		"effectId": [
+			"combined_upstream_tr_roseblossom_atk_effectid"
+		]
+	},
+	"5356": {
+		"effectId": [
+			"original4_tr_metalic_fury_main",
+			"original_audio_tr_metalic_fury"
+		]
+	},
+	"5357": {
+		"beginCastEffectId": [
+			"original4_tr_soundblend_cast",
+			"combined_upstream_tr_soundblend_begincasteffectid"
+		],
+		"successEffectId": "original4_tr_soundblend_main"
+	},
+	"5361": {
+		"beginCastEffectId": "original4_tr_musical_interlude_cast",
+		"successEffectIdOnCaster": [
+			"original4_tr_musical_interlude_main",
+			"original_audio_tr_musical_interlude"
+		]
+	},
+	"5363": {
+		"successEffectIdOnCaster": [
+			"original_audio_tr_nipelheim_requiem"
+		],
+		"effectId": [
+			"combined_upstream_tr_nipelheim_requiem_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_tr_nipelheim_requiem_effectidoncaster"
+		]
+	},
+	"5366": {
+		"successEffectId": [
+			"original4_em_spell_enchanting_main",
+			"original_audio_em_spell_enchanting"
+		]
+	},
+	"5367": {
+		"beginCastEffectId": [
+			"original4_em_activity_burn_cast",
+			"combined_upstream_em_activity_burn_begincasteffectid"
+		],
+		"successEffectId": [
+			"original4_em_activity_burn_main",
+			"original_audio_em_activity_burn"
+		]
+	},
+	"5368": {
+		"beginCastEffectId": [
+			"original4_em_increasing_activity_cast",
+			"combined_upstream_em_increasing_activity_begincasteffectid"
+		],
+		"successEffectId": [
+			"original4_em_increasing_activity_main",
+			"original_audio_em_increasing_activity"
+		]
+	},
+	"5369": {
+		"beginCastEffectId": [
+			"original_all_em_diamond_storm_cast",
+			"combined_upstream_em_diamond_storm_begincasteffectid"
+		],
+		"hitEffectId": "original_all_em_diamond_storm_hit",
+		"effectId": [
+			"original_all_em_diamond_storm_main",
+			"original_all_em_diamond_storm_bottom",
+			"original_audio_em_diamond_storm"
+		]
+	},
+	"5370": {
+		"beginCastEffectId": [
+			"original_all_em_lightning_land_cast",
+			"combined_upstream_em_lightning_land_begincasteffectid"
+		],
+		"hitEffectId": "original_all_em_lightning_land_hit"
+	},
+	"5371": {
+		"beginCastEffectId": "original_quick_em_venom_swamp_cast",
+		"hitEffectId": [
+			"original_completion_em_venom_swamp_hit"
+		]
+	},
+	"5372": {
+		"beginCastEffectId": [
+			"original_all_em_conflagration_cast",
+			"combined_upstream_em_conflagration_begincasteffectid"
+		],
+		"hitEffectId": "original_all_em_conflagration_hit"
+	},
+	"5373": {
+		"beginCastEffectId": [
+			"original_all_em_terra_drive_cast",
+			"combined_upstream_em_terra_drive_begincasteffectid"
+		],
+		"hitEffectId": "original_all_em_terra_drive_hit",
+		"effectId": [
+			"original_all_em_terra_drive_main",
+			"original_all_em_terra_drive_bottom",
+			"original_audio_em_terra_drive"
+		]
+	},
+	"5375": {
+		"effectId": [
+			"combined_upstream_em_summon_elemental_ardor_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_em_summon_elemental_ardor_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_em_summon_elemental_ardor_hiteffectid"
+		]
+	},
+	"5376": {
+		"effectIdOnCaster": [
+			"combined_upstream_em_summon_elemental_diluvio_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_em_summon_elemental_diluvio_hiteffectid"
+		]
+	},
+	"5377": {
+		"effectId": [
+			"combined_upstream_em_summon_elemental_procella_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_em_summon_elemental_procella_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_em_summon_elemental_procella_hiteffectid"
+		]
+	},
+	"5378": {
+		"effectId": [
+			"combined_upstream_em_summon_elemental_terremotus_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_em_summon_elemental_terremotus_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_em_summon_elemental_terremotus_hiteffectid"
+		]
+	},
+	"5379": {
+		"effectId": [
+			"combined_upstream_em_summon_elemental_serpens_effectid"
+		],
+		"effectIdOnCaster": [
+			"combined_upstream_em_summon_elemental_serpens_effectidoncaster"
+		],
+		"hitEffectId": [
+			"combined_upstream_em_summon_elemental_serpens_hiteffectid"
+		]
+	},
+	"5380": {
+		"beginCastEffectId": "original_quick_em_elemental_buster_cast"
+	},
+	"5382": {
+		"effectId": [
+			"combined_upstream_abc_chain_reaction_shot_atk_effectid"
+		]
+	},
+	"5383": {
+		"effectId": [
+			"combined_upstream_abc_from_the_abyss_atk_effectid"
+		]
+	},
+	"5389": {
+		"successEffectIdOnCaster": [
+			"original_completion_em_elemental_buster_fire_main"
+		],
+		"hitEffectId": [
+			"original_completion_em_elemental_buster_fire_hit"
+		]
+	},
+	"5390": {
+		"successEffectIdOnCaster": [
+			"original_completion_em_elemental_buster_water_main"
+		],
+		"hitEffectId": [
+			"original_completion_em_elemental_buster_water_hit"
+		]
+	},
+	"5391": {
+		"successEffectIdOnCaster": [
+			"original_completion_em_elemental_buster_wind_main"
+		],
+		"hitEffectId": [
+			"original_completion_em_elemental_buster_wind_hit"
+		]
+	},
+	"5392": {
+		"successEffectIdOnCaster": [
+			"original_completion_em_elemental_buster_ground_main"
+		],
+		"hitEffectId": [
+			"original_completion_em_elemental_buster_ground_hit"
+		]
+	},
+	"5393": {
+		"successEffectIdOnCaster": [
+			"original_completion_em_elemental_buster_poison_main"
+		],
+		"hitEffectId": [
+			"original_completion_em_elemental_buster_poison_hit"
+		]
+	},
+	"5403": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_nw_intensive_aim"
+		]
+	},
+	"5405": {
+		"successEffectIdOnCaster": [
+			"kro_original_nw_the_vigilante_at_night_successeffectidoncaster"
+		]
+	},
+	"5406": {
+		"releaseEffectId": [
+			"original_completion_audio_nw_only_one_bullet"
+		],
+		"hitEffectId": [
+			"kro_original_nw_only_one_bullet_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_nw_only_one_bullet_effectid"
+		]
+	},
+	"5407": {
+		"releaseEffectId": [
+			"original_completion_audio_nw_spiral_shooting"
+		],
+		"effectId": [
+			"kro_original_nw_spiral_shooting_effectid"
+		]
+	},
+	"5408": {
+		"releaseEffectId": [
+			"original_completion_audio_nw_magazine_for_one"
+		],
+		"effectId": [
+			"kro_original_nw_magazine_for_one_effectid"
+		]
+	},
+	"5409": {
+		"effectId": [
+			"original_completion_audio_nw_wild_fire",
+			"kro_phase_nw_wild_fire_effectid"
+		]
+	},
+	"5410": {
+		"effectId": [
+			"original_completion_audio_nw_basic_grenade",
+			"kro_phase_nw_basic_grenade_effectid"
+		]
+	},
+	"5411": {
+		"effectId": [
+			"complete_hasty"
+		]
+	},
+	"5413": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_nw_auto_firing_launcher",
+			"kro_original_nw_auto_firing_launcher_successeffectidoncaster"
+		]
+	},
+	"5414": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_nw_hidden_card",
+			"kro_phase_nw_hidden_card_successeffectidoncaster"
+		]
+	},
+	"5415": {
+		"hitEffectId": [
+			"kro_phase_nw_mission_bombard_hiteffectid"
+		]
+	},
+	"5418": {
+		"effectId": [
+			"original_completion_audio_soa_talisman_of_protection",
+			"kro_original_soa_talisman_of_protection_effectid"
+		]
+	},
+	"5419": {
+		"effectId": [
+			"original_completion_audio_soa_talisman_of_warrior",
+			"kro_original_soa_talisman_of_warrior_effectid"
+		]
+	},
+	"5420": {
+		"effectId": [
+			"kro_original_soa_talisman_of_magician_effectid"
+		]
+	},
+	"5421": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_soa_soul_gathering",
+			"kro_original_soa_soul_gathering_successeffectidoncaster"
+		]
+	},
+	"5423": {
+		"effectId": [
+			"kro_original_soa_talisman_of_five_elements_effectid"
+		]
+	},
+	"5424": {
+		"releaseEffectId": [
+			"original_completion_audio_soa_talisman_of_soul_stealing"
+		],
+		"effectId": [
+			"kro_original_soa_talisman_of_soul_stealing_effectid"
+		]
+	},
+	"5425": {
+		"successEffectIdOnCaster": [
+			"kro_original_soa_exorcism_of_malicious_soul_successeffectidoncaster"
+		]
+	},
+	"5426": {
+		"releaseEffectId": [
+			"original_completion_audio_soa_talisman_of_blue_dragon"
+		],
+		"effectId": [
+			"kro_original_soa_talisman_of_blue_dragon_effectid"
+		]
+	},
+	"5427": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_soa_talisman_of_white_tiger",
+			"kro_original_soa_talisman_of_white_tiger_successeffectidoncaster"
+		]
+	},
+	"5428": {
+		"releaseEffectId": [
+			"original_completion_audio_soa_talisman_of_red_phoenix"
+		],
+		"effectId": [
+			"kro_original_soa_talisman_of_red_phoenix_effectid"
+		]
+	},
+	"5429": {
+		"effectId": [
+			"pending_resolution_audio_tortoise",
+			"kro_phase_soa_talisman_of_black_tortoise_effectid"
+		]
+	},
+	"5430": {
+		"releaseEffectId": [
+			"original_completion_audio_soa_talisman_of_four_bearing_god"
+		],
+		"effectId": [
+			"kro_original_soa_talisman_of_four_bearing_god_effectid"
+		]
+	},
+	"5431": {
+		"successEffectId": [
+			"kro_phase_soa_circle_of_directions_and_elementals_successeffectid"
+		]
+	},
+	"5432": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_soa_soul_of_heaven_and_earth",
+			"kro_original_soa_soul_of_heaven_and_earth_successeffectidoncaster"
+		]
+	},
+	"5435": {
+		"releaseEffectId": [
+			"original_completion_audio_sh_chul_ho_sonic_claw"
+		],
+		"effectId": [
+
+		],
+		"successEffectId": [
+			"kro_phase_sh_chul_ho_sonic_claw_effectid"
+		]
+	},
+	"5436": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_howling_of_chul_ho",
+			"kro_original_sh_howling_of_chul_ho_successeffectidoncaster"
+		]
+	},
+	"5437": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_hogogong_strike",
+			"kro_original_sh_hogogong_strike_successeffectidoncaster"
+		]
+	},
+	"5439": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_ki_sul_water_spraying",
+			"kro_original_sh_ki_sul_water_spraying_successeffectidoncaster"
+		]
+	},
+	"5440": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_marine_festival_of_ki_sul",
+			"kro_original_sh_marine_festival_of_ki_sul_successeffectidoncaster"
+		]
+	},
+	"5441": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_sandy_festival_of_ki_sul",
+			"kro_original_sh_sandy_festival_of_ki_sul_successeffectidoncaster"
+		]
+	},
+	"5442": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_ki_sul_rampage",
+			"kro_original_sh_ki_sul_rampage_successeffectidoncaster"
+		]
+	},
+	"5444": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_colors_of_hyun_rok"
+		]
+	},
+	"5446": {
+		"releaseEffectId": [
+			"original_completion_audio_sh_hyun_rok_cannon"
+		],
+		"effectId": [
+			"kro_original_sh_hyun_rok_cannon_effectid"
+		]
+	},
+	"5447": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_sh_temporary_communion",
+			"kro_original_sh_temporary_communion_successeffectidoncaster"
+		]
+	},
+	"5448": {
+		"effectId": [
+			"original_completion_audio_sh_blessing_of_mystical_creatures",
+			"kro_original_sh_blessing_of_mystical_creatures_effectid"
+		]
+	},
+	"5451": {
+		"hitEffectId": [
+			"kro_original_hn_doublebowlingbash_effectid"
+		]
+	},
+	"5452": {
+		"releaseEffectId": [
+			"original_completion_audio_hn_mega_sonic_blow"
+		],
+		"hitEffectId": [
+			"kro_original_hn_mega_sonic_blow_effectid"
+		]
+	},
+	"5453": {
+		"releaseEffectId": [
+			"original_completion_audio_hn_shield_chain_rush"
+		],
+		"hitEffectId": [
+			"kro_original_hn_shield_chain_rush_effectid"
+		]
+	},
+	"5454": {
+		"releaseEffectId": [
+			"original_completion_audio_hn_spiral_pierce_max"
+		],
+		"hitEffectId": [
+
+		],
+		"successEffectIdOnCaster": [
+			"fidelity_hn_spiral_pierce_max_successeffectidoncaster"
+		],
+		"successEffectId": [
+			"kro_phase_hn_spiral_pierce_max_hiteffectid"
+		]
+	},
+	"5455": {
+		"effectId": [
+			"pending_resolution_audio_meteor",
+			"kro_phase_hn_meteor_storm_buster_effectid"
+		]
+	},
+	"5456": {
+		"effectId": [
+			"combined_upstream_hn_jupitel_thunder_storm_effectid"
+		]
+	},
+	"5457": {
+		"effectId": [
+			"kro_original_hn_jack_frost_nova_effectid"
+		]
+	},
+	"5458": {
+		"effectId": [
+
+		],
+		"successEffectIdOnCaster": [
+			"combined_upstream_hn_hells_drive_effectid"
+		]
+	},
+	"5459": {
+		"successEffectIdOnCaster": [
+			"kro_original_hn_ground_gravitation_successeffectidoncaster"
+		]
+	},
+	"5460": {
+		"releaseEffectId": [
+			"original_completion_audio_hn_napalm_vulcan_strike"
+		],
+		"hitEffectId": [
+			"kro_original_hn_napalm_vulcan_strike_effectid"
+		]
+	},
+	"5461": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_hn_breakinglimit",
+			"kro_original_hn_breakinglimit_successeffectidoncaster"
+		]
+	},
+	"5462": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_hn_rulebreak",
+			"kro_original_hn_rulebreak_successeffectidoncaster"
+		]
+	},
+	"5466": {
+		"releaseEffectId": [
+			"original_completion_audio_ske_noon_blast"
+		],
+		"effectId": [
+			"kro_original_ske_noon_blast_effectid"
+		]
+	},
+	"5467": {
+		"releaseEffectId": [
+			"original_completion_audio_ske_sunset_blast"
+		],
+		"effectId": [
+			"kro_original_ske_sunset_blast_effectid"
+		]
+	},
+	"5469": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ske_midnight_kick",
+			"kro_original_ske_midnight_kick_successeffectidoncaster"
+		]
+	},
+	"5470": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ske_dawn_break",
+			"kro_original_ske_dawn_break_successeffectidoncaster"
+		]
+	},
+	"5474": {
+		"releaseEffectId": [
+			"original_completion_audio_ske_all_in_the_sky"
+		],
+		"effectId": [
+			"kro_original_ske_all_in_the_sky_effectid"
+		]
+	},
+	"5475": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ske_enchanting_sky"
+		]
+	},
+	"5476": {
+		"effectId": [
+			"original_completion_audio_ss_tokedasu"
+		],
+		"effectIdOnCaster": [
+			"fidelity_ss_tokedasu_effectidoncaster",
+			"complete_melt_shadow"
+		]
+	},
+	"5477": {
+		"releaseEffectId": [
+			"original_completion_audio_ss_shimiru"
+		]
+	},
+	"5478": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ss_akumukesu",
+			"kro_original_ss_akumukesu_successeffectidoncaster"
+		]
+	},
+	"5480": {
+		"effectId": [
+			"original_completion_audio_ss_kagegari",
+			"kro_phase_ss_kagegari_effectid"
+		]
+	},
+	"5481": {
+		"successEffectIdOnCaster": [
+			"kro_original_ss_kagenomai_successeffectidoncaster"
+		]
+	},
+	"5482": {
+		"releaseEffectId": [
+			"original_completion_audio_ss_kagegissen"
+		],
+		"hitEffectId": [
+			"kro_phase_ss_kagegissen_hiteffectid"
+		]
+	},
+	"5484": {
+		"effectId": [
+			"original_completion_audio_ss_fuumakouchiku"
+		]
+	},
+	"5487": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ss_kunaikussetsu"
+		]
+	},
+	"5488": {
+		"releaseEffectId": [
+			"original_completion_audio_ss_sekienhou"
+		],
+		"effectId": [
+			"kro_original_ss_sekienhou_effectid"
+		]
+	},
+	"5489": {
+		"effectId": [
+			"original_completion_audio_ss_reiketsuhou",
+			"kro_phase_ss_reiketsuhou_effectid"
+		]
+	},
+	"5490": {
+		"releaseEffectId": [
+			"original_completion_audio_ss_raidenpou"
+		],
+		"beginCastEffectId": [
+			"kro_phase_ss_raidenpou_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_phase_ss_raidenpou_hiteffectid"
+		],
+		"successEffectId": [
+			"complete_raiden"
+		]
+	},
+	"5491": {
+		"releaseEffectId": [
+			"original_completion_audio_ss_kinryuuhou"
+		],
+		"hitEffectId": [
+			"kro_original_ss_kinryuuhou_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_ss_kinryuuhou_effectid"
+		]
+	},
+	"5492": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ss_antenpou",
+			"kro_original_ss_antenpou_successeffectidoncaster"
+		]
+	},
+	"5493": {
+		"successEffectIdOnCaster": [
+			"kro_original_ss_kageakumu_successeffectidoncaster"
+		]
+	},
+	"5494": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ss_hitouakumu",
+			"complete_kunai_nightmare"
+		]
+	},
+	"5495": {
+		"successEffectIdOnCaster": [
+			"original_completion_audio_ss_ankokuryuuakumu",
+			"complete_dark_dragon"
+		]
+	},
+	"5500": {
+		"beginCastEffectId": [
+			"kro_original_nw_wild_shot_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_nw_wild_shot_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_nw_wild_shot_effectid"
+		]
+	},
+	"5501": {
+		"beginCastEffectId": [
+			"kro_original_nw_midnight_fallen_begincasteffectid"
+		],
+		"effectId": [
+			"kro_phase_nw_midnight_fallen_effectid"
+		]
+	},
+	"5502": {
+		"hitEffectId": [
+			"kro_original_ske_sky_sun_hiteffectid"
+		],
+		"successEffectIdOnCaster": [
+			"kro_original_ske_sky_sun_successeffectidoncaster"
+		]
+	},
+	"5503": {
+		"beginCastEffectId": [
+			"kro_original_ske_sky_moon_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_ske_sky_moon_hiteffectid"
+		],
+		"effectId": [
+			"combined_upstream_ske_sky_moon_effectid"
+		]
+	},
+	"5504": {
+		"hitEffectId": [
+			"kro_original_ske_star_light_kick_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_ske_star_light_kick_effectid"
+		]
+	},
+	"5505": {
+		"successEffectIdOnCaster": "final_hn_overcoming_crisis_successeffectidoncaster"
+	},
+	"5506": {
+		"beginCastEffectId": [
+			"kro_phase_sh_chul_ho_battering_begincasteffectid"
+		],
+		"hitEffectId": [
+
+		],
+		"effectId": [
+
+		],
+		"successEffectId": [
+			"combined_upstream_sh_chul_ho_battering_effectid"
+		]
+	},
+	"5507": {
+		"beginCastEffectId": [
+			"kro_original_sh_hyun_rok_spirit_power_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_sh_hyun_rok_spirit_power_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_sh_hyun_rok_spirit_power_effectid"
+		]
+	},
+	"6001": {
+		"hitEffectId": [
+			"kro_original_dk_dragonic_breath_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_dk_dragonic_breath_effectid"
+		]
+	},
+	"6002": {
+		"effectId": [
+			"kro_original_mt_spark_blaster_effectid"
+		]
+	},
+	"6003": {
+		"effectId": [
+			"kro_original_mt_triple_laser_effectid"
+		]
+	},
+	"6004": {
+		"successEffectIdOnCaster": [
+			"kro_original_mt_mighty_smash_successeffectidoncaster"
+		]
+	},
+	"6005": {
+		"effectIdOnCaster": "four_bo_explosive_powder_successeffectidoncaster"
+	},
+	"6006": {
+		"effectId": "four_bo_mayhemic_thorns_effectid"
+	},
+	"6502": {
+		"beginCastEffectId": [
+			"kro_phase_dk_dragonic_pierce_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_phase_dk_dragonic_pierce_hiteffectid"
+		],
+		"effectId": [
+			"combined_upstream_dk_dragonic_pierce_effectid"
+		]
+	},
+	"6503": {
+		"beginCastEffectId": [
+			"kro_phase_ig_radiant_spear_begincasteffectid"
+		]
+	},
+	"6504": {
+		"effectId": [
+			"kro_original_ig_imperial_cross_effectid"
+		]
+	},
+	"6505": {
+		"beginCastEffectId": [
+			"kro_original_ig_imperial_pressure_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_ig_imperial_pressure_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_ig_imperial_pressure_effectid"
+		]
+	},
+	"6506": {
+		"effectId": [
+			"kro_original_mt_rush_strike_effectid"
+		]
+	},
+	"6507": {
+		"hitEffectId": [
+			"kro_original_mt_powerful_swing_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_mt_powerful_swing_effectid"
+		]
+	},
+	"6508": {
+		"beginCastEffectId": [
+			"kro_original_mt_energy_cannonade_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_mt_energy_cannonade_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_mt_energy_cannonade_effectid"
+		]
+	},
+	"6509": {
+		"hitEffectId": "four_bo_mystery_powder_hiteffectid",
+		"effectIdOnCaster": "four_bo_mystery_powder_successeffectidoncaster"
+	},
+	"6510": {
+		"hitEffectId": [
+			"kro_original_bo_dust_explosion_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_bo_dust_explosion_effectid"
+		]
+	},
+	"6511": {
+		"effectId": [
+			"combined_upstream_shc_cross_slash_effectid"
+		]
+	},
+	"6513": {
+		"effectId": [
+			"kro_original_abc_chasing_break_effectid"
+		]
+	},
+	"6514": {
+		"beginCastEffectId": [
+			"kro_original_abc_chasing_shot_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_abc_chasing_shot_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_abc_chasing_shot_effectid"
+		]
+	},
+	"6515": {
+		"beginCastEffectId": [
+			"kro_original_abc_abyss_flame_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_abc_abyss_flame_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_abc_abyss_flame_effectid"
+		]
+	},
+	"6516": {
+		"beginCastEffectId": [
+			"kro_original_ag_energy_conversion_begincasteffectid"
+		],
+		"successEffectIdOnCaster": [
+			"kro_original_ag_energy_conversion_successeffectidoncaster"
+		]
+	},
+	"6517": {
+		"beginCastEffectId": [
+			"kro_original_em_psychic_stream_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_em_psychic_stream_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_em_psychic_stream_effectid"
+		]
+	},
+	"6518": {
+		"beginCastEffectId": [
+			"kro_original_cd_divinus_flos_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_cd_divinus_flos_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_cd_divinus_flos_effectid"
+		]
+	},
+	"6519": {
+		"beginCastEffectId": [
+			"kro_original_iq_blazing_flame_blast_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_iq_blazing_flame_blast_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_iq_blazing_flame_blast_effectid"
+		]
+	},
+	"6520": {
+		"beginCastEffectId": [
+			"kro_original_wh_wild_walk_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_wh_wild_walk_hiteffectid"
+		],
+		"effectId": [
+			"kro_original_wh_wild_walk_effectid"
+		]
+	},
+	"6521": {
+		"beginCastEffectId": [
+			"kro_original_tr_rhythmical_wave_begincasteffectid"
+		],
+		"hitEffectId": [
+			"kro_original_tr_rhythmical_wave_hiteffectid"
+		],
+		"effectId": [
+			"combined_upstream_tr_rhythmical_wave_effectid"
+		]
+	},
+	"8020": {
+
+	},
+	"8210": {
+
+	},
+	"8443": {
+		"effectId": [
+			"combined_upstream_em_el_flametechnic_effectid"
+		]
+	},
+	"8444": {
+		"effectId": [
+			"combined_upstream_em_el_flamearmor_effectid"
+		]
+	},
+	"8446": {
+		"effectId": [
+			"combined_upstream_em_el_cold_force_effectid"
+		]
+	},
+	"8449": {
+		"effectId": [
+			"combined_upstream_em_el_grace_breeze_effectid"
+		]
+	},
+	"8452": {
+		"effectId": [
+			"combined_upstream_em_el_earth_care_effectid"
+		]
+	},
+	"8455": {
+		"effectId": [
+			"combined_upstream_em_el_deep_poisoning_effectid"
+		]
+	},
+	"8457": {
+		"effectId": [
+			"combined_upstream_em_el_deadly_poison_effectid"
+		]
+	}
+});

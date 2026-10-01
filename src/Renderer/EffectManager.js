@@ -25,6 +25,7 @@ import ThreeDEffect from 'Renderer/Effects/ThreeDEffect.js';
 import Entity from 'Renderer/Entity/Entity.js';
 import EntityManager from 'Renderer/EntityManager.js';
 import Renderer from 'Renderer/Renderer.js';
+import Camera from 'Renderer/Camera.js';
 import Altitude from 'Renderer/Map/Altitude.js';
 import Sound from 'Audio/SoundManager.js';
 import Preferences from 'Preferences/Map.js';
@@ -377,6 +378,7 @@ class EffectManager {
 	 * Destroy all effects
 	 */
 	static free(gl) {
+		EffectManager.originalStatusEpoch++;
 		const keys = Object.keys(_list);
 
 		keys.forEach(key => {
@@ -560,6 +562,21 @@ class EffectManager {
 		}
 
 		const effects = EffectDB[EF_Init_Par.effectId];
+		// Class changes and kit rewards can complete several achievements at once.
+		// Share one original celebration without dropping achievement updates.
+		const celebration = effects.find(effect => effect.celebrationGroup);
+		const owner = EF_Init_Par.ownerEntity;
+		if (celebration && owner) {
+			owner._celebrationTicks ||= Object.create(null);
+			const group = celebration.celebrationGroup;
+			const previousTick = owner._celebrationTicks[group];
+			const elapsed = EF_Init_Par.startTick - previousTick;
+			if (previousTick !== undefined && elapsed >= 0 && elapsed < celebration.celebrationCooldown) {
+				return;
+			}
+			owner._celebrationTicks[group] = EF_Init_Par.startTick;
+		}
+
 		let EF_Inst_Par;
 		let Params;
 		let i, j, count;
@@ -642,7 +659,11 @@ class EffectManager {
 		Params.Inst.repeatDelay = Params.effect.repeatDelay ? Params.effect.repeatDelay : Params.Init.repeatDelay; // Instance has priority
 
 		// Play sound
-		if (Params.effect.wav) {
+		if (
+			Params.effect.wav &&
+			(!Params.effect.unitAudioKey ||
+				EffectManager.shouldPlayFourUnitSound(Params.effect.unitAudioKey, Params.Init.otherAID, Renderer.tick))
+		) {
 			filename = Params.effect.wav;
 
 			if (Params.effect.rand) {
@@ -750,6 +771,291 @@ class EffectManager {
 	 * @param {number} position y
 	 * @param {number} skill unique id
 	 */
+
+	/** Select original directional resources in the current camera orientation. */
+	static spamOriginalDirectional(skillId, phase, srcAID, destAID, tick) {
+		if (![6502, 6503, 5506, 5435].includes(skillId)) {
+			return;
+		}
+		const source = EntityManager.get(srcAID);
+		const target = EntityManager.get(destAID);
+		if (!source || !target || source === target) {
+			return;
+		}
+		const dx = target.position[0] - source.position[0];
+		const dy = target.position[1] - source.position[1];
+		const world = dx || dy ? Math.round(-Math.atan2(dy, dx) / (Math.PI / 4) + 6) : source.direction || 0;
+		const direction = (((world + Camera.direction) % 8) + 8) % 8;
+		let effectId;
+		let ownerAID = srcAID;
+		if (skillId === 6502 && phase === 'use') {
+			effectId = 'complete_dragonic_' + ([0, 3, 4, 7].includes(direction) ? 'vertical' : 'horizon');
+		} else if (skillId === 6503 && phase === 'use') {
+			effectId = 'complete_radiant_' + ([1, 2, 3].includes(direction) ? 'leftdown' : 'rightdown');
+		} else if (skillId === 5506 && phase === 'hit') {
+			effectId = 'complete_chulho_' + ([1, 2, 3].includes(direction) ? 'left' : 'right');
+			ownerAID = destAID;
+		} else if (skillId === 5435 && phase === 'success') {
+			effectId = 'complete_claw_' + [6, 7, 9, 11, 12, 1, 3, 5][direction];
+		}
+		if (effectId) {
+			EffectManager.spam({ effectId, ownerAID, otherAID: destAID, startTick: tick });
+		}
+	}
+
+	static originalStatusEpoch = 0;
+	static originalUnitPhases = {
+		299: { end: 'complete_refraction_end' },
+		292: {
+			end: 'kro_phase_soa_totem_of_tutelary_unit_end'
+		},
+		295: {
+			end: 'kro_phase_hn_jack_frost_nova_end'
+		}
+	};
+	static originalStatusPhases = {
+		1347: {
+			name: 'GRENADE_FRAGMENT_1',
+			effect: 'kro_phase_nw_grenade_fragment_grenade_fragment_1',
+			repeat: false
+		},
+		1348: {
+			name: 'GRENADE_FRAGMENT_2',
+			effect: 'kro_phase_nw_grenade_fragment_grenade_fragment_2',
+			repeat: false
+		},
+		1349: {
+			name: 'GRENADE_FRAGMENT_3',
+			effect: 'kro_phase_nw_grenade_fragment_grenade_fragment_3',
+			repeat: false
+		},
+		1350: {
+			name: 'GRENADE_FRAGMENT_4',
+			effect: 'kro_phase_nw_grenade_fragment_grenade_fragment_4',
+			repeat: false
+		},
+		1351: {
+			name: 'GRENADE_FRAGMENT_5',
+			effect: 'kro_phase_nw_grenade_fragment_grenade_fragment_5',
+			repeat: false
+		},
+		1352: {
+			name: 'GRENADE_FRAGMENT_6',
+			effect: 'kro_phase_nw_grenade_fragment_grenade_fragment_6',
+			repeat: false
+		},
+		1370: {
+			name: 'COLORS_OF_HYUN_ROK_1',
+			effect: 'kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_1',
+			repeat: false
+		},
+		1371: {
+			name: 'COLORS_OF_HYUN_ROK_2',
+			effect: 'kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_2',
+			repeat: false
+		},
+		1372: {
+			name: 'COLORS_OF_HYUN_ROK_3',
+			effect: 'kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_3',
+			repeat: false
+		},
+		1373: {
+			name: 'COLORS_OF_HYUN_ROK_4',
+			effect: 'kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_4',
+			repeat: false
+		},
+		1374: {
+			name: 'COLORS_OF_HYUN_ROK_5',
+			effect: 'kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_5',
+			repeat: false
+		},
+		1375: {
+			name: 'COLORS_OF_HYUN_ROK_6',
+			effect: 'kro_phase_sh_colors_of_hyun_rok_colors_of_hyun_rok_6',
+			repeat: false
+		},
+		1667: {
+			name: 'FIRE_CHARM_POWER',
+			effect: 'kro_phase_ss_four_charm_fire_charm_power',
+			repeat: false
+		},
+		1668: {
+			name: 'WATER_CHARM_POWER',
+			effect: 'kro_phase_ss_four_charm_water_charm_power',
+			repeat: false
+		},
+		1669: {
+			name: 'WIND_CHARM_POWER',
+			effect: 'kro_phase_ss_four_charm_wind_charm_power',
+			repeat: false
+		},
+		1670: {
+			name: 'GROUND_CHARM_POWER',
+			effect: 'kro_phase_ss_four_charm_ground_charm_power',
+			repeat: false
+		},
+		1665: {
+			name: 'MYSTERY_POWDER',
+			effect: 'kro_phase_bo_mystery_powder_mystery_powder',
+			repeat: true
+		},
+		1364: {
+			name: 'T_FIVETH_GOD',
+			effect: 'kro_phase_soa_circle_of_directions_and_elementals_t_fiveth_god',
+			repeat: true
+		},
+		1346: {
+			name: 'INTENSIVE_AIM_COUNT',
+			variants: {
+				0: 'kro_phase_nw_intensive_aim_count_0',
+				1: 'kro_phase_nw_intensive_aim_count_1',
+				2: 'kro_phase_nw_intensive_aim_count_2',
+				3: 'kro_phase_nw_intensive_aim_count_3',
+				4: 'kro_phase_nw_intensive_aim_count_4',
+				5: 'kro_phase_nw_intensive_aim_count_5',
+				6: 'kro_phase_nw_intensive_aim_count_6',
+				7: 'kro_phase_nw_intensive_aim_count_7',
+				8: 'kro_phase_nw_intensive_aim_count_8',
+				9: 'kro_phase_nw_intensive_aim_count_9',
+				10: 'kro_phase_nw_intensive_aim_count_10'
+			},
+			repeat: true,
+			min: 0,
+			max: 10
+		},
+		1345: {
+			name: 'INTENSIVE_AIM',
+			effect: 'kro_phase_nw_intensive_aim_intensive_aim',
+			repeat: false,
+			clearOnEnd: [1346]
+		},
+		1366: {
+			name: 'HOGOGONG',
+			effect: 'kro_phase_sh_howling_of_chul_ho_hogogong',
+			repeat: true
+		},
+		1392: {
+			name: 'SKY_ENCHANT',
+			effect: 'fidelity_ske_enchanting_sky_buff',
+			repeat: true,
+			clearOnStart: [1388, 1389, 1390, 1385, 1386, 1387]
+		},
+		1388: {
+			name: 'RISING_MOON',
+			effect: 'fidelity_ske_rising_moon_rising_moon',
+			repeat: true,
+			clearOnStart: [1389, 1390, 1385, 1386, 1387, 1392]
+		},
+		1389: {
+			name: 'MIDNIGHT_MOON',
+			effect: 'fidelity_ske_rising_moon_midnight_moon',
+			repeat: true,
+			clearOnStart: [1388, 1390, 1385, 1386, 1387, 1392]
+		},
+		1390: {
+			name: 'DAWN_MOON',
+			effect: 'fidelity_ske_rising_moon_dawn_moon',
+			repeat: true,
+			clearOnStart: [1388, 1389, 1385, 1386, 1387, 1392]
+		},
+		1385: {
+			name: 'RISING_SUN',
+			effect: 'fidelity_ske_rising_sun_rising_sun',
+			repeat: true,
+			clearOnStart: [1388, 1389, 1390, 1386, 1387, 1392]
+		},
+		1386: {
+			name: 'NOON_SUN',
+			effect: 'fidelity_ske_rising_sun_noon_sun',
+			repeat: true,
+			clearOnStart: [1388, 1389, 1390, 1385, 1387, 1392]
+		},
+		1387: {
+			name: 'SUNSET_SUN',
+			effect: 'fidelity_ske_rising_sun_sunset_sun',
+			repeat: true,
+			clearOnStart: [1388, 1389, 1390, 1385, 1386, 1392]
+		}
+	};
+	static originalSkillVariants = {
+		5404: {
+			7: 'kro_phase_nw_grenade_fragment_reset'
+		},
+		5444: {
+			7: 'kro_phase_sh_colors_of_hyun_rok_reset'
+		}
+	};
+	/** Original status effects follow the server's state and counters. */
+	static spamOriginalStatus(statusId, ownerAID, state, values) {
+		const definition = EffectManager.originalStatusPhases[statusId];
+		const entity = EntityManager.get(ownerAID);
+		if (!definition || !entity) {
+			return;
+		}
+		// Map reload frees effects but can keep the local player's entity.
+		if (entity._originalStatusEpoch !== EffectManager.originalStatusEpoch) {
+			entity._originalStatusEffects = Object.create(null);
+			entity._originalStatusEpoch = EffectManager.originalStatusEpoch;
+		}
+		const previous = entity._originalStatusEffects[statusId];
+		if (state === 0) {
+			if (previous) {
+				EffectManager.remove(null, ownerAID, previous);
+				delete entity._originalStatusEffects[statusId];
+			}
+			for (const dependent of definition.clearOnEnd || []) {
+				EffectManager.spamOriginalStatus(dependent, ownerAID, 0, []);
+			}
+			return;
+		}
+		// Native celestial phases are mutually exclusive, including enter packets.
+		for (const dependent of definition.clearOnStart || []) {
+			if (entity._originalStatusEffects[dependent]) {
+				EffectManager.spamOriginalStatus(dependent, ownerAID, 0, []);
+			}
+		}
+		let effectId = definition.effect;
+		if (definition.variants) {
+			const count = values && values[0];
+			// Invalid/missing counters must not silently pick another variant.
+			if (!Number.isInteger(count) || count < definition.min || count > definition.max) {
+				return;
+			}
+			effectId = definition.variants[count];
+		}
+		if (!effectId || previous === effectId) {
+			return;
+		}
+		if (previous) {
+			EffectManager.remove(null, ownerAID, previous);
+		}
+		entity._originalStatusEffects[statusId] = effectId;
+		EffectManager.spam({ effectId, ownerAID, startTick: Renderer.tick, persistent: !!definition.repeat });
+	}
+
+	/** Skill level 7 explicitly cancels these elemental endows. */
+	static spamOriginalSkillVariant(skillId, level, ownerAID) {
+		const effectId = EffectManager.originalSkillVariants[skillId]?.[level];
+		if (effectId) {
+			EffectManager.spam({ effectId, ownerAID, startTick: Renderer.tick });
+		}
+	}
+
+	/** End phases are detached from the unit that the server has removed. */
+	static spamOriginalUnitEnd(entity) {
+		if (!entity || !entity._originalUnitEndEffectId) {
+			return;
+		}
+		const effectId = entity._originalUnitEndEffectId;
+		entity._originalUnitEndEffectId = null;
+		EffectManager.spam({
+			effectId,
+			position: [...entity.position],
+			startTick: Renderer.tick,
+			otherAID: entity.creatorGID
+		});
+	}
+
 	static spamSkillZone(unit_id, xPos, yPos, uid, creatorUid) {
 		// No effect mode (/effect)
 		if (!Preferences.effect) {
@@ -780,6 +1086,7 @@ class EffectManager {
 				? entity.constructor.TYPE_UNIT
 				: entity.constructor.TYPE_EFFECT;
 		entity.creatorGID = creatorUid;
+		entity._originalUnitEndEffectId = EffectManager.originalUnitPhases[unit_id]?.end;
 
 		EntityManager.add(entity);
 
@@ -806,6 +1113,7 @@ class EffectManager {
 	 * @param {number} tick
 	 */
 	static spamSkill(skillId, destAID, position, tick, srcAID) {
+		EffectManager.spamOriginalDirectional(skillId, 'use', srcAID, destAID, tick);
 		let effects, EF_Init_Par;
 		if (!(skillId in SkillEffect)) {
 			return;
@@ -856,6 +1164,21 @@ class EffectManager {
 	 * @param {number} tick
 	 */
 	static spamSkillSuccess(skillId, destAID, tick, srcAID) {
+		if (skillId === 5456 && destAID) {
+			EffectManager.spam({
+				effectId: 'complete_jupitel_' + Math.floor(Math.random() * 3),
+				ownerAID: destAID,
+				startTick: tick
+			});
+		}
+		if (skillId === 5458 && srcAID) {
+			EffectManager.spam({
+				effectId: 'complete_hell_rock_' + Math.floor(Math.random() * 3),
+				ownerAID: srcAID,
+				startTick: tick
+			});
+		}
+		EffectManager.spamOriginalDirectional(skillId, 'success', srcAID, destAID, tick);
 		let effects, EF_Init_Par;
 		if (!(skillId in SkillEffect)) {
 			return;
@@ -904,6 +1227,7 @@ class EffectManager {
 	 * @param {number} tick
 	 */
 	static spamSkillHit(skillId, destAID, tick, srcAID) {
+		EffectManager.spamOriginalDirectional(skillId, 'hit', srcAID, destAID, tick);
 		let effects, EF_Init_Par;
 		if (!(skillId in SkillEffect)) {
 			return;
@@ -1276,4 +1600,38 @@ class EffectManager {
 /**
  * Export
  */
+
+// Shield and immobilization visuals follow server status start/end, not a timer guess.
+EffectManager.originalStatusPhases[919] = { name: 'TUNAPARTY', effect: 'doram_tunaparty_original', repeat: true };
+EffectManager.originalStatusPhases[896] = { name: 'SV_ROOTTWIST', effect: 'doram_roottwist_original', repeat: true };
+
+EffectManager.originalStatusPhases[350] = { name: 'DUPLELIGHT', effect: 'five_duplelight_status', repeat: false };
+EffectManager.originalStatusPhases[330] = { name: 'ORATIO', effect: 'five_oratio_status', repeat: true };
+EffectManager.originalStatusPhases[328] = { name: 'VENOMIMPRESS', effect: 'five_venom_status', repeat: true };
+
+// Ground packets arrive once per cell. The visual repeats, but its WAV belongs
+// to the cast. The map epoch prevents suppression after reloading a map.
+EffectManager.fourUnitAudioTime = new Map();
+EffectManager.shouldPlayFourUnitSound = function (key, creator, tick) {
+	const token = `${EffectManager.originalStatusEpoch}:${key}:${creator}`;
+	const last = EffectManager.fourUnitAudioTime.get(token);
+	if (last !== undefined && tick >= last && tick - last < 200) {
+		return false;
+	}
+	if (EffectManager.fourUnitAudioTime.size >= 128) {
+		EffectManager.fourUnitAudioTime.clear();
+	}
+	EffectManager.fourUnitAudioTime.set(token, tick);
+	return true;
+};
+
+EffectManager.originalSkillVariants[5404] = {
+	1: 'final_grenade_audio_1',
+	2: 'final_grenade_audio_2',
+	3: 'final_grenade_audio_3',
+	4: 'final_grenade_audio_4',
+	5: 'final_grenade_audio_5',
+	6: 'final_grenade_audio_6',
+	7: 'final_grenade_audio_7'
+};
 export default EffectManager;
