@@ -16725,10 +16725,32 @@ var GND = class {
 				mesh.push((x + 1) * 2, h_a[1], (y + 0) * 2, 1, 0, 0, tile.u2, tile.v2, l.u2, l.v1, 0, 0, (x + 1) * 2, h_a[3], (y + 1) * 2, 1, 0, 0, tile.u1, tile.v1, l.u1, l.v1, 0, 0, (x + 1) * 2, h_b[0], (y + 0) * 2, 1, 0, 0, tile.u4, tile.v4, l.u2, l.v2, 0, 0, (x + 1) * 2, h_b[0], (y + 0) * 2, 1, 0, 0, tile.u4, tile.v4, l.u2, l.v2, 0, 0, (x + 1) * 2, h_b[2], (y + 1) * 2, 1, 0, 0, tile.u3, tile.v3, l.u1, l.v2, 0, 0, (x + 1) * 2, h_a[3], (y + 1) * 2, 1, 0, 0, tile.u1, tile.v1, l.u1, l.v1, 0, 0);
 			}
 		}
+		const cells = width * height;
+		const cellTexture = new Int16Array(cells).fill(-1);
+		const cellHeights = new Float32Array(cells * 4);
+		const cellUv = new Float32Array(cells * 4);
+		for (let i = 0; i < cells; ++i) {
+			const cell = surfaces[i];
+			cellHeights.set(cell.height, i * 4);
+			if (cell.tile_up > -1) {
+				const top = tiles[cell.tile_up];
+				if (top && top.texture > -1) {
+					cellTexture[i] = top.texture;
+					lightmap_atlas(top.light);
+					cellUv[i * 4] = (top.u1 + top.u2 + top.u3 + top.u4) / 4;
+					cellUv[i * 4 + 1] = (top.v1 + top.v2 + top.v3 + top.v4) / 4;
+					cellUv[i * 4 + 2] = (l.u1 + l.u2) / 2;
+					cellUv[i * 4 + 3] = (l.v1 + l.v2) / 2;
+				}
+			}
+		}
 		return {
 			width: this.width,
 			height: this.height,
 			textures: this.textures,
+			cellTexture,
+			cellHeights,
+			cellUv,
 			lightmap,
 			lightmapSize: this.lightmap.count,
 			tileColor: this.createTilesColorImage(),

@@ -11365,7 +11365,7 @@ var init_MemoryManager = __esmMin((() => {
 //#endregion
 //#region src/Network/Packets/packets2003_len_main.js
 var packets2003_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2003_len_main_default });
-function init$36(packetver) {
+function init$37(packetver) {
 	length_list$22[100] = 55;
 	length_list$22[101] = 17;
 	length_list$22[102] = 3;
@@ -11773,12 +11773,12 @@ function init$36(packetver) {
 var length_list$22, packets2003_len_main_default;
 var init_packets2003_len_main = __esmMin((() => {
 	length_list$22 = new Array();
-	packets2003_len_main_default = { init: init$36 };
+	packets2003_len_main_default = { init: init$37 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2004_len_main.js
 var packets2004_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2004_len_main_default });
-function init$35(packetver) {
+function init$36(packetver) {
 	length_list$21[100] = 55;
 	length_list$21[101] = 17;
 	length_list$21[102] = 3;
@@ -12386,12 +12386,12 @@ function init$35(packetver) {
 var length_list$21, packets2004_len_main_default;
 var init_packets2004_len_main = __esmMin((() => {
 	length_list$21 = new Array();
-	packets2004_len_main_default = { init: init$35 };
+	packets2004_len_main_default = { init: init$36 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2005_len_main.js
 var packets2005_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2005_len_main_default });
-function init$34(packetver) {
+function init$35(packetver) {
 	length_list$20[100] = 55;
 	length_list$20[101] = 17;
 	length_list$20[102] = 3;
@@ -13016,12 +13016,12 @@ function init$34(packetver) {
 var length_list$20, packets2005_len_main_default;
 var init_packets2005_len_main = __esmMin((() => {
 	length_list$20 = new Array();
-	packets2005_len_main_default = { init: init$34 };
+	packets2005_len_main_default = { init: init$35 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2006_len_main.js
 var packets2006_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2006_len_main_default });
-function init$33(packetver) {
+function init$34(packetver) {
 	length_list$19[100] = 55;
 	length_list$19[101] = 17;
 	length_list$19[102] = 3;
@@ -13615,12 +13615,12 @@ function init$33(packetver) {
 var length_list$19, packets2006_len_main_default;
 var init_packets2006_len_main = __esmMin((() => {
 	length_list$19 = new Array();
-	packets2006_len_main_default = { init: init$33 };
+	packets2006_len_main_default = { init: init$34 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2007_len_main.js
 var packets2007_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2007_len_main_default });
-function init$32(packetver) {
+function init$33(packetver) {
 	length_list$18[100] = 55;
 	length_list$18[101] = 17;
 	length_list$18[102] = 3;
@@ -14307,12 +14307,12 @@ function init$32(packetver) {
 var length_list$18, packets2007_len_main_default;
 var init_packets2007_len_main = __esmMin((() => {
 	length_list$18 = new Array();
-	packets2007_len_main_default = { init: init$32 };
+	packets2007_len_main_default = { init: init$33 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2008_len_main.js
 var packets2008_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2008_len_main_default });
-function init$31(packetver) {
+function init$32(packetver) {
 	length_list$17[100] = 55;
 	length_list$17[101] = 17;
 	length_list$17[102] = 3;
@@ -32496,12 +32496,12 @@ function init$31(packetver) {
 var length_list$17, packets2008_len_main_default;
 var init_packets2008_len_main = __esmMin((() => {
 	length_list$17 = new Array();
-	packets2008_len_main_default = { init: init$31 };
+	packets2008_len_main_default = { init: init$32 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2009_len_main.js
 var packets2009_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2009_len_main_default });
-function init$30(packetver) {
+function init$31(packetver) {
 	length_list$16[100] = 55;
 	length_list$16[101] = 17;
 	length_list$16[102] = 3;
@@ -38738,12 +38738,12 @@ function init$30(packetver) {
 var length_list$16, packets2009_len_main_default;
 var init_packets2009_len_main = __esmMin((() => {
 	length_list$16 = new Array();
-	packets2009_len_main_default = { init: init$30 };
+	packets2009_len_main_default = { init: init$31 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2010_len_main.js
 var packets2010_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2010_len_main_default });
-function init$29(packetver) {
+function init$30(packetver) {
 	length_list$15[100] = 55;
 	length_list$15[101] = 17;
 	length_list$15[102] = 3;
@@ -40217,12 +40217,12 @@ function init$29(packetver) {
 var length_list$15, packets2010_len_main_default;
 var init_packets2010_len_main = __esmMin((() => {
 	length_list$15 = new Array();
-	packets2010_len_main_default = { init: init$29 };
+	packets2010_len_main_default = { init: init$30 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2011_len_main.js
 var packets2011_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2011_len_main_default });
-function init$28(packetver) {
+function init$29(packetver) {
 	length_list$14[100] = 55;
 	length_list$14[101] = 17;
 	length_list$14[102] = 3;
@@ -43152,12 +43152,12 @@ function init$28(packetver) {
 var length_list$14, packets2011_len_main_default;
 var init_packets2011_len_main = __esmMin((() => {
 	length_list$14 = new Array();
-	packets2011_len_main_default = { init: init$28 };
+	packets2011_len_main_default = { init: init$29 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2012_len_main.js
 var packets2012_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2012_len_main_default });
-function init$27(packetver) {
+function init$28(packetver) {
 	length_list$13[100] = 55;
 	length_list$13[101] = 17;
 	length_list$13[102] = 3;
@@ -46572,12 +46572,12 @@ function init$27(packetver) {
 var length_list$13, packets2012_len_main_default;
 var init_packets2012_len_main = __esmMin((() => {
 	length_list$13 = new Array();
-	packets2012_len_main_default = { init: init$27 };
+	packets2012_len_main_default = { init: init$28 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2013_len_main.js
 var packets2013_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2013_len_main_default });
-function init$26(packetver) {
+function init$27(packetver) {
 	length_list$12[100] = 55;
 	length_list$12[101] = 17;
 	length_list$12[102] = 3;
@@ -50066,12 +50066,12 @@ function init$26(packetver) {
 var length_list$12, packets2013_len_main_default;
 var init_packets2013_len_main = __esmMin((() => {
 	length_list$12 = new Array();
-	packets2013_len_main_default = { init: init$26 };
+	packets2013_len_main_default = { init: init$27 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2014_len_main.js
 var packets2014_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2014_len_main_default });
-function init$25(packetver) {
+function init$26(packetver) {
 	length_list$11[100] = 55;
 	length_list$11[101] = 17;
 	length_list$11[102] = 3;
@@ -53651,12 +53651,12 @@ function init$25(packetver) {
 var length_list$11, packets2014_len_main_default;
 var init_packets2014_len_main = __esmMin((() => {
 	length_list$11 = new Array();
-	packets2014_len_main_default = { init: init$25 };
+	packets2014_len_main_default = { init: init$26 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2015_len_main.js
 var packets2015_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2015_len_main_default });
-function init$24(packetver) {
+function init$25(packetver) {
 	length_list$10[100] = 55;
 	length_list$10[101] = 17;
 	length_list$10[102] = 3;
@@ -57088,12 +57088,12 @@ function init$24(packetver) {
 var length_list$10, packets2015_len_main_default;
 var init_packets2015_len_main = __esmMin((() => {
 	length_list$10 = new Array();
-	packets2015_len_main_default = { init: init$24 };
+	packets2015_len_main_default = { init: init$25 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2016_len_main.js
 var packets2016_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2016_len_main_default });
-function init$23(packetver) {
+function init$24(packetver) {
 	length_list$9[100] = 55;
 	length_list$9[101] = 17;
 	length_list$9[102] = 3;
@@ -60691,12 +60691,12 @@ function init$23(packetver) {
 var length_list$9, packets2016_len_main_default;
 var init_packets2016_len_main = __esmMin((() => {
 	length_list$9 = new Array();
-	packets2016_len_main_default = { init: init$23 };
+	packets2016_len_main_default = { init: init$24 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2017_len_main.js
 var packets2017_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2017_len_main_default });
-function init$22(packetver) {
+function init$23(packetver) {
 	length_list$8[100] = 55;
 	length_list$8[101] = 17;
 	length_list$8[102] = 3;
@@ -64274,12 +64274,12 @@ function init$22(packetver) {
 var length_list$8, packets2017_len_main_default;
 var init_packets2017_len_main = __esmMin((() => {
 	length_list$8 = new Array();
-	packets2017_len_main_default = { init: init$22 };
+	packets2017_len_main_default = { init: init$23 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2018_len_main.js
 var packets2018_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2018_len_main_default });
-function init$21(packetver) {
+function init$22(packetver) {
 	length_list$7[100] = 55;
 	length_list$7[101] = 17;
 	length_list$7[102] = 3;
@@ -66183,12 +66183,12 @@ function init$21(packetver) {
 var length_list$7, packets2018_len_main_default;
 var init_packets2018_len_main = __esmMin((() => {
 	length_list$7 = new Array();
-	packets2018_len_main_default = { init: init$21 };
+	packets2018_len_main_default = { init: init$22 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2019_len_main.js
 var packets2019_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2019_len_main_default });
-function init$20(packetver) {
+function init$21(packetver) {
 	length_list$6[100] = 55;
 	length_list$6[101] = 17;
 	length_list$6[102] = 3;
@@ -67766,12 +67766,12 @@ function init$20(packetver) {
 var length_list$6, packets2019_len_main_default;
 var init_packets2019_len_main = __esmMin((() => {
 	length_list$6 = new Array();
-	packets2019_len_main_default = { init: init$20 };
+	packets2019_len_main_default = { init: init$21 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2020_len_main.js
 var packets2020_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2020_len_main_default });
-function init$19(packetver) {
+function init$20(packetver) {
 	length_list$5[100] = 55;
 	length_list$5[101] = 17;
 	length_list$5[102] = 3;
@@ -69356,12 +69356,12 @@ function init$19(packetver) {
 var length_list$5, packets2020_len_main_default;
 var init_packets2020_len_main = __esmMin((() => {
 	length_list$5 = new Array();
-	packets2020_len_main_default = { init: init$19 };
+	packets2020_len_main_default = { init: init$20 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2021_len_main.js
 var packets2021_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2021_len_main_default });
-function init$18(packetver) {
+function init$19(packetver) {
 	length_list$4[100] = 55;
 	length_list$4[101] = 17;
 	length_list$4[102] = 3;
@@ -70967,12 +70967,12 @@ function init$18(packetver) {
 var length_list$4, packets2021_len_main_default;
 var init_packets2021_len_main = __esmMin((() => {
 	length_list$4 = new Array();
-	packets2021_len_main_default = { init: init$18 };
+	packets2021_len_main_default = { init: init$19 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2022_len_main.js
 var packets2022_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2022_len_main_default });
-function init$17(packetver) {
+function init$18(packetver) {
 	length_list$3[100] = 55;
 	length_list$3[101] = 17;
 	length_list$3[102] = 3;
@@ -72584,12 +72584,12 @@ function init$17(packetver) {
 var length_list$3, packets2022_len_main_default;
 var init_packets2022_len_main = __esmMin((() => {
 	length_list$3 = new Array();
-	packets2022_len_main_default = { init: init$17 };
+	packets2022_len_main_default = { init: init$18 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2023_len_main.js
 var packets2023_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2023_len_main_default });
-function init$16(packetver) {
+function init$17(packetver) {
 	length_list$2[100] = 55;
 	length_list$2[101] = 17;
 	length_list$2[102] = 3;
@@ -74255,12 +74255,12 @@ function init$16(packetver) {
 var length_list$2, packets2023_len_main_default;
 var init_packets2023_len_main = __esmMin((() => {
 	length_list$2 = new Array();
-	packets2023_len_main_default = { init: init$16 };
+	packets2023_len_main_default = { init: init$17 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2024_len_main.js
 var packets2024_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2024_len_main_default });
-function init$15(packetver) {
+function init$16(packetver) {
 	length_list$1[100] = 55;
 	length_list$1[101] = 17;
 	length_list$1[102] = 3;
@@ -75966,12 +75966,12 @@ function init$15(packetver) {
 var length_list$1, packets2024_len_main_default;
 var init_packets2024_len_main = __esmMin((() => {
 	length_list$1 = new Array();
-	packets2024_len_main_default = { init: init$15 };
+	packets2024_len_main_default = { init: init$16 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2025_len_main.js
 var packets2025_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2025_len_main_default });
-function init$14(packetver) {
+function init$15(packetver) {
 	length_list[100] = 55;
 	length_list[101] = 17;
 	length_list[102] = 3;
@@ -77717,7 +77717,7 @@ function init$14(packetver) {
 var length_list, packets2025_len_main_default;
 var init_packets2025_len_main = __esmMin((() => {
 	length_list = new Array();
-	packets2025_len_main_default = { init: init$14 };
+	packets2025_len_main_default = { init: init$15 };
 }));
 //#endregion
 //#region src/Network/PacketLength.js
@@ -77726,7 +77726,7 @@ var init_packets2025_len_main = __esmMin((() => {
 *
 * @param {number} packetver - packet version (clientdate)
 */
-function init$13(packetver) {
+function init$14(packetver) {
 	packetver = parseInt(packetver);
 	const years = [
 		2025,
@@ -77827,7 +77827,7 @@ var init_PacketLength = __esmMin((() => {
 	};
 	packets_len = new Array();
 	PacketLength_default = {
-		init: init$13,
+		init: init$14,
 		getPacketLength
 	};
 }));
@@ -83724,7 +83724,7 @@ var init_PostProcess = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/VerticalFlip.js
-var _program$28, _buffer$21, _active$3, VerticalFlip;
+var _program$29, _buffer$21, _active$3, VerticalFlip;
 var init_VerticalFlip = __esmMin((() => {
 	init_VerticalFlip$2();
 	init_VerticalFlip$1();
@@ -83733,9 +83733,9 @@ var init_VerticalFlip = __esmMin((() => {
 	_active$3 = false;
 	VerticalFlip = class {
 		static init(gl) {
-			if (_program$28) return;
+			if (_program$29) return;
 			try {
-				_program$28 = WebGL_default.createShaderProgram(gl, VerticalFlip_default$1, VerticalFlip_default);
+				_program$29 = WebGL_default.createShaderProgram(gl, VerticalFlip_default$1, VerticalFlip_default);
 			} catch (e) {
 				console.error("Error when compiling shader VerticalFlip.", e);
 				return;
@@ -83768,19 +83768,19 @@ var init_VerticalFlip = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$21 || !_program$28 || !_active$3) return;
+			if (!_buffer$21 || !_program$29 || !_active$3) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$28);
+			gl.useProgram(_program$29);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
-			let posLoc = _program$28.attribute.aPosition;
+			let posLoc = _program$29.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 16, 0);
-			posLoc = _program$28.attribute.aTextureCoord;
+			posLoc = _program$29.attribute.aTextureCoord;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 16, 8);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.uniform1i(_program$28.uniform.uTexture, 0);
+			gl.uniform1i(_program$29.uniform.uTexture, 0);
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 			PostProcess.afterRenderPass(gl);
 		}
@@ -83788,13 +83788,13 @@ var init_VerticalFlip = __esmMin((() => {
 		* @returns {WebGLProgram} Shader program
 		*/
 		static program() {
-			return _program$28;
+			return _program$29;
 		}
 		/** Resets effect state */
 		static clean(gl) {
 			_active$3 = false;
 			if (_buffer$21) gl.deleteBuffer(_buffer$21);
-			_program$28 = _buffer$21 = null;
+			_program$29 = _buffer$21 = null;
 		}
 		/** @returns {boolean} Whether the effect is active */
 		static isActive() {
@@ -206176,7 +206176,7 @@ var init_HtmlHelper = __esmMin((() => {
 /**
 * Render background (or a black background if no image is loaded yet)
 */
-function render$15() {
+function render$16() {
 	_ctx$6.clearRect(0, 0, _canvas.width, _canvas.height);
 	if (_progress > -1) Background.setPercent(_progress);
 }
@@ -206244,7 +206244,7 @@ var init_Background = __esmMin((() => {
 			let i;
 			_progress = 0;
 			_canvas.style.zIndex = "1";
-			render$15();
+			render$16();
 			if (loading) {
 				_loading = loading;
 				return;
@@ -206267,7 +206267,7 @@ var init_Background = __esmMin((() => {
 				height: height + "px"
 			});
 			_ctx$6.clearRect(0, 0, width, height);
-			render$15();
+			render$16();
 		}
 		/**
 		* Set an image as background
@@ -206280,7 +206280,7 @@ var init_Background = __esmMin((() => {
 			_progress = -1;
 			_container.innerHTML = "";
 			_container.style.backgroundImage = "none";
-			render$15();
+			render$16();
 			if (Array.isArray(filename)) {
 				let loadedCount = 0;
 				const total = filename.length;
@@ -207005,7 +207005,7 @@ var init_GridSelector$1 = __esmMin((() => {
 *
 * @param {object} gl context
 */
-function init$12(gl) {
+function init$13(gl) {
 	Client.loadFile("data/texture/grid.tga", function(buffer) {
 		Texture.load(buffer, function(success) {
 			if (!success) return;
@@ -207028,7 +207028,7 @@ function init$12(gl) {
 		});
 	});
 	_buffer$20 = gl.createBuffer();
-	_program$27 = WebGL_default.createShaderProgram(gl, GridSelector_default$2, GridSelector_default$1);
+	_program$28 = WebGL_default.createShaderProgram(gl, GridSelector_default$2, GridSelector_default$1);
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$20);
 	gl.bufferData(gl.ARRAY_BUFFER, _buffer_data.byteLength, gl.DYNAMIC_DRAW);
 }
@@ -207042,12 +207042,12 @@ function init$12(gl) {
 * @param {number} x
 * @param {number} y
 */
-function render$14(gl, modelView, projection, fog, x, y) {
+function render$15(gl, modelView, projection, fog, x, y) {
 	if (!_texture$5) return;
-	const uniform = _program$27.uniform;
-	const attribute = _program$27.attribute;
+	const uniform = _program$28.uniform;
+	const attribute = _program$28.attribute;
 	let z;
-	gl.useProgram(_program$27);
+	gl.useProgram(_program$28);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -207084,7 +207084,7 @@ function render$14(gl, modelView, projection, fog, x, y) {
 *
 * @param {object} gl context
 */
-function free$9(gl) {
+function free$10(gl) {
 	if (_buffer$20) {
 		gl.deleteBuffer(_buffer$20);
 		_buffer$20 = null;
@@ -207093,12 +207093,12 @@ function free$9(gl) {
 		gl.deleteTexture(_texture$5);
 		_texture$5 = null;
 	}
-	if (_program$27) {
-		gl.deleteProgram(_program$27);
-		_program$27 = null;
+	if (_program$28) {
+		gl.deleteProgram(_program$28);
+		_program$28 = null;
 	}
 }
-var _program$27, _buffer$20, _texture$5, _xy, _buffer_data, GridSelector_default;
+var _program$28, _buffer$20, _texture$5, _xy, _buffer_data, GridSelector_default;
 var init_GridSelector = __esmMin((() => {
 	init_Altitude();
 	init_Client();
@@ -207107,7 +207107,7 @@ var init_GridSelector = __esmMin((() => {
 	init_Configs();
 	init_GridSelector$2();
 	init_GridSelector$1();
-	_program$27 = null;
+	_program$28 = null;
 	_buffer$20 = null;
 	_texture$5 = null;
 	_xy = null;
@@ -207134,9 +207134,9 @@ var init_GridSelector = __esmMin((() => {
 		1
 	]);
 	GridSelector_default = {
-		init: init$12,
-		free: free$9,
-		render: render$14
+		init: init$13,
+		free: free$10,
+		render: render$15
 	};
 }));
 //#endregion
@@ -207219,10 +207219,10 @@ var init_Ground$1 = __esmMin((() => {
 * @param {object} fog structure
 * @param {object} light structure
 */
-function render$13(gl, modelView, projection, normalMat, fog, light) {
-	const uniform = _program$26.uniform;
-	const attribute = _program$26.attribute;
-	gl.useProgram(_program$26);
+function render$14(gl, modelView, projection, normalMat, fog, light) {
+	const uniform = _program$27.uniform;
+	const attribute = _program$27.attribute;
+	gl.useProgram(_program$27);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform3fv(uniform.uLightDirection, light.direction);
@@ -207387,13 +207387,23 @@ function onTextureAtlasComplete(gl, atlas) {
 * @param {object} gl context
 * @param {object} data - ground
 */
-function init$11(gl, data) {
+/**
+* The ground's texture atlas and lightmap, for things drawn on the ground
+* that should take its colour and its shadows (Grass.js).
+*/
+function textures() {
+	return {
+		atlas: _textureAtlas,
+		lightmap: _lightmap
+	};
+}
+function init$12(gl, data) {
 	_vertCount$1 = data.meshVertCount;
 	_width = data.width;
 	data.height;
 	_shadowMap = data.shadowMap;
 	if (!_buffer$19) _buffer$19 = gl.createBuffer();
-	if (!_program$26) _program$26 = WebGL_default.createShaderProgram(gl, Ground_default$2, Ground_default$1);
+	if (!_program$27) _program$27 = WebGL_default.createShaderProgram(gl, Ground_default$2, Ground_default$1);
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$19);
 	gl.bufferData(gl.ARRAY_BUFFER, data.mesh, gl.STATIC_DRAW);
 	initLightmap(gl, data.lightmap, data.lightmapSize);
@@ -207405,7 +207415,7 @@ function init$11(gl, data) {
 *
 * @param {object} gl context
 */
-function free$8(gl) {
+function free$9(gl) {
 	if (_lightmap) {
 		gl.deleteTexture(_lightmap);
 		_lightmap = null;
@@ -207444,7 +207454,7 @@ function getShadowFactor(x, y) {
 	for (y = -3; y < 3; ++y) for (x = -3; x < 3; ++x) factor += _shadowMap[_x + x + (_y + y) * _width * 8];
 	return factor / 36 / 255;
 }
-var procCanvas$2, procCtx$2, _program$26, _buffer$19, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
+var procCanvas$2, procCtx$2, _program$27, _buffer$19, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
 var init_Ground = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
@@ -207454,7 +207464,7 @@ var init_Ground = __esmMin((() => {
 	init_Ground$1();
 	procCanvas$2 = document.createElement("canvas");
 	procCtx$2 = procCanvas$2.getContext("2d", { willReadFrequently: true });
-	_program$26 = null;
+	_program$27 = null;
 	_buffer$19 = null;
 	_lightmap = null;
 	_tileColor = null;
@@ -207463,10 +207473,11 @@ var init_Ground = __esmMin((() => {
 	_vertCount$1 = 0;
 	_width = 0;
 	Ground_default = {
-		init: init$11,
-		free: free$8,
-		render: render$13,
-		getShadowFactor
+		init: init$12,
+		free: free$9,
+		render: render$14,
+		getShadowFactor,
+		textures
 	};
 }));
 //#endregion
@@ -207488,7 +207499,7 @@ var init_SpriteRenderer$1 = __esmMin((() => {
 */
 function RenderCanvas3D(isBlendModeOne) {
 	if (!this.image.texture || !this.color[3]) return;
-	const uniform = _program$25.uniform;
+	const uniform = _program$26.uniform;
 	const gl = _gl$2;
 	const use_pal = this.image.palette !== null;
 	if (isBlendModeOne) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -207529,7 +207540,7 @@ function RenderCanvas3D(isBlendModeOne) {
 	}
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 }
-var mat4$22, RenderCanvas2D, _program$25, _buffer$18, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
+var mat4$22, RenderCanvas2D, _program$26, _buffer$18, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
 var init_SpriteRenderer = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -207635,7 +207646,7 @@ var init_SpriteRenderer = __esmMin((() => {
 			_ctx$5.restore();
 		};
 	})();
-	_program$25 = null;
+	_program$26 = null;
 	_buffer$18 = null;
 	_ctx$5 = null;
 	_gl$2 = null;
@@ -207746,7 +207757,7 @@ var init_SpriteRenderer = __esmMin((() => {
 					1
 				]), gl.STATIC_DRAW);
 			}
-			if (!_program$25) _program$25 = WebGL_default.createShaderProgram(gl, SpriteRenderer_default$1, SpriteRenderer_default);
+			if (!_program$26) _program$26 = WebGL_default.createShaderProgram(gl, SpriteRenderer_default$1, SpriteRenderer_default);
 		}
 		/**
 		* Initialize 3D Context
@@ -207757,9 +207768,9 @@ var init_SpriteRenderer = __esmMin((() => {
 		* @param {object} fog structure
 		*/
 		static bind3DContext(gl, modelView, projection, fog) {
-			const attribute = _program$25.attribute;
-			const uniform = _program$25.uniform;
-			gl.useProgram(_program$25);
+			const attribute = _program$26.attribute;
+			const uniform = _program$26.uniform;
+			gl.useProgram(_program$26);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uViewModelMat, false, mat4$22.invert(_matrix$7, modelView));
@@ -207791,7 +207802,7 @@ var init_SpriteRenderer = __esmMin((() => {
 		* @param {object} gl context
 		*/
 		static unbind(gl) {
-			const attribute = _program$25.attribute;
+			const attribute = _program$26.attribute;
 			gl.disableVertexAttribArray(attribute.aPosition);
 			gl.disableVertexAttribArray(attribute.aTextureCoord);
 		}
@@ -207891,7 +207902,7 @@ function setReflection(reflection) {
 * @param {object} gl context
 * @param {object} water data
 */
-function init$10(gl, water) {
+function init$11(gl, water) {
 	_vertCount = water.vertCount;
 	_waveHeight = water.waveHeight;
 	_waveSpeed = water.waveSpeed;
@@ -207900,7 +207911,7 @@ function init$10(gl, water) {
 	_wavePitch = water.wavePitch;
 	_waterOpacity = water.type !== 4 && water.type !== 6 ? .8 : 1;
 	if (!_vertCount) return;
-	if (!_program$24) _program$24 = WebGL_default.createShaderProgram(gl, Water_default$2, Water_default$1);
+	if (!_program$25) _program$25 = WebGL_default.createShaderProgram(gl, Water_default$2, Water_default$1);
 	_buffer$17 = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
 	gl.bufferData(gl.ARRAY_BUFFER, water.mesh, gl.STATIC_DRAW);
@@ -207919,12 +207930,12 @@ function init$10(gl, water) {
 * @param {object} light structure
 * @param {number} tick (game tick)
 */
-function render$12(gl, modelView, projection, fog, light, tick) {
+function render$13(gl, modelView, projection, fog, light, tick) {
 	if (!_vertCount) return;
-	const uniform = _program$24.uniform;
-	const attribute = _program$24.attribute;
+	const uniform = _program$25.uniform;
+	const attribute = _program$25.attribute;
 	const frame = tick / (1e3 / 60);
-	gl.useProgram(_program$24);
+	gl.useProgram(_program$25);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -207984,15 +207995,15 @@ function render$12(gl, modelView, projection, fog, light, tick) {
 *
 * @param {object} gl context
 */
-function free$7(gl) {
+function free$8(gl) {
 	let i;
 	if (_buffer$17) {
 		gl.deleteBuffer(_buffer$17);
 		_buffer$17 = null;
 	}
-	if (_program$24) {
-		gl.deleteProgram(_program$24);
-		_program$24 = null;
+	if (_program$25) {
+		gl.deleteProgram(_program$25);
+		_program$25 = null;
 	}
 	for (i = 0; i < 32; ++i) if (_textures$1[i]) {
 		gl.deleteTexture(_textures$1[i]);
@@ -208020,14 +208031,14 @@ function isSubmerged(x, y) {
 function hasWater() {
 	return _vertCount > 0;
 }
-var _program$24, _buffer$17, _vertCount, _textures$1, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, _reflection, Water_default;
+var _program$25, _buffer$17, _vertCount, _textures$1, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, _reflection, Water_default;
 var init_Water = __esmMin((() => {
 	init_WebGL();
 	init_SpriteRenderer();
 	init_Altitude();
 	init_Water$2();
 	init_Water$1();
-	_program$24 = null;
+	_program$25 = null;
 	_buffer$17 = null;
 	_vertCount = 0;
 	_textures$1 = new Array(32);
@@ -208039,9 +208050,9 @@ var init_Water = __esmMin((() => {
 	_waterOpacity = .9;
 	_reflection = null;
 	Water_default = {
-		init: init$10,
-		free: free$7,
-		render: render$12,
+		init: init$11,
+		free: free$8,
+		render: render$13,
 		isSubmerged,
 		hasWater,
 		level,
@@ -208314,13 +208325,13 @@ function buildBatches() {
 * @param {object} gl context
 * @param {object} data ( models )
 */
-function init$9(gl, data) {
+function init$10(gl, data) {
 	const count = data.infos.length;
 	_objects.length = count;
 	_batchesReady = false;
 	_pendingTextures = count;
 	if (!_buffer$16) _buffer$16 = gl.createBuffer();
-	if (!_program$23) _program$23 = WebGL_default.createShaderProgram(gl, Models_default$2, OccluderFade.injectShader(Models_default$1));
+	if (!_program$24) _program$24 = WebGL_default.createShaderProgram(gl, Models_default$2, OccluderFade.injectShader(Models_default$1));
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
 	gl.bufferData(gl.ARRAY_BUFFER, data.buffer, gl.STATIC_DRAW);
 	function onTextureLoaded(texture, index) {
@@ -208368,9 +208379,9 @@ function drawMeshes(gl) {
 * @param {object} light structure
 */
 function bind$1(gl, modelView, projection, fog, light) {
-	const uniform = _program$23.uniform;
-	const attribute = _program$23.attribute;
-	gl.useProgram(_program$23);
+	const uniform = _program$24.uniform;
+	const attribute = _program$24.attribute;
+	gl.useProgram(_program$24);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform3fv(uniform.uLightDirection, light.direction);
@@ -208401,7 +208412,7 @@ function bind$1(gl, modelView, projection, fog, light) {
 * @param {object} gl context
 */
 function unbind(gl) {
-	const attribute = _program$23.attribute;
+	const attribute = _program$24.attribute;
 	gl.disableVertexAttribArray(attribute.aPosition);
 	gl.disableVertexAttribArray(attribute.aVertexNormal);
 	gl.disableVertexAttribArray(attribute.aTextureCoord);
@@ -208417,10 +208428,10 @@ function unbind(gl) {
 * @param {object} fog structure
 * @param {object} light structure
 */
-function render$11(gl, modelView, projection, normalMat, fog, light) {
+function render$12(gl, modelView, projection, normalMat, fog, light) {
 	bind$1(gl, modelView, projection, fog, light);
-	OccluderFade.renderOpaque(gl, _program$23.uniform, () => drawMeshes(gl));
-	OccluderFade.renderQuery(gl, _program$23.uniform, () => drawMeshes(gl), OccluderFade.QUERY.MODELS);
+	OccluderFade.renderOpaque(gl, _program$24.uniform, () => drawMeshes(gl));
+	OccluderFade.renderQuery(gl, _program$24.uniform, () => drawMeshes(gl), OccluderFade.QUERY.MODELS);
 	unbind(gl);
 }
 /**
@@ -208437,7 +208448,7 @@ function render$11(gl, modelView, projection, normalMat, fog, light) {
 function renderFaded$1(gl, modelView, projection, normalMat, fog, light) {
 	if (!OccluderFade.needsBlendPass()) return;
 	bind$1(gl, modelView, projection, fog, light);
-	OccluderFade.renderBlend(gl, _program$23.uniform, () => drawMeshes(gl));
+	OccluderFade.renderBlend(gl, _program$24.uniform, () => drawMeshes(gl));
 	unbind(gl);
 }
 /**
@@ -208445,39 +208456,39 @@ function renderFaded$1(gl, modelView, projection, normalMat, fog, light) {
 *
 * @param {object} gl context
 */
-function free$6(gl) {
+function free$7(gl) {
 	let i, count;
 	if (_buffer$16) {
 		gl.deleteBuffer(_buffer$16);
 		_buffer$16 = null;
 	}
-	if (_program$23) {
-		gl.deleteProgram(_program$23);
-		_program$23 = null;
+	if (_program$24) {
+		gl.deleteProgram(_program$24);
+		_program$24 = null;
 	}
 	for (i = 0, count = _objects.length; i < count; ++i) gl.deleteTexture(_objects[i].texture);
 	_objects.length = 0;
 	_batches.length = 0;
 	_batchesReady = false;
 }
-var _program$23, _buffer$16, _objects, _batches, _batchesReady, _pendingTextures, Models_default;
+var _program$24, _buffer$16, _objects, _batches, _batchesReady, _pendingTextures, Models_default;
 var init_Models = __esmMin((() => {
 	init_Models$2();
 	init_Models$1();
 	init_WebGL();
 	init_Map();
 	init_OccluderFade();
-	_program$23 = null;
+	_program$24 = null;
 	_buffer$16 = null;
 	_objects = [];
 	_batches = [];
 	_batchesReady = false;
 	_pendingTextures = 0;
 	Models_default = {
-		init: init$9,
-		render: render$11,
+		init: init$10,
+		render: render$12,
 		renderFaded: renderFaded$1,
-		free: free$6
+		free: free$7
 	};
 }));
 //#endregion
@@ -208497,40 +208508,40 @@ var init_AnimatedModels$1 = __esmMin((() => {
 /**
 * Initialize shader program
 */
-function init$8(gl) {
-	_program$22 = WebGL_default.createShaderProgram(gl, AnimatedModels_default$2, OccluderFade.injectShader(AnimatedModels_default$1));
-	_program$22.uniform = {
-		uModelViewMat: gl.getUniformLocation(_program$22, "uModelViewMat"),
-		uProjectionMat: gl.getUniformLocation(_program$22, "uProjectionMat"),
-		uNormalMat: gl.getUniformLocation(_program$22, "uNormalMat"),
-		uLightDirection: gl.getUniformLocation(_program$22, "uLightDirection"),
-		uLightOpacity: gl.getUniformLocation(_program$22, "uLightOpacity"),
-		uLightAmbient: gl.getUniformLocation(_program$22, "uLightAmbient"),
-		uLightDiffuse: gl.getUniformLocation(_program$22, "uLightDiffuse"),
-		uLightEnv: gl.getUniformLocation(_program$22, "uLightEnv"),
-		uFogUse: gl.getUniformLocation(_program$22, "uFogUse"),
-		uFogNear: gl.getUniformLocation(_program$22, "uFogNear"),
-		uFogFar: gl.getUniformLocation(_program$22, "uFogFar"),
-		uFogColor: gl.getUniformLocation(_program$22, "uFogColor"),
-		uDiffuse: gl.getUniformLocation(_program$22, "uDiffuse"),
-		uOccluderFadeMode: gl.getUniformLocation(_program$22, "uOccluderFadeMode"),
-		uOccluderFadeEye: gl.getUniformLocation(_program$22, "uOccluderFadeEye"),
-		uOccluderFadeFocus: gl.getUniformLocation(_program$22, "uOccluderFadeFocus"),
-		uOccluderFadeRadius: gl.getUniformLocation(_program$22, "uOccluderFadeRadius"),
-		uOccluderFadeOpacity: gl.getUniformLocation(_program$22, "uOccluderFadeOpacity"),
-		uOccluderFadeStrength: gl.getUniformLocation(_program$22, "uOccluderFadeStrength")
+function init$9(gl) {
+	_program$23 = WebGL_default.createShaderProgram(gl, AnimatedModels_default$2, OccluderFade.injectShader(AnimatedModels_default$1));
+	_program$23.uniform = {
+		uModelViewMat: gl.getUniformLocation(_program$23, "uModelViewMat"),
+		uProjectionMat: gl.getUniformLocation(_program$23, "uProjectionMat"),
+		uNormalMat: gl.getUniformLocation(_program$23, "uNormalMat"),
+		uLightDirection: gl.getUniformLocation(_program$23, "uLightDirection"),
+		uLightOpacity: gl.getUniformLocation(_program$23, "uLightOpacity"),
+		uLightAmbient: gl.getUniformLocation(_program$23, "uLightAmbient"),
+		uLightDiffuse: gl.getUniformLocation(_program$23, "uLightDiffuse"),
+		uLightEnv: gl.getUniformLocation(_program$23, "uLightEnv"),
+		uFogUse: gl.getUniformLocation(_program$23, "uFogUse"),
+		uFogNear: gl.getUniformLocation(_program$23, "uFogNear"),
+		uFogFar: gl.getUniformLocation(_program$23, "uFogFar"),
+		uFogColor: gl.getUniformLocation(_program$23, "uFogColor"),
+		uDiffuse: gl.getUniformLocation(_program$23, "uDiffuse"),
+		uOccluderFadeMode: gl.getUniformLocation(_program$23, "uOccluderFadeMode"),
+		uOccluderFadeEye: gl.getUniformLocation(_program$23, "uOccluderFadeEye"),
+		uOccluderFadeFocus: gl.getUniformLocation(_program$23, "uOccluderFadeFocus"),
+		uOccluderFadeRadius: gl.getUniformLocation(_program$23, "uOccluderFadeRadius"),
+		uOccluderFadeOpacity: gl.getUniformLocation(_program$23, "uOccluderFadeOpacity"),
+		uOccluderFadeStrength: gl.getUniformLocation(_program$23, "uOccluderFadeStrength")
 	};
-	_program$22.attribute = {
-		aPosition: gl.getAttribLocation(_program$22, "aPosition"),
-		aNormal: gl.getAttribLocation(_program$22, "aNormal"),
-		aTextureCoord: gl.getAttribLocation(_program$22, "aTextureCoord"),
-		aAlpha: gl.getAttribLocation(_program$22, "aAlpha")
+	_program$23.attribute = {
+		aPosition: gl.getAttribLocation(_program$23, "aPosition"),
+		aNormal: gl.getAttribLocation(_program$23, "aNormal"),
+		aTextureCoord: gl.getAttribLocation(_program$23, "aTextureCoord"),
+		aAlpha: gl.getAttribLocation(_program$23, "aAlpha")
 	};
 }
 /**
 * Free resources
 */
-function free$5(gl) {
+function free$6(gl) {
 	for (let i = 0; i < _animatedModels.length; i++) {
 		const model = _animatedModels[i];
 		if (model.vao) gl.deleteVertexArray(model.vao);
@@ -208547,7 +208558,7 @@ function isNodeStatic(node) {
 */
 function add$2(gl, modelData) {
 	if (!modelData || !modelData.nodes || modelData.nodes.length === 0) return;
-	if (!_program$22) init$8(gl);
+	if (!_program$23) init$9(gl);
 	const instances = [];
 	for (let i = 0; i < modelData.instances.length; i++) {
 		const instArray = modelData.instances[i];
@@ -208705,7 +208716,7 @@ function add$2(gl, modelData) {
 	animModel.vao = gl.createVertexArray();
 	gl.bindVertexArray(animModel.vao);
 	gl.bindBuffer(gl.ARRAY_BUFFER, animModel.buffer);
-	const attribute = _program$22.attribute;
+	const attribute = _program$23.attribute;
 	const stride = 36;
 	gl.enableVertexAttribArray(attribute.aPosition);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, stride, 0);
@@ -208902,8 +208913,8 @@ function updateModelBuffer(gl, model, frame, force) {
 * Bind program and per-frame uniforms shared by both model passes
 */
 function bind(gl, modelView, projection, normalMat, fog, light) {
-	const uniform = _program$22.uniform;
-	gl.useProgram(_program$22);
+	const uniform = _program$23.uniform;
+	gl.useProgram(_program$23);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniformMatrix3fv(uniform.uNormalMat, false, normalMat);
@@ -208940,16 +208951,16 @@ function drawModels(gl) {
 /**
 * Render animated models (opaque pass)
 */
-function render$10(gl, modelView, projection, normalMat, fog, light, tick) {
+function render$11(gl, modelView, projection, normalMat, fog, light, tick) {
 	if (_animatedModels.length === 0) return;
-	if (!_program$22) init$8(gl);
+	if (!_program$23) init$9(gl);
 	bind(gl, modelView, projection, normalMat, fog, light);
 	for (let m = 0; m < _animatedModels.length; m++) {
 		const model = _animatedModels[m];
 		updateModelBuffer(gl, model, tick % (model.animLen || 1), false);
 	}
-	OccluderFade.renderOpaque(gl, _program$22.uniform, () => drawModels(gl));
-	OccluderFade.renderQuery(gl, _program$22.uniform, () => drawModels(gl), OccluderFade.QUERY.ANIMATED);
+	OccluderFade.renderOpaque(gl, _program$23.uniform, () => drawModels(gl));
+	OccluderFade.renderQuery(gl, _program$23.uniform, () => drawModels(gl), OccluderFade.QUERY.ANIMATED);
 	gl.bindVertexArray(null);
 }
 /**
@@ -208957,9 +208968,9 @@ function render$10(gl, modelView, projection, normalMat, fog, light, tick) {
 * Reuses the vertex data uploaded by render() this frame.
 */
 function renderFaded(gl, modelView, projection, normalMat, fog, light) {
-	if (_animatedModels.length === 0 || !_program$22 || !OccluderFade.needsBlendPass()) return;
+	if (_animatedModels.length === 0 || !_program$23 || !OccluderFade.needsBlendPass()) return;
 	bind(gl, modelView, projection, normalMat, fog, light);
-	OccluderFade.renderBlend(gl, _program$22.uniform, () => drawModels(gl));
+	OccluderFade.renderBlend(gl, _program$23.uniform, () => drawModels(gl));
 	gl.bindVertexArray(null);
 }
 /**
@@ -208968,7 +208979,7 @@ function renderFaded(gl, modelView, projection, normalMat, fog, light) {
 function hasAnimatedModels() {
 	return _animatedModels.length > 0;
 }
-var mat3$4, mat4$20, vec3$5, quat$1, _tempVec3, _tempVec3Scale, _tempQuat, _tempMat4, _program$22, _animatedModels, AnimatedModels_default;
+var mat3$4, mat4$20, vec3$5, quat$1, _tempVec3, _tempVec3Scale, _tempQuat, _tempMat4, _program$23, _animatedModels, AnimatedModels_default;
 var init_AnimatedModels = __esmMin((() => {
 	init_Client();
 	init_gl_matrix();
@@ -208985,13 +208996,13 @@ var init_AnimatedModels = __esmMin((() => {
 	_tempVec3Scale = vec3$5.create();
 	_tempQuat = quat$1.create();
 	_tempMat4 = mat4$20.create();
-	_program$22 = null;
+	_program$23 = null;
 	_animatedModels = [];
 	AnimatedModels_default = {
-		init: init$8,
-		free: free$5,
+		init: init$9,
+		free: free$6,
 		add: add$2,
-		render: render$10,
+		render: render$11,
 		renderFaded,
 		hasAnimatedModels
 	};
@@ -212685,38 +212696,38 @@ function grayBroadcast(src, out) {
 /**
 * Initialize the shader program.
 */
-function init$7(gl) {
-	_program$21 = WebGL_default.createShaderProgram(gl, GR2Model_default$1, GR2Model_default);
-	_program$21.uniform = {
-		uModelViewMat: gl.getUniformLocation(_program$21, "uModelViewMat"),
-		uProjectionMat: gl.getUniformLocation(_program$21, "uProjectionMat"),
-		uNormalMat: gl.getUniformLocation(_program$21, "uNormalMat"),
-		uBones: gl.getUniformLocation(_program$21, "uBones[0]"),
-		uLightDirection: gl.getUniformLocation(_program$21, "uLightDirection"),
-		uLightOpacity: gl.getUniformLocation(_program$21, "uLightOpacity"),
-		uLightAmbient: gl.getUniformLocation(_program$21, "uLightAmbient"),
-		uLightDiffuse: gl.getUniformLocation(_program$21, "uLightDiffuse"),
-		uLightEnv: gl.getUniformLocation(_program$21, "uLightEnv"),
-		uAlphaRef: gl.getUniformLocation(_program$21, "uAlphaRef"),
-		uAlpha: gl.getUniformLocation(_program$21, "uAlpha"),
-		uFogUse: gl.getUniformLocation(_program$21, "uFogUse"),
-		uFogNear: gl.getUniformLocation(_program$21, "uFogNear"),
-		uFogFar: gl.getUniformLocation(_program$21, "uFogFar"),
-		uFogColor: gl.getUniformLocation(_program$21, "uFogColor"),
-		uDiffuse: gl.getUniformLocation(_program$21, "uDiffuse")
+function init$8(gl) {
+	_program$22 = WebGL_default.createShaderProgram(gl, GR2Model_default$1, GR2Model_default);
+	_program$22.uniform = {
+		uModelViewMat: gl.getUniformLocation(_program$22, "uModelViewMat"),
+		uProjectionMat: gl.getUniformLocation(_program$22, "uProjectionMat"),
+		uNormalMat: gl.getUniformLocation(_program$22, "uNormalMat"),
+		uBones: gl.getUniformLocation(_program$22, "uBones[0]"),
+		uLightDirection: gl.getUniformLocation(_program$22, "uLightDirection"),
+		uLightOpacity: gl.getUniformLocation(_program$22, "uLightOpacity"),
+		uLightAmbient: gl.getUniformLocation(_program$22, "uLightAmbient"),
+		uLightDiffuse: gl.getUniformLocation(_program$22, "uLightDiffuse"),
+		uLightEnv: gl.getUniformLocation(_program$22, "uLightEnv"),
+		uAlphaRef: gl.getUniformLocation(_program$22, "uAlphaRef"),
+		uAlpha: gl.getUniformLocation(_program$22, "uAlpha"),
+		uFogUse: gl.getUniformLocation(_program$22, "uFogUse"),
+		uFogNear: gl.getUniformLocation(_program$22, "uFogNear"),
+		uFogFar: gl.getUniformLocation(_program$22, "uFogFar"),
+		uFogColor: gl.getUniformLocation(_program$22, "uFogColor"),
+		uDiffuse: gl.getUniformLocation(_program$22, "uDiffuse")
 	};
-	_program$21.attribute = {
-		aPosition: gl.getAttribLocation(_program$21, "aPosition"),
-		aNormal: gl.getAttribLocation(_program$21, "aNormal"),
-		aTextureCoord: gl.getAttribLocation(_program$21, "aTextureCoord"),
-		aBoneIndex: gl.getAttribLocation(_program$21, "aBoneIndex"),
-		aBoneWeight: gl.getAttribLocation(_program$21, "aBoneWeight")
+	_program$22.attribute = {
+		aPosition: gl.getAttribLocation(_program$22, "aPosition"),
+		aNormal: gl.getAttribLocation(_program$22, "aNormal"),
+		aTextureCoord: gl.getAttribLocation(_program$22, "aTextureCoord"),
+		aBoneIndex: gl.getAttribLocation(_program$22, "aBoneIndex"),
+		aBoneWeight: gl.getAttribLocation(_program$22, "aBoneWeight")
 	};
 }
 /**
 * Free all type GL resources and drop every instance (MapRenderer calls this on map unload).
 */
-function free$4(gl) {
+function free$5(gl) {
 	for (const path in _types) {
 		const type = _types[path];
 		const submeshes = type.submeshes;
@@ -212868,7 +212879,7 @@ function acquire(path) {
 */
 function buildTypeGL(gl, type) {
 	type.textures = makeTypeTextures(gl, type.parsed);
-	const attr = _program$21.attribute;
+	const attr = _program$22.attribute;
 	type.submeshes = type.meshes.map(function(mesh) {
 		const vao = gl.createVertexArray();
 		gl.bindVertexArray(vao);
@@ -212985,16 +212996,16 @@ function normalize3(v) {
 * sits next to): (gl, modelView, projection, normalMat, fog, light, tick). modelView is
 * Camera.modelView (the view matrix); the per-instance world is composed on top.
 */
-function render$9(gl, modelView, projection, normalMat, fog, light, tick) {
+function render$10(gl, modelView, projection, normalMat, fog, light, tick) {
 	_gl$1 = gl;
 	if (_instances.length === 0 || !light) return;
-	if (!_program$21) init$7(gl);
+	if (!_program$22) init$8(gl);
 	for (const path in _types) {
 		const type = _types[path];
 		if (type.cpuReady && !type.glReady) buildTypeGL(gl, type);
 	}
-	const uniform = _program$21.uniform;
-	gl.useProgram(_program$21);
+	const uniform = _program$22.uniform;
+	gl.useProgram(_program$22);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1f(uniform.uLightOpacity, light.opacity != null ? light.opacity : 1);
 	gl.uniform3fv(uniform.uLightEnv, light.env || _phaseEnv);
@@ -213339,7 +213350,7 @@ function clear() {
 	for (let i = 0; i < insts.length; i++) detach(insts[i]);
 	_poseCache = {};
 }
-var mat3$3, mat4$19, ALPHA_REF, _phaseDiffuse, _phaseAmbient, _phaseEnv, _gr2FlagDiffuse, _gr2EmpDiffuse, _gr2EmpAmbient, _gr2FlagAmbient, GR2_ROSTER, _program$21, _gl$1, _types, _missing, _instances, _poseCache, _dbgCellTile, _dbgTileInst, _dbgCellInited, _debugCell, BASE_SPHERE_HALF_EXTENT, _readyPromise, _mv, _mvp, _nmat, _lightView, _clip, CULL_MARGIN, CLIP_W_EPS, DIR_STEP_DEG, FADE, TEX_MISSING_PX, TEX_GREY_PX, A4_NIBBLE_EXPAND, _emblemCanvas, GR2_VERTEX_STRIDE, GR2_VERTEX_LAYOUT, GR2ModelRenderer_default;
+var mat3$3, mat4$19, ALPHA_REF, _phaseDiffuse, _phaseAmbient, _phaseEnv, _gr2FlagDiffuse, _gr2EmpDiffuse, _gr2EmpAmbient, _gr2FlagAmbient, GR2_ROSTER, _program$22, _gl$1, _types, _missing, _instances, _poseCache, _dbgCellTile, _dbgTileInst, _dbgCellInited, _debugCell, BASE_SPHERE_HALF_EXTENT, _readyPromise, _mv, _mvp, _nmat, _lightView, _clip, CULL_MARGIN, CLIP_W_EPS, DIR_STEP_DEG, FADE, TEX_MISSING_PX, TEX_GREY_PX, A4_NIBBLE_EXPAND, _emblemCanvas, GR2_VERTEX_STRIDE, GR2_VERTEX_LAYOUT, GR2ModelRenderer_default;
 var init_GR2ModelRenderer = __esmMin((() => {
 	init_Client();
 	init_gl_matrix();
@@ -213398,7 +213409,7 @@ var init_GR2ModelRenderer = __esmMin((() => {
 		sguardian90_9: "emp",
 		treasurebox_2: "emp"
 	};
-	_program$21 = null;
+	_program$22 = null;
 	_gl$1 = null;
 	_types = {};
 	_missing = {};
@@ -213474,9 +213485,9 @@ var init_GR2ModelRenderer = __esmMin((() => {
 		}
 	];
 	GR2ModelRenderer_default = {
-		init: init$7,
-		free: free$4,
-		render: render$9,
+		init: init$8,
+		free: free$5,
+		render: render$10,
 		attach: attach$1,
 		detach,
 		isMissing: function(path) {
@@ -213508,7 +213519,7 @@ function add$1(sound) {
 /**
 * Remove data from memory
 */
-function free$3() {
+function free$4() {
 	_list$5.length = 0;
 }
 /**
@@ -213516,7 +213527,7 @@ function free$3() {
 *
 * @param {vec2} position
 */
-function render$8(position, tick) {
+function render$9(position, tick) {
 	_list$5.forEach((sound) => {
 		const dist = Math.floor(vec2$3.dist(sound.pos, position));
 		if (sound.tick < tick && dist <= sound.range) {
@@ -213533,8 +213544,8 @@ var init_Sounds = __esmMin((() => {
 	_list$5 = [];
 	Sounds_default = {
 		add: add$1,
-		free: free$3,
-		render: render$8
+		free: free$4,
+		render: render$9
 	};
 }));
 //#endregion
@@ -238096,7 +238107,7 @@ function calculateAnimation(layer, keyIndex, result) {
 	}
 	return true;
 }
-var mat4$18, D3DBLEND, _program$20, _buffer$15, _bufferData, _matrix$6, _lastAngle, PIXEL_TO_WORLD_Z, anim, StrEffect;
+var mat4$18, D3DBLEND, _program$21, _buffer$15, _bufferData, _matrix$6, _lastAngle, PIXEL_TO_WORLD_Z, anim, StrEffect;
 var init_StrEffect = __esmMin((() => {
 	init_StrEffect$2();
 	init_StrEffect$1();
@@ -238105,7 +238116,7 @@ var init_StrEffect = __esmMin((() => {
 	init_Client();
 	mat4$18 = gl_matrix_default.mat4;
 	D3DBLEND = {};
-	_program$20 = null;
+	_program$21 = null;
 	_buffer$15 = null;
 	_bufferData = /* @__PURE__ */ new Float32Array(16);
 	_matrix$6 = mat4$18.create();
@@ -238201,8 +238212,8 @@ var init_StrEffect = __esmMin((() => {
 		* @param {StrAnimation} animation object
 		*/
 		renderAnimation(gl, material, animat) {
-			const uniform = _program$20.uniform;
-			const attribute = _program$20.attribute;
+			const uniform = _program$21.uniform;
+			const attribute = _program$21.attribute;
 			let sizeScale = 1;
 			if (this.ownerEntity) sizeScale = (this.ownerEntity.xSize + this.ownerEntity.ySize) / 2 / 5;
 			_bufferData[0] = animat.xy[0] * sizeScale;
@@ -238260,7 +238271,7 @@ var init_StrEffect = __esmMin((() => {
 				gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$15);
 				gl.bufferData(gl.ARRAY_BUFFER, _bufferData.byteLength, gl.DYNAMIC_DRAW);
 			}
-			if (!_program$20) _program$20 = WebGL_default.createShaderProgram(gl, StrEffect_default$1, StrEffect_default);
+			if (!_program$21) _program$21 = WebGL_default.createShaderProgram(gl, StrEffect_default$1, StrEffect_default);
 			D3DBLEND[1] = gl.ZERO;
 			D3DBLEND[2] = gl.ONE;
 			D3DBLEND[3] = gl.SRC_COLOR;
@@ -238282,9 +238293,9 @@ var init_StrEffect = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
-			if (_program$20) {
-				gl.deleteProgram(_program$20);
-				_program$20 = null;
+			if (_program$21) {
+				gl.deleteProgram(_program$21);
+				_program$21 = null;
 			}
 			if (_buffer$15) {
 				gl.deleteBuffer(_buffer$15);
@@ -238302,10 +238313,10 @@ var init_StrEffect = __esmMin((() => {
 		* @param {number} tick
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$20.uniform;
-			const attribute = _program$20.attribute;
+			const uniform = _program$21.uniform;
+			const attribute = _program$21.attribute;
 			gl.depthMask(false);
-			gl.useProgram(_program$20);
+			gl.useProgram(_program$21);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1f(uniform.uFogNear, fog.near * 100);
@@ -238323,8 +238334,8 @@ var init_StrEffect = __esmMin((() => {
 		*/
 		static afterRender(gl) {
 			gl.depthMask(true);
-			gl.disableVertexAttribArray(_program$20.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$20.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$21.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$21.attribute.aTextureCoord);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
 	};
@@ -251471,7 +251482,7 @@ function generateCylinder(totalCircleSides, circleSides, repeatTextureX) {
 	}
 	return new Float32Array(mesh);
 }
-var _program$19, blendMode$3, mat4$17, _matrix$5, Cylinder;
+var _program$20, blendMode$3, mat4$17, _matrix$5, Cylinder;
 var init_Cylinder = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -251575,8 +251586,8 @@ var init_Cylinder = __esmMin((() => {
 		render(gl, tick) {
 			const renderCount = tick - this.startTick;
 			const duration = this.endTick - this.startTick;
-			const uniform = _program$19.uniform;
-			const attribute = _program$19.attribute;
+			const uniform = _program$20.uniform;
+			const attribute = _program$20.attribute;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			if (this.repeatTextureX > 1) gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 			gl.enableVertexAttribArray(attribute.aPosition);
@@ -251696,7 +251707,7 @@ var init_Cylinder = __esmMin((() => {
 			blendMode$3[13] = gl.CONSTANT_ALPHA;
 			blendMode$3[14] = gl.ONE_MINUS_CONSTANT_ALPHA;
 			blendMode$3[15] = gl.SRC_ALPHA_SATURATE;
-			_program$19 = WebGL_default.createShaderProgram(gl, Cylinder_default$1, Cylinder_default);
+			_program$20 = WebGL_default.createShaderProgram(gl, Cylinder_default$1, Cylinder_default);
 			this.ready = true;
 			this.renderBeforeEntities = false;
 		}
@@ -251706,9 +251717,9 @@ var init_Cylinder = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
-			if (_program$19) {
-				gl.deleteProgram(_program$19);
-				_program$19 = null;
+			if (_program$20) {
+				gl.deleteProgram(_program$20);
+				_program$20 = null;
 			}
 			if (this.buffer) gl.deleteBuffer(this.buffer);
 			this.ready = false;
@@ -251719,8 +251730,8 @@ var init_Cylinder = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$19.uniform;
-			gl.useProgram(_program$19);
+			const uniform = _program$20.uniform;
+			gl.useProgram(_program$20);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -251736,8 +251747,8 @@ var init_Cylinder = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$19.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$19.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$20.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$20.attribute.aTextureCoord);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
 	};
@@ -253051,7 +253062,7 @@ function initModel(gl, data) {
 		WebGL_default.texture(gl, data.infos[i].texture, onTextureLoaded, i);
 	}
 }
-var _program$18, _normalMat, mat4$15, mat3$1, quat, vec3$3, _light, RsmEffect;
+var _program$19, _normalMat, mat4$15, mat3$1, quat, vec3$3, _light, RsmEffect;
 var init_RsmEffect = __esmMin((() => {
 	init_RsmEffect$2();
 	init_RsmEffect$1();
@@ -253059,7 +253070,7 @@ var init_RsmEffect = __esmMin((() => {
 	init_gl_matrix();
 	init_Client();
 	init_Model();
-	_program$18 = null;
+	_program$19 = null;
 	_normalMat = /* @__PURE__ */ new Float32Array(9);
 	mat4$15 = gl_matrix_default.mat4;
 	mat3$1 = gl_matrix_default.mat3;
@@ -253109,7 +253120,7 @@ var init_RsmEffect = __esmMin((() => {
 			this._Params = params;
 		}
 		static init(gl) {
-			_program$18 = WebGL_default.createShaderProgram(gl, RsmEffect_default$1, RsmEffect_default);
+			_program$19 = WebGL_default.createShaderProgram(gl, RsmEffect_default$1, RsmEffect_default);
 			this.ready = true;
 		}
 		init(gl, tick) {
@@ -253189,18 +253200,18 @@ var init_RsmEffect = __esmMin((() => {
 			this.ready = false;
 		}
 		static free(gl) {
-			if (_program$18) {
-				gl.deleteProgram(_program$18);
-				_program$18 = null;
+			if (_program$19) {
+				gl.deleteProgram(_program$19);
+				_program$19 = null;
 			}
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog, tick) {
 			mat4$15.toInverseMat3(modelView, _normalMat);
 			mat3$1.transpose(_normalMat, _normalMat);
-			const uniform = _program$18.uniform;
-			const attribute = _program$18.attribute;
-			gl.useProgram(_program$18);
+			const uniform = _program$19.uniform;
+			const attribute = _program$19.attribute;
+			gl.useProgram(_program$19);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix3fv(uniform.uNormalMat, false, _normalMat);
@@ -253220,7 +253231,7 @@ var init_RsmEffect = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 		}
 		render(gl, tick) {
-			const uniform = _program$18.uniform;
+			const uniform = _program$19.uniform;
 			if (this.isAnimated && this.model && this.animLen > 0) {
 				const elapsed = tick - this.startTick;
 				const frame = Math.floor(elapsed * this.fps / 1e3 % this.animLen);
@@ -253232,7 +253243,7 @@ var init_RsmEffect = __esmMin((() => {
 			gl.uniform3fv(uniform.uPosition, this.position);
 			gl.uniform1f(uniform.uSize, this.size);
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-			const attribute = _program$18.attribute;
+			const attribute = _program$19.attribute;
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 36, 0);
 			gl.vertexAttribPointer(attribute.aVertexNormal, 3, gl.FLOAT, false, 36, 12);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 36, 24);
@@ -253243,7 +253254,7 @@ var init_RsmEffect = __esmMin((() => {
 			}
 		}
 		static afterRender(gl) {
-			const attribute = _program$18.attribute;
+			const attribute = _program$19.attribute;
 			gl.disableVertexAttribArray(attribute.aPosition);
 			gl.disableVertexAttribArray(attribute.aVertexNormal);
 			gl.disableVertexAttribArray(attribute.aTextureCoord);
@@ -254267,7 +254278,7 @@ var init_QuadHorn$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/QuadHorn.js
-var _program$17, mat4$14, blendMode, vertices, texCoords, rand$1, QuadHorn;
+var _program$18, mat4$14, blendMode, vertices, texCoords, rand$1, QuadHorn;
 var init_QuadHorn = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -254403,8 +254414,8 @@ var init_QuadHorn = __esmMin((() => {
 			this.ready = false;
 		}
 		render(gl, tick) {
-			const uniform = _program$17.uniform;
-			const attribute = _program$17.attribute;
+			const uniform = _program$18.uniform;
+			const attribute = _program$18.attribute;
 			const deltaStart = (tick - this.startTick) / 1e3;
 			const deltaEnd = (tick - this.endTick) / 1e3;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -254491,7 +254502,7 @@ var init_QuadHorn = __esmMin((() => {
 			gl.flush();
 		}
 		static init(gl) {
-			_program$17 = WebGL_default.createShaderProgram(gl, QuadHorn_default$1, QuadHorn_default);
+			_program$18 = WebGL_default.createShaderProgram(gl, QuadHorn_default$1, QuadHorn_default);
 			blendMode[1] = gl.ZERO;
 			blendMode[2] = gl.ONE;
 			blendMode[3] = gl.SRC_COLOR;
@@ -254511,16 +254522,16 @@ var init_QuadHorn = __esmMin((() => {
 			this.renderBeforeEntities = true;
 		}
 		static free(gl) {
-			if (_program$17) {
-				gl.deleteProgram(_program$17);
-				_program$17 = null;
+			if (_program$18) {
+				gl.deleteProgram(_program$18);
+				_program$18 = null;
 			}
 			if (this.buffer) gl.deleteBuffer(this.buffer);
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$17.uniform;
-			gl.useProgram(_program$17);
+			const uniform = _program$18.uniform;
+			gl.useProgram(_program$18);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -254531,9 +254542,9 @@ var init_QuadHorn = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 		}
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$17.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$17.attribute.aTextureCoord);
-			gl.disableVertexAttribArray(_program$17.attribute.aColor);
+			gl.disableVertexAttribArray(_program$18.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$18.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$18.attribute.aColor);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
 	};
@@ -254748,7 +254759,7 @@ function setVertex(index, x, y, z, u, v) {
 	_vertices[offset + 3] = u;
 	_vertices[offset + 4] = v;
 }
-var mat4$13, _matrix$4, UNIT, LAYER_COUNT, SEGMENT_COUNT, TEXTURE_COUNT, SEGMENT_HEIGHT, EFFECT_TICK_MS, OPACITY, PARTICLE_TEXTURE, PARTICLE_CYCLE_MS, PARTICLE_SIZE, PARTICLE_COLOR, PARTICLE_FLOATS, PARTICLE_CORNERS, _program$16, _particleProgram, _textureCache, _vertices, WaterfallEffect;
+var mat4$13, _matrix$4, UNIT, LAYER_COUNT, SEGMENT_COUNT, TEXTURE_COUNT, SEGMENT_HEIGHT, EFFECT_TICK_MS, OPACITY, PARTICLE_TEXTURE, PARTICLE_CYCLE_MS, PARTICLE_SIZE, PARTICLE_COLOR, PARTICLE_FLOATS, PARTICLE_CORNERS, _program$17, _particleProgram, _textureCache, _vertices, WaterfallEffect;
 var init_WaterfallEffect = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -254821,8 +254832,8 @@ var init_WaterfallEffect = __esmMin((() => {
 			this.textureCache = loadTextures(gl, this.textureSet, this);
 		}
 		render(gl, tick) {
-			const uniform = _program$16.uniform;
-			const attribute = _program$16.attribute;
+			const uniform = _program$17.uniform;
+			const attribute = _program$17.attribute;
 			mat4$13.identity(_matrix$4);
 			mat4$13.translate(_matrix$4, _matrix$4, [
 				this.position[0] + .5,
@@ -254893,9 +254904,9 @@ var init_WaterfallEffect = __esmMin((() => {
 			gl.disableVertexAttribArray(attribute.aCorner);
 			gl.disableVertexAttribArray(attribute.aSeed);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.useProgram(_program$16);
-			gl.enableVertexAttribArray(_program$16.attribute.aPosition);
-			gl.enableVertexAttribArray(_program$16.attribute.aTextureCoord);
+			gl.useProgram(_program$17);
+			gl.enableVertexAttribArray(_program$17.attribute.aPosition);
+			gl.enableVertexAttribArray(_program$17.attribute.aTextureCoord);
 		}
 		/**
 		* Free WebGL resources
@@ -254940,9 +254951,9 @@ var init_WaterfallEffect = __esmMin((() => {
 			gl.uniform1f(_particleProgram.uniform.uFogFar, fog.far);
 			gl.uniform1i(_particleProgram.uniform.uTexture, 0);
 			gl.uniform3fv(_particleProgram.uniform.uColor, PARTICLE_COLOR);
-			const uniform = _program$16.uniform;
-			const attribute = _program$16.attribute;
-			gl.useProgram(_program$16);
+			const uniform = _program$17.uniform;
+			const attribute = _program$17.attribute;
+			gl.useProgram(_program$17);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fogUse);
@@ -254965,8 +254976,8 @@ var init_WaterfallEffect = __esmMin((() => {
 		*/
 		static afterRender(gl) {
 			gl.depthMask(true);
-			gl.disableVertexAttribArray(_program$16.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$16.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$17.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$17.attribute.aTextureCoord);
 		}
 		/**
 		* Initialize the effect type
@@ -254974,7 +254985,7 @@ var init_WaterfallEffect = __esmMin((() => {
 		* @param {WebGLRenderingContext} gl
 		*/
 		static init(gl) {
-			_program$16 = WebGL_default.createShaderProgram(gl, WaterfallEffect_default$1, WaterfallEffect_default);
+			_program$17 = WebGL_default.createShaderProgram(gl, WaterfallEffect_default$1, WaterfallEffect_default);
 			_particleProgram = WebGL_default.createShaderProgram(gl, WaterfallParticle_default$1, WaterfallParticle_default);
 			this.ready = true;
 		}
@@ -254992,9 +255003,9 @@ var init_WaterfallEffect = __esmMin((() => {
 				cache.waiters.clear();
 			});
 			_textureCache.clear();
-			if (_program$16) gl.deleteProgram(_program$16);
+			if (_program$17) gl.deleteProgram(_program$17);
 			if (_particleProgram) gl.deleteProgram(_particleProgram);
-			_program$16 = null;
+			_program$17 = null;
 			_particleProgram = null;
 			this.ready = false;
 			this.needInit = true;
@@ -255837,7 +255848,7 @@ function add(mapEffect) {
 /**
 * Remove data from memory
 */
-function free$2() {
+function free$3() {
 	_list$2.length = 0;
 }
 /**
@@ -255884,7 +255895,7 @@ var init_Effects = __esmMin((() => {
 	_list$2 = [];
 	Effects_default = {
 		add,
-		free: free$2,
+		free: free$3,
 		get,
 		remove,
 		spam
@@ -256325,7 +256336,7 @@ var init_Blind$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/Blind.js
-var _program$15, _buffer$14, _active, Blind;
+var _program$16, _buffer$14, _active, Blind;
 var init_Blind = __esmMin((() => {
 	init_WebGL();
 	init_Camera();
@@ -256341,31 +256352,31 @@ var init_Blind = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target buffer
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$14 || !_program$15 || !Blind.isActive()) return;
+			if (!_buffer$14 || !_program$16 || !Blind.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$15);
+			gl.useProgram(_program$16);
 			const baseRadius = .2;
 			const baseFalloff = .5;
 			const zoom = Camera.zoomFinal;
 			const focusRadius = baseRadius + (63 - zoom) / 1e3;
 			const focusFalloff = baseFalloff + (63 - zoom) / 1e3;
-			gl.uniform1f(_program$15.uniform.uFocusRadius, focusRadius);
-			gl.uniform1f(_program$15.uniform.uFocusFalloff, focusFalloff);
-			gl.uniform2f(_program$15.uniform.uAspectRatio, gl.canvas.width / gl.canvas.height, 1);
+			gl.uniform1f(_program$16.uniform.uFocusRadius, focusRadius);
+			gl.uniform1f(_program$16.uniform.uFocusFalloff, focusFalloff);
+			gl.uniform2f(_program$16.uniform.uAspectRatio, gl.canvas.width / gl.canvas.height, 1);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$14);
-			const posLoc = _program$15.attribute.aPosition;
+			const posLoc = _program$16.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.uniform1i(_program$15.uniform.uTexture, 0);
+			gl.uniform1i(_program$16.uniform.uTexture, 0);
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 			PostProcess.afterRenderPass(gl);
 		}
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$15 = WebGL_default.createShaderProgram(gl, Common_default, Blind_default);
+				_program$16 = WebGL_default.createShaderProgram(gl, Common_default, Blind_default);
 			} catch (e) {
 				console.error("Error compiling Blind shader.", e);
 				return;
@@ -256395,11 +256406,11 @@ var init_Blind = __esmMin((() => {
 			_active = bool;
 		}
 		static program() {
-			return _program$15;
+			return _program$16;
 		}
 		static clean(gl) {
 			if (_buffer$14) gl.deleteBuffer(_buffer$14);
-			_program$15 = _buffer$14 = null;
+			_program$16 = _buffer$14 = null;
 		}
 	};
 }));
@@ -256596,7 +256607,7 @@ var init_ScreenEffectManager = __esmMin((() => {
 * @param {object} gl context
 * @param {string} mapname
 */
-function init$6(gl, mapname) {
+function init$7(gl, mapname) {
 	let i;
 	if (!Weather.sky[mapname]) {
 		gl.clearColor(0, 0, 0, 1);
@@ -256670,7 +256681,7 @@ function cloudInit(cloud) {
 * @param {object} fog structure
 * @param {number} tick - game tick
 */
-function render$7(gl, modelView, projection, fog, tick) {
+function render$8(gl, modelView, projection, fog, tick) {
 	if (!_display) return;
 	let i, cloud, opacity;
 	SpriteRenderer.bind3DContext(gl, modelView, projection, fog);
@@ -256716,9 +256727,9 @@ var init_Sky = __esmMin((() => {
 	_color = null;
 	_display = true;
 	Sky_default = {
-		init: init$6,
+		init: init$7,
 		setUpCloudData,
-		render: render$7
+		render: render$8
 	};
 }));
 //#endregion
@@ -258545,12 +258556,20 @@ var init_JoystickUI = __esmMin((() => {
 //#region src/Renderer/Effects/Enhancements.js
 var Enhancements;
 var init_Enhancements = __esmMin((() => {
-	Enhancements = { 
-	/**
-	* Water mirrors the scene above it: 0 off .. 1 full. Costs a second
-	* render of the ground and models, at half resolution, on maps with water.
-	*/
-waterReflection: 0 };
+	Enhancements = {
+		/**
+		* Water mirrors the scene above it: 0 off .. 1 full. Costs a second
+		* render of the ground and models, at half resolution, on maps with water.
+		*/
+		waterReflection: 0,
+		/**
+		* Grass on grass tiles (Renderer/Map/Grass.js), or null for none:
+		* { textures: ['풀', 'grass', ...] -- substrings of the ground texture
+		*   names that are grass, density 0..1, height, width, wind 0..1,
+		*   distance (fade), tint [r,g,b] }
+		*/
+		grass: null
+	};
 }));
 //#endregion
 //#region src/Renderer/Map/WaterReflection.js
@@ -258654,11 +258673,11 @@ function mirrored(modelView, projection, level) {
 * Draw the reflection: `draw(view, projection)` renders what should appear in
 * it. Returns the texture, or null if it could not be made.
 */
-function render$6(gl, modelView, projection, level, draw) {
+function render$7(gl, modelView, projection, level, draw) {
 	const width = Math.max(1, Math.floor(gl.canvas.width / 2));
 	const height = Math.max(1, Math.floor(gl.canvas.height / 2));
 	if (!_fbo || _fbo.width !== width || _fbo.height !== height) {
-		free$1(gl);
+		free$2(gl);
 		const framebuffer = gl.createFramebuffer();
 		const texture = gl.createTexture();
 		const depth = gl.createRenderbuffer();
@@ -258697,7 +258716,7 @@ function render$6(gl, modelView, projection, level, draw) {
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 	return _fbo.texture;
 }
-function free$1(gl) {
+function free$2(gl) {
 	if (_fbo) {
 		gl.deleteFramebuffer(_fbo.framebuffer);
 		gl.deleteTexture(_fbo.texture);
@@ -258709,9 +258728,272 @@ var _fbo, WaterReflection_default;
 var init_WaterReflection = __esmMin((() => {
 	_fbo = null;
 	WaterReflection_default = {
-		render: render$6,
-		free: free$1,
+		render: render$7,
+		free: free$2,
 		mirrored
+	};
+}));
+//#endregion
+//#region src/Renderer/Map/Grass.js
+/** Texture names come from the map as CP949 bytes in a binary string. */
+function decodeName(name) {
+	try {
+		return new TextDecoder("euc-kr").decode(Uint8Array.from(name, (c) => c.charCodeAt(0) & 255)).toLowerCase();
+	} catch {
+		return String(name).toLowerCase();
+	}
+}
+/** A repeatable random number for cell i, tuft k. */
+function random(i, k) {
+	const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
+	return x - Math.floor(x);
+}
+/**
+* Where the tufts go, for these settings. Rebuilt when the settings object
+* changes (a plugin reconfigures) or a new map loads.
+*/
+function build(gl, settings) {
+	_builtFor = settings;
+	_count = 0;
+	if (!_data$1 || !settings) return;
+	const patterns = (Array.isArray(settings.textures) ? settings.textures : []).map((p) => String(p).toLowerCase()).filter(Boolean);
+	if (!patterns.length) return;
+	const grassy = _data$1.textures.map((name) => {
+		const decoded = decodeName(name);
+		return patterns.some((pattern) => decoded.includes(pattern));
+	});
+	const perCell = Math.max(1, Math.min(12, Math.round((settings.density ?? .5) * 12)));
+	const { width, height, cellTexture, cellHeights, cellUv } = _data$1;
+	const instances = [];
+	const uvs = [];
+	for (let y = 0; y < height; ++y) for (let x = 0; x < width; ++x) {
+		const i = x + y * width;
+		const texture = cellTexture[i];
+		if (texture < 0 || !grassy[texture]) continue;
+		const h = cellHeights.subarray(i * 4, i * 4 + 4);
+		for (let k = 0; k < perCell; ++k) {
+			const fx = random(i, k * 2);
+			const fy = random(i, k * 2 + 1);
+			const ground = h[0] * (1 - fx) * (1 - fy) + h[1] * fx * (1 - fy) + h[2] * (1 - fx) * fy + h[3] * fx * fy;
+			instances.push((x + fx) * 2, ground, (y + fy) * 2, random(i, k + 97));
+			uvs.push(cellUv[i * 4], cellUv[i * 4 + 1], cellUv[i * 4 + 2], cellUv[i * 4 + 3]);
+		}
+	}
+	_count = instances.length / 4;
+	if (!_count) return;
+	if (!_program$15) _program$15 = WebGL_default.createShaderProgram(gl, VERTEX, FRAGMENT);
+	if (!_bladeBuffer) {
+		_bladeBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, _bladeBuffer);
+		gl.bufferData(gl.ARRAY_BUFFER, BLADES, gl.STATIC_DRAW);
+	}
+	_instanceBuffer = _instanceBuffer || gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, _instanceBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(instances), gl.STATIC_DRAW);
+	_uvBuffer = _uvBuffer || gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, _uvBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+}
+/**
+* Keep the map's ground data for when grass is switched on.
+*/
+function init$6(gl, data) {
+	_data$1 = data && data.cellTexture ? data : null;
+	_builtFor = null;
+	_count = 0;
+}
+function render$6(gl, modelView, projection, fog, light, tick, lightmapOn) {
+	const settings = Enhancements.grass;
+	if (!settings || !_data$1 || typeof WebGL2RenderingContext === "undefined" || !(gl instanceof WebGL2RenderingContext)) return;
+	if (settings !== _builtFor) build(gl, settings);
+	if (!_count || !_program$15) return;
+	const textures = Ground_default.textures();
+	const uniform = _program$15.uniform;
+	const attribute = _program$15.attribute;
+	gl.useProgram(_program$15);
+	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
+	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
+	gl.uniform1f(uniform.uTime, tick / 1e3);
+	gl.uniform1f(uniform.uHeight, settings.height ?? 1.4);
+	gl.uniform1f(uniform.uWidth, settings.width ?? 1.1);
+	gl.uniform1f(uniform.uWind, settings.wind ?? .25);
+	gl.uniform1f(uniform.uFadeFar, settings.distance ?? 140);
+	const tint = Array.isArray(settings.tint) && settings.tint.length === 3 ? settings.tint : [
+		1,
+		1,
+		1
+	];
+	gl.uniform3fv(uniform.uTint, tint);
+	gl.uniform3fv(uniform.uLightAmbient, light.ambient);
+	gl.uniform3fv(uniform.uLightDiffuse, light.diffuse);
+	gl.uniform1i(uniform.uLightMapUse, lightmapOn ? 1 : 0);
+	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
+	gl.uniform1f(uniform.uFogNear, fog.near);
+	gl.uniform1f(uniform.uFogFar, fog.far);
+	gl.uniform3fv(uniform.uFogColor, fog.color);
+	gl.activeTexture(gl.TEXTURE0);
+	gl.bindTexture(gl.TEXTURE_2D, textures.atlas);
+	gl.uniform1i(uniform.uAtlas, 0);
+	gl.activeTexture(gl.TEXTURE1);
+	gl.bindTexture(gl.TEXTURE_2D, textures.lightmap);
+	gl.uniform1i(uniform.uLightmap, 1);
+	gl.activeTexture(gl.TEXTURE0);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _bladeBuffer);
+	gl.enableVertexAttribArray(attribute.aBlade);
+	gl.vertexAttribPointer(attribute.aBlade, 3, gl.FLOAT, false, 0, 0);
+	gl.vertexAttribDivisor(attribute.aBlade, 0);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _instanceBuffer);
+	gl.enableVertexAttribArray(attribute.aInstance);
+	gl.vertexAttribPointer(attribute.aInstance, 4, gl.FLOAT, false, 0, 0);
+	gl.vertexAttribDivisor(attribute.aInstance, 1);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _uvBuffer);
+	gl.enableVertexAttribArray(attribute.aUv);
+	gl.vertexAttribPointer(attribute.aUv, 4, gl.FLOAT, false, 0, 0);
+	gl.vertexAttribDivisor(attribute.aUv, 1);
+	gl.drawArraysInstanced(gl.TRIANGLES, 0, 12, _count);
+	gl.vertexAttribDivisor(attribute.aInstance, 0);
+	gl.vertexAttribDivisor(attribute.aUv, 0);
+	gl.disableVertexAttribArray(attribute.aBlade);
+	gl.disableVertexAttribArray(attribute.aInstance);
+	gl.disableVertexAttribArray(attribute.aUv);
+}
+function free$1(gl) {
+	if (_instanceBuffer) gl.deleteBuffer(_instanceBuffer);
+	if (_uvBuffer) gl.deleteBuffer(_uvBuffer);
+	_instanceBuffer = _uvBuffer = null;
+	_data$1 = null;
+	_builtFor = null;
+	_count = 0;
+}
+var VERTEX, FRAGMENT, BLADES, _program$15, _bladeBuffer, _instanceBuffer, _uvBuffer, _count, _data$1, _builtFor, Grass_default;
+var init_Grass = __esmMin((() => {
+	init_WebGL();
+	init_Ground();
+	init_Enhancements();
+	VERTEX = `#version 300 es
+precision highp float;
+in vec3 aBlade;       // x across the tuft -0.5..0.5, y up 0..1, z which of the two crossed planes
+in vec4 aInstance;    // xyz on the ground, w a random number for this tuft
+in vec4 aUv;          // xy the tile in the ground atlas, zw in the lightmap
+uniform mat4 uModelViewMat;
+uniform mat4 uProjectionMat;
+uniform float uTime;
+uniform float uHeight;
+uniform float uWidth;
+uniform float uWind;
+uniform float uFadeFar;
+out float vY;
+out float vX;
+out float vRand;
+out float vFade;
+out vec4 vUv;
+void main() {
+	float r = aInstance.w;
+	float angle = r * 6.2831853 + aBlade.z * 1.5707963;
+	vec2 across = vec2(cos(angle), sin(angle));
+	float tall = uHeight * (0.65 + 0.7 * fract(r * 13.7));
+	float sway = sin(uTime * 1.6 + aInstance.x * 0.35 + aInstance.z * 0.27 + r * 6.0) * uWind * aBlade.y * aBlade.y;
+	vec3 position = aInstance.xyz + vec3(across.x * aBlade.x * uWidth + sway, -aBlade.y * tall, across.y * aBlade.x * uWidth + sway * 0.6);
+	vec4 eye = uModelViewMat * vec4(position, 1.0);
+	gl_Position = uProjectionMat * eye;
+	vY = aBlade.y;
+	vX = aBlade.x;
+	vRand = r;
+	vUv = aUv;
+	vFade = 1.0 - smoothstep(uFadeFar * 0.6, uFadeFar, -eye.z);
+}`;
+	FRAGMENT = `#version 300 es
+precision highp float;
+in float vY;
+in float vX;
+in float vRand;
+in float vFade;
+in vec4 vUv;
+out vec4 fragColor;
+uniform sampler2D uAtlas;
+uniform sampler2D uLightmap;
+uniform bool uLightMapUse;
+uniform vec3 uLightAmbient;
+uniform vec3 uLightDiffuse;
+uniform vec3 uTint;
+uniform bool uFogUse;
+uniform float uFogNear;
+uniform float uFogFar;
+uniform vec3 uFogColor;
+float hash(float n) { return fract(sin(n) * 43758.5453); }
+void main() {
+	// Five blades across each plane, tapering to a point.
+	float blades = 5.0;
+	float cell = floor((vX + 0.5) * blades);
+	float within = fract((vX + 0.5) * blades);
+	float lean = (hash(cell + vRand * 17.0) - 0.5) * 0.6 * vY;
+	float halfWidth = 0.42 * (1.0 - vY);
+	if (abs(within - 0.5 - lean) > halfWidth || vY > 0.55 + 0.45 * hash(cell * 3.1 + vRand * 9.0)) discard;
+	// Fade with distance, dithered rather than blended.
+	if (vFade < hash(gl_FragCoord.x * 0.37 + gl_FragCoord.y * 1.31)) discard;
+
+	vec3 ground = texture(uAtlas, vUv.xy).rgb;
+	vec3 color = ground * uTint * mix(0.62, 1.12, vY);
+	color *= clamp(uLightAmbient + uLightDiffuse * 0.6, 0.0, 1.0);
+	if (uLightMapUse) {
+		vec4 light = texture(uLightmap, vUv.zw);
+		color = color * light.a + light.rgb;
+	}
+	fragColor = vec4(color, 1.0);
+	if (uFogUse) {
+		float depth = gl_FragCoord.z / gl_FragCoord.w;
+		fragColor.rgb = mix(fragColor.rgb, uFogColor, smoothstep(uFogNear, uFogFar, depth));
+	}
+}`;
+	BLADES = new Float32Array([
+		-.5,
+		0,
+		0,
+		.5,
+		0,
+		0,
+		.5,
+		1,
+		0,
+		-.5,
+		0,
+		0,
+		.5,
+		1,
+		0,
+		-.5,
+		1,
+		0,
+		-.5,
+		0,
+		1,
+		.5,
+		0,
+		1,
+		.5,
+		1,
+		1,
+		-.5,
+		0,
+		1,
+		.5,
+		1,
+		1,
+		-.5,
+		1,
+		1
+	]);
+	_program$15 = null;
+	_bladeBuffer = null;
+	_instanceBuffer = null;
+	_uvBuffer = null;
+	_count = 0;
+	_data$1 = null;
+	_builtFor = null;
+	Grass_default = {
+		init: init$6,
+		render: render$6,
+		free: free$1
 	};
 }));
 //#endregion
@@ -259351,6 +259633,7 @@ function onGroundComplete(data) {
 	this.water.mesh = data.waterMesh;
 	this.water.vertCount = data.waterVertCount;
 	Ground_default.init(gl, data);
+	Grass_default.init(gl, data);
 	Water_default.init(gl, this.water);
 	this.lights.forEach((light) => {
 		light.world = [
@@ -259500,6 +259783,7 @@ var init_MapRenderer = __esmMin((() => {
 	init_PostProcess();
 	init_Enhancements();
 	init_WaterReflection();
+	init_Grass();
 	init_Bloom();
 	init_VerticalFlip();
 	init_GaussianBlur();
@@ -259612,6 +259896,8 @@ var init_MapRenderer = __esmMin((() => {
 			Effects_default.free();
 			Ground_default.free(gl);
 			Water_default.free(gl);
+			Grass_default.free(gl);
+			WaterReflection_default.free(gl);
 			Models_default.free(gl);
 			AnimatedModels_default.free(gl);
 			OccluderFade.free(gl);
@@ -259663,6 +259949,7 @@ var init_MapRenderer = __esmMin((() => {
 				PostProcess.prepare(gl);
 			} else Water_default.setReflection(null);
 			Ground_default.render(gl, modelView, projection, normalMat, fog, light);
+			Grass_default.render(gl, modelView, projection, fog, light, tick, Map_default.lightmap);
 			Effects_default.spam(SessionStorage_default.Entity.position, tick);
 			if (Mouse.intersect && Altitude.intersect(modelView, projection, _pos$6)) {
 				x = _pos$6[0];
