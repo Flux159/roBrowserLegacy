@@ -44,6 +44,10 @@ import PACKETVER from 'Network/PacketVerManager.js';
 import JoystickUI from 'UI/Components/JoystickUI/JoystickUI.js';
 
 import PostProcess from 'Renderer/Effects/PostProcess.js';
+import Enhancements from 'Renderer/Effects/Enhancements.js';
+import WaterReflection from 'Renderer/Map/WaterReflection.js';
+import Grass from 'Renderer/Map/Grass.js';
+import Shadows from 'Renderer/Map/Shadows.js';
 import Bloom from 'Renderer/Effects/Shaders/Bloom.js';
 import VerticalFlip from 'Renderer/Effects/Shaders/VerticalFlip.js';
 import GaussianBlur from 'Renderer/Effects/Shaders/GaussianBlur.js';
@@ -90,6 +94,7 @@ class MapRenderer {
 	 * @var {array} Sounds object list
 	 */
 	static sounds = null;
+	static lights = [];
 
 	/**
 	 * @var {array} Effects object list
@@ -202,6 +207,9 @@ class MapRenderer {
 		Effects.free();
 		Ground.free(gl);
 		Water.free(gl);
+		Grass.free(gl);
+		Shadows.free(gl);
+		WaterReflection.free(gl);
 		Models.free(gl);
 		AnimatedModels.free(gl);
 		OccluderFade.free(gl);
@@ -220,6 +228,7 @@ class MapRenderer {
 		this.light = null;
 		this.water = null;
 		this.sounds = null;
+		this.lights = [];
 		this.effects = null;
 	}
 
@@ -250,8 +259,40 @@ class MapRenderer {
 		const projection = Camera.projection;
 		const normalMat = Camera.normalMat;
 
+		// Shadow map (Enhancements.shadows): the models from the sun, around the
+		// player, before anything that draws the ground.
+		let rebind = false;
+		if (Enhancements.shadows > 0 && Session.Entity) {
+			const p = Session.Entity.position;
+			Shadows.render(gl, light, [p[0] + 0.5, -p[2], p[1] + 0.5], Enhancements.shadows, program => Models.renderDepth(gl, program));
+			rebind = true;
+		} else {
+			Shadows.clear();
+		}
+
+		// Water reflection (Enhancements.waterReflection): the sky, ground and
+		// models again, mirrored across the water, before the scene itself.
+		const waterLevel = Water.level();
+		if (Enhancements.waterReflection > 0 && waterLevel !== null) {
+			const texture = WaterReflection.render(gl, modelView, projection, waterLevel, (view, clipped) => {
+				Sky.render(gl, view, clipped, fog, tick);
+				Ground.render(gl, view, clipped, normalMat, fog, light);
+				Models.render(gl, view, clipped, normalMat, fog, light);
+				AnimatedModels.render(gl, view, clipped, normalMat, fog, light, tick);
+			});
+			Water.setReflection(texture ? { texture, strength: Math.min(1, Enhancements.waterReflection) } : null);
+			rebind = true;
+		} else {
+			Water.setReflection(null);
+		}
+		if (rebind) {
+			// Back to the scene's own target, cleared.
+			PostProcess.prepare(gl);
+		}
+
 		// Render Ground
 		Ground.render(gl, modelView, projection, normalMat, fog, light);
+		Grass.render(gl, modelView, projection, fog, light, tick, MapPreferences.lightmap);
 
 		// Spam map effects
 		Effects.spam(Session.Entity.position, tick);
@@ -345,6 +386,15 @@ class MapRenderer {
 		MemoryManager.clean(gl, tick);
 
 		// Finalize frame with post-processing effects
+		PostProcess.scene = {
+			modelView,
+			projection,
+			light,
+			lights: MapRenderer.lights,
+			tick,
+			near: 1,
+			far: 1000
+		};
 		PostProcess.render(gl);
 	}
 
@@ -371,6 +421,9 @@ function onWorldComplete(data) {
 	this.water = data.water;
 	this.sounds = data.sound;
 	this.effects = data.effect;
+	// The map's point lights (RSW), which the original client bakes into the
+	// lightmap. Kept for post-process passes (PostProcess.scene.lights).
+	this.lights = data.lights || [];
 	this.diffuse = new Float32Array(this.light.diffuse);
 
 	// Set default env color
@@ -407,7 +460,19 @@ function onGroundComplete(data) {
 	this.water.vertCount = data.waterVertCount;
 
 	Ground.init(gl, data);
+	Grass.init(gl, data);
 	Water.init(gl, this.water);
+
+	// Point lights in world space, the same translation RSW models get
+	// (Loaders/Model.js). Colour arrives as 0-255 or 0-1 depending on the tool
+	// that saved the map.
+	this.lights.forEach(light => {
+		light.world = [light.pos[0] + data.width, light.pos[1], light.pos[2] + data.height];
+		const max = Math.max(light.color[0], light.color[1], light.color[2]);
+		const scale = max > 1 ? 255 : 1;
+		light.rgb = [light.color[0] / scale, light.color[1] / scale, light.color[2] / scale];
+		light.radius = light.range * 0.2;
+	});
 
 	// Initialize sounds
 	this.sounds.forEach(sound => {
@@ -472,6 +537,9 @@ function registerPostProcessModules(gl) {
 		PostProcess.register(Bloom, gl);
 	}
 	PostProcess.register(GaussianBlur, gl);
+	// Passes a client plugin added (PostProcess.addExternal) go after the
+	// scene-wide blur and bloom, and before anti-aliasing and upsampling.
+	PostProcess.registerExternal(gl);
 	PostProcess.register(FXAA, gl);
 	PostProcess.register(CAS, gl);
 	PostProcess.register(Cartoon, gl);
