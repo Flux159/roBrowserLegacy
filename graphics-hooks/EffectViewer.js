@@ -206139,7 +206139,7 @@ var init_HtmlHelper = __esmMin((() => {
 /**
 * Render background (or a black background if no image is loaded yet)
 */
-function render$15() {
+function render$16() {
 	_ctx$6.clearRect(0, 0, _canvas.width, _canvas.height);
 	if (_progress > -1) Background.setPercent(_progress);
 }
@@ -206207,7 +206207,7 @@ var init_Background = __esmMin((() => {
 			let i;
 			_progress = 0;
 			_canvas.style.zIndex = "1";
-			render$15();
+			render$16();
 			if (loading) {
 				_loading = loading;
 				return;
@@ -206230,7 +206230,7 @@ var init_Background = __esmMin((() => {
 				height: height + "px"
 			});
 			_ctx$6.clearRect(0, 0, width, height);
-			render$15();
+			render$16();
 		}
 		/**
 		* Set an image as background
@@ -206243,7 +206243,7 @@ var init_Background = __esmMin((() => {
 			_progress = -1;
 			_container.innerHTML = "";
 			_container.style.backgroundImage = "none";
-			render$15();
+			render$16();
 			if (Array.isArray(filename)) {
 				let loadedCount = 0;
 				const total = filename.length;
@@ -207005,7 +207005,7 @@ function init$13(gl) {
 * @param {number} x
 * @param {number} y
 */
-function render$14(gl, modelView, projection, fog, x, y) {
+function render$15(gl, modelView, projection, fog, x, y) {
 	if (!_texture$5) return;
 	const uniform = _program$27.uniform;
 	const attribute = _program$27.attribute;
@@ -207047,7 +207047,7 @@ function render$14(gl, modelView, projection, fog, x, y) {
 *
 * @param {object} gl context
 */
-function free$8(gl) {
+function free$9(gl) {
 	if (_buffer$20) {
 		gl.deleteBuffer(_buffer$20);
 		_buffer$20 = null;
@@ -207098,8 +207098,8 @@ var init_GridSelector = __esmMin((() => {
 	]);
 	GridSelector_default = {
 		init: init$13,
-		free: free$8,
-		render: render$14
+		free: free$9,
+		render: render$15
 	};
 }));
 //#endregion
@@ -207182,7 +207182,7 @@ var init_Ground$1 = __esmMin((() => {
 * @param {object} fog structure
 * @param {object} light structure
 */
-function render$13(gl, modelView, projection, normalMat, fog, light) {
+function render$14(gl, modelView, projection, normalMat, fog, light) {
 	const uniform = _program$26.uniform;
 	const attribute = _program$26.attribute;
 	gl.useProgram(_program$26);
@@ -207368,7 +207368,7 @@ function init$12(gl, data) {
 *
 * @param {object} gl context
 */
-function free$7(gl) {
+function free$8(gl) {
 	if (_lightmap) {
 		gl.deleteTexture(_lightmap);
 		_lightmap = null;
@@ -207427,8 +207427,8 @@ var init_Ground = __esmMin((() => {
 	_width = 0;
 	Ground_default = {
 		init: init$12,
-		free: free$7,
-		render: render$13,
+		free: free$8,
+		render: render$14,
 		getShadowFactor
 	};
 }));
@@ -207826,16 +207826,28 @@ var init_SpriteRenderer = __esmMin((() => {
 //#region src/Renderer/Map/Water.vs?raw
 var Water_default$2;
 var init_Water$2 = __esmMin((() => {
-	Water_default$2 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec3 aPosition;\r\nin vec2 aTextureCoord;\r\n\r\nout vec2 vTextureCoord;\r\n\r\nuniform mat4 uModelViewMat;\r\nuniform mat4 uProjectionMat;\r\n\r\nuniform float uWaveHeight;\r\nuniform float uWavePitch;\r\nuniform float uWaterOffset;\r\n\r\nconst float PI = 3.14159265358979323846264;\r\n\r\nvoid main(void) {\r\n    float x       = mod( aPosition.x, 2.0);\r\n    float y       = mod( aPosition.z, 2.0);\r\n    float diff    = x < 1.0 ? y < 1.0 ? 1.0 : -1.0 : 0.0;\r\n    float Height  = sin((PI / 180.0) * (uWaterOffset + 0.5 * uWavePitch * (aPosition.x + aPosition.z + diff))) * uWaveHeight;\r\n\r\n    gl_Position   = uProjectionMat * uModelViewMat * vec4( aPosition.x, aPosition.y + Height, aPosition.z, 1.0);\r\n    vTextureCoord = aTextureCoord;\r\n}";
+	Water_default$2 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec3 aPosition;\r\nin vec2 aTextureCoord;\r\n\r\nout vec2 vTextureCoord;\r\nout vec3 vEye;\r\nout vec3 vWorld;\r\n\r\nuniform mat4 uModelViewMat;\r\nuniform mat4 uProjectionMat;\r\n\r\nuniform float uWaveHeight;\r\nuniform float uWavePitch;\r\nuniform float uWaterOffset;\r\n\r\nconst float PI = 3.14159265358979323846264;\r\n\r\nvoid main(void) {\r\n    float x       = mod( aPosition.x, 2.0);\r\n    float y       = mod( aPosition.z, 2.0);\r\n    float diff    = x < 1.0 ? y < 1.0 ? 1.0 : -1.0 : 0.0;\r\n    float Height  = sin((PI / 180.0) * (uWaterOffset + 0.5 * uWavePitch * (aPosition.x + aPosition.z + diff))) * uWaveHeight;\r\n\r\n    vec4 eye      = uModelViewMat * vec4( aPosition.x, aPosition.y + Height, aPosition.z, 1.0);\r\n    gl_Position   = uProjectionMat * eye;\r\n    vTextureCoord = aTextureCoord;\r\n    vEye          = eye.xyz;\r\n    vWorld        = aPosition;\r\n}";
 }));
 //#endregion
 //#region src/Renderer/Map/Water.fs?raw
 var Water_default$1;
 var init_Water$1 = __esmMin((() => {
-	Water_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nuniform vec3  uLightAmbient;\r\nuniform vec3  uLightDiffuse;\r\nuniform float uLightOpacity;\r\n\r\nuniform float uOpacity;\r\n\r\nvoid main(void) {\r\n    \r\n    vec4 textureSample = texture( uDiffuse,  vTextureCoord.st );\r\n    textureSample.a = uOpacity;\r\n    \r\n    if (textureSample.a == 0.0) {\r\n        discard;\r\n    }\r\n    \r\n    textureSample.a *= uOpacity;\r\n    \r\n    fragColor   = textureSample;\r\n\r\n    if (uFogUse) {\r\n        float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n        float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n        fragColor    = mix( fragColor, vec4( uFogColor, fragColor.w ), fogFactor );\r\n    }\r\n}";
+	Water_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nin vec3 vEye;\r\nin vec3 vWorld;\r\nout vec4 fragColor;\r\n\r\n// Planar reflection (WaterReflection.js), off when uReflect is 0.\r\nuniform float     uReflect;\r\nuniform sampler2D uReflection;\r\nuniform vec2      uScreen;\r\nuniform float     uTime;\r\nuniform vec3      uEyeNormal;\r\nuniform vec3      uEyeSun;\r\n\r\nuniform sampler2D uDiffuse;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nuniform vec3  uLightAmbient;\r\nuniform vec3  uLightDiffuse;\r\nuniform float uLightOpacity;\r\n\r\nuniform float uOpacity;\r\n\r\nvoid main(void) {\r\n    \r\n    vec4 textureSample = texture( uDiffuse,  vTextureCoord.st );\r\n    textureSample.a = uOpacity;\r\n    \r\n    if (textureSample.a == 0.0) {\r\n        discard;\r\n    }\r\n    \r\n    textureSample.a *= uOpacity;\r\n\r\n    if (uReflect > 0.0) {\r\n        // The mirrored scene at this pixel, rippled a little.\r\n        vec2 ripple = vec2(sin(vWorld.x * 1.7 + uTime * 1.3), cos(vWorld.z * 1.5 + uTime * 1.1)) * 0.004;\r\n        vec3 reflection = texture(uReflection, gl_FragCoord.xy / uScreen + ripple).rgb;\r\n        // More mirror at a glancing angle, more water looking straight down.\r\n        vec3 view = normalize(-vEye);\r\n        float facing = clamp(abs(dot(view, uEyeNormal)), 0.0, 1.0);\r\n        float fresnel = 0.15 + 0.75 * pow(1.0 - facing, 3.0);\r\n        textureSample.rgb = mix(textureSample.rgb, reflection, fresnel * uReflect);\r\n        // The sun on the surface.\r\n        float sun = pow(max(dot(reflect(-normalize(uEyeSun), uEyeNormal), view), 0.0), 80.0);\r\n        textureSample.rgb += uLightDiffuse * sun * 0.5 * uReflect;\r\n        textureSample.a = mix(textureSample.a, 0.95, fresnel * uReflect);\r\n    }\r\n\r\n    fragColor   = textureSample;\r\n\r\n    if (uFogUse) {\r\n        float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n        float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n        fragColor    = mix( fragColor, vec4( uFogColor, fragColor.w ), fogFactor );\r\n    }\r\n}";
 }));
 //#endregion
 //#region src/Renderer/Map/Water.js
+/**
+* The water plane's height, and whether there is water to reflect in.
+*/
+function level() {
+	return _vertCount ? _waterLevel : null;
+}
+/**
+* Hand the water this frame's reflection (WaterReflection.render), or null.
+*/
+function setReflection(reflection) {
+	_reflection = reflection;
+}
 /**
 * Initialize water data
 *
@@ -207870,7 +207882,7 @@ function init$11(gl, water) {
 * @param {object} light structure
 * @param {number} tick (game tick)
 */
-function render$12(gl, modelView, projection, fog, light, tick) {
+function render$13(gl, modelView, projection, fog, light, tick) {
 	if (!_vertCount) return;
 	const uniform = _program$24.uniform;
 	const attribute = _program$24.attribute;
@@ -207889,6 +207901,35 @@ function render$12(gl, modelView, projection, fog, light, tick) {
 	gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
 	gl.activeTexture(gl.TEXTURE0);
 	gl.uniform1i(uniform.uDiffuse, 0);
+	const reflect = _reflection && _reflection.texture ? _reflection.strength : 0;
+	gl.uniform1f(uniform.uReflect, reflect);
+	if (reflect > 0) {
+		const viewport = gl.getParameter(gl.VIEWPORT);
+		gl.activeTexture(gl.TEXTURE1);
+		gl.bindTexture(gl.TEXTURE_2D, _reflection.texture);
+		gl.uniform1i(uniform.uReflection, 1);
+		gl.activeTexture(gl.TEXTURE0);
+		gl.uniform2f(uniform.uScreen, viewport[2], viewport[3]);
+		gl.uniform1f(uniform.uTime, tick / 1e3);
+		const n = [
+			-modelView[4],
+			-modelView[5],
+			-modelView[6]
+		];
+		const nl = Math.hypot(n[0], n[1], n[2]) || 1;
+		gl.uniform3f(uniform.uEyeNormal, n[0] / nl, n[1] / nl, n[2] / nl);
+		const d = light && light.direction ? light.direction : [
+			0,
+			-1,
+			0
+		];
+		gl.uniform3f(uniform.uEyeSun, modelView[0] * d[0] + modelView[4] * d[1] + modelView[8] * d[2], modelView[1] * d[0] + modelView[5] * d[1] + modelView[9] * d[2], modelView[2] * d[0] + modelView[6] * d[1] + modelView[10] * d[2]);
+		gl.uniform3fv(uniform.uLightDiffuse, light && light.diffuse ? light.diffuse : [
+			1,
+			1,
+			1
+		]);
+	}
 	gl.uniform1f(uniform.uWaveHeight, _waveHeight);
 	gl.uniform1f(uniform.uOpacity, _waterOpacity);
 	gl.uniform1f(uniform.uWavePitch, _wavePitch);
@@ -207906,7 +207947,7 @@ function render$12(gl, modelView, projection, fog, light, tick) {
 *
 * @param {object} gl context
 */
-function free$6(gl) {
+function free$7(gl) {
 	let i;
 	if (_buffer$17) {
 		gl.deleteBuffer(_buffer$17);
@@ -207942,7 +207983,7 @@ function isSubmerged(x, y) {
 function hasWater() {
 	return _vertCount > 0;
 }
-var _program$24, _buffer$17, _vertCount, _textures$1, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, Water_default;
+var _program$24, _buffer$17, _vertCount, _textures$1, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, _reflection, Water_default;
 var init_Water = __esmMin((() => {
 	init_WebGL();
 	init_SpriteRenderer();
@@ -207959,12 +208000,15 @@ var init_Water = __esmMin((() => {
 	_waterLevel = 0;
 	_animSpeed = 0;
 	_waterOpacity = .9;
+	_reflection = null;
 	Water_default = {
 		init: init$11,
-		free: free$6,
-		render: render$12,
+		free: free$7,
+		render: render$13,
 		isSubmerged,
-		hasWater
+		hasWater,
+		level,
+		setReflection
 	};
 }));
 //#endregion
@@ -208336,7 +208380,7 @@ function unbind(gl) {
 * @param {object} fog structure
 * @param {object} light structure
 */
-function render$11(gl, modelView, projection, normalMat, fog, light) {
+function render$12(gl, modelView, projection, normalMat, fog, light) {
 	bind$1(gl, modelView, projection, fog, light);
 	OccluderFade.renderOpaque(gl, _program$23.uniform, () => drawMeshes(gl));
 	OccluderFade.renderQuery(gl, _program$23.uniform, () => drawMeshes(gl), OccluderFade.QUERY.MODELS);
@@ -208364,7 +208408,7 @@ function renderFaded$1(gl, modelView, projection, normalMat, fog, light) {
 *
 * @param {object} gl context
 */
-function free$5(gl) {
+function free$6(gl) {
 	let i, count;
 	if (_buffer$16) {
 		gl.deleteBuffer(_buffer$16);
@@ -208394,9 +208438,9 @@ var init_Models = __esmMin((() => {
 	_pendingTextures = 0;
 	Models_default = {
 		init: init$10,
-		render: render$11,
+		render: render$12,
 		renderFaded: renderFaded$1,
-		free: free$5
+		free: free$6
 	};
 }));
 //#endregion
@@ -208449,7 +208493,7 @@ function init$9(gl) {
 /**
 * Free resources
 */
-function free$4(gl) {
+function free$5(gl) {
 	for (let i = 0; i < _animatedModels.length; i++) {
 		const model = _animatedModels[i];
 		if (model.vao) gl.deleteVertexArray(model.vao);
@@ -208859,7 +208903,7 @@ function drawModels(gl) {
 /**
 * Render animated models (opaque pass)
 */
-function render$10(gl, modelView, projection, normalMat, fog, light, tick) {
+function render$11(gl, modelView, projection, normalMat, fog, light, tick) {
 	if (_animatedModels.length === 0) return;
 	if (!_program$22) init$9(gl);
 	bind(gl, modelView, projection, normalMat, fog, light);
@@ -208908,9 +208952,9 @@ var init_AnimatedModels = __esmMin((() => {
 	_animatedModels = [];
 	AnimatedModels_default = {
 		init: init$9,
-		free: free$4,
+		free: free$5,
 		add: add$2,
-		render: render$10,
+		render: render$11,
 		renderFaded,
 		hasAnimatedModels
 	};
@@ -212635,7 +212679,7 @@ function init$8(gl) {
 /**
 * Free all type GL resources and drop every instance (MapRenderer calls this on map unload).
 */
-function free$3(gl) {
+function free$4(gl) {
 	for (const path in _types) {
 		const type = _types[path];
 		const submeshes = type.submeshes;
@@ -212904,7 +212948,7 @@ function normalize3(v) {
 * sits next to): (gl, modelView, projection, normalMat, fog, light, tick). modelView is
 * Camera.modelView (the view matrix); the per-instance world is composed on top.
 */
-function render$9(gl, modelView, projection, normalMat, fog, light, tick) {
+function render$10(gl, modelView, projection, normalMat, fog, light, tick) {
 	_gl$1 = gl;
 	if (_instances.length === 0 || !light) return;
 	if (!_program$21) init$8(gl);
@@ -213394,8 +213438,8 @@ var init_GR2ModelRenderer = __esmMin((() => {
 	];
 	GR2ModelRenderer_default = {
 		init: init$8,
-		free: free$3,
-		render: render$9,
+		free: free$4,
+		render: render$10,
 		attach: attach$1,
 		detach,
 		isMissing: function(path) {
@@ -213427,7 +213471,7 @@ function add$1(sound) {
 /**
 * Remove data from memory
 */
-function free$2() {
+function free$3() {
 	_list$5.length = 0;
 }
 /**
@@ -213435,7 +213479,7 @@ function free$2() {
 *
 * @param {vec2} position
 */
-function render$8(position, tick) {
+function render$9(position, tick) {
 	_list$5.forEach((sound) => {
 		const dist = Math.floor(vec2$3.dist(sound.pos, position));
 		if (sound.tick < tick && dist <= sound.range) {
@@ -213452,8 +213496,8 @@ var init_Sounds = __esmMin((() => {
 	_list$5 = [];
 	Sounds_default = {
 		add: add$1,
-		free: free$2,
-		render: render$8
+		free: free$3,
+		render: render$9
 	};
 }));
 //#endregion
@@ -255756,7 +255800,7 @@ function add(mapEffect) {
 /**
 * Remove data from memory
 */
-function free$1() {
+function free$2() {
 	_list$2.length = 0;
 }
 /**
@@ -255803,7 +255847,7 @@ var init_Effects = __esmMin((() => {
 	_list$2 = [];
 	Effects_default = {
 		add,
-		free: free$1,
+		free: free$2,
 		get,
 		remove,
 		spam
@@ -256589,7 +256633,7 @@ function cloudInit(cloud) {
 * @param {object} fog structure
 * @param {number} tick - game tick
 */
-function render$7(gl, modelView, projection, fog, tick) {
+function render$8(gl, modelView, projection, fog, tick) {
 	if (!_display) return;
 	let i, cloud, opacity;
 	SpriteRenderer.bind3DContext(gl, modelView, projection, fog);
@@ -256637,7 +256681,7 @@ var init_Sky = __esmMin((() => {
 	Sky_default = {
 		init: init$7,
 		setUpCloudData,
-		render: render$7
+		render: render$8
 	};
 }));
 //#endregion
@@ -258461,6 +258505,179 @@ var init_JoystickUI = __esmMin((() => {
 	JoystickUI_default = UIManager.addComponent(JoystickUI);
 }));
 //#endregion
+//#region src/Renderer/Effects/Enhancements.js
+var Enhancements;
+var init_Enhancements = __esmMin((() => {
+	Enhancements = { 
+	/**
+	* Water mirrors the scene above it: 0 off .. 1 full. Costs a second
+	* render of the ground and models, at half resolution, on maps with water.
+	*/
+waterReflection: 0 };
+}));
+//#endregion
+//#region src/Renderer/Map/WaterReflection.js
+/** Column-major 4x4 multiply: a * b. */
+function multiply(a, b) {
+	const out = /* @__PURE__ */ new Float32Array(16);
+	for (let col = 0; col < 4; col++) for (let row = 0; row < 4; row++) {
+		let sum = 0;
+		for (let k = 0; k < 4; k++) sum += a[k * 4 + row] * b[col * 4 + k];
+		out[col * 4 + row] = sum;
+	}
+	return out;
+}
+/** Column-major 4x4 inverse, or null if singular. */
+function invert(m) {
+	const inv = /* @__PURE__ */ new Float32Array(16);
+	inv[0] = m[5] * m[10] * m[15] - m[5] * m[11] * m[14] - m[9] * m[6] * m[15] + m[9] * m[7] * m[14] + m[13] * m[6] * m[11] - m[13] * m[7] * m[10];
+	inv[4] = -m[4] * m[10] * m[15] + m[4] * m[11] * m[14] + m[8] * m[6] * m[15] - m[8] * m[7] * m[14] - m[12] * m[6] * m[11] + m[12] * m[7] * m[10];
+	inv[8] = m[4] * m[9] * m[15] - m[4] * m[11] * m[13] - m[8] * m[5] * m[15] + m[8] * m[7] * m[13] + m[12] * m[5] * m[11] - m[12] * m[7] * m[9];
+	inv[12] = -m[4] * m[9] * m[14] + m[4] * m[10] * m[13] + m[8] * m[5] * m[14] - m[8] * m[6] * m[13] - m[12] * m[5] * m[10] + m[12] * m[6] * m[9];
+	inv[1] = -m[1] * m[10] * m[15] + m[1] * m[11] * m[14] + m[9] * m[2] * m[15] - m[9] * m[3] * m[14] - m[13] * m[2] * m[11] + m[13] * m[3] * m[10];
+	inv[5] = m[0] * m[10] * m[15] - m[0] * m[11] * m[14] - m[8] * m[2] * m[15] + m[8] * m[3] * m[14] + m[12] * m[2] * m[11] - m[12] * m[3] * m[10];
+	inv[9] = -m[0] * m[9] * m[15] + m[0] * m[11] * m[13] + m[8] * m[1] * m[15] - m[8] * m[3] * m[13] - m[12] * m[1] * m[11] + m[12] * m[3] * m[9];
+	inv[13] = m[0] * m[9] * m[14] - m[0] * m[10] * m[13] - m[8] * m[1] * m[14] + m[8] * m[2] * m[13] + m[12] * m[1] * m[10] - m[12] * m[2] * m[9];
+	inv[2] = m[1] * m[6] * m[15] - m[1] * m[7] * m[14] - m[5] * m[2] * m[15] + m[5] * m[3] * m[14] + m[13] * m[2] * m[7] - m[13] * m[3] * m[6];
+	inv[6] = -m[0] * m[6] * m[15] + m[0] * m[7] * m[14] + m[4] * m[2] * m[15] - m[4] * m[3] * m[14] - m[12] * m[2] * m[7] + m[12] * m[3] * m[6];
+	inv[10] = m[0] * m[5] * m[15] - m[0] * m[7] * m[13] - m[4] * m[1] * m[15] + m[4] * m[3] * m[13] + m[12] * m[1] * m[7] - m[12] * m[3] * m[5];
+	inv[14] = -m[0] * m[5] * m[14] + m[0] * m[6] * m[13] + m[4] * m[1] * m[14] - m[4] * m[2] * m[13] - m[12] * m[1] * m[6] + m[12] * m[2] * m[5];
+	inv[3] = -m[1] * m[6] * m[11] + m[1] * m[7] * m[10] + m[5] * m[2] * m[11] - m[5] * m[3] * m[10] - m[9] * m[2] * m[7] + m[9] * m[3] * m[6];
+	inv[7] = m[0] * m[6] * m[11] - m[0] * m[7] * m[10] - m[4] * m[2] * m[11] + m[4] * m[3] * m[10] + m[8] * m[2] * m[7] - m[8] * m[3] * m[6];
+	inv[11] = -m[0] * m[5] * m[11] + m[0] * m[7] * m[9] + m[4] * m[1] * m[11] - m[4] * m[3] * m[9] - m[8] * m[1] * m[7] + m[8] * m[3] * m[5];
+	inv[15] = m[0] * m[5] * m[10] - m[0] * m[6] * m[9] - m[4] * m[1] * m[10] + m[4] * m[2] * m[9] + m[8] * m[1] * m[6] - m[8] * m[2] * m[5];
+	const det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+	if (Math.abs(det) < 1e-12) return null;
+	for (let i = 0; i < 16; i++) inv[i] /= det;
+	return inv;
+}
+/**
+* The view mirrored across the horizontal plane y = level (world space; up is
+* negative y in RO), and a projection whose near plane is that plane, so only
+* what is above the water is drawn.
+*/
+function mirrored(modelView, projection, level) {
+	const view = multiply(modelView, new Float32Array([
+		1,
+		0,
+		0,
+		0,
+		0,
+		-1,
+		0,
+		0,
+		0,
+		0,
+		1,
+		0,
+		0,
+		2 * level,
+		0,
+		1
+	]));
+	const inv = invert(view);
+	if (!inv) return {
+		view,
+		projection
+	};
+	const p = [
+		0,
+		-1,
+		0,
+		level
+	];
+	const c = [
+		0,
+		1,
+		2,
+		3
+	].map((i) => inv[i * 4] * p[0] + inv[i * 4 + 1] * p[1] + inv[i * 4 + 2] * p[2] + inv[i * 4 + 3] * p[3]);
+	if (c[3] > 0) return {
+		view,
+		projection
+	};
+	const proj = Float32Array.from(projection);
+	const q = [
+		(Math.sign(c[0]) + proj[8]) / proj[0],
+		(Math.sign(c[1]) + proj[9]) / proj[5],
+		-1,
+		(1 + proj[10]) / proj[14]
+	];
+	const scale = 2 / (c[0] * q[0] + c[1] * q[1] + c[2] * q[2] + c[3] * q[3]);
+	proj[2] = c[0] * scale;
+	proj[6] = c[1] * scale;
+	proj[10] = c[2] * scale + 1;
+	proj[14] = c[3] * scale;
+	return {
+		view,
+		projection: proj
+	};
+}
+/**
+* Draw the reflection: `draw(view, projection)` renders what should appear in
+* it. Returns the texture, or null if it could not be made.
+*/
+function render$7(gl, modelView, projection, level, draw) {
+	const width = Math.max(1, Math.floor(gl.canvas.width / 2));
+	const height = Math.max(1, Math.floor(gl.canvas.height / 2));
+	if (!_fbo || _fbo.width !== width || _fbo.height !== height) {
+		free$1(gl);
+		const framebuffer = gl.createFramebuffer();
+		const texture = gl.createTexture();
+		const depth = gl.createRenderbuffer();
+		gl.bindTexture(gl.TEXTURE_2D, texture);
+		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+		gl.bindRenderbuffer(gl.RENDERBUFFER, depth);
+		gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+		gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+		gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+		gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depth);
+		if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+			gl.deleteFramebuffer(framebuffer);
+			gl.deleteTexture(texture);
+			gl.deleteRenderbuffer(depth);
+			return null;
+		}
+		_fbo = {
+			framebuffer,
+			texture,
+			depth,
+			width,
+			height
+		};
+	}
+	const { view, projection: clipped } = mirrored(modelView, projection, level);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, _fbo.framebuffer);
+	gl.viewport(0, 0, width, height);
+	gl.clearColor(0, 0, 0, 0);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	draw(view, clipped);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	return _fbo.texture;
+}
+function free$1(gl) {
+	if (_fbo) {
+		gl.deleteFramebuffer(_fbo.framebuffer);
+		gl.deleteTexture(_fbo.texture);
+		gl.deleteRenderbuffer(_fbo.depth);
+		_fbo = null;
+	}
+}
+var _fbo, WaterReflection_default;
+var init_WaterReflection = __esmMin((() => {
+	_fbo = null;
+	WaterReflection_default = {
+		render: render$7,
+		free: free$1,
+		mirrored
+	};
+}));
+//#endregion
 //#region src/Renderer/Effects/Shaders/GLSL/Bloom.fs?raw
 var Bloom_default;
 var init_Bloom$1 = __esmMin((() => {
@@ -259244,6 +259461,8 @@ var init_MapRenderer = __esmMin((() => {
 	init_PacketVerManager();
 	init_JoystickUI();
 	init_PostProcess();
+	init_Enhancements();
+	init_WaterReflection();
 	init_Bloom();
 	init_VerticalFlip();
 	init_GaussianBlur();
@@ -259392,6 +259611,20 @@ var init_MapRenderer = __esmMin((() => {
 			const modelView = Camera.modelView;
 			const projection = Camera.projection;
 			const normalMat = Camera.normalMat;
+			const waterLevel = Water_default.level();
+			if (Enhancements.waterReflection > 0 && waterLevel !== null) {
+				const texture = WaterReflection_default.render(gl, modelView, projection, waterLevel, (view, clipped) => {
+					Sky_default.render(gl, view, clipped, fog, tick);
+					Ground_default.render(gl, view, clipped, normalMat, fog, light);
+					Models_default.render(gl, view, clipped, normalMat, fog, light);
+					AnimatedModels_default.render(gl, view, clipped, normalMat, fog, light, tick);
+				});
+				Water_default.setReflection(texture ? {
+					texture,
+					strength: Math.min(1, Enhancements.waterReflection)
+				} : null);
+				PostProcess.prepare(gl);
+			} else Water_default.setReflection(null);
 			Ground_default.render(gl, modelView, projection, normalMat, fog, light);
 			Effects_default.spam(SessionStorage_default.Entity.position, tick);
 			if (Mouse.intersect && Altitude.intersect(modelView, projection, _pos$6)) {
