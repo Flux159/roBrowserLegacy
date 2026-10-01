@@ -207495,7 +207495,7 @@ var init_Ground = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/MapHooks.js
-function fail(hook, what, error) {
+function fail$1(hook, what, error) {
 	console.error(`[MapHooks] ${hook.name || "a hook"} failed in ${what}, and is switched off:`, error);
 	remove$1(hook);
 }
@@ -207503,14 +207503,14 @@ function call(hook, what, ...args) {
 	try {
 		return hook[what](...args);
 	} catch (error) {
-		fail(hook, what, error);
+		fail$1(hook, what, error);
 		return;
 	}
 }
 function remove$1(hook) {
-	const index = _hooks.indexOf(hook);
+	const index = _hooks$1.indexOf(hook);
 	if (index < 0) return;
-	_hooks.splice(index, 1);
+	_hooks$1.splice(index, 1);
 	if (_map$1 && typeof hook.free === "function") try {
 		hook.free(_gl$3);
 	} catch (error) {
@@ -207521,9 +207521,9 @@ function remove$1(hook) {
 * Add a hook. If a map is up, its init runs now. Returns a function that
 * takes it out again (and frees it).
 */
-function register(hook) {
+function register$1(hook) {
 	if (!hook || typeof hook !== "object") throw new Error("MapHooks.register takes an object");
-	_hooks.push(hook);
+	_hooks$1.push(hook);
 	if (_map$1 && typeof hook.init === "function") call(hook, "init", _gl$3, _map$1);
 	return () => remove$1(hook);
 }
@@ -207531,12 +207531,12 @@ function register(hook) {
 function mapReady(gl, map) {
 	_gl$3 = gl;
 	_map$1 = map;
-	for (const hook of _hooks.slice()) if (typeof hook.init === "function") call(hook, "init", gl, map);
+	for (const hook of _hooks$1.slice()) if (typeof hook.init === "function") call(hook, "init", gl, map);
 }
 /** The map is going away: free every hook. */
 function mapFree(gl) {
 	if (!_map$1) return;
-	for (const hook of _hooks.slice()) if (typeof hook.free === "function") try {
+	for (const hook of _hooks$1.slice()) if (typeof hook.free === "function") try {
 		hook.free(gl);
 	} catch (error) {
 		console.error(`[MapHooks] ${hook.name || "a hook"} failed to free:`, error);
@@ -207549,12 +207549,12 @@ function modelKey(name) {
 /** Every model some hook draws itself, for the map loader. */
 function modelNames() {
 	const names = /* @__PURE__ */ new Set();
-	for (const hook of _hooks) if (Array.isArray(hook.replacesModels)) hook.replacesModels.forEach((name) => names.add(modelKey(name)));
+	for (const hook of _hooks$1) if (Array.isArray(hook.replacesModels)) hook.replacesModels.forEach((name) => names.add(modelKey(name)));
 	return Array.from(names);
 }
 /** The map's replaced models are loaded: each hook gets its own. */
 function modelsReady(gl, list) {
-	for (const hook of _hooks.slice()) {
+	for (const hook of _hooks$1.slice()) {
 		if (typeof hook.models !== "function" || !Array.isArray(hook.replacesModels)) continue;
 		const mine = new Set(hook.replacesModels.map(modelKey));
 		const models = list.filter((model) => mine.has(model.name));
@@ -207563,7 +207563,7 @@ function modelsReady(gl, list) {
 }
 /** Run a stage. For 'water', only the hooks that replace it. */
 function stage(name, ctx) {
-	for (const hook of _hooks.slice()) {
+	for (const hook of _hooks$1.slice()) {
 		if (typeof hook.render !== "function") continue;
 		const replacing = Array.isArray(hook.replaces) && hook.replaces.includes(name);
 		if (name === "water" ? replacing : true) call(hook, "render", name, ctx);
@@ -207571,7 +207571,7 @@ function stage(name, ctx) {
 }
 /** Whether some hook draws `name` in the client's place. */
 function replaces(name) {
-	return _hooks.some((hook) => Array.isArray(hook.replaces) && hook.replaces.includes(name));
+	return _hooks$1.some((hook) => Array.isArray(hook.replaces) && hook.replaces.includes(name));
 }
 function rgb(value) {
 	return Array.isArray(value) || ArrayBuffer.isView(value) ? value.length === 3 && Array.from(value).every((v) => Number.isFinite(v)) : false;
@@ -207583,7 +207583,7 @@ function rgb(value) {
 function light(mapLight) {
 	if (!mapLight) return mapLight;
 	let over = null;
-	for (const hook of _hooks.slice()) if (typeof hook.light === "function") {
+	for (const hook of _hooks$1.slice()) if (typeof hook.light === "function") {
 		const value = call(hook, "light", mapLight);
 		if (value && typeof value === "object") over = value;
 	}
@@ -207601,9 +207601,9 @@ function light(mapLight) {
 	}
 	return _litView;
 }
-var _hooks, _gl$3, _map$1, _lit, _litFor, _litView, MapHooks_default;
+var _hooks$1, _gl$3, _map$1, _lit, _litFor, _litView, MapHooks_default;
 var init_MapHooks = __esmMin((() => {
-	_hooks = [];
+	_hooks$1 = [];
 	_gl$3 = null;
 	_map$1 = null;
 	_lit = {
@@ -207614,7 +207614,7 @@ var init_MapHooks = __esmMin((() => {
 	_litFor = null;
 	_litView = null;
 	MapHooks_default = {
-		register,
+		register: register$1,
 		mapReady,
 		mapFree,
 		stage,
@@ -210481,7 +210481,7 @@ function Ot(e, t, n, r, i, a) {
 }
 function kt(e, t, n) {
 	let r = Z(e, n + 1);
-	for (let i = 0; i < n; i++) an(e, n) >= r ? (t[i] = 1, on(e, r, n - r, n)) : (t[i] = 0, on(e, 0, r, n));
+	for (let i = 0; i < n; i++) an(e, n) >= r ? (t[i] = 1, on$1(e, r, n - r, n)) : (t[i] = 0, on$1(e, 0, r, n));
 }
 function At(e, t, n, r, i, a, o) {
 	if (H(t)) {
@@ -211016,7 +211016,7 @@ function Z(e, t) {
 function an(e, t) {
 	return q ? q.bitsGet(e, t) : ct(e, t);
 }
-function on(e, t, n, r) {
+function on$1(e, t, n, r) {
 	q ? q.bitsRemove(e, t, n, r) : lt(e, t, n, r);
 }
 function sn(e, t, n, r) {
@@ -231004,6 +231004,44 @@ var init_Bank$1 = __esmMin((() => {
 	Bank_default = UIManager.addComponent(Bank);
 }));
 //#endregion
+//#region src/UI/ExitHooks.js
+/**
+* Be told when the player asks to leave. Returns a function that stops it.
+*/
+function on(listener) {
+	if (typeof listener !== "function") throw new Error("ExitHooks.on takes a function");
+	_listeners.push(listener);
+	return () => {
+		const index = _listeners.indexOf(listener);
+		if (index > -1) _listeners.splice(index, 1);
+	};
+}
+/**
+* The player chose to leave. Called by the window that owns the button,
+* before it acts. A listener that throws is reported and the rest still run.
+*/
+function emit(to, from) {
+	const event = Object.freeze({
+		to,
+		from
+	});
+	_listeners.slice().forEach((listener) => {
+		try {
+			listener(event);
+		} catch (error) {
+			console.error("[ExitHooks] a listener failed:", error);
+		}
+	});
+}
+var _listeners, ExitHooks_default;
+var init_ExitHooks = __esmMin((() => {
+	_listeners = [];
+	ExitHooks_default = {
+		on,
+		emit
+	};
+}));
+//#endregion
 //#region src/UI/Components/SoundOption/SoundOption.html?raw
 var SoundOption_default$2;
 var init_SoundOption$2 = __esmMin((() => {
@@ -232035,6 +232073,7 @@ var init_Escape = __esmMin((() => {
 	init_Renderer();
 	init_UIManager();
 	init_GUIComponent();
+	init_ExitHooks();
 	init_SoundOption();
 	init_GraphicsOption();
 	init_ShortCutOption();
@@ -232074,10 +232113,12 @@ var init_Escape = __esmMin((() => {
 			Escape.onReturnSavePointRequest();
 		});
 		root.querySelector(".charselect").addEventListener("click", function() {
+			ExitHooks_default.emit("charSelect", "escape");
 			Escape.onCharSelectionRequest();
 		});
 		root.querySelector(".hotkey").addEventListener("click", onToggleShortcutUI);
 		root.querySelector(".exit").addEventListener("click", function() {
+			ExitHooks_default.emit("login", "escape");
 			Escape.onExitRequest();
 		});
 		root.querySelector(".cancel").addEventListener("click", function() {
@@ -257387,7 +257428,7 @@ function setupUIHide() {
 		const deltaX = Math.abs(event.clientX - lastMouseX);
 		const deltaY = Math.abs(event.clientY - lastMouseY);
 		if ((deltaX > 5 || deltaY > 5) && Controls_default.joyAutoHide) {
-			hide();
+			hide$1();
 			JoystickInputService_default.active = false;
 		}
 		lastMouseX = event.clientX;
@@ -257484,14 +257525,14 @@ function updateVisuals(buttons) {
 		if (active) active.classList.add("active");
 	}
 }
-function show() {
+function show$1() {
 	if (ui && !_isVisible()) ui.show();
 }
-function hide() {
+function hide$1() {
 	if (ui && _isVisible()) ui.hide();
 }
 function dispose() {
-	hide();
+	hide$1();
 	if (_mouseMoveHandler) {
 		document.removeEventListener("mousemove", _mouseMoveHandler);
 		_mouseMoveHandler = null;
@@ -257520,8 +257561,8 @@ var init_JoystickUIRenderer = __esmMin((() => {
 		updateByIndex,
 		updateSetIndicator,
 		updateVisuals,
-		show,
-		hide
+		show: show$1,
+		hide: hide$1
 	};
 }));
 //#endregion
@@ -338476,6 +338517,143 @@ var init_CharSelect$2 = __esmMin((() => {
 	CharSelect_default$1 = ":host {\r\n	width: 576px;\r\n	height: 342px;\r\n}\r\n\r\n#charselect {\r\n	position: absolute;\r\n	width: 576px;\r\n	height: 342px;\r\n}\r\n\r\n/** Box **/\r\n#charselect .box_select {\r\n	position: absolute;\r\n	width: 139px;\r\n	height: 144px;\r\n	top: 40px;\r\n	margin-left: -5px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#charselect canvas {\r\n	position: absolute;\r\n	top: 44px;\r\n}\r\n#charselect .slot1 {\r\n	left: 60px;\r\n}\r\n#charselect .slot2 {\r\n	left: 224px;\r\n}\r\n#charselect .slot3 {\r\n	left: 386px;\r\n}\r\n\r\n/** Arrow **/\r\n#charselect .arrow {\r\n	position: absolute;\r\n	top: 105px;\r\n	width: 13px;\r\n	height: 13px;\r\n}\r\n#charselect .arrow.left {\r\n	left: 40px;\r\n}\r\n#charselect .arrow.right {\r\n	right: 40px;\r\n}\r\n\r\n/** Slot info **/\r\n#charselect .slotinfo {\r\n	position: absolute;\r\n	top: 195px;\r\n	right: 10px;\r\n	height: 20px;\r\n	display: block;\r\n	border: 1px solid #c6cee7;\r\n	border-radius: 4px;\r\n	padding-left: 10px;\r\n	padding-right: 10px;\r\n}\r\n#charselect .slotinfo .number {\r\n	color: #58709e;\r\n	font-weight: bold;\r\n	margin-right: 10px;\r\n}\r\n#charselect .slotinfo .content {\r\n	color: #555;\r\n	top: 6px;\r\n	right: 8px;\r\n}\r\n\r\n/** Page info **/\r\n#charselect .pageinfo {\r\n	position: absolute;\r\n	left: 275px;\r\n	top: 185px;\r\n	font-weight: bold;\r\n	color: #646464;\r\n}\r\n#charselect .pageinfo .current {\r\n	color: #fe3b7d;\r\n}\r\n\r\n/** Characters infos **/\r\n#charselect .charinfo {\r\n	position: absolute;\r\n	width: 285px;\r\n	top: 204px;\r\n	left: 16px;\r\n}\r\n#charselect .charinfo div {\r\n	position: absolute;\r\n	width: 90px;\r\n	height: 13px;\r\n}\r\n#charselect .charinfo .name {\r\n	left: 52px;\r\n	top: 2px;\r\n	white-space: nowrap;\r\n}\r\n#charselect .charinfo .job {\r\n	left: 52px;\r\n	top: 18px;\r\n}\r\n#charselect .charinfo .lvl {\r\n	left: 52px;\r\n	top: 34px;\r\n}\r\n#charselect .charinfo .exp {\r\n	left: 52px;\r\n	top: 50px;\r\n}\r\n#charselect .charinfo .hp {\r\n	left: 52px;\r\n	top: 66px;\r\n}\r\n#charselect .charinfo .sp {\r\n	left: 52px;\r\n	top: 82px;\r\n}\r\n#charselect .charinfo .map {\r\n	left: 52px;\r\n	top: 98px;\r\n	width: 238px;\r\n}\r\n#charselect .charinfo .str {\r\n	left: 200px;\r\n	top: 2px;\r\n}\r\n#charselect .charinfo .agi {\r\n	left: 200px;\r\n	top: 18px;\r\n}\r\n#charselect .charinfo .vit {\r\n	left: 200px;\r\n	top: 34px;\r\n}\r\n#charselect .charinfo .int {\r\n	left: 200px;\r\n	top: 50px;\r\n}\r\n#charselect .charinfo .dex {\r\n	left: 200px;\r\n	top: 66px;\r\n}\r\n#charselect .charinfo .luk {\r\n	left: 200px;\r\n	top: 82px;\r\n}\r\n\r\n/** Buttons **/\r\n#charselect .btns {\r\n	position: absolute;\r\n	bottom: 4px;\r\n	width: 100%;\r\n	height: 20px;\r\n}\r\n#charselect .btn {\r\n	position: absolute;\r\n	width: 42px;\r\n	height: 20px;\r\n}\r\n\r\n#charselect .ok,\r\n#charselect .make {\r\n	right: 50px;\r\n}\r\n#charselect .cancel {\r\n	right: 4px;\r\n}\r\n#charselect .delete {\r\n	left: 4px;\r\n}\r\n";
 }));
 //#endregion
+//#region src/UI/ScreenHooks.js
+function check(screen) {
+	if (!SCREENS.includes(screen)) throw new Error(`ScreenHooks: unknown screen '${screen}'`);
+}
+function current(screen) {
+	const list = _hooks[screen];
+	return list && list.length ? list[list.length - 1] : null;
+}
+function setHidden(host, hidden) {
+	if (host && host.style) host.style.display = hidden ? "none" : "";
+}
+/** Take a hook out after it threw, and give the screen back. */
+function fail(screen, hook, what, error) {
+	console.error(`[ScreenHooks] ${hook.name || "a hook"} failed in ${what} for ${screen}, and is switched off:`, error);
+	const list = _hooks[screen] || [];
+	const index = list.indexOf(hook);
+	if (index > -1) list.splice(index, 1);
+	const open = _open[screen];
+	if (open && open.hook === hook) {
+		open.hook = null;
+		if (what !== "hide") quietHide(screen, hook);
+		take(screen);
+	}
+}
+function quietHide(screen, hook) {
+	if (typeof hook.hide !== "function") return;
+	try {
+		hook.hide();
+	} catch (error) {
+		console.error(`[ScreenHooks] ${hook.name || "a hook"} failed to hide ${screen}:`, error);
+	}
+}
+/** Give an open screen to its current hook, or to the client's window. */
+function take(screen) {
+	const open = _open[screen];
+	if (!open) return;
+	const hook = current(screen);
+	open.hook = hook;
+	setHidden(open.host, Boolean(hook));
+	if (hook && typeof hook.show === "function") try {
+		hook.show(open.ctx);
+	} catch (error) {
+		fail(screen, hook, "show", error);
+	}
+}
+/**
+* Add a hook for a screen. If that screen is open, the hook takes it now.
+* Returns a function that takes the hook out again.
+*/
+function register(screen, hook) {
+	check(screen);
+	if (!hook || typeof hook !== "object") throw new Error("ScreenHooks.register takes a screen name and an object");
+	(_hooks[screen] = _hooks[screen] || []).push(hook);
+	const open = _open[screen];
+	if (open) {
+		if (open.hook) quietHide(screen, open.hook);
+		take(screen);
+	}
+	return () => unregister(screen, hook);
+}
+function unregister(screen, hook) {
+	const list = _hooks[screen] || [];
+	const index = list.indexOf(hook);
+	if (index < 0) return;
+	list.splice(index, 1);
+	const open = _open[screen];
+	if (open && open.hook === hook) {
+		open.hook = null;
+		quietHide(screen, hook);
+		take(screen);
+	}
+}
+/**
+* A window opened. Returns whether a hook draws it (the window is then
+* hidden). `host` is the element to hide.
+*/
+function show(screen, ctx, host) {
+	check(screen);
+	if (_open[screen]) hide(screen);
+	_open[screen] = {
+		ctx,
+		host,
+		hook: null
+	};
+	take(screen);
+	return Boolean(_open[screen] && _open[screen].hook);
+}
+/** Something the screen's ctx reports changed. */
+function update(screen) {
+	const open = _open[screen];
+	if (!open || !open.hook || typeof open.hook.update !== "function") return;
+	const hook = open.hook;
+	try {
+		hook.update(open.ctx);
+	} catch (error) {
+		fail(screen, hook, "update", error);
+	}
+}
+/** A window closed. */
+function hide(screen) {
+	const open = _open[screen];
+	if (!open) return;
+	delete _open[screen];
+	setHidden(open.host, false);
+	if (open.hook) {
+		const hook = open.hook;
+		if (typeof hook.hide === "function") try {
+			hook.hide();
+		} catch (error) {
+			fail(screen, hook, "hide", error);
+		}
+	}
+}
+/** Whether a hook is drawing this screen now. */
+function active(screen) {
+	return Boolean(_open[screen] && _open[screen].hook);
+}
+var SCREENS, _hooks, _open, ScreenHooks_default;
+var init_ScreenHooks = __esmMin((() => {
+	SCREENS = [
+		"login",
+		"serverList",
+		"charSelect",
+		"charCreate"
+	];
+	_hooks = {};
+	_open = {};
+	ScreenHooks_default = {
+		SCREENS,
+		register,
+		show,
+		update,
+		hide,
+		active
+	};
+}));
+//#endregion
 //#region src/UI/Components/CharSelect/CharSelectCommon.js
 function createCharSelect(config) {
 	const { name, htmlText, cssText, gridLayout = false, hostHeight = 342, defaultMaxSlots = 27, deleteReservation = false, packetverGatedDelete = false, pageBalls = false } = config;
@@ -338526,7 +338704,39 @@ function createCharSelect(config) {
 	let countdownInterval;
 	let _bgInterval = null;
 	const render = gridLayout ? renderGrid : renderPaginated;
-	const moveCursorTo = gridLayout ? moveCursorToGrid : moveCursorToPaginated;
+	const moveCursorTo = (index) => {
+		(gridLayout ? moveCursorToGrid : moveCursorToPaginated)(index);
+		ScreenHooks_default.update("charSelect");
+	};
+	/**
+	* What a plugin drawing this screen sees (UI/ScreenHooks.js). The
+	* actions are the window's own buttons, acting on the selected slot.
+	*/
+	const _screen = {
+		get characters() {
+			return _list.slice();
+		},
+		get maxSlots() {
+			return _maxSlots;
+		},
+		get index() {
+			return _index;
+		},
+		get sex() {
+			return _sex;
+		},
+		get enabled() {
+			return !_disable_UI;
+		},
+		deleteReservation: deleteReservation && (!packetverGatedDelete || PacketVerManager_default.value >= 20100803),
+		select: (slot) => moveCursorTo(slot),
+		play: () => connect(),
+		create: () => create(),
+		requestDelete: () => _screen.deleteReservation ? reserve() : suppress(),
+		cancelDelete: () => _screen.deleteReservation && removedelete(),
+		confirmDelete: () => suppress(),
+		exit: () => cancel()
+	};
 	/**
 	* Initialize UI
 	*/
@@ -338607,6 +338817,7 @@ function createCharSelect(config) {
 			moveCursorTo(_index);
 			_bgInterval = setInterval(changeBackgroundEverySecond, 250);
 			Renderer.render(render);
+			ScreenHooks_default.show("charSelect", _screen, this._host);
 			return;
 		}
 		const root = this.getRoot();
@@ -338617,11 +338828,13 @@ function createCharSelect(config) {
 		if (!pageBalls) root.querySelector(".pageinfo .count").textContent = _maxSlots / 3;
 		moveCursorTo(_index);
 		Renderer.render(render);
+		ScreenHooks_default.show("charSelect", _screen, this._host);
 	};
 	/**
 	* Stop rendering
 	*/
 	Component.onRemove = function onRemove() {
+		ScreenHooks_default.hide("charSelect");
 		if (gridLayout) {
 			if (_bgInterval) {
 				clearInterval(_bgInterval);
@@ -338816,6 +339029,7 @@ function createCharSelect(config) {
 			_entitySlots[character.CharNum].effectState = _entitySlots[character.CharNum]._effectState & ~StatusState_default.EffectState.INVISIBLE;
 			_entitySlots[character.CharNum].hideShadow = true;
 			Component.updateCharSlot(character.CharNum);
+			ScreenHooks_default.update("charSelect");
 			return;
 		}
 		if (deleteReservation && character.DeleteDate) {
@@ -338846,6 +339060,7 @@ function createCharSelect(config) {
 				});
 			}
 		}
+		ScreenHooks_default.update("charSelect");
 	};
 	/**
 	* Disable or Enable the UI.
@@ -338854,6 +339069,7 @@ function createCharSelect(config) {
 	*/
 	Component.setUIEnabled = function setUIEnabled(value) {
 		_disable_UI = !value;
+		ScreenHooks_default.update("charSelect");
 	};
 	/**
 	* Callback to use
@@ -338898,11 +339114,13 @@ function createCharSelect(config) {
 		if (_disable_UI === false) {
 			if (gridLayout) {
 				UIManager.showPromptBox(DB.getMessage(17), "ok", "cancel", () => {
+					ExitHooks_default.emit("login", "charSelect");
 					Component.onExitRequest();
 					Component.clearAllSlots();
 				}, null);
 				stopCountdownInterval();
 			} else UIManager.showPromptBox(DB.getMessage(17), "ok", "cancel", () => {
+				ExitHooks_default.emit("login", "charSelect");
 				Component.onExitRequest();
 			}, null);
 		}
@@ -339009,6 +339227,7 @@ function createCharSelect(config) {
 	*/
 	function requestdelete(index, timer) {
 		const root = Component.getRoot();
+		ScreenHooks_default.update("charSelect");
 		if (gridLayout) {
 			_entitySlots[index].action = 2;
 			const countdown = root.querySelector(`.timedelete.slot${index}`);
@@ -339053,6 +339272,7 @@ function createCharSelect(config) {
 		if (_slots[_index]) {
 			const root = Component.getRoot();
 			_slots[_index].DeleteDate = 0;
+			ScreenHooks_default.update("charSelect");
 			if (gridLayout) {
 				_entitySlots[_index].action = 0;
 				render();
@@ -339463,6 +339683,8 @@ var init_CharSelectCommon = __esmMin((() => {
 	init_Camera();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
+	init_ExitHooks();
 	init_Elements();
 	init_PacketVerManager();
 }));
@@ -339652,6 +339874,76 @@ function createCharCreate(config) {
 	let _curcolor = 0;
 	const render = hasRace ? renderRace : renderLegacy;
 	/**
+	* What a plugin drawing this screen sees (UI/ScreenHooks.js).
+	* create() goes the way the Make button does.
+	*/
+	const _screen = {
+		get sex() {
+			return _accountSex;
+		},
+		get races() {
+			return raceOptions();
+		},
+		chooseSex: hasRace,
+		hasStats,
+		create(look) {
+			const stats = look && look.stats || {};
+			const stat = (key) => hasStats ? parseInt(stats[key], 10) || 1 : 1;
+			const args = [
+				String(look && look.name || ""),
+				stat("str"),
+				stat("agi"),
+				stat("vit"),
+				stat("int"),
+				stat("dex"),
+				stat("luk"),
+				look.hair,
+				look.hairColor
+			];
+			if (hasRace) args.push(look.job, look.sex);
+			Component.onCharCreationRequest(...args);
+		},
+		exit: () => cancel()
+	};
+	/**
+	* The jobs a character can start as, and the hair each can have.
+	*/
+	function raceOptions() {
+		if (!hasRace) return [{
+			job: 0,
+			hair: {
+				min: 2,
+				max: 26
+			},
+			hairColor: {
+				min: 0,
+				max: 9
+			}
+		}];
+		const root = Component.getRoot && Component.__loaded ? Component.getRoot() : null;
+		return [["human", RACE.HUMAN], ["doram", RACE.DORAM]].map(([race, job]) => {
+			const cap = CAP[job];
+			let hairMax = cap.HEAD.MAX;
+			let colorMax = cap.HEADPALETTE.MAX;
+			if (gridHairstyle && root) {
+				hairMax = root.querySelectorAll(`[id$="_${race}_male"]`).length || hairMax;
+				colorMax = root.querySelectorAll("[id$=\"_color\"]").length - 1;
+				if (colorMax < 0) colorMax = cap.HEADPALETTE.MAX;
+			}
+			return {
+				job,
+				hair: {
+					min: cap.HEAD.MIN,
+					max: hairMax
+				},
+				hairColor: {
+					min: cap.HEADPALETTE.MIN,
+					max: colorMax
+				}
+			};
+		});
+	}
+	/**
 	* Initialize UI
 	*/
 	Component.init = function init() {
@@ -339757,12 +340049,14 @@ function createCharCreate(config) {
 		}
 		Renderer.render(render);
 		if (hasStats) updateGraphic();
+		ScreenHooks_default.show("charCreate", _screen, this._host);
 	};
 	/**
 	* Remove component from HTML
 	* Stop rendering
 	*/
 	Component.onRemove = function onRemove() {
+		ScreenHooks_default.hide("charCreate");
 		Renderer.stop(render);
 	};
 	/**
@@ -340297,6 +340591,7 @@ var init_CharCreateCommon = __esmMin((() => {
 	init_Client();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
 	init_Elements();
 	TYPE = {
 		RACE: 1,
@@ -341152,17 +341447,37 @@ var init_WinList$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/WinList/WinList.js
-var WinList, WinList_default;
+var WinList, _screen, WinList_default;
 var init_WinList = __esmMin((() => {
 	init_Renderer();
 	init_KeyEventHandler();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
 	init_Elements();
 	init_WinList$2();
 	init_WinList$1();
 	WinList = new GUIComponent("WinList", WinList_default$1);
 	WinList.render = () => WinList_default$2;
+	_screen = {
+		get servers() {
+			return WinList.list ? WinList.list.slice() : [];
+		},
+		get index() {
+			return WinList.index;
+		},
+		select(index) {
+			WinList.setIndex(index);
+			WinList.selectIndex();
+		},
+		exit: () => WinList.exit()
+	};
+	/**
+	* Once in the page: a plugin may draw this screen instead
+	*/
+	WinList.onAppend = function onAppend() {
+		ScreenHooks_default.show("serverList", _screen, this._host);
+	};
 	/**
 	* Initialize UI
 	*/
@@ -341200,6 +341515,7 @@ var init_WinList = __esmMin((() => {
 			this._listEl.appendChild(node);
 		}
 		this.setIndex(0);
+		ScreenHooks_default.update("serverList");
 	};
 	/**
 	*  Cancel window
@@ -341223,6 +341539,7 @@ var init_WinList = __esmMin((() => {
 			if (nodes[this.index]) nodes[this.index].style.backgroundColor = "transparent";
 			if (nodes[id]) nodes[id].style.backgroundColor = "#cde0ff";
 			this.index = id;
+			ScreenHooks_default.update("serverList");
 		}
 	};
 	/**
@@ -341257,6 +341574,7 @@ var init_WinList = __esmMin((() => {
 	* Free variables once removed from HTML
 	*/
 	WinList.onRemove = function onRemove() {
+		ScreenHooks_default.hide("serverList");
 		this._listEl.innerHTML = "";
 		this.list = null;
 		this.index = 0;
@@ -345474,6 +345792,25 @@ function createWinLogin({ name, htmlText, cssText }) {
 	let _inputUsername;
 	let _inputPassword;
 	let _buttonSave;
+	/**
+	* What a plugin drawing this screen sees (UI/ScreenHooks.js). login()
+	* goes the way the Connect button does, so a different sign-in -- a
+	* token in place of a password -- reaches the server the same way.
+	*/
+	const _screen = {
+		get savedId() {
+			return _preferences.saveID ? _preferences.ID : "";
+		},
+		get saveId() {
+			return Boolean(_preferences.saveID);
+		},
+		login(user, pass, saveId) {
+			if (typeof saveId === "boolean") _preferences.saveID = saveId;
+			submit(String(user), String(pass));
+		},
+		signup: () => signup(),
+		exit: () => exit()
+	};
 	Component.init = function init() {
 		this.draggable();
 		const root = this.getRoot();
@@ -345523,6 +345860,10 @@ function createWinLogin({ name, htmlText, cssText }) {
 		if (_preferences.ID.length) _inputPassword.focus();
 		else _inputUsername.focus();
 		Component.placeOnTop();
+		ScreenHooks_default.show("login", _screen, this._host);
+	};
+	Component.onRemove = function onRemove() {
+		ScreenHooks_default.hide("login");
 	};
 	Component.onKeyDown = function onKeyDown(event) {
 		if (this._host.style.display === "none") return true;
@@ -345556,8 +345897,10 @@ function createWinLogin({ name, htmlText, cssText }) {
 		return false;
 	}
 	function connect() {
-		const user = _inputUsername.value;
-		const pass = _inputPassword.value;
+		submit(_inputUsername.value, _inputPassword.value);
+		return false;
+	}
+	function submit(user, pass) {
 		if (_preferences.saveID) {
 			_preferences.saveID = true;
 			_preferences.ID = user;
@@ -345567,7 +345910,6 @@ function createWinLogin({ name, htmlText, cssText }) {
 		}
 		_preferences.save();
 		Component.onConnectionRequest(user, pass);
-		return false;
 	}
 	async function loadReplay(file) {
 		try {
@@ -345603,6 +345945,7 @@ var init_WinLoginCommon = __esmMin((() => {
 	init_KeyEventHandler();
 	init_UIManager();
 	init_GUIComponent();
+	init_ScreenHooks();
 	init_Elements();
 	init_preload_helper();
 }));
@@ -345659,12 +346002,14 @@ var init_WinLoginV3 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/WinLogin/WinLogin.js
-var publicName, versionInfo, Controller;
+var publicName, versionInfo, Controller, REDESIGN_BACKGROUND, _hasRedesignArt;
 var init_WinLogin = __esmMin((() => {
 	init_WinLogin$1();
 	init_WinLoginV2();
 	init_WinLoginV3();
 	init_UIVersionManager();
+	init_Client();
+	init_DBManager();
 	publicName = "WinLogin";
 	versionInfo = {
 		default: WinLogin_default,
@@ -345676,6 +346021,38 @@ var init_WinLogin = __esmMin((() => {
 		prere: {}
 	};
 	Controller = UIVersionManager.getUIController(publicName, versionInfo);
+	REDESIGN_BACKGROUND = "login_interface/bg_login.tga";
+	_hasRedesignArt = null;
+	/**
+	* Settle on a login window the client data can draw, then call back.
+	*
+	* Call after selectUIVersion(). The result is remembered: a file that failed
+	* to load does not always report the failure to a second listener.
+	*
+	* @param {function} callback
+	*/
+	Controller.selectUIVersionForData = function selectUIVersionForData(callback) {
+		const useClassic = () => {
+			Controller.selectSpecificUIVersion(0);
+			callback();
+		};
+		if (Controller.getUI() === WinLogin_default || _hasRedesignArt === true) {
+			callback();
+			return;
+		}
+		if (_hasRedesignArt === false) {
+			useClassic();
+			return;
+		}
+		Client.loadFile(DB.INTERFACE_PATH + REDESIGN_BACKGROUND, () => {
+			_hasRedesignArt = true;
+			callback();
+		}, () => {
+			_hasRedesignArt = false;
+			console.warn("%c[UIVersion] WinLogin: " + REDESIGN_BACKGROUND + " is not in the client data, using the classic window", "color:#007000");
+			useClassic();
+		});
+	};
 }));
 //#endregion
 //#region src/Engine/LoginEngine.js
@@ -346378,7 +346755,11 @@ var init_LoginEngine = __esmMin((() => {
 				onConnectionRequest.apply(null, autoLogin);
 				Configs.set("autoLogin", null);
 			} else q.add(function() {
-				Controller.getUI().append();
+				Controller.selectUIVersionForData(() => {
+					Controller.getUI().onConnectionRequest = onConnectionRequest;
+					Controller.getUI().onExitRequest = onExitRequest;
+					Controller.getUI().append();
+				});
 			});
 			if (PacketVerManager_default.value < 20170315) Network.hookPacket(PACKET.AC.ACCEPT_LOGIN, onConnectionAccepted);
 			else Network.hookPacket(PACKET.AC.ACCEPT_LOGIN3, onConnectionAccepted);
