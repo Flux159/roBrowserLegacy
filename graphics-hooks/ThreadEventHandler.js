@@ -16729,6 +16729,8 @@ var GND = class {
 		const cellTexture = new Int16Array(cells).fill(-1);
 		const cellHeights = new Float32Array(cells * 4);
 		const cellUv = new Float32Array(cells * 4);
+		const cellAtlas = new Float32Array(cells * 8);
+		const cellLight = new Float32Array(cells * 4);
 		for (let i = 0; i < cells; ++i) {
 			const cell = surfaces[i];
 			cellHeights.set(cell.height, i * 4);
@@ -16741,6 +16743,22 @@ var GND = class {
 					cellUv[i * 4 + 1] = (top.v1 + top.v2 + top.v3 + top.v4) / 4;
 					cellUv[i * 4 + 2] = (l.u1 + l.u2) / 2;
 					cellUv[i * 4 + 3] = (l.v1 + l.v2) / 2;
+					cellAtlas.set([
+						top.u1,
+						top.v1,
+						top.u2,
+						top.v2,
+						top.u3,
+						top.v3,
+						top.u4,
+						top.v4
+					], i * 8);
+					cellLight.set([
+						l.u1,
+						l.v1,
+						l.u2,
+						l.v2
+					], i * 4);
 				}
 			}
 		}
@@ -16751,6 +16769,8 @@ var GND = class {
 			cellTexture,
 			cellHeights,
 			cellUv,
+			cellAtlas,
+			cellLight,
 			lightmap,
 			lightmapSize: this.lightmap.count,
 			tileColor: this.createTilesColorImage(),
