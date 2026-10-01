@@ -259348,6 +259348,7 @@ function onGroundComplete(data) {
 		cellHeights: data.cellHeights,
 		cellUv: data.cellUv,
 		textureNames: data.textureNames || [],
+		textureUrls: Array.isArray(data.textures) ? data.textures.slice() : [],
 		groundTextures: () => Ground_default.textures(),
 		water: () => Water_default.state(),
 		lights: this.lights,
