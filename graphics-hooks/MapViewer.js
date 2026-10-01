@@ -259350,18 +259350,16 @@ function onGroundComplete(data) {
 	this.water.vertCount = data.waterVertCount;
 	Ground_default.init(gl, data);
 	Water_default.init(gl, this.water);
+	const asFloat = (value) => new Float32Array(Int32Array.of(value).buffer)[0];
 	this.lights.forEach((light) => {
 		light.world = [
 			light.pos[0] + data.width,
 			light.pos[1],
 			light.pos[2] + data.height
 		];
-		const scale = Math.max(light.color[0], light.color[1], light.color[2]) > 1 ? 255 : 1;
-		light.rgb = [
-			light.color[0] / scale,
-			light.color[1] / scale,
-			light.color[2] / scale
-		];
+		const color = light.color.map((v) => Math.abs(v) > 65535 ? asFloat(v) : v);
+		const scale = Math.max(color[0], color[1], color[2]) > 1 ? 255 : 1;
+		light.rgb = color.map((v) => Math.min(Math.max(v / scale, 0), 1));
 		light.radius = light.range * .2;
 	});
 	MapHooks_default.mapReady(gl, {
