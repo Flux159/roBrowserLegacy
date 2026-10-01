@@ -19110,6 +19110,7 @@ var MapLoader = class {
 			const compiledGround = ground.compile(world.water.level, world.water.waveHeight);
 			loader.fileCount = ground.textures.length + world.models.length * 3;
 			if (compiledGround.waterVertCount) loader.fileCount += 32;
+			compiledGround.textureNames = compiledGround.textures.slice();
 			loader.loadGroundTextures(world, compiledGround, function onLoaded(waters, textures) {
 				world.water.images = waters;
 				compiledGround.textures = textures;
