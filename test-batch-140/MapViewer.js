@@ -303767,29 +303767,46 @@ function customLuaTables(key) {
 /**
 * loadLuaTable, then each customLuaTables[key] pair after it.
 *
-* loadLuaTable calls onEnd as soon as it has *started*, and `callback` once the
-* table is parsed, so the custom tables chain from `callback`: a mod's rows
-* must land after the base's, or the base would overwrite them. A custom table
-* that fails to load ends the chain there (and says so in the console); it
-* never holds up the rest of the client.
+* A mod's rows must land after the base's, or the base would overwrite them,
+* so each table starts when the one before it has been parsed or has failed.
+* `onEnd` waits for the whole chain: loadLuaTable on its own calls onEnd as
+* soon as it has *started*, which let the game place the player before a
+* mod's headgear row existed -- the look was looked up, not found, and never
+* shown. A table that fails says so in the console and the chain goes on.
 */
 function loadLuaTableWithCustom(file_list, table_name, key, callback, onEnd, contextFunc, isResourceTable = false) {
 	const custom = customLuaTables(key);
 	const next = (index) => {
-		if (index >= custom.length) return;
+		if (index >= custom.length) {
+			onEnd.call();
+			return;
+		}
+		const advance = once(() => next(index + 1));
 		loadLuaTable(custom[index], table_name, function(json) {
 			callback.call(null, json);
-			next(index + 1);
-		}, function() {}, null, isResourceTable);
+			advance();
+		}, function() {}, null, isResourceTable, advance);
 	};
+	const start = once(() => next(0));
 	loadLuaTable(file_list, table_name, function(json) {
 		callback.call(null, json);
-		next(0);
-	}, onEnd, contextFunc, isResourceTable);
+		start();
+	}, function() {}, contextFunc, isResourceTable, start);
 }
-function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isResourceTable = false) {
+/** fn, callable once; later calls do nothing. */
+function once(fn) {
+	let called = false;
+	return (...args) => {
+		if (!called) {
+			called = true;
+			fn(...args);
+		}
+	};
+}
+function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isResourceTable = false, onError = null) {
 	const id_filename = file_list[0];
 	const value_table_filename = file_list[1];
+	const fail = typeof onError === "function" ? onError : function() {};
 	try {
 		console.log("Loading file \"" + id_filename + "\"...");
 		Client.loadFile(id_filename, async function(file) {
@@ -303800,8 +303817,9 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 				loadValueTable();
 			} catch (hException) {
 				console.error(`(${id_filename}) error: `, hException);
+				fail(hException);
 			}
-		});
+		}, () => fail(/* @__PURE__ */ new Error(`${id_filename} not found`)));
 		function loadValueTable() {
 			console.log("Loading file \"" + value_table_filename + "\"...");
 			Client.loadFile(value_table_filename, async function(file) {
@@ -303812,8 +303830,9 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 					parseTable();
 				} catch (hException) {
 					console.error(`(${value_table_filename}) error: `, hException);
+					fail(hException);
 				}
-			});
+			}, () => fail(/* @__PURE__ */ new Error(`${value_table_filename} not found`)));
 		}
 		function parseTable() {
 			const table = {};
@@ -303852,6 +303871,7 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 		}
 	} catch (e) {
 		console.error("error: ", e);
+		fail(e);
 	} finally {
 		onEnd.call();
 	}
