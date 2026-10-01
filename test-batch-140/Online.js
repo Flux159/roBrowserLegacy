@@ -259144,6 +259144,8 @@ function onGroundComplete(data) {
 		cellTexture: data.cellTexture,
 		cellHeights: data.cellHeights,
 		cellUv: data.cellUv,
+		cellAtlas: data.cellAtlas,
+		cellLight: data.cellLight,
 		textureNames: data.textureNames || [],
 		textureUrls: Array.isArray(data.textures) ? data.textures.slice() : [],
 		groundTextures: () => Ground_default.textures(),
