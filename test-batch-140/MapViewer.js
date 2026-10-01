@@ -208170,24 +208170,13 @@ function color(gl) {
 	_color$1 = target(gl, _color$1, vp[2], vp[3], gl.RGB8, gl.RGB, gl.UNSIGNED_BYTE, gl.COLOR_ATTACHMENT0, gl.LINEAR);
 	return blit(gl, _color$1, gl.COLOR_BUFFER_BIT);
 }
-/** Put the depth from the last depth() back, undoing what was drawn since. */
-function restoreDepth(gl) {
-	if (!_depth) return;
-	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
-	const vp = gl.getParameter(gl.VIEWPORT);
-	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, _depth.fbo);
-	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, current);
-	gl.blitFramebuffer(0, 0, _depth.w, _depth.h, vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], gl.DEPTH_BUFFER_BIT, gl.NEAREST);
-	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
-}
 var _depth, _color$1, SceneCopy_default;
 var init_SceneCopy = __esmMin((() => {
 	_depth = null;
 	_color$1 = null;
 	SceneCopy_default = {
 		depth,
-		color,
-		restoreDepth
+		color
 	};
 }));
 //#endregion
@@ -259376,11 +259365,10 @@ function render$6(gl, modelView, projection, fog, light, tick, lightmapOn) {
 	gl.vertexAttribDivisor(attribute.aUv, 1);
 	const cull = gl.isEnabled(gl.CULL_FACE);
 	gl.disable(gl.CULL_FACE);
-	gl.depthMask(!!saved);
+	gl.depthMask(false);
 	gl.drawArraysInstanced(gl.TRIANGLES, 0, 18, _count);
 	gl.depthMask(true);
 	if (cull) gl.enable(gl.CULL_FACE);
-	if (saved) SceneCopy_default.restoreDepth(gl);
 	gl.vertexAttribDivisor(attribute.aInstance, 0);
 	gl.vertexAttribDivisor(attribute.aUv, 0);
 	gl.disableVertexAttribArray(attribute.aBlade);
