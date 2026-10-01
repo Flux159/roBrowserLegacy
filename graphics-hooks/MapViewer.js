@@ -83724,7 +83724,7 @@ var init_PostProcess = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/VerticalFlip.js
-var _program$29, _buffer$21, _active$3, VerticalFlip;
+var _program$30, _buffer$21, _active$3, VerticalFlip;
 var init_VerticalFlip = __esmMin((() => {
 	init_VerticalFlip$2();
 	init_VerticalFlip$1();
@@ -83733,9 +83733,9 @@ var init_VerticalFlip = __esmMin((() => {
 	_active$3 = false;
 	VerticalFlip = class {
 		static init(gl) {
-			if (_program$29) return;
+			if (_program$30) return;
 			try {
-				_program$29 = WebGL_default.createShaderProgram(gl, VerticalFlip_default$1, VerticalFlip_default);
+				_program$30 = WebGL_default.createShaderProgram(gl, VerticalFlip_default$1, VerticalFlip_default);
 			} catch (e) {
 				console.error("Error when compiling shader VerticalFlip.", e);
 				return;
@@ -83768,19 +83768,19 @@ var init_VerticalFlip = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$21 || !_program$29 || !_active$3) return;
+			if (!_buffer$21 || !_program$30 || !_active$3) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$29);
+			gl.useProgram(_program$30);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
-			let posLoc = _program$29.attribute.aPosition;
+			let posLoc = _program$30.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 16, 0);
-			posLoc = _program$29.attribute.aTextureCoord;
+			posLoc = _program$30.attribute.aTextureCoord;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 16, 8);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.uniform1i(_program$29.uniform.uTexture, 0);
+			gl.uniform1i(_program$30.uniform.uTexture, 0);
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 			PostProcess.afterRenderPass(gl);
 		}
@@ -83788,13 +83788,13 @@ var init_VerticalFlip = __esmMin((() => {
 		* @returns {WebGLProgram} Shader program
 		*/
 		static program() {
-			return _program$29;
+			return _program$30;
 		}
 		/** Resets effect state */
 		static clean(gl) {
 			_active$3 = false;
 			if (_buffer$21) gl.deleteBuffer(_buffer$21);
-			_program$29 = _buffer$21 = null;
+			_program$30 = _buffer$21 = null;
 		}
 		/** @returns {boolean} Whether the effect is active */
 		static isActive() {
@@ -206176,7 +206176,7 @@ var init_HtmlHelper = __esmMin((() => {
 /**
 * Render background (or a black background if no image is loaded yet)
 */
-function render$16() {
+function render$17() {
 	_ctx$6.clearRect(0, 0, _canvas.width, _canvas.height);
 	if (_progress > -1) Background.setPercent(_progress);
 }
@@ -206244,7 +206244,7 @@ var init_Background = __esmMin((() => {
 			let i;
 			_progress = 0;
 			_canvas.style.zIndex = "1";
-			render$16();
+			render$17();
 			if (loading) {
 				_loading = loading;
 				return;
@@ -206267,7 +206267,7 @@ var init_Background = __esmMin((() => {
 				height: height + "px"
 			});
 			_ctx$6.clearRect(0, 0, width, height);
-			render$16();
+			render$17();
 		}
 		/**
 		* Set an image as background
@@ -206280,7 +206280,7 @@ var init_Background = __esmMin((() => {
 			_progress = -1;
 			_container.innerHTML = "";
 			_container.style.backgroundImage = "none";
-			render$16();
+			render$17();
 			if (Array.isArray(filename)) {
 				let loadedCount = 0;
 				const total = filename.length;
@@ -207028,7 +207028,7 @@ function init$13(gl) {
 		});
 	});
 	_buffer$20 = gl.createBuffer();
-	_program$28 = WebGL_default.createShaderProgram(gl, GridSelector_default$2, GridSelector_default$1);
+	_program$29 = WebGL_default.createShaderProgram(gl, GridSelector_default$2, GridSelector_default$1);
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$20);
 	gl.bufferData(gl.ARRAY_BUFFER, _buffer_data.byteLength, gl.DYNAMIC_DRAW);
 }
@@ -207042,12 +207042,12 @@ function init$13(gl) {
 * @param {number} x
 * @param {number} y
 */
-function render$15(gl, modelView, projection, fog, x, y) {
+function render$16(gl, modelView, projection, fog, x, y) {
 	if (!_texture$5) return;
-	const uniform = _program$28.uniform;
-	const attribute = _program$28.attribute;
+	const uniform = _program$29.uniform;
+	const attribute = _program$29.attribute;
 	let z;
-	gl.useProgram(_program$28);
+	gl.useProgram(_program$29);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -207084,7 +207084,7 @@ function render$15(gl, modelView, projection, fog, x, y) {
 *
 * @param {object} gl context
 */
-function free$10(gl) {
+function free$11(gl) {
 	if (_buffer$20) {
 		gl.deleteBuffer(_buffer$20);
 		_buffer$20 = null;
@@ -207093,12 +207093,12 @@ function free$10(gl) {
 		gl.deleteTexture(_texture$5);
 		_texture$5 = null;
 	}
-	if (_program$28) {
-		gl.deleteProgram(_program$28);
-		_program$28 = null;
+	if (_program$29) {
+		gl.deleteProgram(_program$29);
+		_program$29 = null;
 	}
 }
-var _program$28, _buffer$20, _texture$5, _xy, _buffer_data, GridSelector_default;
+var _program$29, _buffer$20, _texture$5, _xy, _buffer_data, GridSelector_default;
 var init_GridSelector = __esmMin((() => {
 	init_Altitude();
 	init_Client();
@@ -207107,7 +207107,7 @@ var init_GridSelector = __esmMin((() => {
 	init_Configs();
 	init_GridSelector$2();
 	init_GridSelector$1();
-	_program$28 = null;
+	_program$29 = null;
 	_buffer$20 = null;
 	_texture$5 = null;
 	_xy = null;
@@ -207135,8 +207135,8 @@ var init_GridSelector = __esmMin((() => {
 	]);
 	GridSelector_default = {
 		init: init$13,
-		free: free$10,
-		render: render$15
+		free: free$11,
+		render: render$16
 	};
 }));
 //#endregion
@@ -207199,13 +207199,221 @@ var init_Map = __esmMin((() => {
 //#region src/Renderer/Map/Ground.vs?raw
 var Ground_default$2;
 var init_Ground$2 = __esmMin((() => {
-	Ground_default$2 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec3 aPosition;\r\nin vec3 aVertexNormal;\r\nin vec2 aTextureCoord;\r\nin vec2 aLightmapCoord;\r\nin vec2 aTileColorCoord;\r\n\r\nout vec2 vTextureCoord;\r\nout vec2 vLightmapCoord;\r\nout vec2 vTileColorCoord;\r\nout float vLightWeighting;\r\n\r\nuniform mat4 uModelViewMat;\r\nuniform mat4 uProjectionMat;\r\n\r\nuniform vec3 uLightDirection;\r\nuniform vec3 uLightEnv;\r\n\r\nvoid main(void) {\r\n    gl_Position     = uProjectionMat * uModelViewMat * vec4( aPosition, 1.0);\r\n\r\n    vTextureCoord   = aTextureCoord;\r\n    vLightmapCoord  = aLightmapCoord;\r\n    vTileColorCoord = aTileColorCoord;\r\n\r\n    float dotProduct = dot(aVertexNormal, uLightDirection );\r\n    vLightWeighting = max(dotProduct, 0.0);\r\n}";
+	Ground_default$2 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec3 aPosition;\r\nin vec3 aVertexNormal;\r\nin vec2 aTextureCoord;\r\nin vec2 aLightmapCoord;\r\nin vec2 aTileColorCoord;\r\n\r\nout vec2 vTextureCoord;\r\nout vec2 vLightmapCoord;\r\nout vec2 vTileColorCoord;\r\nout float vLightWeighting;\r\nout vec4 vShadow;\r\n\r\n// Shadows.js: the light's view, used when uShadow > 0.\r\nuniform mat4 uShadowMat;\r\n\r\nuniform mat4 uModelViewMat;\r\nuniform mat4 uProjectionMat;\r\n\r\nuniform vec3 uLightDirection;\r\nuniform vec3 uLightEnv;\r\n\r\nvoid main(void) {\r\n    gl_Position     = uProjectionMat * uModelViewMat * vec4( aPosition, 1.0);\r\n    vShadow         = uShadowMat * vec4( aPosition, 1.0);\r\n\r\n    vTextureCoord   = aTextureCoord;\r\n    vLightmapCoord  = aLightmapCoord;\r\n    vTileColorCoord = aTileColorCoord;\r\n\r\n    float dotProduct = dot(aVertexNormal, uLightDirection );\r\n    vLightWeighting = max(dotProduct, 0.0);\r\n}";
 }));
 //#endregion
 //#region src/Renderer/Map/Ground.fs?raw
 var Ground_default$1;
 var init_Ground$1 = __esmMin((() => {
-	Ground_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nin vec2 vLightmapCoord;\r\nin vec2 vTileColorCoord;\r\nin float vLightWeighting;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\nuniform sampler2D uLightmap;\r\nuniform sampler2D uTileColor;\r\nuniform bool uLightMapUse;\r\nuniform bool uPosterize;\r\nuniform bool uGammaCorrection;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nuniform vec3  uLightAmbient;\r\nuniform vec3  uLightDiffuse;\r\nuniform float uLightOpacity;\r\nuniform vec3  uLightDirection;\r\nuniform vec3 uLightEnv;\r\n\r\nvec3 posterize(vec3 c) {\r\n    c *= 255.0;\r\n    c = floor(c / 16.0) * 16.0;\r\n    c /= 255.0;\r\n    return c;\r\n}\r\n\r\nvoid main(void) {\r\n    vec4 textureSample = texture(uDiffuse, vTextureCoord.st);\r\n    if (textureSample.a < 0.1)\r\n        discard;\r\n\r\n    if (vTileColorCoord.st != vec2(0.0,0.0)) {\r\n        textureSample    *= texture( uTileColor, vTileColorCoord.st);\r\n    }\r\n\r\n    vec3 color = (vLightWeighting * uLightDiffuse + uLightAmbient);\r\n    textureSample.rgb *= clamp(color, 0.0, 1.0);\r\n    textureSample.rgb *= clamp(uLightEnv, 0.0, 1.0);\r\n\r\n    if (uLightMapUse) {\r\n        vec4 lightmap = texture( uLightmap, vLightmapCoord.st);\r\n        if(uPosterize) {\r\n            lightmap.rgb = posterize(lightmap.rgb);\r\n        } else if(uGammaCorrection){\r\n            lightmap.rgb = pow(lightmap.rgb, vec3(1.1));\r\n        }\r\n        textureSample.rgb *= lightmap.a;\r\n        textureSample.rgb += clamp(lightmap.rgb, 0.0, 1.0);\r\n    }\r\n\r\n    fragColor = textureSample;\r\n\r\n    if (uFogUse) {\r\n        float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n        float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n        fragColor    = mix( fragColor, vec4(uFogColor, fragColor.w), fogFactor );\r\n    }\r\n\r\n}";
+	Ground_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nin vec2 vLightmapCoord;\r\nin vec2 vTileColorCoord;\r\nin float vLightWeighting;\r\nin vec4 vShadow;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\nuniform sampler2D uLightmap;\r\nuniform sampler2D uTileColor;\r\nuniform bool uLightMapUse;\r\nuniform bool uPosterize;\r\nuniform bool uGammaCorrection;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nuniform vec3  uLightAmbient;\r\nuniform vec3  uLightDiffuse;\r\nuniform float uLightOpacity;\r\nuniform vec3  uLightDirection;\r\nuniform vec3 uLightEnv;\r\n\r\n// Real-time shadows (Shadows.js), off when uShadow is 0.\r\nuniform float uShadow;\r\nuniform sampler2D uShadowMap;\r\nuniform float uShadowTexel;\r\n\r\n// 0 lit .. 1 hidden from the sun, averaged over 3x3 texels for soft edges.\r\nfloat shadowed() {\r\n    vec3 p = vShadow.xyz / vShadow.w * 0.5 + 0.5;\r\n    if (p.x <= 0.0 || p.x >= 1.0 || p.y <= 0.0 || p.y >= 1.0 || p.z >= 1.0) return 0.0;\r\n    float hidden = 0.0;\r\n    for (int x = -1; x <= 1; x++) {\r\n        for (int y = -1; y <= 1; y++) {\r\n            float closest = texture(uShadowMap, p.xy + vec2(float(x), float(y)) * uShadowTexel).r;\r\n            hidden += p.z - 0.0015 > closest ? 1.0 : 0.0;\r\n        }\r\n    }\r\n    return hidden / 9.0;\r\n}\r\n\r\nvec3 posterize(vec3 c) {\r\n    c *= 255.0;\r\n    c = floor(c / 16.0) * 16.0;\r\n    c /= 255.0;\r\n    return c;\r\n}\r\n\r\nvoid main(void) {\r\n    vec4 textureSample = texture(uDiffuse, vTextureCoord.st);\r\n    if (textureSample.a < 0.1)\r\n        discard;\r\n\r\n    if (vTileColorCoord.st != vec2(0.0,0.0)) {\r\n        textureSample    *= texture( uTileColor, vTileColorCoord.st);\r\n    }\r\n\r\n    float sun = vLightWeighting;\r\n    if (uShadow > 0.0) sun *= 1.0 - shadowed() * uShadow;\r\n    vec3 color = (sun * uLightDiffuse + uLightAmbient);\r\n    textureSample.rgb *= clamp(color, 0.0, 1.0);\r\n    textureSample.rgb *= clamp(uLightEnv, 0.0, 1.0);\r\n\r\n    if (uLightMapUse) {\r\n        vec4 lightmap = texture( uLightmap, vLightmapCoord.st);\r\n        if(uPosterize) {\r\n            lightmap.rgb = posterize(lightmap.rgb);\r\n        } else if(uGammaCorrection){\r\n            lightmap.rgb = pow(lightmap.rgb, vec3(1.1));\r\n        }\r\n        textureSample.rgb *= lightmap.a;\r\n        textureSample.rgb += clamp(lightmap.rgb, 0.0, 1.0);\r\n    }\r\n\r\n    fragColor = textureSample;\r\n\r\n    if (uFogUse) {\r\n        float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n        float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n        fragColor    = mix( fragColor, vec4(uFogColor, fragColor.w), fogFactor );\r\n    }\r\n\r\n}";
+}));
+//#endregion
+//#region src/Renderer/Map/Shadows.js
+function lookAt(eye, center, up) {
+	let z = [
+		eye[0] - center[0],
+		eye[1] - center[1],
+		eye[2] - center[2]
+	];
+	let l = Math.hypot(z[0], z[1], z[2]) || 1;
+	z = z.map((v) => v / l);
+	let x = [
+		up[1] * z[2] - up[2] * z[1],
+		up[2] * z[0] - up[0] * z[2],
+		up[0] * z[1] - up[1] * z[0]
+	];
+	l = Math.hypot(x[0], x[1], x[2]) || 1;
+	x = x.map((v) => v / l);
+	const y = [
+		z[1] * x[2] - z[2] * x[1],
+		z[2] * x[0] - z[0] * x[2],
+		z[0] * x[1] - z[1] * x[0]
+	];
+	const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+	return [
+		x[0],
+		y[0],
+		z[0],
+		0,
+		x[1],
+		y[1],
+		z[1],
+		0,
+		x[2],
+		y[2],
+		z[2],
+		0,
+		-dot(x, eye),
+		-dot(y, eye),
+		-dot(z, eye),
+		1
+	];
+}
+function multiply$1(a, b) {
+	const out = /* @__PURE__ */ new Float32Array(16);
+	for (let col = 0; col < 4; col++) for (let row = 0; row < 4; row++) {
+		let sum = 0;
+		for (let k = 0; k < 4; k++) sum += a[k * 4 + row] * b[col * 4 + k];
+		out[col * 4 + row] = sum;
+	}
+	return out;
+}
+function ensure(gl) {
+	if (_fbo$1) return true;
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.DEPTH_COMPONENT24, SIZE, SIZE, 0, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, null);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	const framebuffer = gl.createFramebuffer();
+	gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+	gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.TEXTURE_2D, texture, 0);
+	gl.drawBuffers([gl.NONE]);
+	gl.readBuffer(gl.NONE);
+	const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	if (!ok) {
+		gl.deleteFramebuffer(framebuffer);
+		gl.deleteTexture(texture);
+		return false;
+	}
+	_fbo$1 = {
+		framebuffer,
+		texture
+	};
+	_program$28 = WebGL_default.createShaderProgram(gl, VERTEX$1, FRAGMENT$1);
+	return true;
+}
+/**
+* The light's view of the area around `center` (world space): an orthographic
+* box along the sun's direction, snapped to the shadow map's texel grid so
+* shadow edges don't shimmer as the player walks.
+*/
+function lightMatrix(direction, center) {
+	const d = direction;
+	const l = Math.hypot(d[0], d[1], d[2]) || 1;
+	const toward = [
+		d[0] / l,
+		d[1] / l,
+		d[2] / l
+	];
+	const up = Math.abs(toward[1]) > .95 ? [
+		0,
+		0,
+		1
+	] : [
+		0,
+		-1,
+		0
+	];
+	const texel = 112 / SIZE;
+	const snapped = [
+		Math.round(center[0] / texel) * texel,
+		center[1],
+		Math.round(center[2] / texel) * texel
+	];
+	const view = lookAt([
+		snapped[0] + toward[0] * DEPTH / 2,
+		snapped[1] + toward[1] * DEPTH / 2,
+		snapped[2] + toward[2] * DEPTH / 2
+	], snapped, up), r = EXTENT;
+	return multiply$1([
+		1 / r,
+		0,
+		0,
+		0,
+		0,
+		1 / r,
+		0,
+		0,
+		0,
+		0,
+		-2 / 399,
+		0,
+		0,
+		0,
+		-401 / 399,
+		1
+	], view);
+}
+/**
+* Draw the shadow map. `drawCasters(program, matrix)` draws what casts
+* shadows with the depth program bound. Afterwards current() describes it
+* for the ground; the caller rebinds its own framebuffer.
+*/
+function render$15(gl, light, center, strength, drawCasters) {
+	_current = null;
+	if (!(strength > 0) || !light || !light.direction || typeof WebGL2RenderingContext === "undefined" || !(gl instanceof WebGL2RenderingContext)) return;
+	if (!ensure(gl)) return;
+	const matrix = lightMatrix(light.direction, center);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, _fbo$1.framebuffer);
+	gl.viewport(0, 0, SIZE, SIZE);
+	gl.clear(gl.DEPTH_BUFFER_BIT);
+	gl.useProgram(_program$28);
+	gl.uniformMatrix4fv(_program$28.uniform.uLightMat, false, matrix);
+	gl.uniform1i(_program$28.uniform.uDiffuse, 0);
+	drawCasters(_program$28, matrix);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+	_current = {
+		texture: _fbo$1.texture,
+		matrix,
+		strength: Math.min(1, strength),
+		texel: 1 / SIZE
+	};
+}
+/** This frame's shadow map, or null. */
+function current() {
+	return _current;
+}
+function clear$1() {
+	_current = null;
+}
+function free$10(gl) {
+	if (_fbo$1) {
+		gl.deleteFramebuffer(_fbo$1.framebuffer);
+		gl.deleteTexture(_fbo$1.texture);
+		_fbo$1 = null;
+	}
+	_current = null;
+}
+var SIZE, EXTENT, DEPTH, VERTEX$1, FRAGMENT$1, _fbo$1, _program$28, _current, Shadows_default;
+var init_Shadows = __esmMin((() => {
+	init_WebGL();
+	SIZE = 2048;
+	EXTENT = 56;
+	DEPTH = 400;
+	VERTEX$1 = `#version 300 es
+precision highp float;
+in vec3 aPosition;
+in vec2 aTextureCoord;
+uniform mat4 uLightMat;
+out vec2 vUv;
+void main() {
+	vUv = aTextureCoord;
+	gl_Position = uLightMat * vec4(aPosition, 1.0);
+}`;
+	FRAGMENT$1 = `#version 300 es
+precision highp float;
+in vec2 vUv;
+uniform sampler2D uDiffuse;
+out vec4 fragColor;
+void main() {
+	// Leaves and fences cast the shape of what is drawn, not of their quad.
+	if (texture(uDiffuse, vUv).a < 0.5) discard;
+	fragColor = vec4(1.0);
+}`;
+	_fbo$1 = null;
+	_program$28 = null;
+	_current = null;
+	Shadows_default = {
+		render: render$15,
+		current,
+		clear: clear$1,
+		free: free$10,
+		lightMatrix
+	};
 }));
 //#endregion
 //#region src/Renderer/Map/Ground.js
@@ -207232,6 +207440,16 @@ function render$14(gl, modelView, projection, normalMat, fog, light) {
 	gl.uniform3fv(uniform.uLightEnv, light.env);
 	gl.uniform1i(uniform.uLightMapUse, Map_default.lightmap);
 	gl.uniform1i(uniform.uPosterize, Map_default.smoothlight === 0);
+	const shadow = Shadows_default.current();
+	gl.uniform1f(uniform.uShadow, shadow ? shadow.strength : 0);
+	gl.uniformMatrix4fv(uniform.uShadowMat, false, shadow ? shadow.matrix : IDENTITY);
+	if (shadow) {
+		gl.activeTexture(gl.TEXTURE3);
+		gl.bindTexture(gl.TEXTURE_2D, shadow.texture);
+		gl.uniform1i(uniform.uShadowMap, 3);
+		gl.uniform1f(uniform.uShadowTexel, shadow.texel);
+		gl.activeTexture(gl.TEXTURE0);
+	}
 	gl.uniform1i(uniform.uGammaCorrection, Map_default.smoothlight === 2);
 	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
 	gl.uniform1f(uniform.uFogNear, fog.near);
@@ -207454,7 +207672,7 @@ function getShadowFactor(x, y) {
 	for (y = -3; y < 3; ++y) for (x = -3; x < 3; ++x) factor += _shadowMap[_x + x + (_y + y) * _width * 8];
 	return factor / 36 / 255;
 }
-var procCanvas$2, procCtx$2, _program$27, _buffer$19, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
+var IDENTITY, procCanvas$2, procCtx$2, _program$27, _buffer$19, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
 var init_Ground = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
@@ -207462,6 +207680,25 @@ var init_Ground = __esmMin((() => {
 	init_Configs();
 	init_Ground$2();
 	init_Ground$1();
+	init_Shadows();
+	IDENTITY = new Float32Array([
+		1,
+		0,
+		0,
+		0,
+		0,
+		1,
+		0,
+		0,
+		0,
+		0,
+		1,
+		0,
+		0,
+		0,
+		0,
+		1
+	]);
 	procCanvas$2 = document.createElement("canvas");
 	procCtx$2 = procCanvas$2.getContext("2d", { willReadFrequently: true });
 	_program$27 = null;
@@ -208428,6 +208665,23 @@ function unbind(gl) {
 * @param {object} fog structure
 * @param {object} light structure
 */
+/**
+* Draw the models into a shadow map (Shadows.js) with its depth program:
+* the same buffer and batches, position and texture coordinates only.
+*/
+function renderDepth(gl, program) {
+	if (!_buffer$16 || !_objects.length) return;
+	const attribute = program.attribute;
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
+	gl.enableVertexAttribArray(attribute.aPosition);
+	gl.enableVertexAttribArray(attribute.aTextureCoord);
+	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 36, 0);
+	gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 36, 24);
+	gl.activeTexture(gl.TEXTURE0);
+	drawMeshes(gl);
+	gl.disableVertexAttribArray(attribute.aPosition);
+	gl.disableVertexAttribArray(attribute.aTextureCoord);
+}
 function render$12(gl, modelView, projection, normalMat, fog, light) {
 	bind$1(gl, modelView, projection, fog, light);
 	OccluderFade.renderOpaque(gl, _program$24.uniform, () => drawMeshes(gl));
@@ -208488,6 +208742,7 @@ var init_Models = __esmMin((() => {
 		init: init$10,
 		render: render$12,
 		renderFaded: renderFaded$1,
+		renderDepth,
 		free: free$7
 	};
 }));
@@ -258568,7 +258823,13 @@ var init_Enhancements = __esmMin((() => {
 		*   names that are grass, density 0..1, height, width, wind 0..1,
 		*   distance (fade), tint [r,g,b] }
 		*/
-		grass: null
+		grass: null,
+		/**
+		* Real-time shadows from buildings and trees onto the ground
+		* (Renderer/Map/Shadows.js): 0 off .. 1 full. On top of the shadows the
+		* map's lightmap already bakes in.
+		*/
+		shadows: 0
 	};
 }));
 //#endregion
@@ -259784,6 +260045,7 @@ var init_MapRenderer = __esmMin((() => {
 	init_Enhancements();
 	init_WaterReflection();
 	init_Grass();
+	init_Shadows();
 	init_Bloom();
 	init_VerticalFlip();
 	init_GaussianBlur();
@@ -259897,6 +260159,7 @@ var init_MapRenderer = __esmMin((() => {
 			Ground_default.free(gl);
 			Water_default.free(gl);
 			Grass_default.free(gl);
+			Shadows_default.free(gl);
 			WaterReflection_default.free(gl);
 			Models_default.free(gl);
 			AnimatedModels_default.free(gl);
@@ -259934,6 +260197,16 @@ var init_MapRenderer = __esmMin((() => {
 			const modelView = Camera.modelView;
 			const projection = Camera.projection;
 			const normalMat = Camera.normalMat;
+			let rebind = false;
+			if (Enhancements.shadows > 0 && SessionStorage_default.Entity) {
+				const p = SessionStorage_default.Entity.position;
+				Shadows_default.render(gl, light, [
+					p[0] + .5,
+					-p[2],
+					p[1] + .5
+				], Enhancements.shadows, (program) => Models_default.renderDepth(gl, program));
+				rebind = true;
+			} else Shadows_default.clear();
 			const waterLevel = Water_default.level();
 			if (Enhancements.waterReflection > 0 && waterLevel !== null) {
 				const texture = WaterReflection_default.render(gl, modelView, projection, waterLevel, (view, clipped) => {
@@ -259946,8 +260219,9 @@ var init_MapRenderer = __esmMin((() => {
 					texture,
 					strength: Math.min(1, Enhancements.waterReflection)
 				} : null);
-				PostProcess.prepare(gl);
+				rebind = true;
 			} else Water_default.setReflection(null);
+			if (rebind) PostProcess.prepare(gl);
 			Ground_default.render(gl, modelView, projection, normalMat, fog, light);
 			Grass_default.render(gl, modelView, projection, fog, light, tick, Map_default.lightmap);
 			Effects_default.spam(SessionStorage_default.Entity.position, tick);
