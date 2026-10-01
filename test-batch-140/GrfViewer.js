@@ -83392,7 +83392,7 @@ function detectBadWebGL(gl) {
 * @param {object} gl context
 * @return {boolean}
 */
-function isWebGL2(gl) {
+function isWebGL2$1(gl) {
 	return gl && window["WebGL2RenderingContext"] !== void 0 && gl instanceof WebGL2RenderingContext;
 }
 var WebGL_default;
@@ -83406,7 +83406,7 @@ var init_WebGL = __esmMin((() => {
 		detectBadWebGL,
 		toPowerOfTwo,
 		texture,
-		isWebGL2
+		isWebGL2: isWebGL2$1
 	};
 }));
 //#endregion
@@ -207748,7 +207748,7 @@ function RenderCanvas3D(isBlendModeOne) {
 		gl.activeTexture(gl.TEXTURE0);
 	}
 	if (_usepal !== use_pal) gl.uniform1i(uniform.uUsePal, _usepal = use_pal);
-	if (this.depth !== _depth) gl.uniform1f(uniform.uSpriteRendererDepth, _depth = this.depth);
+	if (this.depth !== _depth$1) gl.uniform1f(uniform.uSpriteRendererDepth, _depth$1 = this.depth);
 	const disableDepthCorrection = !!this.disableDepthCorrection;
 	if (_disableDepthCorrection !== disableDepthCorrection) {
 		_disableDepthCorrection = disableDepthCorrection;
@@ -207775,7 +207775,7 @@ function RenderCanvas3D(isBlendModeOne) {
 	}
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 }
-var mat4$22, RenderCanvas2D, _program$26, _buffer$18, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
+var mat4$22, RenderCanvas2D, _program$26, _buffer$18, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth$1, _disableDepthCorrection, _depthMask, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
 var init_SpriteRenderer = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -207889,7 +207889,7 @@ var init_SpriteRenderer = __esmMin((() => {
 	_lastGroupId = 0;
 	_shadow = null;
 	_angle = null;
-	_depth = null;
+	_depth$1 = null;
 	_disableDepthCorrection = false;
 	_depthMask = true;
 	_depthTest = true;
@@ -256878,9 +256878,9 @@ function init$9(gl, mapname) {
 		_display = false;
 		return;
 	}
-	_color = Weather.sky[mapname].cloudColor;
+	_color$1 = Weather.sky[mapname].cloudColor;
 	const color = Weather.sky[mapname].skyColor;
-	if (_color) _display = true;
+	if (_color$1) _display = true;
 	else _display = false;
 	gl.clearColor(color[0], color[1], color[2], color[3]);
 	if (!_textures.length && _display) {
@@ -256949,7 +256949,7 @@ function render$8(gl, modelView, projection, fog, tick) {
 	if (!_display) return;
 	let i, cloud, opacity;
 	SpriteRenderer.bind3DContext(gl, modelView, projection, fog);
-	SpriteRenderer.color.set(_color);
+	SpriteRenderer.color.set(_color$1);
 	SpriteRenderer.shadow = 1;
 	SpriteRenderer.angle = 0;
 	SpriteRenderer.size[0] = 500;
@@ -256977,7 +256977,7 @@ function render$8(gl, modelView, projection, fog, tick) {
 	}
 	SpriteRenderer.unbind(gl);
 }
-var MAX_CLOUDS, _clouds, _textures, _color, _display, Sky_default;
+var MAX_CLOUDS, _clouds, _textures, _color$1, _display, Sky_default;
 var init_Sky = __esmMin((() => {
 	init_WebGL();
 	init_WeatherEffect();
@@ -256988,7 +256988,7 @@ var init_Sky = __esmMin((() => {
 	MAX_CLOUDS = 150;
 	_clouds = new Array(MAX_CLOUDS);
 	_textures = [];
-	_color = null;
+	_color$1 = null;
 	_display = true;
 	Sky_default = {
 		init: init$9,
@@ -259004,6 +259004,87 @@ var init_WaterReflection = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/Renderer/Map/SceneCopy.js
+function isWebGL2(gl) {
+	return typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
+}
+function target(gl, old, w, h, internal, format, type, attachment, filter) {
+	if (old && old.w === w && old.h === h) return old;
+	if (old) {
+		gl.deleteFramebuffer(old.fbo);
+		gl.deleteTexture(old.texture);
+	}
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const texture = gl.createTexture();
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.texImage2D(gl.TEXTURE_2D, 0, internal, w, h, 0, format, type, null);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	const fbo = gl.createFramebuffer();
+	gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+	gl.framebufferTexture2D(gl.FRAMEBUFFER, attachment, gl.TEXTURE_2D, texture, 0);
+	if (attachment === gl.DEPTH_ATTACHMENT) {
+		gl.drawBuffers([gl.NONE]);
+		gl.readBuffer(gl.NONE);
+	}
+	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
+	return {
+		fbo,
+		texture,
+		w,
+		h
+	};
+}
+function blit(gl, into, bits) {
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const vp = gl.getParameter(gl.VIEWPORT);
+	gl.getError();
+	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, current);
+	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, into.fbo);
+	gl.blitFramebuffer(vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], 0, 0, into.w, into.h, bits, gl.NEAREST);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
+	return gl.getError() === gl.NO_ERROR ? into.texture : null;
+}
+/**
+* The depth drawn so far, as a texture, or null. Only when drawing into a
+* framebuffer (the post-processing target): the screen's own cannot be read.
+*/
+function depth(gl) {
+	if (!isWebGL2(gl) || !gl.getParameter(gl.FRAMEBUFFER_BINDING)) return null;
+	const vp = gl.getParameter(gl.VIEWPORT);
+	_depth = target(gl, _depth, vp[2], vp[3], gl.DEPTH_COMPONENT24, gl.DEPTH_COMPONENT, gl.UNSIGNED_INT, gl.DEPTH_ATTACHMENT, gl.NEAREST);
+	return blit(gl, _depth, gl.DEPTH_BUFFER_BIT);
+}
+/** The colour drawn so far, as a texture, or null. */
+function color(gl) {
+	if (!isWebGL2(gl) || !gl.getParameter(gl.FRAMEBUFFER_BINDING)) return null;
+	const vp = gl.getParameter(gl.VIEWPORT);
+	_color = target(gl, _color, vp[2], vp[3], gl.RGB8, gl.RGB, gl.UNSIGNED_BYTE, gl.COLOR_ATTACHMENT0, gl.LINEAR);
+	return blit(gl, _color, gl.COLOR_BUFFER_BIT);
+}
+/** Put the depth from the last depth() back, undoing what was drawn since. */
+function restoreDepth(gl) {
+	if (!_depth) return;
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const vp = gl.getParameter(gl.VIEWPORT);
+	gl.bindFramebuffer(gl.READ_FRAMEBUFFER, _depth.fbo);
+	gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER, current);
+	gl.blitFramebuffer(0, 0, _depth.w, _depth.h, vp[0], vp[1], vp[0] + vp[2], vp[1] + vp[3], gl.DEPTH_BUFFER_BIT, gl.NEAREST);
+	gl.bindFramebuffer(gl.FRAMEBUFFER, current);
+}
+var _depth, _color, SceneCopy_default;
+var init_SceneCopy = __esmMin((() => {
+	_depth = null;
+	_color = null;
+	SceneCopy_default = {
+		depth,
+		color,
+		restoreDepth
+	};
+}));
+//#endregion
 //#region src/Renderer/Map/Grass.js
 /** Texture names come from the map as CP949 bytes in a binary string. */
 function decodeName(name) {
@@ -259013,26 +259094,129 @@ function decodeName(name) {
 		return String(name).toLowerCase();
 	}
 }
-/** A repeatable random number for cell i, tuft k. */
+/** A repeatable random number for cell i, clump k. */
 function random(i, k) {
 	const x = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
 	return x - Math.floor(x);
 }
 /**
-* Where the tufts go, for these settings. Rebuilt when the settings object
-* changes (a plugin reconfigures) or a new map loads.
+* The plants, painted once into a texture. Two painted plants side by side: a clump of grass blades (left) and a
+// fern (right). R is how lit the paint is, G a per-blade number for hue,
+// B marks the fern, A coverage. Each stroke has a thin dark rim, the
+// inked edge that makes it read as painted, like RO's own foliage.
+const size = 128;
+const canvas = document.createElement("canvas");
+canvas.width = size * 2;
+canvas.height = size;
+const g = canvas.getContext("2d");
+let seed = 11;
+const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+const paint = (r, id, fern) => `rgb(${Math.max(0, Math.min(255, Math.round(r)))},${Math.round(id * 255)},${fern ? 255 : 0})`;
+g.lineJoin = "round";
+// Grass.
+const blades = [];
+for (let b = 0; b < 15; b++) blades.push({ base: size * (.5 + (rnd() - .5) * .45), lean: (rnd() - .5) * size * .85, tall: size * (.45 + rnd() * .52), width: size * (.045 + rnd() * .04), shade: .7 + rnd() * .3, id: rnd() });
+blades.sort((a, b) => a.tall - b.tall);
+g.filter = "blur(0.7px)";
+const stroke = (blade, side, from, to) => {
+const tipX = blade.base + blade.lean, tipY = size - blade.tall;
+const ctrlX = blade.base + blade.lean * .1, ctrlY = size - blade.tall * .65;
+g.beginPath();
+if (side <= 0) {
+g.moveTo(blade.base - blade.width, size);
+g.quadraticCurveTo(ctrlX - blade.width * .6, ctrlY, tipX, tipY);
+g.quadraticCurveTo(ctrlX, ctrlY, blade.base, size);
+} else {
+g.moveTo(blade.base, size);
+g.quadraticCurveTo(ctrlX, ctrlY, tipX, tipY);
+g.quadraticCurveTo(ctrlX + blade.width * .6, ctrlY, blade.base + blade.width, size);
+}
+g.closePath();
+const grad = g.createLinearGradient(0, size, 0, tipY);
+const id = Math.round(blade.id * 255);
+grad.addColorStop(0, `rgb(${Math.round(from * .25 * blade.shade)},${id},0)`);
+grad.addColorStop(.5, `rgb(${Math.round(from * blade.shade)},${id},0)`);
+grad.addColorStop(1, `rgb(${Math.round(to * blade.shade)},${id},0)`);
+g.fillStyle = grad;
+g.fill();
+};
+for (const blade of blades) {
+const lit = blade.lean < 0 ? 1 : -1;  // the side toward the light
+stroke(blade, -lit, 120, 170);
+stroke(blade, lit, 190, 255);
+}
+// A fern.
+g.save();
+g.translate(size, 0);
+const fronds = [];
+for (let f = 0; f < 7; f++) fronds.push({ angle: (f / 6 - .5) * 2.3 + (rnd() - .5) * .25, length: size * (.55 + rnd() * .4), shade: .7 + rnd() * .3, id: rnd() });
+fronds.sort((a, b) => Math.abs(b.angle) - Math.abs(a.angle));
+for (const frond of fronds) {
+const root = [size * .5, size * .98];
+const dir = [Math.sin(frond.angle), -Math.cos(frond.angle)];
+// The frond arches: up and out, then droops.
+const at = (t) => [root[0] + dir[0] * frond.length * t, root[1] + dir[1] * frond.length * t + frond.length * .45 * t * t * Math.abs(dir[0])];
+for (let t = .08; t < 1; t += .075) {
+const p = at(t), q = at(Math.min(1, t + .01));
+const tangent = Math.atan2(q[1] - p[1], q[0] - p[0]);
+const len = size * .12 * (1 - t * .8) + 2;
+for (const s of [-1, 1]) {
+g.save();
+g.translate(p[0], p[1]);
+g.rotate(tangent + s * 1.05);
+g.beginPath();
+g.ellipse(len * .5, 0, len * .55, len * .2, 0, 0, Math.PI * 2);
+const lg = g.createLinearGradient(0, 0, len, 0);
+lg.addColorStop(0, paint(60 * frond.shade, frond.id, true));
+lg.addColorStop(1, paint((120 + 110 * t) * frond.shade, frond.id, true));
+g.fillStyle = lg;
+g.fill();
+g.strokeStyle = paint(6, frond.id, true);
+g.lineWidth = .7;
+g.stroke();
+g.restore();
+}
+}
+g.beginPath();
+g.moveTo(root[0], root[1]);
+for (let t = .05; t <= 1; t += .05) g.lineTo(...at(t));
+g.strokeStyle = paint(50 * frond.shade, frond.id, true);
+g.lineWidth = 1.2;
+g.stroke();
+}
+g.restore();
+const texture = gl.createTexture();
+const flip = gl.getParameter(gl.UNPACK_FLIP_Y_WEBGL);
+const premultiply = gl.getParameter(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL);
+gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+gl.generateMipmap(gl.TEXTURE_2D);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, flip);
+gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, premultiply);
+return texture;
+}
+/**
+* Where the clumps go, for these settings: grass tiles, on open ground.
 */
 function build(gl, settings) {
-	_builtFor = settings;
 	_count = 0;
 	if (!_data$1 || !settings) return;
+	if (!Altitude.width) return;
+	_builtFor = settings;
 	const patterns = (Array.isArray(settings.textures) ? settings.textures : []).map((p) => String(p).toLowerCase()).filter(Boolean);
 	if (!patterns.length) return;
 	const grassy = (_data$1.textureNames || _data$1.textures).map((name) => {
 		const decoded = decodeName(name);
 		return patterns.some((pattern) => decoded.includes(pattern));
 	});
-	const perCell = Math.max(1, Math.min(12, Math.round((settings.density ?? .5) * 12)));
+	const density = settings.density ?? .5;
+	const perCell = Math.max(1, Math.round(density * 24));
 	const { width, height, cellTexture, cellHeights, cellUv } = _data$1;
 	const instances = [];
 	const uvs = [];
@@ -259044,14 +259228,19 @@ function build(gl, settings) {
 		for (let k = 0; k < perCell; ++k) {
 			const fx = random(i, k * 2);
 			const fy = random(i, k * 2 + 1);
+			const gx = (x + fx) * 2, gz = (y + fy) * 2;
+			const type = Altitude.getCellType(Math.floor(gx), Math.floor(gz));
+			if (!(type & Altitude.TYPE.WALKABLE) || type & Altitude.TYPE.WATER) continue;
 			const ground = h[0] * (1 - fx) * (1 - fy) + h[1] * fx * (1 - fy) + h[2] * (1 - fx) * fy + h[3] * fx * fy;
-			instances.push((x + fx) * 2, ground, (y + fy) * 2, random(i, k + 97));
+			if (Math.abs(-Altitude.getCellHeight(gx - .5, gz - .5) - ground) > .6) continue;
+			instances.push(gx, ground, gz, random(i, k + 97));
 			uvs.push(cellUv[i * 4], cellUv[i * 4 + 1], cellUv[i * 4 + 2], cellUv[i * 4 + 3]);
 		}
 	}
 	_count = instances.length / 4;
 	if (!_count) return;
 	if (!_program$15) _program$15 = WebGL_default.createShaderProgram(gl, VERTEX, FRAGMENT);
+	if (!_bladeTexture) _bladeTexture = bladeTexture(gl);
 	if (!_bladeBuffer) {
 		_bladeBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, _bladeBuffer);
@@ -259084,10 +259273,10 @@ function render$6(gl, modelView, projection, fog, light, tick, lightmapOn) {
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1f(uniform.uTime, tick / 1e3);
-	gl.uniform1f(uniform.uHeight, settings.height ?? 1.4);
-	gl.uniform1f(uniform.uWidth, settings.width ?? 1.1);
+	gl.uniform1f(uniform.uHeight, settings.height ?? 1.25);
+	gl.uniform1f(uniform.uWidth, settings.width ?? 1.6);
 	gl.uniform1f(uniform.uWind, settings.wind ?? .25);
-	gl.uniform1f(uniform.uFadeFar, settings.distance ?? 140);
+	gl.uniform1f(uniform.uFadeFar, settings.distance ?? 400);
 	const tint = Array.isArray(settings.tint) && settings.tint.length === 3 ? settings.tint : [
 		1,
 		1,
@@ -259107,6 +259296,22 @@ function render$6(gl, modelView, projection, fog, light, tick, lightmapOn) {
 	gl.activeTexture(gl.TEXTURE1);
 	gl.bindTexture(gl.TEXTURE_2D, textures.lightmap);
 	gl.uniform1i(uniform.uLightmap, 1);
+	gl.activeTexture(gl.TEXTURE2);
+	gl.bindTexture(gl.TEXTURE_2D, _bladeTexture);
+	gl.uniform1i(uniform.uBlades, 2);
+	const current = gl.getParameter(gl.FRAMEBUFFER_BINDING);
+	const saved = current ? SceneCopy_default.depth(gl) : null;
+	const color = current ? SceneCopy_default.color(gl) : null;
+	gl.activeTexture(gl.TEXTURE4);
+	gl.bindTexture(gl.TEXTURE_2D, color);
+	gl.uniform1i(uniform.uSceneColor, 4);
+	gl.activeTexture(gl.TEXTURE3);
+	gl.bindTexture(gl.TEXTURE_2D, saved);
+	gl.uniform1i(uniform.uSceneDepth, 3);
+	gl.uniform1i(uniform.uHasDepth, saved ? 1 : 0);
+	const vp0 = gl.getParameter(gl.VIEWPORT);
+	gl.uniform2f(uniform.uScreen, vp0[2], vp0[3]);
+	gl.uniform2f(uniform.uProj, projection[10], projection[14]);
 	gl.activeTexture(gl.TEXTURE0);
 	gl.bindBuffer(gl.ARRAY_BUFFER, _bladeBuffer);
 	gl.enableVertexAttribArray(attribute.aBlade);
@@ -259120,7 +259325,13 @@ function render$6(gl, modelView, projection, fog, light, tick, lightmapOn) {
 	gl.enableVertexAttribArray(attribute.aUv);
 	gl.vertexAttribPointer(attribute.aUv, 4, gl.FLOAT, false, 0, 0);
 	gl.vertexAttribDivisor(attribute.aUv, 1);
-	gl.drawArraysInstanced(gl.TRIANGLES, 0, 12, _count);
+	const cull = gl.isEnabled(gl.CULL_FACE);
+	gl.disable(gl.CULL_FACE);
+	gl.depthMask(!!saved);
+	gl.drawArraysInstanced(gl.TRIANGLES, 0, 18, _count);
+	gl.depthMask(true);
+	if (cull) gl.enable(gl.CULL_FACE);
+	if (saved) SceneCopy_default.restoreDepth(gl);
 	gl.vertexAttribDivisor(attribute.aInstance, 0);
 	gl.vertexAttribDivisor(attribute.aUv, 0);
 	gl.disableVertexAttribArray(attribute.aBlade);
@@ -259135,15 +259346,17 @@ function free$1(gl) {
 	_builtFor = null;
 	_count = 0;
 }
-var VERTEX, FRAGMENT, BLADES, _program$15, _bladeBuffer, _instanceBuffer, _uvBuffer, _count, _data$1, _builtFor, Grass_default;
+var VERTEX, FRAGMENT, BLADES, _program$15, _bladeBuffer, _bladeTexture, _instanceBuffer, _uvBuffer, _count, _data$1, _builtFor, Grass_default;
 var init_Grass = __esmMin((() => {
 	init_WebGL();
 	init_Ground();
+	init_Altitude();
+	init_SceneCopy();
 	init_Enhancements();
 	VERTEX = `#version 300 es
 precision highp float;
-in vec3 aBlade;       // x across the tuft -0.5..0.5, y up 0..1, z which of the two crossed planes
-in vec4 aInstance;    // xyz on the ground, w a random number for this tuft
+in vec3 aBlade;       // x across the clump -0.5..0.5, y up 0..1, z which of the three crossed planes
+in vec4 aInstance;    // xyz the root on the ground, w a random number for this clump
 in vec4 aUv;          // xy the tile in the ground atlas, zw in the lightmap
 uniform mat4 uModelViewMat;
 uniform mat4 uProjectionMat;
@@ -259152,36 +259365,76 @@ uniform float uHeight;
 uniform float uWidth;
 uniform float uWind;
 uniform float uFadeFar;
+// The scene so far (ground and models): a clump whose root is covered by a
+// model -- a porch, a wall, a tree -- is not drawn.
+uniform bool uHasDepth;
+uniform sampler2D uSceneDepth;
+uniform vec2 uScreen;
+uniform vec2 uProj;
+uniform sampler2D uSceneColor;
+out vec3 vGround;
+out float vFern;
+out vec2 vTex;
 out float vY;
-out float vX;
 out float vRand;
 out float vFade;
 out vec4 vUv;
 void main() {
 	float r = aInstance.w;
-	float angle = r * 6.2831853 + aBlade.z * 1.5707963;
-	vec2 across = vec2(cos(angle), sin(angle));
-	float tall = uHeight * (0.65 + 0.7 * fract(r * 13.7));
-	float sway = sin(uTime * 1.6 + aInstance.x * 0.35 + aInstance.z * 0.27 + r * 6.0) * uWind * aBlade.y * aBlade.y;
-	vec3 position = aInstance.xyz + vec3(across.x * aBlade.x * uWidth + sway, -aBlade.y * tall, across.y * aBlade.x * uWidth + sway * 0.6);
-	vec4 eye = uModelViewMat * vec4(position, 1.0);
+	// Three cards per clump, each facing the camera like the game's own
+	// sprites, turned a little and set a little apart, so a clump is full
+	// from any angle the camera takes.
+	float card = aBlade.z - 1.0;
+	vFern = step(0.88, fract(r * 91.7));
+	float big = fract(r * 13.7);
+	float scale = (0.5 + 1.1 * big * big) * (0.85 + 0.3 * fract(r * 29.3 + card * 0.31));
+	float turn = card * 0.38 + (fract(r * 3.7) - 0.5) * 0.3;
+	float sway = sin(uTime * 1.3 + aInstance.x * 0.3 + aInstance.z * 0.25 + r * 6.0 + card) * uWind * 0.12 * aBlade.y * aBlade.y;
+	vec2 local = vec2(aBlade.x * uWidth * (1.0 + 0.35 * vFern), aBlade.y * uHeight * (1.0 - 0.2 * vFern)) * scale;
+	local = vec2(local.x * cos(turn) - local.y * sin(turn), local.x * sin(turn) + local.y * cos(turn));
+	local.x += sway;
+	vec3 offset = vec3(cos(r * 40.0 + card * 2.1), 0.0, sin(r * 40.0 + card * 2.1)) * 0.35 * abs(card);
+	vec4 rootEye0 = uModelViewMat * vec4(aInstance.xyz + offset, 1.0);
+	vec4 eye = rootEye0 + vec4(local, 0.0, 0.0);
 	gl_Position = uProjectionMat * eye;
+	float u = fract(r * 7.1 + card * 0.5) > 0.5 ? 0.5 - aBlade.x : aBlade.x + 0.5;
+	vTex = vec2((clamp(u, 0.01, 0.99) + vFern) * 0.5, 1.0 - aBlade.y);
 	vY = aBlade.y;
-	vX = aBlade.x;
-	vRand = r;
+	vRand = fract(r + card * 0.37);
 	vUv = aUv;
 	vFade = 1.0 - smoothstep(uFadeFar * 0.6, uFadeFar, -eye.z);
+	vGround = vec3(0.3, 0.45, 0.2);
+	if (uHasDepth) {
+		vec4 rootEye = uModelViewMat * vec4(aInstance.xyz, 1.0);
+		vec4 root = uProjectionMat * rootEye;
+		vec2 at = root.xy / root.w * 0.5 + 0.5;
+		float zn = textureLod(uSceneDepth, at, 0.0).r * 2.0 - 1.0;
+		float covering = uProj.y / (zn + uProj.x);
+		if (covering < -rootEye.z - 0.08) gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+		// Grass only grows where the ground under it is green: not on the
+		// dirt or the stone a grassy tile also shows.
+		vec3 c = textureLod(uSceneColor, at, 0.0).rgb;
+		float greenness = smoothstep(0.95, 1.0, c.g / max(c.r, 0.01)) * step(1.45, c.g / max(c.b, 0.01));
+		if (greenness < 0.05) gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+		else gl_Position = uProjectionMat * (rootEye0 + vec4(local * mix(0.5, 1.0, greenness), 0.0, 0.0));
+		vGround = c;
+	} else {
+		vGround = vec3(0.3, 0.45, 0.2);
+	}
 }`;
 	FRAGMENT = `#version 300 es
 precision highp float;
+in vec2 vTex;
 in float vY;
-in float vX;
 in float vRand;
 in float vFade;
 in vec4 vUv;
+in vec3 vGround;
+in float vFern;
 out vec4 fragColor;
 uniform sampler2D uAtlas;
 uniform sampler2D uLightmap;
+uniform sampler2D uBlades;
 uniform bool uLightMapUse;
 uniform vec3 uLightAmbient;
 uniform vec3 uLightDiffuse;
@@ -259192,22 +259445,23 @@ uniform float uFogFar;
 uniform vec3 uFogColor;
 float hash(float n) { return fract(sin(n) * 43758.5453); }
 void main() {
-	// Five blades across each plane, tapering to a point.
-	float blades = 5.0;
-	float cell = floor((vX + 0.5) * blades);
-	float within = fract((vX + 0.5) * blades);
-	float lean = (hash(cell + vRand * 17.0) - 0.5) * 0.6 * vY;
-	float halfWidth = 0.42 * (1.0 - vY);
-	if (abs(within - 0.5 - lean) > halfWidth || vY > 0.55 + 0.45 * hash(cell * 3.1 + vRand * 9.0)) discard;
-	// Fade with distance, dithered rather than blended.
+	vec4 blade = texture(uBlades, vTex);
+	if (blade.a < 0.45) discard;
+	if (vY < 0.18 && vY / 0.18 < hash(gl_FragCoord.x * 1.7 + gl_FragCoord.y * 0.63 + vRand * 31.0)) discard;
 	if (vFade < hash(gl_FragCoord.x * 0.37 + gl_FragCoord.y * 1.31)) discard;
-
-	vec3 ground = texture(uAtlas, vUv.xy).rgb;
-	vec3 color = ground * uTint * mix(0.62, 1.12, vY);
-	color *= clamp(uLightAmbient + uLightDiffuse * 0.6, 0.0, 1.0);
-	if (uLightMapUse) {
-		vec4 light = texture(uLightmap, vUv.zw);
-		color = color * light.a + light.rgb;
+	// The colour of the ground it grows from, lit as the ground is, a
+	// little richer: the clump belongs to the painting under it.
+	vec3 rich = clamp(mix(vec3(dot(vGround, vec3(0.299, 0.587, 0.114))), vGround, 1.35), 0.0, 1.0);
+	float hueSeed = fract(vRand * 5.3 + blade.g * 0.7);
+	vec3 own = mix(vec3(0.24, 0.38, 0.15), vec3(0.45, 0.58, 0.26), hueSeed);
+	vec3 base = mix(rich, own, 0.5) * uTint;
+	float lit = blade.r;
+	float tone = 0.72 + 0.45 * fract(vRand * 17.1);  // some clumps in light, some in shade
+	vec3 color = base * tone * mix(0.28, 1.3, lit);
+	color += vec3(0.05, 0.06, 0.0) * smoothstep(0.8, 1.0, lit);
+	if (blade.b > 0.5) {
+		// Ferns: a slightly deeper, cooler green than the grass around them.
+		color *= vec3(0.86, 0.98, 0.9);
 	}
 	fragColor = vec4(color, 1.0);
 	if (uFogUse) {
@@ -259251,10 +259505,29 @@ void main() {
 		1,
 		-.5,
 		1,
-		1
+		1,
+		-.5,
+		0,
+		2,
+		.5,
+		0,
+		2,
+		.5,
+		1,
+		2,
+		-.5,
+		0,
+		2,
+		.5,
+		1,
+		2,
+		-.5,
+		1,
+		2
 	]);
 	_program$15 = null;
 	_bladeBuffer = null;
+	_bladeTexture = null;
 	_instanceBuffer = null;
 	_uvBuffer = null;
 	_count = 0;
@@ -260232,7 +260505,6 @@ var init_MapRenderer = __esmMin((() => {
 			} else Water_default.setReflection(null);
 			if (rebind) PostProcess.prepare(gl);
 			Ground_default.render(gl, modelView, projection, normalMat, fog, light);
-			Grass_default.render(gl, modelView, projection, fog, light, tick, Map_default.lightmap);
 			Effects_default.spam(SessionStorage_default.Entity.position, tick);
 			if (Mouse.intersect && Altitude.intersect(modelView, projection, _pos$6)) {
 				x = _pos$6[0];
@@ -260260,6 +260532,7 @@ var init_MapRenderer = __esmMin((() => {
 			Models_default.render(gl, modelView, projection, normalMat, fog, light);
 			AnimatedModels_default.render(gl, modelView, projection, normalMat, fog, light, tick);
 			GR2ModelRenderer_default.render(gl, modelView, projection, normalMat, fog, light, tick);
+			Grass_default.render(gl, modelView, projection, fog, light, tick, Map_default.lightmap);
 			ScreenEffectManager.render(gl, modelView, projection, fog, tick, true);
 			EffectManager.render(gl, modelView, projection, fog, tick, true);
 			EntityManager.render(gl, modelView, projection, fog, false);
