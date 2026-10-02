@@ -303898,6 +303898,10 @@ function loadSkillInfoList(filename, callback, onEnd) {
 				SkillInfo[skillId]._NeedSkillList.push([requiredSkillId, requiredLevel]);
 				return 1;
 			};
+			ctx.AddJobSkillRequirementList = (skillId, jobId) => {
+				if (!SkillInfo[skillId].NeedSkillList[jobId]) SkillInfo[skillId].NeedSkillList[jobId] = [];
+				return 1;
+			};
 			ctx.AddJobSkillRequirement = (skillId, jobId, requiredSkillId, requiredLevel) => {
 				if (!SkillInfo[skillId].NeedSkillList[jobId]) SkillInfo[skillId].NeedSkillList[jobId] = [];
 				SkillInfo[skillId].NeedSkillList[jobId].push([requiredSkillId, requiredLevel]);
@@ -303949,6 +303953,7 @@ function loadSkillInfoList(filename, callback, onEnd) {
 								if skillData.NeedSkillList then  
 									for jobId, reqList in pairs(skillData.NeedSkillList) do  
 										if reqList then  
+											AddJobSkillRequirementList(skillId, jobId)
 											for _, req in ipairs(reqList) do  
 												if req[1] and req[2] then  
 													AddJobSkillRequirement(skillId, jobId, req[1], req[2])  
