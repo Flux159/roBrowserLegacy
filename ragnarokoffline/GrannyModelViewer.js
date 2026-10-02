@@ -78027,6 +78027,28 @@ var init_SessionStorage = __esmMin((() => {
 		/** @type {Player|Entity|null} The entity currently controlled by the client */
 		Entity: null,
 		AdminList: [],
+		/**
+		* Which parts of the GM look an account on AdminList gets: the GM sprite
+		* in place of its class body, the GM name style, and GM-styled chat. All
+		* on by default, as before; a plugin can turn each off (a GM who wants to
+		* look like their class). Read through showsAdmin.
+		*/
+		AdminLook: {
+			sprite: true,
+			name: true,
+			chat: true
+		},
+		/**
+		* Whether an entity gets one part of the GM look: only an admin does, and
+		* only the parts AdminLook has not turned off.
+		*
+		* @param {{isAdmin?: boolean}} entity
+		* @param {'sprite'|'name'|'chat'} part
+		* @return {boolean}
+		*/
+		showsAdmin(entity, part) {
+			return Boolean(entity?.isAdmin) && this.AdminLook?.[part] !== false;
+		},
 		underAutoCounter: false,
 		moveAction: null,
 		/**
@@ -159713,7 +159735,8 @@ var init_PacketStructure = __esmMin((() => {
 	};
 	PACKET.CZ.REQ_TRADE_BUYING_STORE.prototype.build = function() {
 		const ver = this.getPacketVersion();
-		const len = 12 + this.itemList.length * 6;
+		const itemSize = PacketVerManager_default.value >= 20181121 ? 8 : 6;
+		const len = 12 + this.itemList.length * itemSize;
 		const pkt = new BinaryWriter(len);
 		let i, count;
 		pkt.writeShort(ver[1]);
@@ -159722,7 +159745,8 @@ var init_PacketStructure = __esmMin((() => {
 		pkt.writeULong(this.UniqueID);
 		for (i = 0, count = this.itemList.length; i < count; ++i) {
 			pkt.writeUShort(this.itemList[i].index);
-			pkt.writeUShort(this.itemList[i].ITID);
+			if (PacketVerManager_default.value >= 20181121) pkt.writeULong(this.itemList[i].ITID);
+			else pkt.writeUShort(this.itemList[i].ITID);
 			pkt.writeShort(this.itemList[i].count);
 		}
 		return pkt;
@@ -257300,6 +257324,7 @@ var signboards, mat4$14, vec4$6, _pos$7, _size$6, SignboardManager;
 var init_SignboardManager = __esmMin((() => {
 	init_gl_matrix();
 	init_Renderer();
+	init_Altitude();
 	init_DBManager();
 	init_EntitySignboard();
 	init_VerticalFlip();
@@ -257339,7 +257364,7 @@ var init_SignboardManager = __esmMin((() => {
 			signboards.forEach((signboard) => {
 				const ui = signboard.ui.ui[0];
 				_vector[0] = signboard.x + .5;
-				_vector[1] = 0;
+				_vector[1] = -Altitude.getCellHeight(signboard.x, signboard.y);
 				_vector[2] = signboard.y + .5;
 				mat4$14.translate(_matrix, modelView, _vector);
 				_matrix[0] = 1;
@@ -309158,6 +309183,7 @@ var init_EntityDisplay = __esmMin((() => {
 	init_gl_matrix();
 	init_Map();
 	init_EntityOverlay();
+	init_SessionStorage();
 	vec4$3 = gl_matrix_default.vec4;
 	_pos$3 = /* @__PURE__ */ new Float32Array(4);
 	_size$3 = /* @__PURE__ */ new Float32Array(2);
@@ -309332,7 +309358,7 @@ var init_EntityDisplay = __esmMin((() => {
 		* Refreshes the display (when player uses /showname)
 		*/
 		refresh(entity) {
-			this.update(entity.objecttype === entity.constructor.TYPE_MOB ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_NPC_ABR ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_NPC_BIONIC ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_DISGUISED ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_NPC ? entity.display.STYLE.NPC : entity.objecttype === entity.constructor.TYPE_NPC2 ? entity.display.STYLE.NPC : entity.objecttype === entity.constructor.TYPE_ITEM ? entity.display.STYLE.ITEM : entity.objecttype === entity.constructor.TYPE_PC && entity.isAdmin ? entity.display.STYLE.ADMIN : entity.display.STYLE.DEFAULT);
+			this.update(entity.objecttype === entity.constructor.TYPE_MOB ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_NPC_ABR ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_NPC_BIONIC ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_DISGUISED ? entity.display.STYLE.MOB : entity.objecttype === entity.constructor.TYPE_NPC ? entity.display.STYLE.NPC : entity.objecttype === entity.constructor.TYPE_NPC2 ? entity.display.STYLE.NPC : entity.objecttype === entity.constructor.TYPE_ITEM ? entity.display.STYLE.ITEM : entity.objecttype === entity.constructor.TYPE_PC && SessionStorage_default.showsAdmin(entity, "name") ? entity.display.STYLE.ADMIN : entity.display.STYLE.DEFAULT);
 		}
 		/**
 		* Rendering GUI
@@ -310264,7 +310290,7 @@ function UpdateBody(job) {
 	if (this.costume) job = this.costume;
 	this.xSize = this.ySize = DB.isBaby(job) ? 4 : 5;
 	this.files.shadow.size = job in ShadowTable_default ? ShadowTable_default[job] : 1;
-	let path = this.isAdmin && !shouldSuppressHead.call(this) ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex);
+	let path = SessionStorage_default.showsAdmin(this, "sprite") && !shouldSuppressHead.call(this) ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex);
 	const Entity = this.constructor;
 	if (this.objecttype === Entity.TYPE_UNKNOWN) {
 		let objecttype;
@@ -310479,8 +310505,8 @@ function UpdateBodyStyle(look) {
 				job = this.costume;
 			}
 		}
-		path = this.isAdmin ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex, look, cashMountCostume);
-		const styled = !this.isAdmin && PacketVerManager_default.value > 20141022 && look > 0 && look !== job && !cashMountCostume;
+		path = SessionStorage_default.showsAdmin(this, "sprite") ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex, look, cashMountCostume);
+		const styled = !SessionStorage_default.showsAdmin(this, "sprite") && PacketVerManager_default.value > 20141022 && look > 0 && look !== job && !cashMountCostume;
 		this._bodyStyleJob = styled ? look : null;
 		Entity = this.constructor;
 		Client.loadFile(path + ".act");
@@ -310733,6 +310759,7 @@ var init_EntityView = __esmMin((() => {
 	init_PacketVerManager();
 	init_JobConst();
 	init_GR2ModelRenderer();
+	init_SessionStorage();
 	GR2_MODEL_ROOT = "data/model/3dmob/";
 	GR2_FALLBACK_JOB = 1002;
 	HeadParts = [
@@ -328669,7 +328696,7 @@ function onEntityTalk(pkt) {
 		});
 		entity.dialog.set(pkt.msg);
 		if (entity === SessionStorage_default.Entity) type |= ChatBox_default.TYPE.SELF;
-		else if (entity.isAdmin) type |= ChatBox_default.TYPE.ADMIN;
+		else if (SessionStorage_default.showsAdmin(entity, "chat")) type |= ChatBox_default.TYPE.ADMIN;
 	}
 }
 /**
@@ -328725,7 +328752,7 @@ function onEntityIdentity(pkt) {
 	}
 }
 function updateEntityStyle(entity) {
-	entity.display.update(entity.objecttype === Entity.TYPE_MOB ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_NPC_ABR ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_NPC_BIONIC ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_DISGUISED ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_NPC ? entity.display.STYLE.NPC : entity.objecttype === Entity.TYPE_NPC2 ? entity.display.STYLE.NPC : entity.objecttype === Entity.TYPE_PC && entity.isAdmin ? entity.display.STYLE.ADMIN : entity.display.STYLE.DEFAULT);
+	entity.display.update(entity.objecttype === Entity.TYPE_MOB ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_NPC_ABR ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_NPC_BIONIC ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_DISGUISED ? entity.display.STYLE.MOB : entity.objecttype === Entity.TYPE_NPC ? entity.display.STYLE.NPC : entity.objecttype === Entity.TYPE_NPC2 ? entity.display.STYLE.NPC : entity.objecttype === Entity.TYPE_PC && SessionStorage_default.showsAdmin(entity, "name") ? entity.display.STYLE.ADMIN : entity.display.STYLE.DEFAULT);
 }
 function onTitleChangeAck(pkt) {
 	if (pkt.result === 0) {
@@ -336455,6 +336482,15 @@ function onBuyCashResult(pkt) {
 	NpcStore_default.ui.find(".cashuser .cashpoints").text(pkt.KafraPoint);
 }
 /**
+* Sold to a buying store: the server takes the items without the usual
+* removal packet and sends this one instead (price is per item).
+*
+* @param {object} pkt - PACKET.ZC.ITEM_DELETE_BUYING_STORE
+*/
+function onSellToBuyingStoreDelete(pkt) {
+	InventoryController.getUI().removeItem(pkt.index, pkt.count);
+}
+/**
 * Received purchased informations
 *
 * @param {object} pkt - FAILED_TRADE_BUYING_STORE_TO_SELLER
@@ -336659,6 +336695,7 @@ function MainEngine$9() {
 	Network.hookPacket(PACKET.ZC.PC_PURCHASE_ITEMLIST_FROMMC3, onVendingStoreList);
 	Network.hookPacket(PACKET.ZC.ACK_ITEMLIST_BUYING_STORE, onBuyingStoreList);
 	Network.hookPacket(PACKET.ZC.FAILED_TRADE_BUYING_STORE_TO_SELLER, onSellToBuyingStoreResult);
+	Network.hookPacket(PACKET.ZC.ITEM_DELETE_BUYING_STORE, onSellToBuyingStoreDelete);
 	Network.hookPacket(PACKET.ZC.NPC_MARKET_OPEN2, onMarketShop);
 	Network.hookPacket(PACKET.ZC.NPC_MARKET_PURCHASE_RESULT, onMarketShopResult);
 	Network.hookPacket(PACKET.ZC.NPC_MARKET_PURCHASE_RESULT2, onMarketShopResult);
