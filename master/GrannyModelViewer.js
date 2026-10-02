@@ -78000,7 +78000,11 @@ var init_Preferences$1 = __esmMin((() => {
 var UI_default;
 var init_UI = __esmMin((() => {
 	init_Preferences$1();
-	UI_default = Preferences.get("UI", { windowmagnet: true }, 1);
+	UI_default = Preferences.get("UI", {
+		windowmagnet: true,
+		guildMemberListSorted: true,
+		li: true
+	}, 1);
 }));
 //#endregion
 //#region src/Engine/SessionStorage.js
@@ -78040,7 +78044,7 @@ var init_SessionStorage = __esmMin((() => {
 		hasParty: false,
 		isPartyLeader: false,
 		hasGuild: false,
-		guildRight: 0,
+		guildPermission: 0,
 		guildName: "",
 		isGuildMaster: false,
 		Playing: false,
@@ -83208,7 +83212,7 @@ var init_Texture = __esmMin((() => {
 *
 * @return {object} webgl context
 */
-function getContext(canvas, parameters) {
+function getContext$1(canvas, parameters) {
 	let gl = null;
 	let i;
 	if (!parameters) parameters = {
@@ -83378,7 +83382,7 @@ var init_WebGL = __esmMin((() => {
 	init_Texture();
 	init_Configs();
 	WebGL_default = {
-		getContext,
+		getContext: getContext$1,
 		compileShader,
 		createShaderProgram,
 		detectBadWebGL,
@@ -84818,7 +84822,7 @@ var init_JobNameTable = __esmMin((() => {
 	JobNameTable[JobConst_default.IMPERIAL_GUARD_RIDING] = "imperial_guard_riding";
 	JobNameTable[JobConst_default.BIOLO_RIDING] = "biolo_riding";
 	JobNameTable[JobConst_default.ABYSS_CHASER_RIDING] = "abyss_chaser_riding";
-	JobNameTable[JobConst_default.ELEMENTAL_MASTER_RIDING] = "elemental_master_riding";
+	JobNameTable[JobConst_default.ELEMENTAL_MASTER_RIDING] = "elemetal_master_riding";
 	JobNameTable[JobConst_default.INQUISITOR_RIDING] = "inquisitor_riding";
 	JobNameTable[JobConst_default.TROUBADOUR_RIDING] = "troubadour_riding";
 	JobNameTable[JobConst_default.TROUVERE_RIDING] = "trouvere_riding";
@@ -85086,6 +85090,19 @@ var init_PalNameTable = __esmMin((() => {
 	PalNameTable[JobConst_default.INQUISITOR] = JobNameTable[JobConst_default.INQUISITOR];
 	PalNameTable[JobConst_default.TROUBADOUR] = JobNameTable[JobConst_default.TROUBADOUR];
 	PalNameTable[JobConst_default.TROUVERE] = JobNameTable[JobConst_default.TROUVERE];
+	PalNameTable[JobConst_default.DRAGON_KNIGHT_RIDING] = JobNameTable[JobConst_default.DRAGON_KNIGHT_RIDING];
+	PalNameTable[JobConst_default.MEISTER_RIDING] = JobNameTable[JobConst_default.MEISTER_RIDING];
+	PalNameTable[JobConst_default.SHADOW_CROSS_RIDING] = JobNameTable[JobConst_default.SHADOW_CROSS_RIDING];
+	PalNameTable[JobConst_default.ARCH_MAGE_RIDING] = JobNameTable[JobConst_default.ARCH_MAGE_RIDING];
+	PalNameTable[JobConst_default.CARDINAL_RIDING] = JobNameTable[JobConst_default.CARDINAL_RIDING];
+	PalNameTable[JobConst_default.WINDHAWK_RIDING] = JobNameTable[JobConst_default.WINDHAWK_RIDING];
+	PalNameTable[JobConst_default.IMPERIAL_GUARD_RIDING] = JobNameTable[JobConst_default.IMPERIAL_GUARD_RIDING];
+	PalNameTable[JobConst_default.BIOLO_RIDING] = JobNameTable[JobConst_default.BIOLO_RIDING];
+	PalNameTable[JobConst_default.ABYSS_CHASER_RIDING] = JobNameTable[JobConst_default.ABYSS_CHASER_RIDING];
+	PalNameTable[JobConst_default.ELEMENTAL_MASTER_RIDING] = JobNameTable[JobConst_default.ELEMENTAL_MASTER_RIDING];
+	PalNameTable[JobConst_default.INQUISITOR_RIDING] = JobNameTable[JobConst_default.INQUISITOR_RIDING];
+	PalNameTable[JobConst_default.TROUBADOUR_RIDING] = JobNameTable[JobConst_default.TROUBADOUR_RIDING];
+	PalNameTable[JobConst_default.TROUVERE_RIDING] = JobNameTable[JobConst_default.TROUVERE_RIDING];
 	PalNameTable[JobConst_default.WINDHAWK2] = JobNameTable[JobConst_default.WINDHAWK2];
 	PalNameTable[JobConst_default.MEISTER2] = JobNameTable[JobConst_default.MEISTER2];
 	PalNameTable[JobConst_default.DRAGON_KNIGHT2] = JobNameTable[JobConst_default.DRAGON_KNIGHT2];
@@ -107433,7 +107450,36 @@ var init_SkillConst = __esmMin((() => {
 		ITEM_BANANA_BOMB: 11006,
 		SCRIPT_999: 11999,
 		EFST_DRESS_UP: 12e3,
-		EFST_999: 12999
+		EFST_999: 12999,
+		SS_FOUR_CHARM: 5499,
+		NW_WILD_SHOT: 5500,
+		NW_MIDNIGHT_FALLEN: 5501,
+		SKE_SKY_SUN: 5502,
+		SKE_SKY_MOON: 5503,
+		SKE_STAR_LIGHT_KICK: 5504,
+		HN_OVERCOMING_CRISIS: 5505,
+		SH_CHUL_HO_BATTERING: 5506,
+		SH_HYUN_ROK_SPIRIT_POWER: 5507,
+		DK_DRAGONIC_PIERCE: 6502,
+		IG_RADIANT_SPEAR: 6503,
+		IG_IMPERIAL_CROSS: 6504,
+		IG_IMPERIAL_PRESSURE: 6505,
+		MT_RUSH_STRIKE: 6506,
+		MT_POWERFUL_SWING: 6507,
+		MT_ENERGY_CANNONADE: 6508,
+		BO_MYSTERY_POWDER: 6509,
+		BO_DUST_EXPLOSION: 6510,
+		SHC_CROSS_SLASH: 6511,
+		ABC_HIT_AND_SLIDING: 6512,
+		ABC_CHASING_BREAK: 6513,
+		ABC_CHASING_SHOT: 6514,
+		ABC_ABYSS_FLAME: 6515,
+		AG_ENERGY_CONVERSION: 6516,
+		EM_PSYCHIC_STREAM: 6517,
+		CD_DIVINUS_FLOS: 6518,
+		IQ_BLAZING_FLAME_BLAST: 6519,
+		WH_WILD_WALK: 6520,
+		TR_RHYTHMICAL_WAVE: 6521
 	};
 }));
 //#endregion
@@ -138190,7 +138236,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.DK_MADNESS_CRUSHER]: 19,
 		[SkillConst_default.DK_SERVANT_W_DEMOL]: 22,
 		[SkillConst_default.DK_VIGOR]: 24,
-		[SkillConst_default.DK_DRAGONIC_AURA]: 26
+		[SkillConst_default.DK_DRAGONIC_AURA]: 26,
+		[SkillConst_default.DK_DRAGONIC_PIERCE]: 28
 	};
 	SkillTreeView[JobConst_default.ARCH_MAGE] = {
 		list: 4,
@@ -138212,7 +138259,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.AG_CRYSTAL_IMPACT]: 18,
 		[SkillConst_default.AG_DESTRUCTIVE_HURRICANE]: 19,
 		[SkillConst_default.AG_VIOLENT_QUAKE]: 20,
-		[SkillConst_default.AG_ASTRAL_STRIKE]: 22
+		[SkillConst_default.AG_ASTRAL_STRIKE]: 22,
+		[SkillConst_default.AG_ENERGY_CONVERSION]: 28
 	};
 	SkillTreeView[JobConst_default.INQUISITOR] = {
 		list: 4,
@@ -138233,7 +138281,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.IQ_MASSIVE_F_BLASTER]: 27,
 		[SkillConst_default.IQ_THIRD_PUNISH]: 31,
 		[SkillConst_default.IQ_THIRD_CONSECRATION]: 32,
-		[SkillConst_default.IQ_THIRD_FLAME_BOMB]: 33
+		[SkillConst_default.IQ_THIRD_FLAME_BOMB]: 33,
+		[SkillConst_default.IQ_BLAZING_FLAME_BLAST]: 35
 	};
 	SkillTreeView[JobConst_default.IMPERIAL_GUARD] = {
 		list: 4,
@@ -138250,7 +138299,10 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.IG_HOLY_SHIELD]: 19,
 		[SkillConst_default.IG_GRAND_JUDGEMENT]: 22,
 		[SkillConst_default.IG_ULTIMATE_SACRIFICE]: 25,
-		[SkillConst_default.IG_JUDGEMENT_CROSS]: 26
+		[SkillConst_default.IG_JUDGEMENT_CROSS]: 26,
+		[SkillConst_default.IG_RADIANT_SPEAR]: 28,
+		[SkillConst_default.IG_IMPERIAL_CROSS]: 29,
+		[SkillConst_default.IG_IMPERIAL_PRESSURE]: 30
 	};
 	SkillTreeView[JobConst_default.SHADOW_CROSS] = {
 		list: 4,
@@ -138264,7 +138316,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SHC_POTENT_VENOM]: 19,
 		[SkillConst_default.SHC_SHADOW_STAB]: 22,
 		[SkillConst_default.SHC_SHADOW_EXCEED]: 25,
-		[SkillConst_default.SHC_FATAL_SHADOW_CROW]: 30
+		[SkillConst_default.SHC_FATAL_SHADOW_CROW]: 30,
+		[SkillConst_default.SHC_CROSS_SLASH]: 35
 	};
 	SkillTreeView[JobConst_default.CARDINAL] = {
 		list: 4,
@@ -138284,7 +138337,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.CD_ARGUTUS_TELUM]: 22,
 		[SkillConst_default.CD_ARGUTUS_VITA]: 23,
 		[SkillConst_default.CD_PNEUMATICUS_PROCELLA]: 25,
-		[SkillConst_default.CD_COMPETENTIA]: 29
+		[SkillConst_default.CD_COMPETENTIA]: 29,
+		[SkillConst_default.CD_DIVINUS_FLOS]: 35
 	};
 	SkillTreeView[JobConst_default.BIOLO] = {
 		list: 4,
@@ -138303,7 +138357,9 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.BO_WOODENWARRIOR]: 18,
 		[SkillConst_default.BO_WOODEN_FAIRY]: 19,
 		[SkillConst_default.BO_RESEARCHREPORT]: 24,
-		[SkillConst_default.BO_HELLTREE]: 25
+		[SkillConst_default.BO_HELLTREE]: 25,
+		[SkillConst_default.BO_MYSTERY_POWDER]: 28,
+		[SkillConst_default.BO_DUST_EXPLOSION]: 29
 	};
 	SkillTreeView[JobConst_default.WINDHAWK] = {
 		list: 4,
@@ -138320,7 +138376,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.WH_FLAMETRAP]: 17,
 		[SkillConst_default.WH_SWIFTTRAP]: 18,
 		[SkillConst_default.WH_CALAMITYGALE]: 21,
-		[SkillConst_default.WH_HAWKBOOMERANG]: 26
+		[SkillConst_default.WH_HAWKBOOMERANG]: 26,
+		[SkillConst_default.WH_WILD_WALK]: 28
 	};
 	SkillTreeView[JobConst_default.TROUBADOUR] = {
 		list: 4,
@@ -138339,7 +138396,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.TR_MYSTIC_SYMPHONY]: 22,
 		[SkillConst_default.TR_ROKI_CAPRICCIO]: 24,
 		[SkillConst_default.TR_NIPELHEIM_REQUIEM]: 25,
-		[SkillConst_default.TR_KVASIR_SONATA]: 31
+		[SkillConst_default.TR_KVASIR_SONATA]: 31,
+		[SkillConst_default.TR_RHYTHMICAL_WAVE]: 35
 	};
 	SkillTreeView[JobConst_default.TROUVERE] = {
 		list: 4,
@@ -138358,7 +138416,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.TR_MYSTIC_SYMPHONY]: 22,
 		[SkillConst_default.TR_ROKI_CAPRICCIO]: 24,
 		[SkillConst_default.TR_NIPELHEIM_REQUIEM]: 25,
-		[SkillConst_default.TR_KVASIR_SONATA]: 31
+		[SkillConst_default.TR_KVASIR_SONATA]: 31,
+		[SkillConst_default.TR_RHYTHMICAL_WAVE]: 35
 	};
 	SkillTreeView[JobConst_default.ABYSS_CHASER] = {
 		list: 4,
@@ -138374,7 +138433,11 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.ABC_FRENZY_SHOT]: 17,
 		[SkillConst_default.ABC_ABYSS_SQUARE]: 19,
 		[SkillConst_default.ABC_ABYSS_SLAYER]: 23,
-		[SkillConst_default.ABC_ABYSS_STRIKE]: 26
+		[SkillConst_default.ABC_ABYSS_STRIKE]: 26,
+		[SkillConst_default.ABC_HIT_AND_SLIDING]: 28,
+		[SkillConst_default.ABC_CHASING_BREAK]: 29,
+		[SkillConst_default.ABC_CHASING_SHOT]: 30,
+		[SkillConst_default.ABC_ABYSS_FLAME]: 31
 	};
 	SkillTreeView[JobConst_default.MEISTER] = {
 		list: 4,
@@ -138392,7 +138455,10 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.MT_SUMMON_ABR_DUAL_CANNON]: 19,
 		[SkillConst_default.MT_TRIPLE_LASER]: 20,
 		[SkillConst_default.MT_SUMMON_ABR_MOTHER_NET]: 26,
-		[SkillConst_default.MT_SUMMON_ABR_INFINITY]: 33
+		[SkillConst_default.MT_SUMMON_ABR_INFINITY]: 33,
+		[SkillConst_default.MT_RUSH_STRIKE]: 35,
+		[SkillConst_default.MT_POWERFUL_SWING]: 36,
+		[SkillConst_default.MT_ENERGY_CANNONADE]: 37
 	};
 	SkillTreeView[JobConst_default.ELEMENTAL_MASTER] = {
 		list: 4,
@@ -138413,7 +138479,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.EM_INCREASING_ACTIVITY]: 24,
 		[SkillConst_default.EM_SUMMON_ELEMENTAL_SERPENS]: 26,
 		[SkillConst_default.EM_SUMMON_ELEMENTAL_TERREMOTUS]: 27,
-		[SkillConst_default.EM_ELEMENTAL_BUSTER]: 33
+		[SkillConst_default.EM_ELEMENTAL_BUSTER]: 33,
+		[SkillConst_default.EM_PSYCHIC_STREAM]: 35
 	};
 	SkillTreeView[JobConst_default.SKY_EMPEROR] = {
 		list: 3,
@@ -138430,7 +138497,10 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SKE_DAWN_BREAK]: 24,
 		[SkillConst_default.SKE_STAR_CANNON]: 26,
 		[SkillConst_default.SKE_ALL_IN_THE_SKY]: 30,
-		[SkillConst_default.SKE_ENCHANTING_SKY]: 32
+		[SkillConst_default.SKE_ENCHANTING_SKY]: 32,
+		[SkillConst_default.SKE_SKY_SUN]: 35,
+		[SkillConst_default.SKE_SKY_MOON]: 36,
+		[SkillConst_default.SKE_STAR_LIGHT_KICK]: 37
 	};
 	SkillTreeView[JobConst_default.SOUL_ASCETIC] = {
 		list: 3,
@@ -138470,7 +138540,9 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.NW_HASTY_FIRE_IN_THE_HOLE]: 19,
 		[SkillConst_default.NW_GRENADES_DROPPING]: 26,
 		[SkillConst_default.NW_AUTO_FIRING_LAUNCHER]: 27,
-		[SkillConst_default.NW_MISSION_BOMBARD]: 33
+		[SkillConst_default.NW_MISSION_BOMBARD]: 33,
+		[SkillConst_default.NW_WILD_SHOT]: 35,
+		[SkillConst_default.NW_MIDNIGHT_FALLEN]: 36
 	};
 	SkillTreeView[JobConst_default.HYPER_NOVICE] = {
 		list: 3,
@@ -138488,7 +138560,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.HN_GROUND_GRAVITATION]: 17,
 		[SkillConst_default.HN_NAPALM_VULCAN_STRIKE]: 18,
 		[SkillConst_default.HN_BREAKINGLIMIT]: 21,
-		[SkillConst_default.HN_RULEBREAK]: 24
+		[SkillConst_default.HN_RULEBREAK]: 24,
+		[SkillConst_default.HN_OVERCOMING_CRISIS]: 28
 	};
 	SkillTreeView[JobConst_default.SPIRIT_HANDLER] = {
 		list: 2,
@@ -138508,7 +138581,9 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SH_COMMUNE_WITH_KI_SUL]: 31,
 		[SkillConst_default.SH_COMMUNE_WITH_HYUN_ROK]: 33,
 		[SkillConst_default.SH_TEMPORARY_COMMUNION]: 37,
-		[SkillConst_default.SH_BLESSING_OF_MYSTICAL_CREATURES]: 39
+		[SkillConst_default.SH_BLESSING_OF_MYSTICAL_CREATURES]: 39,
+		[SkillConst_default.SH_CHUL_HO_BATTERING]: 42,
+		[SkillConst_default.SH_HYUN_ROK_SPIRIT_POWER]: 43
 	};
 	SkillTreeView[JobConst_default.SHIRANUI] = {
 		list: 3,
@@ -138532,7 +138607,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SS_HITOUAKUMU]: 30,
 		[SkillConst_default.SS_KAGEAKUMU]: 32,
 		[SkillConst_default.SS_ANTENPOU]: 34,
-		[SkillConst_default.SS_ANKOKURYUUAKUMU]: 41
+		[SkillConst_default.SS_ANKOKURYUUAKUMU]: 41,
+		[SkillConst_default.SS_FOUR_CHARM]: 42
 	};
 	SkillTreeView[JobConst_default.SHINKIRO] = {
 		list: 3,
@@ -138556,7 +138632,8 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SS_HITOUAKUMU]: 30,
 		[SkillConst_default.SS_KAGEAKUMU]: 32,
 		[SkillConst_default.SS_ANTENPOU]: 34,
-		[SkillConst_default.SS_ANKOKURYUUAKUMU]: 41
+		[SkillConst_default.SS_ANKOKURYUUAKUMU]: 41,
+		[SkillConst_default.SS_FOUR_CHARM]: 42
 	};
 	duplicateEntry$2(JobConst_default.NOVICE, JobConst_default.NOVICE_B);
 	duplicateEntry$2(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_B);
@@ -138664,6 +138741,53 @@ var init_SkillTreeView = __esmMin((() => {
 	duplicateEntry$2(JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT2);
 	duplicateEntry$2(JobConst_default.IMPERIAL_GUARD, JobConst_default.IMPERIAL_GUARD2);
 	duplicateEntry$2(JobConst_default.SKY_EMPEROR, JobConst_default.SKY_EMPEROR2);
+}));
+//#endregion
+//#region src/DB/Skills/SkillTreeMerge.js
+/**
+* Put the tree back to the built-in layout, dropping every job and position a
+* previously loaded client file added.
+*
+* @param {object} tree - SkillTreeView, changed in place
+* @param {object} [builtIn] - the layout to restore
+*/
+function resetSkillTree(tree, builtIn = BuiltInSkillTreeView) {
+	for (const jobId of Object.keys(tree)) if (!(jobId in builtIn)) delete tree[jobId];
+	for (const [jobId, entry] of Object.entries(builtIn)) tree[jobId] = { ...entry };
+}
+/**
+* For each job a client file defined, put back the built-in position of any
+* skill the file leaves out, or the next free slot when the file has taken
+* that one. Positions the file set are never moved.
+*
+* @param {object} tree - SkillTreeView after the file was read, changed in place
+* @param {Iterable} jobIds - the jobs the file defined
+* @param {object} [builtIn] - the built-in layout
+*/
+function keepBuiltInSkills(tree, jobIds, builtIn = BuiltInSkillTreeView) {
+	for (const jobId of jobIds) {
+		const entry = tree[jobId];
+		const base = builtIn[jobId];
+		if (!entry || !base) continue;
+		const taken = new Set(Object.keys(entry).filter(isSkill).map((key) => entry[key]));
+		let next = Math.max(-1, ...taken) + 1;
+		for (const [skillId, pos] of Object.entries(base)) {
+			if (!isSkill(skillId) || skillId in entry) continue;
+			let slot = pos;
+			if (taken.has(slot)) {
+				while (taken.has(next)) next++;
+				slot = next;
+			}
+			entry[skillId] = slot;
+			taken.add(slot);
+		}
+	}
+}
+var isSkill, BuiltInSkillTreeView;
+var init_SkillTreeMerge = __esmMin((() => {
+	init_SkillTreeView();
+	isSkill = (key) => /^\d+$/.test(key);
+	BuiltInSkillTreeView = Object.freeze(Object.fromEntries(Object.entries(SkillTreeView).map(([jobId, entry]) => [jobId, Object.freeze({ ...entry })])));
 }));
 //#endregion
 //#region src/DB/Jobs/JobHitSoundTable.js
@@ -161647,7 +161771,7 @@ var init_PacketStructure = __esmMin((() => {
 	PACKET.ZC.CHANGE_GUILD = function PACKET_ZC_CHANGE_GUILD(fp, end) {
 		this.AID = fp.readULong();
 		this.GDID = fp.readULong();
-		this.emblemVersion = fp.readShort();
+		this.emblemVersion = fp.readUShort();
 	};
 	PACKET.ZC.CHANGE_GUILD.size = 12;
 	PACKET.SC.BILLING_INFO = function PACKET_SC_BILLING_INFO(fp, end) {
@@ -167075,6 +167199,16 @@ var init_PacketStructure = __esmMin((() => {
 		pkt_buf.writeShort(2976);
 		return pkt_buf;
 	};
+	PACKET.ZC.ACK_BAN_GUILD_DELNAME = function PACKET_ZC_ACK_BAN_GUILD_DELNAME(fp, end) {
+		this.reasonDesc = fp.readString(40);
+		this.GID = fp.readULong();
+	};
+	PACKET.ZC.ACK_BAN_GUILD_DELNAME.size = 46;
+	PACKET.ZC.ACK_LEAVE_GUILD_DELNAME = function PACKET_ZC_ACK_LEAVE_GUILD_DELNAME(fp, end) {
+		this.GID = fp.readULong();
+		this.reasonDesc = fp.readString(40);
+	};
+	PACKET.ZC.ACK_LEAVE_GUILD_DELNAME.size = 46;
 	PACKET.ZC.GUILD_INFO3 = function PACKET_ZC_GUILD_INFO3(fp, end) {
 		this.GDID = fp.readLong();
 		this.level = fp.readLong();
@@ -167094,6 +167228,20 @@ var init_PacketStructure = __esmMin((() => {
 		this.masterName = this.masterAID;
 	};
 	PACKET.ZC.GUILD_INFO3.size = 94;
+	PACKET.ZC.BAN_LIST2 = function PACKET_ZC_BAN_LIST2(fp, end) {
+		this.banList = (function() {
+			const count = (end - fp.tell()) / 44 | 0;
+			const out = new Array(count);
+			for (let i = 0; i < count; ++i) {
+				out[i] = {};
+				out[i].GID = fp.readULong();
+				out[i].reason = fp.readString(40);
+				out[i].charname = "";
+			}
+			return out;
+		})();
+	};
+	PACKET.ZC.BAN_LIST2.size = -1;
 	PACKET.ZC.STORE_ASSISTANT_ENTRY = function PACKET_ZC_STORE_ASSISTANT_ENTRY(fp, end) {
 		this.GID = fp.readULong();
 		this.job = fp.readShort();
@@ -168251,6 +168399,30 @@ var init_PacketStructure = __esmMin((() => {
 		this.grade = fp.readUChar();
 	};
 	PACKET.ZC.ADD_ITEM_TO_CART4.size = 58;
+	PACKET.CZ.REQ_ADD_NEW_EMBLEM = function PACKET_CZ_REQ_ADD_NEW_EMBLEM() {
+		this.GDID = 0;
+		this.version = 0;
+	};
+	PACKET.CZ.REQ_ADD_NEW_EMBLEM.prototype.build = function() {
+		const pkt_buf = new BinaryWriter(10);
+		pkt_buf.writeShort(2886);
+		pkt_buf.writeULong(this.GDID);
+		pkt_buf.writeULong(this.version);
+		return pkt_buf;
+	};
+	PACKET.CZ.REQ_ADD_NEW_EMBLEM.size = 10;
+	PACKET.ZC.CHANGE_GUILD2 = function PACKET_ZC_CHANGE_GUILD2(fp, end) {
+		this.GDID = fp.readULong();
+		this.emblemVersion = fp.readULong();
+		if (end - fp.tell() >= 4) this.AID = fp.readULong();
+	};
+	PACKET.ZC.CHANGE_GUILD2.size = PacketVerManager_default.value >= 20190619 ? 14 : 10;
+	PACKET.ZC.CHANGE_GUILD3 = function PACKET_ZC_CHANGE_GUILD3(fp, end) {
+		this.GDID = fp.readULong();
+		this.emblemVersion = fp.readULong();
+		this.AID = fp.readULong();
+	};
+	PACKET.ZC.CHANGE_GUILD3.size = 14;
 	PACKET.ZC.NPC_MARKET_PURCHASE_RESULT2 = function PACKET_ZC_NPC_MARKET_PURCHASE_RESULT2(fp, end) {
 		this.result = fp.readUShort();
 		this.itemList = (function() {
@@ -168479,6 +168651,20 @@ var init_PacketStructure = __esmMin((() => {
 		this.masterName = fp.readString(NAME_LENGTH);
 	};
 	PACKET.ZC.GUILD_INFO4.size = 118;
+	PACKET.ZC.BAN_LIST3 = function PACKET_ZC_BAN_LIST3(fp, end) {
+		this.banList = (function() {
+			const count = (end - fp.tell()) / 68 | 0;
+			const out = new Array(count);
+			for (let i = 0; i < count; ++i) {
+				out[i] = {};
+				out[i].GID = fp.readULong();
+				out[i].reason = fp.readString(40);
+				out[i].charname = fp.readString(NAME_LENGTH);
+			}
+			return out;
+		})();
+	};
+	PACKET.ZC.BAN_LIST3.size = -1;
 	PACKET.ZC.MEMBERMGR_INFO3 = function PACKET_ZC_MEMBERMGR_INFO3(fp, end) {
 		this.memberInfo = (function() {
 			const count = (end - fp.tell()) / 58 | 0;
@@ -202967,7 +203153,10 @@ var init_PacketRegister = __esmMin((() => {
 		2670: PACKET.CZ.REQ_SEND_RODEX2,
 		2672: PACKET.CZ.RANDOM_COMBINE_ITEM_UI_CLOSE,
 		2685: PACKET.ZC.ACK_RODEX_LIST2,
+		2690: PACKET.ZC.ACK_BAN_GUILD_DELNAME,
+		2691: PACKET.ZC.ACK_LEAVE_GUILD_DELNAME,
 		2692: PACKET.ZC.GUILD_INFO3,
+		2695: PACKET.ZC.BAN_LIST2,
 		2697: PACKET.ZC.STORE_ASSISTANT_ENTRY,
 		2698: PACKET.ZC.STORE_ASSISTANT_DISAPPEAR,
 		2709: PACKET.ZC.CONFIG_NOTIFY2,
@@ -203074,7 +203263,10 @@ var init_PacketRegister = __esmMin((() => {
 		2935: PACKET.ZC.PC_PURCHASE_ITEMLIST2,
 		2936: PACKET.ZC.NPC_BARTER_MARKET_ITEMINFO,
 		2937: PACKET.ZC.NPC_EXPANDED_BARTER_MARKET_ITEMINFO,
+		2847: PACKET.ZC.CHANGE_GUILD2,
+		2887: PACKET.ZC.CHANGE_GUILD3,
 		2939: PACKET.ZC.GUILD_INFO4,
+		2940: PACKET.ZC.BAN_LIST3,
 		2941: PACKET.ZC.MEMBERMGR_INFO3,
 		2927: PACKET.HC.ACCEPT_MAKECHAR,
 		2957: PACKET.ZC.REPUTE_INFO,
@@ -206447,100 +206639,67 @@ var init_Audio = __esmMin((() => {
 }));
 //#endregion
 //#region src/Audio/SoundManager.js
-/**
-* Move sound to cache.
-* ff we have a request to play the same sound again, get it back
-* Will avoid to re-create sound object at each request (re-usable object)
-*/
-function onSoundEnded() {
-	if (_sounds[this.filename]) {
-		const pos = _sounds[this.filename].instances.indexOf(this);
-		if (pos !== -1) {
-			_sounds[this.filename].instances.splice(pos, 1);
-			if (_sounds[this.filename].instances.length === 0) delete _sounds[this.filename];
-		}
-		addSoundToCache(this);
+function getContext() {
+	if (!_context) {
+		const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+		if (!AudioContextClass) return null;
+		_context = new AudioContextClass();
+		const resume = () => {
+			if (_context.state !== "running") _context.resume().catch(() => {});
+		};
+		[
+			"pointerdown",
+			"keydown",
+			"touchend"
+		].forEach((type) => {
+			window.addEventListener(type, resume, {
+				capture: true,
+				passive: true
+			});
+		});
 	}
+	return _context;
 }
 /**
-* Clear sound from dom on error
-*/
-function onSoundError() {
-	const entry = _sounds[this.filename];
-	if (entry) {
-		const pos = entry.instances.indexOf(this);
-		if (pos !== -1) {
-			entry.instances.splice(pos, 1);
-			if (entry.instances.length === 0) delete _sounds[this.filename];
-		}
-	}
-	this.remove();
-	mediaPlayerCount--;
-}
-/**
-* Add sound to cache and set associated vars
-*
-* @param {Audio} sound element
-*/
-function addSoundToCache(sound) {
-	if (sound.filename) {
-		if (!(sound.filename in _cache$1)) {
-			_cache$1[sound.filename] = /* @__PURE__ */ new Object();
-			_cache$1[sound.filename].instances = new Array();
-		}
-		if (_cache$1[sound.filename].instances.length < balancedMax(C_MAX_CACHED_SOUND_INSTANCES)) {
-			sound.currentTime = 0;
-			sound.cleanupHandle = setTimeout(() => {
-				cleanupCache(sound);
-			}, C_CACHE_CLEANUP_TIME);
-			_cache$1[sound.filename].instances.push(sound);
-		} else {
-			sound.remove();
-			mediaPlayerCount--;
-		}
-	}
-}
-/**
-* Remove sound from cache and return it
-* Check at the same time to remove sound not used since some times.
+* Load and decode a sound (once per filename)
 *
 * @param {string} filename
-* @param {Audio} sound element
+* @returns {Promise<AudioBuffer|null>}
 */
-function getSoundFromCache(filename) {
-	let out = null;
-	if (filename in _cache$1) {
-		if (_cache$1[filename].instances.length > 0) {
-			out = _cache$1[filename].instances.pop();
-			if (out.cleanupHandle) clearTimeout(out.cleanupHandle);
-		}
+function getBuffer(filename) {
+	if (!(filename in _buffers)) {
+		const context = getContext();
+		const promise = new Promise((resolve) => {
+			Client.loadFile(`data/wav/${filename}`, (url) => {
+				fetch(url).then((response) => response.arrayBuffer()).then((data) => new Promise((ok, fail) => context.decodeAudioData(data, ok, fail))).then(resolve).catch((err) => {
+					console.warn("Failed to load sound:", filename, err);
+					resolve(null);
+				});
+			}, () => resolve(null));
+		});
+		promise.then((buffer) => {
+			if (!buffer && _buffers[filename] === promise) delete _buffers[filename];
+		});
+		_buffers[filename] = promise;
 	}
-	return out;
+	return _buffers[filename];
 }
 /**
-* Remove sound from cache if it was sitting there for too long
+* Stop and disconnect playing instances
 *
-* @param {Audio} sound element
+* @param {Array} instances
 */
-function cleanupCache(sound) {
-	if (sound.filename && sound.filename in _cache$1 && _cache$1[sound.filename].instances.length > 0) {
-		const pos = _cache$1[sound.filename].instances.indexOf(sound);
-		if (pos !== -1) {
-			_cache$1[sound.filename].instances.splice(pos, 1);
-			sound.remove();
-			mediaPlayerCount--;
-		}
+function stopInstances(instances) {
+	while (instances.length > 0) {
+		const instance = instances.shift();
+		instance.source.onended = null;
+		try {
+			instance.source.stop();
+		} catch {}
+		instance.gain.disconnect();
 	}
 }
-/**
-* Returns a balanced value for max audio instance number based on the currently existing HTML Media players in the DOM
-*
-* @param {CONST} max instance const value
-*/
-function balancedMax(maxConst) {
-	return Math.ceil(maxConst * (1 - mediaPlayerCount / C_MAX_MEDIA_PLAYERS));
-}
-var C_MAX_SOUND_INSTANCES, C_MAX_CACHED_SOUND_INSTANCES, C_MAX_MEDIA_PLAYERS, C_SAME_SOUND_DELAY, C_CACHE_CLEANUP_TIME, _sounds, _cache$1, mediaPlayerCount, _playGen, SoundManager;
+var C_MAX_SOUND_INSTANCES, C_SAME_SOUND_DELAY, _sounds, _buffers, _playGen, _fileGen, _context, SoundManager;
 var init_SoundManager = __esmMin((() => {
 	init_Client();
 	init_Audio();
@@ -206548,14 +206707,12 @@ var init_SoundManager = __esmMin((() => {
 	init_gl_matrix();
 	init_SessionStorage();
 	C_MAX_SOUND_INSTANCES = 10;
-	C_MAX_CACHED_SOUND_INSTANCES = 30;
-	C_MAX_MEDIA_PLAYERS = 800;
 	C_SAME_SOUND_DELAY = 100;
-	C_CACHE_CLEANUP_TIME = 3e4;
 	_sounds = {};
-	_cache$1 = {};
-	mediaPlayerCount = 0;
+	_buffers = {};
 	_playGen = 0;
+	_fileGen = {};
+	_context = null;
 	SoundManager = class SoundManager {
 		/**
 		* @var {float} sound volume
@@ -206569,52 +206726,45 @@ var init_SoundManager = __esmMin((() => {
 		* @param {optional|number} vol (volume)
 		*/
 		static play(filename, vol) {
-			let volume;
-			if (vol) volume = vol * this.volume;
-			else volume = this.volume;
-			if (volume <= 0 || !Audio_default.Sound.play) return;
-			if (!(filename in _sounds)) {
-				_sounds[filename] = {};
-				_sounds[filename].instances = [];
-				_sounds[filename].lastTick = 0;
-			}
-			const sound = getSoundFromCache(filename);
-			if (sound) {
-				sound.volume = Math.min(volume, 1);
-				sound._volume = volume;
-				const playPromise = sound.play();
-				if (playPromise) playPromise.catch((err) => {
-					if (err.name === "NotSupportedError" || err.name === "AbortError") {
-						const idx = _sounds[filename]?.instances.indexOf(sound);
-						if (idx !== void 0 && idx !== -1) _sounds[filename].instances.splice(idx, 1);
-						sound.remove();
-						mediaPlayerCount--;
-						SoundManager.play(filename, vol);
-						return;
-					}
-					console.warn("Failed to play sound:", err);
-				});
-				_sounds[filename].instances.push(sound);
-				_sounds[filename].lastTick = Date.now();
-				return;
-			}
+			if (typeof vol !== "number" || !isFinite(vol) || vol <= 0) vol = 1;
+			if (vol * this.volume <= 0 || !Audio_default.Sound.play) return;
+			const context = getContext();
+			if (!context) return;
 			const myGen = _playGen;
-			Client.loadFile(`data/wav/${filename}`, (url) => {
-				if (myGen !== _playGen || !(filename in _sounds)) return;
-				if (_sounds[filename].lastTick > Date.now() - C_SAME_SOUND_DELAY || _sounds[filename].instances.length > balancedMax(C_MAX_SOUND_INSTANCES)) return;
-				const audio = document.createElement("audio");
-				mediaPlayerCount++;
-				audio.filename = filename;
-				audio.src = url;
-				audio.volume = Math.min(volume, 1);
-				audio._volume = volume;
-				audio.addEventListener("error", onSoundError, false);
-				audio.addEventListener("ended", onSoundEnded, false);
-				audio.play().catch((err) => {
-					if (err.name !== "AbortError") console.warn("Failed to play sound:", err);
-				});
-				_sounds[filename].instances.push(audio);
-				_sounds[filename].lastTick = Date.now();
+			const myFileGen = _fileGen[filename] || 0;
+			getBuffer(filename).then((buffer) => {
+				if (!buffer || myGen !== _playGen || myFileGen !== (_fileGen[filename] || 0)) return;
+				if (context.state !== "running") return;
+				const volume = vol * SoundManager.volume;
+				if (volume <= 0 || !Audio_default.Sound.play) return;
+				if (!(filename in _sounds)) _sounds[filename] = {
+					instances: [],
+					lastTick: 0
+				};
+				const entry = _sounds[filename];
+				if (entry.lastTick > Date.now() - C_SAME_SOUND_DELAY || entry.instances.length >= C_MAX_SOUND_INSTANCES) return;
+				const source = context.createBufferSource();
+				const gain = context.createGain();
+				source.buffer = buffer;
+				gain.gain.value = Math.min(volume, 1);
+				source.connect(gain);
+				gain.connect(context.destination);
+				const instance = {
+					source,
+					gain,
+					vol
+				};
+				source.onended = () => {
+					gain.disconnect();
+					const current = _sounds[filename];
+					if (current) {
+						const pos = current.instances.indexOf(instance);
+						if (pos !== -1) current.instances.splice(pos, 1);
+					}
+				};
+				entry.instances.push(instance);
+				entry.lastTick = Date.now();
+				source.start();
 			});
 		}
 		/**
@@ -206635,37 +206785,23 @@ var init_SoundManager = __esmMin((() => {
 		*/
 		static stop(filename) {
 			if (filename) {
+				_fileGen[filename] = (_fileGen[filename] || 0) + 1;
 				if (filename in _sounds) {
-					while (_sounds[filename].instances.length > 0) {
-						const s = _sounds[filename].instances.shift();
-						s.pause();
-						s.remove();
-						mediaPlayerCount--;
-					}
+					stopInstances(_sounds[filename].instances);
 					delete _sounds[filename];
 				}
 				return;
 			}
 			_playGen++;
 			Object.keys(_sounds).forEach((key) => {
-				while (_sounds[key].instances.length > 0) {
-					const s = _sounds[key].instances.shift();
-					s.pause();
-					s.remove();
-					mediaPlayerCount--;
-				}
+				stopInstances(_sounds[key].instances);
 				delete _sounds[key];
 			});
-			Object.keys(_cache$1).forEach((key) => {
-				_cache$1[key].instances.forEach((s) => {
-					if (s.cleanupHandle) clearTimeout(s.cleanupHandle);
-					s.remove();
-					mediaPlayerCount--;
-				});
-				delete _cache$1[key];
+			Object.keys(_buffers).forEach((key) => {
+				delete _buffers[key];
 			});
 			MemoryManager.search(/\.wav$/).forEach((key) => {
-				MemoryManager.remove(key);
+				MemoryManager.remove(null, key);
 			});
 		}
 		/**
@@ -206678,8 +206814,8 @@ var init_SoundManager = __esmMin((() => {
 			Audio_default.Sound.volume = this.volume;
 			Audio_default.save();
 			Object.keys(_sounds).forEach((key) => {
-				_sounds[key].instances.forEach((sound) => {
-					sound.volume = Math.min(sound._volume * this.volume, 1);
+				_sounds[key].instances.forEach((instance) => {
+					instance.gain.gain.value = Math.min(instance.vol * this.volume, 1);
 				});
 			});
 		}
@@ -207341,6 +207477,69 @@ function RenderCanvas3D(isBlendModeOne) {
 	}
 	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 }
+/**
+* Convert a sprite frame (RGBA or palette-indexed) into canvas ImageData,
+* applying the layer color modulation.
+*/
+function fillImageData(imageData, frame, pal, color) {
+	let x, y, r, g, b, a, inRow, outRow;
+	const width = frame.width;
+	const height = frame.height;
+	const input = frame.data;
+	const outputWidth = width;
+	const output32 = new Uint32Array(imageData.data.buffer);
+	const r_mul = color[0], g_mul = color[1], b_mul = color[2], a_mul = color[3];
+	const isColorIdentity = r_mul === 1 && g_mul === 1 && b_mul === 1 && a_mul === 1;
+	if (frame.type === 1) {
+		/**
+		* OLD LOGIC: Per-channel RGBA modulation using byte array access.
+		*            4 loads + 4 stores + multiplications per pixel.
+		* NEW LOGIC: Reads and writes pixels as a single 32-bit integer.
+		*            Uses bitwise extraction and assembly with optional color modulation.
+		*            1 load + 1 store per pixel in the fast path.
+		* Reduces memory writes and bounds checks inside the inner loop.
+		*/
+		const input32 = new Uint32Array(input.buffer);
+		for (y = 0; y < height; ++y) {
+			outRow = y * outputWidth;
+			inRow = y * width;
+			for (x = 0; x < width; ++x) {
+				const pixel = input32[inRow + x];
+				if (pixel === 0) {
+					output32[outRow + x] = 0;
+					continue;
+				}
+				if (isColorIdentity) output32[outRow + x] = pixel;
+				else {
+					r = (pixel & 255) * r_mul;
+					g = (pixel >> 8 & 255) * g_mul;
+					b = (pixel >> 16 & 255) * b_mul;
+					a = (pixel >> 24 & 255) * a_mul;
+					output32[outRow + x] = a << 24 | b << 16 | g << 8 | r;
+				}
+			}
+		}
+	} else {
+		const pal32 = /* @__PURE__ */ new Uint32Array(256);
+		for (let i = 0; i < 256; i++) {
+			if (i === 0) {
+				pal32[i] = 0;
+				continue;
+			}
+			const pIdx = i * 4;
+			r = pal[pIdx + 0] * r_mul | 0;
+			g = pal[pIdx + 1] * g_mul | 0;
+			b = pal[pIdx + 2] * b_mul | 0;
+			a = 255 * a_mul | 0;
+			pal32[i] = a << 24 | b << 16 | g << 8 | r;
+		}
+		for (y = 0; y < height; ++y) {
+			outRow = y * outputWidth;
+			inRow = y * width;
+			for (x = 0; x < width; ++x) output32[outRow + x] = pal32[input[inRow + x]];
+		}
+	}
+}
 var mat4$24, RenderCanvas2D, _program$26, _buffer$18, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
 var init_SpriteRenderer = __esmMin((() => {
 	init_WebGL();
@@ -207350,17 +207549,44 @@ var init_SpriteRenderer = __esmMin((() => {
 	init_SpriteRenderer$1();
 	mat4$24 = gl_matrix_default.mat4;
 	RenderCanvas2D = (function RenderCanvas2DClosure() {
-		let imageData;
-		const canvas = document.createElement("canvas");
-		const ctx = canvas.getContext("2d");
-		canvas.width = 20;
-		canvas.height = 20;
-		imageData = ctx.createImageData(canvas.width, canvas.height);
+		const _cache = /* @__PURE__ */ new WeakMap();
+		const MAX_COLORS_PER_PALETTE = 8;
+		function getFrameCanvas(frame, pal, color) {
+			let entry = _cache.get(frame);
+			if (!entry) {
+				entry = {
+					rgba: /* @__PURE__ */ new Map(),
+					byPalette: /* @__PURE__ */ new WeakMap()
+				};
+				_cache.set(frame, entry);
+			}
+			let byColor;
+			if (frame.type === 1 || !pal) byColor = entry.rgba;
+			else {
+				byColor = entry.byPalette.get(pal);
+				if (!byColor) {
+					byColor = /* @__PURE__ */ new Map();
+					entry.byPalette.set(pal, byColor);
+				}
+			}
+			const colorKey = `${color[0]},${color[1]},${color[2]},${color[3]}`;
+			let canvas = byColor.get(colorKey);
+			if (!canvas) {
+				if (byColor.size >= MAX_COLORS_PER_PALETTE) byColor.delete(byColor.keys().next().value);
+				canvas = document.createElement("canvas");
+				canvas.width = frame.width;
+				canvas.height = frame.height;
+				const ctx = canvas.getContext("2d");
+				const imageData = ctx.createImageData(frame.width, frame.height);
+				fillImageData(imageData, frame, pal, color);
+				ctx.putImageData(imageData, 0, 0);
+				byColor.set(colorKey, canvas);
+			}
+			return canvas;
+		}
 		return function() {
 			if (this.sprite.width <= 0 || this.sprite.height <= 0) return;
 			let scale_x, scale_y;
-			let x, y;
-			let r, g, b, a, inRow, outRow;
 			scale_x = 1;
 			scale_y = 1;
 			const _x = _pos$8[0] + this.offset[0];
@@ -207378,67 +207604,7 @@ var init_SpriteRenderer = __esmMin((() => {
 				scale_y *= -1;
 				_size$7[1] *= -1;
 			}
-			if (width > canvas.width || height > canvas.height) {
-				canvas.width = width;
-				canvas.height = height;
-				imageData = ctx.createImageData(width, height);
-			}
-			const input = frame.data;
-			const color = this.color;
-			const outputWidth = canvas.width;
-			const output32 = new Uint32Array(imageData.data.buffer);
-			const r_mul = color[0], g_mul = color[1], b_mul = color[2], a_mul = color[3];
-			const isColorIdentity = r_mul === 1 && g_mul === 1 && b_mul === 1 && a_mul === 1;
-			if (this.sprite.type === 1) {
-				/**
-				* OLD LOGIC: Per-channel RGBA modulation using byte array access.
-				*            4 loads + 4 stores + multiplications per pixel.
-				* NEW LOGIC: Reads and writes pixels as a single 32-bit integer.
-				*            Uses bitwise extraction and assembly with optional color modulation.
-				*            1 load + 1 store per pixel in the fast path.
-				* Reduces memory writes and bounds checks inside the inner loop.
-				*/
-				const input32 = new Uint32Array(input.buffer);
-				for (y = 0; y < height; ++y) {
-					outRow = y * outputWidth;
-					inRow = y * width;
-					for (x = 0; x < width; ++x) {
-						const pixel = input32[inRow + x];
-						if (pixel === 0) {
-							output32[outRow + x] = 0;
-							continue;
-						}
-						if (isColorIdentity) output32[outRow + x] = pixel;
-						else {
-							r = (pixel & 255) * r_mul;
-							g = (pixel >> 8 & 255) * g_mul;
-							b = (pixel >> 16 & 255) * b_mul;
-							a = (pixel >> 24 & 255) * a_mul;
-							output32[outRow + x] = a << 24 | b << 16 | g << 8 | r;
-						}
-					}
-				}
-			} else {
-				const pal32 = /* @__PURE__ */ new Uint32Array(256);
-				for (let i = 0; i < 256; i++) {
-					if (i === 0) {
-						pal32[i] = 0;
-						continue;
-					}
-					const pIdx = i * 4;
-					r = pal[pIdx + 0] * r_mul | 0;
-					g = pal[pIdx + 1] * g_mul | 0;
-					b = pal[pIdx + 2] * b_mul | 0;
-					a = 255 * a_mul | 0;
-					pal32[i] = a << 24 | b << 16 | g << 8 | r;
-				}
-				for (y = 0; y < height; ++y) {
-					outRow = y * outputWidth;
-					inRow = y * width;
-					for (x = 0; x < width; ++x) output32[outRow + x] = pal32[input[inRow + x]];
-				}
-			}
-			ctx.putImageData(imageData, 0, 0, 0, 0, width, height);
+			const canvas = getFrameCanvas(frame, pal, this.color);
 			_ctx$5.save();
 			_ctx$5.translate(_x | 0, _y | 0);
 			_ctx$5.rotate(this.angle / 180 * Math.PI);
@@ -213514,7 +213680,7 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: 104
 	};
 	SkillEffect[SkillConst_default.HT_SKIDTRAP] = { effectId: 69 };
-	SkillEffect[SkillConst_default.HT_LANDMINE] = {};
+	SkillEffect[SkillConst_default.HT_LANDMINE] = { effectId: "ef_ht_landmine" };
 	SkillEffect[SkillConst_default.HT_ANKLESNARE] = { groundEffectId: "ef_anklesnare" };
 	SkillEffect[SkillConst_default.HT_SHOCKWAVE] = {
 		effectId: 145,
@@ -213552,6 +213718,19 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.AS_SPLASHER] = { effectId: 129 };
 	SkillEffect[SkillConst_default.NV_FIRSTAID] = { effectId: 309 };
 	SkillEffect[SkillConst_default.NV_TRICKDEAD] = {};
+	SkillEffect[SkillConst_default.HN_DOUBLEBOWLINGBASH] = { effectId: "ef_hn_doublebowlingbash" };
+	SkillEffect[SkillConst_default.HN_MEGA_SONIC_BLOW] = { effectId: "ef_hn_mega_sonic_blow" };
+	SkillEffect[SkillConst_default.HN_SHIELD_CHAIN_RUSH] = { effectId: "ef_hn_shield_chain_rush" };
+	SkillEffect[SkillConst_default.HN_SPIRAL_PIERCE_MAX] = { effectId: "ef_hn_spiral_pierce_max" };
+	SkillEffect[SkillConst_default.HN_METEOR_STORM_BUSTER] = { effectId: "ef_hn_meteor_storm_buster" };
+	SkillEffect[SkillConst_default.HN_JUPITEL_THUNDER_STORM] = { effectId: "ef_hn_jupitel_thunder_storm" };
+	SkillEffect[SkillConst_default.HN_JACK_FROST_NOVA] = { effectId: "ef_hn_jack_frost_nova" };
+	SkillEffect[SkillConst_default.HN_HELLS_DRIVE] = { effectId: "ef_hn_hells_drive" };
+	SkillEffect[SkillConst_default.HN_GROUND_GRAVITATION] = { effectId: "ef_hn_ground_gravitation" };
+	SkillEffect[SkillConst_default.HN_NAPALM_VULCAN_STRIKE] = { effectId: "ef_hn_napalm_vulcan_strike" };
+	SkillEffect[SkillConst_default.HN_BREAKINGLIMIT] = { effectId: "ef_hn_breakinglimit" };
+	SkillEffect[SkillConst_default.HN_RULEBREAK] = { effectId: "ef_hn_rulebreak" };
+	SkillEffect[5505] = { effectId: "ef_hn_overcoming_crisis" };
 	SkillEffect[SkillConst_default.SM_AUTOBERSERK] = {};
 	SkillEffect[SkillConst_default.AC_MAKINGARROW] = {};
 	SkillEffect[SkillConst_default.AC_CHARGEARROW] = {
@@ -213726,7 +213905,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SA_QUESTION] = {};
 	SkillEffect[SkillConst_default.SA_GRAVITY] = {};
 	SkillEffect[SkillConst_default.SA_LEVELUP] = {};
-	SkillEffect[SkillConst_default.SA_INSTANTDEATH] = {};
+	SkillEffect[SkillConst_default.SA_INSTANTDEATH] = { effectId: "ef_sa_instantdeath" };
 	SkillEffect[SkillConst_default.SA_FULLRECOVERY] = {};
 	SkillEffect[SkillConst_default.SA_COMA] = {};
 	SkillEffect[SkillConst_default.BD_ADAPTATION] = {};
@@ -213948,7 +214127,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.TK_READYTURN] = {};
 	SkillEffect[SkillConst_default.TK_TURNKICK] = { effectId: 414 };
 	SkillEffect[SkillConst_default.TK_READYCOUNTER] = {};
-	SkillEffect[SkillConst_default.TK_COUNTER] = { effectId: 415 };
+	SkillEffect[SkillConst_default.TK_COUNTER] = { effectId: "ef_tk_counter" };
 	SkillEffect[SkillConst_default.TK_DODGE] = {};
 	SkillEffect[SkillConst_default.TK_JUMPKICK] = {
 		effectId: 439,
@@ -213981,7 +214160,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SL_KAUPE] = { effectId: 546 };
 	SkillEffect[SkillConst_default.SL_KAITE] = { effectId: 419 };
 	SkillEffect[SkillConst_default.SL_STIN] = { effectId: 547 };
-	SkillEffect[SkillConst_default.SL_STUN] = { effectId: 555 };
+	SkillEffect[SkillConst_default.SL_STUN] = { effectId: [555, "ef_sl_stun"] };
 	SkillEffect[SkillConst_default.SL_SMA] = {
 		effectId: 553,
 		successEffectId: 425
@@ -214037,7 +214216,10 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GS_BULLSEYE] = { effectId: 649 };
 	SkillEffect[SkillConst_default.GS_MADNESSCANCEL] = { effectId: 625 };
 	SkillEffect[SkillConst_default.GS_ADJUSTMENT] = { effectId: 626 };
-	SkillEffect[SkillConst_default.GS_INCREASING] = { effectId: 456 };
+	SkillEffect[SkillConst_default.GS_INCREASING] = {
+		effectId: [456, "ef_gs_increasing"],
+		effectIdOnCaster: "ef_gs_increasing_cast"
+	};
 	SkillEffect[SkillConst_default.GS_MAGICALBULLET] = { effectId: 644 };
 	SkillEffect[SkillConst_default.GS_CRACKER] = {};
 	SkillEffect[SkillConst_default.GS_TRACKING] = {
@@ -214151,7 +214333,7 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RK_SONICWAVE] = { effectId: 832 };
 	SkillEffect[SkillConst_default.RK_DEATHBOUND] = {};
 	SkillEffect[SkillConst_default.RK_HUNDREDSPEAR] = { effectId: 723 };
-	SkillEffect[SkillConst_default.RK_WINDCUTTER] = {};
+	SkillEffect[SkillConst_default.RK_WINDCUTTER] = { effectId: "ef_rk_windcutter" };
 	SkillEffect[SkillConst_default.RK_IGNITIONBREAK] = { effectIdOnCaster: 722 };
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH] = { hitEffectId: 587 };
 	SkillEffect[SkillConst_default.RK_DRAGONHOWLING] = { effectId: 731 };
@@ -214166,7 +214348,10 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RK_ABUNDANCE] = {};
 	SkillEffect[SkillConst_default.RK_PHANTOMTHRUST] = {};
 	SkillEffect[SkillConst_default.WL_WHITEIMPRISON] = { effectId: 802 };
-	SkillEffect[SkillConst_default.WL_SOULEXPANSION] = {};
+	SkillEffect[SkillConst_default.WL_SOULEXPANSION] = {
+		effectIdOnCaster: "ef_wl_soulexpansion_cast",
+		hitEffectId: "ef_wl_soulexpansion_hit"
+	};
 	SkillEffect[SkillConst_default.WL_FROSTMISTY] = { effectId: 726 };
 	SkillEffect[SkillConst_default.WL_JACKFROST] = {
 		successEffectIdOnCaster: "ef_jackfrost",
@@ -214180,24 +214365,28 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.WL_CRIMSONROCK] = { effectId: 727 };
 	SkillEffect[SkillConst_default.WL_HELLINFERNO] = {
 		groundEffectId: 728,
-		effectId: 800
+		effectId: "ef_wl_hellinferno",
+		effectIdOnCaster: "ef_wl_hellinferno_cast"
 	};
-	SkillEffect[SkillConst_default.WL_COMET] = {};
-	SkillEffect[SkillConst_default.WL_CHAINLIGHTNING] = {};
+	SkillEffect[SkillConst_default.WL_COMET] = {
+		effectId: "ef_wl_comet",
+		effectIdOnCaster: "ef_wl_comet_cast"
+	};
+	SkillEffect[SkillConst_default.WL_CHAINLIGHTNING] = { effectIdOnCaster: "ef_wl_chainlightning_cast" };
 	SkillEffect[SkillConst_default.WL_CHAINLIGHTNING_ATK] = { effectId: 734 };
 	SkillEffect[SkillConst_default.WL_EARTHSTRAIN] = { groundEffectId: 732 };
 	SkillEffect[SkillConst_default.WL_TETRAVORTEX] = {
 		effectId: 804,
 		beginCastEffectId: 805
 	};
-	SkillEffect[SkillConst_default.WL_TETRAVORTEX_FIRE] = {};
-	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WATER] = {};
-	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WIND] = {};
+	SkillEffect[SkillConst_default.WL_TETRAVORTEX_FIRE] = { effectId: "ef_wl_tetravortex_fire" };
+	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WATER] = { effectId: "ef_wl_tetravortex_water" };
+	SkillEffect[SkillConst_default.WL_TETRAVORTEX_WIND] = { effectId: "ef_wl_tetravortex_wind" };
 	SkillEffect[SkillConst_default.WL_TETRAVORTEX_GROUND] = {};
 	SkillEffect[SkillConst_default.WL_SUMMONFB] = {};
 	SkillEffect[SkillConst_default.WL_SUMMONBL] = {};
 	SkillEffect[SkillConst_default.WL_SUMMONWB] = {};
-	SkillEffect[SkillConst_default.WL_SUMMON_ATK_FIRE] = {};
+	SkillEffect[SkillConst_default.WL_SUMMON_ATK_FIRE] = { effectId: "ef_wl_summon_atk_fire" };
 	SkillEffect[SkillConst_default.WL_SUMMON_ATK_WIND] = {};
 	SkillEffect[SkillConst_default.WL_SUMMON_ATK_WATER] = {};
 	SkillEffect[SkillConst_default.WL_SUMMON_ATK_GROUND] = {};
@@ -214205,21 +214394,21 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.WL_RELEASE] = { effectId: 751 };
 	SkillEffect[SkillConst_default.WL_READING_SB] = {};
 	SkillEffect[SkillConst_default.GC_VENOMIMPRESS] = { effectId: 788 };
-	SkillEffect[SkillConst_default.GC_CROSSIMPACT] = {};
+	SkillEffect[SkillConst_default.GC_CROSSIMPACT] = { effectId: "ef_gc_crossimpact" };
 	SkillEffect[SkillConst_default.GC_DARKILLUSION] = {};
 	SkillEffect[SkillConst_default.GC_CREATENEWPOISON] = {};
 	SkillEffect[SkillConst_default.GC_ANTIDOTE] = {};
-	SkillEffect[SkillConst_default.GC_POISONINGWEAPON] = {};
+	SkillEffect[SkillConst_default.GC_POISONINGWEAPON] = { effectId: "ef_gc_poisoningweapon" };
 	SkillEffect[SkillConst_default.GC_WEAPONBLOCKING] = {};
-	SkillEffect[SkillConst_default.GC_COUNTERSLASH] = {};
+	SkillEffect[SkillConst_default.GC_COUNTERSLASH] = { effectId: "ef_gc_counterslash" };
 	SkillEffect[SkillConst_default.GC_WEAPONCRUSH] = {};
 	SkillEffect[SkillConst_default.GC_VENOMPRESSURE] = {};
-	SkillEffect[SkillConst_default.GC_POISONSMOKE] = { effectId: 924 };
+	SkillEffect[SkillConst_default.GC_POISONSMOKE] = { effectId: "ef_gc_poisonsmoke" };
 	SkillEffect[SkillConst_default.GC_CLOAKINGEXCEED] = {};
 	SkillEffect[SkillConst_default.GC_PHANTOMMENACE] = {};
 	SkillEffect[SkillConst_default.GC_HALLUCINATIONWALK] = { effectId: "ef_hallucinationwalk" };
 	SkillEffect[SkillConst_default.GC_ROLLINGCUTTER] = { effectId: 775 };
-	SkillEffect[SkillConst_default.GC_CROSSRIPPERSLASHER] = { effectId: 769 };
+	SkillEffect[SkillConst_default.GC_CROSSRIPPERSLASHER] = { effectId: "ef_gc_crossripperslasher" };
 	SkillEffect[SkillConst_default.AB_JUDEX] = {
 		effectId: 718,
 		hitEffectId: 152
@@ -214248,9 +214437,9 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.AB_DUPLELIGHT_MELEE] = {};
 	SkillEffect[SkillConst_default.AB_DUPLELIGHT_MAGIC] = {};
 	SkillEffect[SkillConst_default.AB_SILENTIUM] = {};
-	SkillEffect[SkillConst_default.AB_SECRAMENT] = {};
+	SkillEffect[SkillConst_default.AB_SECRAMENT] = { effectId: "ef_ab_secrament" };
 	SkillEffect[SkillConst_default.RA_ARROWSTORM] = { effectId: 746 };
-	SkillEffect[SkillConst_default.RA_FEARBREEZE] = {};
+	SkillEffect[SkillConst_default.RA_FEARBREEZE] = { effectId: "ef_ra_fearbreeze" };
 	SkillEffect[SkillConst_default.RA_AIMEDBOLT] = {
 		effectId: 745,
 		beforeHitEffectId: "ef_arrow_projectile"
@@ -214273,10 +214462,10 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RA_ICEBOUNDTRAP] = {};
 	SkillEffect[SkillConst_default.NC_BOOSTKNUCKLE] = {};
 	SkillEffect[SkillConst_default.NC_PILEBUNKER] = {};
-	SkillEffect[SkillConst_default.NC_VULCANARM] = {};
+	SkillEffect[SkillConst_default.NC_VULCANARM] = { effectId: "ef_nc_vulcanarm" };
 	SkillEffect[SkillConst_default.NC_FLAMELAUNCHER] = { effectId: 787 };
 	SkillEffect[SkillConst_default.NC_COLDSLOWER] = {};
-	SkillEffect[SkillConst_default.NC_ARMSCANNON] = {};
+	SkillEffect[SkillConst_default.NC_ARMSCANNON] = { effectIdOnCaster: "ef_nc_armscannon_cast" };
 	SkillEffect[SkillConst_default.NC_ACCELERATION] = {};
 	SkillEffect[SkillConst_default.NC_HOVERING] = {};
 	SkillEffect[SkillConst_default.NC_F_SIDESLIDE] = {};
@@ -214289,16 +214478,23 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.NC_MAGNETICFIELD] = { effectId: 781 };
 	SkillEffect[SkillConst_default.NC_NEUTRALBARRIER] = {};
 	SkillEffect[SkillConst_default.NC_STEALTHFIELD] = {};
-	SkillEffect[SkillConst_default.NC_REPAIR] = { effectId: 785 };
-	SkillEffect[SkillConst_default.NC_AXEBOOMERANG] = { effectId: 774 };
+	SkillEffect[SkillConst_default.NC_REPAIR] = { effectId: "ef_nc_repair" };
+	SkillEffect[SkillConst_default.NC_AXEBOOMERANG] = {
+		effectId: "ef_nc_axeboomerang",
+		effectIdOnCaster: "ef_nc_axeboomerang_cast",
+		hitEffectId: "ef_nc_axeboomerang_hit"
+	};
 	SkillEffect[SkillConst_default.NC_POWERSWING] = { effectId: 795 };
-	SkillEffect[SkillConst_default.NC_AXETORNADO] = {};
+	SkillEffect[SkillConst_default.NC_AXETORNADO] = { effectId: "ef_nc_axetornado" };
 	SkillEffect[SkillConst_default.NC_SILVERSNIPER] = {};
 	SkillEffect[SkillConst_default.NC_MAGICDECOY] = {};
 	SkillEffect[SkillConst_default.NC_DISJOINT] = {};
-	SkillEffect[SkillConst_default.SC_FATALMENACE] = {};
-	SkillEffect[SkillConst_default.SC_REPRODUCE] = {};
-	SkillEffect[SkillConst_default.SC_AUTOSHADOWSPELL] = {};
+	SkillEffect[SkillConst_default.SC_FATALMENACE] = {
+		effectId: "ef_sc_fatalmenace",
+		effectIdOnCaster: "ef_sc_fatalmenace_cast"
+	};
+	SkillEffect[SkillConst_default.SC_REPRODUCE] = { effectId: "ef_sc_reproduce" };
+	SkillEffect[SkillConst_default.SC_AUTOSHADOWSPELL] = { effectId: "ef_sc_autoshadowspell" };
 	SkillEffect[SkillConst_default.SC_SHADOWFORM] = {};
 	SkillEffect[SkillConst_default.SC_TRIANGLESHOT] = { beforeHitEffectId: "ef_arrow_projectile" };
 	SkillEffect[SkillConst_default.SC_BODYPAINT] = { effectId: 811 };
@@ -214320,8 +214516,11 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SC_MAELSTROM] = { groundEffectId: 828 };
 	SkillEffect[SkillConst_default.SC_BLOODYLUST] = { groundEffectId: 829 };
 	SkillEffect[SkillConst_default.SC_FEINTBOMB] = {};
-	SkillEffect[SkillConst_default.LG_CANNONSPEAR] = { effectId: "ef_cannonspear" };
-	SkillEffect[SkillConst_default.LG_BANISHINGPOINT] = { effectId: "ef_banishingpoint" };
+	SkillEffect[SkillConst_default.LG_CANNONSPEAR] = { effectId: ["ef_cannonspear", "ef_lg_cannonspear"] };
+	SkillEffect[SkillConst_default.LG_BANISHINGPOINT] = {
+		effectId: "ef_banishingpoint",
+		effectIdOnCaster: "ef_lg_banishingpoint_cast"
+	};
 	SkillEffect[SkillConst_default.LG_TRAMPLE] = { effectId: "ef_trample" };
 	SkillEffect[SkillConst_default.LG_SHIELDPRESS] = { beforeHitEffectId: 906 };
 	SkillEffect[SkillConst_default.LG_REFLECTDAMAGE] = { effectId: "ef_reflectdamage" };
@@ -214330,39 +214529,63 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.LG_RAGEBURST] = { effectId: "ef_rageburst" };
 	SkillEffect[SkillConst_default.LG_SHIELDSPELL] = { effectId: "ef_shieldspell" };
 	SkillEffect[SkillConst_default.LG_EXEEDBREAK] = { effectId: "ef_exceedbreak" };
-	SkillEffect[SkillConst_default.LG_OVERBRAND] = { effectId: "ef_overbrand" };
+	SkillEffect[SkillConst_default.LG_OVERBRAND] = {
+		effectId: "ef_overbrand",
+		effectIdOnCaster: "ef_lg_overbrand_cast",
+		hitEffectId: "ef_lg_overbrand_hit"
+	};
 	SkillEffect[SkillConst_default.LG_PRESTIGE] = { effectId: 908 };
 	SkillEffect[SkillConst_default.LG_BANDING] = { effectId: 909 };
 	SkillEffect[SkillConst_default.LG_MOONSLASHER] = { effectId: "ef_moonslasher" };
-	SkillEffect[SkillConst_default.LG_RAYOFGENESIS] = { effectId: "ef_rayofgenesis" };
+	SkillEffect[SkillConst_default.LG_RAYOFGENESIS] = {
+		effectId: ["ef_rayofgenesis", "ef_lg_rayofgenesis"],
+		effectIdOnCaster: "ef_lg_rayofgenesis_cast",
+		hitEffectId: "ef_lg_rayofgenesis_hit"
+	};
 	SkillEffect[SkillConst_default.LG_PIETY] = { effectId: "ef_piety" };
-	SkillEffect[SkillConst_default.LG_EARTHDRIVE] = { effectId: "ef_earthdrive" };
+	SkillEffect[SkillConst_default.LG_EARTHDRIVE] = { effectId: ["ef_earthdrive", "ef_lg_earthdrive"] };
 	SkillEffect[SkillConst_default.LG_HESPERUSLIT] = { effectId: "ef_hesperuslit" };
 	SkillEffect[SkillConst_default.LG_INSPIRATION] = { effectId: 910 };
-	SkillEffect[SkillConst_default.LG_OVERBRAND_BRANDISH] = {};
-	SkillEffect[SkillConst_default.LG_OVERBRAND_PLUSATK] = {};
+	SkillEffect[2519] = {
+		effectIdOnCaster: "ef_lg_overbrand_brandish_cast",
+		hitEffectId: "ef_lg_overbrand_brandish_hit"
+	};
+	SkillEffect[2520] = {
+		effectIdOnCaster: "ef_lg_overbrand_plusatk_cast",
+		hitEffectId: "ef_lg_overbrand_plusatk_hit"
+	};
 	SkillEffect[SkillConst_default.SR_DRAGONCOMBO] = { effectId: "ef_dragoncombo" };
 	SkillEffect[SkillConst_default.SR_SKYNETBLOW] = { effectId: "ef_skynetblow" };
 	SkillEffect[SkillConst_default.SR_EARTHSHAKER] = { effectId: 888 };
-	SkillEffect[SkillConst_default.SR_FALLENEMPIRE] = { effectId: "ef_fallenempire" };
-	SkillEffect[SkillConst_default.SR_TIGERCANNON] = { effectId: "ef_tigercannon" };
-	SkillEffect[SkillConst_default.SR_RAMPAGEBLASTER] = { effectId: "ef_rampageblaster" };
+	SkillEffect[SkillConst_default.SR_FALLENEMPIRE] = {
+		effectId: ["ef_fallenempire", "ef_sr_fallenempire"],
+		hitEffectId: "ef_sr_fallenempire_hit"
+	};
+	SkillEffect[SkillConst_default.SR_TIGERCANNON] = { effectId: ["ef_tigercannon", "ef_sr_tigercannon"] };
+	SkillEffect[SkillConst_default.SR_RAMPAGEBLASTER] = { effectId: ["ef_rampageblaster", "ef_sr_rampageblaster"] };
 	SkillEffect[SkillConst_default.SR_CRESCENTELBOW] = { effectId: "ef_crescentelbow" };
 	SkillEffect[SkillConst_default.SR_CURSEDCIRCLE] = { effectId: "ef_cursedcircle" };
-	SkillEffect[SkillConst_default.SR_LIGHTNINGWALK] = { effectId: "ef_lightningwalk" };
+	SkillEffect[SkillConst_default.SR_LIGHTNINGWALK] = { effectId: ["ef_lightningwalk", "ef_sr_lightningwalk"] };
 	SkillEffect[SkillConst_default.SR_KNUCKLEARROW] = { effectId: "ef_knucklearrow" };
 	SkillEffect[SkillConst_default.SR_WINDMILL] = { effectId: "ef_windmill" };
 	SkillEffect[SkillConst_default.SR_RAISINGDRAGON] = { effectId: "ef_raisingdragon" };
 	SkillEffect[SkillConst_default.SR_ASSIMILATEPOWER] = {};
 	SkillEffect[SkillConst_default.SR_POWERVELOCITY] = { effectId: "ef_powervelocity" };
 	SkillEffect[SkillConst_default.SR_CRESCENTELBOW_AUTOSPELL] = {};
-	SkillEffect[SkillConst_default.SR_GATEOFHELL] = { effectId: "ef_gateofhell" };
+	SkillEffect[SkillConst_default.SR_GATEOFHELL] = {
+		effectId: "ef_gateofhell",
+		effectIdOnCaster: "ef_sr_gateofhell_cast"
+	};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_QUIET] = {};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_CURE] = {};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_ENERGYGAIN] = {};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_CHANGE] = {};
 	SkillEffect[SkillConst_default.SR_GENTLETOUCH_REVITALIZE] = {};
-	SkillEffect[SkillConst_default.SR_HOWLINGOFLION] = { effectId: "ef_howlingoflion" };
+	SkillEffect[SkillConst_default.SR_HOWLINGOFLION] = {
+		effectId: ["ef_howlingoflion", "ef_sr_howlingoflion"],
+		effectIdOnCaster: "ef_sr_howlingoflion_cast",
+		hitEffectId: "ef_sr_howlingoflion_hit"
+	};
 	SkillEffect[SkillConst_default.SR_RIDEINLIGHTNING] = { effectId: "ef_rideinlightning" };
 	SkillEffect[SkillConst_default.WA_SWING_DANCE] = { effectId: "ef_swing_dance" };
 	SkillEffect[SkillConst_default.WA_SYMPHONY_OF_LOVER] = { effectId: "ef_symphony_of_lovers" };
@@ -214370,12 +214593,18 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.MI_RUSH_WINDMILL] = { effectId: "ef_rush_windmill" };
 	SkillEffect[SkillConst_default.MI_ECHOSONG] = { effectId: "ef_echo_song" };
 	SkillEffect[SkillConst_default.MI_HARMONIZE] = { effectId: "ef_harmonize" };
-	SkillEffect[SkillConst_default.WM_METALICSOUND] = { effectId: "ef_metalicsound" };
+	SkillEffect[SkillConst_default.WM_METALICSOUND] = {
+		effectId: ["ef_metalicsound", "ef_wm_metalicsound"],
+		hitEffectId: "ef_wm_metalicsound_hit"
+	};
 	SkillEffect[SkillConst_default.WM_REVERBERATION] = { groundEffectId: 856 };
 	SkillEffect[SkillConst_default.WM_REVERBERATION_MELEE] = { effectId: 860 };
-	SkillEffect[SkillConst_default.WM_REVERBERATION_MAGIC] = {};
+	SkillEffect[SkillConst_default.WM_REVERBERATION_MAGIC] = { hitEffectId: "ef_wm_reverberation_magic_hit" };
 	SkillEffect[SkillConst_default.WM_DOMINION_IMPULSE] = { effectId: 863 };
-	SkillEffect[SkillConst_default.WM_SEVERE_RAINSTORM] = { effectId: 857 };
+	SkillEffect[SkillConst_default.WM_SEVERE_RAINSTORM] = {
+		effectId: [857, "ef_wm_severe_rainstorm"],
+		effectIdOnCaster: "ef_wm_severe_rainstorm_cast"
+	};
 	SkillEffect[SkillConst_default.WM_POEMOFNETHERWORLD] = { groundEffectId: 860 };
 	SkillEffect[SkillConst_default.WM_VOICEOFSIREN] = { groundEffectId: 879 };
 	SkillEffect[SkillConst_default.WM_DEADHILLHERE] = { effectId: "ef_valley_of_death" };
@@ -214392,7 +214621,10 @@ var init_SkillEffect = __esmMin((() => {
 		groundEffectId: 866,
 		effectIdOnCaster: 867
 	};
-	SkillEffect[SkillConst_default.WM_SOUND_OF_DESTRUCTION] = { effectId: "ef_sound_of_destruction" };
+	SkillEffect[SkillConst_default.WM_SOUND_OF_DESTRUCTION] = {
+		effectId: "ef_sound_of_destruction",
+		effectIdOnCaster: "ef_wm_sound_of_destruction_cast"
+	};
 	SkillEffect[SkillConst_default.WM_SATURDAY_NIGHT_FEVER] = {
 		groundEffectId: 870,
 		effectIdOnCaster: 871
@@ -214411,16 +214643,28 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.WM_UNLIMITED_HUMMING_VOICE] = {
 		groundEffectId: 878,
-		effectIdOnCaster: 877
+		effectId: "ef_wm_unlimited_humming_voice"
 	};
-	SkillEffect[SkillConst_default.WM_SEVERE_RAINSTORM_MELEE] = {};
+	SkillEffect[SkillConst_default.WM_SEVERE_RAINSTORM_MELEE] = {
+		effectId: "ef_wm_severe_rainstorm_melee",
+		effectIdOnCaster: "ef_wm_severe_rainstorm_melee_cast"
+	};
 	SkillEffect[SkillConst_default.SO_FIREWALK] = { groundEffectId: 920 };
 	SkillEffect[SkillConst_default.SO_ELECTRICWALK] = { groundEffectId: 926 };
 	SkillEffect[SkillConst_default.SO_SPELLFIST] = {};
-	SkillEffect[SkillConst_default.SO_EARTHGRAVE] = { effectId: 927 };
-	SkillEffect[SkillConst_default.SO_DIAMONDDUST] = { effectId: 928 };
-	SkillEffect[SkillConst_default.SO_POISON_BUSTER] = { effectId: 923 };
-	SkillEffect[SkillConst_default.SO_PSYCHIC_WAVE] = { effectId: 922 };
+	SkillEffect[SkillConst_default.SO_EARTHGRAVE] = {
+		effectId: "ef_so_earthgrave",
+		hitEffectId: "ef_so_earthgrave_hit"
+	};
+	SkillEffect[SkillConst_default.SO_DIAMONDDUST] = {
+		effectId: [928, "ef_so_diamonddust"],
+		effectIdOnCaster: "ef_so_diamonddust_cast"
+	};
+	SkillEffect[SkillConst_default.SO_POISON_BUSTER] = { effectId: "ef_so_poison_buster" };
+	SkillEffect[SkillConst_default.SO_PSYCHIC_WAVE] = {
+		effectId: [922, "ef_so_psychic_wave"],
+		effectIdOnCaster: "ef_so_psychic_wave_cast"
+	};
 	SkillEffect[SkillConst_default.SO_CLOUD_KILL] = {};
 	SkillEffect[SkillConst_default.SO_STRIKING] = {};
 	SkillEffect[SkillConst_default.SO_WARMER] = { effectId: 929 };
@@ -214434,18 +214678,21 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SO_SUMMON_TERA] = {};
 	SkillEffect[SkillConst_default.SO_EL_ACTION] = {};
 	SkillEffect[SkillConst_default.SO_EL_ANALYSIS] = {};
-	SkillEffect[SkillConst_default.SO_EL_CURE] = {};
+	SkillEffect[SkillConst_default.SO_EL_CURE] = { effectId: "ef_so_el_cure" };
 	SkillEffect[SkillConst_default.SO_FIRE_INSIGNIA] = {};
 	SkillEffect[SkillConst_default.SO_WATER_INSIGNIA] = {};
 	SkillEffect[SkillConst_default.SO_WIND_INSIGNIA] = {};
 	SkillEffect[SkillConst_default.SO_EARTH_INSIGNIA] = {};
-	SkillEffect[SkillConst_default.GN_CART_TORNADO] = {};
-	SkillEffect[SkillConst_default.GN_CARTCANNON] = {};
-	SkillEffect[SkillConst_default.GN_CARTBOOST] = {};
+	SkillEffect[SkillConst_default.GN_CART_TORNADO] = { effectId: "ef_gn_cart_tornado" };
+	SkillEffect[SkillConst_default.GN_CARTCANNON] = {
+		effectId: "ef_gn_cartcannon",
+		effectIdOnCaster: "ef_gn_cartcannon_cast"
+	};
+	SkillEffect[SkillConst_default.GN_CARTBOOST] = { effectId: "ef_gn_cartboost" };
 	SkillEffect[SkillConst_default.GN_THORNS_TRAP] = { effectId: "ef_thorntrap" };
 	SkillEffect[SkillConst_default.GN_BLOOD_SUCKER] = {};
 	SkillEffect[SkillConst_default.GN_SPORE_EXPLOSION] = {};
-	SkillEffect[SkillConst_default.GN_WALLOFTHORN] = { groundEffectId: 912 };
+	SkillEffect[SkillConst_default.GN_WALLOFTHORN] = { effectIdOnCaster: "ef_gn_wallofthorn_cast" };
 	SkillEffect[SkillConst_default.GN_CRAZYWEED] = { effectId: 915 };
 	SkillEffect[SkillConst_default.GN_CRAZYWEED_ATK] = {};
 	SkillEffect[SkillConst_default.GN_DEMONIC_FIRE] = { effectId: 916 };
@@ -214455,9 +214702,12 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GN_FIRE_EXPANSION_ACID] = {};
 	SkillEffect[SkillConst_default.GN_HELLS_PLANT] = { effectId: 919 };
 	SkillEffect[SkillConst_default.GN_HELLS_PLANT_ATK] = {};
-	SkillEffect[SkillConst_default.GN_MANDRAGORA] = {};
+	SkillEffect[SkillConst_default.GN_MANDRAGORA] = {
+		effectId: "ef_gn_mandragora",
+		effectIdOnCaster: "ef_gn_mandragora_cast"
+	};
 	SkillEffect[SkillConst_default.GN_SLINGITEM] = {};
-	SkillEffect[SkillConst_default.GN_CHANGEMATERIAL] = {};
+	SkillEffect[SkillConst_default.GN_CHANGEMATERIAL] = { effectId: "ef_gn_changematerial" };
 	SkillEffect[SkillConst_default.GN_MIX_COOKING] = {};
 	SkillEffect[SkillConst_default.GN_MAKEBOMB] = {};
 	SkillEffect[SkillConst_default.GN_S_PHARMACY] = {};
@@ -214474,24 +214724,51 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.RL_B_TRAP] = {};
 	SkillEffect[SkillConst_default.RL_FLICKER] = {};
 	SkillEffect[SkillConst_default.RL_S_STORM] = { effectId: "ef_s_storm" };
-	SkillEffect[SkillConst_default.RL_E_CHAIN] = {};
+	SkillEffect[SkillConst_default.RL_E_CHAIN] = { effectId: "ef_rl_e_chain" };
 	SkillEffect[SkillConst_default.RL_QD_SHOT] = {};
 	SkillEffect[SkillConst_default.RL_C_MARKER] = { successEffectId: "ef_c_marker1" };
-	SkillEffect[SkillConst_default.RL_FIREDANCE] = {};
-	SkillEffect[SkillConst_default.RL_H_MINE] = {};
-	SkillEffect[SkillConst_default.RL_P_ALTER] = {};
-	SkillEffect[SkillConst_default.RL_FALLEN_ANGEL] = {};
+	SkillEffect[SkillConst_default.RL_FIREDANCE] = { effectId: "ef_rl_firedance" };
+	SkillEffect[SkillConst_default.RL_H_MINE] = { effectId: "ef_rl_h_mine" };
+	SkillEffect[SkillConst_default.RL_P_ALTER] = { effectId: "ef_rl_p_alter" };
+	SkillEffect[SkillConst_default.RL_FALLEN_ANGEL] = { effectId: "ef_rl_fallen_angel" };
 	SkillEffect[SkillConst_default.RL_R_TRIP] = {};
-	SkillEffect[SkillConst_default.RL_D_TAIL] = {};
-	SkillEffect[SkillConst_default.RL_FIRE_RAIN] = {};
-	SkillEffect[SkillConst_default.RL_HEAT_BARREL] = {};
+	SkillEffect[SkillConst_default.RL_D_TAIL] = { effectId: "ef_rl_d_tail" };
+	SkillEffect[SkillConst_default.RL_FIRE_RAIN] = { effectId: "ef_rl_fire_rain" };
+	SkillEffect[SkillConst_default.RL_HEAT_BARREL] = { effectId: "ef_rl_heat_barrel" };
 	SkillEffect[SkillConst_default.RL_AM_BLAST] = {};
-	SkillEffect[SkillConst_default.RL_SLUGSHOT] = {};
+	SkillEffect[SkillConst_default.RL_SLUGSHOT] = { effectId: "ef_rl_slugshot" };
 	SkillEffect[SkillConst_default.RL_HAMMER_OF_GOD] = {};
 	SkillEffect[SkillConst_default.RL_R_TRIP_PLUSATK] = {};
+	SkillEffect[SkillConst_default.NW_INTENSIVE_AIM] = { effectId: "ef_nw_intensive_aim" };
+	SkillEffect[SkillConst_default.NW_GRENADE_FRAGMENT] = { effectId: "ef_nw_grenade_fragment" };
+	SkillEffect[SkillConst_default.NW_THE_VIGILANTE_AT_NIGHT] = { effectId: "ef_nw_the_vigilante_at_night" };
+	SkillEffect[SkillConst_default.NW_ONLY_ONE_BULLET] = {
+		effectId: "ef_nw_only_one_bullet",
+		hitEffectId: "ef_nw_only_one_bullet_hit"
+	};
+	SkillEffect[SkillConst_default.NW_SPIRAL_SHOOTING] = { effectId: "ef_nw_spiral_shooting" };
+	SkillEffect[SkillConst_default.NW_MAGAZINE_FOR_ONE] = { effectId: "ef_nw_magazine_for_one" };
+	SkillEffect[SkillConst_default.NW_WILD_FIRE] = { effectId: "ef_nw_wild_fire" };
+	SkillEffect[SkillConst_default.NW_BASIC_GRENADE] = { effectId: "ef_nw_basic_grenade" };
+	SkillEffect[SkillConst_default.NW_GRENADES_DROPPING] = { effectId: "ef_nw_grenades_dropping" };
+	SkillEffect[SkillConst_default.NW_AUTO_FIRING_LAUNCHER] = { effectId: "ef_nw_auto_firing_launcher" };
+	SkillEffect[SkillConst_default.NW_HIDDEN_CARD] = { effectId: "ef_nw_hidden_card" };
+	SkillEffect[SkillConst_default.NW_MISSION_BOMBARD] = {
+		effectId: "ef_nw_mission_bombard",
+		hitEffectId: "ef_nw_mission_bombard_hit"
+	};
+	SkillEffect[5500] = {
+		effectId: "ef_nw_wild_shot",
+		effectIdOnCaster: "ef_nw_wild_shot_cast",
+		hitEffectId: "ef_nw_wild_shot_hit"
+	};
+	SkillEffect[5501] = {
+		effectId: "ef_nw_midnight_fallen",
+		effectIdOnCaster: "ef_nw_midnight_fallen_cast"
+	};
 	SkillEffect[SkillConst_default.KO_YAMIKUMO] = {};
-	SkillEffect[SkillConst_default.KO_JYUMONJIKIRI] = {};
-	SkillEffect[SkillConst_default.KO_SETSUDAN] = {};
+	SkillEffect[SkillConst_default.KO_JYUMONJIKIRI] = { effectId: "ef_ko_jyumonjikiri" };
+	SkillEffect[SkillConst_default.KO_SETSUDAN] = { effectId: "ef_ko_setsudan" };
 	SkillEffect[SkillConst_default.KO_BAKURETSU] = {};
 	SkillEffect[SkillConst_default.KO_HAPPOKUNAI] = {};
 	SkillEffect[SkillConst_default.KO_MUCHANAGE] = {};
@@ -214509,63 +214786,749 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.KO_ZENKAI] = {};
 	SkillEffect[SkillConst_default.KO_GENWAKU] = {};
 	SkillEffect[SkillConst_default.KO_IZAYOI] = {};
+	SkillEffect[SkillConst_default.SS_TOKEDASU] = { effectId: "ef_ss_tokedasu" };
+	SkillEffect[SkillConst_default.SS_SHIMIRU] = { effectId: "ef_ss_shimiru" };
+	SkillEffect[SkillConst_default.SS_AKUMUKESU] = { effectId: "ef_ss_akumukesu" };
+	SkillEffect[SkillConst_default.SS_KAGEGARI] = { effectId: "ef_ss_kagegari" };
+	SkillEffect[SkillConst_default.SS_KAGENOMAI] = { effectId: "ef_ss_kagenomai" };
+	SkillEffect[SkillConst_default.SS_KAGEGISSEN] = {
+		effectId: "ef_ss_kagegissen",
+		hitEffectId: "ef_ss_kagegissen_hit"
+	};
+	SkillEffect[SkillConst_default.SS_FUUMASHOUAKU] = { effectId: "ef_ss_fuumashouaku" };
+	SkillEffect[SkillConst_default.SS_FUUMAKOUCHIKU] = { effectId: "ef_ss_fuumakouchiku" };
+	SkillEffect[SkillConst_default.SS_KUNAIWAIKYOKU] = { effectId: "ef_ss_kunaiwaikyoku" };
+	SkillEffect[SkillConst_default.SS_KUNAIKAITEN] = { effectId: "ef_ss_kunaikaiten" };
+	SkillEffect[SkillConst_default.SS_KUNAIKUSSETSU] = { effectId: "ef_ss_kunaikussetsu" };
+	SkillEffect[SkillConst_default.SS_SEKIENHOU] = { effectId: "ef_ss_sekienhou" };
+	SkillEffect[SkillConst_default.SS_REIKETSUHOU] = { effectId: "ef_ss_reiketsuhou" };
+	SkillEffect[SkillConst_default.SS_RAIDENPOU] = {
+		effectId: "ef_ss_raidenpou",
+		effectIdOnCaster: "ef_ss_raidenpou_cast",
+		hitEffectId: "ef_ss_raidenpou_hit"
+	};
+	SkillEffect[SkillConst_default.SS_KINRYUUHOU] = {
+		effectId: "ef_ss_kinryuuhou",
+		hitEffectId: "ef_ss_kinryuuhou_hit"
+	};
+	SkillEffect[SkillConst_default.SS_ANTENPOU] = { effectId: "ef_ss_antenpou" };
+	SkillEffect[SkillConst_default.SS_KAGEAKUMU] = { effectId: "ef_ss_kageakumu" };
+	SkillEffect[SkillConst_default.SS_HITOUAKUMU] = { effectId: "ef_ss_hitouakumu" };
+	SkillEffect[SkillConst_default.SS_ANKOKURYUUAKUMU] = { effectId: "ef_ss_ankokuryuuakumu" };
+	SkillEffect[5499] = { effectId: "ef_ss_four_charm" };
 	SkillEffect[SkillConst_default.KG_KAGEHUMI] = {};
 	SkillEffect[SkillConst_default.KG_KYOMU] = {};
 	SkillEffect[SkillConst_default.KG_KAGEMUSYA] = {};
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_PROTECTION] = { effectId: "ef_soa_talisman_of_protection" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_WARRIOR] = { effectId: "ef_soa_talisman_of_warrior" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_MAGICIAN] = { effectId: "ef_soa_talisman_of_magician" };
+	SkillEffect[SkillConst_default.SOA_SOUL_GATHERING] = { effectId: "ef_soa_soul_gathering" };
+	SkillEffect[SkillConst_default.SOA_TOTEM_OF_TUTELARY] = { effectId: "ef_soa_totem_of_tutelary" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_FIVE_ELEMENTS] = { effectId: "ef_soa_talisman_of_five_elements" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_SOUL_STEALING] = { effectId: "ef_soa_talisman_of_soul_stealing" };
+	SkillEffect[SkillConst_default.SOA_EXORCISM_OF_MALICIOUS_SOUL] = { effectId: "ef_soa_exorcism_of_malicious_soul" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_BLUE_DRAGON] = { effectId: "ef_soa_talisman_of_blue_dragon" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_WHITE_TIGER] = { effectId: "ef_soa_talisman_of_white_tiger" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_RED_PHOENIX] = { effectId: "ef_soa_talisman_of_red_phoenix" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_BLACK_TORTOISE] = { effectId: "ef_soa_talisman_of_black_tortoise" };
+	SkillEffect[SkillConst_default.SOA_TALISMAN_OF_FOUR_BEARING_GOD] = { effectId: "ef_soa_talisman_of_four_bearing_god" };
+	SkillEffect[SkillConst_default.SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS] = { effectId: "ef_soa_circle_of_directions_and_elementals" };
+	SkillEffect[SkillConst_default.SOA_SOUL_OF_HEAVEN_AND_EARTH] = { effectId: "ef_soa_soul_of_heaven_and_earth" };
 	SkillEffect[SkillConst_default.OB_ZANGETSU] = {};
 	SkillEffect[SkillConst_default.OB_OBOROGENSOU] = {};
 	SkillEffect[SkillConst_default.OB_OBOROGENSOU_TRANSITION_ATK] = {};
 	SkillEffect[SkillConst_default.OB_AKAITSUKI] = {};
+	SkillEffect[SkillConst_default.SKE_RISING_SUN] = { effectId: "ef_ske_rising_sun" };
+	SkillEffect[SkillConst_default.SKE_NOON_BLAST] = { effectId: "ef_ske_noon_blast" };
+	SkillEffect[SkillConst_default.SKE_SUNSET_BLAST] = { effectId: "ef_ske_sunset_blast" };
+	SkillEffect[SkillConst_default.SKE_MIDNIGHT_KICK] = { effectId: "ef_ske_midnight_kick" };
+	SkillEffect[SkillConst_default.SKE_DAWN_BREAK] = { effectId: "ef_ske_dawn_break" };
+	SkillEffect[SkillConst_default.SKE_TWINKLING_GALAXY] = { effectId: "ef_ske_twinkling_galaxy" };
+	SkillEffect[SkillConst_default.SKE_STAR_BURST] = { effectId: "ef_ske_star_burst" };
+	SkillEffect[SkillConst_default.SKE_STAR_CANNON] = { effectId: "ef_ske_star_cannon" };
+	SkillEffect[SkillConst_default.SKE_ALL_IN_THE_SKY] = { effectId: "ef_ske_all_in_the_sky" };
+	SkillEffect[SkillConst_default.SKE_ENCHANTING_SKY] = { effectId: "ef_ske_enchanting_sky" };
+	SkillEffect[5502] = {
+		effectId: "ef_ske_sky_sun",
+		hitEffectId: "ef_ske_sky_sun_hit"
+	};
+	SkillEffect[5503] = {
+		effectId: "ef_ske_sky_moon",
+		effectIdOnCaster: "ef_ske_sky_moon_cast",
+		hitEffectId: "ef_ske_sky_moon_hit"
+	};
+	SkillEffect[5504] = {
+		effectId: "ef_ske_star_light_kick",
+		hitEffectId: "ef_ske_star_light_kick_hit"
+	};
 	SkillEffect[SkillConst_default.ECL_SNOWFLIP] = {};
 	SkillEffect[SkillConst_default.ECL_PEONYMAMY] = {};
 	SkillEffect[SkillConst_default.ECL_SADAGUI] = {};
 	SkillEffect[SkillConst_default.ECL_SEQUOIADUST] = {};
 	SkillEffect[SkillConst_default.ECLAGE_RECALL] = {};
+	SkillEffect[SkillConst_default.SHC_SHADOW_EXCEED] = { effectIdOnCaster: "ef_shc_shadow_exceed_cast" };
+	SkillEffect[SkillConst_default.SHC_DANCING_KNIFE] = { effectIdOnCaster: "ef_shc_dancing_knife_cast" };
+	SkillEffect[SkillConst_default.SHC_SAVAGE_IMPACT] = {
+		effectId: "ef_shc_savage_impact",
+		hitEffectId: "ef_shc_savage_impact_hit"
+	};
+	SkillEffect[SkillConst_default.SHC_ETERNAL_SLASH] = {
+		effectId: "ef_shc_eternal_slash",
+		hitEffectId: "ef_shc_eternal_slash_hit"
+	};
+	SkillEffect[SkillConst_default.SHC_POTENT_VENOM] = { effectId: "ef_shc_potent_venom" };
+	SkillEffect[SkillConst_default.SHC_SHADOW_STAB] = { effectId: "ef_shc_shadow_stab" };
+	SkillEffect[SkillConst_default.SHC_IMPACT_CRATER] = {
+		effectId: "ef_shc_impact_crater",
+		hitEffectId: "ef_shc_impact_crater_hit"
+	};
+	SkillEffect[SkillConst_default.SHC_ENCHANTING_SHADOW] = { effectId: "ef_shc_enchanting_shadow" };
+	SkillEffect[SkillConst_default.SHC_FATAL_SHADOW_CROW] = {
+		effectId: "ef_shc_fatal_shadow_crow",
+		hitEffectId: "ef_shc_fatal_shadow_crow_hit"
+	};
+	SkillEffect[6511] = { effectId: "ef_shc_cross_slash" };
 	SkillEffect[SkillConst_default.GC_DARKCROW] = { effectId: 1040 };
-	SkillEffect[SkillConst_default.RA_UNLIMIT] = {};
+	SkillEffect[SkillConst_default.RA_UNLIMIT] = { effectId: "ef_ra_unlimit" };
 	SkillEffect[SkillConst_default.GN_ILLUSIONDOPING] = { effectId: 1049 };
+	SkillEffect[5307] = { effectId: "ef_bo_acidified_zone_water_atk" };
+	SkillEffect[5308] = { effectId: "ef_bo_acidified_zone_ground_atk" };
+	SkillEffect[5309] = { effectId: "ef_bo_acidified_zone_wind_atk" };
+	SkillEffect[5310] = { effectId: "ef_bo_acidified_zone_fire_atk" };
+	SkillEffect[SkillConst_default.BO_ADVANCE_PROTECTION] = { effectId: "ef_bo_advance_protection" };
+	SkillEffect[SkillConst_default.BO_ACIDIFIED_ZONE_WATER] = {
+		effectIdOnCaster: "ef_bo_acidified_zone_water_cast",
+		hitEffectId: "ef_bo_acidified_zone_water_hit"
+	};
+	SkillEffect[SkillConst_default.BO_ACIDIFIED_ZONE_GROUND] = {
+		effectIdOnCaster: "ef_bo_acidified_zone_ground_cast",
+		hitEffectId: "ef_bo_acidified_zone_ground_hit"
+	};
+	SkillEffect[SkillConst_default.BO_ACIDIFIED_ZONE_WIND] = {
+		effectIdOnCaster: "ef_bo_acidified_zone_wind_cast",
+		hitEffectId: "ef_bo_acidified_zone_wind_hit"
+	};
+	SkillEffect[SkillConst_default.BO_ACIDIFIED_ZONE_FIRE] = {
+		effectIdOnCaster: "ef_bo_acidified_zone_fire_cast",
+		hitEffectId: "ef_bo_acidified_zone_fire_hit"
+	};
+	SkillEffect[SkillConst_default.BO_WOODENWARRIOR] = {
+		effectIdOnCaster: "ef_bo_woodenwarrior_cast",
+		hitEffectId: "ef_bo_woodenwarrior_hit"
+	};
+	SkillEffect[SkillConst_default.BO_WOODEN_FAIRY] = { effectIdOnCaster: "ef_bo_wooden_fairy_cast" };
+	SkillEffect[SkillConst_default.BO_RESEARCHREPORT] = {
+		effectId: "ef_bo_researchreport",
+		effectIdOnCaster: "ef_bo_researchreport_cast"
+	};
+	SkillEffect[SkillConst_default.BO_HELLTREE] = { effectIdOnCaster: "ef_bo_helltree_cast" };
+	SkillEffect[5385] = { hitEffectId: "ef_bo_wooden_attack_hit" };
+	SkillEffect[SkillConst_default.BO_EXPLOSIVE_POWDER] = { effectId: "ef_bo_explosive_powder" };
+	SkillEffect[SkillConst_default.BO_MAYHEMIC_THORNS] = { effectId: "ef_bo_mayhemic_thorns" };
+	SkillEffect[6509] = {
+		effectId: "ef_bo_mystery_powder",
+		hitEffectId: "ef_bo_mystery_powder_hit"
+	};
+	SkillEffect[6510] = {
+		effectId: "ef_bo_dust_explosion",
+		hitEffectId: "ef_bo_dust_explosion_hit"
+	};
 	SkillEffect[SkillConst_default.RK_DRAGONBREATH_WATER] = { hitEffectId: "ef_dragonbreath_water" };
+	SkillEffect[SkillConst_default.WH_WIND_SIGN] = { effectId: "ef_wh_wind_sign" };
+	SkillEffect[SkillConst_default.WH_HAWKRUSH] = { effectId: "ef_wh_hawkrush" };
+	SkillEffect[SkillConst_default.WH_CALAMITYGALE] = { effectIdOnCaster: "ef_wh_calamitygale_cast" };
+	SkillEffect[SkillConst_default.WH_HAWKBOOMERANG] = { effectId: "ef_wh_hawkboomerang" };
+	SkillEffect[SkillConst_default.WH_GALESTORM] = {
+		effectId: "ef_wh_galestorm",
+		effectIdOnCaster: "ef_wh_galestorm_cast",
+		hitEffectId: "ef_wh_galestorm_hit"
+	};
+	SkillEffect[SkillConst_default.WH_DEEPBLINDTRAP] = {
+		effectId: "ef_wh_deepblindtrap",
+		effectIdOnCaster: "ef_wh_deepblindtrap_cast",
+		hitEffectId: "ef_wh_deepblindtrap_hit"
+	};
+	SkillEffect[SkillConst_default.WH_SOLIDTRAP] = {
+		effectId: "ef_wh_solidtrap",
+		effectIdOnCaster: "ef_wh_solidtrap_cast",
+		hitEffectId: "ef_wh_solidtrap_hit"
+	};
+	SkillEffect[SkillConst_default.WH_SWIFTTRAP] = {
+		effectId: "ef_wh_swifttrap",
+		effectIdOnCaster: "ef_wh_swifttrap_cast",
+		hitEffectId: "ef_wh_swifttrap_hit"
+	};
+	SkillEffect[SkillConst_default.WH_CRESCIVE_BOLT] = {
+		effectId: "ef_wh_crescive_bolt",
+		effectIdOnCaster: "ef_wh_crescive_bolt_cast",
+		hitEffectId: "ef_wh_crescive_bolt_hit"
+	};
+	SkillEffect[SkillConst_default.WH_FLAMETRAP] = {
+		effectId: "ef_wh_flametrap",
+		effectIdOnCaster: "ef_wh_flametrap_cast",
+		hitEffectId: "ef_wh_flametrap_hit"
+	};
+	SkillEffect[6520] = {
+		effectId: "ef_wh_wild_walk",
+		effectIdOnCaster: "ef_wh_wild_walk_cast",
+		hitEffectId: "ef_wh_wild_walk_hit"
+	};
 	SkillEffect[SkillConst_default.RK_LUXANIMA] = { effectId: 1044 };
+	SkillEffect[SkillConst_default.DK_SERVANTWEAPON] = {
+		effectId: "ef_dk_servantweapon",
+		effectIdOnCaster: "ef_dk_servantweapon_cast",
+		hitEffectId: "ef_dk_servantweapon_hit"
+	};
+	SkillEffect[SkillConst_default.DK_SERVANTWEAPON_ATK] = { effectId: "ef_dk_servantweapon_atk" };
+	SkillEffect[SkillConst_default.DK_SERVANT_W_SIGN] = { effectId: "ef_dk_servant_w_sign" };
+	SkillEffect[SkillConst_default.DK_SERVANT_W_PHANTOM] = { effectId: "ef_dk_servant_w_phantom" };
+	SkillEffect[SkillConst_default.DK_SERVANT_W_DEMOL] = { hitEffectId: "ef_dk_servant_w_demol_hit" };
+	SkillEffect[SkillConst_default.DK_CHARGINGPIERCE] = {
+		effectIdOnCaster: "ef_dk_chargingpierce_cast",
+		hitEffectId: "ef_dk_chargingpierce_hit"
+	};
+	SkillEffect[SkillConst_default.DK_HACKANDSLASHER] = {
+		effectId: "ef_dk_hackandslasher",
+		hitEffectId: "ef_dk_hackandslasher_hit"
+	};
+	SkillEffect[SkillConst_default.DK_HACKANDSLASHER_ATK] = { effectId: "ef_dk_hackandslasher_atk" };
+	SkillEffect[SkillConst_default.DK_DRAGONIC_AURA] = { effectIdOnCaster: "ef_dk_dragonic_aura" };
+	SkillEffect[SkillConst_default.DK_MADNESS_CRUSHER] = { effectId: "ef_dk_madness_crusher" };
+	SkillEffect[SkillConst_default.DK_VIGOR] = {
+		effectId: "ef_dk_vigor",
+		effectIdOnCaster: "ef_dk_vigor_cast"
+	};
+	SkillEffect[SkillConst_default.DK_STORMSLASH] = { hitEffectId: "ef_dk_stormslash_hit" };
+	SkillEffect[SkillConst_default.DK_DRAGONIC_BREATH] = {
+		effectId: "ef_dk_dragonic_breath",
+		hitEffectId: "ef_dk_dragonic_breath_hit"
+	};
+	SkillEffect[6502] = {
+		effectId: "ef_dk_dragonic_pierce",
+		effectIdOnCaster: "ef_dk_dragonic_pierce_cast",
+		hitEffectId: "ef_dk_dragonic_pierce_hit"
+	};
 	SkillEffect[SkillConst_default.NC_MAGMA_ERUPTION] = { effectId: 1050 };
+	SkillEffect[SkillConst_default.MT_AXE_STOMP] = {
+		effectId: "ef_mt_axe_stomp",
+		hitEffectId: "ef_mt_axe_stomp_hit"
+	};
+	SkillEffect[SkillConst_default.MT_RUSH_QUAKE] = {
+		effectId: "ef_mt_rush_quake",
+		hitEffectId: "ef_mt_rush_quake_hit"
+	};
+	SkillEffect[SkillConst_default.MT_A_MACHINE] = {
+		effectId: "ef_mt_a_machine",
+		effectIdOnCaster: "ef_mt_a_machine_cast",
+		hitEffectId: "ef_mt_a_machine_hit"
+	};
+	SkillEffect[SkillConst_default.MT_D_MACHINE] = {
+		effectId: "ef_mt_d_machine",
+		effectIdOnCaster: "ef_mt_d_machine_cast"
+	};
+	SkillEffect[SkillConst_default.MT_SUMMON_ABR_BATTLE_WARIOR] = { effectId: "ef_mt_summon_abr_battle_warior" };
+	SkillEffect[SkillConst_default.MT_SUMMON_ABR_DUAL_CANNON] = { effectId: "ef_mt_summon_abr_dual_cannon" };
+	SkillEffect[SkillConst_default.MT_SUMMON_ABR_INFINITY] = {
+		effectId: "ef_mt_summon_abr_infinity",
+		effectIdOnCaster: "ef_mt_summon_abr_infinity_cast",
+		hitEffectId: "ef_mt_summon_abr_infinity_hit"
+	};
+	SkillEffect[SkillConst_default.MT_SPARK_BLASTER] = { effectId: "ef_mt_spark_blaster" };
+	SkillEffect[SkillConst_default.MT_TRIPLE_LASER] = { effectId: "ef_mt_triple_laser" };
+	SkillEffect[SkillConst_default.MT_MIGHTY_SMASH] = { effectId: "ef_mt_mighty_smash" };
+	SkillEffect[6506] = { effectId: "ef_mt_rush_strike" };
+	SkillEffect[6507] = {
+		effectId: "ef_mt_powerful_swing",
+		hitEffectId: "ef_mt_powerful_swing_hit"
+	};
+	SkillEffect[6508] = {
+		effectId: "ef_mt_energy_cannonade",
+		effectIdOnCaster: "ef_mt_energy_cannonade_cast",
+		hitEffectId: "ef_mt_energy_cannonade_hit"
+	};
 	SkillEffect[SkillConst_default.WM_FRIGG_SONG] = { effectId: "ef_frigg_song" };
+	SkillEffect[SkillConst_default.TR_MYSTIC_SYMPHONY] = {
+		effectId: "ef_tr_mystic_symphony",
+		effectIdOnCaster: "ef_tr_mystic_symphony_cast"
+	};
+	SkillEffect[SkillConst_default.TR_KVASIR_SONATA] = {
+		effectId: "ef_tr_kvasir_sonata",
+		effectIdOnCaster: "ef_tr_kvasir_sonata_cast"
+	};
+	SkillEffect[SkillConst_default.TR_ROSEBLOSSOM] = {
+		effectIdOnCaster: "ef_tr_roseblossom_cast",
+		hitEffectId: "ef_tr_roseblossom_hit"
+	};
+	SkillEffect[SkillConst_default.TR_ROSEBLOSSOM_ATK] = { effectId: "ef_tr_roseblossom_atk" };
+	SkillEffect[SkillConst_default.TR_RHYTHMSHOOTING] = {
+		effectIdOnCaster: "ef_tr_rhythmshooting_cast",
+		hitEffectId: "ef_tr_rhythmshooting_hit"
+	};
+	SkillEffect[SkillConst_default.TR_METALIC_FURY] = { effectId: "ef_tr_metalic_fury" };
+	SkillEffect[SkillConst_default.TR_SOUNDBLEND] = {
+		effectId: "ef_tr_soundblend",
+		effectIdOnCaster: "ef_tr_soundblend_cast"
+	};
+	SkillEffect[SkillConst_default.TR_GEF_NOCTURN] = {
+		effectId: "ef_tr_gef_nocturn",
+		effectIdOnCaster: "ef_tr_gef_nocturn_cast"
+	};
+	SkillEffect[SkillConst_default.TR_ROKI_CAPRICCIO] = {
+		effectId: "ef_tr_roki_capriccio",
+		effectIdOnCaster: "ef_tr_roki_capriccio_cast"
+	};
+	SkillEffect[SkillConst_default.TR_AIN_RHAPSODY] = {
+		effectId: "ef_tr_ain_rhapsody",
+		effectIdOnCaster: "ef_tr_ain_rhapsody_cast"
+	};
+	SkillEffect[SkillConst_default.TR_MUSICAL_INTERLUDE] = {
+		effectId: "ef_tr_musical_interlude",
+		effectIdOnCaster: "ef_tr_musical_interlude_cast"
+	};
+	SkillEffect[SkillConst_default.TR_JAWAII_SERENADE] = {
+		effectId: "ef_tr_jawaii_serenade",
+		effectIdOnCaster: "ef_tr_jawaii_serenade_cast"
+	};
+	SkillEffect[SkillConst_default.TR_NIPELHEIM_REQUIEM] = {
+		effectId: "ef_tr_nipelheim_requiem",
+		effectIdOnCaster: "ef_tr_nipelheim_requiem_cast"
+	};
+	SkillEffect[SkillConst_default.TR_PRON_MARCH] = {
+		effectId: "ef_tr_pron_march",
+		effectIdOnCaster: "ef_tr_pron_march_cast"
+	};
+	SkillEffect[6521] = {
+		effectId: "ef_tr_rhythmical_wave",
+		effectIdOnCaster: "ef_tr_rhythmical_wave_cast",
+		hitEffectId: "ef_tr_rhythmical_wave_hit"
+	};
 	SkillEffect[SkillConst_default.SO_ELEMENTAL_SHIELD] = { effectId: 1046 };
+	SkillEffect[SkillConst_default.EM_SPELL_ENCHANTING] = { effectId: "ef_em_spell_enchanting" };
+	SkillEffect[SkillConst_default.EM_ACTIVITY_BURN] = {
+		effectId: "ef_em_activity_burn",
+		effectIdOnCaster: "ef_em_activity_burn_cast"
+	};
+	SkillEffect[SkillConst_default.EM_INCREASING_ACTIVITY] = {
+		effectId: "ef_em_increasing_activity",
+		effectIdOnCaster: "ef_em_increasing_activity_cast"
+	};
+	SkillEffect[SkillConst_default.EM_DIAMOND_STORM] = {
+		effectId: "ef_em_diamond_storm",
+		effectIdOnCaster: "ef_em_diamond_storm_cast",
+		hitEffectId: "ef_em_diamond_storm_hit"
+	};
+	SkillEffect[SkillConst_default.EM_LIGHTNING_LAND] = {
+		effectId: "ef_em_lightning_land",
+		effectIdOnCaster: "ef_em_lightning_land_cast",
+		hitEffectId: "ef_em_lightning_land_hit"
+	};
+	SkillEffect[SkillConst_default.EM_VENOM_SWAMP] = {
+		effectId: "ef_em_venom_swamp",
+		effectIdOnCaster: "ef_em_venom_swamp_cast",
+		hitEffectId: "ef_em_venom_swamp_hit"
+	};
+	SkillEffect[SkillConst_default.EM_CONFLAGRATION] = {
+		effectId: "ef_em_conflagration",
+		effectIdOnCaster: "ef_em_conflagration_cast",
+		hitEffectId: "ef_em_conflagration_hit"
+	};
+	SkillEffect[SkillConst_default.EM_TERRA_DRIVE] = {
+		effectId: "ef_em_terra_drive",
+		effectIdOnCaster: "ef_em_terra_drive_cast",
+		hitEffectId: "ef_em_terra_drive_hit"
+	};
+	SkillEffect[SkillConst_default.EM_SUMMON_ELEMENTAL_ARDOR] = {
+		effectId: "ef_em_summon_elemental_ardor",
+		effectIdOnCaster: "ef_em_summon_elemental_ardor_cast",
+		hitEffectId: "ef_em_summon_elemental_ardor_hit"
+	};
+	SkillEffect[SkillConst_default.EM_SUMMON_ELEMENTAL_DILUVIO] = {
+		effectIdOnCaster: "ef_em_summon_elemental_diluvio_cast",
+		hitEffectId: "ef_em_summon_elemental_diluvio_hit"
+	};
+	SkillEffect[SkillConst_default.EM_SUMMON_ELEMENTAL_PROCELLA] = {
+		effectId: "ef_em_summon_elemental_procella",
+		effectIdOnCaster: "ef_em_summon_elemental_procella_cast",
+		hitEffectId: "ef_em_summon_elemental_procella_hit"
+	};
+	SkillEffect[SkillConst_default.EM_SUMMON_ELEMENTAL_TERREMOTUS] = {
+		effectId: "ef_em_summon_elemental_terremotus",
+		effectIdOnCaster: "ef_em_summon_elemental_terremotus_cast",
+		hitEffectId: "ef_em_summon_elemental_terremotus_hit"
+	};
+	SkillEffect[SkillConst_default.EM_SUMMON_ELEMENTAL_SERPENS] = {
+		effectId: "ef_em_summon_elemental_serpens",
+		effectIdOnCaster: "ef_em_summon_elemental_serpens_cast",
+		hitEffectId: "ef_em_summon_elemental_serpens_hit"
+	};
+	SkillEffect[SkillConst_default.EM_ELEMENTAL_BUSTER] = { effectIdOnCaster: "ef_em_elemental_buster_cast" };
+	SkillEffect[SkillConst_default.EM_ELEMENTAL_BUSTER_FIRE] = {
+		effectId: "ef_em_elemental_buster_fire",
+		hitEffectId: "ef_em_elemental_buster_fire_hit"
+	};
+	SkillEffect[SkillConst_default.EM_ELEMENTAL_BUSTER_WATER] = {
+		effectId: "ef_em_elemental_buster_water",
+		hitEffectId: "ef_em_elemental_buster_water_hit"
+	};
+	SkillEffect[SkillConst_default.EM_ELEMENTAL_BUSTER_WIND] = {
+		effectId: "ef_em_elemental_buster_wind",
+		hitEffectId: "ef_em_elemental_buster_wind_hit"
+	};
+	SkillEffect[SkillConst_default.EM_ELEMENTAL_BUSTER_GROUND] = {
+		effectId: "ef_em_elemental_buster_ground",
+		hitEffectId: "ef_em_elemental_buster_ground_hit"
+	};
+	SkillEffect[SkillConst_default.EM_ELEMENTAL_BUSTER_POISON] = {
+		effectId: "ef_em_elemental_buster_poison",
+		hitEffectId: "ef_em_elemental_buster_poison_hit"
+	};
+	SkillEffect[6517] = {
+		effectId: "ef_em_psychic_stream",
+		effectIdOnCaster: "ef_em_psychic_stream_cast",
+		hitEffectId: "ef_em_psychic_stream_hit"
+	};
+	SkillEffect[SkillConst_default.EM_EL_FLAMETECHNIC] = { effectId: "ef_em_el_flametechnic" };
+	SkillEffect[SkillConst_default.EM_EL_FLAMEARMOR] = { effectId: "ef_em_el_flamearmor" };
+	SkillEffect[SkillConst_default.EM_EL_COLD_FORCE] = { effectId: "ef_em_el_cold_force" };
+	SkillEffect[SkillConst_default.EM_EL_GRACE_BREEZE] = { effectId: "ef_em_el_grace_breeze" };
+	SkillEffect[SkillConst_default.EM_EL_EARTH_CARE] = { effectId: "ef_em_el_earth_care" };
+	SkillEffect[SkillConst_default.EM_EL_DEEP_POISONING] = { effectId: "ef_em_el_deep_poisoning" };
+	SkillEffect[SkillConst_default.EM_EL_DEADLY_POISON] = { effectId: "ef_em_el_deadly_poison" };
 	SkillEffect[SkillConst_default.SR_FLASHCOMBO] = { effectId: 1043 };
+	SkillEffect[SkillConst_default.IQ_POWERFUL_FAITH] = { effectId: "ef_iq_powerful_faith" };
+	SkillEffect[SkillConst_default.IQ_FIRM_FAITH] = { effectId: "ef_iq_firm_faith" };
+	SkillEffect[SkillConst_default.IQ_OLEUM_SANCTUM] = {
+		effectId: "ef_iq_oleum_sanctum",
+		hitEffectId: "ef_iq_oleum_sanctum_hit"
+	};
+	SkillEffect[SkillConst_default.IQ_SINCERE_FAITH] = { effectId: "ef_iq_sincere_faith" };
+	SkillEffect[SkillConst_default.IQ_MASSIVE_F_BLASTER] = {
+		effectId: "ef_iq_massive_f_blaster",
+		hitEffectId: "ef_iq_massive_f_blaster_hit"
+	};
+	SkillEffect[SkillConst_default.IQ_EXPOSION_BLASTER] = {
+		effectId: "ef_iq_exposion_blaster",
+		hitEffectId: "ef_iq_exposion_blaster_hit"
+	};
+	SkillEffect[SkillConst_default.IQ_FIRST_BRAND] = {
+		effectId: "ef_iq_first_brand",
+		hitEffectId: "ef_iq_first_brand_hit"
+	};
+	SkillEffect[SkillConst_default.IQ_FIRST_FAITH_POWER] = {
+		effectId: "ef_iq_first_faith_power",
+		effectIdOnCaster: "ef_iq_first_faith_power_cast"
+	};
+	SkillEffect[SkillConst_default.IQ_JUDGE] = {
+		effectId: "ef_iq_judge",
+		effectIdOnCaster: "ef_iq_judge_cast"
+	};
+	SkillEffect[SkillConst_default.IQ_SECOND_FLAME] = { effectId: "ef_iq_second_flame" };
+	SkillEffect[SkillConst_default.IQ_SECOND_FAITH] = { effectId: "ef_iq_second_faith" };
+	SkillEffect[SkillConst_default.IQ_SECOND_JUDGEMENT] = { effectId: "ef_iq_second_judgement" };
+	SkillEffect[SkillConst_default.IQ_THIRD_PUNISH] = { effectId: "ef_iq_third_punish" };
+	SkillEffect[SkillConst_default.IQ_THIRD_FLAME_BOMB] = { effectId: "ef_iq_third_flame_bomb" };
+	SkillEffect[SkillConst_default.IQ_THIRD_CONSECRATION] = { effectId: "ef_iq_third_consecration" };
+	SkillEffect[SkillConst_default.IQ_THIRD_EXOR_FLAME] = {
+		effectId: "ef_iq_third_exor_flame",
+		effectIdOnCaster: "ef_iq_third_exor_flame_cast"
+	};
+	SkillEffect[6519] = {
+		effectId: "ef_iq_blazing_flame_blast",
+		effectIdOnCaster: "ef_iq_blazing_flame_blast_cast",
+		hitEffectId: "ef_iq_blazing_flame_blast_hit"
+	};
 	SkillEffect[SkillConst_default.SC_ESCAPE] = {};
+	SkillEffect[SkillConst_default.ABC_ABYSS_DAGGER] = {
+		effectId: "ef_abc_abyss_dagger",
+		hitEffectId: "ef_abc_abyss_dagger_hit"
+	};
+	SkillEffect[SkillConst_default.ABC_UNLUCKY_RUSH] = {
+		effectId: "ef_abc_unlucky_rush",
+		effectIdOnCaster: "ef_abc_unlucky_rush_cast",
+		hitEffectId: "ef_abc_unlucky_rush_hit"
+	};
+	SkillEffect[SkillConst_default.ABC_CHAIN_REACTION_SHOT] = {
+		effectId: "ef_abc_chain_reaction_shot",
+		effectIdOnCaster: "ef_abc_chain_reaction_shot_cast",
+		hitEffectId: "ef_abc_chain_reaction_shot_hit"
+	};
+	SkillEffect[SkillConst_default.ABC_FROM_THE_ABYSS] = { hitEffectId: "ef_abc_from_the_abyss_hit" };
+	SkillEffect[SkillConst_default.ABC_ABYSS_SLAYER] = {
+		effectId: "ef_abc_abyss_slayer",
+		effectIdOnCaster: "ef_abc_abyss_slayer_cast"
+	};
+	SkillEffect[SkillConst_default.ABC_ABYSS_STRIKE] = {
+		effectId: "ef_abc_abyss_strike",
+		effectIdOnCaster: "ef_abc_abyss_strike_cast",
+		hitEffectId: "ef_abc_abyss_strike_hit"
+	};
+	SkillEffect[SkillConst_default.ABC_DEFT_STAB] = { effectId: "ef_abc_deft_stab" };
+	SkillEffect[SkillConst_default.ABC_ABYSS_SQUARE] = {
+		effectId: "ef_abc_abyss_square",
+		hitEffectId: "ef_abc_abyss_square_hit"
+	};
+	SkillEffect[SkillConst_default.ABC_FRENZY_SHOT] = {
+		effectId: "ef_abc_frenzy_shot",
+		hitEffectId: "ef_abc_frenzy_shot_hit"
+	};
+	SkillEffect[SkillConst_default.ABC_CHAIN_REACTION_SHOT_ATK] = { effectId: "ef_abc_chain_reaction_shot_atk" };
+	SkillEffect[SkillConst_default.ABC_FROM_THE_ABYSS_ATK] = { effectId: "ef_abc_from_the_abyss_atk" };
+	SkillEffect[6513] = { effectId: "ef_abc_chasing_break" };
+	SkillEffect[6514] = {
+		effectIdOnCaster: "ef_abc_chasing_shot_cast",
+		hitEffectId: "ef_abc_chasing_shot_hit"
+	};
+	SkillEffect[6515] = {
+		effectId: "ef_abc_abyss_flame",
+		effectIdOnCaster: "ef_abc_abyss_flame_cast",
+		hitEffectId: "ef_abc_abyss_flame_hit"
+	};
 	SkillEffect[SkillConst_default.AB_OFFERTORIUM] = { effectId: 1047 };
+	SkillEffect[SkillConst_default.CD_REPARATIO] = {
+		effectId: "ef_cd_reparatio",
+		effectIdOnCaster: "ef_cd_reparatio_cast"
+	};
+	SkillEffect[SkillConst_default.CD_MEDIALE_VOTUM] = {
+		effectId: "ef_cd_mediale_votum",
+		effectIdOnCaster: "ef_cd_mediale_votum_cast"
+	};
+	SkillEffect[SkillConst_default.CD_ARGUTUS_VITA] = {
+		effectId: "ef_cd_argutus_vita",
+		effectIdOnCaster: "ef_cd_argutus_vita_cast"
+	};
+	SkillEffect[SkillConst_default.CD_ARGUTUS_TELUM] = {
+		effectId: "ef_cd_argutus_telum",
+		effectIdOnCaster: "ef_cd_argutus_telum_cast"
+	};
+	SkillEffect[SkillConst_default.CD_ARBITRIUM] = {
+		effectId: "ef_cd_arbitrium",
+		effectIdOnCaster: "ef_cd_arbitrium_cast",
+		hitEffectId: "ef_cd_arbitrium_hit"
+	};
+	SkillEffect[SkillConst_default.CD_ARBITRIUM_ATK] = { effectId: "ef_cd_arbitrium_atk" };
+	SkillEffect[SkillConst_default.CD_PRESENS_ACIES] = {
+		effectId: "ef_cd_presens_acies",
+		effectIdOnCaster: "ef_cd_presens_acies_cast"
+	};
+	SkillEffect[SkillConst_default.CD_EFFLIGO] = {
+		effectId: "ef_cd_effligo",
+		hitEffectId: "ef_cd_effligo_hit"
+	};
+	SkillEffect[SkillConst_default.CD_COMPETENTIA] = {
+		effectId: "ef_cd_competentia",
+		effectIdOnCaster: "ef_cd_competentia_cast"
+	};
+	SkillEffect[SkillConst_default.CD_PNEUMATICUS_PROCELLA] = {
+		effectId: "ef_cd_pneumaticus_procella",
+		effectIdOnCaster: "ef_cd_pneumaticus_procella_cast"
+	};
+	SkillEffect[SkillConst_default.CD_DILECTIO_HEAL] = {
+		effectId: "ef_cd_dilectio_heal",
+		effectIdOnCaster: "ef_cd_dilectio_heal_cast"
+	};
+	SkillEffect[SkillConst_default.CD_RELIGIO] = {
+		effectId: "ef_cd_religio",
+		effectIdOnCaster: "ef_cd_religio_cast"
+	};
+	SkillEffect[SkillConst_default.CD_BENEDICTUM] = {
+		effectId: "ef_cd_benedictum",
+		effectIdOnCaster: "ef_cd_benedictum_cast"
+	};
+	SkillEffect[SkillConst_default.CD_PETITIO] = { effectId: "ef_cd_petitio" };
+	SkillEffect[SkillConst_default.CD_FRAMEN] = { effectId: "ef_cd_framen" };
+	SkillEffect[6518] = {
+		effectId: "ef_cd_divinus_flos",
+		effectIdOnCaster: "ef_cd_divinus_flos_cast",
+		hitEffectId: "ef_cd_divinus_flos_hit"
+	};
 	SkillEffect[SkillConst_default.WL_TELEKINESIS_INTENSE] = { effectId: 1048 };
+	SkillEffect[SkillConst_default.AG_DEADLY_PROJECTION] = {
+		effectIdOnCaster: "ef_ag_deadly_projection_cast",
+		hitEffectId: "ef_ag_deadly_projection_hit"
+	};
+	SkillEffect[SkillConst_default.AG_DESTRUCTIVE_HURRICANE] = {
+		effectId: "ef_ag_destructive_hurricane",
+		effectIdOnCaster: "ef_ag_destructive_hurricane_cast",
+		hitEffectId: "ef_ag_destructive_hurricane_hit"
+	};
+	SkillEffect[SkillConst_default.AG_RAIN_OF_CRYSTAL] = {
+		effectIdOnCaster: "ef_ag_rain_of_crystal_cast",
+		hitEffectId: "ef_ag_rain_of_crystal_hit"
+	};
+	SkillEffect[SkillConst_default.AG_MYSTERY_ILLUSION] = {
+		effectId: "ef_ag_mystery_illusion",
+		effectIdOnCaster: "ef_ag_mystery_illusion_cast",
+		hitEffectId: "ef_ag_mystery_illusion_hit"
+	};
+	SkillEffect[SkillConst_default.AG_VIOLENT_QUAKE] = {
+		effectId: "ef_ag_violent_quake",
+		effectIdOnCaster: "ef_ag_violent_quake_cast",
+		hitEffectId: "ef_ag_violent_quake_hit"
+	};
+	SkillEffect[SkillConst_default.AG_VIOLENT_QUAKE_ATK] = { effectId: "ef_ag_violent_quake_atk" };
+	SkillEffect[SkillConst_default.AG_SOUL_VC_STRIKE] = {
+		effectIdOnCaster: "ef_ag_soul_vc_strike_cast",
+		hitEffectId: "ef_ag_soul_vc_strike_hit"
+	};
+	SkillEffect[SkillConst_default.AG_STRANTUM_TREMOR] = {
+		effectId: "ef_ag_strantum_tremor",
+		effectIdOnCaster: "ef_ag_strantum_tremor_cast",
+		hitEffectId: "ef_ag_strantum_tremor_hit"
+	};
+	SkillEffect[SkillConst_default.AG_ALL_BLOOM] = {
+		effectId: "ef_ag_all_bloom",
+		effectIdOnCaster: "ef_ag_all_bloom_cast",
+		hitEffectId: "ef_ag_all_bloom_hit"
+	};
+	SkillEffect[SkillConst_default.AG_ALL_BLOOM_ATK] = { effectId: "ef_ag_all_bloom_atk" };
+	SkillEffect[SkillConst_default.AG_ALL_BLOOM_ATK2] = { effectId: "ef_ag_all_bloom_atk2" };
+	SkillEffect[SkillConst_default.AG_CRYSTAL_IMPACT] = {
+		effectId: "ef_ag_crystal_impact",
+		effectIdOnCaster: "ef_ag_crystal_impact_cast",
+		hitEffectId: "ef_ag_crystal_impact_hit"
+	};
+	SkillEffect[SkillConst_default.AG_CRYSTAL_IMPACT_ATK] = { effectId: "ef_ag_crystal_impact_atk" };
+	SkillEffect[SkillConst_default.AG_TORNADO_STORM] = {
+		effectId: "ef_ag_tornado_storm",
+		effectIdOnCaster: "ef_ag_tornado_storm_cast",
+		hitEffectId: "ef_ag_tornado_storm_hit"
+	};
+	SkillEffect[SkillConst_default.AG_ASTRAL_STRIKE] = {
+		effectId: "ef_ag_astral_strike",
+		effectIdOnCaster: "ef_ag_astral_strike_cast"
+	};
+	SkillEffect[SkillConst_default.AG_CLIMAX] = {
+		effectId: "ef_ag_climax",
+		effectIdOnCaster: "ef_ag_climax_cast"
+	};
+	SkillEffect[SkillConst_default.AG_ROCK_DOWN] = {
+		effectId: "ef_ag_rock_down",
+		effectIdOnCaster: "ef_ag_rock_down_cast",
+		hitEffectId: "ef_ag_rock_down_hit"
+	};
+	SkillEffect[SkillConst_default.AG_STORM_CANNON] = {
+		effectId: "ef_ag_storm_cannon",
+		effectIdOnCaster: "ef_ag_storm_cannon_cast"
+	};
+	SkillEffect[SkillConst_default.AG_CRIMSON_ARROW] = {
+		effectId: "ef_ag_crimson_arrow",
+		effectIdOnCaster: "ef_ag_crimson_arrow_cast",
+		hitEffectId: "ef_ag_crimson_arrow_hit"
+	};
+	SkillEffect[SkillConst_default.AG_CRIMSON_ARROW_ATK] = { effectId: "ef_ag_crimson_arrow_atk" };
+	SkillEffect[SkillConst_default.AG_FROZEN_SLASH] = {
+		effectId: "ef_ag_frozen_slash",
+		effectIdOnCaster: "ef_ag_frozen_slash_cast",
+		hitEffectId: "ef_ag_frozen_slash_hit"
+	};
+	SkillEffect[5306] = { effectId: "ef_ag_destructive_hurricane_climax" };
+	SkillEffect[6516] = {
+		effectId: "ef_ag_energy_conversion",
+		effectIdOnCaster: "ef_ag_energy_conversion_cast"
+	};
 	SkillEffect[SkillConst_default.LG_KINGS_GRACE] = { effectId: "ef_kings_grace" };
+	SkillEffect[SkillConst_default.IG_GUARD_STANCE] = {
+		effectId: "ef_ig_guard_stance",
+		effectIdOnCaster: "ef_ig_guard_stance_cast"
+	};
+	SkillEffect[SkillConst_default.IG_GUARDIAN_SHIELD] = { effectId: "ef_ig_guardian_shield" };
+	SkillEffect[SkillConst_default.IG_REBOUND_SHIELD] = {
+		effectId: "ef_ig_rebound_shield",
+		effectIdOnCaster: "ef_ig_rebound_shield_cast"
+	};
+	SkillEffect[SkillConst_default.IG_ATTACK_STANCE] = {
+		effectId: "ef_ig_attack_stance",
+		effectIdOnCaster: "ef_ig_attack_stance_cast"
+	};
+	SkillEffect[SkillConst_default.IG_ULTIMATE_SACRIFICE] = { effectId: "ef_ig_ultimate_sacrifice" };
+	SkillEffect[SkillConst_default.IG_HOLY_SHIELD] = {
+		effectId: "ef_ig_holy_shield",
+		effectIdOnCaster: "ef_ig_holy_shield_cast"
+	};
+	SkillEffect[SkillConst_default.IG_GRAND_JUDGEMENT] = {
+		effectId: "ef_ig_grand_judgement",
+		effectIdOnCaster: "ef_ig_grand_judgement_cast"
+	};
+	SkillEffect[SkillConst_default.IG_JUDGEMENT_CROSS] = {
+		effectId: "ef_ig_judgement_cross",
+		effectIdOnCaster: "ef_ig_judgement_cross_cast",
+		hitEffectId: "ef_ig_judgement_cross_hit"
+	};
+	SkillEffect[SkillConst_default.IG_SHIELD_SHOOTING] = {
+		effectId: "ef_ig_shield_shooting",
+		effectIdOnCaster: "ef_ig_shield_shooting_cast",
+		hitEffectId: "ef_ig_shield_shooting_hit"
+	};
+	SkillEffect[SkillConst_default.IG_OVERSLASH] = {
+		effectId: "ef_ig_overslash",
+		effectIdOnCaster: "ef_ig_overslash_cast",
+		hitEffectId: "ef_ig_overslash_hit"
+	};
+	SkillEffect[SkillConst_default.IG_CROSS_RAIN] = {
+		effectId: "ef_ig_cross_rain",
+		effectIdOnCaster: "ef_ig_cross_rain_cast"
+	};
+	SkillEffect[6503] = { effectIdOnCaster: "ef_ig_radiant_spear_cast" };
+	SkillEffect[6504] = { effectId: "ef_ig_imperial_cross" };
+	SkillEffect[6505] = {
+		effectId: "ef_ig_imperial_pressure",
+		effectIdOnCaster: "ef_ig_imperial_pressure_cast",
+		hitEffectId: "ef_ig_imperial_pressure_hit"
+	};
 	SkillEffect[SkillConst_default.ALL_FULL_THROTTLE] = { effectId: 1042 };
-	SkillEffect[SkillConst_default.SU_BITE] = {};
+	SkillEffect[SkillConst_default.SU_BITE] = { effectId: "ef_su_bite" };
 	SkillEffect[SkillConst_default.SU_HIDE] = {};
-	SkillEffect[SkillConst_default.SU_SCRATCH] = {};
+	SkillEffect[SkillConst_default.SU_SCRATCH] = { effectId: "ef_su_scratch" };
 	SkillEffect[SkillConst_default.SU_STOOP] = {};
 	SkillEffect[SkillConst_default.SU_LOPE] = {};
-	SkillEffect[SkillConst_default.SU_SV_STEMSPEAR] = {};
+	SkillEffect[SkillConst_default.SU_SV_STEMSPEAR] = { effectId: "ef_su_sv_stemspear" };
 	SkillEffect[SkillConst_default.SU_CN_POWDERING] = {};
 	SkillEffect[SkillConst_default.SU_CN_METEOR] = {};
 	SkillEffect[SkillConst_default.SU_SV_ROOTTWIST] = {};
 	SkillEffect[SkillConst_default.SU_SV_ROOTTWIST_ATK] = {};
-	SkillEffect[SkillConst_default.SU_SCAROFTAROU] = {};
-	SkillEffect[SkillConst_default.SU_PICKYPECK] = {};
+	SkillEffect[SkillConst_default.SU_SCAROFTAROU] = { effectId: "ef_su_scaroftarou" };
+	SkillEffect[SkillConst_default.SU_PICKYPECK] = { effectId: "ef_su_pickypeck" };
 	SkillEffect[SkillConst_default.SU_PICKYPECK_DOUBLE_ATK] = {};
-	SkillEffect[SkillConst_default.SU_ARCLOUSEDASH] = {};
+	SkillEffect[SkillConst_default.SU_ARCLOUSEDASH] = { effectId: "ef_su_arclousedash" };
 	SkillEffect[SkillConst_default.SU_LUNATICCARROTBEAT] = {};
-	SkillEffect[SkillConst_default.SU_TUNABELLY] = {};
+	SkillEffect[SkillConst_default.SU_TUNABELLY] = { effectId: "ef_su_tunabelly" };
 	SkillEffect[SkillConst_default.SU_TUNAPARTY] = {};
-	SkillEffect[SkillConst_default.SU_BUNCHOFSHRIMP] = {};
-	SkillEffect[SkillConst_default.SU_FRESHSHRIMP] = {};
-	SkillEffect[SkillConst_default.SU_POWEROFFLOCK] = {};
-	SkillEffect[SkillConst_default.SU_SVG_SPIRIT] = {};
-	SkillEffect[SkillConst_default.SU_HISS] = {};
-	SkillEffect[SkillConst_default.SU_NYANGGRASS] = {};
-	SkillEffect[SkillConst_default.SU_GROOMING] = {};
+	SkillEffect[SkillConst_default.SU_BUNCHOFSHRIMP] = { effectId: "ef_su_bunchofshrimp" };
+	SkillEffect[SkillConst_default.SU_FRESHSHRIMP] = { effectId: "ef_su_freshshrimp" };
+	SkillEffect[SkillConst_default.SU_POWEROFFLOCK] = { effectId: "ef_su_powerofflock" };
+	SkillEffect[SkillConst_default.SU_SVG_SPIRIT] = { effectId: "ef_su_svg_spirit" };
+	SkillEffect[SkillConst_default.SU_HISS] = { effectId: "ef_su_hiss" };
+	SkillEffect[SkillConst_default.SU_NYANGGRASS] = { effectId: "ef_su_nyanggrass" };
+	SkillEffect[SkillConst_default.SU_GROOMING] = { effectId: "ef_su_grooming" };
 	SkillEffect[SkillConst_default.SU_PURRING] = {};
 	SkillEffect[SkillConst_default.SU_SHRIMPARTY] = {};
 	SkillEffect[SkillConst_default.SU_MEOWMEOW] = {};
-	SkillEffect[SkillConst_default.SU_CHATTERING] = {};
+	SkillEffect[SkillConst_default.SU_CHATTERING] = { effectId: "ef_su_chattering" };
 	SkillEffect[SkillConst_default.WE_CALLALLFAMILY] = {};
 	SkillEffect[SkillConst_default.WE_ONEFOREVER] = {};
 	SkillEffect[SkillConst_default.WE_CHEERUP] = {};
+	SkillEffect[SkillConst_default.SH_CHUL_HO_SONIC_CLAW] = { effectId: "ef_sh_chul_ho_sonic_claw" };
+	SkillEffect[SkillConst_default.SH_HOWLING_OF_CHUL_HO] = { effectId: "ef_sh_howling_of_chul_ho" };
+	SkillEffect[SkillConst_default.SH_HOGOGONG_STRIKE] = { effectId: "ef_sh_hogogong_strike" };
+	SkillEffect[SkillConst_default.SH_KI_SUL_WATER_SPRAYING] = { effectId: "ef_sh_ki_sul_water_spraying" };
+	SkillEffect[SkillConst_default.SH_MARINE_FESTIVAL_OF_KI_SUL] = { effectId: "ef_sh_marine_festival_of_ki_sul" };
+	SkillEffect[SkillConst_default.SH_SANDY_FESTIVAL_OF_KI_SUL] = { effectId: "ef_sh_sandy_festival_of_ki_sul" };
+	SkillEffect[SkillConst_default.SH_KI_SUL_RAMPAGE] = { effectId: "ef_sh_ki_sul_rampage" };
+	SkillEffect[SkillConst_default.SH_COLORS_OF_HYUN_ROK] = { effectId: "ef_sh_colors_of_hyun_rok" };
+	SkillEffect[SkillConst_default.SH_HYUN_ROKS_BREEZE] = { effectId: "ef_sh_hyun_roks_breeze" };
+	SkillEffect[SkillConst_default.SH_HYUN_ROK_CANNON] = { effectId: "ef_sh_hyun_rok_cannon" };
+	SkillEffect[SkillConst_default.SH_TEMPORARY_COMMUNION] = { effectId: "ef_sh_temporary_communion" };
+	SkillEffect[SkillConst_default.SH_BLESSING_OF_MYSTICAL_CREATURES] = { effectId: "ef_sh_blessing_of_mystical_creatures" };
+	SkillEffect[5506] = {
+		effectId: "ef_sh_chul_ho_battering",
+		effectIdOnCaster: "ef_sh_chul_ho_battering_cast",
+		hitEffectId: "ef_sh_chul_ho_battering_hit"
+	};
+	SkillEffect[5507] = {
+		effectId: "ef_sh_hyun_rok_spirit_power",
+		effectIdOnCaster: "ef_sh_hyun_rok_spirit_power_cast",
+		hitEffectId: "ef_sh_hyun_rok_spirit_power_hit"
+	};
 	SkillEffect[SkillConst_default.HLIF_HEAL] = SkillEffect[SkillConst_default.AL_HEAL];
 	SkillEffect[SkillConst_default.HLIF_AVOID] = SkillEffect[SkillConst_default.AL_INCAGI];
 	SkillEffect[SkillConst_default.HLIF_CHANGE] = { effectId: 505 };
@@ -214692,6 +215655,20 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.GD_RESTORE] = {};
 	SkillEffect[SkillConst_default.GD_EMERGENCYCALL] = {};
 	SkillEffect[SkillConst_default.GD_ITEMEMERGENCYCALL] = {};
+	SkillEffect[SkillConst_default.SL_ASSASIN] = { effectId: "ef_sl_assasin" };
+	SkillEffect[SkillConst_default.BS_ADRENALINE2] = { effectId: "ef_bs_adrenaline2" };
+	SkillEffect[SkillConst_default.SL_HUNTER] = { effectId: "ef_sl_hunter" };
+	SkillEffect[SkillConst_default.SJ_FULLMOONKICK] = { effectId: "ef_sj_fullmoonkick" };
+	SkillEffect[SkillConst_default.SJ_NEWMOONKICK] = { effectId: "ef_sj_newmoonkick" };
+	SkillEffect[SkillConst_default.SJ_FLASHKICK] = { effectId: "ef_sj_flashkick" };
+	SkillEffect[SkillConst_default.SJ_FALLINGSTAR] = { effectId: "ef_sj_fallingstar" };
+	SkillEffect[SkillConst_default.SJ_DOCUMENT] = { effectId: "ef_sj_document" };
+	SkillEffect[SkillConst_default.SJ_SOLARBURST] = { effectId: "ef_sj_solarburst" };
+	SkillEffect[SkillConst_default.SJ_PROMINENCEKICK] = { effectId: "ef_sj_prominencekick" };
+	SkillEffect[SkillConst_default.SP_SOULGOLEM] = { effectId: "ef_sp_soulgolem" };
+	SkillEffect[SkillConst_default.SP_SOULCURSE] = { effectId: "ef_sp_soulcurse" };
+	SkillEffect[SkillConst_default.SP_SOULREVOLVE] = { effectId: "ef_sp_soulrevolve" };
+	SkillEffect[SkillConst_default.NV_HELPANGEL] = { effectId: "ef_nv_helpangel" };
 }));
 //#endregion
 //#region src/DB/Skills/SkillUnitConst.js
@@ -218935,8 +219912,30 @@ var init_ChatBoxSettings = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$18() {
+function _root$19() {
 	return ChatBox._shadow || ChatBox._host;
+}
+/**
+* Whether an Alt/Option keydown produces a different printable character than its key
+* (macOS Option layer, dead keys), i.e. the user is typing rather than using a hotkey.
+* @param {KeyboardEvent} event
+* @returns {boolean}
+*/
+function isComposedAltCharacter(event) {
+	if (event.ctrlKey || event.metaKey || !event.key) return false;
+	if (event.key === "Dead") return true;
+	if (event.key.length !== 1) return false;
+	const match = /^(?:Key|Digit)(.)$/.exec(event.code || "");
+	return !!match && event.key.toUpperCase() !== match[1];
+}
+/**
+* Move caret to the end of a contenteditable element.
+* Uses Selection.collapse(): WebKit ignores addRange() for ranges inside a shadow root, so the
+* removeAllRanges()+addRange() idiom left Safari with no caret and typing went nowhere.
+* @param {HTMLElement} el
+*/
+function setCaretToEnd$1(el) {
+	window.getSelection().collapse(el, el.childNodes.length);
 }
 /**
 * Extract plain chat text from the contenteditable input while preserving item links.
@@ -218957,7 +219956,7 @@ function extractChatMessage$1(inputEl) {
 */
 function flushMessageBuffer() {
 	if (_messageBuffer.length === 0) return;
-	const root = _root$18();
+	const root = _root$19();
 	const messages = _messageBuffer.slice();
 	_messageBuffer = [];
 	const messagesByTab = {};
@@ -219086,7 +220085,7 @@ function stopPropagation$12(event) {
 */
 function onPrivateMessageUserSelection(name) {
 	return function onPrivateMessageUserSelectionClosure() {
-		const nickBox = _root$18().querySelector(".input .username");
+		const nickBox = _root$19().querySelector(".input .username");
 		if (nickBox) nickBox.value = name;
 	};
 }
@@ -219095,7 +220094,7 @@ function onPrivateMessageUserSelection(name) {
 */
 function onChangeTargetMessage(type) {
 	return function onChangeTargetMessageClosure() {
-		const $input = _root$18().querySelector(".input-chatbox");
+		const $input = _root$19().querySelector(".input-chatbox");
 		if ($input) {
 			$input.classList.remove("guild", "party", "clan");
 			if (type & ChatBox.TYPE.PARTY) $input.classList.add("party");
@@ -219141,7 +220140,7 @@ function getScrollLineHeightPx(element) {
 	return 14;
 }
 function makeResizableDiv() {
-	const root = _root$18();
+	const root = _root$19();
 	const resizer = root.querySelector(".event_add_cursor");
 	if (!resizer) return;
 	let originalHeight = 0;
@@ -219284,7 +220283,7 @@ var init_ChatBox = __esmMin((() => {
 	* Initialize UI
 	*/
 	ChatBox.init = function init() {
-		const root = _root$18();
+		const root = _root$19();
 		if (!ContextMenu_default.__loaded) ContextMenu_default.prepare();
 		_heightIndex = _preferences$41.height - 1;
 		ChatBox.updateHeight();
@@ -219347,6 +220346,10 @@ var init_ChatBox = __esmMin((() => {
 		});
 		const inputChatbox = root.querySelector(".input-chatbox");
 		if (Configs.get("restoreChatFocus", false) && inputChatbox) inputChatbox.addEventListener("blur", () => {
+			if (inputChatbox.dataset.escapeBlur) {
+				delete inputChatbox.dataset.escapeBlur;
+				return;
+			}
 			Events.setTimeout(() => {
 				const active = KEYS.getDeepActiveElement();
 				const movedInsideChatbox = active && root.querySelector("#chatbox").contains(active);
@@ -219356,20 +220359,10 @@ var init_ChatBox = __esmMin((() => {
 		});
 		if (inputChatbox) {
 			inputChatbox.addEventListener("click", function() {
-				const range = document.createRange();
-				const selection = window.getSelection();
-				range.selectNodeContents(this);
-				range.collapse(false);
-				selection.removeAllRanges();
-				selection.addRange(range);
+				setCaretToEnd$1(this);
 			});
 			inputChatbox.addEventListener("focus", function() {
-				const range = document.createRange();
-				const selection = window.getSelection();
-				range.selectNodeContents(this);
-				range.collapse(false);
-				selection.removeAllRanges();
-				selection.addRange(range);
+				setCaretToEnd$1(this);
 			});
 			inputChatbox.maxLength = MAX_LENGTH;
 			inputChatbox.addEventListener("input", (event) => {
@@ -219621,7 +220614,7 @@ var init_ChatBox = __esmMin((() => {
 	* Clean up the box
 	*/
 	ChatBox.clean = function Clean() {
-		const root = _root$18();
+		const root = _root$19();
 		root.querySelectorAll(".content").forEach((content) => {
 			const matches = content.innerHTML.match(/(blob:[^"]+)/g);
 			if (matches) for (let i = 0, count = matches.length; i < count; ++i) window.URL.revokeObjectURL(matches[i]);
@@ -219635,13 +220628,13 @@ var init_ChatBox = __esmMin((() => {
 		_historyNickName.clear();
 	};
 	ChatBox.toggleChatBattleOption = function toggleChatBattleOption() {
-		const onInput = _root$18().querySelector(".header tr td div.on input");
+		const onInput = _root$19().querySelector(".header tr td div.on input");
 		const tabName = onInput ? onInput.value : "";
 		ChatBoxSettings_default.toggle();
 		ChatBoxSettings_default.updateTab(this.activeTab, tabName);
 	};
 	ChatBox.removeTab = function removeTab() {
-		const root = _root$18();
+		const root = _root$19();
 		const tabEl = root.querySelector(`table.header tr td.tab[data-tab="${this.activeTab}"]`);
 		if (tabEl) tabEl.remove();
 		const contentEl = root.querySelector(`.body .content[data-content="${this.activeTab}"]`);
@@ -219657,7 +220650,7 @@ var init_ChatBox = __esmMin((() => {
 		ChatBoxSettings_default.updateTab(this.activeTab, tabName);
 	};
 	ChatBox.addNewTab = function addNewTab(name, settings) {
-		const root = _root$18();
+		const root = _root$19();
 		if (!name) name = "New Tab";
 		if (!settings) settings = [
 			ChatBox.FILTER.PUBLIC_LOG,
@@ -219714,7 +220707,7 @@ var init_ChatBox = __esmMin((() => {
 		return tabID;
 	};
 	ChatBox.switchTab = function switchTab(tabID) {
-		const root = _root$18();
+		const root = _root$19();
 		root.querySelectorAll("table.header tr td.tab div").forEach((el) => el.classList.remove("on"));
 		root.querySelectorAll(".body .content").forEach((el) => el.classList.remove("active"));
 		this.activeTab = tabID;
@@ -219733,7 +220726,7 @@ var init_ChatBox = __esmMin((() => {
 	* Once append to HTML
 	*/
 	ChatBox.onAppend = function OnAppend() {
-		const root = _root$18();
+		const root = _root$19();
 		const inputEl = root.querySelector(".input");
 		if (inputEl) inputEl.style.display = "none";
 		const bmEl = root.querySelector(".battlemode");
@@ -219764,7 +220757,7 @@ var init_ChatBox = __esmMin((() => {
 	* @return {boolean} found a shortcut ?
 	*/
 	ChatBox.processBattleMode = function processBattleMode(keyId) {
-		const bmEl = _root$18().querySelector(".battlemode");
+		const bmEl = _root$19().querySelector(".battlemode");
 		if (bmEl && bmEl.style.display !== "none" || KEYS.ALT || KEYS.SHIFT || KEYS.CTRL || keyId >= KEYS.F1 && keyId <= KEYS.F24 || KEYS.INSERT) return BattleMode.process(keyId);
 		return false;
 	};
@@ -219772,7 +220765,7 @@ var init_ChatBox = __esmMin((() => {
 	* Key Event Handler
 	*/
 	ChatBox.onKeyDown = function OnKeyDown(event) {
-		const root = _root$18();
+		const root = _root$19();
 		const messageBox = root.querySelector(".input-chatbox");
 		const nickBox = root.querySelector(".input .username");
 		const onInput = root.querySelector(".header tr td div.on input");
@@ -219817,6 +220810,10 @@ var init_ChatBox = __esmMin((() => {
 						return true;
 					}
 					if (event.altKey || KEYS.ALT) {
+						if (isComposedAltCharacter(event)) {
+							event.stopImmediatePropagation();
+							return true;
+						}
 						if (!(event.which === KEYS.LEFT || event.which === KEYS.RIGHT || event.which === KEYS.UP || event.which === KEYS.DOWN || event.which === KEYS.BACKSPACE || event.which === KEYS.DELETE || event.which === KEYS.HOME || event.which === KEYS.END)) {
 							if (ChatBox.processBattleMode(event.which)) {
 								event.preventDefault();
@@ -219829,7 +220826,12 @@ var init_ChatBox = __esmMin((() => {
 						event.stopImmediatePropagation();
 						return true;
 					}
-					if (event.which === KEYS.ESCAPE || event.key === "Escape") return true;
+					if (event.which === KEYS.ESCAPE || event.key === "Escape") {
+						activeElement.dataset.escapeBlur = "1";
+						activeElement.blur();
+						event.stopImmediatePropagation();
+						return false;
+					}
 					event.stopImmediatePropagation();
 					return true;
 				}
@@ -219882,6 +220884,7 @@ var init_ChatBox = __esmMin((() => {
 				}
 				break;
 			case KEYS.ENTER: {
+				if (activeElement && activeElement.tagName === "BUTTON" && !root.contains(activeElement)) return true;
 				if (document.activeElement.className === "message input-chatbox" && document.activeElement !== messageBox) return true;
 				if (document.querySelector("#NpcMenu, #NpcBox")) return true;
 				if (activeElement === messageBox) {
@@ -219896,12 +220899,7 @@ var init_ChatBox = __esmMin((() => {
 					if (bmEl) bmEl.style.display = "none";
 				}
 				messageBox.focus();
-				const range = document.createRange();
-				const sel = window.getSelection();
-				range.selectNodeContents(messageBox);
-				range.collapse(false);
-				sel.removeAllRanges();
-				sel.addRange(range);
+				setCaretToEnd$1(messageBox);
 				event.stopImmediatePropagation();
 				return false;
 			}
@@ -219910,7 +220908,7 @@ var init_ChatBox = __esmMin((() => {
 		return false;
 	};
 	ChatBox.toggleChat = function toggleChat() {
-		const messageBox = _root$18().querySelector(".input-chatbox");
+		const messageBox = _root$19().querySelector(".input-chatbox");
 		const activeElement = KEYS.getDeepActiveElement();
 		if (activeElement.tagName === "INPUT" && activeElement !== messageBox) return true;
 		if (document.querySelector("#NpcMenu, #NpcBox")) return true;
@@ -219921,7 +220919,7 @@ var init_ChatBox = __esmMin((() => {
 	* Process ChatBox message
 	*/
 	ChatBox.submit = function Submit() {
-		const root = _root$18();
+		const root = _root$19();
 		const inputEl = root.querySelector(".input");
 		const $user = root.querySelector(".input .username");
 		const $text = root.querySelector(".input-chatbox");
@@ -219987,7 +220985,7 @@ var init_ChatBox = __esmMin((() => {
 	* Change chatbox's height
 	*/
 	ChatBox.updateHeight = function changeHeight(AlwaysVisible) {
-		const root = _root$18();
+		const root = _root$19();
 		const HeightList = [
 			0,
 			0,
@@ -220043,7 +221041,7 @@ var init_ChatBox = __esmMin((() => {
 	* Save chat from current tab into a file.
 	*/
 	ChatBox.saveCurrentTabChat = function saveCurrentTabChat() {
-		const root = _root$18();
+		const root = _root$19();
 		let data;
 		const tzoffset = (/* @__PURE__ */ new Date()).getTimezoneOffset() * 6e4;
 		let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
@@ -220058,7 +221056,7 @@ var init_ChatBox = __esmMin((() => {
 		ChatBox.addText(`Chat History [${ChatBox.tabs[ChatBox.activeTab].name}] ${date} can be saved by <a style="color:#F88" download="ChatHistory [${ChatBox.tabs[ChatBox.activeTab].name}] (${date.replace("/", "-")}).html" href="${url}" target="_blank">clicking here</a>.`, ChatBox.TYPE.PUBLIC, ChatBox.FILTER.PUBLIC_LOG, null, true);
 	};
 	ChatBox.applyFontScale = function applyFontScale() {
-		const root = _root$18();
+		const root = _root$19();
 		const scale = clampChatFontScale(_preferences$41.fontScale || 1);
 		const baseFont = 12;
 		const baseLineHeight = 14;
@@ -220079,7 +221077,7 @@ var init_ChatBox = __esmMin((() => {
 		if (message) message.style.lineHeight = `${inputLineHeight}px`;
 	};
 	ChatBox._setupItemLinkHandler = function _setupItemLinkHandler() {
-		const root = _root$18();
+		const root = _root$19();
 		if (!root) return;
 		root.addEventListener("click", (event) => {
 			const link = event.target.closest(".item-link");
@@ -220110,7 +221108,7 @@ var init_ChatBox = __esmMin((() => {
 		ItemInfo.setItem(item);
 	});
 	ChatBox.insertText = function(text) {
-		const input = _root$18().querySelector(".input-chatbox");
+		const input = _root$19().querySelector(".input-chatbox");
 		if (!input) return;
 		input.appendChild(document.createTextNode(text));
 		input.focus();
@@ -224233,12 +225231,7 @@ var init_Friends = __esmMin((() => {
 * @param {HTMLElement} el
 */
 function setCaretToEnd(el) {
-	const range = document.createRange();
-	const sel = window.getSelection();
-	range.selectNodeContents(el);
-	range.collapse(false);
-	sel.removeAllRanges();
-	sel.addRange(range);
+	window.getSelection().collapse(el, el.childNodes.length);
 }
 /**
 * Extract plain chat text from input while preserving item links
@@ -224529,14 +225522,14 @@ var init_WhisperBox = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$17() {
+function _root$18() {
 	return PartyHelper._shadow || PartyHelper._host;
 }
 /**
 * Validate and process form data
 */
 function onValidate$1() {
-	const root = _root$17();
+	const root = _root$18();
 	const PartyFriends = UIManager.getComponent("PartyFriends");
 	switch (_type$6) {
 		case PartyHelper.Type.CREATE: {
@@ -224599,7 +225592,7 @@ var init_PartyHelper = __esmMin((() => {
 	* Initialize component event listeners
 	*/
 	PartyHelper.init = function init() {
-		const root = _root$17();
+		const root = _root$18();
 		const baseBtn = root.querySelector(".base");
 		if (baseBtn) baseBtn.addEventListener("mousedown", (e) => {
 			e.stopImmediatePropagation();
@@ -224635,7 +225628,7 @@ var init_PartyHelper = __esmMin((() => {
 				off.classList.remove("off");
 				off.classList.add("on");
 				const prefs = WhisperBox.preferences;
-				const rootEl = _root$17();
+				const rootEl = _root$18();
 				const strangerOn = rootEl.querySelector(".open1to1Stranger .on");
 				const friendOn = rootEl.querySelector(".open1to1Friend .on");
 				const alarmOn = rootEl.querySelector(".alarm1to1 .on");
@@ -224698,7 +225691,7 @@ var init_PartyHelper = __esmMin((() => {
 	*/
 	PartyHelper.onAppend = function onAppend() {
 		const base = UIManager.getComponent("PartyFriends");
-		const root = _root$17();
+		const root = _root$18();
 		const partyContent = root.querySelector(".party-content");
 		const friendContent = root.querySelector(".friend-content");
 		if (partyContent) partyContent.style.display = "none";
@@ -224715,7 +225708,7 @@ var init_PartyHelper = __esmMin((() => {
 	* Cleanup on window removal
 	*/
 	PartyHelper.onRemove = function onRemove() {
-		const root = _root$17();
+		const root = _root$18();
 		const partyContent = root.querySelector(".party-content");
 		const friendContent = root.querySelector(".friend-content");
 		if (partyContent) partyContent.style.display = "none";
@@ -224729,7 +225722,7 @@ var init_PartyHelper = __esmMin((() => {
 	* @param {number} type
 	*/
 	PartyHelper.setType = function setType(type) {
-		const root = _root$17();
+		const root = _root$18();
 		root.querySelectorAll(".content").forEach((el) => el.classList.remove("disabled"));
 		const footer = root.querySelector(".footer");
 		if (footer) footer.style.display = "block";
@@ -224814,7 +225807,7 @@ var init_PartyHelper = __esmMin((() => {
 	* @param {boolean} editable
 	*/
 	PartyHelper.setOptions = function setOptions(options, editable) {
-		const root = _root$17();
+		const root = _root$18();
 		function swap(off) {
 			const on = off.parentNode.querySelector(".on");
 			const tmp = on.style.backgroundImage;
@@ -224845,7 +225838,7 @@ var init_PartyHelper = __esmMin((() => {
 	* @param {object} options
 	*/
 	PartyHelper.setFriendOptions = function setFriendOptions(options) {
-		const root = _root$17();
+		const root = _root$18();
 		function swap(off) {
 			const on = off.parentNode.querySelector(".on");
 			on.className = "off";
@@ -225230,7 +226223,7 @@ var init_Rodex$2 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$16() {
+function _root$17() {
 	return Rodex._shadow || Rodex._host;
 }
 function onClickClose$2(e) {
@@ -225280,7 +226273,7 @@ function onClickTab(e) {
 	Rodex.page = 0;
 	const element = e.currentTarget;
 	const id = element.id.replace("tab_", "");
-	const root = _root$16();
+	const root = _root$17();
 	root.querySelectorAll(".nav-item.active").forEach((el) => el.classList.remove("active"));
 	element.classList.add("active");
 	if (id >= 0 && id <= 2) {
@@ -225291,7 +226284,7 @@ function onClickTab(e) {
 function onClickSearchTitle(e) {
 	e.stopImmediatePropagation();
 	Rodex.searchType = 1;
-	const root = _root$16();
+	const root = _root$17();
 	Client.loadFile(DB.INTERFACE_PATH + "basic_interface/rodexsystem/renewal/checkbox_search_off.bmp", (data) => {
 		const el = root.querySelector(".search-sender");
 		if (el) el.style.backgroundImage = `url(${data})`;
@@ -225304,7 +226297,7 @@ function onClickSearchTitle(e) {
 function onClickSearchSender(e) {
 	e.stopImmediatePropagation();
 	Rodex.searchType = 2;
-	const root = _root$16();
+	const root = _root$17();
 	Client.loadFile(DB.INTERFACE_PATH + "basic_interface/rodexsystem/renewal/checkbox_search_on.bmp", (data) => {
 		const el = root.querySelector(".search-sender");
 		if (el) el.style.backgroundImage = `url(${data})`;
@@ -225316,7 +226309,7 @@ function onClickSearchSender(e) {
 }
 function onClickSearchButton(e) {
 	e.stopImmediatePropagation();
-	const root = _root$16();
+	const root = _root$17();
 	const search = root.querySelector(".search").value;
 	root.querySelectorAll(".nav-item.active").forEach((el) => el.classList.remove("active"));
 	root.querySelector("#tab_3").classList.add("active");
@@ -225392,7 +226385,7 @@ var init_Rodex$1 = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	Rodex.onAppend = function OnAppend() {
-		const root = _root$16();
+		const root = _root$17();
 		this._host.style.top = `${Math.min(Math.max(0, _preferences$37.y), Renderer.height - this._host.offsetHeight)}px`;
 		this._host.style.left = `${Math.min(Math.max(0, _preferences$37.x), Renderer.width - this._host.offsetWidth)}px`;
 		this.draggable(root.querySelector(".titlebar"));
@@ -225439,7 +226432,7 @@ var init_Rodex$1 = __esmMin((() => {
 		this.focus();
 	};
 	Rodex.createRodexList = function createRodexList(tabID = 0, search = false, term = "") {
-		const root = _root$16();
+		const root = _root$17();
 		const content = root.querySelector(".mail-list");
 		content.innerHTML = "";
 		let mail_list = [];
@@ -225509,7 +226502,7 @@ var init_Rodex$1 = __esmMin((() => {
 		}
 	};
 	Rodex.updateDeletedMailContent = function updateDeletedMailContent(openType, MailID) {
-		const root = _root$16();
+		const root = _root$17();
 		const mailEl = root.querySelector(`#mail_${MailID}`);
 		if (mailEl) {
 			mailEl.textContent = DB.getMessage(2907);
@@ -225542,7 +226535,7 @@ var init_Rodex$1 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$15(comp) {
+function _root$16(comp) {
 	return comp._shadow || comp._host;
 }
 /**
@@ -225633,7 +226626,7 @@ var init_PartyMemberExternal = __esmMin((() => {
 	*/
 	PartyMemberExternal.init = function init() {
 		const self = this;
-		const root = _root$15(this);
+		const root = _root$16(this);
 		root.addEventListener("mousedown", (event) => {
 			self._lastPos = {
 				top: self._host.offsetTop,
@@ -225726,7 +226719,7 @@ var init_PartyMemberExternal = __esmMin((() => {
 	* @param {object} player
 	*/
 	PartyMemberExternal.update = function update(player) {
-		const root = _root$15(this);
+		const root = _root$16(this);
 		if (!root) return;
 		const level = player.baseLevel || player.level || player.Level || 0;
 		const jobID = player.class_ || player.job || player.Job || 0;
@@ -225778,7 +226771,7 @@ var init_PartyMemberExternal = __esmMin((() => {
 	* @param {number} maxhp
 	*/
 	PartyMemberExternal.updateMemberLife = function updateMemberLife(hp, maxhp) {
-		const root = _root$15(this);
+		const root = _root$16(this);
 		if (root) updateCanvasLife(root, hp, maxhp);
 	};
 	PartyMemberExternal_default = UIManager.addComponent(PartyMemberExternal);
@@ -225800,11 +226793,11 @@ var init_Mail$2 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$14() {
+function _root$15() {
 	return Mail._shadow || Mail._host;
 }
 function updatePageMailItems() {
-	const root = _root$14();
+	const root = _root$15();
 	const nextBtn = root.querySelector(".next");
 	if (nextBtn) nextBtn.addEventListener("click", (e) => {
 		e.stopImmediatePropagation();
@@ -225829,7 +226822,7 @@ function updatePageMailItems() {
 * Create messages window size
 */
 function onWindowMailbox() {
-	const root = _root$14();
+	const root = _root$15();
 	Mail.parseMailrefreshinbox();
 	const sendBtn = root.querySelector("#create_mail_send");
 	if (sendBtn) sendBtn.disabled = false;
@@ -225857,7 +226850,7 @@ function onWindowMailbox() {
 	if (title) title.textContent = DB.getMessage(1025);
 }
 function createMailList() {
-	const root = _root$14();
+	const root = _root$15();
 	const content = root.querySelector(".list_item_mail");
 	root.querySelectorAll(".item_mail").forEach((el) => el.remove());
 	if (Mail.list.length == 0) return;
@@ -225912,7 +226905,7 @@ function createMailList() {
 	adjustButtons();
 }
 function adjustButtons() {
-	const root = _root$14();
+	const root = _root$15();
 	if (Mail.list.length == 0) return;
 	const mailLength = Mail.list.mailList.length;
 	if (!(Mail.page > mailLength / Mail.pageSize - 1)) addEventNextAndPrevAdd("next");
@@ -225925,7 +226918,7 @@ function adjustButtons() {
 	if (prevSpan) prevSpan.disabled = mailLength <= Mail.pageSize || Mail.page == 0;
 }
 function addEventNextAndPrevAdd(eventName) {
-	const root = _root$14();
+	const root = _root$15();
 	const overlay = root.querySelector(`.prev_next .overlay_${eventName}`);
 	const text = root.querySelector(`.prev_next .${eventName} span`);
 	if (text) text.classList.add("event_add_cursor");
@@ -225941,7 +226934,7 @@ function addEventNextAndPrevAdd(eventName) {
 	}
 }
 function addEventNextAndPrevRemove(eventName) {
-	const root = _root$14();
+	const root = _root$15();
 	const overlay = root.querySelector(`.prev_next .overlay_${eventName}`);
 	const text = root.querySelector(`.prev_next .${eventName} span`);
 	if (overlay) overlay.style.display = "none";
@@ -225953,7 +226946,7 @@ function offCreateMessagesOnWindowMailbox(event) {
 	removeCreateAllItem();
 }
 function sendCreateMessagesMail(event) {
-	const root = _root$14();
+	const root = _root$15();
 	event.stopImmediatePropagation();
 	const zenyOk = root.querySelector("#zeny_ok");
 	if (zenyOk && window.getComputedStyle(zenyOk).display !== "none") {
@@ -225988,7 +226981,7 @@ function openWindowCreateMessages(event) {
 * Open Create messages window size
 */
 function onWindowCreateMessages() {
-	const root = _root$14();
+	const root = _root$15();
 	removeCreateAllItem();
 	offWindowListMail();
 	Client.loadFile(DB.INTERFACE_PATH + "basic_interface/maillist2_bg.bmp", (url) => {
@@ -225999,7 +226992,7 @@ function onWindowCreateMessages() {
 	if (title) title.textContent = DB.getMessage(1026);
 }
 function offWindowListMail() {
-	const root = _root$14();
+	const root = _root$15();
 	const prevNext = root.querySelector(".prev_next");
 	if (prevNext) prevNext.style.display = "none";
 	const blockMail = root.querySelector(".block_mail");
@@ -226010,7 +227003,7 @@ function offWindowListMail() {
 	if (textarea) textarea.focus();
 }
 function onAddZenyInput(event) {
-	const root = _root$14();
+	const root = _root$15();
 	event.stopImmediatePropagation();
 	const zenyAmt = root.querySelector("#zeny_amt");
 	if (zenyAmt) zenyAmt.style.display = "none";
@@ -226025,7 +227018,7 @@ function onAddZenyInput(event) {
 	Mail.parseMailWinopen(2);
 }
 function onValidZenyInput(event) {
-	const root = _root$14();
+	const root = _root$15();
 	event.stopImmediatePropagation();
 	const zenyAmt = root.querySelector("#zeny_amt");
 	if (zenyAmt) zenyAmt.style.display = "inline-block";
@@ -226087,7 +227080,7 @@ function onDrop$11(event) {
 * Show item name when mouse is over
 */
 function onItemOver$13() {
-	const root = _root$14();
+	const root = _root$15();
 	const idx = parseInt(this.getAttribute("data-index"), 10);
 	const item = Mail.getItemByIndex(idx);
 	if (!item) return;
@@ -226103,7 +227096,7 @@ function onItemOver$13() {
 * Hide the item name
 */
 function onItemOut$14() {
-	const overlay = _root$14().querySelector(".container_item .overlay");
+	const overlay = _root$15().querySelector(".container_item .overlay");
 	if (overlay) overlay.style.display = "none";
 }
 /**
@@ -226249,7 +227242,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	Mail.onAppend = function OnAppend() {
-		const root = _root$14();
+		const root = _root$15();
 		const closeBtn = root.querySelector(".close");
 		if (closeBtn) closeBtn.addEventListener("click", this.onClosePressed.bind(this));
 		const inboxBtn = root.querySelector("#inbox");
@@ -226310,7 +227303,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Add item to inventory
 	*/
 	Mail.addItemSub = function AddItemSub(Index) {
-		const root = _root$14();
+		const root = _root$15();
 		const item = _preferences$36.item_add_email;
 		if (item.index !== Index) return false;
 		if (item.WearState && item.type !== ItemType_default.AMMO && item.type !== ItemType_default.CARD) return false;
@@ -226331,14 +227324,14 @@ var init_Mail$1 = __esmMin((() => {
 	* Send from mail to inventory - Remove item
 	*/
 	Mail.removeItem = function removeItem() {
-		const item = _root$14().querySelector(".item");
+		const item = _root$15().querySelector(".item");
 		if (item) item.remove();
 	};
 	/**
 	* Send from mail to inventory - Remove zenys
 	*/
 	Mail.removeZeny = function removeZeny() {
-		const input = _root$14().querySelector(".input_zeny_amt");
+		const input = _root$15().querySelector(".input_zeny_amt");
 		if (input) input.value = "0";
 	};
 	/**
@@ -226360,7 +227353,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Extend Mail window size
 	*/
 	Mail.resize = function Resize(width, height) {
-		const root = _root$14();
+		const root = _root$15();
 		width = Math.min(Math.max(width, 6), 9);
 		height = Math.min(Math.max(height, 2), 6);
 		const mailEl = root.querySelector("#Mail");
@@ -226412,7 +227405,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Responder to a mail.
 	*/
 	Mail.replyNewMail = function replyNewMail(fromName) {
-		const root = _root$14();
+		const root = _root$15();
 		onWindowCreateMessages();
 		const textTo = root.querySelector(".text_to");
 		if (textTo) textTo.value = fromName.replace(/^(\$|\%)/, "").replace(/\t/g, "");
@@ -226421,7 +227414,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Responder to a mail from friends.
 	*/
 	Mail.replyNewMailFriends = async function replyNewMailFriends(fromName) {
-		const root = _root$14();
+		const root = _root$15();
 		Mail.append();
 		sleep(1).then(() => {
 			onWindowCreateMessages();
@@ -226446,7 +227439,7 @@ var init_Mail$1 = __esmMin((() => {
 		});
 	};
 	Mail.clearFieldsItemZeny = function clearFieldsItemZeny() {
-		const root = _root$14();
+		const root = _root$15();
 		const item = root.querySelector(".item");
 		if (item) item.remove();
 		const zenyInput = root.querySelector(".input_zeny_amt");
@@ -226810,10 +227803,10 @@ function createPartyFriends(config) {
 		_friends[index].State = state;
 		if (state) {
 			if (node) node.style.backgroundImage = "";
-			ChatBox_default.addText(DB.getMessage(1042).replace("%s", _friends[index].Name), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.PUBLIC_LOG);
+			if (UI_default.li) ChatBox_default.addText(DB.getMessage(1042, "%s has logged out.").replace("%s", _friends[index].Name), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.PUBLIC_LOG);
 			return;
 		}
-		ChatBox_default.addText(DB.getMessage(1041).replace("%s", _friends[index].Name), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.PUBLIC_LOG);
+		if (UI_default.li) ChatBox_default.addText(DB.getMessage(1041, "%s has logged in.").replace("%s", _friends[index].Name), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.PUBLIC_LOG);
 		Client.loadFile(DB.INTERFACE_PATH + "basic_interface/grp_online.bmp", function(url) {
 			if (node) node.style.backgroundImage = `url(${url})`;
 		});
@@ -227909,6 +228902,7 @@ var init_PartyFriendsCommon = __esmMin((() => {
 	init_Camera();
 	init_MiniMap();
 	init_Preferences$1();
+	init_UI();
 	init_MonsterTable();
 	init_Client();
 	init_Renderer();
@@ -227994,36 +228988,40 @@ var init_PartyFriends = __esmMin((() => {
 //#region src/UI/Components/GuildCompanion/GuildCompanion.html?raw
 var GuildCompanion_default$2;
 var init_GuildCompanion$2 = __esmMin((() => {
-	GuildCompanion_default$2 = "<div id=\"GuildCompanion\">\r\n	<div class=\"win companion\">\r\n		<div class=\"titlebar\">\r\n			<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n			<span class=\"title\">Guild Companion</span>\r\n			<div class=\"right\">\r\n				<ui-button\r\n					class=\"base btn_x\"\r\n					bg=\"basic_interface/sys_close_off.bmp\"\r\n					hover=\"basic_interface/sys_close_on.bmp\"\r\n				></ui-button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n		<div class=\"body\">\r\n			<div class=\"msg\">Join a guild or start your own!</div>\r\n			<div class=\"btns\">\r\n				<button class=\"btn btn_create\" type=\"button\">create guild</button>\r\n				<button class=\"btn btn_close\" type=\"button\">OK</button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n	<div class=\"win namebox\">\r\n		<div class=\"titlebar\">\r\n			<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n			<span class=\"title name_title\">Create Guild</span>\r\n			<div class=\"right\">\r\n				<ui-button\r\n					class=\"base btn_x2\"\r\n					bg=\"basic_interface/sys_close_off.bmp\"\r\n					hover=\"basic_interface/sys_close_on.bmp\"\r\n				></ui-button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n		<div class=\"body\">\r\n			<div class=\"label name_label\">Guild Name</div>\r\n			<input type=\"text\" class=\"guildname\" maxlength=\"23\" />\r\n			<div class=\"btns\">\r\n				<button class=\"btn btn_ok\" type=\"button\">OK</button>\r\n				<button class=\"btn btn_cancel\" type=\"button\">cancel</button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	GuildCompanion_default$2 = "<div id=\"GuildCompanion\">\r\n	<!-- The \"you have no guild yet\" pane. Its client counterpart, UIGuildTipWnd,\r\n	     is a scrollable tip list fed from client data rather than a two-button\r\n	     prompt, so this pane is a web affordance. It takes the client's caption\r\n	     for that window and the button bitmaps the client ships for it, under\r\n	     유저인터페이스\\guild_helper. -->\r\n	<div class=\"win companion\">\r\n		<div class=\"titlebar\">\r\n			<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n			<span class=\"title\"><ui-text msg=\"2078\">Guild System</ui-text></span>\r\n			<div class=\"right\">\r\n				<ui-button\r\n					class=\"base btn_x\"\r\n					bg=\"basic_interface/sys_close_off.bmp\"\r\n					hover=\"basic_interface/sys_close_on.bmp\"\r\n				></ui-button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n		<div class=\"body\">\r\n			<!-- No table id says this, so it is kept as a literal on purpose\r\n			     rather than forced onto an id that means something else. -->\r\n			<div class=\"msg\">Join a guild or start your own!</div>\r\n			<div class=\"btns\">\r\n				<ui-button\r\n					class=\"btn btn_create\"\r\n					bg=\"guild_helper/create_guild.bmp\"\r\n					hover=\"guild_helper/create_guild_a.bmp\"\r\n					down=\"guild_helper/create_guild_b.bmp\"\r\n				></ui-button>\r\n				<ui-button\r\n					class=\"btn btn_close\"\r\n					bg=\"guild_helper/btn_ok.bmp\"\r\n					hover=\"guild_helper/btn_ok_a.bmp\"\r\n					down=\"guild_helper/btn_ok_b.bmp\"\r\n				></ui-button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n\r\n	<!-- One window for both create and disband, which is what the client does.\r\n	     The caption and the label are the only difference, so open() fills them\r\n	     and the markup carries neither.\r\n	     See docs/reference/guild/create-disband-dialogs.md -->\r\n	<div class=\"win namebox\">\r\n		<div class=\"titlebar\">\r\n			<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n			<span class=\"title name_title\"></span>\r\n			<div class=\"right\">\r\n				<ui-button\r\n					class=\"base btn_x2\"\r\n					bg=\"basic_interface/sys_close_off.bmp\"\r\n					hover=\"basic_interface/sys_close_on.bmp\"\r\n				></ui-button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n		<div class=\"body\">\r\n			<div class=\"label name_label\"></div>\r\n			<input type=\"text\" class=\"guildname\" maxlength=\"23\" />\r\n			<div class=\"btns\">\r\n				<ui-button class=\"btn btn_ok\" bg=\"btn_ok.bmp\" hover=\"btn_ok_a.bmp\" down=\"btn_ok_b.bmp\"></ui-button>\r\n				<ui-button\r\n					class=\"btn btn_cancel\"\r\n					bg=\"btn_cancel.bmp\"\r\n					hover=\"btn_cancel_a.bmp\"\r\n					down=\"btn_cancel_b.bmp\"\r\n				></ui-button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/GuildCompanion/GuildCompanion.css?raw
 var GuildCompanion_default$1;
 var init_GuildCompanion$1 = __esmMin((() => {
-	GuildCompanion_default$1 = ":host {\r\n	top: 160px;\r\n	left: 260px;\r\n	z-index: 100;\r\n}\r\n\r\n#GuildCompanion {\r\n	position: relative;\r\n	font-family: Arial, sans-serif;\r\n	font-size: 12px;\r\n	white-space: nowrap;\r\n}\r\n\r\n#GuildCompanion .win {\r\n	display: inline-block;\r\n	vertical-align: top;\r\n	background-color: white;\r\n	border: 1px solid #a5a5a5;\r\n	border-radius: 3px;\r\n	margin-right: 6px;\r\n}\r\n\r\n#GuildCompanion .win.namebox {\r\n	display: none;\r\n}\r\n#GuildCompanion .win.namebox.visible {\r\n	display: inline-block;\r\n}\r\n\r\n#GuildCompanion .win.companion.hidden {\r\n	display: none;\r\n}\r\n\r\n#GuildCompanion .titlebar {\r\n	height: 17px;\r\n	line-height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0 0;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n	padding-left: 6px;\r\n}\r\n#GuildCompanion .titlebar .title {\r\n	vertical-align: middle;\r\n}\r\n#GuildCompanion .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n#GuildCompanion .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#GuildCompanion .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#GuildCompanion .body {\r\n	padding: 10px 12px 8px 12px;\r\n}\r\n\r\n#GuildCompanion .companion .msg {\r\n	margin-bottom: 12px;\r\n}\r\n\r\n#GuildCompanion .namebox .label {\r\n	margin-bottom: 4px;\r\n}\r\n#GuildCompanion .namebox input {\r\n	border: 1px solid #c1c6c2;\r\n	background-color: #efefef;\r\n	width: 150px;\r\n	height: 16px;\r\n	margin-bottom: 12px;\r\n}\r\n\r\n#GuildCompanion .btns {\r\n	text-align: center;\r\n}\r\n#GuildCompanion .namebox .btns {\r\n	text-align: right;\r\n}\r\n\r\n#GuildCompanion .btn {\r\n	font-family: Arial, sans-serif;\r\n	font-size: 11px;\r\n	padding: 2px 10px;\r\n	margin: 0 3px;\r\n	cursor: pointer;\r\n}\r\n";
+	GuildCompanion_default$1 = ":host {\r\n	z-index: 100;\r\n}\r\n\r\n#GuildCompanion {\r\n	position: relative;\r\n	font-size: 12px;\r\n	white-space: nowrap;\r\n}\r\n\r\n/* The two panes are never shown together - open() hides one and shows the\r\n * other - so they stack rather than sit side by side. The 1px frame edge is an\r\n * inset shadow instead of a border: a shadow takes part in no layout, which is\r\n * what lets the namebox below carry the client's own coordinates unshifted. */\r\n#GuildCompanion .win {\r\n	display: block;\r\n	position: relative;\r\n	background-color: white;\r\n	box-shadow: inset 0 0 0 1px #a5a5a5;\r\n	border-radius: 3px;\r\n}\r\n\r\n#GuildCompanion .win.namebox {\r\n	display: none;\r\n}\r\n#GuildCompanion .win.namebox.visible {\r\n	display: block;\r\n}\r\n\r\n#GuildCompanion .win.companion.hidden {\r\n	display: none;\r\n}\r\n\r\n#GuildCompanion .titlebar {\r\n	height: 17px;\r\n	line-height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0 0;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n	padding-left: 6px;\r\n}\r\n#GuildCompanion .titlebar .title {\r\n	vertical-align: middle;\r\n}\r\n#GuildCompanion .titlebar .base {\r\n	display: inline-block;\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n	cursor: pointer;\r\n}\r\n#GuildCompanion .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#GuildCompanion .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#GuildCompanion .btn {\r\n	display: inline-block;\r\n	height: 20px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	cursor: pointer;\r\n}\r\n\r\n/* ---- The \"no guild yet\" pane -------------------------------------------\r\n * No decoded geometry: the client's counterpart is a tip list, not this. Only\r\n * the bitmaps and the caption come from the client. */\r\n\r\n#GuildCompanion .companion .body {\r\n	padding: 10px 12px 8px 12px;\r\n}\r\n#GuildCompanion .companion .msg {\r\n	margin-bottom: 12px;\r\n}\r\n#GuildCompanion .companion .btns {\r\n	text-align: center;\r\n}\r\n#GuildCompanion .companion .btn_create {\r\n	width: 71px;\r\n	margin-right: 6px;\r\n}\r\n#GuildCompanion .companion .btn_close {\r\n	width: 42px;\r\n}\r\n\r\n/* ---- Create / disband, on the client's box -----------------------------\r\n * One window for both modes, at the client's own geometry: 150x100, edit\r\n * 124x20 at (13, 42), OK and Cancel at (58, 76) and (104, 76). Children are\r\n * absolute so each number appears once.\r\n * See docs/reference/guild/create-disband-dialogs.md */\r\n#GuildCompanion .namebox {\r\n	width: 150px;\r\n	height: 100px;\r\n	/* The client's label has no box and is clipped by the window DC. An\r\n	 * absolute box has no such edge, and a localised label overran the frame. */\r\n	overflow: hidden;\r\n}\r\n/* An anchor, not a box - there is nothing to centre the label in, so left/top\r\n * with no width and no text-align.\r\n *\r\n * 13 rather than the client's 16, deliberately: flush with the field's left\r\n * edge rather than with the text inside it, which reads as an indent.\r\n * See docs/reference/guild/create-disband-dialogs.md */\r\n#GuildCompanion .namebox .label {\r\n	position: absolute;\r\n	left: 13px;\r\n	top: 23px;\r\n}\r\n#GuildCompanion .namebox input {\r\n	position: absolute;\r\n	left: 13px;\r\n	top: 42px;\r\n	width: 124px;\r\n	height: 20px;\r\n	box-sizing: border-box;\r\n	padding: 0 2px;\r\n	border: 1px solid #c1c6c2;\r\n	/* The client's own near-white on this edit widget. */\r\n	background-color: #e6e6e6;\r\n	/* The UA's `font` shorthand on form controls drops the inherited family and\r\n	 * resets font-size-adjust, so an input opts out of the x-height\r\n	 * normalisation the rest of the window runs under. */\r\n	font-family: inherit;\r\n	font-size: 12px;\r\n	font-size-adjust: inherit;\r\n	/* The 18px content band, stated rather than left to the UA: without it the\r\n	 * value sits wherever the engine's default input line-height puts it, which\r\n	 * is not the same on every browser. */\r\n	line-height: 18px;\r\n}\r\n#GuildCompanion .namebox .btn {\r\n	position: absolute;\r\n	top: 76px;\r\n	width: 42px;\r\n}\r\n#GuildCompanion .namebox .btn_ok {\r\n	left: 58px;\r\n}\r\n#GuildCompanion .namebox .btn_cancel {\r\n	left: 104px;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/GuildCompanion/GuildCompanion.js
+/**
+* Helper: query inside shadow root
+*/
+function _root$14() {
+	return GuildCompanion.getRoot();
+}
 function open(mode) {
 	_mode = mode;
 	if (!GuildCompanion.__active) GuildCompanion.append();
-	const root = GuildCompanion._shadow;
+	const root = _root$14();
 	const companion = root.querySelector(".win.companion");
 	const nameWin = root.querySelector(".win.namebox");
 	const input = root.querySelector(".guildname");
+	const strings = MODE_STRINGS[mode] || MODE_STRINGS.create;
+	root.querySelector(".name_title").textContent = DB.getMessage(strings.title[0], strings.title[1]);
+	root.querySelector(".name_label").textContent = DB.getMessage(strings.label[0], strings.label[1]);
+	input.value = "";
 	if (mode === "disband") {
 		companion.classList.add("hidden");
 		nameWin.classList.add("visible");
-		root.querySelector(".name_title").textContent = "Disband the Guild";
-		root.querySelector(".name_label").textContent = "Enter Guild Name";
-		input.value = "";
 		input.focus();
 	} else {
 		companion.classList.remove("hidden");
 		nameWin.classList.remove("visible");
-		root.querySelector(".name_title").textContent = "Create Guild";
-		root.querySelector(".name_label").textContent = "Guild Name";
-		input.value = "";
 	}
 	center();
 }
@@ -228036,7 +229034,7 @@ function center() {
 	host.style.left = `${Math.max(0, Math.round((w - rect.width) / 2))}px`;
 	host.style.top = `${Math.max(0, Math.round((h - rect.height) / 2))}px`;
 }
-var GuildCompanion, _mode, GuildCompanion_default;
+var GuildCompanion, _mode, MODE_STRINGS, GuildCompanion_default;
 var init_GuildCompanion = __esmMin((() => {
 	init_Renderer();
 	init_SessionStorage();
@@ -228052,11 +229050,22 @@ var init_GuildCompanion = __esmMin((() => {
 	_mode = "create";
 	GuildCompanion.onRequestCreateGuild = function onRequestCreateGuild() {};
 	GuildCompanion.onRequestBreakGuild = function onRequestBreakGuild() {};
+	MODE_STRINGS = {
+		create: {
+			title: [2076, "Create Guild"],
+			label: [2077, "Guild Name"]
+		},
+		disband: {
+			title: [2088, "Disband the Guild"],
+			label: [2089, "Enter Guild Name"]
+		}
+	};
 	GuildCompanion.init = function init() {
-		const root = this._shadow;
-		this.draggable(root.querySelector(".companion .titlebar"));
+		const root = _root$14();
 		const nameWin = root.querySelector(".win.namebox");
 		const input = root.querySelector(".guildname");
+		this.draggable(root.querySelector(".companion .titlebar"));
+		this.draggable(root.querySelector(".namebox .titlebar"));
 		const closeAll = () => {
 			GuildCompanion.remove();
 		};
@@ -228071,7 +229080,9 @@ var init_GuildCompanion = __esmMin((() => {
 		const submit = () => {
 			const name = input.value.trim();
 			if (!name.length) {
-				input.focus();
+				UIManager.showMessageBox(DB.getMessage(2080, "You must enter the name of your guild."), "ok", () => {
+					input.focus();
+				});
 				return;
 			}
 			if (_mode === "disband") {
@@ -228227,13 +229238,13 @@ var init_SkillDescription = __esmMin((() => {
 //#region src/UI/Components/Guild/Guild.html?raw
 var Guild_default$2;
 var init_Guild$3 = __esmMin((() => {
-	Guild_default$2 = "<div id=\"Guild\">\r\n	<div class=\"titlebar\">\r\n		<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n		<div class=\"right\">\r\n			<ui-button\r\n				class=\"base close\"\r\n				bg=\"basic_interface/sys_close_off.bmp\"\r\n				hover=\"basic_interface/sys_close_on.bmp\"\r\n			></ui-button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n\r\n	<div class=\"tabs\">\r\n		<!--\r\n		--><button data-flag=\"0\" class=\"info\"><ui-text msg=\"340\">Guild Info</ui-text></button><!--\r\n		--><button data-flag=\"1\" class=\"members\"><ui-text msg=\"341\">Guildsmen Info</ui-text></button><!--\r\n		--><button data-flag=\"2\" class=\"positions\"><ui-text msg=\"342\">Position</ui-text></button><!--\r\n		--><button data-flag=\"3\" class=\"skills\"><ui-text msg=\"343\">Guild Skill</ui-text></button><!--\r\n		--><button data-flag=\"4\" class=\"history\"><ui-text msg=\"344\">Expel History</ui-text></button><!--\r\n		--><button data-flag=\"6\" class=\"notice\"><ui-text msg=\"345\">Guild Notice</ui-text></button>\r\n	</div>\r\n\r\n	<div class=\"panel\">\r\n		<!-- INFO TAB -->\r\n		<div class=\"content info\">\r\n			<div class=\"name\"><ui-text msg=\"328\">Guild Name</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"level\"><ui-text msg=\"329\">Guild lvl</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"master\"><ui-text msg=\"330\">Guild Master</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"members\">\r\n				<ui-text msg=\"331\">Guildsmen</ui-text> : <span class=\"numMember\">0</span> /\r\n				<span class=\"maxMember\">0</span> <ui-button bg=\"basic_interface/grp_online.bmp\"></ui-button>\r\n				<span class=\"online\"></span>\r\n			</div>\r\n			<div class=\"avglevel\"><ui-text msg=\"332\">Avg.lvl of Guildsmen</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"territory\"><ui-text msg=\"333\">Territory</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"tendency\">\r\n				<div class=\"title\"><ui-text msg=\"334\">Tendency</ui-text> : <span class=\"value\"></span></div>\r\n				<div class=\"righteous\">R</div>\r\n				<div class=\"wiked\">W</div>\r\n				<div class=\"vulgar\">V</div>\r\n				<div class=\"famed\">F</div>\r\n				<canvas width=\"90\" height=\"90\"></canvas>\r\n			</div>\r\n			<div class=\"exp\"><ui-text msg=\"335\">EXP</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"emblem\"><ui-text msg=\"336\">Emblem</ui-text></div>\r\n			<div class=\"emblem_container\"></div>\r\n			<ui-button class=\"emblem_edit\" bg=\"btn_edit.bmp\" hover=\"btn_edit_a.bmp\" down=\"btn_edit_b.bmp\">\r\n				<input type=\"file\" />\r\n			</ui-button>\r\n\r\n			<div class=\"tax\"><ui-text msg=\"337\">Tax Point</ui-text> : <span class=\"value\">0</span></div>\r\n			<div class=\"ally\"><ui-text msg=\"338\">Alliance</ui-text></div>\r\n			<div class=\"ally_list\"></div>\r\n			<div class=\"hostile\"><ui-text msg=\"339\">Antagonist</ui-text></div>\r\n			<div class=\"hostile_list\"></div>\r\n		</div>\r\n\r\n		<!-- MEMBERS TAB -->\r\n		<div class=\"content members\">\r\n			<table>\r\n				<thead>\r\n					<tr>\r\n						<th class=\"name\"><ui-text msg=\"407\">Name</ui-text></th>\r\n						<th class=\"position\"><ui-text msg=\"503\">Position</ui-text></th>\r\n						<th class=\"job\"><ui-text msg=\"504\">Job</ui-text></th>\r\n						<th class=\"level\"><ui-text msg=\"408\">Level</ui-text></th>\r\n						<th class=\"note\"><ui-text msg=\"505\">Note</ui-text></th>\r\n						<th class=\"devotion\"><ui-text msg=\"506\">Devotion</ui-text></th>\r\n						<th class=\"tax\"><ui-text msg=\"507\">Tax Point</ui-text></th>\r\n					</tr>\r\n				</thead>\r\n				<tbody>\r\n					<tr class=\"MemberView\">\r\n						<td class=\"name\">\r\n							<canvas width=\"30\" height=\"30\"></canvas>\r\n							<span class=\"value\"></span>\r\n						</td>\r\n						<td class=\"position\"></td>\r\n						<td class=\"job\"></td>\r\n						<td class=\"level\"></td>\r\n						<td class=\"note\"></td>\r\n						<td class=\"devotion\"></td>\r\n						<td class=\"tax\"></td>\r\n					</tr>\r\n				</tbody>\r\n			</table>\r\n		</div>\r\n\r\n		<!-- POSITIONS TAB -->\r\n		<div class=\"content positions\">\r\n			<table>\r\n				<thead>\r\n					<tr>\r\n						<th class=\"id\"><ui-text msg=\"510\">Rank</ui-text></th>\r\n						<th class=\"title\"><ui-text msg=\"511\">Position Title</ui-text></th>\r\n						<th class=\"invite\"><ui-text msg=\"512\">Invitation</ui-text></th>\r\n						<th class=\"punish\"><ui-text msg=\"513\">Punish</ui-text></th>\r\n						<th class=\"tax\"><ui-text msg=\"514\">Tax</ui-text></th>\r\n					</tr>\r\n				</thead>\r\n				<tbody>\r\n					<tr class=\"PositionView\">\r\n						<td class=\"id\"></td>\r\n						<td class=\"title\">\r\n							<input type=\"text\" value=\"\" />\r\n						</td>\r\n						<td class=\"invite\">\r\n							<ui-button bg=\"checkbox_0.bmp\" class=\"off\"></ui-button>\r\n						</td>\r\n						<td class=\"punish\">\r\n							<ui-button bg=\"checkbox_0.bmp\" class=\"off\"></ui-button>\r\n						</td>\r\n						<td class=\"tax\"><input type=\"text\" value=\"0\" /> %</td>\r\n					</tr>\r\n				</tbody>\r\n			</table>\r\n		</div>\r\n\r\n		<!-- SKILLS TAB -->\r\n		<div class=\"content skills\">\r\n			<div class=\"skill_list\">\r\n				<table>\r\n					<!-- Just to get reference, will be removed -->\r\n					<ui-button\r\n						class=\"btn levelup\"\r\n						bg=\"basic_interface/skill_up_a.bmp\"\r\n						hover=\"basic_interface/skill_up_b.bmp\"\r\n						down=\"basic_interface/skill_up_c.bmp\"\r\n					></ui-button>\r\n				</table>\r\n			</div>\r\n\r\n			<div class=\"footer\">\r\n				<ui-image src=\"basic_interface/btnbar_mid2.bmp\"></ui-image>\r\n				<div class=\"text\">Skill Points: <span class=\"skpoints_count\">0</span></div>\r\n				<ui-button\r\n					class=\"btn apply\"\r\n					bg=\"btn_apply.bmp\"\r\n					hover=\"btn_apply_a.bmp\"\r\n					down=\"btn_apply_b.bmp\"\r\n				></ui-button>\r\n				<ui-button\r\n					class=\"btn reset\"\r\n					bg=\"btn_reset.bmp\"\r\n					hover=\"btn_reset_a.bmp\"\r\n					down=\"btn_reset_b.bmp\"\r\n				></ui-button>\r\n			</div>\r\n		</div>\r\n\r\n		<!-- HISTORY BAN TAB -->\r\n		<div class=\"content history\">\r\n			<table>\r\n				<thead>\r\n					<tr>\r\n						<th class=\"name\"><ui-text msg=\"407\">Name</ui-text></th>\r\n						<th class=\"reason\"><ui-text msg=\"462\">The Reason of Expulsion</ui-text></th>\r\n					</tr>\r\n				</thead>\r\n				<tbody>\r\n					<tr class=\"ExpelView\">\r\n						<td class=\"name\"></td>\r\n						<td class=\"reason\"></td>\r\n					</tr>\r\n				</tbody>\r\n			</table>\r\n		</div>\r\n\r\n		<!-- NOTICE TAB -->\r\n		<div class=\"content notice\">\r\n			<div class=\"subjectTitle\"><ui-text msg=\"515\">Title</ui-text></div>\r\n			<input type=\"text\" class=\"subject\" />\r\n\r\n			<div class=\"noticeTitle\"><ui-text msg=\"516\">Contents</ui-text></div>\r\n			<textarea class=\"notice\"></textarea>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"footer\">\r\n		<ui-image src=\"basic_interface/btnbar_mid2.bmp\"></ui-image>\r\n		<button class=\"btn_disband\" type=\"button\">Disband</button>\r\n		<ui-button class=\"btn_ok\" bg=\"btn_ok.bmp\" hover=\"btn_ok_a.bmp\" down=\"btn_ok_b.bmp\"></ui-button>\r\n	</div>\r\n</div>\r\n";
+	Guild_default$2 = "<div id=\"Guild\">\r\n	<div class=\"titlebar\">\r\n		<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n		<div class=\"right\">\r\n			<ui-button\r\n				class=\"base close\"\r\n				bg=\"basic_interface/sys_close_off.bmp\"\r\n				hover=\"basic_interface/sys_close_on.bmp\"\r\n			></ui-button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n\r\n	<div class=\"tabs\">\r\n		<!--\r\n		--><button data-flag=\"0\" class=\"info\"><ui-text msg=\"340\">Guild Info</ui-text></button><!--\r\n		--><button data-flag=\"1\" class=\"members\"><ui-text msg=\"341\">Guildsmen Info</ui-text></button><!--\r\n		--><button data-flag=\"2\" class=\"positions\"><ui-text msg=\"342\">Position</ui-text></button><!--\r\n		--><button data-flag=\"3\" class=\"skills\"><ui-text msg=\"343\">Guild Skill</ui-text></button><!--\r\n		--><button data-flag=\"4\" class=\"history\"><ui-text msg=\"344\">Expel History</ui-text></button><!--\r\n		--><button data-flag=\"6\" class=\"notice\"><ui-text msg=\"345\">Guild Notice</ui-text></button>\r\n	</div>\r\n\r\n	<div class=\"panel\">\r\n		<!-- INFO TAB -->\r\n		<div class=\"content info\">\r\n			<div class=\"name\"><ui-text msg=\"328\">Guild Name</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"level\"><ui-text msg=\"329\">Guild lvl</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"master\"><ui-text msg=\"330\">Guild Master</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"members\">\r\n				<ui-text msg=\"331\">Guildsmen</ui-text> : <span class=\"numMember\">0</span> /\r\n				<span class=\"maxMember\">0</span>\r\n				<span class=\"online-icon\" data-background=\"basic_interface/grp_online.bmp\"></span>\r\n				<span class=\"online\"></span>\r\n			</div>\r\n			<div class=\"avglevel\"><ui-text msg=\"332\">Avg.lvl of Guildsmen</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"territory\"><ui-text msg=\"333\">Territory</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"tendency\">\r\n				<!-- Label only, with no value and no separator. The chart is the\r\n				     value. See docs/reference/guild/info-tab-legacy.md -->\r\n				<div class=\"title\"><ui-text msg=\"334\">Tendency</ui-text></div>\r\n				<div class=\"righteous\">R</div>\r\n				<div class=\"wiked\">W</div>\r\n				<div class=\"vulgar\">V</div>\r\n				<div class=\"famed\">F</div>\r\n				<canvas width=\"90\" height=\"90\"></canvas>\r\n			</div>\r\n			<div class=\"exp\"><ui-text msg=\"335\">EXP</ui-text> : <span class=\"value\"></span></div>\r\n			<div class=\"emblem\"><ui-text msg=\"336\">Emblem</ui-text></div>\r\n			<!-- The emblem is the picker: one file input, opened by clicking the\r\n			     emblem, by the Edit button or by a drop.\r\n			     See docs/reference/guild/emblem-picker.md -->\r\n			<div class=\"emblem_container\">\r\n				<label class=\"emblem_pick\"><input type=\"file\" accept=\".bmp,.gif,image/bmp,image/gif\" /></label>\r\n			</div>\r\n			<ui-button class=\"emblem_edit\" bg=\"btn_edit.bmp\" hover=\"btn_edit_a.bmp\" down=\"btn_edit_b.bmp\"></ui-button>\r\n\r\n			<div class=\"tax\"><ui-text msg=\"337\">Tax Point</ui-text> : <span class=\"value\">0</span></div>\r\n			<div class=\"ally\"><ui-text msg=\"338\">Alliance</ui-text></div>\r\n			<div class=\"ally_list\"></div>\r\n			<div class=\"hostile\"><ui-text msg=\"339\">Antagonist</ui-text></div>\r\n			<div class=\"hostile_list\"></div>\r\n		</div>\r\n\r\n		<!-- MEMBERS TAB -->\r\n		<div class=\"content members\">\r\n			<table>\r\n				<thead>\r\n					<tr>\r\n						<th class=\"name\"><ui-text msg=\"407\">Name</ui-text></th>\r\n						<th class=\"position\"><ui-text msg=\"503\">Position</ui-text></th>\r\n						<th class=\"job\"><ui-text msg=\"504\">Job</ui-text></th>\r\n						<th class=\"level\"><ui-text msg=\"408\">Level</ui-text></th>\r\n						<th class=\"note\"><ui-text msg=\"505\">Note</ui-text></th>\r\n						<th class=\"devotion\"><ui-text msg=\"506\">Tax</ui-text></th>\r\n						<th class=\"tax\"><ui-text msg=\"507\">Contribution</ui-text></th>\r\n					</tr>\r\n				</thead>\r\n				<tbody>\r\n					<tr class=\"MemberView\">\r\n						<td class=\"name\">\r\n							<canvas width=\"30\" height=\"30\"></canvas>\r\n							<span class=\"value\"></span>\r\n							<span class=\"lastlogin\"></span>\r\n						</td>\r\n						<td class=\"position\"></td>\r\n						<td class=\"job\"></td>\r\n						<td class=\"level\"></td>\r\n						<td class=\"note\"></td>\r\n						<td class=\"devotion\"></td>\r\n						<td class=\"tax\"></td>\r\n					</tr>\r\n				</tbody>\r\n			</table>\r\n		</div>\r\n\r\n		<!-- POSITIONS TAB -->\r\n		<div class=\"content positions\">\r\n			<table>\r\n				<thead>\r\n					<tr>\r\n						<th class=\"id\"><ui-text msg=\"510\">Rank</ui-text></th>\r\n						<th class=\"title\"><ui-text msg=\"511\">Position Title</ui-text></th>\r\n						<th class=\"invite\"><ui-text msg=\"512\">Invitation</ui-text></th>\r\n						<th class=\"punish\"><ui-text msg=\"513\">Punish</ui-text></th>\r\n						<th class=\"storage\"><ui-text msg=\"2499\">Storage</ui-text></th>\r\n						<th class=\"tax\"><ui-text msg=\"514\">Tax</ui-text></th>\r\n					</tr>\r\n				</thead>\r\n				<tbody>\r\n					<tr class=\"PositionView\">\r\n						<td class=\"id\"></td>\r\n						<td class=\"title\">\r\n							<input type=\"text\" value=\"\" />\r\n						</td>\r\n						<td class=\"invite\">\r\n							<div class=\"checkbox off\"></div>\r\n						</td>\r\n						<td class=\"punish\">\r\n							<div class=\"checkbox off\"></div>\r\n						</td>\r\n						<td class=\"storage\">\r\n							<div class=\"checkbox off\"></div>\r\n						</td>\r\n						<td class=\"tax\"><input type=\"text\" value=\"0\" maxlength=\"2\" /> %</td>\r\n					</tr>\r\n				</tbody>\r\n			</table>\r\n		</div>\r\n\r\n		<!-- SKILLS TAB -->\r\n		<div class=\"content skills\">\r\n			<div class=\"skill_list\">\r\n				<!-- Just to get reference, will be removed -->\r\n				<ui-button\r\n					class=\"btn levelup\"\r\n					bg=\"basic_interface/skill_up_a.bmp\"\r\n					hover=\"basic_interface/skill_up_b.bmp\"\r\n					down=\"basic_interface/skill_up_c.bmp\"\r\n				></ui-button>\r\n			</div>\r\n		</div>\r\n\r\n		<!-- HISTORY BAN TAB -->\r\n		<div class=\"content history\">\r\n			<table>\r\n				<thead>\r\n					<tr>\r\n						<th class=\"name\"><ui-text msg=\"407\">Name</ui-text></th>\r\n						<th class=\"reason\"><ui-text msg=\"462\">The Reason of Expulsion</ui-text></th>\r\n					</tr>\r\n				</thead>\r\n				<tbody>\r\n					<tr class=\"ExpelView\">\r\n						<td class=\"name\"></td>\r\n						<td class=\"reason\"></td>\r\n					</tr>\r\n				</tbody>\r\n			</table>\r\n		</div>\r\n\r\n		<!-- NOTICE TAB -->\r\n		<div class=\"content notice\">\r\n			<div class=\"subjectTitle\"><ui-text msg=\"515\">Title</ui-text></div>\r\n			<input type=\"text\" class=\"subject\" />\r\n\r\n			<div class=\"noticeTitle\"><ui-text msg=\"516\">Contents</ui-text></div>\r\n			<textarea class=\"notice\"></textarea>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"footer\">\r\n		<ui-image src=\"basic_interface/btnbar_mid2.bmp\"></ui-image>\r\n		<ui-button\r\n			class=\"btn_disband\"\r\n			bg=\"btn_disband.bmp\"\r\n			hover=\"btn_disband_a.bmp\"\r\n			down=\"btn_disband_b.bmp\"\r\n		></ui-button>\r\n		<ui-button class=\"btn_ok\" bg=\"btn_ok.bmp\" hover=\"btn_ok_a.bmp\" down=\"btn_ok_b.bmp\"></ui-button>\r\n		<div class=\"text skpoints\">Skill Points: <span class=\"skpoints_count\">0</span></div>\r\n		<div class=\"sortlogin\">\r\n			<ui-button bg=\"checkbox_1.bmp\"></ui-button><ui-text msg=\"2864\">Show guild member login status</ui-text>\r\n		</div>\r\n		<!-- The client draws btn_close beside this one at x=92. It is left out on\r\n		     purpose, not missing: it carries the same command id as the titlebar's\r\n		     close button, so it is a duplicate. See Guild.js. -->\r\n		<ui-button class=\"btn btn_use\" bg=\"btn_use.bmp\" hover=\"btn_use_a.bmp\" down=\"btn_use_b.bmp\"></ui-button>\r\n	</div>\r\n\r\n	<!-- The whole window becomes the drop target while a file is dragged over\r\n	     it, the emblem alone being a 24x24 target.\r\n	     See docs/reference/guild/emblem-picker.md -->\r\n	<div class=\"emblem_drop\"><ui-text msg=\"336\">Emblem</ui-text></div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/Guild/Guild.css?raw
 var Guild_default$1;
 var init_Guild$2 = __esmMin((() => {
-	Guild_default$1 = ":host {\r\n	top: 100px;\r\n	left: 100px;\r\n	width: 400px;\r\n	height: 317px;\r\n}\r\n\r\n#Guild {\r\n	position: absolute;\r\n}\r\n\r\n#Guild .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n#Guild .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n#Guild .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#Guild .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#Guild .panel {\r\n	background-color: white;\r\n	padding-right: 2px;\r\n}\r\n#Guild .content {\r\n	position: relative;\r\n	box-sizing: border-box;\r\n	overflow-y: auto;\r\n	padding: 2px;\r\n	border-top: 1px solid #c6c6c6;\r\n	height: 250px;\r\n}\r\n\r\n#Guild .tabs {\r\n	height: 23px;\r\n	background-color: #b5b6b5;\r\n	white-space: nowrap;\r\n}\r\n#Guild .tabs button.active {\r\n	background-color: #fff;\r\n}\r\n#Guild .tabs button {\r\n	width: 64px;\r\n	height: 23px;\r\n	margin-left: 1px;\r\n	margin-right: 1px;\r\n	margin-top: 1px;\r\n	padding: 0;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n	background-color: #cecece;\r\n	border: 0px;\r\n	padding: 3px;\r\n}\r\n#Guild .footer {\r\n	width: 100%;\r\n	height: 27px;\r\n	background-repeat: repeat-x;\r\n	background-color: transparent;\r\n	position: relative;\r\n	border-radius: 0px 0px 3px 3px;\r\n}\r\n#Guild .footer .btn_ok {\r\n	display: none;\r\n	position: absolute;\r\n	bottom: 4px;\r\n	right: 4px;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n}\r\n\r\n#Guild .content.members,\r\n#Guild .content.positions,\r\n#Guild .content.skills,\r\n#Guild .content.history,\r\n#Guild .content.notice {\r\n	display: none;\r\n}\r\n\r\n/*\r\n * Guild Info CSS\r\n */\r\n#Guild .content.info .exp,\r\n#Guild .content.info .emblem,\r\n#Guild .content.info .tax,\r\n#Guild .content.info .ally,\r\n#Guild .content.info .ally_list,\r\n#Guild .content.info .hostile,\r\n#Guild .content.info .hostile_list {\r\n	position: absolute;\r\n	left: 201px;\r\n}\r\n\r\n#Guild .content.info .name {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 13px;\r\n}\r\n#Guild .content.info .level {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 28px;\r\n}\r\n#Guild .content.info .master {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 45px;\r\n}\r\n#Guild .content.info .members {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 61px;\r\n}\r\n#Guild .content.info .avglevel {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 77px;\r\n}\r\n#Guild .content.info .territory {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 93px;\r\n}\r\n#Guild .content.info .tendency {\r\n	position: absolute;\r\n	left: 9px;\r\n	top: 114px;\r\n}\r\n#Guild .content.info .tendency .title {\r\n	position: absolute;\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n#Guild .content.info .tendency .righteous {\r\n	position: absolute;\r\n	left: 50px;\r\n	top: 16px;\r\n	text-align: center;\r\n}\r\n#Guild .content.info .tendency .wiked {\r\n	position: absolute;\r\n	left: 50px;\r\n	top: 120px;\r\n	text-align: center;\r\n}\r\n#Guild .content.info .tendency .vulgar {\r\n	position: absolute;\r\n	left: 0px;\r\n	top: 68px;\r\n}\r\n#Guild .content.info .tendency .famed {\r\n	position: absolute;\r\n	left: 102px;\r\n	top: 68px;\r\n}\r\n#Guild .content.info .tendency canvas {\r\n	position: absolute;\r\n	top: 30px;\r\n	left: 10px;\r\n}\r\n\r\n#Guild .content.info .members ui-button {\r\n	margin-left: 5px;\r\n	vertical-align: -4px;\r\n	border: none;\r\n	width: 15px;\r\n	height: 15px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n#Guild .content.info .exp {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 13px;\r\n}\r\n#Guild .content.info .emblem {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 37px;\r\n}\r\n#Guild .content.info .tax {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 61px;\r\n}\r\n#Guild .content.info .ally {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 103px;\r\n}\r\n#Guild .content.info .ally_list {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 118px;\r\n	white-space: pre;\r\n	width: 168px;\r\n	height: 48px;\r\n	background: #cecece;\r\n}\r\n#Guild .content.info .hostile {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 177px;\r\n}\r\n#Guild .content.info .hostile_list {\r\n	position: absolute;\r\n	left: 201px;\r\n	top: 193px;\r\n	white-space: pre;\r\n	width: 168px;\r\n	height: 48px;\r\n	background: #cecece;\r\n}\r\n\r\n#Guild .content.info .ally_list div,\r\n#Guild .content.info .hostile_list div {\r\n	padding: 2px;\r\n}\r\n#Guild .content.info .ally_list div.active,\r\n#Guild .content.info .hostile_list div.active {\r\n	background-color: #739eef;\r\n	padding: 2px;\r\n}\r\n\r\n#Guild .content.info .emblem_container {\r\n	width: 24px;\r\n	height: 24px;\r\n	position: absolute;\r\n	top: 29px;\r\n	left: 300px;\r\n	background-color: #709ce7;\r\n	background-repeat: no-repeat;\r\n}\r\n#Guild .content.info .emblem_edit {\r\n	position: absolute;\r\n	top: 30px;\r\n	left: 330px;\r\n	width: 42px;\r\n	height: 20px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.info .emblem_edit input {\r\n	opacity: 0;\r\n}\r\n\r\n/*\r\n * Guild Members\r\n */\r\n#Guild .content.members table {\r\n	border-spacing: 0;\r\n	border-collapse: collapse;\r\n}\r\n#Guild .content.members tbody tr {\r\n	border-left: 1px solid #c2c2c2;\r\n	border-right: 1px solid #c2c2c2;\r\n}\r\n#Guild .content.members td {\r\n	border-bottom: 1px solid #c2c2c2;\r\n}\r\n#Guild .content.members tr.active td {\r\n	background-color: #739eef !important;\r\n}\r\n#Guild .content.members th {\r\n	border: 1px solid #c2c2c2;\r\n}\r\n#Guild .content.members td,\r\n#Guild .content.members th {\r\n	text-align: left;\r\n	font-weight: normal;\r\n	padding-left: 2px;\r\n	height: 35px;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n}\r\n#Guild .content.members tr.online td {\r\n	background-color: #efe;\r\n}\r\n#Guild .content.members tr canvas {\r\n	display: inline;\r\n}\r\n#Guild .content.members .name {\r\n	width: 85px;\r\n	max-width: 85px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .name canvas {\r\n	vertical-align: -11px;\r\n}\r\n#Guild .content.members .position {\r\n	width: 70px;\r\n	max-width: 70px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .position select {\r\n	width: 65px;\r\n	max-width: 65px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .job {\r\n	width: 43px;\r\n	max-width: 43px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .level {\r\n	width: 30px;\r\n}\r\n#Guild .content.members .note {\r\n	width: 41px;\r\n}\r\n#Guild .content.members .devotion {\r\n	width: 42px;\r\n}\r\n#Guild .content.members .tax {\r\n	width: 63px;\r\n	max-width: 63px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n\r\n/*\r\n * Guild Positions\r\n */\r\n#Guild .content.positions table {\r\n	border-spacing: 0;\r\n	border-collapse: collapse;\r\n}\r\n#Guild .content.positions tr.active {\r\n	border: none;\r\n}\r\n#Guild .content.positions tr.active td {\r\n	background-color: #739eef;\r\n}\r\n#Guild .content.positions th,\r\n#Guild .content.positions td {\r\n	height: 20px;\r\n	font-weight: normal;\r\n	text-align: left;\r\n	padding: 2px 2px 0px 3px;\r\n	border: 1px solid #c2c2c2;\r\n}\r\n#Guild .content.positions .id {\r\n	width: 57px;\r\n}\r\n#Guild .content.positions .title {\r\n	width: 158px;\r\n	padding: 0px;\r\n}\r\n#Guild .content.positions .invite {\r\n	width: 68px;\r\n}\r\n#Guild .content.positions .punish {\r\n	width: 68px;\r\n}\r\n#Guild .content.positions .tax {\r\n	width: 68px;\r\n	padding: 0;\r\n}\r\n#Guild .content.positions input {\r\n	border: none;\r\n	background-color: white;\r\n	padding: 0;\r\n	height: 18px;\r\n}\r\n#Guild .content.positions .title input {\r\n	padding-left: 2px;\r\n	width: 140px;\r\n	margin-left: 4px;\r\n}\r\n#Guild .content.positions .tax input {\r\n	width: 28px;\r\n	padding-left: 2px;\r\n	margin-left: 3px;\r\n}\r\n#Guild .content.positions ui-button {\r\n	border: none;\r\n	width: 10px;\r\n	height: 10px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n/*\r\n * Guild Skills\r\n */\r\n#Guild .content.skills {\r\n	overflow-y: hidden;\r\n}\r\n#Guild .content.skills .skill_list {\r\n	overflow-y: auto;\r\n	padding: 5px;\r\n	border-top: 1px solid #c6c6c6;\r\n	width: 394px;\r\n	height: 215px;\r\n}\r\n#Guild .content.skills .skill_list table {\r\n	border: none;\r\n	border-spacing: 0px;\r\n	padding-top: 5px;\r\n	width: 100%;\r\n}\r\n#Guild .content.skills .skill_list td,\r\n#Guild .content.skills .skill_list .name {\r\n	padding: 0px;\r\n}\r\n\r\n#Guild .content.skills .levelup {\r\n	border: 0;\r\n	width: 24px;\r\n	height: 24px;\r\n	padding: 0;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#Guild .content.skills td.type {\r\n	vertical-align: bottom;\r\n}\r\n\r\n#Guild .content.skills .skill_list .icon {\r\n	padding-left: 15px;\r\n}\r\n#Guild .content.skills .skill_list .levelupcontainer {\r\n	padding-left: 5px;\r\n	padding-right: 5px;\r\n	width: 24px;\r\n}\r\n#Guild .content.skills .skill_list div.name {\r\n	line-height: 12px;\r\n	white-space: nowrap;\r\n	padding-left: 5px;\r\n	white-space: nowrap;\r\n	width: 120px;\r\n	padding-top: 4px;\r\n	height: 28px;\r\n}\r\n#Guild .content.skills .disabled .icon,\r\n#Guild .content.skills .disabled .name {\r\n	opacity: 0.5;\r\n}\r\n#Guild .content.skills .disabled .consume,\r\n#Guild .content.skills .disabled .level {\r\n	display: none;\r\n}\r\n#Guild .content.skills .currentDown,\r\n#Guild .content.skills .currentUp {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n\r\n#Guild .content.skills .selected.disabled .selectable {\r\n	background-color: #b5b5b5;\r\n}\r\n#Guild .content.skills .selected.passive .selectable {\r\n	background-color: #73d5ee;\r\n}\r\n#Guild .content.skills .selected.active .selectable {\r\n	background-color: #739cee;\r\n}\r\n\r\n#Guild .content.skills .footer {\r\n	width: 100%;\r\n	height: 27px;\r\n	background-repeat: repeat-x;\r\n	background-color: transparent;\r\n	position: relative;\r\n}\r\n#Guild .content.skills .footer .text {\r\n	padding-top: 7px;\r\n	margin-left: 10px;\r\n}\r\n\r\n#Guild .footer .btn_disband {\r\n	display: none;\r\n	position: absolute;\r\n	bottom: 4px;\r\n	right: 4px;\r\n	padding: 2px 10px;\r\n	font-family: Arial, sans-serif;\r\n	font-size: 11px;\r\n	cursor: pointer;\r\n}\r\n\r\n#Guild .content.skills .footer .btn {\r\n	position: absolute;\r\n	top: 5px;\r\n	border: 0;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	display: none;\r\n}\r\n#Guild .content.skills .footer .apply {\r\n	right: 70px;\r\n}\r\n#Guild .content.skills .footer .reset {\r\n	right: 20px;\r\n}\r\n\r\n/*\r\n * Guild History\r\n */\r\n#Guild .content.history table {\r\n	border-spacing: 0;\r\n	border-collapse: collapse;\r\n}\r\n#Guild .content.history th,\r\n#Guild .content.history td {\r\n	font-weight: normal;\r\n	text-align: left;\r\n	padding: 5px 5px 0px 5px;\r\n	border: 1px solid #c2c2c2;\r\n}\r\n#Guild .content.history .name {\r\n	width: 90px;\r\n}\r\n#Guild .content.history .reason {\r\n	width: 275px;\r\n}\r\n\r\n/*\r\n * Guild Notice\r\n */\r\n#Guild .notice .subjectTitle {\r\n	position: absolute;\r\n	top: 13px;\r\n	left: 9px;\r\n}\r\n#Guild .notice .subject {\r\n	position: absolute;\r\n	top: 11px;\r\n	left: 50px;\r\n	padding-left: 5px;\r\n	height: 14px;\r\n	border: none;\r\n	width: 333px;\r\n	background-color: #eee;\r\n}\r\n#Guild .notice .noticeTitle {\r\n	position: absolute;\r\n	top: 36px;\r\n	left: 9px;\r\n}\r\n#Guild .notice .notice {\r\n	position: absolute;\r\n	top: 52px;\r\n	left: 9px;\r\n	padding-left: 5px;\r\n	margin: 0px;\r\n	width: 372px;\r\n	height: 168px;\r\n	background-color: #eee;\r\n	border: none;\r\n	resize: none;\r\n}\r\n";
+	Guild_default$1 = ":host {\r\n	top: 100px;\r\n	left: 100px;\r\n	width: 400px;\r\n	height: 317px;\r\n}\r\n\r\n/* The size the client gives this window: UIWindow::SetSize(400, 317), from a\r\n * pair of read-only globals shared by all six tabs. Without a width here the\r\n * frame is shrink-to-fit, so anything that widens a pane - a scrollbar's\r\n * gutter, a longer list, a different tab - moves the frame and drags the\r\n * floated close button with it. */\r\n#Guild {\r\n	position: absolute;\r\n	width: 400px;\r\n	height: 317px;\r\n}\r\n\r\n/* Dropping a file to change the emblem is a web addition, so there is no client\r\n * state to copy. Hidden until a file is actually dragged over the window, and\r\n * only for the guild master on the tab the emblem lives on.\r\n * See docs/reference/guild/emblem-picker.md */\r\n#Guild .emblem_drop {\r\n	display: none;\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	width: 100%;\r\n	height: 100%;\r\n	z-index: 10;\r\n	align-items: center;\r\n	justify-content: center;\r\n	border: 2px dashed #707070;\r\n	border-radius: 3px;\r\n	background-color: rgba(255, 255, 255, 0.75);\r\n	box-sizing: border-box;\r\n	font-size: 12px;\r\n	font-weight: bold;\r\n}\r\n#Guild .emblem_drop.dragover {\r\n	display: flex;\r\n}\r\n\r\n#Guild .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n#Guild .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	/* Top, not middle: the client puts this at a literal y, and a baseline\r\n	 * alignment lands it on a fraction of a pixel instead. */\r\n	vertical-align: top;\r\n}\r\n/* SetPos(W - 14, 3) with sys_close_off.bmp at 11x11 - so (386, 3). The 3px\r\n * right margin puts the 11px button's left edge on 386 in a 400 frame. */\r\n#Guild .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n	margin-top: 3px;\r\n	line-height: 0;\r\n}\r\n#Guild .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n/* The client's content pane is (1, 41, 398, 276) painted over (0, 41, 400, 276),\r\n * so the only edges it leaves are the 1px verticals at x=0 and x=399 - there is\r\n * no horizontal rule under the tabs. The bottom 29 of that 276 are overpainted\r\n * by the button bar, which is a sibling of this box, so the strips this panel\r\n * has to draw are exactly its own height.\r\n *\r\n * A shadow rather than a border on purpose: every band in this window is a\r\n * border-box width that already includes its own separator, and the totals are\r\n * pinned (members 370 in a 375 band, positions a hard 376, skills a hard 398).\r\n * A border would not grow this box, it would take those 2px out of .content and\r\n * walk every measured separator inward. An inset shadow paints in the same\r\n * place and takes part in no layout at all. */\r\n#Guild .panel {\r\n	background-color: white;\r\n	padding-right: 2px;\r\n	box-shadow:\r\n		inset 1px 0 #c8c8c8,\r\n		inset -1px 0 #c8c8c8;\r\n}\r\n#Guild .content {\r\n	position: relative;\r\n	box-sizing: border-box;\r\n	overflow-y: auto;\r\n	padding: 2px;\r\n	height: 247px;\r\n}\r\n\r\n/* The client's tab band is 24px, y 17..41, with the 23px cells sitting 1px\r\n * inside it. At 23 the cells overhang the band and the panel's white shows\r\n * through the 2px gutters between them. */\r\n#Guild .tabs {\r\n	height: 24px;\r\n	background-color: #b4b4b4;\r\n	white-space: nowrap;\r\n}\r\n#Guild .tabs button.active {\r\n	background-color: #fff;\r\n}\r\n/* A tab this member's access mask refuses - a declared deviation. `not-allowed`\r\n * covers only the custom cursor being off; the game cursor is set in\r\n * GUIComponent. See docs/reference/guild/member-view.md */\r\n#Guild .tabs button.denied {\r\n	color: #8c8c8c;\r\n	cursor: not-allowed;\r\n}\r\n/* The client paints a 64x23 cell at x = 1 + 66k and puts a 62x15 label box\r\n * inside it at (3 + 66k, 22) - so the label is inset 2px left and 4px top, and\r\n * is 62 wide, not 58. The margins below already reproduce the 66px pitch; the\r\n * asymmetric padding is what lands the text box on the client's own rect.\r\n *\r\n * Font size 12 is the client's too. A label that does not fit gets ellipsised\r\n * rather than widened, which is also what the client does - it measures the\r\n * string and appends a literal \"...\" while it exceeds 62px - so the clipped\r\n * \"Guild Notice\" is faithful behaviour, not a layout bug. Widening the button\r\n * would be the bug: it feeds straight back into the frame's width. */\r\n#Guild .tabs button {\r\n	width: 64px;\r\n	height: 23px;\r\n	margin-left: 1px;\r\n	margin-right: 1px;\r\n	margin-top: 1px;\r\n	padding: 4px 0 0 2px;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n	background-color: #c8c8c8;\r\n	border: 0px;\r\n	font-family: inherit;\r\n	font-size: 12px;\r\n	/* The UA's `font` shorthand on form controls resets font-size-adjust, so a\r\n	 * button opts out of the x-height normalisation every other element in the\r\n	 * window runs under and its labels end up a different apparent size. */\r\n	font-size-adjust: inherit;\r\n	/* The client draws the label at the top-left of the box with no alignment\r\n	 * flag. A button centres by default, which makes each label start at a\r\n	 * different x depending on how long it is. */\r\n	text-align: left;\r\n}\r\n/* btnbar_mid2.bmp is 29 tall, so the client's bar covers y 288..317. */\r\n#Guild .footer {\r\n	width: 100%;\r\n	height: 29px;\r\n	background-repeat: repeat-x;\r\n	background-color: transparent;\r\n	position: relative;\r\n	border-radius: 0px 0px 3px 3px;\r\n}\r\n/* SetPos(W - 61, H - 23) = (339, 294), inside a bar that starts at 288.\r\n *\r\n * Deliberately 1px above the client. The bar is 29 tall and the button 20, so\r\n * dead centre is 4.5 and the client's own 6 leaves 6 above against 3 below. The\r\n * client is not self-consistent here either - it puts btn_disBand at 292 and\r\n * btn_use at 293 in the same bar - so 5 both centres this button as closely as\r\n * an integer allows and lands it on the same line as `.footer .btn`. */\r\n#Guild .footer .btn_ok {\r\n	display: none;\r\n	position: absolute;\r\n	top: 5px;\r\n	left: 339px;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n}\r\n\r\n#Guild .content.members,\r\n#Guild .content.positions,\r\n#Guild .content.skills,\r\n#Guild .content.history,\r\n#Guild .content.notice {\r\n	display: none;\r\n}\r\n\r\n/*\r\n * Guild Info CSS\r\n */\r\n/* The client's Info tab is a fixed layout drawn at literal coordinates and it\r\n * never scrolls - the modern clients' lowest element is the antagonist box at\r\n * 229..277, well clear of the bar at 288, and ver12's tendency label at 281 is\r\n * simply painted past it onto the same surface. So the pane is not a scroll\r\n * container at all: `visible` rather than the `hidden` this used to carry,\r\n * which would clip that label instead of letting it through. */\r\n#Guild .content.info {\r\n	overflow-y: visible;\r\n}\r\n#Guild .content.info .exp,\r\n#Guild .content.info .emblem,\r\n#Guild .content.info .tax,\r\n#Guild .content.info .ally,\r\n#Guild .content.info .ally_list,\r\n#Guild .content.info .hostile,\r\n#Guild .content.info .hostile_list {\r\n	position: absolute;\r\n	/* The client's right column is at x=200, not 201. */\r\n	left: 200px;\r\n}\r\n\r\n#Guild .content.info .name {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 8px;\r\n}\r\n#Guild .content.info .level {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 24px;\r\n}\r\n#Guild .content.info .master {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 40px;\r\n}\r\n#Guild .content.info .members {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 56px;\r\n}\r\n#Guild .content.info .avglevel {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 72px;\r\n}\r\n#Guild .content.info .territory {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 88px;\r\n}\r\n/* Both legacy, drawn by ver12 only, so off unless the deployment asks through\r\n * guild.showTendency and guild.showTaxPoint.\r\n * See docs/reference/guild/info-tab-legacy.md */\r\n#Guild .content.info .tendency,\r\n#Guild .content.info .tax {\r\n	display: none;\r\n}\r\n#Guild .content.info.shows_tendency .tendency,\r\n#Guild .content.info.shows_taxpoint .tax {\r\n	display: block;\r\n}\r\n/* The client puts the label at (8, 161) and hangs the chart off it, the last\r\n * of its bottom labels landing at y=281. That is past this pane's 288 once the\r\n * glyph box is counted, but the client has no pane edge there - it fills one\r\n * surface from y=41 to the window's full 317 and paints the chart over it. So\r\n * the block keeps the client's coordinates and is allowed out of the pane\r\n * instead of being nudged up to fit. `visible` on both axes, so this is not a\r\n * scroll container and cannot raise a bar for the overflow. */\r\n#Guild .content.info .tendency {\r\n	position: absolute;\r\n	left: 8px;\r\n	top: 120px;\r\n	/* Over the button bar, which follows in the DOM and would otherwise cover\r\n	 * the bottom label. The client draws its chrome first and every label\r\n	 * after, so this is the client's own order. */\r\n	z-index: 1;\r\n}\r\n/* The .tendency box is absolutely positioned with no width and only absolutely\r\n * positioned children, so it shrink-to-fits to zero and the label wraps after\r\n * the first word. */\r\n#Guild .content.info .tendency .title {\r\n	position: absolute;\r\n	top: 0px;\r\n	left: 0px;\r\n	white-space: nowrap;\r\n}\r\n/* Four labels, not three: the client draws R at (63, 176), V at (11, 227),\r\n * W at (64, 281) and F at (116, 227) - a full compass. Horizontal is honor,\r\n * V at -100 and F at +100; vertical is virtue, R at +100 and W at -100. */\r\n#Guild .content.info .tendency .righteous {\r\n	position: absolute;\r\n	left: 55px;\r\n	top: 15px;\r\n}\r\n#Guild .content.info .tendency .wiked {\r\n	position: absolute;\r\n	left: 56px;\r\n	top: 120px;\r\n}\r\n#Guild .content.info .tendency .vulgar {\r\n	position: absolute;\r\n	left: 3px;\r\n	top: 66px;\r\n}\r\n#Guild .content.info .tendency .famed {\r\n	position: absolute;\r\n	left: 108px;\r\n	top: 66px;\r\n}\r\n/* Frame at (23, 188), 90x90. */\r\n#Guild .content.info .tendency canvas {\r\n	position: absolute;\r\n	top: 27px;\r\n	left: 15px;\r\n}\r\n\r\n/* The client blits grp_online.bmp at (128, 95) - it is an image, not a widget,\r\n * with no hover and nothing to click. A ui-button here loaded the right bitmap\r\n * but also put the game cursor into its \"click\" state over a decoration. */\r\n#Guild .content.info .members .online-icon {\r\n	display: inline-block;\r\n	margin-left: 5px;\r\n	vertical-align: -4px;\r\n	width: 15px;\r\n	height: 15px;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#Guild .content.info .exp {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 8px;\r\n}\r\n/* At max guild level 2022 and mars26 paint this line red. Label and value are\r\n * one string in a single draw call there, so the colour takes the whole line\r\n * and not just the figure. ver12 blanks the figure instead and stays black. */\r\n#Guild .content.info .exp.maxlevel {\r\n	color: #ff0000;\r\n}\r\n#Guild .content.info .emblem {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 32px;\r\n}\r\n/* (200, 97) - the one right-column slot only ver12 fills, between Emblem at 73\r\n * and Alliance at 139. It had been sitting 5px low at 102, which nothing caught\r\n * because the modern clients draw nothing here to compare against. */\r\n#Guild .content.info .tax {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 56px;\r\n}\r\n#Guild .content.info .ally {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 98px;\r\n}\r\n/* 168x48 holds exactly three of the client's 16px rows, which is also where\r\n * its draw loop hard-stops. Clipped rather than scrolled - no guild tab in any\r\n * client puts a bar here. */\r\n#Guild .content.info .ally_list {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 114px;\r\n	white-space: pre;\r\n	width: 168px;\r\n	height: 48px;\r\n	overflow: hidden;\r\n	background: #c8c8c8;\r\n}\r\n#Guild .content.info .hostile {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 172px;\r\n}\r\n#Guild .content.info .hostile_list {\r\n	position: absolute;\r\n	left: 200px;\r\n	top: 188px;\r\n	white-space: pre;\r\n	width: 168px;\r\n	height: 48px;\r\n	overflow: hidden;\r\n	background: #c8c8c8;\r\n}\r\n\r\n/* The client's rows are a 16px pitch starting 2px inside the box, with their\r\n * text at x=204 - four past the box's own 200 - and a selection band only 80\r\n * wide, which is the width of its hit test rather than of the box. Ours were\r\n * a 2px padding on a 12px/1.2 line, so an 18.4px pitch at x=202 with the\r\n * highlight running the full 168. */\r\n#Guild .content.info .ally_list div,\r\n#Guild .content.info .hostile_list div {\r\n	height: 16px;\r\n	line-height: 16px;\r\n	padding: 0 0 0 4px;\r\n	box-sizing: border-box;\r\n}\r\n#Guild .content.info .ally_list div.active,\r\n#Guild .content.info .hostile_list div.active {\r\n	background-color: #709fed;\r\n	width: 80px;\r\n}\r\n\r\n/* The client draws the emblem at (300, 65) in a 26x26 frame at (299, 64), and\r\n * puts the edit button at (W - w - 8, 69) = (350, 69) - w being btn_edit.bmp's\r\n * own 42x20. The pane's padding box starts at y=41, so a faithful top is the\r\n * client's y minus 41: 24 here and 28 on the button.\r\n *\r\n * The two tops below are deliberately 3px and 1px past that, and this is the one\r\n * place in this window where the port lays out better than the binary instead of\r\n * reproducing it. The client aligns nothing in this row - the \"Emblem\" label,\r\n * the 24px icon and the 20px button land on three different vertical centres,\r\n * 80.2 / 77 / 79, which reads as a row sagging to the right. Moving the icon and\r\n * the button puts all three on 80. The label itself does not move: it belongs to\r\n * the left column's rhythm (.emblem 32, .tax 56, .ally 98) and shifting it would\r\n * break that. */\r\n#Guild .content.info .emblem_container {\r\n	width: 24px;\r\n	height: 24px;\r\n	position: absolute;\r\n	top: 27px;\r\n	left: 300px;\r\n	background-color: #709fed;\r\n	background-repeat: no-repeat;\r\n	/* The client fills a 26x26 frame at (299, 64) before blitting the 24x24\r\n	 * emblem at (300, 65), so the fill shows as a 1px ring. A shadow rather than\r\n	 * a border, to leave the box at the emblem's own size. */\r\n	box-shadow: 0 0 0 1px #709fed;\r\n}\r\n/* The emblem doubles as the picker's label, so clicking it opens the file\r\n * dialog and the cursor reads it as clickable. Hidden for anyone but the guild\r\n * master. See docs/reference/guild/emblem-picker.md */\r\n#Guild .content.info .emblem_pick {\r\n	display: block;\r\n	height: 100%;\r\n}\r\n#Guild .content.info .emblem_pick input {\r\n	display: none;\r\n}\r\n/* 29 rather than the client's 28 - see the emblem_container note above. */\r\n#Guild .content.info .emblem_edit {\r\n	position: absolute;\r\n	top: 29px;\r\n	left: 350px;\r\n	width: 42px;\r\n	height: 20px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	overflow: hidden;\r\n}\r\n\r\n/*\r\n * Guild Members\r\n */\r\n/* Alone among the tabs, this one insets its bar a further pixel - SetPos(W-16)\r\n * against the W-15 that Positions, Skills and Expel History all use. Offsetting\r\n * the bar rather than narrowing the pane keeps the column separators where they\r\n * were measured. !important because Scrollbar.js writes right: 0px inline when\r\n * it attaches, which no selector outranks. */\r\n#Guild .content.members > .ro-custom-scrollbar {\r\n	right: 1px !important;\r\n}\r\n/* The client's list frame starts at x=5 and its row band at x=6; the pane's own\r\n * 2px padding puts us at 2, so 3px of margin makes up the difference. */\r\n#Guild .content.members table {\r\n	border-spacing: 0;\r\n	border-collapse: collapse;\r\n	margin-left: 3px;\r\n}\r\n/* #c8c8c8 is the client's own separator colour - palette (14, 6) of\r\n * colorchip.bmp, the same entry its pane fills and list frames read. Every grid\r\n * line in this window uses it. */\r\n#Guild .content.members tbody tr {\r\n	border-left: 1px solid #c8c8c8;\r\n	border-right: 1px solid #c8c8c8;\r\n}\r\n#Guild .content.members td {\r\n	border-bottom: 1px solid #c8c8c8;\r\n}\r\n#Guild .content.members tr.active td {\r\n	background-color: #709fed !important;\r\n}\r\n#Guild .content.members th {\r\n	border: 1px solid #c8c8c8;\r\n}\r\n#Guild .content.members td,\r\n#Guild .content.members th {\r\n	/* The widths below are the client's own column widths, so they have to\r\n	 * cover the padding too rather than sit on top of it - and, since each\r\n	 * carries its own separator, the 1px border as well. The client draws five\r\n	 * 1px lines down the full height of the list at x = 104/170/224/264/304,\r\n	 * which is what makes its 375px band hold six columns summing to 370. */\r\n	box-sizing: border-box;\r\n	border-right: 1px solid #c8c8c8;\r\n	text-align: left;\r\n	font-weight: normal;\r\n	padding-left: 2px;\r\n	height: 35px;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n}\r\n#Guild .content.members tr.online td {\r\n	background-color: #e4ffe2;\r\n}\r\n/* A grade picked but not yet sent. Declared deviation: the client has no mark\r\n * for it, and without one the row reads as if the server had agreed.\r\n * See docs/reference/guild/grade-change.md */\r\n#Guild .content.members tr.pending td {\r\n	background-color: #fff4d6;\r\n}\r\n#Guild .content.members tr.pending .name .value::before {\r\n	content: '*';\r\n	margin-right: 2px;\r\n	color: #b06a00;\r\n}\r\n\r\n/*\r\n * The note column belongs to the 0x0154 era: that list carries an intro, the\r\n * later ones do not, and the official client dropped the column along with the\r\n * field. Hidden by default, restored when the wire feeds it, and the remaining\r\n * columns take the width back.\r\n */\r\n#Guild .content.members .note {\r\n	display: none;\r\n}\r\n#Guild .content.members.has-memo .note {\r\n	display: table-cell;\r\n}\r\n/* The last login is a second line of the row rather than a cell - the client\r\n * draws it across the row, under everything. It is taken out of the flow so\r\n * the name column keeps its width while the line gets the whole row. */\r\n#Guild .content.members .name .lastlogin {\r\n	position: absolute;\r\n	left: 4px;\r\n	bottom: 1px;\r\n	width: 340px;\r\n	font-size: 11px;\r\n	line-height: 12px;\r\n	color: #404040;\r\n}\r\n#Guild .content.members.has-memo .name .lastlogin {\r\n	display: none;\r\n}\r\n#Guild .content.members tr canvas {\r\n	display: inline;\r\n}\r\n/* The name has to clip on its own, because the cell cannot: it is the\r\n * positioning context for the line above, which has to overflow it. */\r\n#Guild .content.members .name {\r\n	position: relative;\r\n	width: 99px;\r\n	max-width: 99px;\r\n	overflow: visible;\r\n}\r\n#Guild .content.members .name .value {\r\n	display: inline-block;\r\n	max-width: 63px;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n	vertical-align: middle;\r\n}\r\n#Guild .content.members .name canvas {\r\n	vertical-align: -11px;\r\n}\r\n#Guild .content.members .position {\r\n	width: 66px;\r\n	max-width: 66px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .position select {\r\n	width: 61px;\r\n	max-width: 61px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .job {\r\n	width: 54px;\r\n	max-width: 54px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n#Guild .content.members .level {\r\n	width: 40px;\r\n}\r\n#Guild .content.members .note {\r\n	width: 41px;\r\n}\r\n#Guild .content.members .devotion {\r\n	width: 40px;\r\n}\r\n/* The client's own 76, plus 1px for the list frame's right border - the last\r\n * column has no separator of its own, it closes against the frame at x=381.\r\n * This column used to carry 8 extra pixels to make up for a band that started\r\n * at x=2; the band starts at 6 now, so the compensation is gone. */\r\n#Guild .content.members .tax {\r\n	width: 77px;\r\n	max-width: 77px;\r\n	text-overflow: ellipsis;\r\n	overflow: hidden;\r\n}\r\n\r\n/* Showing the note means fitting seven columns in the same row, so the columns\r\n * widened above go back to what they were. */\r\n#Guild .content.members.has-memo .name {\r\n	width: 85px;\r\n	max-width: 85px;\r\n}\r\n#Guild .content.members.has-memo .name .value {\r\n	max-width: 50px;\r\n}\r\n#Guild .content.members.has-memo .position {\r\n	width: 68px;\r\n	max-width: 68px;\r\n}\r\n#Guild .content.members.has-memo .position select {\r\n	width: 63px;\r\n	max-width: 63px;\r\n}\r\n#Guild .content.members.has-memo .job {\r\n	width: 43px;\r\n	max-width: 43px;\r\n}\r\n#Guild .content.members.has-memo .level {\r\n	width: 30px;\r\n}\r\n#Guild .content.members.has-memo .devotion {\r\n	width: 42px;\r\n}\r\n#Guild .content.members.has-memo .tax {\r\n	width: 62px;\r\n	max-width: 62px;\r\n}\r\n\r\n/* Three row pitches, one per client, and the heights below are pitches: the\r\n * separator is inside the cell rather than a gap between rows.\r\n *\r\n *   ver12   34 + 1 = 35   one line, no access date\r\n *   mars26  35 + 1 = 36   one line, no access date\r\n *   2022    43 + 1 = 44   two lines - it is the only client that draws an\r\n *                         access date, and it pays 8px of row height for it\r\n *\r\n * mars26 is the baseline as the newest. The memo-era packet carries a note and\r\n * no date at all, which is the ver12 generation, so it selects ver12's pitch. */\r\n#Guild .content.members tbody td {\r\n	height: 36px;\r\n	vertical-align: middle;\r\n	padding-top: 0;\r\n}\r\n#Guild .content.members.has-memo tbody td {\r\n	height: 35px;\r\n}\r\n#Guild .content.members.has-lastlogin tbody td {\r\n	height: 44px;\r\n	vertical-align: top;\r\n	padding-top: 3px;\r\n}\r\n\r\n/*\r\n * Guild Positions\r\n */\r\n/* Same band as the member list: the client's list frame starts at x=5, and the\r\n * pane's own 2px padding puts us at 2. */\r\n#Guild .content.positions table {\r\n	border-spacing: 0;\r\n	border-collapse: collapse;\r\n	margin-left: 3px;\r\n	/* Fixed plus an explicit width, so the column widths below are the ones that\r\n	 * get used. `table-layout: fixed` on its own does nothing here - with\r\n	 * `width: auto` the fixed algorithm has no width to distribute and browsers\r\n	 * fall back to the auto one, which let the title input's intrinsic width\r\n	 * push every column wider and run the band past the client's right edge. */\r\n	table-layout: fixed;\r\n	width: 376px;\r\n}\r\n#Guild .content.positions tr.active {\r\n	border: none;\r\n}\r\n#Guild .content.positions tr.active td {\r\n	background-color: #709fed;\r\n}\r\n#Guild .content.positions th,\r\n#Guild .content.positions td {\r\n	box-sizing: border-box;\r\n	height: 20px;\r\n	font-weight: normal;\r\n	text-align: left;\r\n	padding: 2px 2px 0px 3px;\r\n	border: 1px solid #c8c8c8;\r\n}\r\n/* ver12's five-column layout - 50/142/60/60/60, a band of x 5..381. 2022 and\r\n * mars26 add Storage and cut Title from 142 to 100, and their band then runs to\r\n * x=400, under the scrollbar that starts at 385 - the client paints its own Tax\r\n * cell beneath its own bar. We take the sixth column but not that regression:\r\n * Title gives up the width instead, so the band still closes at 381 whichever\r\n * layout is up. Each width carries +1px for its own separator; the last closes\r\n * against the frame. */\r\n#Guild .content.positions .id {\r\n	width: 50px;\r\n}\r\n#Guild .content.positions .title {\r\n	width: 143px;\r\n}\r\n#Guild .content.positions .invite {\r\n	width: 61px;\r\n}\r\n#Guild .content.positions .punish {\r\n	width: 61px;\r\n}\r\n#Guild .content.positions .tax {\r\n	width: 61px;\r\n}\r\n/* These two place their own contents, so they give up the shared padding - on\r\n * the cell only, or it takes the heading's indent with it.\r\n * See docs/reference/guild/member-view.md */\r\n#Guild .content.positions td.title,\r\n#Guild .content.positions td.tax {\r\n	padding: 0;\r\n}\r\n/* The guild storage right only exists from PACKETVER 20140205, and ver12 has no\r\n * column for it. Off, the five widths above sum to the band's 376; on, Title\r\n * pays for the sixth so the sum does not move. */\r\n#Guild .content.positions .storage {\r\n	display: none;\r\n	width: 61px;\r\n}\r\n#Guild .content.positions.has-storage .storage {\r\n	display: table-cell;\r\n}\r\n#Guild .content.positions.has-storage .title {\r\n	width: 82px;\r\n}\r\n#Guild .content.positions.has-storage .title input {\r\n	width: 75px;\r\n}\r\n#Guild .content.positions input {\r\n	border: none;\r\n	background-color: white;\r\n	padding: 0;\r\n	height: 18px;\r\n}\r\n#Guild .content.positions .title input {\r\n	padding-left: 2px;\r\n	width: 136px;\r\n	margin-left: 4px;\r\n}\r\n#Guild .content.positions .tax input {\r\n	width: 28px;\r\n	padding-left: 2px;\r\n	margin-left: 3px;\r\n}\r\n/* A plain element rather than a ui-button: that one reloads its `bg` on every\r\n * hover and press, which paints the unticked image back over a ticked box. The\r\n * client's checkbox is 12x12 at x 160 / 221, y 66 + 19r.\r\n *\r\n * The bitmap is smaller than the cell - checkbox_0/1.bmp are 10x10 - and the\r\n * client does not stretch it: the blit takes its extent from the surface, never\r\n * from the widget, so the 12x12 size never reaches it. It goes out at x = 0 and\r\n * y = (cellH - bmpH) / 2, i.e. flush left and vertically centred. `left center`\r\n * rather than a hard `0 1px` because that division is the rule, and a skin\r\n * shipping a different checkbox size has to keep working. */\r\n/* The tick is 12x12 in a 61x20 cell, so a click at the cell's centre used to\r\n * land on nothing. Filling the cell makes the whole of it the target and, since\r\n * the cursor list matches the element under the pointer, makes it read as one\r\n * too. `.tick` is the same box without the class, a member's mark being an image\r\n * and nothing else. See docs/reference/guild/member-view.md */\r\n#Guild .content.positions .checkbox,\r\n#Guild .content.positions .tick {\r\n	display: block;\r\n	border: none;\r\n	width: 100%;\r\n	height: 16px;\r\n	background-repeat: no-repeat;\r\n	background-position: left top;\r\n	background-color: transparent;\r\n}\r\n\r\n/* The inset the field carried, on the text that replaces it. Only the name can\r\n * outrun its cell. See docs/reference/guild/member-view.md */\r\n#Guild .content.positions .title .value,\r\n#Guild .content.positions .tax .value {\r\n	display: block;\r\n	padding: 2px 0 0 6px;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n}\r\n/* The tax field insets by 5, not 6. */\r\n#Guild .content.positions .tax .value {\r\n	padding-left: 5px;\r\n}\r\n\r\n/*\r\n * Guild Skills\r\n */\r\n/* The scrolling element on this tab is .skill_list, not the pane, so the bar\r\n * lands on .skill_list's right edge. Dropping the pane's right padding and\r\n * widening the list to 396 puts that edge at 398, which is where the bar has to\r\n * start from to sit at the client's x=385. */\r\n/* No padding, so .skill_list can be the pane: the client's skill area runs from\r\n * y=41 down to the bar at 288 with nothing between them, and its scrollbar is\r\n * SetPos(385, 41) by 247 tall - which is that same span. */\r\n#Guild .content.skills {\r\n	overflow-y: hidden;\r\n	padding: 0;\r\n}\r\n/* border-box, so the 5px padding stays inside the 394. Without it this box is\r\n * 404 wide and overflows the pane, which is what pushed the Skills tab to the\r\n * frame's 400px ceiling before the frame was pinned. The custom scrollbar\r\n * happens to set box-sizing itself when it attaches, so the overflow only\r\n * showed between first paint and that attach. */\r\n#Guild .content.skills .skill_list {\r\n	box-sizing: border-box;\r\n	overflow-y: auto;\r\n	padding: 0;\r\n	width: 398px;\r\n	height: 247px;\r\n}\r\n\r\n/* The client has no grid here - it paints each row straight onto the window at\r\n * fixed offsets, so every x below is a gap or a box size rather than a\r\n * coordinate, and the row itself stays in flow. Reading the row left to right:\r\n * icon at 44, level-up + at 78, and the selection highlight at 104 by 164x28\r\n * with the name, Lv and Sp all drawn inside it. */\r\n#Guild .content.skills .skill {\r\n	display: flex;\r\n	box-sizing: border-box;\r\n	/* Row pitch 34 on 2022 and mars26 (ver12 uses 32). The 2px is the\r\n	 * highlight's own y: the client draws it at 34i+43 and the pane starts at\r\n	 * 41, so it sits two below the row's top. */\r\n	height: 34px;\r\n	padding: 2px 0 0 44px;\r\n}\r\n#Guild .content.skills .skill .icon,\r\n#Guild .content.skills .skill .levelupcontainer {\r\n	flex: none;\r\n	width: 24px;\r\n	height: 24px;\r\n	/* the icon and the + are at 34i+45, two below the highlight */\r\n	margin-top: 2px;\r\n}\r\n/* 44 + 24 + 10 = 78 */\r\n#Guild .content.skills .skill .levelupcontainer {\r\n	margin-left: 10px;\r\n}\r\n#Guild .content.skills .levelup {\r\n	border: 0;\r\n	width: 24px;\r\n	height: 24px;\r\n	padding: 0;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n/* The highlight rect itself, so the .selected rules below can just colour it.\r\n * 78 + 24 + 2 = 104, and the 8px inset puts the name on the client's 112. */\r\n#Guild .content.skills .skill .selectable {\r\n	flex: none;\r\n	box-sizing: border-box;\r\n	width: 164px;\r\n	height: 28px;\r\n	margin-left: 2px;\r\n	padding: 3px 0 0 8px;\r\n}\r\n#Guild .content.skills .skill .name,\r\n#Guild .content.skills .skill .level,\r\n#Guild .content.skills .skill .consume {\r\n	height: 12px;\r\n	line-height: 12px;\r\n	white-space: nowrap;\r\n}\r\n/* The second line, which the client draws 12 below the name at 34i+58 */\r\n#Guild .content.skills .skill .levelline {\r\n	display: flex;\r\n}\r\n#Guild .content.skills .skill .level {\r\n	box-sizing: border-box;\r\n	/* 112 + 100 = 212, where Sp starts */\r\n	width: 100px;\r\n	/* Lv is drawn at 113, one right of the name's 112 */\r\n	padding-left: 1px;\r\n}\r\n/* The client greys the name at level 0 and leaves the icon alone; it also skips\r\n * the Lv and Sp lines entirely rather than drawing them empty. */\r\n#Guild .content.skills .disabled .name {\r\n	color: #787878;\r\n}\r\n#Guild .content.skills .disabled .consume,\r\n#Guild .content.skills .disabled .level {\r\n	display: none;\r\n}\r\n\r\n#Guild .content.skills .selected.disabled .selectable {\r\n	background-color: #b5b5b5;\r\n}\r\n#Guild .content.skills .selected.passive .selectable {\r\n	background-color: #73d5ee;\r\n}\r\n#Guild .content.skills .selected.active .selectable {\r\n	background-color: #739cee;\r\n}\r\n\r\n/* The client has no inner footer on this tab - it paints the skill list straight\r\n * onto the window and puts these three at window coordinates that land on the\r\n * bottom bar: the two buttons at (46, 293) and (92, 293), the readout at\r\n * (W - 100, H - 20) = (300, 297). They live in the frame's footer for that\r\n * reason, and are shown only while the Skills tab is up. */\r\n/* 240x12 at (12, 299). 2022 only, so whether this shows at all is the\r\n * `guild.memberListSort` deployment setting.\r\n * See docs/reference/guild/member-list-sort.md */\r\n#Guild .footer .sortlogin {\r\n	display: none;\r\n	position: absolute;\r\n	top: 11px;\r\n	left: 12px;\r\n	width: 240px;\r\n	height: 12px;\r\n	font-size: 11px;\r\n	line-height: 12px;\r\n}\r\n#Guild .footer .sortlogin ui-button {\r\n	width: 12px;\r\n	height: 12px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: top;\r\n	margin-right: 4px;\r\n}\r\n#Guild .footer .skpoints {\r\n	display: none;\r\n	position: absolute;\r\n	top: 9px;\r\n	left: 300px;\r\n	white-space: nowrap;\r\n}\r\n\r\n/* SetPos(W - w - 15, H - h - 5) with btn_disBand.bmp at 64x20, so (321, 292).\r\n *\r\n * Deliberately 1px below the client, for the same reason btn_ok sits 1px above\r\n * it: the client scatters this bar's three buttons over 292 / 293 / 294, and\r\n * `top: 5` puts all three on one line at 293 - the closest an integer gets to\r\n * centring a 20px button in a 29px bar. */\r\n#Guild .footer .btn_disband {\r\n	display: none;\r\n	position: absolute;\r\n	width: 64px;\r\n	height: 20px;\r\n	top: 5px;\r\n	right: 15px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	cursor: pointer;\r\n}\r\n\r\n#Guild .footer .btn {\r\n	position: absolute;\r\n	top: 5px;\r\n	border: 0;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	display: none;\r\n}\r\n/* The client puts two controls here, at y = H - 24 = 293: btn_use at 46, which\r\n * casts the selected skill, and btn_close at 92, which dismisses the window.\r\n * btn_close is in the client and is not ported, on purpose - it is assigned the\r\n * same command id as the titlebar's close button, so it is a duplicate of a\r\n * control this window already draws. See the note in Guild.js. */\r\n#Guild .footer .btn_use {\r\n	left: 46px;\r\n}\r\n\r\n/*\r\n * Guild History\r\n */\r\n#Guild .content.history table {\r\n	border-spacing: 0;\r\n	border-collapse: collapse;\r\n}\r\n#Guild .content.history th,\r\n#Guild .content.history td {\r\n	font-weight: normal;\r\n	text-align: left;\r\n	padding: 5px 5px 0px 5px;\r\n	border: 1px solid #c8c8c8;\r\n}\r\n#Guild .content.history .name {\r\n	width: 90px;\r\n}\r\n#Guild .content.history .reason {\r\n	width: 275px;\r\n}\r\n\r\n/*\r\n * Guild Notice\r\n */\r\n#Guild .notice .subjectTitle {\r\n	position: absolute;\r\n	top: 13px;\r\n	left: 9px;\r\n}\r\n/* border-box and 331 so the field closes on x=381, the same right edge as the\r\n * textarea below it and as the member list's band. Content-box at 333 plus the\r\n * 5px padding put it at 390 - nine pixels past the textarea, and past the band\r\n * into the gutter the scrollbar reserves. */\r\n#Guild .notice .subject {\r\n	position: absolute;\r\n	top: 11px;\r\n	left: 50px;\r\n	padding-left: 5px;\r\n	height: 14px;\r\n	border: none;\r\n	box-sizing: border-box;\r\n	width: 331px;\r\n	background-color: #eee;\r\n}\r\n#Guild .notice .noticeTitle {\r\n	position: absolute;\r\n	top: 36px;\r\n	left: 9px;\r\n}\r\n#Guild .notice .notice {\r\n	position: absolute;\r\n	top: 52px;\r\n	left: 9px;\r\n	padding-left: 5px;\r\n	margin: 0px;\r\n	width: 372px;\r\n	height: 168px;\r\n	background-color: #eee;\r\n	border: none;\r\n	resize: none;\r\n}\r\n/* A member gets the notice as text, carrying the field's own class so neither\r\n * box moves on the swap. See docs/reference/guild/member-view.md */\r\n#Guild .notice .value {\r\n	box-sizing: border-box;\r\n	overflow: hidden;\r\n	white-space: nowrap;\r\n}\r\n#Guild .notice .notice.value {\r\n	overflow-y: auto;\r\n	white-space: pre-wrap;\r\n	word-break: break-word;\r\n}\r\n\r\n/* Text selection, re-enabled where the browser gave it to us for free.\r\n *\r\n * Common.css suppresses selection globally - `* { -moz-user-select: none }`\r\n * (:9-11) and `body { user-select: none }` (:64-65), which is inherited across\r\n * the shadow boundary. That is deliberate: it stops a drag fighting the game\r\n * canvas. But it lands on the form controls too, so the guild master cannot\r\n * double-click a word in the Notice they are typing, and nobody can copy a\r\n * member's name to paste into a whisper.\r\n *\r\n * Scoped here rather than carved out of Common.css, which ~30 components share.\r\n * All four typed fields are listed, not just the two that were reported: a\r\n * field you type into has to be selectable, and the notice subject and the tax\r\n * cell are the same kind of control as the two beside them. The values a member\r\n * gets in place of those fields are listed too - copying a grade name is the\r\n * whole of what is left to them there, and the notice pair already matches by\r\n * carrying its field's class.\r\n *\r\n * No `cursor: text` to go with it. The member name is not in GUIComponent's\r\n * clickable-cursor list, and giving it a text caret would fight the row's own\r\n * context-menu affordance. */\r\n#Guild .content.members .name .value,\r\n#Guild .content.positions .title input,\r\n#Guild .content.positions .tax input,\r\n#Guild .content.positions .title .value,\r\n#Guild .content.positions .tax .value,\r\n#Guild .notice .subject,\r\n#Guild .notice .notice {\r\n	-webkit-user-select: text;\r\n	user-select: text;\r\n}\r\n\r\n/* Keyboard focus, made visible again.\r\n *\r\n * Common.css:2 kills the outline on every :focus so the client's chrome is not\r\n * ringed by the browser. Correct for a mouse, but it also means a keyboard user\r\n * tabbing through this window has no idea where they are.\r\n *\r\n * `:focus-visible` throughout, not `:focus`, so all of this is keyboard-only:\r\n * clicking a control paints nothing and the window looks exactly as the client\r\n * does under a mouse, which is why Common.css suppressed the outline to begin\r\n * with.\r\n *\r\n * The tab strip gets weight rather than a ring. The six cells already use\r\n * background to mean *active* (#fff against the inactive #c8c8c8), so focus\r\n * needs a different channel or the two states blur together. Measured before\r\n * choosing it: five of the six labels are unaffected, and the sixth\r\n * (\"Announcement\") is already ellipsised by 19px at normal weight - the client\r\n * truncates its own labels the same way - so bold costs 6px more of a label\r\n * that is clipped either way, and introduces no new clipping. */\r\n#Guild .tabs button:focus-visible {\r\n	font-weight: bold;\r\n}\r\n\r\n/* The editable fields shift to one shared colour when focused, and their resting\r\n * colours are left exactly as they ship - #eee on the Notice pair, white on the\r\n * Positions inputs. #f7f7f7 sits between the two, so the focused field reads as\r\n * different from its neighbours either way: a shade up from the Notice grey, a\r\n * shade down from the Positions white. Nine tones in both directions.\r\n *\r\n * No outline. A ring is the conventional answer and it was tried, but it is the\r\n * most browser-looking mark available in a window that is otherwise the client's\r\n * pixels, and a fill change is enough once the resting colours are left alone. */\r\n#Guild .content input:focus-visible,\r\n#Guild .content select:focus-visible,\r\n#Guild .content textarea:focus-visible {\r\n	background-color: #f7f7f7;\r\n}\r\n\r\n/* The permission checkboxes are bare <div>s - they were a <ui-button> until that\r\n * element's own repaint started fighting the checked/unchecked bitmap - so they\r\n * are the one control in this window that never told the pointer it was\r\n * actionable. GUIComponent's CLICKABLE_SELECTOR now lists `.checkbox`, which is\r\n * what drives the in-game cursor; this rule covers the case where the custom\r\n * cursor is off and the real CSS one is showing. */\r\n#Guild .checkbox {\r\n	cursor: pointer;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/WinStats/WinStats/WinStats.html?raw
@@ -228643,11 +229654,244 @@ var init_WinStats = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/Guild/Guild.js
+function _hasStorageColumn() {
+	return parseInt(PacketVerManager_default.value, 10) >= 20140205;
+}
+/**
+* Helper: does the Info tab draw the tendency chart
+*
+* @return {boolean}
+*/
+function _showsTendency() {
+	return _config().showTendency === true;
+}
+/**
+* Helper: does the Info tab draw the Tax Point line
+*
+* @return {boolean}
+*/
+function _showsTaxPoint() {
+	return _config().showTaxPoint === true;
+}
 /**
 * Helper: query inside shadow root
 */
 function _root$13(comp) {
 	return comp.getRoot();
+}
+/**
+* Helper: forget the queued grade changes, and the marks that showed them
+*
+* Leaves the rows on the grades they display, so this is only ever right where
+* those grades have just been sent. Every other drop goes through
+* _clearPendingPositions, which puts them back first.
+* @see docs/reference/guild/grade-change.md
+*/
+function _dropPendingPositions() {
+	_pendingPositions = {};
+	const root = _root$13(Guild);
+	if (!root) return;
+	for (const row of root.querySelectorAll(".content.members .MemberView.pending")) row.classList.remove("pending");
+}
+/**
+* Helper: is a grade change waiting to be sent
+*
+* @return {boolean} true while the members tab holds an unsent edit
+*/
+function _hasPendingPositions() {
+	for (const _GID in _pendingPositions) return true;
+	return false;
+}
+/**
+* Helper: drop the queued grades, putting their rows back on the server's
+*
+* Forgetting the queue is not enough: the row was moved to the picked grade when
+* it was queued, so dropping the queue alone would leave that grade on show as
+* though the server had agreed to it - and the grade guard would then refuse to
+* queue it a second time, the row already reading as the value asked for. Every
+* drop restores, so no call site has to work out whether it is the one that has
+* to; Apply is the exception and says so.
+* @see docs/reference/guild/grade-change.md
+*/
+function _clearPendingPositions() {
+	const root = _root$13(Guild);
+	if (root) for (const GID in _pendingPositions) {
+		const pending = _pendingPositions[GID];
+		for (let i = 0, count = _members.length; i < count; ++i) {
+			const member = _members[i];
+			if (member.AID === pending.AID && member.GID === pending.GID) {
+				member.GPositionID = pending.previousID;
+				Guild.setMember(member);
+				break;
+			}
+		}
+	}
+	_dropPendingPositions();
+	if (root) _refreshApplyButton(getActiveTab(root));
+}
+/**
+* Helper: put the Positions tab back to what the server last sent
+*
+* Both the queued edits and the flag that keeps them are dropped together:
+* keeping one without the other either applies edits the rows no longer show,
+* or refuses every refresh for edits that are gone.
+* @see docs/reference/guild/grade-change.md
+*/
+function _resetPositionsTab() {
+	_clearPendingPositions();
+	_positionsDirty = false;
+	_positionsSelected = 0;
+	if (_root$13(Guild)) {
+		_hideApplyButton();
+		Guild.updatePositionView();
+	}
+}
+/**
+* Helper: put the Info tab back to the values its markup ships
+*
+* The counters return to zero and the rest to blank, which is the state the
+* window is built in.
+* @see docs/reference/guild/member-view.md
+*
+* @param {HTMLElement} root - the window's shadow root
+*/
+function _clearInfoTab(root) {
+	const general = root.querySelector(".content.info");
+	if (!general) return;
+	for (const selector of INFO_BLANK_CELLS) {
+		const cell = general.querySelector(selector);
+		if (cell) cell.textContent = "";
+	}
+	for (const selector of INFO_ZERO_CELLS) {
+		const cell = general.querySelector(selector);
+		if (cell) cell.textContent = "0";
+	}
+	const exp = general.querySelector(".exp");
+	if (exp) exp.classList.remove("maxlevel");
+	const emblemContainer = general.querySelector(".emblem_container");
+	if (emblemContainer) emblemContainer.style.backgroundImage = "";
+	Guild.setRelations([]);
+	renderTendency(0, 0);
+}
+/**
+* Helper: reveal the Apply button, the affordance for a pending change
+*/
+function _showApplyButton() {
+	const btnOk = _root$13(Guild).querySelector(".footer .btn_ok");
+	if (btnOk) btnOk.style.display = "block";
+}
+/**
+* Helper: take the Apply button back, there being nothing left to send
+*/
+function _hideApplyButton() {
+	const btnOk = _root$13(Guild).querySelector(".footer .btn_ok");
+	if (btnOk) btnOk.style.display = "none";
+}
+/**
+* Helper: offer Apply only while the tab on show has an edit to apply
+*
+* The positions tab holds its edits in its rows and the members tab in the
+* queue, so which one is up decides whether there is anything left to send.
+*
+* @param {string} tab - class of the tab on show
+*/
+function _refreshApplyButton(tab) {
+	if (tab === "positions" && _positionsDirty || tab === "members" && _hasPendingPositions()) {
+		_showApplyButton();
+		return;
+	}
+	_hideApplyButton();
+}
+/**
+* Helper: put a value where the guild master gets a control
+* @see docs/reference/guild/member-view.md
+*
+* @param {HTMLElement} cell - the cell to fill
+* @param {string} text - the value to show
+* @param {boolean} [clips] - the cell ellipsises, so offer the value on hover
+*/
+function _asValue(cell, text, clips) {
+	if (!cell) return;
+	const value = document.createElement("span");
+	value.className = "value";
+	value.textContent = text;
+	if (clips) value.title = text;
+	cell.innerHTML = "";
+	cell.appendChild(value);
+}
+/**
+* Helper: the last login date, built from the client's own format string
+*
+* Only the fields the shipped formats use are substituted, not all of strftime.
+*
+* @param {number} timestamp - seconds since epoch, as the member list sends it
+* @return {string} the date, localtime, like the client shows it
+*/
+function _formatLastLogin(timestamp) {
+	const date = /* @__PURE__ */ new Date(timestamp * 1e3);
+	const pad = (value) => `${value}`.padStart(2, "0");
+	return DB.getMessage(3011, "%Y.%m.%d").replace("%Y", date.getFullYear()).replace("%y", pad(date.getFullYear() % 100)).replace("%m", pad(date.getMonth() + 1)).replace("%d", pad(date.getDate()));
+}
+/**
+* Helper: this window's settings, with the defaults above filled in
+*
+* Configs.get does not merge, so a server naming `guild` at all would
+* otherwise drop every key it does not itself set.
+*
+* @return {object}
+*/
+function _config() {
+	return {
+		...GUILD_CONFIG,
+		...Configs.get("guild", {})
+	};
+}
+/**
+* Helper: does the member list get ordered by login status right now
+*
+* 'never' | 'checkbox' | 'always', one per client generation.
+* @see docs/reference/guild/member-list-sort.md
+*
+* @return {boolean}
+*/
+function _sortsByLogin() {
+	const mode = _config().memberListSort;
+	if (mode === "always") return true;
+	if (mode === "never") return false;
+	return !!UI_default.guildMemberListSorted;
+}
+/**
+* Helper: lay the rows out in a given order without rebuilding any of them
+*
+* Rows are moved, so each keeps its listeners, its canvas and its data-index.
+* `_members` stays in the order the server sent - only the table is sorted.
+* @see docs/reference/guild/member-list-sort.md
+*
+* @param {ShadowRoot|Element} root
+* @param {Array} ordered - the members in the order the rows should appear
+*/
+function reorderMemberRows(root, ordered) {
+	const list = root.querySelector(".content.members tbody");
+	if (!list) return;
+	const rowAt = {};
+	for (const row of list.querySelectorAll(".MemberView")) rowAt[row.getAttribute("data-index")] = row;
+	const indexOf = {};
+	for (let i = 0, count = _members.length; i < count; ++i) indexOf[`${_members[i].AID}_${_members[i].GID}`] = i;
+	for (let i = 0, count = ordered.length; i < count; ++i) {
+		const row = rowAt[indexOf[`${ordered[i].AID}_${ordered[i].GID}`]];
+		if (row) list.appendChild(row);
+	}
+}
+/**
+* Helper: the roster, online first
+*
+* Stable, so members sharing a status keep the order the server sent them in.
+*
+* @param {Array} members
+* @return {Array} a sorted copy
+*/
+function _orderByLogin(members) {
+	return members.slice().sort((a, b) => (b.CurrentState ? 1 : 0) - (a.CurrentState ? 1 : 0));
 }
 /**
 * Helper: escape HTML
@@ -228657,12 +229901,109 @@ function _escapeHTML$3(text) {
 	div.textContent = text;
 	return div.innerHTML;
 }
+/**
+* Reflect the two legacy switches onto the tab
+*
+* Called on open and on every tab change, not only when a guild-info packet
+* lands: they decide whether those elements are drawn at all, so waiting for a
+* packet would draw them and take them away.
+* @see docs/reference/guild/info-tab-legacy.md
+*/
+function updateInfoOptions(root) {
+	const infoContent = root.querySelector(".content.info");
+	if (infoContent) {
+		infoContent.classList.toggle("shows_tendency", _showsTendency());
+		infoContent.classList.toggle("shows_taxpoint", _showsTaxPoint());
+	}
+}
+/**
+* Is this drag something the emblem would take, from someone allowed to set it
+* @see docs/reference/guild/emblem-picker.md
+*/
+function _acceptsEmblemDrop(root, transfer) {
+	return transfer && Array.prototype.indexOf.call(transfer.types, "Files") !== -1 && SessionStorage_default.isGuildMaster && getActiveTab(root) === "info";
+}
+/**
+* A BMP or GIF of exactly 24x24, small enough for the server to store
+* @see docs/reference/guild/emblem-picker.md
+*/
+function isEmblem(data) {
+	const view = new DataView(data.buffer);
+	if (data[0] === 66 && data[1] === 77 && data.length >= 26 && data.length <= 1783) return view.getInt32(18, true) === EMBLEM_SIDE && Math.abs(view.getInt32(22, true)) === EMBLEM_SIDE;
+	if (data[0] === 71 && data[1] === 73 && data[2] === 70 && data.length >= 10 && data.length <= 5e4) return view.getUint16(6, true) === EMBLEM_SIDE && view.getUint16(8, true) === EMBLEM_SIDE;
+	return false;
+}
+/**
+* Send a picked emblem, or refuse it with the client's own message - the one
+* path behind all three ways of picking one
+* @see docs/reference/guild/emblem-picker.md
+*/
+function submitEmblem(file) {
+	if (!file || !SessionStorage_default.isGuildMaster) return;
+	const reader = new FileReader();
+	reader.onload = (e) => {
+		const data = new Uint8Array(e.target.result);
+		if (isEmblem(data)) Guild.onSendEmblem(data);
+		else UIManager.showMessageBox(DB.getMessage(3587, "This file cannot be registered."), "ok");
+	};
+	reader.readAsArrayBuffer(file);
+}
+/**
+* The entity behind a member row's 30x30 cell - a head, deliberately
+*
+* `sex` and `job` go to the private fields on purpose: their setters each start
+* an asynchronous body load that cannot be taken back afterwards.
+* @see docs/reference/guild/member-portrait.md
+*
+* @param {object} [entity] - the member's existing entity, if they have one
+* @param {{sex: number, job: number, head: number, headPalette: number}} look
+* @return {object} the entity to store back on the member
+*/
+function memberPortrait(entity, look) {
+	if (!entity) {
+		entity = new Entity();
+		entity.objecttype = Entity.TYPE_PC;
+		entity.files.shadow.spr = null;
+	}
+	entity._sex = look.sex;
+	entity._job = look.job;
+	entity._effectiveJob = look.job;
+	entity.head = look.head;
+	entity.headpalette = look.headPalette;
+	entity.direction = 4;
+	entity.headDir = 0;
+	entity.action = entity.ACTION.IDLE;
+	entity.animation = {
+		tick: 0,
+		frame: 0,
+		repeat: true,
+		play: true,
+		next: false,
+		delay: 0,
+		save: false
+	};
+	return entity;
+}
+/**
+* Show the level-up arrow on each skill the player may actually raise
+*
+* @see docs/reference/guild/member-view.md
+*/
+function updateSkillArrows(root) {
+	if (!root) return;
+	const count = _skills.length;
+	for (let i = 0; i < count; ++i) {
+		const levelupEl = root.querySelector(`.skill.id${_skills[i].SKID} .levelup`);
+		if (levelupEl) levelupEl.style.display = _skills[i].upgradable && _skpoints && SessionStorage_default.isGuildMaster ? "" : "none";
+	}
+}
 function getSkillById(id) {
 	const count = _skills.length;
 	for (let i = 0; i < count; ++i) if (_skills[i].SKID === id) return _skills[i];
 	return null;
 }
 function onRequestSkillUp() {
+	if (!SessionStorage_default.isGuildMaster) return;
 	const index = this.parentNode.parentNode.getAttribute("data-index");
 	Guild.onIncreaseSkill(parseInt(index, 10));
 }
@@ -228683,11 +230024,9 @@ function onRequestSkillInfo() {
 	SkillDescription_default.setSkill(skill.SKID);
 }
 function onSkillFocus() {
-	let main = this.parentElement;
-	if (!main.classList.contains("skill")) main = main.parentElement;
 	const root = _root$13(Guild);
 	for (const el of root.querySelectorAll(".skill")) el.classList.remove("selected");
-	main.classList.add("selected");
+	this.classList.add("selected");
 }
 function onSkillDragStart(event) {
 	const skill = getSkillById(parseInt(this.getAttribute("data-index"), 10));
@@ -228708,59 +230047,129 @@ function onSkillDragStart(event) {
 function onSkillDragEnd() {
 	delete window._OBJ_DRAG_;
 }
-function skillLevelSelectUp(skill) {
-	const level = skill.selectedLevel ? skill.selectedLevel : skill.level;
-	if (level < skill.level) {
-		skill.selectedLevel = level + 1;
-		const element = _root$13(Guild).querySelector(`.skill.id${skill.SKID}`);
-		if (element) {
-			const current = element.querySelector(".level .current");
-			if (current) current.textContent = skill.selectedLevel;
-		}
+/**
+* Helper: put the stored notice into whichever pair the pane is holding
+*/
+function _writeNotice(content) {
+	const subject = content?.querySelector(".subject");
+	const body = content?.querySelector(".notice");
+	if (!subject || !body) return;
+	if (SessionStorage_default.isGuildMaster) {
+		subject.value = _notice.subject;
+		body.value = _notice.body;
+		return;
 	}
+	subject.textContent = _notice.subject;
+	body.textContent = _notice.body;
 }
-function skillLevelSelectDown(skill) {
-	const level = skill.selectedLevel ? skill.selectedLevel : skill.level;
-	if (level > 1) {
-		skill.selectedLevel = level - 1;
-		const element = _root$13(Guild).querySelector(`.skill.id${skill.SKID}`);
-		if (element) {
-			const current = element.querySelector(".level .current");
-			if (current) current.textContent = skill.selectedLevel;
-		}
+/**
+* Helper: a tab's label in full, which its 64px cell ellipsises
+*
+* Read through the message id rather than off the element: the label is only
+* the markup's English fallback until `ui-text` upgrades.
+*/
+function _tabLabel(btn) {
+	const text = btn.querySelector("ui-text");
+	if (!text) return btn.textContent.trim();
+	return DB.getMessage(parseInt(text.getAttribute("msg"), 10), text.textContent.trim());
+}
+/**
+* Mark the tabs this member's access mask refuses
+* @see docs/reference/guild/member-view.md
+*/
+function updateTabAccess(root) {
+	if (!root) return;
+	for (const btn of root.querySelectorAll(".tabs button")) {
+		const tab = parseInt(btn.getAttribute("data-flag"), 10);
+		const denied = !!tab && !(_guildAccess & AccessTypeBit[tab]);
+		btn.classList.toggle("denied", denied);
+		btn.setAttribute("aria-disabled", denied ? "true" : "false");
+		btn.tabIndex = denied ? -1 : 0;
+		btn.title = _tabLabel(btn);
 	}
+	if (root.querySelector(".tabs button.active.denied")) onChangeTab.call(root.querySelector(".tabs button"));
 }
 function onChangeTab(event) {
 	const tab = parseInt(this.getAttribute("data-flag"), 10);
 	const root = _root$13(Guild);
 	if (this.classList.contains("active") || tab && !(_guildAccess & AccessTypeBit[tab])) return false;
-	Guild.onGuildInfoRequest(tab);
+	if (tab !== TAB_MEMBERS && tab !== TAB_POSITIONS || !_hasPendingPositions()) Guild.onGuildInfoRequest(tab);
 	for (const btn of root.querySelectorAll(".tabs button")) btn.classList.remove("active");
 	for (const content of root.querySelectorAll(".content")) content.style.display = "none";
 	const targetClass = this.className.replace(/\s*active\s*/g, "").trim();
 	const targetContent = root.querySelector(`.content.${targetClass}`);
 	if (targetContent) targetContent.style.display = "block";
-	const btnOk = root.querySelector(".footer .btn_ok");
-	if (btnOk) btnOk.style.display = "none";
+	_refreshApplyButton(targetClass);
 	updateDisbandButton(root, targetClass);
+	updateSkillFooter(root, targetClass);
+	updateMemberSort(root, targetClass);
+	updateInfoOptions(root);
 	if (targetClass === "members") Renderer.render(renderMemberFaces);
 	else Renderer.stop(renderMemberFaces);
 	this.classList.add("active");
 	return false;
 }
+/**
+* Where the tendency marker sits, in canvas-local pixels
+*
+* Truncates rather than rounds, which is a real one-pixel difference here.
+* @see docs/reference/guild/info-tab-legacy.md
+*
+* @param {number} honor - ZC_GUILD_INFO honor, [-100, 100]
+* @param {number} virtue - ZC_GUILD_INFO virtue, [-100, 100]
+* @return {{x: number, y: number}} top-left of the 2x2 marker
+*/
+function tendencyMarker(honor, virtue) {
+	return {
+		x: 44 + Math.trunc((honor || 0) * .42),
+		y: 44 - Math.trunc((virtue || 0) * .42)
+	};
+}
+/**
+* The ver12 chart, at the client's own rects translated into the canvas
+*
+* The four colours are the same ones the rest of this window uses.
+* @see docs/reference/guild/info-tab-legacy.md
+*/
 function renderTendency(honor, virtue) {
 	const canvas = _root$13(Guild).querySelector(".content.info .tendency canvas");
 	if (!canvas) return;
 	const ctx = canvas.getContext("2d");
-	ctx.fillStyle = "#cecfce";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	ctx.fillStyle = "#739eef";
-	ctx.fillRect(1, 1, canvas.width - 2, canvas.height - 2);
-	ctx.fillStyle = "#4261a5";
-	ctx.fillRect(canvas.width / 2 - 1, 1, 2, canvas.height - 2);
-	ctx.fillRect(1, canvas.height / 2 - 1, canvas.width - 2, 2);
+	ctx.fillStyle = "#c8c8c8";
+	ctx.fillRect(0, 0, 90, 90);
+	ctx.fillStyle = "#709fed";
+	ctx.fillRect(1, 1, 88, 88);
+	ctx.fillStyle = "#4262a5";
+	ctx.fillRect(44, 1, 2, 88);
+	ctx.fillRect(1, 44, 88, 2);
+	const marker = tendencyMarker(honor, virtue);
 	ctx.fillStyle = "#ffffff";
-	ctx.fillRect(canvas.width / 2 - 1, canvas.height / 2 - 1, 2, 2);
+	ctx.fillRect(marker.x, marker.y, 2, 2);
+}
+/**
+* Bounds of everything non-transparent, or null if nothing was drawn.
+*
+* @param {CanvasRenderingContext2D} ctx
+* @param {number} side
+*/
+function opaqueBounds(ctx, side) {
+	const data = ctx.getImageData(0, 0, side, side).data;
+	let top = -1, bottom = -1, left = side, right = -1;
+	for (let y = 0; y < side; ++y) {
+		const row = y * side;
+		for (let x = 0; x < side; ++x) if (data[(row + x) * 4 + 3] > 8) {
+			if (top < 0) top = y;
+			bottom = y;
+			if (x < left) left = x;
+			if (x > right) right = x;
+		}
+	}
+	return top < 0 ? null : {
+		top,
+		bottom,
+		left,
+		right
+	};
 }
 function onValidate() {
 	const root = _root$13(Guild);
@@ -228773,56 +230182,84 @@ function onValidate() {
 		activeTab = cls;
 		break;
 	}
+	if (!SessionStorage_default.isGuildMaster) {
+		_hideApplyButton();
+		return;
+	}
 	switch (activeTab) {
 		case "members": {
 			const list = [];
-			_members.forEach((member) => {
+			for (const GID in _pendingPositions) {
+				const pending = _pendingPositions[GID];
 				list.push({
-					AID: member.AID,
-					GID: member.GID,
-					positionID: member.GPositionID
+					AID: pending.AID,
+					GID: pending.GID,
+					positionID: pending.positionID
 				});
-			});
+			}
+			if (!list.length) return;
 			Guild.onChangeMemberPosRequest(list);
+			_dropPendingPositions();
 			break;
 		}
 		case "positions": {
 			const positionList = [];
 			const positions = root.querySelectorAll(".PositionView");
-			for (let i = 0, count = _positions.length; i < count; ++i) {
-				const position = positions[i];
-				if (!position) continue;
+			for (const position of positions) {
+				const rank = _positions[parseInt(position.dataset.positionId, 10)];
+				if (!rank || rank.right === void 0) continue;
 				const posName = position.querySelector(".title input")?.value || "";
-				const payRate = parseInt(position.querySelector(".tax input")?.value || "0", 10);
-				let right = 0;
-				const inviteBtn = position.querySelector(".invite ui-button");
-				if (inviteBtn && inviteBtn.classList.contains("on")) right |= 1;
-				const punishBtn = position.querySelector(".punish ui-button");
-				if (punishBtn && punishBtn.classList.contains("on")) right |= 16;
-				if (_positions[i].right !== right || _positions[i].posName !== posName || _positions[i].payRate !== payRate) positionList.push({
-					positionID: _positions[i].positionID,
-					ranking: _positions[i].ranking,
+				const typed = parseInt(position.querySelector(".tax input")?.value, 10) || 0;
+				const payRate = Math.min(99, Math.max(0, typed));
+				const owned = _hasStorageColumn() ? 273 : 17;
+				let right = rank.right & ~owned;
+				const inviteBox = position.querySelector(".invite .checkbox");
+				if (inviteBox && inviteBox.classList.contains("on")) right |= 1;
+				const punishBox = position.querySelector(".punish .checkbox");
+				if (punishBox && punishBox.classList.contains("on")) right |= 16;
+				const storageBox = position.querySelector(".storage .checkbox");
+				if (_hasStorageColumn() && storageBox && storageBox.classList.contains("on")) right |= GUILD_PERM_STORAGE;
+				if (rank.right !== right || rank.posName !== posName || rank.payRate !== payRate) positionList.push({
+					positionID: rank.positionID,
+					ranking: rank.ranking,
 					right,
 					posName,
 					payRate
 				});
 			}
-			Guild.onPositionUpdateRequest(positionList);
+			if (positionList.length) {
+				_sentPayRates = {};
+				for (const entry of positionList) _sentPayRates[entry.positionID] = entry.payRate;
+				Guild.onPositionUpdateRequest(positionList);
+			}
+			_positionsDirty = false;
 			break;
 		}
 		case "notice": {
-			const subject = root.querySelector(".content.notice input")?.value || "";
-			const content = root.querySelector(".content.notice textarea")?.value || "";
+			const subject = root.querySelector(".content.notice .subject")?.value || "";
+			const content = root.querySelector(".content.notice textarea.notice")?.value || "";
 			Guild.onNoticeUpdateRequest(subject, content);
 			break;
 		}
 	}
-	const btnOk = root.querySelector(".footer .btn_ok");
-	if (btnOk) btnOk.style.display = "none";
+	_hideApplyButton();
 }
 function getActiveTab(root) {
 	const btn = root ? root.querySelector(".tabs button.active") : null;
 	return btn ? btn.className.replace(/\s*active\s*/g, "").trim() : "";
+}
+/**
+* Show or hide the two ways into the emblem picker
+* @see docs/reference/guild/emblem-picker.md
+*/
+function updateEmblemControls(root) {
+	const general = root ? root.querySelector(".content.info") : null;
+	if (!general) return;
+	const emblemDisplay = SessionStorage_default.isGuildMaster ? "" : "none";
+	const emblemEdit = general.querySelector(".emblem_edit");
+	if (emblemEdit) emblemEdit.style.display = emblemDisplay;
+	const emblemPick = general.querySelector(".emblem_pick");
+	if (emblemPick) emblemPick.style.display = emblemDisplay;
 }
 function updateDisbandButton(root, activeTab) {
 	if (!root) return;
@@ -228836,7 +230273,32 @@ function updateDisbandButton(root, activeTab) {
 		});
 	}
 }
-var AccessTypeBit, Guild, _memberViewTemplate, _positionViewTemplate, _expelViewTemplate, _positions, _members, _skills, _btnIncSkillTemplate, _skpoints, _btnLevelUp, lArrow, rArrow, _totalExp, _guildAccess, _checkbox_off, _checkbox_on, renderMemberFaces, Guild_default;
+function updateSkillFooter(root, activeTab) {
+	if (!root) return;
+	const onSkills = activeTab === "skills";
+	for (const el of root.querySelectorAll(".footer .btn_use")) el.style.display = onSkills ? "block" : "none";
+	for (const el of root.querySelectorAll(".footer .skpoints")) el.style.display = onSkills && SessionStorage_default.isGuildMaster ? "block" : "none";
+}
+function updateMemberSort(root, activeTab) {
+	if (!root) return;
+	const box = root.querySelector(".footer .sortlogin");
+	if (!box) return;
+	const offered = _config().memberListSort === "checkbox";
+	box.style.display = offered && activeTab === "members" ? "block" : "none";
+	const btn = box.querySelector("ui-button");
+	const uri = UI_default.guildMemberListSorted ? _checkbox_on : _checkbox_off;
+	if (btn && uri) btn.style.backgroundImage = `url(${uri})`;
+	if (!box.dataset.bound) {
+		box.dataset.bound = "1";
+		box.addEventListener("click", () => {
+			UI_default.guildMemberListSorted = !UI_default.guildMemberListSorted;
+			UI_default.save();
+			reorderMemberRows(root, _sortsByLogin() ? _orderByLogin(_members) : _members);
+			updateMemberSort(root, "members");
+		});
+	}
+}
+var ACCESS_UNKNOWN, TAB_MEMBERS, TAB_POSITIONS, INFO_BLANK_CELLS, INFO_ZERO_CELLS, AccessTypeBit, Guild, _memberViewTemplate, _positionViewTemplate, _expelViewTemplate, _noticeSubjectTemplate, _noticeBodyTemplate, _notice, _positions, _members, _skills, _pendingPositions, _positionsDirty, _positionsSelected, _sentPayRates, GUILD_PERM_STORAGE, PERMISSION_COLUMNS, GUILD_LEVEL_MAX, EMBLEM_SIDE, _btnIncSkillTemplate, _skpoints, _btnLevelUp, _totalExp, _guildAccess, _accessRequested, _checkbox_off, _checkbox_on, _hasMemo, GUILD_CONFIG, PORTRAIT_BOX, renderMemberFaces, Guild_default;
 var init_Guild$1 = __esmMin((() => {
 	init_DBManager();
 	init_SkillInfo();
@@ -228848,6 +230310,7 @@ var init_Guild$1 = __esmMin((() => {
 	init_Camera();
 	init_Renderer();
 	init_Client();
+	init_PacketVerManager();
 	init_UIManager();
 	init_GUIComponent();
 	init_Elements();
@@ -228860,6 +230323,25 @@ var init_Guild$1 = __esmMin((() => {
 	init_Guild$3();
 	init_Guild$2();
 	init_WinStats();
+	init_Configs();
+	init_UI();
+	ACCESS_UNKNOWN = -1;
+	TAB_MEMBERS = 1;
+	TAB_POSITIONS = 2;
+	INFO_BLANK_CELLS = [
+		".name .value",
+		".level .value",
+		".master .value",
+		".avglevel .value",
+		".territory .value",
+		".exp .value",
+		".members .online"
+	];
+	INFO_ZERO_CELLS = [
+		".members .numMember",
+		".members .maxMember",
+		".tax .value"
+	];
 	AccessTypeBit = {
 		0: 0,
 		1: 1,
@@ -228871,12 +230353,36 @@ var init_Guild$1 = __esmMin((() => {
 	};
 	Guild = new GUIComponent("Guild", Guild_default$1);
 	Guild.render = () => Guild_default$2;
+	_notice = {
+		subject: "",
+		body: ""
+	};
 	_positions = [];
 	_members = [];
 	_skills = [];
+	_pendingPositions = {};
+	_positionsDirty = false;
+	_positionsSelected = 0;
+	_sentPayRates = {};
+	GUILD_PERM_STORAGE = 256;
+	PERMISSION_COLUMNS = {
+		invite: 1,
+		punish: 16,
+		storage: GUILD_PERM_STORAGE
+	};
+	GUILD_LEVEL_MAX = 50;
+	EMBLEM_SIDE = 24;
 	_skpoints = 0;
 	_totalExp = 0;
-	_guildAccess = 0;
+	_guildAccess = ACCESS_UNKNOWN;
+	_accessRequested = false;
+	_hasMemo = false;
+	GUILD_CONFIG = {
+		memberListSort: "always",
+		showLastLogin: false,
+		showTendency: false,
+		showTaxPoint: false
+	};
 	/**
 	* Initialize component
 	*/
@@ -228894,10 +230400,13 @@ var init_Guild$1 = __esmMin((() => {
 			closeBtn.addEventListener("click", () => Guild.toggle());
 		}
 		const tabsContainer = root.querySelector(".tabs");
-		if (tabsContainer) tabsContainer.addEventListener("click", (e) => {
-			const btn = e.target.closest("button");
-			if (btn) onChangeTab.call(btn, e);
-		});
+		if (tabsContainer) {
+			tabsContainer.addEventListener("click", (e) => {
+				const btn = e.target.closest("button");
+				if (btn) onChangeTab.call(btn, e);
+			});
+			for (const btn of tabsContainer.querySelectorAll("button")) btn.title = _tabLabel(btn);
+		}
 		Client.loadFiles([`${DB.INTERFACE_PATH}checkbox_0.bmp`, `${DB.INTERFACE_PATH}checkbox_1.bmp`], (off, on) => {
 			_checkbox_off = off;
 			_checkbox_on = on;
@@ -228905,29 +230414,30 @@ var init_Guild$1 = __esmMin((() => {
 		const posBody = root.querySelector(".content.positions tbody");
 		if (posBody) {
 			posBody.addEventListener("mousedown", (e) => {
-				if (e.target.closest("input") && !SessionStorage_default.isGuildMaster) e.preventDefault();
 				const tr = e.target.closest("tr");
 				if (tr) {
-					for (const row of posBody.querySelectorAll("tr")) row.classList.remove("active");
+					const rows = [...posBody.querySelectorAll("tr")];
+					for (const row of rows) row.classList.remove("active");
 					tr.classList.add("active");
+					_positionsSelected = rows.indexOf(tr);
 				}
 			});
 			posBody.addEventListener("focus", (e) => {
 				if (e.target.matches("input")) {
-					const btnOk = root.querySelector(".footer .btn_ok");
-					if (btnOk) btnOk.style.display = "block";
+					_positionsDirty = true;
+					_showApplyButton();
 					e.target.select();
 				}
 			}, true);
 			posBody.addEventListener("click", (e) => {
-				const btn = e.target.closest("ui-button");
-				if (btn && SessionStorage_default.isGuildMaster) {
-					btn.className = btn.className.replace(/\b(on|off)\b/g, "").trim();
-					const isOn = !btn.classList.contains("on");
-					btn.classList.add(isOn ? "on" : "off");
-					btn.style.backgroundImage = `url(${isOn ? _checkbox_on : _checkbox_off})`;
-					const btnOk = root.querySelector(".footer .btn_ok");
-					if (btnOk) btnOk.style.display = "block";
+				const box = e.target.closest(".checkbox");
+				if (box && SessionStorage_default.isGuildMaster) {
+					const isOn = !box.classList.contains("on");
+					box.className = box.className.replace(/\b(on|off)\b/g, "").trim();
+					box.classList.add(isOn ? "on" : "off");
+					box.style.backgroundImage = `url(${isOn ? _checkbox_on : _checkbox_off})`;
+					_positionsDirty = true;
+					_showApplyButton();
 				}
 			});
 		}
@@ -228950,18 +230460,19 @@ var init_Guild$1 = __esmMin((() => {
 		}
 		const membersBody = root.querySelector(".content.members tbody");
 		if (membersBody) {
+			const selectRow = (tr) => {
+				for (const row of membersBody.querySelectorAll("tr")) row.classList.remove("active");
+				tr.classList.add("active");
+			};
 			membersBody.addEventListener("mousedown", (e) => {
 				const tr = e.target.closest("tr");
-				if (tr) {
-					for (const row of membersBody.querySelectorAll("tr")) row.classList.remove("active");
-					tr.classList.add("active");
-				}
+				if (tr) selectRow(tr);
 			});
 			membersBody.addEventListener("contextmenu", (e) => {
-				const td = e.target.closest("td.name");
-				if (!td) return;
-				const index = td.parentNode.getAttribute("data-index");
-				const member = _members[index];
+				const tr = e.target.closest("tr");
+				const member = tr && _members[tr.getAttribute("data-index")];
+				if (!member) return;
+				selectRow(tr);
 				const isSelf = member.AID === SessionStorage_default.AID && member.GID === SessionStorage_default.GID;
 				ContextMenu_default.remove();
 				ContextMenu_default.append();
@@ -228979,7 +230490,18 @@ var init_Guild$1 = __esmMin((() => {
 						Guild.onRequestLeave(member.AID, member.GID, reason);
 					};
 				});
-				if (SessionStorage_default.guildRight & 16 && !isSelf) ContextMenu_default.addElement(DB.getMessage(509), () => {
+				if (SessionStorage_default.isGuildMaster && !isSelf) ContextMenu_default.addElement(DB.getMessage(2923, "Assign Guild Leader"), () => {
+					const grade = _positions[member.GPositionID];
+					const text = DB.getMessage(2924, "Are you sure you want to assign %s as guild leader? After assigning your position will become %s").replace("%s", member.CharName || DB.getMessage(581, "Nameless")).replace("%s", grade && grade.posName ? grade.posName : "");
+					UIManager.showPromptBox(text, "ok", "cancel", () => {
+						Guild.onChangeMemberPosRequest([{
+							AID: member.AID,
+							GID: member.GID,
+							positionID: 0
+						}]);
+					});
+				});
+				if (SessionStorage_default.guildPermission & 16 && !isSelf) ContextMenu_default.addElement(DB.getMessage(509), () => {
 					InputBox_default.append();
 					InputBox_default.setType("text");
 					const textEl = (_root$13(InputBox_default) || InputBox_default.ui?.[0])?.querySelector?.(".text");
@@ -229020,7 +230542,7 @@ var init_Guild$1 = __esmMin((() => {
 			if (target) onRequestSkillInfo.call(target);
 		});
 		container.addEventListener("mousedown", (e) => {
-			const target = e.target.closest(".selectable");
+			const target = e.target.closest(".skill");
 			if (target && target.closest(".content.skills")) onSkillFocus.call(target);
 		});
 		container.addEventListener("dragstart", (e) => {
@@ -229032,36 +230554,45 @@ var init_Guild$1 = __esmMin((() => {
 			if (target && target.closest(".content.skills")) onSkillDragEnd.call(target);
 		});
 		const noticeContent = root.querySelector(".content.notice");
-		if (noticeContent) noticeContent.addEventListener("focus", (e) => {
-			if (e.target.matches("textarea, input")) {
-				const btnOk = root.querySelector(".footer .btn_ok");
-				if (btnOk) btnOk.style.display = "block";
-			}
-		}, true);
-		const emblemInput = root.querySelector(".content.info .emblem_edit input");
+		if (noticeContent) {
+			_noticeSubjectTemplate = noticeContent.querySelector(".subject")?.cloneNode(true);
+			_noticeBodyTemplate = noticeContent.querySelector("textarea.notice")?.cloneNode(true);
+			Guild.updateNoticeView();
+			noticeContent.addEventListener("focus", (e) => {
+				if (SessionStorage_default.isGuildMaster && e.target.matches("textarea, input")) _showApplyButton();
+			}, true);
+		}
+		const emblemInput = root.querySelector(".content.info .emblem_pick input");
 		if (emblemInput) emblemInput.addEventListener("change", function() {
-			const file = this.files[0];
-			if (!file) return;
-			const isBmp = /^image\/(bmp|x-bmp|x-ms-bmp|x-windows-bmp)$/.test(file.type) || /\.bmp$/i.test(file.name);
-			const isGif = file.type === "image/gif" || /\.gif$/i.test(file.name);
-			if (isBmp && file.size <= 1783 || isGif && file.size <= 5e4) {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-					Guild.onSendEmblem(new Uint8Array(e.target.result));
-				};
-				reader.readAsArrayBuffer(this.files[0]);
-			} else console.warn("[Warning] Incorrect emblem file type. Only BMP, 24bit or lower is accepted or GIFs max size 50Kb or lower.");
+			submitEmblem(this.files[0]);
+			this.value = "";
 		});
+		const emblemEdit = root.querySelector(".content.info .emblem_edit");
+		if (emblemEdit && emblemInput) emblemEdit.addEventListener("click", () => emblemInput.click());
+		const emblemDrop = root.querySelector(".emblem_drop");
+		const guildWindow = root.querySelector("#Guild");
+		if (emblemDrop && guildWindow) {
+			guildWindow.addEventListener("dragenter", (e) => {
+				e.preventDefault();
+				if (_acceptsEmblemDrop(root, e.dataTransfer)) emblemDrop.classList.add("dragover");
+			});
+			guildWindow.addEventListener("dragover", (e) => e.preventDefault());
+			guildWindow.addEventListener("drop", (e) => e.preventDefault());
+			emblemDrop.addEventListener("dragleave", () => emblemDrop.classList.remove("dragover"));
+			emblemDrop.addEventListener("drop", (e) => {
+				emblemDrop.classList.remove("dragover");
+				submitEmblem(e.dataTransfer.files[0]);
+			});
+		}
 		const footerOk = root.querySelector(".footer .btn_ok");
 		if (footerOk) footerOk.addEventListener("click", () => onValidate());
+		const footerUse = root.querySelector(".footer .btn_use");
+		if (footerUse) footerUse.addEventListener("click", () => {
+			const selected = root.querySelector(".content.skills .skill.selected");
+			if (selected) Guild.useSkillID(parseInt(selected.getAttribute("data-index"), 10));
+		});
 		this.draggable(".titlebar");
 		this.ui.hide();
-		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/arw_right.bmp`, (data) => {
-			rArrow = `url(${data})`;
-		});
-		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/arw_left.bmp`, (data) => {
-			lArrow = `url(${data})`;
-		});
 		renderTendency(0, 0);
 	};
 	/**
@@ -229069,6 +230600,41 @@ var init_Guild$1 = __esmMin((() => {
 	*/
 	Guild.onRemove = function onRemove() {
 		Renderer.stop(renderMemberFaces);
+		_resetPositionsTab();
+	};
+	/**
+	* Empty the window of the character who was here before
+	*
+	* The component is a singleton and outlives a character change.
+	* @see docs/reference/guild/member-view.md
+	*/
+	Guild.reset = function reset() {
+		const root = _root$13(this);
+		if (!root) return;
+		_members.length = 0;
+		_positions.length = 0;
+		_skills.length = 0;
+		_skpoints = 0;
+		_guildAccess = ACCESS_UNKNOWN;
+		_accessRequested = false;
+		_hasMemo = false;
+		_sentPayRates = {};
+		_resetPositionsTab();
+		for (const selector of [
+			".content.members tbody",
+			".content.positions tbody",
+			".content.history tbody"
+		]) {
+			const container = root.querySelector(selector);
+			if (container) container.innerHTML = "";
+		}
+		const skillList = root.querySelector(".content.skills .skill_list");
+		if (skillList) skillList.innerHTML = "";
+		_clearInfoTab(root);
+		Guild.setNotice("", "");
+		for (const btn of root.querySelectorAll(".tabs button")) btn.classList.remove("active");
+		updateTabAccess(root);
+		for (const content of root.querySelectorAll(".content")) content.style.display = "none";
 	};
 	Guild.onShortCut = function onShortCut(key) {
 		if (key.cmd === "TOGGLE") this.toggle();
@@ -229091,17 +230657,19 @@ var init_Guild$1 = __esmMin((() => {
 		if (this.ui.is(":visible")) return;
 		this.ui.show();
 		const root = _root$13(this);
+		updateInfoOptions(root);
 		if (!root.querySelector(".tabs .active")) {
 			const infoBtn = root.querySelector(".tabs .info");
 			if (infoBtn) infoBtn.click();
-			Guild.onRequestAccess();
 		}
+		Guild.requestAccessIfUnknown();
 		const membersContent = root.querySelector(".content.members");
 		if (membersContent && membersContent.style.display !== "none") Renderer.render(renderMemberFaces);
 	};
 	Guild.hide = function hide() {
 		this.ui.hide();
 		Renderer.stop(renderMemberFaces);
+		_resetPositionsTab();
 	};
 	Guild.setGuildInformations = function setGuildInformations(info) {
 		const root = _root$13(this);
@@ -229114,18 +230682,23 @@ var init_Guild$1 = __esmMin((() => {
 		general.querySelector(".members .maxMember").textContent = info.maxUserNum;
 		general.querySelector(".avglevel .value").textContent = info.userAverageLevel;
 		general.querySelector(".territory .value").textContent = info.manageLand;
-		general.querySelector(".exp .value").textContent = info.exp;
 		general.querySelector(".tax .value").textContent = info.point;
+		const atMaxLevel = info.level >= GUILD_LEVEL_MAX;
+		general.querySelector(".exp .value").textContent = atMaxLevel ? 0 : info.exp;
+		general.querySelector(".exp").classList.toggle("maxlevel", atMaxLevel);
 		Guild.updateSession(info);
 		Guild.onRequestGuildEmblem(info.GDID, info.emblemVersion, Guild.setEmblem.bind(this));
-		const emblemEdit = general.querySelector(".emblem_edit");
-		if (emblemEdit) emblemEdit.style.display = SessionStorage_default.isGuildMaster ? "" : "none";
+		updateEmblemControls(root);
 		updateDisbandButton(root, getActiveTab(root));
+		updateSkillFooter(root, getActiveTab(root));
+		updateMemberSort(root, getActiveTab(root));
 		WinStatsController.getUI().update("guildname", info.guildname);
-		renderTendency(info.honor, info.virtue);
+		updateInfoOptions(root);
+		if (_showsTendency()) renderTendency(info.honor, info.virtue);
 	};
 	Guild.setEmblem = function setEmblem(image) {
-		const el = _root$13(this).querySelector(".content.info .emblem_container");
+		const root = _root$13(this);
+		const el = root ? root.querySelector(".content.info .emblem_container") : null;
 		if (el) el.style.backgroundImage = `url(${image.src})`;
 	};
 	Guild.setRelations = function setRelations(guilds) {
@@ -229150,12 +230723,20 @@ var init_Guild$1 = __esmMin((() => {
 		const el = list.querySelector(`div[data-guild-id="${guildId}"]`);
 		if (el) el.remove();
 	};
-	Guild.setMembers = function setMembers(members) {
+	Guild.setMembers = function setMembers(members, hasMemo) {
 		let online = 0;
 		const count = members.length;
 		_members.length = 0;
 		_totalExp = 0;
+		if (_hasPendingPositions()) ChatBox_default.addText("The guild member list changed. The grade waiting to be applied was dropped.", ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
+		_clearPendingPositions();
 		const root = _root$13(this);
+		_hasMemo = !!hasMemo;
+		const membersContent = root.querySelector(".content.members");
+		if (membersContent) {
+			membersContent.classList.toggle("has-memo", _hasMemo);
+			membersContent.classList.toggle("has-lastlogin", !_hasMemo && _config().showLastLogin);
+		}
 		const tbody = root.querySelector(".content.members tbody");
 		if (tbody) tbody.innerHTML = "";
 		for (let i = 0; i < count; ++i) {
@@ -229166,7 +230747,9 @@ var init_Guild$1 = __esmMin((() => {
 		if (numMember) numMember.textContent = count;
 		const onlineEl = root.querySelector(".content.info .members .online");
 		if (onlineEl) onlineEl.textContent = online;
+		const ordered = _sortsByLogin() ? _orderByLogin(members) : members;
 		for (let i = 0; i < count; ++i) this.setMember(members[i]);
+		reorderMemberRows(root, ordered);
 		renderMemberFaces(Renderer.tick + 1e3);
 	};
 	Guild.setMember = function setMember(member) {
@@ -229174,8 +230757,10 @@ var init_Guild$1 = __esmMin((() => {
 		const root = _root$13(this);
 		for (i = 0, count = _members.length; i < count; ++i) if (_members[i].AID === member.AID && _members[i].GID === member.GID) break;
 		let view;
-		if (i < count) view = root.querySelector(`.MemberView[data-index="${i}"]`);
-		else {
+		if (i < count) {
+			view = root.querySelector(`.MemberView[data-index="${i}"]`);
+			_members[i] = member;
+		} else {
 			view = _memberViewTemplate.cloneNode(true);
 			const tbody = root.querySelector(".content.members tbody");
 			if (tbody) tbody.appendChild(view);
@@ -229183,24 +230768,42 @@ var init_Guild$1 = __esmMin((() => {
 		}
 		if (member.CurrentState) view.classList.add("online");
 		view.setAttribute("data-index", i);
+		view.classList.toggle("pending", member.GID in _pendingPositions);
+		const displayName = member.CharName || DB.getMessage(581, "Nameless");
 		const nameValue = view.querySelector(".name .value");
 		if (nameValue) {
-			nameValue.textContent = member.CharName;
-			nameValue.title = member.CharName;
+			nameValue.textContent = displayName;
+			nameValue.title = displayName;
 		}
+		const lastLogin = view.querySelector(".name .lastlogin");
+		if (lastLogin) lastLogin.textContent = member.LastLogin && _config().showLastLogin ? DB.getMessage(3012, "Last login: %s").replace("%s", _formatLastLogin(member.LastLogin)) : "";
 		if (_positions[member.GPositionID]) {
 			const positionCell = view.querySelector(".position");
 			if (SessionStorage_default.isGuildMaster) {
-				let selectHTML = `<select class="changePosition member_${member.AID}_${member.GID}">`;
+				const own = !member.GPositionID ? " disabled" : "";
+				let selectHTML = `<select class="changePosition member_${member.AID}_${member.GID}"${own}>`;
 				_positions.forEach((position, key) => {
 					selectHTML += `<option value="${position.positionID}" ${key === member.GPositionID ? "selected" : ""}>${_escapeHTML$3(position.posName)}</option>`;
 				});
 				selectHTML += "</select>";
 				positionCell.innerHTML = selectHTML;
 				const selectEl = positionCell.querySelector(`.member_${member.AID}_${member.GID}`);
-				if (selectEl) selectEl.addEventListener("change", (evt) => {
-					Guild.updateMemberPosition(member.AID, member.GID, parseInt(evt.target.value, 10), true);
-				});
+				if (selectEl) {
+					selectEl.addEventListener("change", (evt) => {
+						const positionID = parseInt(evt.target.value, 10);
+						if (!Guild.updateMemberPosition(member.AID, member.GID, positionID, true)) {
+							evt.target.value = member.GPositionID;
+							return;
+						}
+						view.classList.add("pending");
+						_showApplyButton();
+					});
+					const showFullGrade = () => {
+						selectEl.title = selectEl.options[selectEl.selectedIndex].textContent;
+					};
+					showFullGrade();
+					selectEl.addEventListener("change", showFullGrade);
+				}
 			} else {
 				positionCell.textContent = _positions[member.GPositionID].posName;
 				positionCell.title = _positions[member.GPositionID].posName;
@@ -229222,19 +230825,32 @@ var init_Guild$1 = __esmMin((() => {
 			taxCell.textContent = member.MemberExp;
 			taxCell.title = member.MemberExp;
 		}
-		if (!member.entity) {
-			member.entity = new Entity();
-			member.entity.direction = 4;
-			member.entity.objecttype = Entity.TYPE_PC;
-			member.entity.files.shadow.spr = null;
-		}
-		member.entity.sex = member.Sex;
-		member.entity._job = member.Job;
-		member.entity._effectiveJob = member.Job;
-		member.entity.head = member.HeadType;
-		member.entity.headpalette = member.HeadPalette;
+		member.entity = memberPortrait(member.entity, {
+			sex: member.Sex,
+			job: member.Job,
+			head: member.HeadType,
+			headPalette: member.HeadPalette
+		});
 		const numMember = root.querySelector(".content.info .members .numMember");
 		if (numMember) numMember.textContent = _members.length;
+	};
+	/**
+	* The name the roster holds for a character id
+	*
+	* The departure packets of the id-only era carry no name, and the roster is
+	* where the client reads it back from.
+	* @see docs/reference/guild/member-view.md
+	*
+	* @param {number} GID - character id
+	* @return {string} the member's name, or the placeholder the list itself uses
+	*/
+	Guild.getMemberName = function getMemberName(GID) {
+		let name = "";
+		for (let i = 0, count = _members.length; i < count; ++i) if (_members[i].GID === GID) {
+			name = _members[i].CharName;
+			break;
+		}
+		return name || DB.getMessage(581, "Nameless");
 	};
 	Guild.updateMemberStatus = function updateMemberStatus(member) {
 		let i, count;
@@ -229248,22 +230864,77 @@ var init_Guild$1 = __esmMin((() => {
 			if (_members[i].CurrentState) view.classList.add("online");
 			else view.classList.remove("online");
 		}
-		if ("sex" in member) _members[i].entity.sex = member.sex;
-		if ("head" in member) _members[i].entity.head = member.head;
-		if ("headPalette" in member) _members[i].entity.headpalette = member.headPalette;
+		const current = _members[i];
+		if (member.status) {
+			if ("sex" in member) current.Sex = member.sex;
+			if ("head" in member) current.HeadType = member.head;
+			if ("headPalette" in member) current.HeadPalette = member.headPalette;
+		}
+		current.entity = memberPortrait(current.entity, {
+			sex: current.Sex,
+			job: current.Job,
+			head: current.HeadType,
+			headPalette: current.HeadPalette
+		});
 		for (i = 0, count = _members.length; i < count; ++i) online += _members[i].CurrentState ? 1 : 0;
 		const onlineEl = root.querySelector(".content.info .members .online");
 		if (onlineEl) onlineEl.textContent = online;
-		const nameValue = view?.querySelector(".name .value");
-		ChatBox_default.addText(DB.getMessage(485 + (member.status ? 0 : 1)).replace("%s", nameValue ? nameValue.textContent : ""), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.GUILD);
+		if (_sortsByLogin()) {
+			reorderMemberRows(root, _orderByLogin(_members));
+			renderMemberFaces(Renderer.tick + 1e3);
+		}
+		if (!UI_default.li) return;
+		ChatBox_default.addText(DB.getMessage(member.status ? 485 : 486, member.status ? "Guild Member %s has connected." : "Guild Member %s has disconnected.").replace("%s", current.CharName || DB.getMessage(581, "Nameless")), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.GUILD);
 	};
+	/**
+	* Move a member to another grade
+	*
+	* From the dropdown the change is only queued, never sent on selection.
+	* @see docs/reference/guild/grade-change.md
+	*
+	* @param {number} AID - account id
+	* @param {number} GID - character id
+	* @param {number} positionID - grade to move the member to
+	* @param {boolean} fromDropdown - true when the grade dropdown is the source
+	* @return {boolean} false when the member is unknown or the selection refused
+	*/
 	Guild.updateMemberPosition = function updateMemberPosition(AID, GID, positionID, fromDropdown) {
 		for (let i = 0, count = _members.length; i < count; ++i) if (_members[i].AID === AID && _members[i].GID === GID) {
+			const currentID = _members[i].GPositionID;
+			if (fromDropdown && (!positionID || !currentID || positionID === currentID)) return false;
 			_members[i].GPositionID = positionID;
-			if (!fromDropdown) Guild.setMember(_members[i]);
-			break;
+			if (fromDropdown) {
+				const queued = _pendingPositions[GID];
+				_pendingPositions[GID] = {
+					AID,
+					GID,
+					positionID,
+					previousID: queued ? queued.previousID : currentID
+				};
+			} else Guild.setMember(_members[i]);
+			return true;
 		}
-		if (fromDropdown) onValidate();
+		return false;
+	};
+	/**
+	* Apply the grades the server acknowledged
+	*
+	* The ack is server truth, so it also drops whatever was still queued. Every row
+	* goes back to the server's grade first and the acknowledged ones are then moved
+	* again: an ack can carry fewer entries than were sent, and the rest have to end
+	* on what the server holds rather than on what it never answered.
+	* @see docs/reference/guild/grade-change.md
+	*
+	* @param {Array} memberInfo - PACKET.ZC.ACK_REQ_CHANGE_MEMBERS entries
+	*/
+	Guild.setMemberPositions = function setMemberPositions(memberInfo) {
+		_clearPendingPositions();
+		if (!memberInfo) return;
+		for (let i = 0, count = memberInfo.length; i < count; ++i) {
+			const entry = memberInfo[i];
+			if (!entry.positionID) continue;
+			Guild.updateMemberPosition(entry.AID, entry.GID, entry.positionID, false);
+		}
 	};
 	Guild.setPositions = function setPositions(positions, erase) {
 		let rank;
@@ -229276,14 +230947,19 @@ var init_Guild$1 = __esmMin((() => {
 			_positions[rank.positionID].ranking = rank.ranking;
 			_positions[rank.positionID].payRate = rank.payRate;
 			if (rank.posName) _positions[rank.positionID].posName = rank.posName;
+			const sent = _sentPayRates[rank.positionID];
+			if (sent !== void 0 && rank.payRate !== void 0 && sent !== rank.payRate) ChatBox_default.addText(DB.getMessage(3486, "You can't enter value more than 50%.").replace(/%[ds]|\d+/, rank.payRate), ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
+			delete _sentPayRates[rank.positionID];
 		}
 		Guild.updatePositionView();
 	};
 	Guild.setPositionsName = function setPositionsName(positions) {
 		let rank;
+		_clearPendingPositions();
 		for (let i = 0, count = positions.length; i < count; ++i) {
 			rank = positions[i];
 			if (!(rank.positionID in _positions)) _positions[rank.positionID] = {};
+			_positions[rank.positionID].positionID = rank.positionID;
 			_positions[rank.positionID].posName = rank.posName;
 		}
 		Guild.updatePositionView();
@@ -229291,29 +230967,40 @@ var init_Guild$1 = __esmMin((() => {
 	Guild.updatePositionView = function updatePositionView() {
 		const container = _root$13(this).querySelector(".content.positions tbody");
 		if (!container) return;
+		const isMaster = SessionStorage_default.isGuildMaster;
+		if (_positionsDirty) {
+			if (isMaster) return;
+			_positionsDirty = false;
+			_hideApplyButton();
+		}
+		container.closest(".content.positions")?.classList.toggle("has-storage", _hasStorageColumn());
 		container.innerHTML = "";
 		const count = _positions.length;
+		let rendered = 0;
 		for (let i = 0; i < count; ++i) {
-			const view = _positionViewTemplate.cloneNode(true);
 			const rank = _positions[i];
-			if (i === 0) view.classList.add("active");
+			if (!rank) continue;
+			const view = _positionViewTemplate.cloneNode(true);
+			view.dataset.positionId = rank.positionID;
+			if (rendered === _positionsSelected) view.classList.add("active");
+			++rendered;
 			const idCell = view.querySelector(".id");
 			if (idCell) idCell.textContent = rank.positionID;
-			const titleInput = view.querySelector(".title input");
-			if (titleInput) titleInput.value = rank.posName;
-			const taxInput = view.querySelector(".tax input");
-			if (taxInput) taxInput.value = rank.payRate;
-			const inviteBtn = view.querySelector(".invite ui-button");
-			if (inviteBtn) {
-				inviteBtn.style.backgroundImage = `url(${rank.right & 1 ? _checkbox_on : _checkbox_off})`;
-				inviteBtn.className = inviteBtn.className.replace(/\b(on|off)\b/g, "").trim();
-				inviteBtn.classList.add(rank.right & 1 ? "on" : "off");
+			if (isMaster) {
+				const titleInput = view.querySelector(".title input");
+				if (titleInput) titleInput.value = rank.posName;
+				const taxInput = view.querySelector(".tax input");
+				if (taxInput) taxInput.value = rank.payRate;
+			} else {
+				_asValue(view.querySelector(".title"), rank.posName, true);
+				_asValue(view.querySelector(".tax"), `${rank.payRate} %`);
 			}
-			const punishBtn = view.querySelector(".punish ui-button");
-			if (punishBtn) {
-				punishBtn.style.backgroundImage = `url(${rank.right & 16 ? _checkbox_on : _checkbox_off})`;
-				punishBtn.className = punishBtn.className.replace(/\b(on|off)\b/g, "").trim();
-				punishBtn.classList.add(rank.right & 16 ? "on" : "off");
+			for (const column in PERMISSION_COLUMNS) {
+				const box = view.querySelector(`.${column} .checkbox`);
+				if (!box) continue;
+				const on = rank.right & PERMISSION_COLUMNS[column];
+				box.style.backgroundImage = `url(${on ? _checkbox_on : _checkbox_off})`;
+				box.className = `${isMaster ? "checkbox" : "tick"} ${on ? "on" : "off"}`;
 			}
 			container.appendChild(view);
 		}
@@ -229322,8 +231009,8 @@ var init_Guild$1 = __esmMin((() => {
 		const root = _root$13(this);
 		for (let i = 0, count = _skills.length; i < count; ++i) this.onUpdateSkill(_skills[i].SKID, 0);
 		_skills.length = 0;
-		const table = root.querySelector(".content.skills .skill_list table");
-		if (table) table.innerHTML = "";
+		const list = root.querySelector(".content.skills .skill_list");
+		if (list) list.innerHTML = "";
 		for (let i = 0, count = skills.length; i < count; ++i) this.addSkill(skills[i]);
 	};
 	Guild.addSkill = function addSkill(skill) {
@@ -229339,29 +231026,15 @@ var init_Guild$1 = __esmMin((() => {
 			onRequestSkillUp.call(this);
 		});
 		const className = !skill.level ? "disabled" : skill.type ? "active" : "passive";
-		const tr = document.createElement("tr");
+		const tr = document.createElement("div");
 		tr.className = `skill id${skill.SKID} ${className}`;
 		tr.setAttribute("data-index", skill.SKID);
 		tr.setAttribute("draggable", "true");
-		tr.innerHTML = `<td class="icon"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="24" height="24" /></td><td class="levelupcontainer"></td><td class=selectable><div class="name">${_escapeHTML$3(sk.SkillName)}<br/><span class="level">` + (sk.bSeperateLv ? `<button class="currentDown"></button>Lv : <span class="current">${skill.level}</span> / <span class="max">${skill.level}</span><button class="currentUp"></button>` : `Lv : <span class="current">${skill.level}</span>`) + `</span></div></td><td class="selectable type"><div class="consume">${skill.type ? `Sp : <span class="spcost">${skill.spcost}</span>` : "Passive"}</div></td>`;
-		if (!skill.upgradable || !_skpoints) levelup.style.display = "none";
+		tr.innerHTML = `<div class="icon"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" width="24" height="24" /></div><div class="levelupcontainer"></div><div class="selectable"><div class="name">${_escapeHTML$3(sk.SkillName)}</div><div class="levelline"><div class="level">Lv : <span class="current">${skill.level}</span></div><div class="consume">${skill.type ? `Sp : <span class="spcost">${skill.spcost}</span>` : "Passive"}</div></div></div>`;
+		if (!skill.upgradable || !_skpoints || !SessionStorage_default.isGuildMaster) levelup.style.display = "none";
 		tr.querySelector(".levelupcontainer").appendChild(levelup);
-		const currentUp = tr.querySelector(".level .currentUp");
-		if (currentUp) {
-			if (rArrow) currentUp.style.backgroundImage = rArrow;
-			currentUp.addEventListener("click", () => {
-				skillLevelSelectUp(skill);
-			});
-		}
-		const currentDown = tr.querySelector(".level .currentDown");
-		if (currentDown) {
-			if (lArrow) currentDown.style.backgroundImage = lArrow;
-			currentDown.addEventListener("click", () => {
-				skillLevelSelectDown(skill);
-			});
-		}
-		const table = root.querySelector(".content.skills .skill_list table");
-		if (table) table.appendChild(tr);
+		const list = root.querySelector(".content.skills .skill_list");
+		if (list) list.appendChild(tr);
 		this.parseHTML.call(levelup);
 		Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, (data) => {
 			const img = tr.querySelector(".icon img");
@@ -229381,23 +231054,19 @@ var init_Guild$1 = __esmMin((() => {
 		if (Number.isInteger(skill.type)) target.type = skill.type;
 		const element = _root$13(this).querySelector(`.skill.id${skill.SKID}`);
 		if (!element) return;
-		for (const el of element.querySelectorAll(".level .current, .level .max")) el.textContent = skill.level;
-		if (skill.selectedLevel) {
-			const current = element.querySelector(".level .current");
-			if (current) current.textContent = skill.selectedLevel;
-		}
+		for (const el of element.querySelectorAll(".level .current")) el.textContent = skill.level;
 		const spcost = element.querySelector(".spcost");
 		if (spcost) spcost.textContent = skill.spcost;
 		element.classList.remove("active", "passive", "disabled");
 		element.classList.add(!skill.level ? "disabled" : skill.type ? "active" : "passive");
 		const levelupEl = element.querySelector(".levelup");
-		if (levelupEl) levelupEl.style.display = skill.upgradable && _skpoints ? "" : "none";
+		if (levelupEl) levelupEl.style.display = skill.upgradable && _skpoints && SessionStorage_default.isGuildMaster ? "" : "none";
 		this.onUpdateSkill(skill.SKID, skill.level);
 	};
 	Guild.useSkillID = function useSkillID(id, level) {
 		const skill = getSkillById(id);
 		if (!skill || !skill.level || !skill.type) return;
-		Guild.useSkill(skill, level ? level : skill.selectedLevel);
+		Guild.useSkill(skill, level ? level : skill.level);
 	};
 	Guild.useSkill = function useSkill(skill, level) {
 		if (skill.type & SkillTargetSelection_default.TYPE.SELF) this.onUseSkill(skill.SKID, level ? level : skill.level);
@@ -229416,21 +231085,64 @@ var init_Guild$1 = __esmMin((() => {
 			return;
 		}
 		_skpoints = amount;
-		const count = _skills.length;
-		for (let i = 0; i < count; ++i) {
-			const levelupEl = root.querySelector(`.skill.id${_skills[i].SKID} .levelup`);
-			if (levelupEl) levelupEl.style.display = _skills[i].upgradable && amount ? "" : "none";
-		}
+		updateSkillArrows(root);
 	};
 	Guild.onLevelUp = function onLevelUp() {
 		if (_btnLevelUp) document.body.appendChild(_btnLevelUp);
 	};
 	Guild.setNotice = function setNotice(subject, notice) {
+		_notice.subject = subject;
+		_notice.body = notice;
+		Guild.updateNoticeView();
+		_writeNotice(_root$13(this)?.querySelector(".content.notice"));
+	};
+	/**
+	* Draw the Notice tab for whoever is looking at it
+	*
+	* A member gets the text and no field.
+	* @see docs/reference/guild/member-view.md
+	*/
+	Guild.updateNoticeView = function updateNoticeView() {
 		const root = _root$13(this);
-		const subjectInput = root.querySelector(".content.notice .subject");
-		if (subjectInput) subjectInput.value = subject;
-		const noticeTextarea = root.querySelector(".content.notice textarea.notice");
-		if (noticeTextarea) noticeTextarea.value = notice;
+		if (!root) return;
+		const content = root.querySelector(".content.notice");
+		if (!content || !_noticeSubjectTemplate || !_noticeBodyTemplate) return;
+		const subjectSlot = content.querySelector(".subject");
+		const bodySlot = content.querySelector(".notice");
+		if (!subjectSlot || !bodySlot) return;
+		const isMaster = SessionStorage_default.isGuildMaster;
+		if (isMaster === (subjectSlot.tagName === "INPUT")) return;
+		const fill = (slot, template) => {
+			let next;
+			if (isMaster) next = template.cloneNode(true);
+			else {
+				next = document.createElement("div");
+				next.className = `${template.className} value`;
+			}
+			slot.replaceWith(next);
+		};
+		fill(subjectSlot, _noticeSubjectTemplate);
+		fill(bodySlot, _noticeBodyTemplate);
+		_writeNotice(content);
+		if (!isMaster) _hideApplyButton();
+	};
+	/**
+	* Redraw everything the guild-master flag decides
+	*
+	* Reached from the flag's own packet, which can arrive before the window exists.
+	* @see docs/reference/guild/member-view.md
+	*/
+	Guild.updateMasterView = function updateMasterView() {
+		const root = _root$13(this);
+		if (!root) return;
+		Guild.updatePositionView();
+		Guild.updateNoticeView();
+		updateSkillFooter(root, getActiveTab(root));
+		updateSkillArrows(root);
+		updateEmblemControls(root);
+		updateDisbandButton(root, getActiveTab(root));
+		_clearPendingPositions();
+		if (_members.length) Guild.setMembers([..._members], _hasMemo);
 	};
 	Guild.setExpelList = function setExpelList(list) {
 		const container = _root$13(this).querySelector(".content.history tbody");
@@ -229439,7 +231151,7 @@ var init_Guild$1 = __esmMin((() => {
 		for (let i = 0, count = list.length; i < count; ++i) {
 			const element = _expelViewTemplate.cloneNode(true);
 			const nameCell = element.querySelector(".name");
-			if (nameCell) nameCell.textContent = list[i].charname;
+			if (nameCell) nameCell.textContent = list[i].charname || DB.getMessage(581, "Nameless");
 			const reasonCell = element.querySelector(".reason");
 			if (reasonCell) reasonCell.textContent = list[i].reason;
 			container.appendChild(element);
@@ -229447,21 +231159,63 @@ var init_Guild$1 = __esmMin((() => {
 	};
 	Guild.setAccess = function setAccess(access) {
 		_guildAccess = access;
+		_accessRequested = false;
+		updateTabAccess(_root$13(this));
 	};
+	/**
+	* Ask which tabs this character may open, once
+	*
+	* The mask changes with who the player is, not with what the guild does.
+	* @see docs/reference/guild/member-view.md
+	*/
+	Guild.requestAccessIfUnknown = function requestAccessIfUnknown() {
+		if (_guildAccess !== ACCESS_UNKNOWN || _accessRequested || !SessionStorage_default.hasGuild) return;
+		_accessRequested = true;
+		Guild.onRequestAccess();
+	};
+	/**
+	* Forget the mask, the role having changed under it
+	*
+	* Through setAccess, so the marks cannot outlive the mask that earned them.
+	* @see docs/reference/guild/member-view.md
+	*/
+	Guild.invalidateAccess = function invalidateAccess() {
+		Guild.setAccess(ACCESS_UNKNOWN);
+	};
+	PORTRAIT_BOX = 96;
 	renderMemberFaces = (function renderMemberFacesClosure() {
 		let lastTick = 0;
+		let scratch = null;
+		let scratchCtx = null;
 		return function renderMemberFace(tick) {
 			if (tick < lastTick + 1e3) return;
 			lastTick = tick;
-			const canvases = _root$13(Guild).querySelectorAll(".content.members canvas");
+			const root = _root$13(Guild);
+			if (!scratch) {
+				scratch = document.createElement("canvas");
+				scratch.width = scratch.height = PORTRAIT_BOX;
+				scratchCtx = scratch.getContext("2d");
+			}
+			const canvasFor = {};
+			for (const row of root.querySelectorAll(".content.members .MemberView")) canvasFor[row.getAttribute("data-index")] = row.querySelector("canvas");
 			Camera.direction = 4;
 			for (let i = 0, count = _members.length; i < count; ++i) {
-				if (!canvases[i]) continue;
-				const ctx = canvases[i].getContext("2d");
-				ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+				const canvas = canvasFor[i];
+				if (!canvas) continue;
+				const ctx = canvas.getContext("2d");
+				const cellW = canvas.width;
+				const cellH = canvas.height;
+				ctx.clearRect(0, 0, cellW, cellH);
 				if (!_members[i].CurrentState) continue;
-				SpriteRenderer.bind2DContext(ctx, 15, 45);
+				scratchCtx.clearRect(0, 0, PORTRAIT_BOX, PORTRAIT_BOX);
+				SpriteRenderer.bind2DContext(scratchCtx, PORTRAIT_BOX / 2, 65.5);
 				_members[i].entity.renderEntity();
+				const box = opaqueBounds(scratchCtx, PORTRAIT_BOX);
+				if (!box) continue;
+				const boxH = box.bottom - box.top + 1;
+				const sx = box.left + (box.right - box.left + 1 - cellW) / 2;
+				const sy = boxH > cellH ? box.top : box.top + (boxH - cellH) / 2;
+				ctx.drawImage(scratch, Math.min(Math.max(Math.round(sx), 0), PORTRAIT_BOX - cellW), Math.min(Math.max(Math.round(sy), 0), PORTRAIT_BOX - cellH), cellW, cellH, 0, 0, cellW, cellH);
 			}
 		};
 	})();
@@ -229470,7 +231224,8 @@ var init_Guild$1 = __esmMin((() => {
 	};
 	Guild.promptDisbandGuild = function promptDisbandGuild() {
 		if (!SessionStorage_default.isGuildMaster) return;
-		UIManager.showMessageBox("If you are using a guild storage, all items inside it will disappear.", "ok", () => {
+		const warning = DB.getMessage(2564, "If you are using a guild storage, all items inside it will disappear.");
+		UIManager.showMessageBox(warning, "ok", () => {
 			GuildCompanion_default.openDisband();
 		});
 	};
@@ -229485,12 +231240,20 @@ var init_Guild$1 = __esmMin((() => {
 	Guild.onRequestMemberExpel = function() {};
 	Guild.onRequestDeleteRelation = function() {};
 	Guild.onRequestAccess = function() {};
+	/**
+	* Take from the guild's basic information what belongs to the session
+	*
+	* The guild-master flag is deliberately not set here. It is carried explicitly
+	* by the belonging packet, which the server sends after this one on a handover,
+	* and a second writer would leave that handler comparing a value already moved
+	* under it.
+	* @see docs/reference/guild/member-view.md
+	*/
 	Guild.updateSession = function(info) {
 		SessionStorage_default.hasGuild = true;
 		SessionStorage_default.guildName = info.guildname || "";
 		SessionStorage_default.Entity.GUID = info.GDID;
 		SessionStorage_default.Entity.GEmblemVer = info.emblemVersion;
-		if (SessionStorage_default.Entity.display.name === info.masterName) SessionStorage_default.isGuildMaster = true;
 	};
 	Guild.onRequestGuildEmblem = function() {};
 	Guild.onSendEmblem = function() {};
@@ -237087,14 +238850,30 @@ var init_StrEffect = __esmMin((() => {
 		xy: /* @__PURE__ */ new Float32Array(8)
 	};
 	StrEffect = class {
-		constructor(filename, position, startTick, texturePath) {
+		constructor(filename, position, startTick, texturePath, fallbacks = []) {
 			this.filename = filename;
 			this.startTick = startTick;
 			this.position = position;
 			this.texturePath = texturePath;
+			this.fallbacks = fallbacks.slice();
+			this.load();
+		}
+		/**
+		* Load the file. Clients keep the same art under different folders from one
+		* release to the next, so a missing file moves on to the next candidate;
+		* when none is left the effect is removed.
+		*/
+		load() {
 			Client.loadFile(this.filename, null, () => {
-				this.needCleanUp = true;
-			}, { texturePath });
+				const next = this.fallbacks.shift();
+				if (!next) {
+					this.needCleanUp = true;
+					return;
+				}
+				this.filename = next.filename;
+				this.texturePath = next.texturePath;
+				this.load();
+			}, { texturePath: this.texturePath });
 		}
 		/**
 		* Preparing for render
@@ -246219,9 +247998,16 @@ function onGuildAccess(pkt) {
 function onGuildOwnInfo(pkt) {
 	if (pkt.GDID === void 0) return;
 	GuildEngine.guild_id = pkt.GDID;
+	const wasMaster = SessionStorage_default.isGuildMaster;
+	const knewRole = SessionStorage_default.hasGuild;
 	SessionStorage_default.hasGuild = true;
-	SessionStorage_default.guildRight = pkt.right;
+	SessionStorage_default.guildPermission = pkt.right;
 	SessionStorage_default.isGuildMaster = !!pkt.isMaster;
+	if (SessionStorage_default.isGuildMaster !== wasMaster) {
+		if (knewRole) Guild_default.invalidateAccess();
+		Guild_default.updateMasterView();
+	}
+	Guild_default.requestAccessIfUnknown();
 	if (pkt.GName) SessionStorage_default.guildName = pkt.GName;
 	SessionStorage_default.Entity.GUID = pkt.GDID;
 	SessionStorage_default.Entity.GEmblemVer = pkt.emblemVersion;
@@ -246242,12 +248028,33 @@ function onGuildRelation(pkt) {
 	Guild_default.setRelations(pkt.relatedGuildList);
 }
 /**
+* A guild changed its emblem - fetch the new one for everyone wearing it
+*
+* Sent to everyone in range, so it arrives for other guilds too. The request
+* repaints every entity of that guild.
+* @see docs/reference/guild/emblem-picker.md
+*
+* @param {object} pkt - PACKET.ZC.CHANGE_GUILD | PACKET.ZC.CHANGE_GUILD2
+*/
+function onGuildEmblemChanged(pkt) {
+	if (!pkt.GDID || !pkt.emblemVersion) return;
+	if (_emblemNotified[pkt.GDID] === pkt.emblemVersion) return;
+	_emblemNotified[pkt.GDID] = pkt.emblemVersion;
+	const isOwnGuild = pkt.GDID === SessionStorage_default.Entity.GUID;
+	if (isOwnGuild) SessionStorage_default.Entity.GEmblemVer = pkt.emblemVersion;
+	GuildEngine.requestGuildEmblem(pkt.GDID, pkt.emblemVersion, (image) => {
+		if (isOwnGuild) Guild_default.setEmblem(image);
+	}, () => {
+		if (_emblemNotified[pkt.GDID] === pkt.emblemVersion) delete _emblemNotified[pkt.GDID];
+	});
+}
+/**
 * Get guild members informations
 *
 * @param {object} pkt - PACKET.ZC.MEMBERMGR_INFO
 */
 function onGuildMembers(pkt) {
-	Guild_default.setMembers(pkt.memberInfo);
+	Guild_default.setMembers(pkt.memberInfo, pkt instanceof PACKET.ZC.MEMBERMGR_INFO);
 }
 /**
 * Update guild positions
@@ -246272,6 +248079,17 @@ function onGuildPositionsName(pkt) {
 	Guild_default.setPositionsName(pkt.memberList);
 }
 /**
+* A server did answer the member info request
+*
+* There is no window to show it in yet, but the answer is what tells us the
+* request is supported, so the timer waiting on it has to be called off.
+*
+* @param {object} pkt - PACKET.ZC.ACK_OPEN_MEMBER_INFO
+*/
+function onGuildMemberInfo() {
+	clearTimeout(_memberInfoTimer);
+}
+/**
 * Update a guild member
 *
 * @param {object} pkt - PACKET.ZC.ACK_GUILD_MEMBER_INFO
@@ -246280,12 +248098,12 @@ function onGuildMemberUpdate(pkt) {
 	Guild_default.setMember(pkt.Info);
 }
 /**
-* Update member rank
+* Update member ranks
 *
 * @param {object} pkt - PACKET.ZC.ACK_REQ_CHANGE_MEMBERS
 */
 function onGuildMemberPositionUpdate(pkt) {
-	Guild_default.updateMemberPosition(pkt.AID, pkt.GID, pkt.positionID);
+	Guild_default.setMemberPositions(pkt.memberInfo);
 }
 /**
 * List of guild skills
@@ -246302,8 +248120,10 @@ function onGuildSkillList(pkt) {
 * @param {object} pkt - PACKET.ZC.GUILD_NOTICE
 */
 function onGuildNotice(pkt) {
-	ChatBox_default.addText("[ " + pkt.subject + " ]", ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF63");
-	ChatBox_default.addText("[ " + pkt.notice + " ]", ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF63");
+	if (UI_default.li) {
+		ChatBox_default.addText("[ " + pkt.subject + " ]", ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF63");
+		ChatBox_default.addText("[ " + pkt.notice + " ]", ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF63");
+	}
 	Guild_default.setNotice(pkt.subject, pkt.notice);
 }
 /**
@@ -246358,8 +248178,9 @@ function onGuildDestroy(pkt) {
 			SessionStorage_default.hasGuild = false;
 			SessionStorage_default.guildName = "";
 			SessionStorage_default.isGuildMaster = false;
-			SessionStorage_default.guildRight = 0;
+			SessionStorage_default.guildPermission = 0;
 			SessionStorage_default.Entity.GUID = 0;
+			Guild_default.reset();
 			ChatBox_default.addText(DB.getMessage(400), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.GUILD);
 			break;
 		case 1:
@@ -246386,6 +248207,22 @@ function onGuildInviteRequest(pkt) {
 	UIManager.showPromptBox("(" + pkt.guildName + ") " + DB.getMessage(377), "ok", "cancel", answer(1), answer(0));
 }
 /**
+* One line of the invitation result, with the invited character's name
+* substituted if the message table asked for one.
+*
+* A no-op on the stock tables, none of whose strings carry a `%s`.
+* @see docs/reference/guild/invitation-ack.md
+*
+* @param {number} id - message table id
+* @param {string} defaultText - used when the table has no such id
+* @param {number} type - ChatBox.TYPE
+*/
+function addInviteResult(id, defaultText, type) {
+	const text = DB.getMessage(id, defaultText).replace("%s", _lastInvited || DB.getMessage(581, "Nameless"));
+	_lastInvited = "";
+	ChatBox_default.addText(text, type, ChatBox_default.FILTER.GUILD);
+}
+/**
 * Result from a guild invitation
 *
 * @param {object} pkt - PACKET.ZC.ACK_REQ_JOIN_GUILD
@@ -246393,15 +248230,15 @@ function onGuildInviteRequest(pkt) {
 function onGuildInviteResult(pkt) {
 	switch (pkt.answer) {
 		case 0:
-			ChatBox_default.addText(DB.getMessage(378), ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
+			addInviteResult(378, "He/She is already in a Guild.", ChatBox_default.TYPE.ERROR);
 			break;
 		case 1:
-			ChatBox_default.addText(DB.getMessage(379), ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
+			addInviteResult(379, "You have refused the guild invitation.", ChatBox_default.TYPE.ERROR);
 			break;
 		case 2:
-			ChatBox_default.addText(DB.getMessage(380), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.GUILD);
+			addInviteResult(380, "You have accepted the guild invitation.", ChatBox_default.TYPE.BLUE);
 			break;
-		case 3: ChatBox_default.addText(DB.getMessage(381), ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
+		case 3: addInviteResult(381, "Your Guild is full.", ChatBox_default.TYPE.ERROR);
 	}
 }
 /**
@@ -246413,38 +248250,62 @@ function onGuildMemberStatus(pkt) {
 	Guild_default.updateMemberStatus(pkt);
 }
 /**
-* Event occured when a player got expel from the guild
+* Announce a member's departure, and empty the window when it is ours
 *
-* @param {object} pkt - PACKET.ZC.ACK_BAN_GUILD_SSO
+* The server sends nothing else that would take the window down, so this is
+* where it happens.
+*
+* @param {string} charName - who left
+* @param {string} reasonDesc - the reason the server gave
+* @param {boolean} isSelf - whether the member who left is us
+* @param {number} announceID - message for the departure line
+* @param {number} reasonID - message for the reason line
 */
-function onGuildMemberExpulsion(pkt) {
-	ChatBox_default.addText(DB.getMessage(370).replace("%s", pkt.charName), ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF00");
-	ChatBox_default.addText(DB.getMessage(371).replace("%s", pkt.reasonDesc), ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF00");
-	if (pkt.charName === SessionStorage_default.Entity.display.name) {
-		Guild_default.hide();
-		SessionStorage_default.hasGuild = false;
-		SessionStorage_default.guildName = "";
-		SessionStorage_default.isGuildMaster = false;
-		SessionStorage_default.guildRight = 0;
-		SessionStorage_default.Entity.GUID = 0;
-	}
+function reportDeparture(charName, reasonDesc, isSelf, announceID, reasonID) {
+	ChatBox_default.addText(DB.getMessage(announceID).replace("%s", charName), ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF00");
+	ChatBox_default.addText(DB.getMessage(reasonID).replace("%s", reasonDesc), ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF00");
+	if (!isSelf) return;
+	Guild_default.hide();
+	SessionStorage_default.hasGuild = false;
+	SessionStorage_default.guildName = "";
+	SessionStorage_default.isGuildMaster = false;
+	SessionStorage_default.guildPermission = 0;
+	SessionStorage_default.Entity.GUID = 0;
+	Guild_default.reset();
 }
 /**
 * Event occured when a player got expel from the guild
 *
+* @param {object} pkt - PACKET.ZC.ACK_BAN_GUILD | PACKET.ZC.ACK_BAN_GUILD_SSO
+*/
+function onGuildMemberExpulsion(pkt) {
+	reportDeparture(pkt.charName, pkt.reasonDesc, pkt.charName === SessionStorage_default.Entity.display.name, 370, 371);
+}
+/**
+* Event occured when a player left the guild
+*
 * @param {object} pkt - PACKET.ZC.ACK_LEAVE_GUILD
 */
 function onGuildMemberLeave(pkt) {
-	ChatBox_default.addText(DB.getMessage(364).replace("%s", pkt.charName), ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF00");
-	ChatBox_default.addText(DB.getMessage(365).replace("%s", pkt.reasonDesc), ChatBox_default.TYPE.GUILD, ChatBox_default.FILTER.GUILD, "#FFFF00");
-	if (pkt.charName === SessionStorage_default.Entity.display.name) {
-		Guild_default.hide();
-		SessionStorage_default.hasGuild = false;
-		SessionStorage_default.guildName = "";
-		SessionStorage_default.isGuildMaster = false;
-		SessionStorage_default.guildRight = 0;
-		SessionStorage_default.Entity.GUID = 0;
-	}
+	reportDeparture(pkt.charName, pkt.reasonDesc, pkt.charName === SessionStorage_default.Entity.display.name, 364, 365);
+}
+/**
+* The same two departures, from the era that sends a character id and no name
+*
+* Session.GID is the character id; Session.Entity.GID is the account's, and
+* matching on that one would never fire.
+* @see docs/reference/guild/member-view.md
+*
+* @param {object} pkt - PACKET.ZC.ACK_BAN_GUILD_DELNAME
+*/
+function onGuildMemberExpulsionByID(pkt) {
+	reportDeparture(Guild_default.getMemberName(pkt.GID), pkt.reasonDesc, pkt.GID === SessionStorage_default.GID, 370, 371);
+}
+/**
+* @param {object} pkt - PACKET.ZC.ACK_LEAVE_GUILD_DELNAME
+*/
+function onGuildMemberLeaveByID(pkt) {
+	reportDeparture(Guild_default.getMemberName(pkt.GID), pkt.reasonDesc, pkt.GID === SessionStorage_default.GID, 364, 365);
 }
 /**
 * Remove guild relation
@@ -246524,7 +248385,7 @@ function onGuildHostilityResult(pkt) {
 	}
 }
 function onGuildCastleInfo(pkt) {}
-var _emblems, _pendingGuildSkillRequest, GuildEngine, onGuildEmblem;
+var _emblems, _pendingGuildSkillRequest, _memberInfoTimer, _emblemNotified, _lastInvited, GuildEngine, onGuildEmblem;
 var init_Guild = __esmMin((() => {
 	init_DBManager();
 	init_Inflate();
@@ -246542,8 +248403,12 @@ var init_Guild = __esmMin((() => {
 	init_Configs();
 	init_MiniMap();
 	init_ShortCut();
+	init_UI();
 	_emblems = {};
 	_pendingGuildSkillRequest = false;
+	_memberInfoTimer = 0;
+	_emblemNotified = {};
+	_lastInvited = "";
 	GuildEngine = class GuildEngine {
 		/**
 		* @var {number} our guild id
@@ -246565,6 +248430,7 @@ var init_Guild = __esmMin((() => {
 			Network.hookPacket(PACKET.ZC.MEMBERMGR_INFO2, onGuildMembers);
 			Network.hookPacket(PACKET.ZC.MEMBERMGR_INFO3, onGuildMembers);
 			Network.hookPacket(PACKET.ZC.ACK_GUILD_MEMBER_INFO, onGuildMemberUpdate);
+			Network.hookPacket(PACKET.ZC.ACK_OPEN_MEMBER_INFO, onGuildMemberInfo);
 			Network.hookPacket(PACKET.ZC.POSITION_INFO, onGuildPositions);
 			Network.hookPacket(PACKET.ZC.POSITION_ID_NAME_INFO, onGuildPositionsName);
 			Network.hookPacket(PACKET.ZC.ACK_CHANGE_GUILD_POSITIONINFO, onGuildPositions);
@@ -246576,6 +248442,11 @@ var init_Guild = __esmMin((() => {
 			Network.hookPacket(PACKET.ZC.UPDATE_GDID, onGuildOwnInfo);
 			Network.hookPacket(PACKET.ZC.UPDATE_GDID2, onGuildOwnInfo);
 			Network.hookPacket(PACKET.ZC.BAN_LIST, onGuildExpelList);
+			Network.hookPacket(PACKET.ZC.BAN_LIST2, onGuildExpelList);
+			Network.hookPacket(PACKET.ZC.BAN_LIST3, onGuildExpelList);
+			Network.hookPacket(PACKET.ZC.CHANGE_GUILD, onGuildEmblemChanged);
+			Network.hookPacket(PACKET.ZC.CHANGE_GUILD2, onGuildEmblemChanged);
+			Network.hookPacket(PACKET.ZC.CHANGE_GUILD3, onGuildEmblemChanged);
 			Network.hookPacket(PACKET.ZC.ACK_DISORGANIZE_GUILD_RESULT, onGuildDestroy);
 			Network.hookPacket(PACKET.ZC.REQ_JOIN_GUILD, onGuildInviteRequest);
 			Network.hookPacket(PACKET.ZC.ACK_REQ_JOIN_GUILD, onGuildInviteResult);
@@ -246583,7 +248454,9 @@ var init_Guild = __esmMin((() => {
 			Network.hookPacket(PACKET.ZC.UPDATE_CHARSTAT2, onGuildMemberStatus);
 			Network.hookPacket(PACKET.ZC.ACK_BAN_GUILD, onGuildMemberExpulsion);
 			Network.hookPacket(PACKET.ZC.ACK_BAN_GUILD_SSO, onGuildMemberExpulsion);
+			Network.hookPacket(PACKET.ZC.ACK_BAN_GUILD_DELNAME, onGuildMemberExpulsionByID);
 			Network.hookPacket(PACKET.ZC.ACK_LEAVE_GUILD, onGuildMemberLeave);
+			Network.hookPacket(PACKET.ZC.ACK_LEAVE_GUILD_DELNAME, onGuildMemberLeaveByID);
 			Network.hookPacket(PACKET.ZC.DELETE_RELATED_GUILD, onGuildAllianceDeleteAck);
 			Network.hookPacket(PACKET.ZC.ADD_RELATED_GUILD, onGuildAllianceAdd);
 			Network.hookPacket(PACKET.ZC.REQ_ALLY_GUILD, onGuildAskForAlliance);
@@ -246631,8 +248504,10 @@ var init_Guild = __esmMin((() => {
 		* @param {number} guild id
 		* @param {number} version
 		* @param {function} callback
+		* @param {function} [onFailure] - the fetch gave up, and nothing was repainted
 		*/
-		static requestGuildEmblem(guild_id, version, callback) {
+		static requestGuildEmblem(guild_id, version, callback, onFailure) {
+			const failed = onFailure || function() {};
 			if (!_emblems[guild_id]) _emblems[guild_id] = {
 				version: -1,
 				image: new Image(),
@@ -246649,7 +248524,10 @@ var init_Guild = __esmMin((() => {
 				return;
 			}
 			if (PacketVerManager_default.value >= 20170315) {
-				if (!guild_id || typeof guild_id === "undefined" || !SessionStorage_default.AID || SessionStorage_default.AID === 0 || !SessionStorage_default.ServerName || SessionStorage_default.ServerName === void 0 || !SessionStorage_default.WebToken || SessionStorage_default.WebToken === void 0) return;
+				if (!guild_id || typeof guild_id === "undefined" || !SessionStorage_default.AID || SessionStorage_default.AID === 0 || !SessionStorage_default.ServerName || SessionStorage_default.ServerName === void 0 || !SessionStorage_default.WebToken || SessionStorage_default.WebToken === void 0) {
+					failed();
+					return;
+				}
 				const formData = new FormData();
 				formData.append("GDID", guild_id);
 				formData.append("WorldName", SessionStorage_default.ServerName);
@@ -246661,22 +248539,29 @@ var init_Guild = __esmMin((() => {
 				xhr.open("POST", webserverAddress + "/emblem/download", true);
 				xhr.responseType = "blob";
 				xhr.timeout = 5e3;
+				const commit = (img, gifCanvas) => {
+					if (version < emblem.version) return;
+					if (version > emblem.version) {
+						emblem.version = version;
+						emblem.image = img;
+						emblem.gif = gifCanvas;
+					}
+					callback(emblem.image, emblem.gif);
+					EntityManager.forEach((entity) => {
+						if (entity.GUID === guild_id) entity.setEntityGuildEmblem(emblem.image, emblem.gif);
+					});
+				};
 				xhr.onload = () => {
 					if (xhr.status !== 200) {
 						console.warn("Emblem download returned non-200 status:", xhr.status);
+						failed();
 						return;
 					}
 					try {
 						if (!(xhr.getResponseHeader("Content-Type") === "image/gif")) {
 							const img = new Image();
 							img.onload = () => {
-								emblem.version = version;
-								emblem.image = img;
-								emblem.gif = null;
-								callback(emblem.image, emblem.gif);
-								EntityManager.forEach((entity) => {
-									if (entity.GUID === guild_id) entity.setEntityGuildEmblem(img);
-								});
+								commit(img, null);
 							};
 							img.decoding = "async";
 							const blobUrl = URL.createObjectURL(xhr.response);
@@ -246689,13 +248574,7 @@ var init_Guild = __esmMin((() => {
 								const gifCanvas = this;
 								const img = new Image();
 								img.onload = () => {
-									emblem.version = version;
-									emblem.image = img;
-									emblem.gif = gifCanvas;
-									callback(emblem.image, emblem.gif);
-									EntityManager.forEach((entity) => {
-										if (entity.GUID === guild_id) entity.setEntityGuildEmblem(img, gifCanvas);
-									});
+									commit(img, gifCanvas);
 								};
 								img.decoding = "async";
 								const blobUrl = URL.createObjectURL(xhr.response);
@@ -246703,17 +248582,23 @@ var init_Guild = __esmMin((() => {
 									img.src = this.toDataURL();
 									URL.revokeObjectURL(blobUrl);
 								});
+							} else {
+								console.warn("Emblem gif could not be decoded");
+								failed();
 							}
 						});
 					} catch (e) {
 						console.error("Error processing guild emblem:", e);
+						failed();
 					}
 				};
 				xhr.onerror = () => {
 					console.warn("Emblem download failed: web-server unreachable");
+					failed();
 				};
 				xhr.ontimeout = () => {
 					console.warn("Emblem download timed out");
+					failed();
 				};
 				xhr.send(formData);
 			} else {
@@ -246728,6 +248613,16 @@ var init_Guild = __esmMin((() => {
 		*/
 		static requestAccess() {
 			Network.sendPacket(new PACKET.CZ.REQ_GUILD_MENUINTERFACE());
+		}
+		/**
+		* Empty the guild window for the character now entering the map
+		* @see docs/reference/guild/member-view.md
+		*/
+		static resetForNewCharacter() {
+			SessionStorage_default.isGuildMaster = false;
+			clearTimeout(_memberInfoTimer);
+			_memberInfoTimer = 0;
+			Guild_default.reset();
 		}
 		/**
 		* Ask the server to create a guild
@@ -246789,6 +248684,8 @@ var init_Guild = __esmMin((() => {
 		* @param {number} target account id
 		*/
 		static requestPlayerInvitation(AID) {
+			const entity = EntityManager.get(AID);
+			_lastInvited = entity ? entity.display.name : "";
 			const pkt = new PACKET.CZ.REQ_JOIN_GUILD();
 			pkt.AID = AID;
 			pkt.MyAID = SessionStorage_default.AID;
@@ -246810,6 +248707,7 @@ var init_Guild = __esmMin((() => {
 				ChatBox_default.addText("Guild invite by name requires client 2012-01-31 or newer.", ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.PUBLIC_LOG);
 				return;
 			}
+			_lastInvited = name;
 			const pkt = new PACKET.CZ.REQ_JOIN_GUILD2();
 			pkt.name = name;
 			Network.sendPacket(pkt);
@@ -246875,6 +248773,10 @@ var init_Guild = __esmMin((() => {
 			const pkt = new PACKET.CZ.REQ_OPEN_MEMBER_INFO();
 			pkt.AID = AID;
 			Network.sendPacket(pkt);
+			clearTimeout(_memberInfoTimer);
+			_memberInfoTimer = setTimeout(() => {
+				ChatBox_default.addText(`${DB.getMessage(129, "View Information")} : the server did not answer.`, ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
+			}, 3e3);
 		}
 		/**
 		* Request to delete an ally or antagonist
@@ -246893,6 +248795,7 @@ var init_Guild = __esmMin((() => {
 		* Note: it's a hacky way that do not compress the emblem.
 		*
 		* @param {Uint8Array} file
+		* @see docs/reference/guild/emblem-picker.md
 		*/
 		static sendEmblem(data) {
 			if (PacketVerManager_default.value >= 20170315) {
@@ -246927,6 +248830,12 @@ var init_Guild = __esmMin((() => {
 					try {
 						const response = JSON.parse(xhr.responseText);
 						console.log("Emblem uploaded successfully, version:", response.version);
+						if (PacketVerManager_default.value >= 20190724) {
+							const pkt = new PACKET.CZ.REQ_ADD_NEW_EMBLEM();
+							pkt.GDID = SessionStorage_default.Entity.GUID;
+							pkt.version = response.version;
+							Network.sendPacket(pkt);
+						}
 						GuildEngine.requestGuildEmblem(SessionStorage_default.Entity.GUID, response.version, (image, _gif) => {
 							Guild_default.setEmblem(image);
 						});
@@ -248840,8 +250749,9 @@ var init_SakuraWeatherEffect = __esmMin((() => {
 				const radY = leave.angY * Math.PI / 180;
 				const driftX = leave.swayFacX * Math.sin(radX);
 				const driftY = leave.swayFacY * Math.sin(radY);
-				leave.x += driftX * .1;
-				leave.y += driftY * .1;
+				const driftScale = dt / RAG_TICK_MS$1;
+				leave.x += driftX * .1 * driftScale;
+				leave.y += driftY * .1 * driftScale;
 				leave._lastTick = tick;
 				let alpha = 1;
 				let alphaCap = 1;
@@ -248967,11 +250877,14 @@ var init_PokJukWeatherEffect = __esmMin((() => {
 			};
 		}
 		render(gl, tick) {
-			for (let i = 0; i < this.fireworks.length; i++) {
-				const fw = this.fireworks[i];
-				this.updateFirework(fw);
-				this.drawFirework(fw);
+			const dt = Math.min(tick - (this._lastTick || tick), 250);
+			this._lastTick = tick;
+			this._accumTime = (this._accumTime || 0) + dt;
+			while (this._accumTime >= 16) {
+				this._accumTime -= 16;
+				for (let i = 0; i < this.fireworks.length; i++) this.updateFirework(this.fireworks[i]);
 			}
+			for (let i = 0; i < this.fireworks.length; i++) this.drawFirework(this.fireworks[i]);
 		}
 		updateFirework(fw) {
 			fw.process++;
@@ -249344,6 +251257,7 @@ var init_CloudWeatherEffect = __esmMin((() => {
 			cloud.direction[2] = (Math.random() * .1 - .05) * speed;
 			cloud.born_tick = cloud.death_tick ? cloud.death_tick + 2e3 : now;
 			cloud.death_tick = cloud.born_tick + 6e3;
+			cloud._lastTick = cloud.born_tick;
 		}
 		render(gl, tick) {
 			if (!this._display) return;
@@ -249375,7 +251289,9 @@ var init_CloudWeatherEffect = __esmMin((() => {
 				SpriteRenderer.zIndex = zindex;
 				SpriteRenderer.color[3] = opacity;
 				SpriteRenderer.image.texture = this._textures[cloud.sprite];
-				vec3$8.add(cloud.position, cloud.position, cloud.direction);
+				const dt = Math.min(tick - (cloud._lastTick || cloud.born_tick), 250);
+				cloud._lastTick = tick;
+				vec3$8.scaleAndAdd(cloud.position, cloud.position, cloud.direction, dt / 25);
 				SpriteRenderer.position.set(cloud.position);
 				SpriteRenderer.runWithDepth(!overlay, false, !overlay, () => {
 					SpriteRenderer.render();
@@ -249575,6 +251491,15 @@ var init_ProcessCommand = __esmMin((() => {
 				this.addText(DB.getMessage(317 + Map_default.miss), this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
 				Map_default.miss = !Map_default.miss;
 				Map_default.save();
+			}
+		},
+		li: {
+			description: "Toggles the chat announcements when a friend or a guild member connects or disconnects",
+			callback: function() {
+				const line = UI_default.li ? DB.getMessage(1045, "Do not display online status of friends in Chat Window.  [/li OFF]") : DB.getMessage(1044, "Display online status of friends in Chat Window. [/li ON]");
+				this.addText(line, this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+				UI_default.li = !UI_default.li;
+				UI_default.save();
 			}
 		},
 		aura: {
@@ -253921,10 +255846,24 @@ function PrepareInit(callParams) {
 function spamSTR(Params) {
 	let filename;
 	const texturePath = Params.effect.texturePath || "";
-	if (Map_default.mineffect && Params.effect.min) filename = Params.effect.min;
+	const minimal = !!(Map_default.mineffect && Params.effect.min);
+	if (minimal) filename = Params.effect.min;
 	else filename = Params.effect.file;
-	if (Params.effect.rand) filename = filename.replace("%d", Math.round(Params.effect.rand[0] + (Params.effect.rand[1] - Params.effect.rand[0]) * Math.random()));
-	EffectManager.add(new StrEffect("data/texture/effect/" + filename + ".str", Params.Inst.position, Params.Inst.startTick, texturePath), Params);
+	let pick = (name) => name;
+	if (Params.effect.rand) {
+		const n = Math.round(Params.effect.rand[0] + (Params.effect.rand[1] - Params.effect.rand[0]) * Math.random());
+		pick = (name) => name.replace("%d", n);
+	}
+	filename = pick(filename);
+	const fallbacks = (Params.effect.fallback || []).map((file) => ({
+		filename: "data/texture/effect/" + pick(file) + ".str",
+		texturePath: file.substring(0, file.lastIndexOf("/") + 1)
+	}));
+	if (minimal) fallbacks.unshift({
+		filename: "data/texture/effect/" + pick(Params.effect.file) + ".str",
+		texturePath
+	});
+	EffectManager.add(new StrEffect("data/texture/effect/" + filename + ".str", Params.Inst.position, Params.Inst.startTick, texturePath, fallbacks), Params);
 }
 /**
 * Spam an effect to the scene
@@ -255545,6 +257484,7 @@ function cloudInit(cloud) {
 	cloud.direction[2] = Math.random() * .002 - .001;
 	cloud.born_tick = cloud.death_tick ? cloud.death_tick + 2e3 : Date.now();
 	cloud.death_tick = cloud.born_tick + 6e3;
+	cloud._lastTick = cloud.born_tick;
 }
 /**
 * Rendering clouds on maps
@@ -255579,7 +257519,9 @@ function render$8(gl, modelView, projection, fog, tick) {
 		SpriteRenderer.zIndex = 0;
 		SpriteRenderer.color[3] = opacity;
 		SpriteRenderer.image.texture = _textures$1[cloud.sprite];
-		vec3$8.add(cloud.position, cloud.position, cloud.direction);
+		const dt = Math.min(tick - (cloud._lastTick || cloud.born_tick), 250);
+		cloud._lastTick = tick;
+		vec3$8.scaleAndAdd(cloud.position, cloud.position, cloud.direction, dt / 25);
 		SpriteRenderer.position.set(cloud.position);
 		SpriteRenderer.runWithDepth(true, false, true, function() {
 			SpriteRenderer.render();
@@ -259961,14 +261903,13 @@ var init_SwirlingAura = __esmMin((() => {
 			this.bands = [];
 			for (let ec = 0; ec < 3; ec++) this.bands.push({
 				life: 1,
-				process: 0,
+				initialRotStart: ec * 90,
 				rotStart: ec * 90,
 				maxHeight: (15 - 2 * ec) * GAME_TO_WORLD,
 				distance: (3.9 + .2 * ec) * GAME_TO_WORLD * INNER_CIRCLE_SCALE,
 				riseAngle: (55 - 5 * ec) * DEG_TO_RAD$1,
 				spinSpeed: ec + 3,
-				height: new Float32Array(E_DIVISION),
-				flag1: new Uint8Array(E_DIVISION)
+				height: new Float32Array(E_DIVISION)
 			});
 			this.basicAngle = FULL_DISPLAY_ANGLE / 20;
 			this.vertices = /* @__PURE__ */ new Float32Array(210);
@@ -259980,19 +261921,17 @@ var init_SwirlingAura = __esmMin((() => {
 		/**
 		* Update height profile for a band
 		*/
-		updateHeightProfile(band) {
+		updateHeightProfile(band, process) {
 			const middle = 10;
 			const step = 9;
-			for (let i = 0; i < E_DIVISION; i++) if (band.flag1[i] === 0) {
+			for (let i = 0; i < E_DIVISION; i++) {
 				const sinLimit = (90 + (i - middle) * step) * DEG_TO_RAD$1;
 				const sinLimitValue = Math.sin(sinLimit);
 				const maxPossible = band.maxHeight * sinLimitValue;
-				if (band.process <= 90) {
-					const sinProcess = Math.sin(band.process * DEG_TO_RAD$1);
-					band.height[i] = band.maxHeight * sinLimitValue * sinProcess;
-				}
-				band.height[i] = Math.max(0, Math.min(band.height[i], maxPossible));
-				if (band.height[i] >= maxPossible * .99) band.flag1[i] = 1;
+				if (process <= 90) {
+					const sinProcess = Math.sin(process * DEG_TO_RAD$1);
+					band.height[i] = Math.max(0, Math.min(band.maxHeight * sinLimitValue * sinProcess, maxPossible));
+				} else band.height[i] = maxPossible;
 			}
 		}
 		/**
@@ -260097,13 +262036,13 @@ var init_SwirlingAura = __esmMin((() => {
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			const self = this;
+			const process = (tick - this.tick) / 25;
 			SpriteRenderer.runWithDepth(true, false, false, function() {
 				for (let ec = 0; ec < self.bands.length; ec++) {
 					const band = self.bands[ec];
 					if (!band.life) continue;
-					band.process++;
-					band.rotStart = (band.rotStart + band.spinSpeed) % 360;
-					self.updateHeightProfile(band);
+					band.rotStart = (band.initialRotStart + process * band.spinSpeed) % 360;
+					self.updateHeightProfile(band, process);
 					self.fillBandMesh(band);
 					gl.bindBuffer(gl.ARRAY_BUFFER, self.buffers[ec]);
 					gl.bufferSubData(gl.ARRAY_BUFFER, 0, self.vertices);
@@ -260265,6 +262204,8 @@ var init_GroundAura = __esmMin((() => {
 			this.aura[1].direction = -1;
 			this.cosCache = {};
 			this.sinCache = {};
+			this._lastTick = tick;
+			this._accumTime = 0;
 		}
 		/**
 		* Initialize instance
@@ -260286,16 +262227,29 @@ var init_GroundAura = __esmMin((() => {
 		render(gl, tick) {
 			const uniform = _program$8.uniform;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
-			for (let i = 0; i < this.aura.length; i++) {
-				this.aura[i].riseAngle += 3;
-				if (this.aura[i].riseAngle && !(this.aura[i].riseAngle % 180)) {
-					this.aura[i].direction *= -1;
-					if (this.aura[i].direction < 0 && this.aura[i].size[0] < this.aura[i].initialSize[0] || this.aura[i].direction > 0 && this.aura[i].size[0] > this.aura[i].initialSize[0]) {
-						this.aura[i].size[0] = this.aura[i].initialSize[0];
-						this.aura[i].size[1] = this.aura[i].initialSize[1];
+			const RAG_TICK_MS = 25;
+			const dt = Math.min(tick - (this._lastTick || tick), 250);
+			this._lastTick = tick;
+			this._accumTime = (this._accumTime || 0) + dt;
+			while (this._accumTime >= RAG_TICK_MS) {
+				this._accumTime -= RAG_TICK_MS;
+				for (let i = 0; i < this.aura.length; i++) {
+					this.aura[i].riseAngle += 3;
+					if (this.aura[i].riseAngle && !(this.aura[i].riseAngle % 180)) {
+						this.aura[i].direction *= -1;
+						if (this.aura[i].direction < 0 && this.aura[i].size[0] < this.aura[i].initialSize[0] || this.aura[i].direction > 0 && this.aura[i].size[0] > this.aura[i].initialSize[0]) {
+							this.aura[i].size[0] = this.aura[i].initialSize[0];
+							this.aura[i].size[1] = this.aura[i].initialSize[1];
+						}
+					}
+					if (this.aura[i].riseAngle >= 360) this.aura[i].riseAngle -= 360;
+					if (this.aura[i].life) {
+						const auraAngle = i * 23;
+						const sizeModifier = calculateSize(this, this.aura, auraAngle, i);
+						this.aura[i].size[0] += sizeModifier[0] * this.aura[i].direction / (this.size / 2);
+						this.aura[i].size[1] += sizeModifier[1] * this.aura[i].direction / (this.size / 2);
 					}
 				}
-				if (this.aura[i].riseAngle >= 360) this.aura[i].riseAngle -= 360;
 			}
 			const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
 			const worldPos = [
@@ -260309,9 +262263,6 @@ var init_GroundAura = __esmMin((() => {
 				for (let i = 0; i < self.aura.length; i++) {
 					if (!self.aura[i].life) continue;
 					const auraAngle = i * 23;
-					const sizeModifier = calculateSize(self, self.aura, auraAngle, i);
-					self.aura[i].size[0] += sizeModifier[0] * self.aura[i].direction / (self.size / 2);
-					self.aura[i].size[1] += sizeModifier[1] * self.aura[i].direction / (self.size / 2);
 					gl.uniform2f(uniform.uSize, self.aura[i].size[0], self.aura[i].size[1]);
 					gl.uniform1f(uniform.uAngle, auraAngle * Math.PI / 180);
 					gl.uniform4f(uniform.uColor, 1, 1, 1, .8);
@@ -260404,10 +262355,10 @@ function wrapDegrees(angle) {
 * Advance a phase angle toward a random target, reseed when reached.
 * Returns { angle, target }
 */
-function advancePhase(current, target) {
+function advancePhase(current, target, stepScale = 1) {
 	let diff = target - current;
 	diff = (diff + 540) % 360 - 180;
-	const step = 2 + Math.random();
+	const step = (2 + Math.random()) * stepScale;
 	if (Math.abs(diff) <= step) {
 		current = target;
 		target = randRange(0, 360);
@@ -260537,6 +262488,7 @@ var init_Level99Bubble = __esmMin((() => {
 			this.position = position;
 			this.textureName = textureName || "whitelight.tga";
 			this.tick = tick || 0;
+			this._lastTick = tick || Date.now();
 			this.flag1 = flag1 === 0 || flag1 ? flag1 : 1;
 			const isGhost = this.flag1 === 11 || this.flag1 === 3;
 			this.baseRadius = this.flag1 === 1 ? REF_RADIUS : isGhost ? 3.2 : .8;
@@ -260615,9 +262567,9 @@ var init_Level99Bubble = __esmMin((() => {
 		/**
 		* Update all phases in a column (advance toward random targets)
 		*/
-		updatePhases(column) {
+		updatePhases(column, stepScale = 1) {
 			for (let i = 0; i < 16; i++) {
-				const result = advancePhase(column.phases[i], column.phaseTargets[i]);
+				const result = advancePhase(column.phases[i], column.phaseTargets[i], stepScale);
 				column.phases[i] = result.angle;
 				column.phaseTargets[i] = result.target;
 			}
@@ -260629,17 +262581,17 @@ var init_Level99Bubble = __esmMin((() => {
 		* - Y drift: y -= v each frame
 		* - Reset when y < resetY: x=z=0, y=rand[0,seedMax], reseed phases
 		*/
-		updateAnchor(column, anchorIndex) {
+		updateAnchor(column, anchorIndex, stepScale = 1) {
 			const anchor = column.anchors[anchorIndex];
 			const signs = ANCHOR_SIGNS[anchorIndex];
 			const phaseOffsets = ANCHOR_PHASE_OFFSETS[anchorIndex];
 			if (anchor.y < 0) {
 				const phaseA = column.phases[phaseOffsets.pa] * DEG_TO_RAD;
 				const phaseB = column.phases[phaseOffsets.pb] * DEG_TO_RAD;
-				anchor.x += signs.kx * this.driftK * Math.sin(phaseA);
-				anchor.z += signs.kz * this.driftK * Math.sin(phaseB);
+				anchor.x += signs.kx * this.driftK * Math.sin(phaseA) * stepScale;
+				anchor.z += signs.kz * this.driftK * Math.sin(phaseB) * stepScale;
 			}
-			anchor.y -= this.fallSpeed * debugConfig.fallSpeedMult;
+			anchor.y -= this.fallSpeed * debugConfig.fallSpeedMult * stepScale;
 			const resetLimit = this.resetY * debugConfig.respawnDepthMult;
 			if (anchor.y < resetLimit) {
 				anchor.x = 0;
@@ -260703,12 +262655,16 @@ var init_Level99Bubble = __esmMin((() => {
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			if (debugConfig.showRedBg) this.renderBackground(gl, basePos);
 			const radius = this.baseRadius * GAME_TO_WORLD * debugConfig.scaleMult;
+			const RAG_TICK_MS = 25;
+			const dt = Math.min(tick - (this._lastTick || tick), 250);
+			this._lastTick = tick;
+			const stepScale = dt / RAG_TICK_MS;
 			for (let ec = 0; ec < this.columns.length; ec++) {
 				const column = this.columns[ec];
 				if (!column.life) continue;
-				this.updatePhases(column);
+				this.updatePhases(column, stepScale);
 				for (let ai = 0; ai < column.anchors.length; ai++) {
-					this.updateAnchor(column, ai);
+					this.updateAnchor(column, ai, stepScale);
 					const anchor = column.anchors[ai];
 					const anchorWorldX = anchor.x * GAME_TO_WORLD;
 					const anchorWorldY = anchor.y * GAME_TO_WORLD;
@@ -267622,6 +269578,103 @@ var init_EffectTable = __esmMin((() => {
 			posz: 2,
 			wav: "_heal_effect"
 		}],
+		ef_hn_doublebowlingbash: [{
+			type: "STR",
+			file: "hyper_novice/hn_doublebowlingbash/double_bowlingbash",
+			texturePath: "hyper_novice/hn_doublebowlingbash/",
+			wav: "effect/hyper_novice/hn_double_bowlingbash"
+		}],
+		ef_hn_mega_sonic_blow: [{
+			type: "STR",
+			file: "hyper_novice/hn_mega_sonic_blow/mega_sonic_blow",
+			texturePath: "hyper_novice/hn_mega_sonic_blow/",
+			wav: "effect/hyper_novice/hn_mega_sonic_blow"
+		}],
+		ef_hn_shield_chain_rush: [{
+			type: "STR",
+			file: "hyper_novice/hn_shield_chain_rush/shield_chain_rush",
+			texturePath: "hyper_novice/hn_shield_chain_rush/",
+			wav: "effect/hyper_novice/hn_shield_chain_rush"
+		}],
+		ef_hn_spiral_pierce_max: [{
+			type: "STR",
+			file: "hyper_novice/hn_spiral_pierce_max/spiral_pierce_max",
+			texturePath: "hyper_novice/hn_spiral_pierce_max/",
+			wav: "effect/hyper_novice/hn_spiral_pierce_max"
+		}],
+		ef_hn_meteor_storm_buster: [{
+			type: "STR",
+			file: "hyper_novice/hn_meteor_storm_buster/meteor_storm_buster",
+			texturePath: "hyper_novice/hn_meteor_storm_buster/",
+			wav: "effect/hyper_novice/hn_meteor_storm_buster"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_meteor_storm_buster/meteor_storm_buster_bottom",
+			texturePath: "hyper_novice/hn_meteor_storm_buster/",
+			renderBeforeEntities: true
+		}],
+		ef_hn_jupitel_thunder_storm: [{
+			type: "STR",
+			file: "hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm_ball/jupitel_thunder_storm_ball",
+			texturePath: "hyper_novice/hn_jupitel_thunder_storm/jupitel_thunder_storm_ball/"
+		}],
+		ef_hn_jack_frost_nova: [{
+			type: "STR",
+			file: "hyper_novice/hn_jack_frost_nova/jack_frost_nova_end/jack_frost_nova_end",
+			texturePath: "hyper_novice/hn_jack_frost_nova/jack_frost_nova_end/",
+			wav: "effect/hyper_novice/hn_jack_frost_nova"
+		}],
+		ef_hn_hells_drive: [{
+			type: "STR",
+			file: "hyper_novice/hn_hells_drive/hells_drive_bottom",
+			texturePath: "hyper_novice/hn_hells_drive/",
+			renderBeforeEntities: true
+		}],
+		ef_hn_ground_gravitation: [{
+			type: "STR",
+			file: "hyper_novice/hn_ground_gravitation/ground_gravitation_loop",
+			texturePath: "hyper_novice/hn_ground_gravitation/",
+			wav: "effect/hyper_novice/hn_ground_gravitation"
+		}],
+		ef_hn_napalm_vulcan_strike: [{
+			type: "STR",
+			file: "hyper_novice/hn_napalm_vulcan_strike/napalm_vulcan_strike",
+			texturePath: "hyper_novice/hn_napalm_vulcan_strike/",
+			wav: "effect/hyper_novice/hn_napalm_vulcan_strike"
+		}],
+		ef_hn_breakinglimit: [{
+			type: "STR",
+			file: "hyper_novice/hn_breakinglimit/breakinglimit/breakinglimit",
+			texturePath: "hyper_novice/hn_breakinglimit/breakinglimit/",
+			wav: "effect/hyper_novice/hn_breakinglimit"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_breakinglimit/breakinglimit_buff/breakinglimit_buff",
+			texturePath: "hyper_novice/hn_breakinglimit/breakinglimit_buff/"
+		}],
+		ef_hn_rulebreak: [{
+			type: "STR",
+			file: "hyper_novice/hn_rulebreak/rulebreak/rulebreak",
+			texturePath: "hyper_novice/hn_rulebreak/rulebreak/",
+			wav: "effect/hyper_novice/hn_rulebreak"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_rulebreak/rulebreak_buff/rulebreak_buff",
+			texturePath: "hyper_novice/hn_rulebreak/rulebreak_buff/"
+		}],
+		ef_hn_overcoming_crisis: [{
+			type: "STR",
+			file: "hyper_novice/hn_overcoming_crisis/overcoming_crisis/overcoming_crisis",
+			texturePath: "hyper_novice/hn_overcoming_crisis/overcoming_crisis/",
+			min: "hyper_novice/hn_overcoming_crisis/overcoming_crisis/min_overcoming_crisis",
+			wav: "effect/hyper_novice/hn_overcoming_crisis"
+		}, {
+			type: "STR",
+			file: "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/overcoming_crisis_bottom",
+			texturePath: "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/",
+			min: "hyper_novice/hn_overcoming_crisis/overcoming_crisis_bottom/min_overcoming_crisis_bottom",
+			renderBeforeEntities: true
+		}],
 		311: [{
 			type: "STR",
 			file: "loud",
@@ -270736,6 +272789,185 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/assasin_cloaking",
 			attachedEntity: true
 		}],
+		ef_sh_chul_ho_sonic_claw: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/chul_ho_sonic_claw",
+			texturePath: "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/",
+			min: "spirit_handler/sh_chul_ho_sonic_claw/chul_ho_sonic_claw/min_chul_ho_sonic_claw",
+			wav: "effect/spirit_handler/sh_chul_ho_sonic_claw"
+		}],
+		ef_sh_howling_of_chul_ho: [{
+			type: "STR",
+			file: "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/howling_of_chul_ho",
+			texturePath: "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/",
+			min: "spirit_handler/sh_howling_of_chul_ho/howling_of_chul_ho/min_howling_of_chul_ho",
+			wav: "effect/spirit_handler/sh_howling_of_chul_ho"
+		}],
+		ef_sh_hogogong_strike: [{
+			type: "STR",
+			file: "spirit_handler/sh_hogogong_strike/hogogong_strike",
+			texturePath: "spirit_handler/sh_hogogong_strike/",
+			min: "spirit_handler/sh_hogogong_strike/min_hogogong_strike",
+			wav: "effect/spirit_handler/sh_hogogong_strike"
+		}],
+		ef_sh_ki_sul_water_spraying: [{
+			type: "STR",
+			file: "spirit_handler/sh_ki_sul_water_spraying/ki_sul_water_spraying",
+			texturePath: "spirit_handler/sh_ki_sul_water_spraying/",
+			min: "spirit_handler/sh_ki_sul_water_spraying/min_ki_sul_water_spraying",
+			wav: "effect/spirit_handler/sh_ki_sul_water_spraying"
+		}],
+		ef_sh_marine_festival_of_ki_sul: [{
+			type: "STR",
+			file: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/marine_festival_of_ki_sul",
+			texturePath: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/",
+			min: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul/min_marine_festival_of_ki_sul",
+			wav: "effect/spirit_handler/sh_marine_festival_of_ki_sul"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/marine_festival_of_ki_sul_bottom",
+			texturePath: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/",
+			min: "spirit_handler/sh_marine_festival_of_ki_sul/marine_festival_of_ki_sul_bottom/min_marine_festival_of_ki_sul_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_sandy_festival_of_ki_sul: [{
+			type: "STR",
+			file: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/sandy_festival_of_ki_sul",
+			texturePath: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/",
+			min: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul/min_sandy_festival_of_ki_sul",
+			wav: "effect/spirit_handler/sh_sandy_festival_of_ki_sul"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/sandy_festival_of_ki_sul_bottom",
+			texturePath: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/",
+			min: "spirit_handler/sh_sandy_festival_of_ki_sul/sandy_festival_of_ki_sul_bottom/min_sandy_festival_of_ki_sul_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_ki_sul_rampage: [{
+			type: "STR",
+			file: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/ki_sul_rampage",
+			texturePath: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/",
+			min: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage/min_ki_sul_rampage",
+			wav: "effect/spirit_handler/sh_ki_sul_rampage"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/ki_sul_rampage_bottom",
+			texturePath: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/",
+			min: "spirit_handler/sh_ki_sul_rampage/ki_sul_rampage_bottom/min_ki_sul_rampage_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_colors_of_hyun_rok: [{
+			type: "STR",
+			file: "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/colors_of_hyun_rok_fire",
+			texturePath: "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/",
+			min: "spirit_handler/sh_colors_of_hyun_rok/colors_of_hyun_rok_fire/min_colors_of_hyun_rok_fire",
+			wav: "effect/spirit_handler/sh_colors_of_hyun_rok"
+		}],
+		ef_sh_hyun_roks_breeze: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/hyun_roks_breeze",
+			texturePath: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/",
+			min: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze/min_hyun_roks_breeze",
+			wav: "effect/spirit_handler/sh_hyun_roks_breeze"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/hyun_roks_breeze_bottom",
+			texturePath: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/",
+			min: "spirit_handler/sh_hyun_roks_breeze/hyun_roks_breeze_bottom/min_hyun_roks_breeze_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_hyun_rok_cannon: [{
+			type: "STR",
+			file: "spirit_handler/skid_sh_hyun_rok_cannon/hyun_rok_cannon",
+			texturePath: "spirit_handler/skid_sh_hyun_rok_cannon/",
+			min: "spirit_handler/skid_sh_hyun_rok_cannon/min_hyun_rok_cannon",
+			wav: "effect/spirit_handler/sh_hyun_rok_cannon"
+		}],
+		ef_sh_temporary_communion: [
+			{
+				type: "STR",
+				file: "spirit_handler/sh_temporary_communion/temporary_communion/temporary_communion",
+				texturePath: "spirit_handler/sh_temporary_communion/temporary_communion/",
+				min: "spirit_handler/sh_temporary_communion/temporary_communion/min_temporary_communion",
+				wav: "effect/spirit_handler/sh_temporary_communion"
+			},
+			{
+				type: "STR",
+				file: "spirit_handler/sh_temporary_communion/temporary_communion_buff/temporary_communion_buff",
+				texturePath: "spirit_handler/sh_temporary_communion/temporary_communion_buff/",
+				min: "spirit_handler/sh_temporary_communion/temporary_communion_buff/min_temporary_communion_buff"
+			},
+			{
+				type: "STR",
+				file: "spirit_handler/sh_temporary_communion/temporary_communion_buff_bottom/temporary_communion_buff_bottom",
+				texturePath: "spirit_handler/sh_temporary_communion/temporary_communion_buff_bottom/",
+				min: "spirit_handler/sh_temporary_communion/temporary_communion_buff_bottom/min_temporary_communion_buff_bottom",
+				renderBeforeEntities: true
+			}
+		],
+		ef_sh_blessing_of_mystical_creatures: [{
+			type: "STR",
+			file: "spirit_handler/sh_blessing_of_mystical_creatures/blessing_of_mystical_creatures",
+			texturePath: "spirit_handler/sh_blessing_of_mystical_creatures/",
+			min: "spirit_handler/sh_blessing_of_mystical_creatures/min_blessing_of_mystical_creatures",
+			wav: "effect/spirit_handler/sh_blessing_of_mystical_creatures"
+		}],
+		ef_sh_chul_ho_battering: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering/chul_ho_battering",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering/min_chul_ho_battering",
+			wav: "effect/spirit_handler/sh_chul_ho_battering"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/chul_ho_battering_bottom",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_bottom/min_chul_ho_battering_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_chul_ho_battering_cast: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/chul_ho_battering_cast",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_cast/min_chul_ho_battering_cast"
+		}],
+		ef_sh_chul_ho_battering_hit: [{
+			type: "STR",
+			file: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/chul_ho_battering_hit",
+			texturePath: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/",
+			min: "spirit_handler/sh_chul_ho_battering/chul_ho_battering_hit/min_chul_ho_battering_hit"
+		}],
+		ef_sh_hyun_rok_spirit_power: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/hyun_rok_spirit_power",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power/min_hyun_rok_spirit_power",
+			wav: "effect/spirit_handler/sh_hyun_rok_spirit_power"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/hyun_rok_spirit_power_bottom",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_bottom/min_hyun_rok_spirit_power_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_hyun_rok_spirit_power_cast: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/hyun_rok_spirit_power_cast",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast/min_hyun_rok_spirit_power_cast"
+		}, {
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/hyun_rok_spirit_power_cast_bottom",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_cast_bottom/min_hyun_rok_spirit_power_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_sh_hyun_rok_spirit_power_hit: [{
+			type: "STR",
+			file: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/hyun_rok_spirit_power_hit",
+			texturePath: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/",
+			min: "spirit_handler/sh_hyun_rok_spirit_power/hyun_rok_spirit_power_hit/min_hyun_rok_spirit_power_hit"
+		}],
 		"496_beforecast": [{
 			type: "FUNC",
 			attachedEntity: true,
@@ -271488,6 +273720,137 @@ var init_EffectTable = __esmMin((() => {
 			file: "food_luk",
 			attachedEntity: true
 		}],
+		ef_ske_rising_sun: [{
+			type: "STR",
+			file: "sky_emperor/ske_rising_sun/ske_rising_sun",
+			texturePath: "sky_emperor/ske_rising_sun/"
+		}],
+		ef_ske_noon_blast: [{
+			type: "STR",
+			file: "sky_emperor/ske_noon_blast/ske_noon_blast",
+			texturePath: "sky_emperor/ske_noon_blast/",
+			min: "sky_emperor/ske_noon_blast/min_ske_noon_blast",
+			wav: "effect/sky_emperor/ske_noon_blast"
+		}],
+		ef_ske_sunset_blast: [{
+			type: "STR",
+			file: "sky_emperor/ske_sunset_blast/sunset_blast",
+			texturePath: "sky_emperor/ske_sunset_blast/",
+			min: "sky_emperor/ske_sunset_blast/min_sunset_blast",
+			wav: "effect/sky_emperor/ske_sunset_blast"
+		}],
+		ef_ske_midnight_kick: [{
+			type: "STR",
+			file: "sky_emperor/ske_midnight_kick/ske_midnight_kick",
+			texturePath: "sky_emperor/ske_midnight_kick/",
+			min: "sky_emperor/ske_midnight_kick/min_ske_midnight_kick",
+			wav: "effect/sky_emperor/ske_midnight_kick"
+		}],
+		ef_ske_dawn_break: [{
+			type: "STR",
+			file: "sky_emperor/ske_dawn_break/ske_dawn_break",
+			texturePath: "sky_emperor/ske_dawn_break/",
+			min: "sky_emperor/ske_dawn_break/min_ske_dawn_break",
+			wav: "effect/sky_emperor/ske_dawn_break"
+		}],
+		ef_ske_twinkling_galaxy: [{
+			type: "STR",
+			file: "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/ske_twinkling_galaxy_bottom",
+			texturePath: "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/",
+			min: "sky_emperor/ske_twinkling_galaxy/twinkling_galaxy_bottom/min_ske_twinkling_galaxy_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_star_burst: [{
+			wav: "effect/sky_emperor/ske_star_burst",
+			attachedEntity: true
+		}],
+		ef_ske_star_cannon: [{
+			type: "STR",
+			file: "sky_emperor/ske_star_cannon/star_cannon/ske_star_cannon",
+			texturePath: "sky_emperor/ske_star_cannon/star_cannon/",
+			min: "sky_emperor/ske_star_cannon/star_cannon/min_ske_star_cannon",
+			wav: "effect/sky_emperor/ske_star_cannon"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_star_cannon/star_cannon_bottom/ske_star_cannon_bottom",
+			texturePath: "sky_emperor/ske_star_cannon/star_cannon_bottom/",
+			min: "sky_emperor/ske_star_cannon/star_cannon_bottom/min_ske_star_cannon_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_all_in_the_sky: [{
+			type: "STR",
+			file: "sky_emperor/ske_all_in_the_sky/ske_all_in_the_sky",
+			texturePath: "sky_emperor/ske_all_in_the_sky/",
+			min: "sky_emperor/ske_all_in_the_sky/min_ske_all_in_the_sky",
+			wav: "effect/sky_emperor/ske_all_in_the_sky"
+		}],
+		ef_ske_enchanting_sky: [{
+			wav: "effect/sky_emperor/ske_enchanting_sky",
+			attachedEntity: true
+		}],
+		ef_ske_sky_sun: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_sun/sky_sun/sky_sun",
+			texturePath: "sky_emperor/ske_sky_sun/sky_sun/",
+			min: "sky_emperor/ske_sky_sun/sky_sun/min_sky_sun",
+			wav: "effect/sky_emperor/ske_sky_sun"
+		}],
+		ef_ske_sky_sun_hit: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_sun/sky_sun_hit/sky_sun_hit",
+			texturePath: "sky_emperor/ske_sky_sun/sky_sun_hit/",
+			min: "sky_emperor/ske_sky_sun/sky_sun_hit/min_sky_sun_hit"
+		}],
+		ef_ske_sky_moon: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon/sky_moon",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon/",
+			min: "sky_emperor/ske_sky_moon/sky_moon/min_sky_moon",
+			wav: "effect/sky_emperor/ske_sky_moon"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_bottom/sky_moon_bottom",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_bottom/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_bottom/min_sky_moon_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_sky_moon_cast: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_cast/sky_moon_cast",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_cast/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_cast/min_sky_moon_cast"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/sky_moon_cast_bottom",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_cast_bottom/min_sky_moon_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_sky_moon_hit: [{
+			type: "STR",
+			file: "sky_emperor/ske_sky_moon/sky_moon_hit/sky_moon_hit",
+			texturePath: "sky_emperor/ske_sky_moon/sky_moon_hit/",
+			min: "sky_emperor/ske_sky_moon/sky_moon_hit/min_sky_moon_hit"
+		}],
+		ef_ske_star_light_kick: [{
+			type: "STR",
+			file: "sky_emperor/ske_star_light_kick/star_light_kick/star_light_kick",
+			texturePath: "sky_emperor/ske_star_light_kick/star_light_kick/",
+			min: "sky_emperor/ske_star_light_kick/star_light_kick/min_star_light_kick",
+			wav: "effect/sky_emperor/ske_star_light_kick"
+		}, {
+			type: "STR",
+			file: "sky_emperor/ske_star_light_kick/star_light_kick_bottom/star_light_kick_bottom",
+			texturePath: "sky_emperor/ske_star_light_kick/star_light_kick_bottom/",
+			min: "sky_emperor/ske_star_light_kick/star_light_kick_bottom/min_star_light_kick_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ske_star_light_kick_hit: [{
+			type: "STR",
+			file: "sky_emperor/ske_star_light_kick/star_light_kick_hit/star_light_kick_hit",
+			texturePath: "sky_emperor/ske_star_light_kick/star_light_kick_hit/",
+			min: "sky_emperor/ske_star_light_kick/star_light_kick_hit/min_star_light_kick_hit"
+		}],
 		600: [{
 			type: "3D",
 			alphaMax: 1,
@@ -271963,6 +274326,129 @@ var init_EffectTable = __esmMin((() => {
 			file: "storm_min",
 			wav: "effect/wizard_stormgust",
 			attachedEntity: true
+		}],
+		ef_soa_talisman_of_protection: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_protection/talisman_of_protection",
+			texturePath: "soul_ascetic/soa_talisman_of_protection/",
+			min: "soul_ascetic/soa_talisman_of_protection/min_talisman_of_protection",
+			wav: "effect/soul_ascetic/soa_talisman_of_protection"
+		}],
+		ef_soa_talisman_of_warrior: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_warrior/talisman_of_warrior",
+			texturePath: "soul_ascetic/soa_talisman_of_warrior/",
+			min: "soul_ascetic/soa_talisman_of_warrior/min_talisman_of_warrior",
+			wav: "effect/soul_ascetic/soa_talisman_of_warrior"
+		}],
+		ef_soa_talisman_of_magician: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/talisman_of_magician",
+			texturePath: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/",
+			min: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician/min_talisman_of_magician"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/talisman_of_magician_bottom",
+			texturePath: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/",
+			min: "soul_ascetic/soa_talisman_of_magician/talisman_of_magician_bottom/min_talisman_of_magician_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_soa_soul_gathering: [{
+			type: "STR",
+			file: "soul_ascetic/soa_soul_gathering/soul_gathering",
+			texturePath: "soul_ascetic/soa_soul_gathering/",
+			min: "soul_ascetic/soa_soul_gathering/min_soul_gathering",
+			wav: "effect/soul_ascetic/soa_soul_gathering"
+		}],
+		ef_soa_totem_of_tutelary: [{
+			type: "STR",
+			file: "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/totem_of_tutelary_end",
+			texturePath: "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/",
+			min: "soul_ascetic/soa_totem_of_tutelary/totem_of_tutelary/min_totem_of_tutelary_end"
+		}],
+		ef_soa_talisman_of_five_elements: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_five_elements/talisman_of_the_five_elements",
+			texturePath: "soul_ascetic/soa_talisman_of_five_elements/",
+			min: "soul_ascetic/soa_talisman_of_five_elements/min_talisman_of_the_five_elements"
+		}],
+		ef_soa_talisman_of_soul_stealing: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_soul_stealing/talisman_of_soul_stealing",
+			texturePath: "soul_ascetic/soa_talisman_of_soul_stealing/",
+			min: "soul_ascetic/soa_talisman_of_soul_stealing/min_talisman_of_soul_stealing",
+			wav: "effect/soul_ascetic/soa_talisman_of_soul_stealing"
+		}],
+		ef_soa_exorcism_of_malicious_soul: [{
+			type: "STR",
+			file: "soul_ascetic/soa_exorcism_of_malicious_soul/exorcism_of_malicuous_soul",
+			texturePath: "soul_ascetic/soa_exorcism_of_malicious_soul/",
+			min: "soul_ascetic/soa_exorcism_of_malicious_soul/min_exorcism_of_malicuous_soul"
+		}],
+		ef_soa_talisman_of_blue_dragon: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_blue_dragon/talisman_of_blue_dragon",
+			texturePath: "soul_ascetic/soa_talisman_of_blue_dragon/",
+			min: "soul_ascetic/soa_talisman_of_blue_dragon/min_talisman_of_blue_dragon",
+			wav: "effect/soul_ascetic/soa_talisman_of_blue_dragon"
+		}],
+		ef_soa_talisman_of_white_tiger: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_white_tiger/talisman_of_white_tiger",
+			texturePath: "soul_ascetic/soa_talisman_of_white_tiger/",
+			min: "soul_ascetic/soa_talisman_of_white_tiger/min_talisman_of_white_tiger",
+			wav: "effect/soul_ascetic/soa_talisman_of_white_tiger"
+		}],
+		ef_soa_talisman_of_red_phoenix: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/talisman_of_red_phoenix",
+			texturePath: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/",
+			min: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix/min_talisman_of_red_phoenix",
+			wav: "effect/soul_ascetic/soa_talisman_of_red_phoenix"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/talisman_of_red_phoenix_bottom",
+			texturePath: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/",
+			min: "soul_ascetic/soa_talisman_of_red_phoenix/talisman_of_red_phoenix_bottom/min_talisman_of_red_phoenix_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_soa_talisman_of_black_tortoise: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/talisman_of_black_tortoise",
+			texturePath: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/",
+			min: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise/min_talisman_of_black_tortoise",
+			wav: "effect/soul_ascetic/soa_talisman_of_black_tortoise"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/talisman_of_black_tortoise_bottom",
+			texturePath: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/",
+			min: "soul_ascetic/soa_talisman_of_black_tortoise/talisman_of_black_tortoise_bottom/min_talisman_of_black_tortoise_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_soa_talisman_of_four_bearing_god: [{
+			type: "STR",
+			file: "soul_ascetic/soa_talisman_of_four_bearing_god/talisman_of_four_bearing_god",
+			texturePath: "soul_ascetic/soa_talisman_of_four_bearing_god/",
+			min: "soul_ascetic/soa_talisman_of_four_bearing_god/min_talisman_of_four_bearing_god",
+			wav: "effect/soul_ascetic/soa_talisman_of_four_bearing_god"
+		}],
+		ef_soa_circle_of_directions_and_elementals: [{
+			type: "STR",
+			file: "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/circle_directions_elements",
+			texturePath: "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/",
+			min: "soul_ascetic/soa_circle_of_directions_and_elementals/circle_directions_elements/min_circle_directions_elements"
+		}],
+		ef_soa_soul_of_heaven_and_earth: [{
+			type: "STR",
+			file: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/soul_of_heaven_and_earth",
+			texturePath: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/",
+			min: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth/min_soul_of_heaven_and_earth",
+			wav: "effect/soul_ascetic/soa_soul_of_heaven_and_earth"
+		}, {
+			type: "STR",
+			file: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth_buff/soul_of_heaven_and_earth_buff",
+			texturePath: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth_buff/",
+			min: "soul_ascetic/soa_soul_of_heaven_and_earth/soul_of_heaven_and_earth_buff/min_soul_of_heaven_and_earth_buff"
 		}],
 		709: [{
 			type: "STR",
@@ -273443,6 +275929,210 @@ var init_EffectTable = __esmMin((() => {
 			posz: .5,
 			repeat: true
 		}, { wav: "effect/³ª¶ôÀÇ³ë·¡" }],
+		ef_ss_tokedasu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_tokedasu/tokedasu/tokedasu",
+			texturePath: "shinkiro_shiranui/ss_tokedasu/tokedasu/",
+			min: "shinkiro_shiranui/ss_tokedasu/tokedasu/min_tokedasu",
+			wav: "effect/shinkiro_shiranui/ss_tokedasu"
+		}],
+		ef_ss_shimiru: [{
+			wav: "effect/shinkiro_shiranui/ss_shimiru",
+			attachedEntity: true
+		}],
+		ef_ss_akumukesu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_akumukesu/akumukesu",
+			texturePath: "shinkiro_shiranui/ss_akumukesu/",
+			min: "shinkiro_shiranui/ss_akumukesu/min_akumukesu",
+			wav: "effect/shinkiro_shiranui/ss_akumukesu"
+		}],
+		ef_ss_kagegari: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kagegari/kagegari",
+			texturePath: "shinkiro_shiranui/ss_kagegari/",
+			min: "shinkiro_shiranui/ss_kagegari/min_kagegari",
+			wav: "effect/shinkiro_shiranui/ss_kagegari"
+		}],
+		ef_ss_kagenomai: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kagenomai/kagenomai",
+			texturePath: "shinkiro_shiranui/ss_kagenomai/",
+			min: "shinkiro_shiranui/ss_kagenomai/min_kagenomai"
+		}],
+		ef_ss_kagegissen: [
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_kagegissen/kagegissen",
+				texturePath: "shinkiro_shiranui/ss_kagegissen/",
+				min: "shinkiro_shiranui/ss_kagegissen/min_kagegissen",
+				wav: "effect/shinkiro_shiranui/ss_kagegissen"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_kagegissen/new_kagegissen/new_kagegissen",
+				texturePath: "shinkiro_shiranui/ss_kagegissen/new_kagegissen/"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_bottom/new_kagegissen_bottom",
+				texturePath: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_bottom/",
+				renderBeforeEntities: true
+			}
+		],
+		ef_ss_kagegissen_hit: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_hit/new_kagegissen_hit",
+			texturePath: "shinkiro_shiranui/ss_kagegissen/new_kagegissen_hit/"
+		}],
+		ef_ss_fuumashouaku: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/fuumashouaku",
+			texturePath: "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/",
+			min: "shinkiro_shiranui/ss_fuumashouaku/fuumashouaku/min_fuumashouaku",
+			wav: "effect/shinkiro_shiranui/ss_fuumashouaku"
+		}],
+		ef_ss_fuumakouchiku: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_fuumakouchiku/fuumakouchiku/fuumakouchiku",
+			texturePath: "shinkiro_shiranui/ss_fuumakouchiku/fuumakouchiku/",
+			min: "shinkiro_shiranui/ss_fuumakouchiku/fuumakouchiku/min_fuumakouchiku",
+			wav: "effect/shinkiro_shiranui/ss_fuumakouchiku"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_fuumakouchiku/new_fuumakouchiku/new_fuumakouchiku",
+			texturePath: "shinkiro_shiranui/ss_fuumakouchiku/new_fuumakouchiku/",
+			min: "shinkiro_shiranui/ss_fuumakouchiku/new_fuumakouchiku/min_new_fuumakouchiku"
+		}],
+		ef_ss_kunaiwaikyoku: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaiwaikyoku/kunaiwaikyoku",
+			texturePath: "shinkiro_shiranui/ss_kunaiwaikyoku/",
+			min: "shinkiro_shiranui/ss_kunaiwaikyoku/min_kunaiwaikyoku",
+			wav: "effect/shinkiro_shiranui/ss_kunaiwaikyoku"
+		}],
+		ef_ss_kunaikaiten: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/kunaikaiten_bottom",
+			texturePath: "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/",
+			min: "shinkiro_shiranui/ss_kunaikaiten/kunaikaiten_bottom/min_kunaikaiten_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ss_kunaikussetsu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/kunaikussetsu",
+			texturePath: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/",
+			min: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu/min_kunaikussetsu",
+			wav: "effect/shinkiro_shiranui/ss_kunaikussetsu"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/kunaikussetsu_bottom",
+			texturePath: "shinkiro_shiranui/ss_kunaikussetsu/kunaikussetsu_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ss_sekienhou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_sekienhou/sekienhou",
+			texturePath: "shinkiro_shiranui/ss_sekienhou/",
+			min: "shinkiro_shiranui/ss_sekienhou/min_sekienhou",
+			wav: "effect/shinkiro_shiranui/ss_sekienhou"
+		}],
+		ef_ss_reiketsuhou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/reiketsuhou",
+			texturePath: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/",
+			min: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou/min_reiketsuhou",
+			wav: "effect/shinkiro_shiranui/ss_reiketsuhou"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/reiketsuhou_bottom",
+			texturePath: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/",
+			min: "shinkiro_shiranui/ss_reiketsuhou/reiketsuhou_bottom/min_reiketsuhou_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ss_raidenpou: [
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou/new_raidenpou",
+				texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou/",
+				min: "shinkiro_shiranui/ss_raidenpou/new_raidenpou/min_new_raidenpou",
+				wav: "effect/shinkiro_shiranui/ss_raidenpou"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_raidenpou/raidenpou",
+				texturePath: "shinkiro_shiranui/ss_raidenpou/",
+				min: "shinkiro_shiranui/ss_raidenpou/min_raidenpou"
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_bottom/new_raidenpou_bottom",
+				texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_bottom/",
+				renderBeforeEntities: true
+			}
+		],
+		ef_ss_raidenpou_cast: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/new_raidenpou_cast",
+			texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/",
+			min: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_cast/min_new_raidenpou_cast"
+		}],
+		ef_ss_raidenpou_hit: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/new_raidenpou_hit",
+			texturePath: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/",
+			min: "shinkiro_shiranui/ss_raidenpou/new_raidenpou_hit/min_new_raidenpou_hit"
+		}],
+		ef_ss_kinryuuhou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/kinryuuhou",
+			texturePath: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/",
+			min: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou/min_kinryuuhou",
+			wav: "effect/shinkiro_shiranui/ss_kinryuuhou"
+		}],
+		ef_ss_kinryuuhou_hit: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/kinryuuhou_hit",
+			texturePath: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/",
+			min: "shinkiro_shiranui/ss_kinryuuhou/kinryuuhou_hit/min_kinryuuhou_hit"
+		}],
+		ef_ss_antenpou: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_antenpou/antenpou",
+			texturePath: "shinkiro_shiranui/ss_antenpou/",
+			min: "shinkiro_shiranui/ss_antenpou/min_antenpou",
+			wav: "effect/shinkiro_shiranui/ss_antenpou"
+		}],
+		ef_ss_kageakumu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_kageakumu/kageakumu",
+			texturePath: "shinkiro_shiranui/ss_kageakumu/",
+			min: "shinkiro_shiranui/ss_kageakumu/min_kageakumu"
+		}],
+		ef_ss_hitouakumu: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/hitouakumu",
+			texturePath: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/",
+			min: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/min_hitouakumu",
+			wav: "effect/shinkiro_shiranui/ss_hitouakumu"
+		}],
+		ef_ss_ankokuryuuakumu: [{
+			wav: "effect/shinkiro_shiranui/ss_ankokuryuuakumu",
+			attachedEntity: true
+		}],
+		ef_ss_four_charm: [{
+			type: "STR",
+			file: "shinkiro_shiranui/ss_four_charm/four_charm_ice/four_charm_ice",
+			texturePath: "shinkiro_shiranui/ss_four_charm/four_charm_ice/",
+			min: "shinkiro_shiranui/ss_four_charm/four_charm_ice/min_four_charm_ice",
+			wav: "effect/shinkiro_shiranui/ss_four_charm"
+		}, {
+			type: "STR",
+			file: "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/four_charm_ice_bottom",
+			texturePath: "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/",
+			min: "shinkiro_shiranui/ss_four_charm/four_charm_ice_bottom/min_four_charm_ice_bottom",
+			renderBeforeEntities: true
+		}],
 		861: [{ wav: "effect/¼øÈ¯ÇÏ´ÂÀÚ¿¬ÀÇ¼Ò¸®" }],
 		862: [
 			{
@@ -274005,6 +276695,488 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/so_elemental_shield",
 			attachedEntity: true
 		}],
+		ef_em_spell_enchanting: [{
+			type: "STR",
+			file: "spell_enchanting/spell_enchanting/spell_enchanting",
+			texturePath: "spell_enchanting/spell_enchanting/",
+			wav: "effect/em_spell_enchanting"
+		}],
+		ef_em_activity_burn: [{
+			type: "STR",
+			file: "activity_burn/activity_burn/activity_burn",
+			texturePath: "activity_burn/activity_burn/",
+			min: "activity_burn/activity_burn/min_activity_burn",
+			wav: "effect/em_activity_burn"
+		}],
+		ef_em_activity_burn_cast: [{
+			type: "STR",
+			file: "activity_burn/activity_burn_cast/activity_burn_cast",
+			texturePath: "activity_burn/activity_burn_cast/",
+			min: "activity_burn/activity_burn_cast/min_activity_burn_cast"
+		}, {
+			type: "STR",
+			file: "activity_burn/activity_burn_cast_bottom/activity_burn_cast_bottom",
+			texturePath: "activity_burn/activity_burn_cast_bottom/",
+			min: "activity_burn/activity_burn_cast_bottom/min_activity_burn_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_increasing_activity: [{
+			type: "STR",
+			file: "increasing_activity/increasing_activity/increasing_activity",
+			texturePath: "increasing_activity/increasing_activity/",
+			min: "increasing_activity/increasing_activity/min_increasing_activity",
+			wav: "effect/em_increasing_activity"
+		}],
+		ef_em_increasing_activity_cast: [{
+			type: "STR",
+			file: "increasing_activity/increasing_activity_cast/increasing_activity_cast",
+			texturePath: "increasing_activity/increasing_activity_cast/",
+			min: "increasing_activity/increasing_activity_cast/min_increasing_activity_cast"
+		}, {
+			type: "STR",
+			file: "increasing_activity/increasing_activity_cast_bottom/increasing_activity_cast_bottom",
+			texturePath: "increasing_activity/increasing_activity_cast_bottom/",
+			min: "increasing_activity/increasing_activity_cast_bottom/min_increasing_activity_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_diamond_storm: [{
+			type: "STR",
+			file: "diamond_storm/diamond_storm/diamond_storm",
+			texturePath: "diamond_storm/diamond_storm/",
+			min: "diamond_storm/diamond_storm/min_diamond_storm",
+			wav: "effect/em_diamond_storm"
+		}, {
+			type: "STR",
+			file: "diamond_storm/diamond_storm_bottom/diamond_storm_bottom",
+			texturePath: "diamond_storm/diamond_storm_bottom/",
+			min: "diamond_storm/diamond_storm_bottom/min_diamond_storm_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_diamond_storm_cast: [{
+			type: "STR",
+			file: "diamond_storm/diamond_storm_cast/diamond_storm_cast",
+			texturePath: "diamond_storm/diamond_storm_cast/",
+			min: "diamond_storm/diamond_storm_cast/min_diamond_storm_cast"
+		}, {
+			type: "STR",
+			file: "diamond_storm/diamond_storm_cast_bottom/diamond_storm_cast_bottom",
+			texturePath: "diamond_storm/diamond_storm_cast_bottom/",
+			min: "diamond_storm/diamond_storm_cast_bottom/min_diamond_storm_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_diamond_storm_hit: [{
+			type: "STR",
+			file: "diamond_storm/diamond_storm_hit/diamond_storm_hit",
+			texturePath: "diamond_storm/diamond_storm_hit/",
+			min: "diamond_storm/diamond_storm_hit/min_diamond_storm_hit"
+		}],
+		ef_em_lightning_land: [{
+			type: "STR",
+			file: "lightning_land/lightning_land/lightning_land",
+			texturePath: "lightning_land/lightning_land/",
+			min: "lightning_land/lightning_land/min_lightning_land",
+			wav: "effect/em_lightning_land"
+		}, {
+			type: "STR",
+			file: "lightning_land/lightning_land_bottom/lightning_land_bottom",
+			texturePath: "lightning_land/lightning_land_bottom/",
+			min: "lightning_land/lightning_land_bottom/min_lightning_land_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_lightning_land_cast: [{
+			type: "STR",
+			file: "lightning_land/lightning_land_cast/lightning_land_cast",
+			texturePath: "lightning_land/lightning_land_cast/",
+			min: "lightning_land/lightning_land_cast/min_lightning_land_cast"
+		}, {
+			type: "STR",
+			file: "lightning_land/lightning_land_cast_bottom/lightning_land_cast_bottom",
+			texturePath: "lightning_land/lightning_land_cast_bottom/",
+			min: "lightning_land/lightning_land_cast_bottom/min_lightning_land_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_lightning_land_hit: [{
+			type: "STR",
+			file: "lightning_land/lightning_land_hit/lightning_land_hit",
+			texturePath: "lightning_land/lightning_land_hit/",
+			min: "lightning_land/lightning_land_hit/min_lightning_land_hit"
+		}],
+		ef_em_venom_swamp: [{
+			type: "STR",
+			file: "venom_swamp/venom_swamp_bottom/venom_swamp_bottom",
+			texturePath: "venom_swamp/venom_swamp_bottom/",
+			min: "venom_swamp/venom_swamp_bottom/min_venom_swamp_bottom",
+			renderBeforeEntities: true,
+			wav: "effect/em_venom_swamp"
+		}],
+		ef_em_venom_swamp_cast: [{
+			type: "STR",
+			file: "venom_swamp/venom_swamp_cast/venom_swamp_cast",
+			texturePath: "venom_swamp/venom_swamp_cast/",
+			min: "venom_swamp/venom_swamp_cast/min_venom_swamp_cast"
+		}, {
+			type: "STR",
+			file: "venom_swamp/venom_swamp_cast_bottom/venom_swamp_cast_bottom",
+			texturePath: "venom_swamp/venom_swamp_cast_bottom/",
+			min: "venom_swamp/venom_swamp_cast_bottom/min_venom_swamp_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_venom_swamp_hit: [{
+			type: "STR",
+			file: "venom_swamp/venom_swamp_hit/venom_swamp_hit",
+			texturePath: "venom_swamp/venom_swamp_hit/",
+			min: "venom_swamp/venom_swamp_hit/min_venom_swamp_hit"
+		}],
+		ef_em_conflagration: [{
+			type: "STR",
+			file: "conflagration/conflagration",
+			texturePath: "conflagration/",
+			wav: "effect/em_conflagration"
+		}, {
+			type: "STR",
+			file: "conflagration/conflagration_bottom/conflagration_bottom",
+			texturePath: "conflagration/conflagration_bottom/",
+			min: "conflagration/conflagration_bottom/min_conflagration_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_conflagration_cast: [{
+			type: "STR",
+			file: "conflagration/conflagration_cast/conflagration_cast",
+			texturePath: "conflagration/conflagration_cast/",
+			min: "conflagration/conflagration_cast/min_conflagration_cast"
+		}, {
+			type: "STR",
+			file: "conflagration/conflagration_cast_bottom/conflagration_cast_bottom",
+			texturePath: "conflagration/conflagration_cast_bottom/",
+			min: "conflagration/conflagration_cast_bottom/min_conflagration_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_conflagration_hit: [{
+			type: "STR",
+			file: "conflagration/conflagration_hit/conflagration_hit",
+			texturePath: "conflagration/conflagration_hit/",
+			min: "conflagration/conflagration_hit/min_conflagration_hit"
+		}],
+		ef_em_terra_drive: [{
+			type: "STR",
+			file: "terradrive/terradrive/terradrive",
+			texturePath: "terradrive/terradrive/",
+			min: "terradrive/terradrive/min_terradrive",
+			wav: "effect/em_terra_drive"
+		}, {
+			type: "STR",
+			file: "terradrive/terradrive_bottom/terradrive_bottom",
+			texturePath: "terradrive/terradrive_bottom/",
+			min: "terradrive/terradrive_bottom/min_terradrive_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_terra_drive_cast: [{
+			type: "STR",
+			file: "terradrive/terradrive_cast/terradrive_cast",
+			texturePath: "terradrive/terradrive_cast/",
+			min: "terradrive/terradrive_cast/min_terradrive_cast"
+		}, {
+			type: "STR",
+			file: "terradrive/terradrive_cast_bottom/terradrive_cast_bottom",
+			texturePath: "terradrive/terradrive_cast_bottom/",
+			min: "terradrive/terradrive_cast_bottom/min_terradrive_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_terra_drive_hit: [{
+			type: "STR",
+			file: "terradrive/terradrive_hit/terradrive_hit",
+			texturePath: "terradrive/terradrive_hit/",
+			min: "terradrive/terradrive_hit/min_terradrive_hit"
+		}],
+		ef_em_summon_elemental_ardor: [{
+			type: "STR",
+			file: "ardor/ardor/ardor",
+			texturePath: "ardor/ardor/",
+			min: "ardor/ardor/min_ardor"
+		}, {
+			type: "STR",
+			file: "ardor/ardor_bottom/ardor_bottom",
+			texturePath: "ardor/ardor_bottom/",
+			min: "ardor/ardor_bottom/min_ardor_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_ardor_cast: [{
+			type: "STR",
+			file: "ardor/ardor_cast/ardor_cast",
+			texturePath: "ardor/ardor_cast/",
+			min: "ardor/ardor_cast/min_ardor_cast"
+		}, {
+			type: "STR",
+			file: "ardor/ardor_cast_bottom/ardor_cast_bottom",
+			texturePath: "ardor/ardor_cast_bottom/",
+			min: "ardor/ardor_cast_bottom/min_ardor_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_ardor_hit: [{
+			type: "STR",
+			file: "ardor/ardor_hit/ardor_hit",
+			texturePath: "ardor/ardor_hit/",
+			min: "ardor/ardor_hit/min_ardor_hit"
+		}],
+		ef_em_summon_elemental_diluvio_cast: [{
+			type: "STR",
+			file: "diluvio/diluvio_cast/diluvio_cast",
+			texturePath: "diluvio/diluvio_cast/",
+			min: "diluvio/diluvio_cast/min_diluvio_cast"
+		}, {
+			type: "STR",
+			file: "diluvio/diluvio_cast_bottom/diluvio_cast_bottom",
+			texturePath: "diluvio/diluvio_cast_bottom/",
+			min: "diluvio/diluvio_cast_bottom/min_diluvio_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_diluvio_hit: [{
+			type: "STR",
+			file: "diluvio/diluvio_hit/diluvio_hit",
+			texturePath: "diluvio/diluvio_hit/",
+			min: "diluvio/diluvio_hit/min_diluvio_hit"
+		}],
+		ef_em_summon_elemental_procella: [{
+			type: "STR",
+			file: "procella/procella/procella",
+			texturePath: "procella/procella/",
+			min: "procella/procella/min_procella"
+		}, {
+			type: "STR",
+			file: "procella/procella_bottom/procella_bottom",
+			texturePath: "procella/procella_bottom/",
+			min: "procella/procella_bottom/min_procella_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_procella_cast: [{
+			type: "STR",
+			file: "procella/procella_cast/procella_cast",
+			texturePath: "procella/procella_cast/",
+			min: "procella/procella_cast/min_procella_cast"
+		}, {
+			type: "STR",
+			file: "procella/procella_cast_bottom/procella_cast_bottom",
+			texturePath: "procella/procella_cast_bottom/",
+			min: "procella/procella_cast_bottom/min_procella_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_procella_hit: [{
+			type: "STR",
+			file: "procella/procella_hit/procella_hit",
+			texturePath: "procella/procella_hit/",
+			min: "procella/procella_hit/min_procella_hit"
+		}],
+		ef_em_summon_elemental_terremotus: [{
+			type: "STR",
+			file: "terremotus/terremotus/terremotus",
+			texturePath: "terremotus/terremotus/",
+			min: "terremotus/terremotus/min_terremotus"
+		}],
+		ef_em_summon_elemental_terremotus_cast: [{
+			type: "STR",
+			file: "terremotus/terremotus_cast/terremotus_cast",
+			texturePath: "terremotus/terremotus_cast/",
+			min: "terremotus/terremotus_cast/min_terremotus_cast"
+		}, {
+			type: "STR",
+			file: "terremotus/terremotus_cast_bottom/terremotus_cast_bottom",
+			texturePath: "terremotus/terremotus_cast_bottom/",
+			min: "terremotus/terremotus_cast_bottom/min_terremotus_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_terremotus_hit: [{
+			type: "STR",
+			file: "terremotus/terremotus_hit/terremotus_hit",
+			texturePath: "terremotus/terremotus_hit/",
+			min: "terremotus/terremotus_hit/min_terremotus_hit"
+		}],
+		ef_em_summon_elemental_serpens: [{
+			type: "STR",
+			file: "serpens/serpens_bottom/serpens_bottom",
+			texturePath: "serpens/serpens_bottom/",
+			min: "serpens/serpens_bottom/min_serpens_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_serpens_cast: [{
+			type: "STR",
+			file: "serpens/serpens_cast/serpens_cast",
+			texturePath: "serpens/serpens_cast/",
+			min: "serpens/serpens_cast/min_serpens_cast"
+		}, {
+			type: "STR",
+			file: "serpens/serpens_cast_bottom/serpens_cast_bottom",
+			texturePath: "serpens/serpens_cast_bottom/",
+			min: "serpens/serpens_cast_bottom/min_serpens_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_summon_elemental_serpens_hit: [{
+			type: "STR",
+			file: "serpens/serpens_hit/serpens_hit",
+			texturePath: "serpens/serpens_hit/",
+			min: "serpens/serpens_hit/min_serpens_hit"
+		}],
+		ef_em_elemental_buster_cast: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster_cast/elemental_buster_cast",
+			texturePath: "elemental_buster/elemental_buster_cast/",
+			min: "elemental_buster/elemental_buster_cast/min_elemental_buster_cast"
+		}],
+		ef_em_elemental_buster_fire: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_fire/elemental_buster_fire",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_fire/",
+			min: "elemental_buster/elemental_buster/elemental_buster_fire/min_elemental_buster_fire"
+		}, {
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_fire_bottom/elemental_buster_fire_bottom",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_fire_bottom/",
+			min: "elemental_buster/elemental_buster/elemental_buster_fire_bottom/min_elemental_buster_fire_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_elemental_buster_fire_hit: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster_hit/elemental_buster_fire_hit/elemental_buster_fire_hit",
+			texturePath: "elemental_buster/elemental_buster_hit/elemental_buster_fire_hit/",
+			min: "elemental_buster/elemental_buster_hit/elemental_buster_fire_hit/min_elemental_buster_fire_hit"
+		}],
+		ef_em_elemental_buster_water: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_water/elemental_buster_water",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_water/",
+			min: "elemental_buster/elemental_buster/elemental_buster_water/min_elemental_buster_water"
+		}, {
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_water_bottom/elemental_buster_water_bottom",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_water_bottom/",
+			min: "elemental_buster/elemental_buster/elemental_buster_water_bottom/min_elemental_buster_water_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_elemental_buster_water_hit: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster_hit/elemental_buster_water_hit/elemental_buster_water_hit",
+			texturePath: "elemental_buster/elemental_buster_hit/elemental_buster_water_hit/",
+			min: "elemental_buster/elemental_buster_hit/elemental_buster_water_hit/min_elemental_buster_water_hit"
+		}],
+		ef_em_elemental_buster_wind: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_wind/elemental_buster_wind",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_wind/",
+			min: "elemental_buster/elemental_buster/elemental_buster_wind/min_elemental_buster_wind"
+		}, {
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_wind_bottom/elemental_buster_wind_bottom",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_wind_bottom/",
+			min: "elemental_buster/elemental_buster/elemental_buster_wind_bottom/min_elemental_buster_wind_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_elemental_buster_wind_hit: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster_hit/elemental_buster_wind_hit/elemental_buster_wind_hit",
+			texturePath: "elemental_buster/elemental_buster_hit/elemental_buster_wind_hit/",
+			min: "elemental_buster/elemental_buster_hit/elemental_buster_wind_hit/min_elemental_buster_wind_hit"
+		}],
+		ef_em_elemental_buster_ground: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_land/elemental_buster_land",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_land/",
+			min: "elemental_buster/elemental_buster/elemental_buster_land/min_elemental_buster_land"
+		}, {
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_land_bottom/elemental_buster_land_bottom",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_land_bottom/",
+			min: "elemental_buster/elemental_buster/elemental_buster_land_bottom/min_elemental_buster_land_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_elemental_buster_ground_hit: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster_hit/elemental_buster_land_hit/elemental_buster_land_hit",
+			texturePath: "elemental_buster/elemental_buster_hit/elemental_buster_land_hit/",
+			min: "elemental_buster/elemental_buster_hit/elemental_buster_land_hit/min_elemental_buster_land_hit"
+		}],
+		ef_em_elemental_buster_poison: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_poison/elemental_buster_poison",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_poison/",
+			min: "elemental_buster/elemental_buster/elemental_buster_poison/min_elemental_buster_poison"
+		}, {
+			type: "STR",
+			file: "elemental_buster/elemental_buster/elemental_buster_poison_bottom/elemental_buster_poison_bottom",
+			texturePath: "elemental_buster/elemental_buster/elemental_buster_poison_bottom/",
+			min: "elemental_buster/elemental_buster/elemental_buster_poison_bottom/min_elemental_buster_poison_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_elemental_buster_poison_hit: [{
+			type: "STR",
+			file: "elemental_buster/elemental_buster_hit/elemental_buster_poison_hit/elemental_buster_poison_hit",
+			texturePath: "elemental_buster/elemental_buster_hit/elemental_buster_poison_hit/",
+			min: "elemental_buster/elemental_buster_hit/elemental_buster_poison_hit/min_elemental_buster_poison_hit"
+		}],
+		ef_em_psychic_stream: [{
+			type: "STR",
+			file: "elemental_master/em_psychic_stream/psychic_stream/psychic_stream",
+			texturePath: "elemental_master/em_psychic_stream/psychic_stream/",
+			min: "elemental_master/em_psychic_stream/psychic_stream/min_psychic_stream",
+			wav: "effect/em_psychic_stream"
+		}, {
+			type: "STR",
+			file: "elemental_master/em_psychic_stream/psychic_stream_bottom/psychic_stream_bottom",
+			texturePath: "elemental_master/em_psychic_stream/psychic_stream_bottom/",
+			min: "elemental_master/em_psychic_stream/psychic_stream_bottom/min_psychic_stream_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_em_psychic_stream_cast: [{
+			type: "STR",
+			file: "elemental_master/em_psychic_stream/psychic_stream_cast/psychic_stream_cast",
+			texturePath: "elemental_master/em_psychic_stream/psychic_stream_cast/",
+			min: "elemental_master/em_psychic_stream/psychic_stream_cast/min_psychic_stream_cast"
+		}],
+		ef_em_psychic_stream_hit: [{
+			type: "STR",
+			file: "elemental_master/em_psychic_stream/psychic_stream_hit/psychic_stream_hit",
+			texturePath: "elemental_master/em_psychic_stream/psychic_stream_hit/",
+			min: "elemental_master/em_psychic_stream/psychic_stream_hit/min_psychic_stream_hit"
+		}],
+		ef_em_el_flametechnic: [{
+			type: "STR",
+			file: "ardor/ardor_flametechnic/ardor_flametechnic",
+			texturePath: "ardor/ardor_flametechnic/",
+			min: "ardor/ardor_flametechnic/min_ardor_flametechnic"
+		}],
+		ef_em_el_flamearmor: [{
+			type: "STR",
+			file: "ardor/ardor_flamearmor/ardor_flamearmor",
+			texturePath: "ardor/ardor_flamearmor/",
+			min: "ardor/ardor_flamearmor/min_ardor_flamearmor"
+		}],
+		ef_em_el_cold_force: [{
+			type: "STR",
+			file: "diluvio/diluvio_cold_force/diluvio_cold_force",
+			texturePath: "diluvio/diluvio_cold_force/",
+			min: "diluvio/diluvio_cold_force/min_diluvio_cold_force"
+		}],
+		ef_em_el_grace_breeze: [{
+			type: "STR",
+			file: "procella/procella_grace_breeze/procella_grace_breeze",
+			texturePath: "procella/procella_grace_breeze/",
+			min: "procella/procella_grace_breeze/min_procella_grace_breeze"
+		}],
+		ef_em_el_earth_care: [{
+			type: "STR",
+			file: "terremotus/terremotus_earth_care/terremotus_earth_care",
+			texturePath: "terremotus/terremotus_earth_care/",
+			min: "terremotus/terremotus_earth_care/min_terremotus_earth_care"
+		}],
+		ef_em_el_deep_poisoning: [{
+			type: "STR",
+			file: "serpens/serpens_deep_poisoning/serpens_deep_poisoning",
+			texturePath: "serpens/serpens_deep_poisoning/",
+			min: "serpens/serpens_deep_poisoning/min_serpens_deep_poisoning"
+		}],
+		ef_em_el_deadly_poison: [{
+			type: "STR",
+			file: "deadlypoison/deadlypoison",
+			texturePath: "deadlypoison/"
+		}],
 		1047: [{
 			type: "STR",
 			file: "ab_offertorium",
@@ -274028,6 +277200,198 @@ var init_EffectTable = __esmMin((() => {
 			file: "nc_magma_eruption",
 			wav: "effect/nc_magma_eruption",
 			attachedEntity: true
+		}],
+		ef_mt_axe_stomp: [{
+			type: "STR",
+			file: "new_axe_stomp/new_axe_stomp/new_axe_stomp",
+			texturePath: "new_axe_stomp/new_axe_stomp/",
+			min: "new_axe_stomp/new_axe_stomp/min_new_axe_stomp",
+			wav: "effect/mt_axe_stomp"
+		}, {
+			type: "STR",
+			file: "new_axe_stomp/new_axe_stomp_bottom/new_axe_stomp_bottom",
+			texturePath: "new_axe_stomp/new_axe_stomp_bottom/",
+			min: "new_axe_stomp/new_axe_stomp_bottom/min_new_axe_stomp_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_mt_axe_stomp_hit: [{
+			type: "STR",
+			file: "new_axe_stomp/new_axe_stomp_hit/new_axe_stomp_hit",
+			texturePath: "new_axe_stomp/new_axe_stomp_hit/",
+			min: "new_axe_stomp/new_axe_stomp_hit/min_new_axe_stomp_hit"
+		}],
+		ef_mt_rush_quake: [{
+			type: "STR",
+			file: "new_rush_quake/new_rush_quake/new_rush_quake",
+			texturePath: "new_rush_quake/new_rush_quake/",
+			min: "new_rush_quake/new_rush_quake/min_new_rush_quake",
+			wav: "effect/mt_rush_quake"
+		}],
+		ef_mt_rush_quake_hit: [{
+			type: "STR",
+			file: "new_rush_quake/new_rush_quake_hit/new_rush_quake_hit",
+			texturePath: "new_rush_quake/new_rush_quake_hit/",
+			min: "new_rush_quake/new_rush_quake_hit/min_new_rush_quake_hit"
+		}],
+		ef_mt_a_machine: [{
+			type: "STR",
+			file: "new_a_machine/new_a_machine/new_a_machine",
+			texturePath: "new_a_machine/new_a_machine/",
+			wav: "effect/mt_a_machine"
+		}],
+		ef_mt_a_machine_cast: [{
+			type: "STR",
+			file: "new_a_machine/new_a_machine_cast/new_a_machine_cast",
+			texturePath: "new_a_machine/new_a_machine_cast/"
+		}, {
+			type: "STR",
+			file: "new_a_machine/new_a_machine_cast_bottom/new_a_machine_cast_bottom",
+			texturePath: "new_a_machine/new_a_machine_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_mt_a_machine_hit: [{
+			type: "STR",
+			file: "new_a_machine/new_a_machine_attack/new_a_machine_attack",
+			texturePath: "new_a_machine/new_a_machine_attack/"
+		}, {
+			type: "STR",
+			file: "new_a_machine/new_a_machine_hit/new_a_machine_hit",
+			texturePath: "new_a_machine/new_a_machine_hit/"
+		}],
+		ef_mt_d_machine: [{
+			type: "STR",
+			file: "new_d_machine/new_d_machine/new_d_machine",
+			texturePath: "new_d_machine/new_d_machine/",
+			min: "new_d_machine/new_d_machine/min_new_d_machine",
+			wav: "effect/mt_d_machine"
+		}],
+		ef_mt_d_machine_cast: [{
+			type: "STR",
+			file: "new_d_machine/new_d_machine_cast/new_d_machine_cast",
+			texturePath: "new_d_machine/new_d_machine_cast/",
+			min: "new_d_machine/new_d_machine_cast/min_new_d_machine_cast"
+		}, {
+			type: "STR",
+			file: "new_d_machine/new_d_machine_cast_bottom/new_d_machine_cast_bottom",
+			texturePath: "new_d_machine/new_d_machine_cast_bottom/",
+			min: "new_d_machine/new_d_machine_cast_bottom/min_new_d_machine_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_mt_summon_abr_battle_warior: [{
+			wav: "effect/mt_summon_abr_battle_warior",
+			attachedEntity: true
+		}],
+		ef_mt_summon_abr_dual_cannon: [{
+			wav: "effect/mt_summon_abr_dual_cannon",
+			attachedEntity: true
+		}],
+		ef_mt_summon_abr_infinity: [{
+			type: "STR",
+			file: "new_abr_infinity/new_abr_infinity/new_abr_infinity",
+			texturePath: "new_abr_infinity/new_abr_infinity/",
+			min: "new_abr_infinity/new_abr_infinity/min_new_abr_infinity",
+			wav: "effect/mt_summon_abr_infinity"
+		}, {
+			type: "STR",
+			file: "new_abr_infinity/new_abr_infinity_bottom/new_abr_infinity_bottom",
+			texturePath: "new_abr_infinity/new_abr_infinity_bottom/",
+			min: "new_abr_infinity/new_abr_infinity_bottom/min_new_abr_infinity_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_mt_summon_abr_infinity_cast: [{
+			type: "STR",
+			file: "new_abr_infinity/new_abr_infinity_cast/new_abr_infinity_cast",
+			texturePath: "new_abr_infinity/new_abr_infinity_cast/",
+			min: "new_abr_infinity/new_abr_infinity_cast/min_new_abr_infinity_cast"
+		}],
+		ef_mt_summon_abr_infinity_hit: [{
+			type: "STR",
+			file: "new_abr_infinity/new_abr_infinity_hit/new_abr_infinity_hit",
+			texturePath: "new_abr_infinity/new_abr_infinity_hit/",
+			min: "new_abr_infinity/new_abr_infinity_hit/min_new_abr_infinity_hit"
+		}],
+		ef_mt_spark_blaster: [{
+			type: "STR",
+			file: "meister/spark_blaster/spark_blaster/spark_blaster",
+			texturePath: "meister/spark_blaster/spark_blaster/",
+			min: "meister/spark_blaster/spark_blaster/min_spark_blaster",
+			wav: "effect/mt_spark_blaster"
+		}, {
+			type: "STR",
+			file: "meister/spark_blaster/spark_blaster_bottom/spark_blaster_bottom",
+			texturePath: "meister/spark_blaster/spark_blaster_bottom/",
+			min: "meister/spark_blaster/spark_blaster_bottom/min_spark_blaster_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_mt_triple_laser: [{
+			type: "STR",
+			file: "meister/triple_laser/triple_laser/triple_laser",
+			texturePath: "meister/triple_laser/triple_laser/",
+			min: "meister/triple_laser/triple_laser/min_triple_laser",
+			wav: "effect/mt_triple_laser"
+		}],
+		ef_mt_mighty_smash: [{
+			type: "STR",
+			file: "meister/mighty_smash/mighty_smash/mighty_smash",
+			texturePath: "meister/mighty_smash/mighty_smash/",
+			min: "meister/mighty_smash/mighty_smash/min_mighty_smash",
+			wav: "effect/mt_mighty_smash"
+		}],
+		ef_mt_rush_strike: [{
+			type: "STR",
+			file: "meister/mt_rush_strike/rush_strike/rush_strike",
+			texturePath: "meister/mt_rush_strike/rush_strike/",
+			min: "meister/mt_rush_strike/rush_strike/min_rush_strike",
+			wav: "effect/mt_rush_strike"
+		}, {
+			type: "STR",
+			file: "meister/mt_rush_strike/rush_strike_bottom/rush_strike_bottom",
+			texturePath: "meister/mt_rush_strike/rush_strike_bottom/",
+			min: "meister/mt_rush_strike/rush_strike_bottom/min_rush_strike_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_mt_powerful_swing: [{
+			type: "STR",
+			file: "meister/mt_powerful_swing/powerful_swing/powerful_swing",
+			texturePath: "meister/mt_powerful_swing/powerful_swing/",
+			min: "meister/mt_powerful_swing/powerful_swing/min_powerful_swing",
+			wav: "effect/mt_powerful_swing"
+		}, {
+			type: "STR",
+			file: "meister/mt_powerful_swing/powerful_swing_bottom/powerful_swing_bottom",
+			texturePath: "meister/mt_powerful_swing/powerful_swing_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_mt_powerful_swing_hit: [{
+			type: "STR",
+			file: "meister/mt_powerful_swing/powerful_swing_hit/powerful_swing_hit",
+			texturePath: "meister/mt_powerful_swing/powerful_swing_hit/",
+			min: "meister/mt_powerful_swing/powerful_swing_hit/min_powerful_swing_hit"
+		}],
+		ef_mt_energy_cannonade: [{
+			type: "STR",
+			file: "meister/mt_energy_cannonade/energy_cannonade/energy_cannonade",
+			texturePath: "meister/mt_energy_cannonade/energy_cannonade/",
+			min: "meister/mt_energy_cannonade/energy_cannonade/min_energy_cannonade",
+			wav: "effect/mt_energy_cannonade"
+		}],
+		ef_mt_energy_cannonade_cast: [{
+			type: "STR",
+			file: "meister/mt_energy_cannonade/energy_cannonade_cast/energy_cannonade_cast",
+			texturePath: "meister/mt_energy_cannonade/energy_cannonade_cast/",
+			min: "meister/mt_energy_cannonade/energy_cannonade_cast/min_energy_cannonade_cast"
+		}, {
+			type: "STR",
+			file: "meister/mt_energy_cannonade/energy_cannonade_cast_bottom/energy_cannonade_cast_bottom",
+			texturePath: "meister/mt_energy_cannonade/energy_cannonade_cast_bottom/",
+			min: "meister/mt_energy_cannonade/energy_cannonade_cast_bottom/min_energy_cannonade_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_mt_energy_cannonade_hit: [{
+			type: "STR",
+			file: "meister/mt_energy_cannonade/energy_cannonade_hit/energy_cannonade_hit",
+			texturePath: "meister/mt_energy_cannonade/energy_cannonade_hit/",
+			min: "meister/mt_energy_cannonade/energy_cannonade_hit/min_energy_cannonade_hit"
 		}],
 		1055: [{
 			type: "STR",
@@ -274474,6 +277838,248 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/°¡½Ã³ª¹«µ£",
 			attachedEntity: true
 		}],
+		ef_bo_acidified_zone_water_atk: [{
+			type: "STR",
+			file: "acidified_zone_water/acidified_zone_water_hit/acidified_zone_water_hit",
+			texturePath: "acidified_zone_water/acidified_zone_water_hit/",
+			min: "acidified_zone_water/acidified_zone_water_hit/min_acidified_zone_water_hit"
+		}],
+		ef_bo_acidified_zone_ground_atk: [{
+			type: "STR",
+			file: "acidified_zone_ground/acidified_zone_ground_hit/acidified_zone_ground_hit",
+			texturePath: "acidified_zone_ground/acidified_zone_ground_hit/",
+			min: "acidified_zone_ground/acidified_zone_ground_hit/min_acidified_zone_ground_hit"
+		}],
+		ef_bo_acidified_zone_wind_atk: [{
+			type: "STR",
+			file: "acidified_zone_wind/acidified_zone_wind_hit/acidified_zone_wind_hit",
+			texturePath: "acidified_zone_wind/acidified_zone_wind_hit/",
+			min: "acidified_zone_wind/acidified_zone_wind_hit/min_acidified_zone_wind_hit"
+		}],
+		ef_bo_acidified_zone_fire_atk: [{
+			type: "STR",
+			file: "acidified_zone_fire/acidified_zone_fire_hit/acidified_zone_fire_hit",
+			texturePath: "acidified_zone_fire/acidified_zone_fire_hit/",
+			min: "acidified_zone_fire/acidified_zone_fire_hit/min_acidified_zone_fire_hit"
+		}],
+		ef_bo_advance_protection: [{
+			wav: "effect/bo_advance_protection",
+			attachedEntity: true
+		}],
+		ef_bo_acidified_zone_water_cast: [{
+			type: "STR",
+			file: "acidified_zone_water/acidified_zone_water_cast/acidified_zone_water_cast",
+			texturePath: "acidified_zone_water/acidified_zone_water_cast/",
+			min: "acidified_zone_water/acidified_zone_water_cast/min_acidified_zone_water_cast",
+			wav: "effect/bo_acidified_zone_water"
+		}, {
+			type: "STR",
+			file: "acidified_zone_water/acidified_zone_water_cast_bottom/acidified_zone_water_cast_bottom",
+			texturePath: "acidified_zone_water/acidified_zone_water_cast_bottom/",
+			min: "acidified_zone_water/acidified_zone_water_cast_bottom/min_acidified_zone_water_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_acidified_zone_water_hit: [{
+			type: "STR",
+			file: "acidified_zone_water/acidified_zone_water_hit/acidified_zone_water_hit",
+			texturePath: "acidified_zone_water/acidified_zone_water_hit/",
+			min: "acidified_zone_water/acidified_zone_water_hit/min_acidified_zone_water_hit"
+		}],
+		ef_bo_acidified_zone_ground_cast: [{
+			type: "STR",
+			file: "acidified_zone_ground/acidified_zone_ground_cast/acidified_zone_ground_cast",
+			texturePath: "acidified_zone_ground/acidified_zone_ground_cast/",
+			min: "acidified_zone_ground/acidified_zone_ground_cast/min_acidified_zone_ground_cast",
+			wav: "effect/bo_acidified_zone_ground"
+		}, {
+			type: "STR",
+			file: "acidified_zone_ground/acidified_zone_ground_cast_bottom/acidified_zone_ground_cast_bottom",
+			texturePath: "acidified_zone_ground/acidified_zone_ground_cast_bottom/",
+			min: "acidified_zone_ground/acidified_zone_ground_cast_bottom/min_acidified_zone_ground_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_acidified_zone_ground_hit: [{
+			type: "STR",
+			file: "acidified_zone_ground/acidified_zone_ground_hit/acidified_zone_ground_hit",
+			texturePath: "acidified_zone_ground/acidified_zone_ground_hit/",
+			min: "acidified_zone_ground/acidified_zone_ground_hit/min_acidified_zone_ground_hit"
+		}],
+		ef_bo_acidified_zone_wind_cast: [{
+			type: "STR",
+			file: "acidified_zone_wind/acidified_zone_wind_cast/acidified_zone_wind_cast",
+			texturePath: "acidified_zone_wind/acidified_zone_wind_cast/",
+			min: "acidified_zone_wind/acidified_zone_wind_cast/min_acidified_zone_wind_cast",
+			wav: "effect/bo_acidified_zone_wind"
+		}, {
+			type: "STR",
+			file: "acidified_zone_wind/acidified_zone_wind_cast_bottom/acidified_zone_wind_cast_bottom",
+			texturePath: "acidified_zone_wind/acidified_zone_wind_cast_bottom/",
+			min: "acidified_zone_wind/acidified_zone_wind_cast_bottom/min_acidified_zone_wind_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_acidified_zone_wind_hit: [{
+			type: "STR",
+			file: "acidified_zone_wind/acidified_zone_wind_hit/acidified_zone_wind_hit",
+			texturePath: "acidified_zone_wind/acidified_zone_wind_hit/",
+			min: "acidified_zone_wind/acidified_zone_wind_hit/min_acidified_zone_wind_hit"
+		}],
+		ef_bo_acidified_zone_fire_cast: [{
+			type: "STR",
+			file: "acidified_zone_fire/acidified_zone_fire_cast/acidified_zone_fire_cast",
+			texturePath: "acidified_zone_fire/acidified_zone_fire_cast/",
+			min: "acidified_zone_fire/acidified_zone_fire_cast/min_acidified_zone_fire_cast",
+			wav: "effect/bo_acidified_zone_fire"
+		}, {
+			type: "STR",
+			file: "acidified_zone_fire/acidified_zone_fire_cast_bottom/acidified_zone_fire_cast_bottom",
+			texturePath: "acidified_zone_fire/acidified_zone_fire_cast_bottom/",
+			min: "acidified_zone_fire/acidified_zone_fire_cast_bottom/min_acidified_zone_fire_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_acidified_zone_fire_hit: [{
+			type: "STR",
+			file: "acidified_zone_fire/acidified_zone_fire_hit/acidified_zone_fire_hit",
+			texturePath: "acidified_zone_fire/acidified_zone_fire_hit/",
+			min: "acidified_zone_fire/acidified_zone_fire_hit/min_acidified_zone_fire_hit"
+		}],
+		ef_bo_woodenwarrior_cast: [{
+			type: "STR",
+			file: "wooden_warrior/wooden_warrior_cast/wooden_warrior_cast",
+			texturePath: "wooden_warrior/wooden_warrior_cast/",
+			min: "wooden_warrior/wooden_warrior_cast/min_wooden_warrior_cast"
+		}, {
+			type: "STR",
+			file: "wooden_warrior/wooden_warrior_cast_bottom/wooden_warrior_cast_bottom",
+			texturePath: "wooden_warrior/wooden_warrior_cast_bottom/",
+			min: "wooden_warrior/wooden_warrior_cast_bottom/min_wooden_warrior_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_woodenwarrior_hit: [
+			{
+				type: "STR",
+				file: "wooden_warrior/throwrock/throwrock_hit/throwrock_hit",
+				texturePath: "wooden_warrior/throwrock/throwrock_hit/",
+				min: "wooden_warrior/throwrock/throwrock_hit/min_throwrock_hit"
+			},
+			{
+				type: "STR",
+				file: "wooden_warrior/wooden_attack/wooden_attack/wooden_attack",
+				texturePath: "wooden_warrior/wooden_attack/wooden_attack/",
+				min: "wooden_warrior/wooden_attack/wooden_attack/min_wooden_attack"
+			},
+			{
+				type: "STR",
+				file: "wooden_warrior/wooden_attack/wooden_attack_hit/wooden_attack_hit",
+				texturePath: "wooden_warrior/wooden_attack/wooden_attack_hit/",
+				min: "wooden_warrior/wooden_attack/wooden_attack_hit/min_wooden_attack_hit"
+			}
+		],
+		ef_bo_wooden_fairy_cast: [{
+			type: "STR",
+			file: "wooden_fairy/wooden_cast/wooden_cast",
+			texturePath: "wooden_fairy/wooden_cast/",
+			min: "wooden_fairy/wooden_cast/min_wooden_cast"
+		}, {
+			type: "STR",
+			file: "wooden_fairy/wooden_cast_bottom/wooden_cast_bottom",
+			texturePath: "wooden_fairy/wooden_cast_bottom/",
+			min: "wooden_fairy/wooden_cast_bottom/min_wooden_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_researchreport: [{
+			type: "STR",
+			file: "research_report/researchreport/researchreport",
+			texturePath: "research_report/researchreport/",
+			min: "research_report/researchreport/min_researchreport",
+			wav: "effect/bo_researchreport"
+		}],
+		ef_bo_researchreport_cast: [{
+			type: "STR",
+			file: "research_report/researchreport_cast/researchreport_cast",
+			texturePath: "research_report/researchreport_cast/",
+			min: "research_report/researchreport_cast/min_researchreport_cast"
+		}, {
+			type: "STR",
+			file: "research_report/researchreport_cast_bottom/researchreport_cast_bottom",
+			texturePath: "research_report/researchreport_cast_bottom/",
+			min: "research_report/researchreport_cast_bottom/min_researchreport_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_helltree_cast: [{
+			type: "STR",
+			file: "helltree/helltree_cast/helltree_cast",
+			texturePath: "helltree/helltree_cast/",
+			min: "helltree/helltree_cast/min_helltree_cast"
+		}, {
+			type: "STR",
+			file: "helltree/helltree_cast_bottom/helltree_cast_bottom",
+			texturePath: "helltree/helltree_cast_bottom/",
+			min: "helltree/helltree_cast_bottom/min_helltree_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_wooden_attack_hit: [{
+			type: "STR",
+			file: "wooden_warrior/wooden_attack/wooden_attack/wooden_attack",
+			texturePath: "wooden_warrior/wooden_attack/wooden_attack/",
+			min: "wooden_warrior/wooden_attack/wooden_attack/min_wooden_attack",
+			wav: "effect/bo_wooden_attack"
+		}, {
+			type: "STR",
+			file: "wooden_warrior/wooden_attack/wooden_attack_hit/wooden_attack_hit",
+			texturePath: "wooden_warrior/wooden_attack/wooden_attack_hit/",
+			min: "wooden_warrior/wooden_attack/wooden_attack_hit/min_wooden_attack_hit"
+		}],
+		ef_bo_explosive_powder: [{
+			type: "STR",
+			file: "biolo/explosive_powder/explosive_powder/explosive_powder",
+			texturePath: "biolo/explosive_powder/explosive_powder/",
+			min: "biolo/explosive_powder/explosive_powder/min_explosive_powder",
+			wav: "effect/bo_explosive_powder"
+		}],
+		ef_bo_mayhemic_thorns: [{
+			type: "STR",
+			file: "biolo/mayhemic_thorns/mayhemic_thorns/mayhemic_thorns",
+			texturePath: "biolo/mayhemic_thorns/mayhemic_thorns/",
+			min: "biolo/mayhemic_thorns/mayhemic_thorns/min_mayhemic_thorns",
+			wav: "effect/bo_mayhemic_thorns"
+		}, {
+			type: "STR",
+			file: "biolo/mayhemic_thorns/mayhemic_thorns_bottom/mayhemic_thorns_bottom",
+			texturePath: "biolo/mayhemic_thorns/mayhemic_thorns_bottom/",
+			min: "biolo/mayhemic_thorns/mayhemic_thorns_bottom/min_mayhemic_thorns_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_bo_mystery_powder: [{
+			type: "STR",
+			file: "biolo/bo_mystery_powder/mistery_powder/mistery_powder",
+			texturePath: "biolo/bo_mystery_powder/mistery_powder/",
+			min: "biolo/bo_mystery_powder/mistery_powder/min_mistery_powder",
+			wav: "effect/bo_mystery_powder"
+		}],
+		ef_bo_mystery_powder_hit: [{
+			type: "STR",
+			file: "biolo/bo_mystery_powder/mistery_powder_hit/mistery_powder_hit",
+			texturePath: "biolo/bo_mystery_powder/mistery_powder_hit/",
+			min: "biolo/bo_mystery_powder/mistery_powder_hit/min_mistery_powder_hit"
+		}],
+		ef_bo_dust_explosion: [{
+			type: "STR",
+			file: "biolo/bo_dust_explosion/dust_explosion/dust_explosion",
+			texturePath: "biolo/bo_dust_explosion/dust_explosion/",
+			min: "biolo/bo_dust_explosion/dust_explosion/min_dust_explosion"
+		}],
+		ef_bo_dust_explosion_hit: [{
+			type: "STR",
+			file: "biolo/bo_dust_explosion/dust_explosion_hit/dust_explosion_hit",
+			texturePath: "biolo/bo_dust_explosion/dust_explosion_hit/",
+			min: "biolo/bo_dust_explosion/dust_explosion_hit/min_dust_explosion_hit"
+		}, {
+			type: "STR",
+			file: "biolo/bo_dust_explosion/dust_explosion_hit_bottom/dust_explosion_hit_bottom",
+			texturePath: "biolo/bo_dust_explosion/dust_explosion_hit_bottom/",
+			min: "biolo/bo_dust_explosion/dust_explosion_hit_bottom/min_dust_explosion_hit_bottom",
+			renderBeforeEntities: true
+		}],
 		ef_banishingpoint: [{
 			wav: "effect/lg_banishingpoint",
 			attachedEntity: true
@@ -274548,6 +278154,311 @@ var init_EffectTable = __esmMin((() => {
 		ef_trample: [{
 			wav: "effect/lg_trample",
 			attachedEntity: true
+		}],
+		ef_ig_guard_stance: [{
+			type: "STR",
+			file: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance/new_guard_stance",
+			texturePath: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance/",
+			fallback: ["guard_stance/guard_stance/guard_stance"],
+			wav: "effect/ig_guard_stance"
+		}],
+		ef_ig_guard_stance_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast/new_guard_stance_cast",
+			texturePath: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast/",
+			min: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast/min_new_guard_stance_cast",
+			fallback: ["guard_stance/guard_stance_cast/guard_stance_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast_bottom/new_guard_stance_cast_bottom",
+			texturePath: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast_bottom/",
+			min: "imperial_guard/ig_guard_stance/new_guard_stance/new_guard_stance_cast_bottom/min_new_guard_stance_cast_bottom",
+			fallback: ["guard_stance/guard_stance_cast_bottom/guard_stance_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_guardian_shield: [{
+			type: "STR",
+			file: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/guardianshield",
+			texturePath: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/",
+			min: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield/min_guardianshield",
+			fallback: ["guardianshield/guardianshield/guardianshield"],
+			wav: "effect/ig_guardian_shield"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/guardianshield_bottom",
+			texturePath: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/",
+			min: "imperial_guard/ig_guardian_shield/new_guardianshield/guardianshield_bottom/min_guardianshield_bottom",
+			fallback: ["guardianshield/guardianshield_bottom/guardianshield_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_rebound_shield: [{
+			type: "STR",
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield/new_rebound_shield",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield/min_new_rebound_shield",
+			fallback: ["rebound_shield/rebound_shield/rebound_shield"],
+			wav: "effect/ig_rebound_shield"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield_bottom/new_rebound_shield_bottom",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield_bottom/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/new_rebound_shield_bottom/min_new_rebound_shield_bottom",
+			fallback: ["rebound_shield/rebound_shield_bottom/rebound_shield_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_rebound_shield_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast/rebound_shield_cast",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast/min_rebound_shield_cast",
+			fallback: ["rebound_shield/rebound_shield_cast/rebound_shield_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast_bottom/rebound_shield_cast_bottom",
+			texturePath: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast_bottom/",
+			min: "imperial_guard/ig_rebound_shield/new_rebound_shield/rebound_shield_cast_bottom/min_rebound_shield_cast_bottom",
+			fallback: ["rebound_shield/rebound_shield_cast_bottom/rebound_shield_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_attack_stance: [{
+			type: "STR",
+			file: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance/new_attack_stance",
+			texturePath: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance/",
+			fallback: ["attack_stance/attack_stance/attack_stance"]
+		}],
+		ef_ig_attack_stance_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast/new_attack_stance_cast",
+			texturePath: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast/",
+			min: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast/min_new_attack_stance_cast",
+			fallback: ["attack_stance/attack_stance_cast/attack_stance_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast_bottom/new_attack_stance_cast_bottom",
+			texturePath: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast_bottom/",
+			min: "imperial_guard/ig_attack_stance/new_attack_stance/new_attack_stance_cast_bottom/min_new_attack_stance_cast_bottom",
+			fallback: ["attack_stance/attack_stance_cast_bottom/attack_stance_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_ultimate_sacrifice: [{
+			type: "STR",
+			file: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice/ultimatesacrifice",
+			texturePath: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice/",
+			min: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice/min_ultimatesacrifice",
+			fallback: ["ultimate_sacrifice/ultimatesacrifice/ultimatesacrifice"],
+			wav: "effect/ig_ultimate_sacrifice"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice_bottom/ultimatesacrifice_bottom",
+			texturePath: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice_bottom/",
+			min: "imperial_guard/ig_ultimate_sacrifice/ultimatesacrifice_bottom/min_ultimatesacrifice_bottom",
+			fallback: ["ultimate_sacrifice/ultimatesacrifice_bottom/ultimatesacrifice_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_holy_shield: [{
+			type: "STR",
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield/new_holy_shield",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield/min_new_holy_shield",
+			fallback: ["holy_shield/holy_shield/holy_shield"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_bottom/new_holy_shield_bottom",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_bottom/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_bottom/min_new_holy_shield_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ig_holy_shield_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast/new_holy_shield_cast",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast/min_new_holy_shield_cast",
+			fallback: ["holy_shield/holy_shield_cast/holy_shield_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast_bottom/new_holy_shield_cast_bottom",
+			texturePath: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast_bottom/",
+			min: "imperial_guard/ig_holy_shield/new_holy_shield/new_holy_shield_cast_bottom/min_new_holy_shield_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ig_grand_judgement: [{
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement/new_grand_judgement",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement/min_new_grand_judgement",
+			fallback: ["grand_judgement/grand_judgement/grand_judgement"],
+			wav: "effect/ig_grand_judgement"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement_bottom/new_grand_judgement_bottom",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement_bottom/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/new_grand_judgement_bottom/min_new_grand_judgement_bottom",
+			fallback: ["grand_judgement/grand_judgement_bottom/grand_judgement_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_grand_judgement_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast/grand_judgement_cast",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast/min_grand_judgement_cast",
+			fallback: ["grand_judgement/grand_judgement_cast/grand_judgement_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast_bottom/grand_judgement_cast_bottom",
+			texturePath: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast_bottom/",
+			min: "imperial_guard/ig_grand_judgement/new_grand_judgement/grand_judgement_cast_bottom/min_grand_judgement_cast_bottom",
+			fallback: ["grand_judgement/grand_judgement_cast_bottom/grand_judgement_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_judgement_cross: [{
+			type: "STR",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross/new_judgement_cross",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross/min_new_judgement_cross",
+			fallback: ["judgement_cross/judgement_cross/judgement_cross"],
+			wav: "effect/ig_judgement_cross"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_bottom/new_judgement_cross_bottom",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_bottom/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_bottom/min_new_judgement_cross_bottom",
+			fallback: ["judgement_cross/judgement_cross_bottom/judgement_cross_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_judgement_cross_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast/new_judgement_cross_cast",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast/min_new_judgement_cross_cast",
+			fallback: ["judgement_cross/judgement_cross_cast/judgement_cross_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast_bottom/new_judgement_cross_cast_bottom",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast_bottom/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_cast_bottom/min_new_judgement_cross_cast_bottom",
+			fallback: ["judgement_cross/judgement_cross_cast_bottom/judgement_cross_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_judgement_cross_hit: [{
+			type: "STR",
+			file: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_hit/new_judgement_cross_hit",
+			texturePath: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_hit/",
+			min: "imperial_guard/ig_judgement_cross/new_judgement_cross/new_judgement_cross_hit/min_new_judgement_cross_hit"
+		}],
+		ef_ig_shield_shooting: [{
+			type: "STR",
+			file: "shield_shooting/shield_shooting/shield_shooting",
+			texturePath: "shield_shooting/shield_shooting/",
+			min: "shield_shooting/shield_shooting/min_shield_shooting",
+			wav: "effect/ig_shield_shooting"
+		}],
+		ef_ig_shield_shooting_cast: [{
+			type: "STR",
+			file: "shield_shooting/shield_shooting_cast/shield_shooting_cast",
+			texturePath: "shield_shooting/shield_shooting_cast/",
+			min: "shield_shooting/shield_shooting_cast/min_shield_shooting_cast"
+		}],
+		ef_ig_shield_shooting_hit: [{
+			type: "STR",
+			file: "shield_shooting/shield_shooting_hit/shield_shooting_hit",
+			texturePath: "shield_shooting/shield_shooting_hit/",
+			min: "shield_shooting/shield_shooting_hit/min_shield_shooting_hit"
+		}],
+		ef_ig_overslash: [{
+			type: "STR",
+			file: "imperial_guard/ig_overslash/new_overslash/new_overslash/new_overslash",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/new_overslash/",
+			fallback: ["overslash/overslash/overslash"],
+			wav: "effect/ig_overslash"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_overslash/new_overslash/new_overslash_bottom/new_overslash_bottom",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/new_overslash_bottom/",
+			min: "imperial_guard/ig_overslash/new_overslash/new_overslash_bottom/min_new_overslash_bottom",
+			fallback: ["overslash/overslash_bottom/overslash_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_overslash_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_overslash/new_overslash/overslash_cast/overslash_cast",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/overslash_cast/",
+			min: "imperial_guard/ig_overslash/new_overslash/overslash_cast/min_overslash_cast",
+			fallback: ["overslash/overslash_cast/overslash_cast"]
+		}],
+		ef_ig_overslash_hit: [{
+			type: "STR",
+			file: "imperial_guard/ig_overslash/new_overslash/new_overslash_hit/new_overslash_hit",
+			texturePath: "imperial_guard/ig_overslash/new_overslash/new_overslash_hit/",
+			min: "imperial_guard/ig_overslash/new_overslash/new_overslash_hit/min_new_overslash_hit",
+			fallback: ["overslash/overslash_hit/overslash_hit"]
+		}],
+		ef_ig_cross_rain: [{
+			type: "STR",
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain/new_cross_rain",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain/min_new_cross_rain",
+			fallback: ["crossrain/cross_rain/cross_rain"],
+			wav: "effect/ig_cross_rain"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_bottom/new_cross_rain_bottom",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_bottom/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_bottom/min_new_cross_rain_bottom",
+			fallback: ["crossrain/cross_rain_bottom/cross_rain_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_cross_rain_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast/new_cross_rain_cast",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast/min_new_cross_rain_cast",
+			fallback: ["crossrain/cross_rain_cast/cross_rain_cast"]
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast_bottom/new_cross_rain_cast_bottom",
+			texturePath: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast_bottom/",
+			min: "imperial_guard/ig_cross_rain/new_crossrain/new_cross_rain_cast_bottom/min_new_cross_rain_cast_bottom",
+			fallback: ["crossrain/cross_rain_cast_bottom/cross_rain_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_ig_radiant_spear_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_radiant_spear/radiant_spear_cast/radiant_spear_cast",
+			texturePath: "imperial_guard/ig_radiant_spear/radiant_spear_cast/",
+			min: "imperial_guard/ig_radiant_spear/radiant_spear_cast/min_radiant_spear_cast"
+		}],
+		ef_ig_imperial_cross: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_cross/imperial_cross/imperial_cross",
+			texturePath: "imperial_guard/ig_imperial_cross/imperial_cross/",
+			min: "imperial_guard/ig_imperial_cross/imperial_cross/min_imperial_cross",
+			wav: "effect/ig_imperial_cross"
+		}],
+		ef_ig_imperial_pressure: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/imperal_pressure/imperal_pressure",
+			texturePath: "imperial_guard/ig_imperial_pressure/imperal_pressure/",
+			min: "imperial_guard/ig_imperial_pressure/imperal_pressure/min_imperal_pressure",
+			wav: "effect/ig_imperial_pressure"
+		}, {
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/imperal_pressure_bottom",
+			texturePath: "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/",
+			min: "imperial_guard/ig_imperial_pressure/imperal_pressure_bottom/min_imperal_pressure_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ig_imperial_pressure_cast: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/imperal_pressure_cast",
+			texturePath: "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/",
+			min: "imperial_guard/ig_imperial_pressure/imperal_pressure_cast/min_imperal_pressure_cast"
+		}],
+		ef_ig_imperial_pressure_hit: [{
+			type: "STR",
+			file: "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/new_rayofgenesis_hit",
+			texturePath: "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/",
+			min: "imperial_guard/ig_imperial_pressure/new_rayofgenesis_hit/min_new_rayofgenesis_hit",
+			fallback: ["new_rayofgenesis/new_rayofgenesis_hit/new_rayofgenesis_hit"]
 		}],
 		ef_crescentelbow: [{
 			wav: "effect/sr_crescentelbow",
@@ -274624,6 +278535,227 @@ var init_EffectTable = __esmMin((() => {
 				}
 			}
 		}],
+		ef_iq_powerful_faith: [{
+			type: "STR",
+			file: "powerfulfaith/powerfulfaith/powerfulfaith",
+			texturePath: "powerfulfaith/powerfulfaith/",
+			min: "powerfulfaith/powerfulfaith/min_powerfulfaith"
+		}],
+		ef_iq_firm_faith: [{
+			type: "STR",
+			file: "firmfaith/firmfaith/firmfaith",
+			texturePath: "firmfaith/firmfaith/",
+			min: "firmfaith/firmfaith/min_firmfaith"
+		}],
+		ef_iq_oleum_sanctum: [{
+			type: "STR",
+			file: "4ig_oleumsanctum/oleumsanctum/oleumsanctum",
+			texturePath: "4ig_oleumsanctum/oleumsanctum/",
+			min: "4ig_oleumsanctum/oleumsanctum/min_oleumsanctum",
+			wav: "effect/iq_oleum_sanctum"
+		}, {
+			type: "STR",
+			file: "4ig_oleumsanctum/oleumsanctum_bottom/oleumsanctum_bottom",
+			texturePath: "4ig_oleumsanctum/oleumsanctum_bottom/",
+			min: "4ig_oleumsanctum/oleumsanctum_bottom/min_oleumsanctum_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_oleum_sanctum_hit: [{
+			type: "STR",
+			file: "4ig_oleumsanctum/oleumsanctum_hit/oleumsanctum_hit",
+			texturePath: "4ig_oleumsanctum/oleumsanctum_hit/",
+			min: "4ig_oleumsanctum/oleumsanctum_hit/min_oleumsanctum_hit"
+		}],
+		ef_iq_sincere_faith: [{
+			type: "STR",
+			file: "sincerefaith/sincerefaith/sincerefaith",
+			texturePath: "sincerefaith/sincerefaith/",
+			min: "sincerefaith/sincerefaith/min_sincerefaith"
+		}, {
+			type: "STR",
+			file: "sincerefaith/sincerefaith_bottom/sincerefaith_bottom",
+			texturePath: "sincerefaith/sincerefaith_bottom/",
+			min: "sincerefaith/sincerefaith_bottom/min_sincerefaith_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_massive_f_blaster: [{
+			type: "STR",
+			file: "4iq_massivefblaster/massivefblaster/massivefblaster",
+			texturePath: "4iq_massivefblaster/massivefblaster/",
+			min: "4iq_massivefblaster/massivefblaster/min_massivefblaster",
+			wav: "effect/iq_massive_f_blaster"
+		}],
+		ef_iq_massive_f_blaster_hit: [{
+			type: "STR",
+			file: "4iq_massivefblaster/massivefblaster_hit/massivefblaster_hit",
+			texturePath: "4iq_massivefblaster/massivefblaster_hit/",
+			min: "4iq_massivefblaster/massivefblaster_hit/min_massivefblaster_hit"
+		}, {
+			type: "STR",
+			file: "4iq_massivefblaster/massivefblaster_hit_bottom/massivefblaster_hit_bottom",
+			texturePath: "4iq_massivefblaster/massivefblaster_hit_bottom/",
+			min: "4iq_massivefblaster/massivefblaster_hit_bottom/min_massivefblaster_hit_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_exposion_blaster: [{
+			type: "STR",
+			file: "4ig_explosionblaster/explosionblaster/explosionblaster",
+			texturePath: "4ig_explosionblaster/explosionblaster/",
+			min: "4ig_explosionblaster/explosionblaster/min_explosionblaster",
+			wav: "effect/iq_exposion_blaster"
+		}, {
+			type: "STR",
+			file: "4ig_explosionblaster/explosionblaster_bottom/explosionblaster_bottom",
+			texturePath: "4ig_explosionblaster/explosionblaster_bottom/",
+			min: "4ig_explosionblaster/explosionblaster_bottom/min_explosionblaster_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_exposion_blaster_hit: [{
+			type: "STR",
+			file: "4ig_explosionblaster/explosionblaster_hit/explosionblaster_hit",
+			texturePath: "4ig_explosionblaster/explosionblaster_hit/",
+			min: "4ig_explosionblaster/explosionblaster_hit/min_explosionblaster_hit"
+		}],
+		ef_iq_first_brand: [{
+			type: "STR",
+			file: "4ig_firstbrand/firstbrand/firstbrand",
+			texturePath: "4ig_firstbrand/firstbrand/",
+			min: "4ig_firstbrand/firstbrand/min_firstbrand",
+			wav: "effect/iq_first_brand"
+		}],
+		ef_iq_first_brand_hit: [{
+			type: "STR",
+			file: "4ig_firstbrand/firstbrand_hit/firstbrand_hit",
+			texturePath: "4ig_firstbrand/firstbrand_hit/",
+			min: "4ig_firstbrand/firstbrand_hit/min_firstbrand_hit"
+		}],
+		ef_iq_first_faith_power: [{
+			type: "STR",
+			file: "4ig_firstfaithpower/firstfaithpower/firstfaithpower",
+			texturePath: "4ig_firstfaithpower/firstfaithpower/",
+			min: "4ig_firstfaithpower/firstfaithpower/min_firstfaithpower",
+			wav: "effect/iq_first_faith_power"
+		}],
+		ef_iq_first_faith_power_cast: [{
+			type: "STR",
+			file: "4ig_firstfaithpower/firstfaithpower_cast/firstfaithpower_cast",
+			texturePath: "4ig_firstfaithpower/firstfaithpower_cast/",
+			min: "4ig_firstfaithpower/firstfaithpower_cast/min_firstfaithpower_cast"
+		}],
+		ef_iq_judge: [{
+			type: "STR",
+			file: "4ig_judge/judge/judge",
+			texturePath: "4ig_judge/judge/",
+			min: "4ig_judge/judge/min_judge",
+			wav: "effect/iq_judge"
+		}],
+		ef_iq_judge_cast: [{
+			type: "STR",
+			file: "4ig_judge/judge_cast/judge_cast",
+			texturePath: "4ig_judge/judge_cast/",
+			min: "4ig_judge/judge_cast/min_judge_cast"
+		}],
+		ef_iq_second_flame: [{
+			type: "STR",
+			file: "4iq_secondflame/secondflame/secondflame",
+			texturePath: "4iq_secondflame/secondflame/",
+			min: "4iq_secondflame/secondflame/min_secondflame",
+			wav: "effect/iq_second_flame"
+		}, {
+			type: "STR",
+			file: "4iq_secondflame/secondflame_bottom/secondflame_bottom",
+			texturePath: "4iq_secondflame/secondflame_bottom/",
+			min: "4iq_secondflame/secondflame_bottom/min_secondflame_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_second_faith: [{
+			wav: "effect/iq_second_faith",
+			attachedEntity: true
+		}],
+		ef_iq_second_judgement: [{
+			type: "STR",
+			file: "4iq_secondjudgement/secondjudgement/secondjudgement",
+			texturePath: "4iq_secondjudgement/secondjudgement/",
+			min: "4iq_secondjudgement/secondjudgement/min_secondjudgement",
+			wav: "effect/iq_second_judgement"
+		}],
+		ef_iq_third_punish: [{
+			type: "STR",
+			file: "4iq_thirdpunish/thirdpunish/thirdpunish",
+			texturePath: "4iq_thirdpunish/thirdpunish/",
+			min: "4iq_thirdpunish/thirdpunish/min_thirdpunish",
+			wav: "effect/iq_third_punish"
+		}, {
+			type: "STR",
+			file: "4iq_thirdpunish/thirdpunish_bottom/thirdpunish_bottom",
+			texturePath: "4iq_thirdpunish/thirdpunish_bottom/",
+			min: "4iq_thirdpunish/thirdpunish_bottom/min_thirdpunish_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_third_flame_bomb: [{
+			type: "STR",
+			file: "4iq_thirdflamebomb/thirdflamebomb/thirdflamebomb",
+			texturePath: "4iq_thirdflamebomb/thirdflamebomb/",
+			min: "4iq_thirdflamebomb/thirdflamebomb/min_thirdflamebomb",
+			wav: "effect/iq_third_flame_bomb"
+		}, {
+			type: "STR",
+			file: "4iq_thirdflamebomb/thirdflamebomb_bottom/thirdflamebomb_bottom",
+			texturePath: "4iq_thirdflamebomb/thirdflamebomb_bottom/",
+			min: "4iq_thirdflamebomb/thirdflamebomb_bottom/min_thirdflamebomb_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_third_consecration: [{
+			type: "STR",
+			file: "4iq_thirdconsecration/thirdconsecration/thirdconsecration",
+			texturePath: "4iq_thirdconsecration/thirdconsecration/",
+			min: "4iq_thirdconsecration/thirdconsecration/min_thirdconsecration",
+			wav: "effect/iq_third_consecration"
+		}, {
+			type: "STR",
+			file: "4iq_thirdconsecration/thirdconsecration_bottom/thirdconsecration_bottom",
+			texturePath: "4iq_thirdconsecration/thirdconsecration_bottom/",
+			min: "4iq_thirdconsecration/thirdconsecration_bottom/min_thirdconsecration_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_third_exor_flame: [{
+			type: "STR",
+			file: "4ig_thirdexorflame/thirdexorflame/thirdexorflame",
+			texturePath: "4ig_thirdexorflame/thirdexorflame/",
+			min: "4ig_thirdexorflame/thirdexorflame/min_thirdexorflame",
+			wav: "effect/iq_third_exor_flame"
+		}],
+		ef_iq_third_exor_flame_cast: [{
+			type: "STR",
+			file: "4ig_thirdexorflame/thirdexorflame_cast/thirdexorflame_cast",
+			texturePath: "4ig_thirdexorflame/thirdexorflame_cast/",
+			min: "4ig_thirdexorflame/thirdexorflame_cast/min_thirdexorflame_cast"
+		}],
+		ef_iq_blazing_flame_blast: [{
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/blazing_flame_blast",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast/min_blazing_flame_blast",
+			wav: "effect/iq_blazing_flame_blast"
+		}],
+		ef_iq_blazing_flame_blast_cast: [{
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/blazing_flame_blast_cast",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast/min_blazing_flame_blast_cast"
+		}, {
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/blazing_flame_blast_cast_bottom",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_cast_bottom/min_blazing_flame_blast_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_iq_blazing_flame_blast_hit: [{
+			type: "STR",
+			file: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/blazing_flame_blast_hit",
+			texturePath: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/",
+			min: "inquisitor/iq_blazing_flame_blast/blazing_flame_blast_hit/min_blazing_flame_blast_hit"
+		}],
 		ef_jackfrost: [{
 			wav: "effect/wl_jackfrost",
 			attachedEntity: true
@@ -274674,6 +278806,478 @@ var init_EffectTable = __esmMin((() => {
 			wav: "effect/wl_siennaexecrate",
 			attachedEntity: true
 		}],
+		ef_ag_deadly_projection_cast: [{
+			type: "STR",
+			file: "deadly_projection/deadly_projection_cast/deadly_projection_cast",
+			texturePath: "deadly_projection/deadly_projection_cast/",
+			min: "deadly_projection/deadly_projection_cast/min_deadly_projection_cast",
+			wav: "effect/ag_deadly_projection"
+		}, {
+			type: "STR",
+			file: "deadly_projection/deadly_projection_cast_bottom/deadly_projection_cast_bottom",
+			texturePath: "deadly_projection/deadly_projection_cast_bottom/",
+			min: "deadly_projection/deadly_projection_cast_bottom/min_deadly_projection_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_deadly_projection_hit: [{
+			type: "STR",
+			file: "deadly_projection/deadly_projection_hit/deadly_projection_hit",
+			texturePath: "deadly_projection/deadly_projection_hit/",
+			min: "deadly_projection/deadly_projection_hit/min_deadly_projection_hit"
+		}],
+		ef_ag_destructive_hurricane: [{
+			type: "STR",
+			file: "destructive_hurricane/destructive_hurricane/destructive_hurricane",
+			texturePath: "destructive_hurricane/destructive_hurricane/",
+			min: "destructive_hurricane/destructive_hurricane/min_destructive_hurricane",
+			wav: "effect/ag_destructive_hurricane"
+		}, {
+			type: "STR",
+			file: "destructive_hurricane/destructive_hurricane_bottom/destructive_hurricane_bottom",
+			texturePath: "destructive_hurricane/destructive_hurricane_bottom/",
+			min: "destructive_hurricane/destructive_hurricane_bottom/min_destructive_hurricane_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_destructive_hurricane_cast: [{
+			type: "STR",
+			file: "destructive_hurricane/destructive_hurricane_cast/destructive_hurricane_cast",
+			texturePath: "destructive_hurricane/destructive_hurricane_cast/",
+			min: "destructive_hurricane/destructive_hurricane_cast/min_destructive_hurricane_cast"
+		}, {
+			type: "STR",
+			file: "destructive_hurricane/destructive_hurricane_cast_bottom/destructive_hurricane_cast_bottom",
+			texturePath: "destructive_hurricane/destructive_hurricane_cast_bottom/",
+			min: "destructive_hurricane/destructive_hurricane_cast_bottom/min_destructive_hurricane_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_destructive_hurricane_hit: [{
+			type: "STR",
+			file: "destructive_hurricane/destructive_hurricane_hit/destructive_hurricane_hit",
+			texturePath: "destructive_hurricane/destructive_hurricane_hit/",
+			min: "destructive_hurricane/destructive_hurricane_hit/min_destructive_hurricane_hit"
+		}],
+		ef_ag_rain_of_crystal_cast: [{
+			type: "STR",
+			file: "rain_of_crystal/rain_of_crystal_casting/rain_of_crystal_casting",
+			texturePath: "rain_of_crystal/rain_of_crystal_casting/",
+			min: "rain_of_crystal/rain_of_crystal_casting/min_rain_of_crystal_casting",
+			wav: "effect/ag_rain_of_crystal"
+		}, {
+			type: "STR",
+			file: "rain_of_crystal/rain_of_crystal_casting_bottom/rain_of_crystal_casting_bottom",
+			texturePath: "rain_of_crystal/rain_of_crystal_casting_bottom/",
+			min: "rain_of_crystal/rain_of_crystal_casting_bottom/min_rain_of_crystal_casting_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_rain_of_crystal_hit: [{
+			type: "STR",
+			file: "rain_of_crystal/rain_of_crystal_attack/rain_of_crystal_attack",
+			texturePath: "rain_of_crystal/rain_of_crystal_attack/",
+			min: "rain_of_crystal/rain_of_crystal_attack/min_rain_of_crystal_attack"
+		}, {
+			type: "STR",
+			file: "rain_of_crystal/rain_of_crystal_attack_bottom/rain_of_crystal_attack_bottom",
+			texturePath: "rain_of_crystal/rain_of_crystal_attack_bottom/",
+			min: "rain_of_crystal/rain_of_crystal_attack_bottom/min_rain_of_crystal_attack_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_mystery_illusion: [{
+			type: "STR",
+			file: "mystery_illusion/mystery_illusion/mystery_illusion",
+			texturePath: "mystery_illusion/mystery_illusion/",
+			wav: "effect/ag_mystery_illusion"
+		}, {
+			type: "STR",
+			file: "mystery_illusion/mystery_illusion_bottom/mystery_illusion_bottom",
+			texturePath: "mystery_illusion/mystery_illusion_bottom/",
+			min: "mystery_illusion/mystery_illusion_bottom/min_mystery_illusion_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_mystery_illusion_cast: [{
+			type: "STR",
+			file: "mystery_illusion/mystery_illusion_cast/mystery_illusion_cast",
+			texturePath: "mystery_illusion/mystery_illusion_cast/",
+			min: "mystery_illusion/mystery_illusion_cast/min_mystery_illusion_cast"
+		}, {
+			type: "STR",
+			file: "mystery_illusion/mystery_illusion_cast_bottom/mystery_illusion_cast_bottom",
+			texturePath: "mystery_illusion/mystery_illusion_cast_bottom/",
+			min: "mystery_illusion/mystery_illusion_cast_bottom/min_mystery_illusion_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_mystery_illusion_hit: [{
+			type: "STR",
+			file: "mystery_illusion/mystery_illusion_hit/mystery_illusion_hit",
+			texturePath: "mystery_illusion/mystery_illusion_hit/",
+			min: "mystery_illusion/mystery_illusion_hit/min_mystery_illusion_hit"
+		}],
+		ef_ag_violent_quake: [{
+			type: "STR",
+			file: "violentquake/violentquake/violentquake_01",
+			texturePath: "violentquake/violentquake/",
+			wav: "effect/ag_violent_quake"
+		}, {
+			type: "STR",
+			file: "violentquake/violentquake_bottom/violentquake_bottom",
+			texturePath: "violentquake/violentquake_bottom/",
+			min: "violentquake/violentquake_bottom/min_violentquake_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_violent_quake_cast: [{
+			type: "STR",
+			file: "violentquake/violentquake_cast/violentquake_cast",
+			texturePath: "violentquake/violentquake_cast/",
+			min: "violentquake/violentquake_cast/min_violentquake_cast"
+		}, {
+			type: "STR",
+			file: "violentquake/violentquake_cast_bottom/violentquake_cast_bottom",
+			texturePath: "violentquake/violentquake_cast_bottom/",
+			min: "violentquake/violentquake_cast_bottom/min_violentquake_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_violent_quake_hit: [{
+			type: "STR",
+			file: "violentquake/violentquake_hit/violentquake_hit",
+			texturePath: "violentquake/violentquake_hit/",
+			min: "violentquake/violentquake_hit/min_violentquake_hit"
+		}],
+		ef_ag_violent_quake_atk: [{
+			type: "STR",
+			file: "violentquake/violentquake_hit/violentquake_hit",
+			texturePath: "violentquake/violentquake_hit/",
+			min: "violentquake/violentquake_hit/min_violentquake_hit"
+		}],
+		ef_ag_soul_vc_strike_cast: [{
+			type: "STR",
+			file: "soul_vc_strike/soul_vc_strike_cast/soul_vc_strike_cast",
+			texturePath: "soul_vc_strike/soul_vc_strike_cast/",
+			min: "soul_vc_strike/soul_vc_strike_cast/min_soul_vc_strike_cast"
+		}, {
+			type: "STR",
+			file: "soul_vc_strike/soul_vc_strike_cast_bottom/soul_vc_strike_cast_bottom",
+			texturePath: "soul_vc_strike/soul_vc_strike_cast_bottom/",
+			min: "soul_vc_strike/soul_vc_strike_cast_bottom/min_soul_vc_strike_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_soul_vc_strike_hit: [{
+			type: "STR",
+			file: "soul_vc_strike/soul_vc_strike_hit/soul_vc_strike_hit",
+			texturePath: "soul_vc_strike/soul_vc_strike_hit/",
+			min: "soul_vc_strike/soul_vc_strike_hit/min_soul_vc_strike_hit"
+		}],
+		ef_ag_strantum_tremor: [{
+			type: "STR",
+			file: "new_strantumtremor/new_strantumtremor/new_strantumtremor",
+			texturePath: "new_strantumtremor/new_strantumtremor/"
+		}, {
+			type: "STR",
+			file: "new_strantumtremor/new_strantumtremor_bottom/new_strantumtremor_bottom",
+			texturePath: "new_strantumtremor/new_strantumtremor_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ag_strantum_tremor_cast: [{
+			type: "STR",
+			file: "new_strantumtremor/new_strantumtremor_cast/new_strantumtremor_cast",
+			texturePath: "new_strantumtremor/new_strantumtremor_cast/"
+		}, {
+			type: "STR",
+			file: "new_strantumtremor/new_strantumtremor_cast_bottom/new_strantumtremor_cast_bottom",
+			texturePath: "new_strantumtremor/new_strantumtremor_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ag_strantum_tremor_hit: [{
+			type: "STR",
+			file: "new_strantumtremor/new_strantumtremor_hit/new_strantumtremor_hit",
+			texturePath: "new_strantumtremor/new_strantumtremor_hit/"
+		}],
+		ef_ag_all_bloom: [{
+			type: "STR",
+			file: "allbloom/allbloom/allbloom",
+			texturePath: "allbloom/allbloom/",
+			min: "allbloom/allbloom/min_allbloom",
+			wav: "effect/ag_all_bloom"
+		}, {
+			type: "STR",
+			file: "allbloom/allbloom_bottom/allbloom_bottom",
+			texturePath: "allbloom/allbloom_bottom/",
+			min: "allbloom/allbloom_bottom/min_allbloom_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_all_bloom_cast: [{
+			type: "STR",
+			file: "allbloom/allbloom_cast/allbloom_cast",
+			texturePath: "allbloom/allbloom_cast/",
+			min: "allbloom/allbloom_cast/min_allbloom_cast"
+		}, {
+			type: "STR",
+			file: "allbloom/allbloom_cast_bottom/allbloom_cast_bottom",
+			texturePath: "allbloom/allbloom_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ag_all_bloom_hit: [{
+			type: "STR",
+			file: "allbloom/allbloom_hit/allbloom_hit",
+			texturePath: "allbloom/allbloom_hit/",
+			min: "allbloom/allbloom_hit/min_allbloom_hit"
+		}],
+		ef_ag_all_bloom_atk: [{
+			type: "STR",
+			file: "allbloom/allbloom_hit/allbloom_hit",
+			texturePath: "allbloom/allbloom_hit/",
+			min: "allbloom/allbloom_hit/min_allbloom_hit"
+		}],
+		ef_ag_all_bloom_atk2: [{
+			type: "STR",
+			file: "allbloom/allbloom_hit/allbloom_hit",
+			texturePath: "allbloom/allbloom_hit/",
+			min: "allbloom/allbloom_hit/min_allbloom_hit"
+		}],
+		ef_ag_crystal_impact: [
+			{
+				type: "STR",
+				file: "crystal_impact/crystal_impact/crystal_impact",
+				texturePath: "crystal_impact/crystal_impact/",
+				min: "crystal_impact/crystal_impact/min_crystal_impact",
+				wav: "effect/ag_crystal_impact"
+			},
+			{
+				type: "STR",
+				file: "crystal_impact/crystal_impact_buff/crystal_impact_buff",
+				texturePath: "crystal_impact/crystal_impact_buff/",
+				min: "crystal_impact/crystal_impact_buff/min_crystal_impact_buff"
+			},
+			{
+				type: "STR",
+				file: "crystal_impact/crystal_impact_bottom/crystal_impact_bottom",
+				texturePath: "crystal_impact/crystal_impact_bottom/",
+				min: "crystal_impact/crystal_impact_bottom/min_crystal_impact_bottom",
+				renderBeforeEntities: true
+			}
+		],
+		ef_ag_crystal_impact_cast: [{
+			type: "STR",
+			file: "crystal_impact/crystal_impact_cast/crystal_impact_cast",
+			texturePath: "crystal_impact/crystal_impact_cast/",
+			min: "crystal_impact/crystal_impact_cast/min_crystal_impact_cast"
+		}, {
+			type: "STR",
+			file: "crystal_impact/crystal_impact_cast_bottom/crystal_impact_cast_bottom",
+			texturePath: "crystal_impact/crystal_impact_cast_bottom/",
+			min: "crystal_impact/crystal_impact_cast_bottom/min_crystal_impact_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_crystal_impact_hit: [{
+			type: "STR",
+			file: "crystal_impact/crystal_impact_hit/crystal_impact_hit",
+			texturePath: "crystal_impact/crystal_impact_hit/",
+			min: "crystal_impact/crystal_impact_hit/min_crystal_impact_hit"
+		}],
+		ef_ag_crystal_impact_atk: [{
+			type: "STR",
+			file: "crystal_impact/crystal_impact_hit/crystal_impact_hit",
+			texturePath: "crystal_impact/crystal_impact_hit/",
+			min: "crystal_impact/crystal_impact_hit/min_crystal_impact_hit"
+		}],
+		ef_ag_tornado_storm: [{
+			type: "STR",
+			file: "new_tornadostorm/new_tornadostorm/new_tornadostorm",
+			texturePath: "new_tornadostorm/new_tornadostorm/",
+			wav: "effect/ag_tornado_storm"
+		}, {
+			type: "STR",
+			file: "new_tornadostorm/new_tornadostorm_bottom/new_tornadostorm_bottom",
+			texturePath: "new_tornadostorm/new_tornadostorm_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ag_tornado_storm_cast: [{
+			type: "STR",
+			file: "new_tornadostorm/new_tornadostorm_cast/new_tornadostorm_cast",
+			texturePath: "new_tornadostorm/new_tornadostorm_cast/"
+		}, {
+			type: "STR",
+			file: "new_tornadostorm/new_tornadostorm_cast_bottom/new_tornadostorm_cast_bottom",
+			texturePath: "new_tornadostorm/new_tornadostorm_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ag_tornado_storm_hit: [{
+			type: "STR",
+			file: "new_tornadostorm/new_tornadostorm_hit/new_tornadostorm_hit",
+			texturePath: "new_tornadostorm/new_tornadostorm_hit/"
+		}],
+		ef_ag_astral_strike: [{
+			type: "STR",
+			file: "astralstrike/astralstrike/astralstrike",
+			texturePath: "astralstrike/astralstrike/",
+			min: "astralstrike/astralstrike/min_astralstrike"
+		}, {
+			type: "STR",
+			file: "astralstrike/astralstrike_bottom/astralstrike_bottom",
+			texturePath: "astralstrike/astralstrike_bottom/",
+			min: "astralstrike/astralstrike_bottom/min_astralstrike_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_astral_strike_cast: [{
+			type: "STR",
+			file: "astralstrike/astralstrike_cast/astralstrike_cast",
+			texturePath: "astralstrike/astralstrike_cast/",
+			min: "astralstrike/astralstrike_cast/min_astralstrike_cast"
+		}, {
+			type: "STR",
+			file: "astralstrike/astralstrike_cast_bottom/astralstrike_cast_bottom",
+			texturePath: "astralstrike/astralstrike_cast_bottom/",
+			min: "astralstrike/astralstrike_cast_bottom/min_astralstrike_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_climax: [{
+			type: "STR",
+			file: "climax/climax/climax",
+			texturePath: "climax/climax/",
+			min: "climax/climax/min_climax",
+			wav: "effect/ag_climax"
+		}, {
+			type: "STR",
+			file: "climax/climax_bottom/climax_bottom_%d",
+			rand: [1, 5],
+			texturePath: "climax/climax_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_ag_climax_cast: [{
+			type: "STR",
+			file: "climax/climax_cast/climax_cast",
+			texturePath: "climax/climax_cast/",
+			min: "climax/climax_cast/min_climax_cast"
+		}],
+		ef_ag_rock_down: [{
+			type: "STR",
+			file: "rockdown/rockdown/rockdown",
+			texturePath: "rockdown/rockdown/",
+			min: "rockdown/rockdown/min_rockdown",
+			wav: "effect/ag_rock_down"
+		}, {
+			type: "STR",
+			file: "rockdown/rockdown_bottom/rockdown_bottom",
+			texturePath: "rockdown/rockdown_bottom/",
+			min: "rockdown/rockdown_bottom/min_rockdown_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_rock_down_cast: [{
+			type: "STR",
+			file: "rockdown/rockdown_cast/rockdown_cast",
+			texturePath: "rockdown/rockdown_cast/",
+			min: "rockdown/rockdown_cast/min_rockdown_cast"
+		}, {
+			type: "STR",
+			file: "rockdown/rockdown_cast_bottom/rockdown_cast_bottom",
+			texturePath: "rockdown/rockdown_cast_bottom/",
+			min: "rockdown/rockdown_cast_bottom/min_rockdown_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_rock_down_hit: [{
+			type: "STR",
+			file: "rockdown/rockdown_hit/rockdown_hit",
+			texturePath: "rockdown/rockdown_hit/",
+			min: "rockdown/rockdown_hit/min_rockdown_hit"
+		}],
+		ef_ag_storm_cannon: [{
+			type: "STR",
+			file: "stormcannon/stormcannon/stormcannon",
+			texturePath: "stormcannon/stormcannon/",
+			min: "stormcannon/stormcannon/min_stormcannon",
+			wav: "effect/ag_storm_cannon"
+		}, {
+			type: "STR",
+			file: "stormcannon/stormcannon_bottom/stormcannon_bottom",
+			texturePath: "stormcannon/stormcannon_bottom/",
+			min: "stormcannon/stormcannon_bottom/min_stormcannon_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_storm_cannon_cast: [{
+			type: "STR",
+			file: "stormcannon/stormcannon_cast_bottom/stormcannon_cast_bottom",
+			texturePath: "stormcannon/stormcannon_cast_bottom/",
+			min: "stormcannon/stormcannon_cast_bottom/min_stormcannon_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_crimson_arrow: [{
+			type: "STR",
+			file: "crimsonarrow/crimsonarrow/crimsonarrow",
+			texturePath: "crimsonarrow/crimsonarrow/",
+			min: "crimsonarrow/crimsonarrow/min_crimsonarrow"
+		}],
+		ef_ag_crimson_arrow_cast: [{
+			type: "STR",
+			file: "crimsonarrow/crimsonarrow_cast/crimsonarrow_cast",
+			texturePath: "crimsonarrow/crimsonarrow_cast/",
+			min: "crimsonarrow/crimsonarrow_cast/min_crimsonarrow_cast"
+		}, {
+			type: "STR",
+			file: "crimsonarrow/crimsonarrow_cast_bottom/crimsonarrow_cast_bottom",
+			texturePath: "crimsonarrow/crimsonarrow_cast_bottom/",
+			min: "crimsonarrow/crimsonarrow_cast_bottom/min_crimsonarrow_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_crimson_arrow_hit: [{
+			type: "STR",
+			file: "crimsonarrow/crimsonarrow_hit/crimsonarrow_hit",
+			texturePath: "crimsonarrow/crimsonarrow_hit/",
+			min: "crimsonarrow/crimsonarrow_hit/min_crimsonarrow_hit"
+		}],
+		ef_ag_crimson_arrow_atk: [{
+			type: "STR",
+			file: "crimsonarrow/crimsonarrow_hit/crimsonarrow_hit",
+			texturePath: "crimsonarrow/crimsonarrow_hit/",
+			min: "crimsonarrow/crimsonarrow_hit/min_crimsonarrow_hit"
+		}],
+		ef_ag_frozen_slash: [{
+			type: "STR",
+			file: "frozen_slash/frozen_slash/frozen_slash",
+			texturePath: "frozen_slash/frozen_slash/",
+			min: "frozen_slash/frozen_slash/min_frozen_slash",
+			wav: "effect/ag_frozen_slash"
+		}],
+		ef_ag_frozen_slash_cast: [{
+			type: "STR",
+			file: "frozen_slash/frozen_slash_casting/frozen_slash_cast",
+			texturePath: "frozen_slash/frozen_slash_casting/",
+			min: "frozen_slash/frozen_slash_casting/min_frozen_slash_cast"
+		}, {
+			type: "STR",
+			file: "frozen_slash/frozen_slash_casting_bottom/frozen_slash_cast_bottom",
+			texturePath: "frozen_slash/frozen_slash_casting_bottom/",
+			min: "frozen_slash/frozen_slash_casting_bottom/min_frozen_slash_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_ag_frozen_slash_hit: [{
+			type: "STR",
+			file: "frozen_slash/frozen_slash_hit/frozen_slash_hit",
+			texturePath: "frozen_slash/frozen_slash_hit/",
+			min: "frozen_slash/frozen_slash_hit/min_frozen_slash_hit"
+		}],
+		ef_ag_destructive_hurricane_climax: [{
+			type: "STR",
+			file: "destructive_hurricane/destructive_hurricane_climax/destructive_hurricane_climax",
+			texturePath: "destructive_hurricane/destructive_hurricane_climax/",
+			min: "destructive_hurricane/destructive_hurricane_climax/min_destructive_hurricane_climax"
+		}],
+		ef_ag_energy_conversion: [{
+			type: "STR",
+			file: "archmage/ag_energy_conversion/energy_conversion/energy_conversion",
+			texturePath: "archmage/ag_energy_conversion/energy_conversion/",
+			min: "archmage/ag_energy_conversion/energy_conversion/min_energy_conversion",
+			wav: "effect/ag_energy_conversion"
+		}],
+		ef_ag_energy_conversion_cast: [{
+			type: "STR",
+			file: "archmage/ag_energy_conversion/energy_conversion_cast/energy_conversion_cast",
+			texturePath: "archmage/ag_energy_conversion/energy_conversion_cast/",
+			min: "archmage/ag_energy_conversion/energy_conversion_cast/min_energy_conversion_cast"
+		}, {
+			type: "STR",
+			file: "archmage/ag_energy_conversion/energy_conversion_cast_bottom/energy_conversion_cast_bottom",
+			texturePath: "archmage/ag_energy_conversion/energy_conversion_cast_bottom/",
+			min: "archmage/ag_energy_conversion/energy_conversion_cast_bottom/min_energy_conversion_cast_bottom",
+			renderBeforeEntities: true
+		}],
 		ef_frigg_song: [{
 			wav: "effect/wm_frigg_song",
 			attachedEntity: true
@@ -274681,6 +279285,265 @@ var init_EffectTable = __esmMin((() => {
 		ef_duplelight: [{
 			wav: "effect/ab_duplelight",
 			attachedEntity: true
+		}],
+		ef_cd_reparatio: [{
+			type: "STR",
+			file: "new_reparatio/new_reparatio/new_reparatio",
+			texturePath: "new_reparatio/new_reparatio/",
+			min: "new_reparatio/new_reparatio/min_new_reparatio"
+		}, {
+			type: "STR",
+			file: "new_reparatio/new_reparatio_bottom/new_reparatio_bottom",
+			texturePath: "new_reparatio/new_reparatio_bottom/",
+			min: "new_reparatio/new_reparatio_bottom/min_new_reparatio_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_reparatio_cast: [{
+			type: "STR",
+			file: "new_reparatio/new_reparatio_cast/new_reparatio_cast",
+			texturePath: "new_reparatio/new_reparatio_cast/",
+			min: "new_reparatio/new_reparatio_cast/min_new_reparatio_cast"
+		}, {
+			type: "STR",
+			file: "new_reparatio/new_reparatio_cast_bottom/new_reparatio_cast_bottom",
+			texturePath: "new_reparatio/new_reparatio_cast_bottom/",
+			min: "new_reparatio/new_reparatio_cast_bottom/min_new_reparatio_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_mediale_votum: [{
+			type: "STR",
+			file: "medialevotum/medialevotum/medialevotum",
+			texturePath: "medialevotum/medialevotum/",
+			min: "medialevotum/medialevotum/min_medialevotum",
+			wav: "effect/cd_mediale_votum"
+		}],
+		ef_cd_mediale_votum_cast: [{
+			type: "STR",
+			file: "medialevotum/medialevotum_cast/medialevotum_cast",
+			texturePath: "medialevotum/medialevotum_cast/",
+			min: "medialevotum/medialevotum_cast/min_medialevotum_cast"
+		}],
+		ef_cd_argutus_vita: [{
+			type: "STR",
+			file: "argutusvita/argutusvita/argutusvita",
+			texturePath: "argutusvita/argutusvita/",
+			min: "argutusvita/argutusvita/min_argutusvita",
+			wav: "effect/cd_argutus_vita"
+		}],
+		ef_cd_argutus_vita_cast: [{
+			type: "STR",
+			file: "argutusvita/argutusvita_cast/argutusvita_cast",
+			texturePath: "argutusvita/argutusvita_cast/",
+			min: "argutusvita/argutusvita_cast/min_argutusvita_cast"
+		}],
+		ef_cd_argutus_telum: [{
+			type: "STR",
+			file: "argutustelum/argutustelum/argutustelum",
+			texturePath: "argutustelum/argutustelum/",
+			min: "argutustelum/argutustelum/min_argutustelum"
+		}],
+		ef_cd_argutus_telum_cast: [{
+			type: "STR",
+			file: "argutustelum/argutustelum_cast/argutustelum_cast",
+			texturePath: "argutustelum/argutustelum_cast/",
+			min: "argutustelum/argutustelum_cast/min_argutustelum_cast"
+		}],
+		ef_cd_arbitrium: [{
+			type: "STR",
+			file: "arbitrium/arbitrium/arbitrium",
+			texturePath: "arbitrium/arbitrium/",
+			min: "arbitrium/arbitrium/min_arbitrium",
+			wav: "effect/cd_arbitrium"
+		}, {
+			type: "STR",
+			file: "arbitrium/arbitrium_bottom/arbitrium_bottom",
+			texturePath: "arbitrium/arbitrium_bottom/",
+			min: "arbitrium/arbitrium_bottom/min_arbitrium_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_arbitrium_cast: [{
+			type: "STR",
+			file: "arbitrium/arbitrium_cast/arbitrium_cast",
+			texturePath: "arbitrium/arbitrium_cast/",
+			min: "arbitrium/arbitrium_cast/min_arbitrium_cast"
+		}, {
+			type: "STR",
+			file: "arbitrium/arbitrium_cast_bottom/arbitrium_cast_bottom",
+			texturePath: "arbitrium/arbitrium_cast_bottom/",
+			min: "arbitrium/arbitrium_cast_bottom/min_arbitrium_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_arbitrium_hit: [{
+			type: "STR",
+			file: "arbitrium/arbitrium_hit/arbitrium_hit",
+			texturePath: "arbitrium/arbitrium_hit/",
+			min: "arbitrium/arbitrium_hit/min_arbitrium_hit"
+		}],
+		ef_cd_arbitrium_atk: [{
+			type: "STR",
+			file: "arbitrium/arbitrium_hit/arbitrium_hit",
+			texturePath: "arbitrium/arbitrium_hit/",
+			min: "arbitrium/arbitrium_hit/min_arbitrium_hit"
+		}],
+		ef_cd_presens_acies: [{
+			type: "STR",
+			file: "presensacies/presensacies/presensacies",
+			texturePath: "presensacies/presensacies/",
+			min: "presensacies/presensacies/min_presensacies",
+			wav: "effect/cd_presens_acies"
+		}],
+		ef_cd_presens_acies_cast: [{
+			type: "STR",
+			file: "presensacies/presensacies_cast/presensacies_cast",
+			texturePath: "presensacies/presensacies_cast/",
+			min: "presensacies/presensacies_cast/min_presensacies_cast"
+		}],
+		ef_cd_effligo: [{
+			type: "STR",
+			file: "effligo/effligo/effligo",
+			texturePath: "effligo/effligo/",
+			min: "effligo/effligo/min_effligo",
+			wav: "effect/cd_effligo"
+		}, {
+			type: "STR",
+			file: "effligo/effligo_bottom/effligo_bottom",
+			texturePath: "effligo/effligo_bottom/",
+			min: "effligo/effligo_bottom/min_effligo_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_effligo_hit: [{
+			type: "STR",
+			file: "effligo/effligo_hit/effligo_hit",
+			texturePath: "effligo/effligo_hit/",
+			min: "effligo/effligo_hit/min_effligo_hit"
+		}],
+		ef_cd_competentia: [{
+			type: "STR",
+			file: "competentia/competentia/competentia",
+			texturePath: "competentia/competentia/",
+			min: "competentia/competentia/min_competentia",
+			wav: "effect/cd_competentia"
+		}, {
+			type: "STR",
+			file: "competentia/competentia_bottom/competentia_bottom",
+			texturePath: "competentia/competentia_bottom/",
+			min: "competentia/competentia_bottom/min_competentia_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_competentia_cast: [{
+			type: "STR",
+			file: "competentia/competentia_cast/competentia_cast",
+			texturePath: "competentia/competentia_cast/"
+		}],
+		ef_cd_pneumaticus_procella: [{
+			type: "STR",
+			file: "new_pneumaticusprocella/new_pneumaticusprocella/new_pneumaticusprocella",
+			texturePath: "new_pneumaticusprocella/new_pneumaticusprocella/",
+			wav: "effect/cd_pneumaticus_procella"
+		}],
+		ef_cd_pneumaticus_procella_cast: [{
+			type: "STR",
+			file: "new_pneumaticusprocella/new_pneumaticusprocella_cast/new_pneumaticusprocella_cast",
+			texturePath: "new_pneumaticusprocella/new_pneumaticusprocella_cast/"
+		}],
+		ef_cd_dilectio_heal: [{
+			type: "STR",
+			file: "new_dilectioheal/new_dilectioheal/new_dilectioheal",
+			texturePath: "new_dilectioheal/new_dilectioheal/",
+			min: "new_dilectioheal/new_dilectioheal/min_new_dilectioheal",
+			wav: "effect/cd_dilectio_heal"
+		}],
+		ef_cd_dilectio_heal_cast: [{
+			type: "STR",
+			file: "new_dilectioheal/new_dilectioheal_cast/new_dilectioheal_cast",
+			texturePath: "new_dilectioheal/new_dilectioheal_cast/",
+			min: "new_dilectioheal/new_dilectioheal_cast/min_new_dilectioheal_cast"
+		}, {
+			type: "STR",
+			file: "new_dilectioheal/new_dilectioheal_cast_bottom/new_dilectioheal_cast_bottom",
+			texturePath: "new_dilectioheal/new_dilectioheal_cast_bottom/",
+			min: "new_dilectioheal/new_dilectioheal_cast_bottom/min_new_dilectioheal_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_religio: [{
+			type: "STR",
+			file: "religio/religio/religio",
+			texturePath: "religio/religio/",
+			min: "religio/religio/min_religio",
+			wav: "effect/cd_religio"
+		}],
+		ef_cd_religio_cast: [{
+			type: "STR",
+			file: "religio/religio_cast/religio_cast",
+			texturePath: "religio/religio_cast/",
+			min: "religio/religio_cast/min_religio_cast"
+		}],
+		ef_cd_benedictum: [{
+			type: "STR",
+			file: "benedictum/benedictum/benedictum",
+			texturePath: "benedictum/benedictum/",
+			min: "benedictum/benedictum/min_benedictum",
+			wav: "effect/cd_benedictum"
+		}],
+		ef_cd_benedictum_cast: [{
+			type: "STR",
+			file: "benedictum/benedictum_cast/benedictum_cast",
+			texturePath: "benedictum/benedictum_cast/",
+			min: "benedictum/benedictum_cast/min_benedictum_cast"
+		}, {
+			type: "STR",
+			file: "benedictum/benedictum_cast_bottom/benedictum_cast_bottom",
+			texturePath: "benedictum/benedictum_cast_bottom/",
+			min: "benedictum/benedictum_cast_bottom/min_benedictum_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_petitio: [{
+			type: "STR",
+			file: "petitio/petitio/petitio",
+			texturePath: "petitio/petitio/",
+			min: "petitio/petitio/min_petitio",
+			wav: "effect/cd_petitio"
+		}, {
+			type: "STR",
+			file: "petitio/petitio_bottom/petitio_bottom",
+			texturePath: "petitio/petitio_bottom/",
+			min: "petitio/petitio_bottom/min_petitio_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_framen: [{
+			wav: "effect/cd_framen",
+			attachedEntity: true
+		}],
+		ef_cd_divinus_flos: [{
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos/divinus_flos",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos/",
+			min: "cardinal/cd_divinus_flos/divinus_flos/min_divinus_flos",
+			wav: "effect/cd_divinus_flos"
+		}, {
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_bottom/divinus_flos_bottom",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_bottom/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_bottom/min_divinus_flos_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_divinus_flos_cast: [{
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_cast/divinus_flos_cast",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_cast/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_cast/min_divinus_flos_cast"
+		}, {
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/divinus_flos_cast_bottom",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_cast_bottom/min_divinus_flos_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_cd_divinus_flos_hit: [{
+			type: "STR",
+			file: "cardinal/cd_divinus_flos/divinus_flos_hit/divinus_flos_hit",
+			texturePath: "cardinal/cd_divinus_flos/divinus_flos_hit/",
+			min: "cardinal/cd_divinus_flos/divinus_flos_hit/min_divinus_flos_hit"
 		}],
 		ef_wugbite: [{
 			wav: "wug_bite",
@@ -274700,9 +279563,353 @@ var init_EffectTable = __esmMin((() => {
 			wav: "dragon_breath",
 			attachedEntity: true
 		}],
+		ef_dk_servantweapon: [{
+			type: "STR",
+			file: "dragon_knight/dk_servantweapon/servantweapon/servantweapon",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon/",
+			min: "dragon_knight/dk_servantweapon/servantweapon/min_servantweapon",
+			fallback: ["new_servantweapon/new_servantweapon/new_servantweapon"],
+			wav: "effect/dk_servantweapon"
+		}],
+		ef_dk_servantweapon_cast: [{
+			type: "STR",
+			file: "dragon_knight/dk_servantweapon/servantweapon_cast/servantweapon_cast",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon_cast/",
+			min: "dragon_knight/dk_servantweapon/servantweapon_cast/min_servantweapon_cast",
+			fallback: ["new_servantweapon/new_servantweapon_cast/new_servantweapon_cast"]
+		}],
+		ef_dk_servantweapon_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_servantweapon/servantweapon_hit/servantweapon_hit",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon_hit/",
+			min: "dragon_knight/dk_servantweapon/servantweapon_hit/min_servantweapon_hit",
+			fallback: ["new_servantweapon/new_servantweapon_hit/new_servantweapon_hit"]
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_servantweapon/servantweapon_hit_bottom/servantweapon_hit_bottom",
+			texturePath: "dragon_knight/dk_servantweapon/servantweapon_hit_bottom/",
+			min: "dragon_knight/dk_servantweapon/servantweapon_hit_bottom/min_servantweapon_hit_bottom",
+			fallback: ["new_servantweapon/new_servantweapon_hit_bottom/new_servantweapon_hit_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_dk_servantweapon_atk: [{
+			type: "STR",
+			file: "new_servantweapon/new_servantweapon_hit/new_servantweapon_hit",
+			texturePath: "new_servantweapon/new_servantweapon_hit/",
+			min: "new_servantweapon/new_servantweapon_hit/min_new_servantweapon_hit"
+		}, {
+			type: "STR",
+			file: "new_servantweapon/new_servantweapon_hit_bottom/new_servantweapon_hit_bottom",
+			texturePath: "new_servantweapon/new_servantweapon_hit_bottom/",
+			min: "new_servantweapon/new_servantweapon_hit_bottom/min_new_servantweapon_hit_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_dk_servant_w_sign: [{
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_sign/servant_sign/servant_sign",
+			texturePath: "dragon_knight/dk_servant_w_sign/servant_sign/",
+			min: "dragon_knight/dk_servant_w_sign/servant_sign/min_servant_sign",
+			fallback: ["servant_sign/servant_sign/servant_sign"],
+			wav: "effect/dk_servant_w_sign"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_sign/servant_sign_bottom/servant_sign_bottom",
+			texturePath: "dragon_knight/dk_servant_w_sign/servant_sign_bottom/",
+			min: "dragon_knight/dk_servant_w_sign/servant_sign_bottom/min_servant_sign_bottom",
+			fallback: ["servant_sign/servant_sign_bottom/servant_sign_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_dk_servant_w_phantom: [{
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/servant_phantom_sub",
+			texturePath: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/",
+			min: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub/min_servant_phantom_sub",
+			fallback: ["servant_phantom/servant_phantom_sub/servant_phantom_sub"],
+			wav: "effect/dk_servant_w_phantom"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/servant_phantom_sub_bottom",
+			texturePath: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/",
+			min: "dragon_knight/dk_servant_w_phantom/servant_phantom_sub_bottom/min_servant_phantom_sub_bottom",
+			fallback: ["servant_phantom/servant_phantom_sub_bottom/servant_phantom_sub_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_dk_servant_w_demol_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_servant_w_demol/servant_demolition_hit/servant_demolition_hit",
+			texturePath: "dragon_knight/dk_servant_w_demol/servant_demolition_hit/",
+			min: "dragon_knight/dk_servant_w_demol/servant_demolition_hit/min_servant_demolition_hit",
+			fallback: ["servant_demolition/servant_demolition_hit/servant_demolition_hit"],
+			wav: "effect/dk_servant_w_demol"
+		}],
+		ef_dk_chargingpierce_cast: [{
+			type: "STR",
+			file: "dragon_knight/dk_chargingpierce/chargingpierce_cast/chargingpierce_cast",
+			texturePath: "dragon_knight/dk_chargingpierce/chargingpierce_cast/",
+			fallback: ["new_chargingpierce/new_chargingpierce_cast/new_chargingpierce_cast"],
+			wav: "effect/dk_chargingpierce1"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_chargingpierce/chargingpierce_cast_bottom/chargingpierce_cast_bottom",
+			texturePath: "dragon_knight/dk_chargingpierce/chargingpierce_cast_bottom/",
+			fallback: ["new_chargingpierce/new_chargingpierce_cast_bottom/new_chargingpierce_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_dk_chargingpierce_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_chargingpierce/chargingpierce_hit/chargingpierce_hit",
+			texturePath: "dragon_knight/dk_chargingpierce/chargingpierce_hit/",
+			fallback: ["new_chargingpierce/new_chargingpierce_hit/new_chargingpierce_hit"],
+			wav: "effect/dk_chargingpierce2"
+		}],
+		ef_dk_hackandslasher: [{
+			type: "STR",
+			file: "dragon_knight/dk_hackandslasher/hackandslash/hackandslash",
+			texturePath: "dragon_knight/dk_hackandslasher/hackandslash/",
+			min: "dragon_knight/dk_hackandslasher/hackandslash/min_hackandslash",
+			fallback: ["hackandslash/hackandslash/hackandslash"],
+			wav: "effect/dk_hackandslasher"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_hackandslasher/hackandslash_bottom/hackandslash_bottom",
+			texturePath: "dragon_knight/dk_hackandslasher/hackandslash_bottom/",
+			min: "dragon_knight/dk_hackandslasher/hackandslash_bottom/min_hackandslash_bottom",
+			fallback: ["hackandslash/hackandslash_bottom/hackandslash_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_dk_hackandslasher_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_hackandslasher/hackandslash_hit/hackandslash_hit",
+			texturePath: "dragon_knight/dk_hackandslasher/hackandslash_hit/",
+			min: "dragon_knight/dk_hackandslasher/hackandslash_hit/min_hackandslash_hit",
+			fallback: ["hackandslash/hackandslash_hit/hackandslash_hit"]
+		}],
+		ef_dk_hackandslasher_atk: [{
+			type: "STR",
+			file: "hackandslash/hackandslash_hit/hackandslash_hit",
+			texturePath: "hackandslash/hackandslash_hit/",
+			min: "hackandslash/hackandslash_hit/min_hackandslash_hit"
+		}],
+		ef_dk_dragonic_aura: [{
+			wav: "effect/dk_dragonic_aura1",
+			attachedEntity: true
+		}],
+		ef_dk_madness_crusher: [{
+			type: "STR",
+			file: "dragon_knight/dk_madness_crusher/madness_crusher/madness_crusher",
+			texturePath: "dragon_knight/dk_madness_crusher/madness_crusher/",
+			min: "dragon_knight/dk_madness_crusher/madness_crusher/min_madness_crusher",
+			fallback: ["madness_crusher/madness_crusher/madness_crusher"],
+			wav: "effect/dk_madness_crusher"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_madness_crusher/madness_crusher_bottom/madness_crusher_bottom",
+			texturePath: "dragon_knight/dk_madness_crusher/madness_crusher_bottom/",
+			min: "dragon_knight/dk_madness_crusher/madness_crusher_bottom/min_madness_crusher_bottom",
+			fallback: ["madness_crusher/madness_crusher_bottom/madness_crusher_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_dk_vigor: [{
+			type: "STR",
+			file: "dragon_knight/dk_vigor/vigor_buff/vigor_buff",
+			texturePath: "dragon_knight/dk_vigor/vigor_buff/",
+			min: "dragon_knight/dk_vigor/vigor_buff/min_vigor_buff",
+			fallback: ["vigor/vigor_buff/vigor_buff"],
+			wav: "effect/dk_vigor"
+		}],
+		ef_dk_vigor_cast: [{
+			type: "STR",
+			file: "dragon_knight/dk_vigor/vigor_cast/vigor_cast",
+			texturePath: "dragon_knight/dk_vigor/vigor_cast/",
+			min: "dragon_knight/dk_vigor/vigor_cast/min_vigor_cast",
+			fallback: ["vigor/vigor_cast/vigor_cast"]
+		}],
+		ef_dk_stormslash_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_stormslash/stormslash/stormslash_%d",
+			min: "dragon_knight/dk_stormslash/stormslash/min_stormslash_%d",
+			rand: [1, 5],
+			texturePath: "dragon_knight/dk_stormslash/stormslash/",
+			fallback: ["stormslash/stormslash/stormslash_%d"],
+			wav: "effect/dk_stormslash1"
+		}],
+		ef_dk_dragonic_breath: [{
+			type: "STR",
+			file: "dragon_knight/dragonic_breath/dragonic_breath/dragonic_breath",
+			texturePath: "dragon_knight/dragonic_breath/dragonic_breath/",
+			min: "dragon_knight/dragonic_breath/dragonic_breath/min_dragonic_breath",
+			wav: "effect/dk_dragonic_breath"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dragonic_breath/dragonic_breath_bottom/dragonic_breath_bottom",
+			texturePath: "dragon_knight/dragonic_breath/dragonic_breath_bottom/",
+			min: "dragon_knight/dragonic_breath/dragonic_breath_bottom/min_dragonic_breath_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_dk_dragonic_breath_hit: [{
+			type: "STR",
+			file: "dragon_knight/dragonic_breath/dragonic_breath_hit/dragonic_breath_hit",
+			texturePath: "dragon_knight/dragonic_breath/dragonic_breath_hit/",
+			min: "dragon_knight/dragonic_breath/dragonic_breath_hit/min_dragonic_breath_hit"
+		}],
+		ef_dk_dragonic_pierce: [{
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/dragonic_pierce_bottom",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_bottom/min_dragonic_pierce_bottom",
+			renderBeforeEntities: true,
+			wav: "effect/dk_dragonic_pierce"
+		}],
+		ef_dk_dragonic_pierce_cast: [{
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/dragonic_pierce_cast",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_cast/min_dragonic_pierce_cast"
+		}],
+		ef_dk_dragonic_pierce_hit: [{
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/dragonic_pierce_hit",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit/min_dragonic_pierce_hit"
+		}, {
+			type: "STR",
+			file: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/dragonic_pierce_hit_bottom",
+			texturePath: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/",
+			min: "dragon_knight/dk_dragonic_pierce/dragonic_pierce_hit_bottom/min_dragonic_pierce_hit_bottom",
+			renderBeforeEntities: true
+		}],
 		ef_hallucinationwalk: [{
 			wav: "effect/hallucinationwalk",
 			attachedEntity: true
+		}],
+		ef_shc_shadow_exceed_cast: [{
+			type: "STR",
+			file: "shadow_cross/shc_shadow_exceed/shadow_exceed_cast/shadow_exceed_cast",
+			texturePath: "shadow_cross/shc_shadow_exceed/shadow_exceed_cast/",
+			min: "shadow_cross/shc_shadow_exceed/shadow_exceed_cast/min_shadow_exceed_cast",
+			fallback: ["shadow_exceed/shadow_exceed_cast/shadow_exceed_cast"],
+			wav: "effect/shc_shadow_exceed"
+		}],
+		ef_shc_dancing_knife_cast: [{
+			type: "STR",
+			file: "shadow_cross/shc_dancing_knife/dancing_knife_cast/dancing_knife_cast",
+			texturePath: "shadow_cross/shc_dancing_knife/dancing_knife_cast/",
+			fallback: ["dancing_knife/dancing_knife_cast/dancing_knife_cast"],
+			wav: "effect/shc_dancing_knife"
+		}, {
+			type: "STR",
+			file: "shadow_cross/shc_dancing_knife/dancing_knife_cast_bottom/dancing_knife_cast_bottom",
+			texturePath: "shadow_cross/shc_dancing_knife/dancing_knife_cast_bottom/",
+			fallback: ["dancing_knife/dancing_knife_cast_bottom/dancing_knife_cast_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_shc_savage_impact: [{
+			type: "STR",
+			file: "savage_impact/savage_impact/savage_impact",
+			texturePath: "savage_impact/savage_impact/",
+			min: "savage_impact/savage_impact/min_savage_impact",
+			wav: "effect/shc_savage_impact"
+		}],
+		ef_shc_savage_impact_hit: [{
+			type: "STR",
+			file: "savage_impact/savage_impact_hit/savage_impact_hit",
+			texturePath: "savage_impact/savage_impact_hit/",
+			min: "savage_impact/savage_impact_hit/min_savage_impact_hit"
+		}],
+		ef_shc_eternal_slash: [{
+			type: "STR",
+			file: "eternal_slash/eternal_slash/eternal_slash",
+			texturePath: "eternal_slash/eternal_slash/",
+			min: "eternal_slash/eternal_slash/min_eternal_slash",
+			wav: "effect/shc_eternal_slash"
+		}, {
+			type: "STR",
+			file: "eternal_slash/eternal_slash_bottom/eternal_slash_bottom",
+			texturePath: "eternal_slash/eternal_slash_bottom/",
+			min: "eternal_slash/eternal_slash_bottom/min_eternal_slash_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_shc_eternal_slash_hit: [{
+			type: "STR",
+			file: "eternal_slash/eternal_slash_hit/eternal_slash_hit",
+			texturePath: "eternal_slash/eternal_slash_hit/",
+			min: "eternal_slash/eternal_slash_hit/min_eternal_slash_hit"
+		}],
+		ef_shc_potent_venom: [{
+			type: "STR",
+			file: "new_potent_venom/new_potent_venom",
+			texturePath: "new_potent_venom/",
+			min: "new_potent_venom/min_new_potent_venom",
+			wav: "effect/shc_potent_venom"
+		}],
+		ef_shc_shadow_stab: [{
+			type: "STR",
+			file: "shadow_cross/shc_shadow_stab/shadow_stab/shadow_stab",
+			texturePath: "shadow_cross/shc_shadow_stab/shadow_stab/",
+			fallback: ["shadow_stab/shadow_stab/shadow_stab"],
+			wav: "effect/shc_shadow_stab"
+		}],
+		ef_shc_impact_crater: [{
+			type: "STR",
+			file: "shadow_cross/shc_impact_crater/impact_crater/impact_crater",
+			texturePath: "shadow_cross/shc_impact_crater/impact_crater/",
+			min: "shadow_cross/shc_impact_crater/impact_crater/min_impact_crater",
+			fallback: ["impact_crater/impact_crater/impact_crater"],
+			wav: "effect/shc_impact_crater"
+		}, {
+			type: "STR",
+			file: "shadow_cross/shc_impact_crater/impact_crater_bottom/impact_crater_bottom",
+			texturePath: "shadow_cross/shc_impact_crater/impact_crater_bottom/",
+			min: "shadow_cross/shc_impact_crater/impact_crater_bottom/min_impact_crater_bottom",
+			fallback: ["impact_crater/impact_crater_bottom/impact_crater_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_shc_impact_crater_hit: [{
+			type: "STR",
+			file: "shadow_cross/shc_impact_crater/impact_crater_hit/impact_crater_hit",
+			texturePath: "shadow_cross/shc_impact_crater/impact_crater_hit/",
+			min: "shadow_cross/shc_impact_crater/impact_crater_hit/min_impact_crater_hit",
+			fallback: ["impact_crater/impact_crater_hit/impact_crater_hit"]
+		}],
+		ef_shc_enchanting_shadow: [{
+			type: "STR",
+			file: "shadow_cross/shc_enchanting_shadow/enchanting_shadow/enchanting_shadow",
+			texturePath: "shadow_cross/shc_enchanting_shadow/enchanting_shadow/",
+			min: "shadow_cross/shc_enchanting_shadow/enchanting_shadow/min_enchanting_shadow",
+			fallback: ["enchanting_shadow/enchanting_shadow/new_enchanting_shadow"]
+		}, {
+			type: "STR",
+			file: "shadow_cross/shc_enchanting_shadow/enchanting_shadow_bottom/enchanting_shadow_bottom",
+			texturePath: "shadow_cross/shc_enchanting_shadow/enchanting_shadow_bottom/",
+			min: "shadow_cross/shc_enchanting_shadow/enchanting_shadow_bottom/min_enchanting_shadow_bottom",
+			fallback: ["enchanting_shadow/enchanting_shadow_bottom/new_enchanting_shadow_bottom"],
+			renderBeforeEntities: true
+		}],
+		ef_shc_fatal_shadow_crow: [{
+			type: "STR",
+			file: "fatal_shadow_crow/fatal_shadow_crow/fatal_shadow_crow",
+			texturePath: "fatal_shadow_crow/fatal_shadow_crow/",
+			min: "fatal_shadow_crow/fatal_shadow_crow/min_fatal_shadow_crow",
+			wav: "effect/shc_fatal_shadow_crow"
+		}, {
+			type: "STR",
+			file: "fatal_shadow_crow/fatal_shadow_crow_bottom/fatal_shadow_crow_bottom",
+			texturePath: "fatal_shadow_crow/fatal_shadow_crow_bottom/",
+			min: "fatal_shadow_crow/fatal_shadow_crow_bottom/min_fatal_shadow_crow_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_shc_fatal_shadow_crow_hit: [{
+			type: "STR",
+			file: "fatal_shadow_crow/fatal_shadow_crow_hit/fatal_shadow_crow_hit",
+			texturePath: "fatal_shadow_crow/fatal_shadow_crow_hit/",
+			min: "fatal_shadow_crow/fatal_shadow_crow_hit/min_fatal_shadow_crow_hit"
+		}],
+		ef_shc_cross_slash: [{
+			type: "STR",
+			file: "shadow_cross/shc_cross_slash/cross_slash/cross_slash",
+			texturePath: "shadow_cross/shc_cross_slash/cross_slash/",
+			min: "shadow_cross/shc_cross_slash/cross_slash/min_cross_slash",
+			wav: "effect/shc_cross_slash"
 		}],
 		ef_s_storm: [{
 			type: "STR",
@@ -274729,6 +279936,251 @@ var init_EffectTable = __esmMin((() => {
 		ef_valley_of_death: [{
 			wav: "effect/»ç¸ÁÀÇ°ñÂ¥±â¿¡¼­",
 			attachedEntity: true
+		}],
+		ef_tr_mystic_symphony: [{
+			type: "STR",
+			file: "mysticsymphony/mysticsymphony/mysticsymphony",
+			texturePath: "mysticsymphony/mysticsymphony/",
+			min: "mysticsymphony/mysticsymphony/min_mysticsymphony",
+			wav: "effect/tr_mystic_symphony"
+		}],
+		ef_tr_mystic_symphony_cast: [{
+			type: "STR",
+			file: "mysticsymphony/mysticsymphony_cast/mysticsymphony_cast",
+			texturePath: "mysticsymphony/mysticsymphony_cast/",
+			min: "mysticsymphony/mysticsymphony_cast/min_mysticsymphony_cast"
+		}],
+		ef_tr_kvasir_sonata: [{
+			type: "STR",
+			file: "4tr_kvasirsonata/kvasirsonata/kvasirsonata",
+			texturePath: "4tr_kvasirsonata/kvasirsonata/",
+			min: "4tr_kvasirsonata/kvasirsonata/min_kvasirsonata",
+			wav: "effect/tr_kvasir_sonata"
+		}],
+		ef_tr_kvasir_sonata_cast: [{
+			type: "STR",
+			file: "4tr_kvasirsonata/kvasirsonata_cast/kvasirsonata_cast",
+			texturePath: "4tr_kvasirsonata/kvasirsonata_cast/",
+			min: "4tr_kvasirsonata/kvasirsonata_cast/min_kvasirsonata_cast"
+		}, {
+			type: "STR",
+			file: "4tr_kvasirsonata/kvasirsonata_cast_bottom/kvasirsonata_cast_bottom",
+			texturePath: "4tr_kvasirsonata/kvasirsonata_cast_bottom/",
+			min: "4tr_kvasirsonata/kvasirsonata_cast_bottom/min_kvasirsonata_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_roseblossom_cast: [{
+			type: "STR",
+			file: "roseblossom/roseblossom_cast/roseblossom_cast",
+			texturePath: "roseblossom/roseblossom_cast/",
+			min: "roseblossom/roseblossom_cast/min_roseblossom_cast"
+		}, {
+			type: "STR",
+			file: "roseblossom/roseblossom_cast_bottom/roseblossom_cast_bottom",
+			texturePath: "roseblossom/roseblossom_cast_bottom/",
+			min: "roseblossom/roseblossom_cast_bottom/min_roseblossom_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_roseblossom_hit: [{
+			type: "STR",
+			file: "roseblossom/roseblossom_hit/roseblossom_hit",
+			texturePath: "roseblossom/roseblossom_hit/",
+			min: "roseblossom/roseblossom_hit/min_roseblossom_hit"
+		}],
+		ef_tr_roseblossom_atk: [{
+			type: "STR",
+			file: "roseblossom/roseblossom_hit/roseblossom_hit",
+			texturePath: "roseblossom/roseblossom_hit/",
+			min: "roseblossom/roseblossom_hit/min_roseblossom_hit"
+		}],
+		ef_tr_rhythmshooting_cast: [{
+			type: "STR",
+			file: "rhythmshooting/rhythmshooting_cast/rhythmshooting_cast",
+			texturePath: "rhythmshooting/rhythmshooting_cast/",
+			min: "rhythmshooting/rhythmshooting_cast/min_rhythmshooting_cast",
+			wav: "effect/tr_rhythmshooting"
+		}, {
+			type: "STR",
+			file: "rhythmshooting/rhythmshooting_cast_bottom/rhythmshooting_cast_bottom",
+			texturePath: "rhythmshooting/rhythmshooting_cast_bottom/",
+			min: "rhythmshooting/rhythmshooting_cast_bottom/min_rhythmshooting_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmshooting_hit: [{
+			type: "STR",
+			file: "rhythmshooting/rhythmshooting_hit/rhythmshooting_hit",
+			texturePath: "rhythmshooting/rhythmshooting_hit/",
+			min: "rhythmshooting/rhythmshooting_hit/min_rhythmshooting_hit"
+		}],
+		ef_tr_metalic_fury: [{
+			type: "STR",
+			file: "metalicfury/metalicfury/metalicfury",
+			texturePath: "metalicfury/metalicfury/",
+			min: "metalicfury/metalicfury/min_metalicfury",
+			wav: "effect/tr_metalic_fury"
+		}],
+		ef_tr_soundblend: [{
+			type: "STR",
+			file: "soundblend/soundblend/soundblend",
+			texturePath: "soundblend/soundblend/",
+			min: "soundblend/soundblend/min_soundblend"
+		}],
+		ef_tr_soundblend_cast: [{
+			type: "STR",
+			file: "soundblend/soundblend_cast/soundblend_cast",
+			texturePath: "soundblend/soundblend_cast/",
+			min: "soundblend/soundblend_cast/min_soundblend_cast"
+		}, {
+			type: "STR",
+			file: "soundblend/soundblend_cast_bottom/soundblend_cast_bottom",
+			texturePath: "soundblend/soundblend_cast_bottom/",
+			min: "soundblend/soundblend_cast_bottom/min_soundblend_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_gef_nocturn: [{
+			type: "STR",
+			file: "gef_nocturn/gef_nocturn/gef_nocturn",
+			texturePath: "gef_nocturn/gef_nocturn/",
+			min: "gef_nocturn/gef_nocturn/min_gef_nocturn",
+			wav: "effect/tr_gef_nocturn"
+		}],
+		ef_tr_gef_nocturn_cast: [{
+			type: "STR",
+			file: "gef_nocturn/gef_nocturn_cast/gef_nocturn_cast",
+			texturePath: "gef_nocturn/gef_nocturn_cast/",
+			min: "gef_nocturn/gef_nocturn_cast/min_gef_nocturn_cast"
+		}, {
+			type: "STR",
+			file: "gef_nocturn/gef_nocturn_cast_bottom/gef_nocturn_cast_bottom",
+			texturePath: "gef_nocturn/gef_nocturn_cast_bottom/",
+			min: "gef_nocturn/gef_nocturn_cast_bottom/min_gef_nocturn_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_roki_capriccio: [{
+			type: "STR",
+			file: "roki_capriccio/roki_capriccio/roki_capriccio",
+			texturePath: "roki_capriccio/roki_capriccio/",
+			min: "roki_capriccio/roki_capriccio/min_roki_capriccio",
+			wav: "effect/tr_roki_capriccio"
+		}],
+		ef_tr_roki_capriccio_cast: [{
+			type: "STR",
+			file: "roki_capriccio/roki_capriccio_cast/roki_capriccio_cast",
+			texturePath: "roki_capriccio/roki_capriccio_cast/",
+			min: "roki_capriccio/roki_capriccio_cast/min_roki_capriccio_cast"
+		}, {
+			type: "STR",
+			file: "roki_capriccio/roki_capriccio_cast_bottom/roki_capriccio_cast_bottom",
+			texturePath: "roki_capriccio/roki_capriccio_cast_bottom/",
+			min: "roki_capriccio/roki_capriccio_cast_bottom/min_roki_capriccio_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_ain_rhapsody: [{
+			type: "STR",
+			file: "ain_rhapsody/ain_rhapsody/ain_rhapsody",
+			texturePath: "ain_rhapsody/ain_rhapsody/",
+			min: "ain_rhapsody/ain_rhapsody/min_ain_rhapsody",
+			wav: "effect/tr_ain_rhapsody"
+		}],
+		ef_tr_ain_rhapsody_cast: [{
+			type: "STR",
+			file: "ain_rhapsody/ain_rhapsody_cast/ain_rhapsody_cast",
+			texturePath: "ain_rhapsody/ain_rhapsody_cast/",
+			min: "ain_rhapsody/ain_rhapsody_cast/min_ain_rhapsody_cast"
+		}],
+		ef_tr_musical_interlude: [{
+			type: "STR",
+			file: "musical_interlude/musical_interlude/musical_interlude",
+			texturePath: "musical_interlude/musical_interlude/",
+			min: "musical_interlude/musical_interlude/min_musical_interlude",
+			wav: "effect/tr_musical_interlude"
+		}],
+		ef_tr_musical_interlude_cast: [{
+			type: "STR",
+			file: "musical_interlude/musical_interlude_cast/musical_interlude_cast",
+			texturePath: "musical_interlude/musical_interlude_cast/",
+			min: "musical_interlude/musical_interlude_cast/min_musical_interlude_cast"
+		}],
+		ef_tr_jawaii_serenade: [{
+			type: "STR",
+			file: "jawaii_serenade/jawaii_serenade/jawaii_serenade",
+			texturePath: "jawaii_serenade/jawaii_serenade/",
+			min: "jawaii_serenade/jawaii_serenade/min_jawaii_serenade",
+			wav: "effect/tr_jawaii_serenade"
+		}],
+		ef_tr_jawaii_serenade_cast: [{
+			type: "STR",
+			file: "jawaii_serenade/jawaii_serenade_cast/jawaii_serenade_cast",
+			texturePath: "jawaii_serenade/jawaii_serenade_cast/",
+			min: "jawaii_serenade/jawaii_serenade_cast/min_jawaii_serenade_cast"
+		}, {
+			type: "STR",
+			file: "jawaii_serenade/jawaii_serenade_cast_bottom/jawaii_serenade_cast_bottom",
+			texturePath: "jawaii_serenade/jawaii_serenade_cast_bottom/",
+			min: "jawaii_serenade/jawaii_serenade_cast_bottom/min_jawaii_serenade_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_nipelheim_requiem: [{
+			type: "STR",
+			file: "nipelheim/nipelheim/nipelheim",
+			texturePath: "nipelheim/nipelheim/",
+			min: "nipelheim/nipelheim/min_nipelheim",
+			wav: "effect/tr_nipelheim_requiem"
+		}],
+		ef_tr_nipelheim_requiem_cast: [{
+			type: "STR",
+			file: "nipelheim/nipelheim_cast/nipelheim_cast",
+			texturePath: "nipelheim/nipelheim_cast/",
+			min: "nipelheim/nipelheim_cast/min_nipelheim_cast"
+		}],
+		ef_tr_pron_march: [{
+			type: "STR",
+			file: "pronmarch/pronmarch/pronmarch",
+			texturePath: "pronmarch/pronmarch/",
+			min: "pronmarch/pronmarch/min_pronmarch",
+			wav: "effect/tr_pron_march"
+		}],
+		ef_tr_pron_march_cast: [{
+			type: "STR",
+			file: "pronmarch/pronmarch_cast/pronmarch_cast",
+			texturePath: "pronmarch/pronmarch_cast/",
+			min: "pronmarch/pronmarch_cast/min_pronmarch_cast"
+		}, {
+			type: "STR",
+			file: "pronmarch/pronmarch_cast_bottom/pronmarch_cast_bottom",
+			texturePath: "pronmarch/pronmarch_cast_bottom/",
+			min: "pronmarch/pronmarch_cast_bottom/min_pronmarch_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmical_wave: [{
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/rhythmical_wave",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave/min_rhythmical_wave"
+		}, {
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/rhythmical_wave_bottom",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_bottom/min_rhythmical_wave_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmical_wave_cast: [{
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/rhythmical_wave_cast",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast/min_rhythmical_wave_cast"
+		}, {
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/rhythmical_wave_cast_bottom",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_cast_bottom/min_rhythmical_wave_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_tr_rhythmical_wave_hit: [{
+			type: "STR",
+			file: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/rhythmical_wave_hit",
+			texturePath: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/",
+			min: "troubadour_trouvere/tr_rhythmical_wave/rhythmical_wave_hit/min_rhythmical_wave_hit"
 		}],
 		ef_harmonize: [{
 			wav: "effect/ÇÏ¸ð³ªÀÌÁî",
@@ -274758,6 +280210,218 @@ var init_EffectTable = __esmMin((() => {
 			zOffset: 1,
 			zIndex: 1
 		}],
+		ef_abc_abyss_dagger: [{
+			type: "STR",
+			file: "abyss_dagger/abyss_dagger/abyss_dagger",
+			texturePath: "abyss_dagger/abyss_dagger/",
+			min: "abyss_dagger/abyss_dagger/min_abyss_dagger",
+			wav: "effect/abc_abyss_dagger"
+		}],
+		ef_abc_abyss_dagger_hit: [{
+			type: "STR",
+			file: "abyss_dagger/abyss_dagger_hit/abyss_dagger_hit",
+			texturePath: "abyss_dagger/abyss_dagger_hit/",
+			min: "abyss_dagger/abyss_dagger_hit/min_abyss_dagger_hit"
+		}],
+		ef_abc_unlucky_rush: [{
+			type: "STR",
+			file: "unlucky_rush/unlucky_rush/unlucky_rush",
+			texturePath: "unlucky_rush/unlucky_rush/",
+			min: "unlucky_rush/unlucky_rush/min_unlucky_rush",
+			wav: "effect/abc_unlucky_rush"
+		}],
+		ef_abc_unlucky_rush_cast: [{
+			type: "STR",
+			file: "unlucky_rush/unlucky_rush_cast/unlucky_rush_cast",
+			texturePath: "unlucky_rush/unlucky_rush_cast/",
+			min: "unlucky_rush/unlucky_rush_cast/min_unlucky_rush_cast"
+		}],
+		ef_abc_unlucky_rush_hit: [{
+			type: "STR",
+			file: "unlucky_rush/unlucky_rush_hit/unlucky_rush_hit",
+			texturePath: "unlucky_rush/unlucky_rush_hit/",
+			min: "unlucky_rush/unlucky_rush_hit/min_unlucky_rush_hit"
+		}],
+		ef_abc_chain_reaction_shot: [{
+			type: "STR",
+			file: "chain_reaction_shot/chain_reaction_shot/chain_reaction_shot",
+			texturePath: "chain_reaction_shot/chain_reaction_shot/",
+			min: "chain_reaction_shot/chain_reaction_shot/min_chain_reaction_shot",
+			wav: "effect/abc_chain_reaction_shot"
+		}],
+		ef_abc_chain_reaction_shot_cast: [{
+			type: "STR",
+			file: "chain_reaction_shot/chain_reaction_shot_cast/chain_reaction_shot_cast",
+			texturePath: "chain_reaction_shot/chain_reaction_shot_cast/",
+			min: "chain_reaction_shot/chain_reaction_shot_cast/min_chain_reaction_shot_cast"
+		}, {
+			type: "STR",
+			file: "chain_reaction_shot/chain_reaction_shot_cast_bottom/chain_reaction_shot_cast_bottom",
+			texturePath: "chain_reaction_shot/chain_reaction_shot_cast_bottom/",
+			min: "chain_reaction_shot/chain_reaction_shot_cast_bottom/min_chain_reaction_shot_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_chain_reaction_shot_hit: [{
+			type: "STR",
+			file: "chain_reaction_shot/chain_reaction_shot_hit/chain_reaction_shot_hit",
+			texturePath: "chain_reaction_shot/chain_reaction_shot_hit/",
+			min: "chain_reaction_shot/chain_reaction_shot_hit/min_chain_reaction_shot_hit"
+		}],
+		ef_abc_from_the_abyss_hit: [{
+			type: "STR",
+			file: "from_the_abyss/from_the_abyss_attack/from_the_abyss_attack",
+			texturePath: "from_the_abyss/from_the_abyss_attack/",
+			wav: "effect/abc_from_the_abyss"
+		}],
+		ef_abc_abyss_slayer: [{
+			type: "STR",
+			file: "4abc_abyss_slayer/abyss_slayer/abyss_slayer",
+			texturePath: "4abc_abyss_slayer/abyss_slayer/",
+			min: "4abc_abyss_slayer/abyss_slayer/min_abyss_slayer",
+			wav: "effect/abc_abyss_slayer"
+		}],
+		ef_abc_abyss_slayer_cast: [{
+			type: "STR",
+			file: "4abc_abyss_slayer/abyss_slayer_cast/abyss_slayer_cast",
+			texturePath: "4abc_abyss_slayer/abyss_slayer_cast/",
+			min: "4abc_abyss_slayer/abyss_slayer_cast/min_abyss_slayer_cast"
+		}, {
+			type: "STR",
+			file: "4abc_abyss_slayer/abyss_slayer_cast_bottom/abyss_slayer_cast_bottom",
+			texturePath: "4abc_abyss_slayer/abyss_slayer_cast_bottom/",
+			min: "4abc_abyss_slayer/abyss_slayer_cast_bottom/min_abyss_slayer_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_abyss_strike: [{
+			type: "STR",
+			file: "abyss_strike/abyss_strike/abyss_strike",
+			texturePath: "abyss_strike/abyss_strike/",
+			min: "abyss_strike/abyss_strike/min_abyss_strike",
+			wav: "effect/abc_abyss_strike"
+		}, {
+			type: "STR",
+			file: "abyss_strike/abyss_strike_bottom/abyss_strike_bottom",
+			texturePath: "abyss_strike/abyss_strike_bottom/",
+			min: "abyss_strike/abyss_strike_bottom/min_abyss_strike_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_abyss_strike_cast: [{
+			type: "STR",
+			file: "abyss_strike/abyss_strike_cast/abyss_strike_cast",
+			texturePath: "abyss_strike/abyss_strike_cast/",
+			min: "abyss_strike/abyss_strike_cast/min_abyss_strike_cast"
+		}, {
+			type: "STR",
+			file: "abyss_strike/abyss_strike_cast_bottom/abyss_strike_cast_bottom",
+			texturePath: "abyss_strike/abyss_strike_cast_bottom/",
+			min: "abyss_strike/abyss_strike_cast_bottom/min_abyss_strike_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_abyss_strike_hit: [{
+			type: "STR",
+			file: "abyss_strike/abyss_strike_hit/abyss_strike_hit",
+			texturePath: "abyss_strike/abyss_strike_hit/",
+			min: "abyss_strike/abyss_strike_hit/min_abyss_strike_hit"
+		}],
+		ef_abc_deft_stab: [{
+			type: "STR",
+			file: "deft_stab/deft_stab/deft_stab",
+			texturePath: "deft_stab/deft_stab/",
+			min: "deft_stab/deft_stab/min_deft_stab"
+		}],
+		ef_abc_abyss_square: [{
+			type: "STR",
+			file: "abyss_square/abyss_square/abyss_square",
+			texturePath: "abyss_square/abyss_square/",
+			min: "abyss_square/abyss_square/min_abyss_square",
+			wav: "effect/abc_abyss_square"
+		}, {
+			type: "STR",
+			file: "abyss_square/abyss_square_bottom/abyss_square_bottom",
+			texturePath: "abyss_square/abyss_square_bottom/",
+			min: "abyss_square/abyss_square_bottom/min_abyss_square_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_abyss_square_hit: [{
+			type: "STR",
+			file: "abyss_square/abyss_square_hit/abyss_square_hit",
+			texturePath: "abyss_square/abyss_square_hit/"
+		}],
+		ef_abc_frenzy_shot: [{
+			type: "STR",
+			file: "frenzy_shot/frenzy_shot/frenzy_shot",
+			texturePath: "frenzy_shot/frenzy_shot/",
+			min: "frenzy_shot/frenzy_shot/min_frenzy_shot",
+			wav: "effect/abc_frenzy_shot"
+		}],
+		ef_abc_frenzy_shot_hit: [{
+			type: "STR",
+			file: "frenzy_shot/frenzy_shot_hit/frenzy_shot_hit",
+			texturePath: "frenzy_shot/frenzy_shot_hit/",
+			min: "frenzy_shot/frenzy_shot_hit/min_frenzy_shot_hit"
+		}],
+		ef_abc_chain_reaction_shot_atk: [{
+			type: "STR",
+			file: "chain_reaction_shot/chain_reaction_shot_hit/chain_reaction_shot_hit",
+			texturePath: "chain_reaction_shot/chain_reaction_shot_hit/",
+			min: "chain_reaction_shot/chain_reaction_shot_hit/min_chain_reaction_shot_hit"
+		}],
+		ef_abc_from_the_abyss_atk: [{
+			type: "STR",
+			file: "from_the_abyss/from_the_abyss_attack/from_the_abyss_attack",
+			texturePath: "from_the_abyss/from_the_abyss_attack/"
+		}],
+		ef_abc_chasing_break: [{
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_break/chasing_break/chasing_break",
+			texturePath: "abyss_chaser/abc_chasing_break/chasing_break/",
+			min: "abyss_chaser/abc_chasing_break/chasing_break/min_chasing_break",
+			wav: "effect/abc_chasing_break"
+		}],
+		ef_abc_chasing_shot_cast: [{
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_shot/chasing_shot_cast/chasing_shot_cast",
+			texturePath: "abyss_chaser/abc_chasing_shot/chasing_shot_cast/",
+			min: "abyss_chaser/abc_chasing_shot/chasing_shot_cast/min_chasing_shot_cast",
+			wav: "effect/abc_chasing_shot"
+		}, {
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/chasing_shot_cast_bottom",
+			texturePath: "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/",
+			min: "abyss_chaser/abc_chasing_shot/chasing_shot_cast_bottom/min_chasing_shot_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_chasing_shot_hit: [{
+			type: "STR",
+			file: "abyss_chaser/abc_chasing_shot/chasing_shot_hit/chasing_shot_hit",
+			texturePath: "abyss_chaser/abc_chasing_shot/chasing_shot_hit/",
+			min: "abyss_chaser/abc_chasing_shot/chasing_shot_hit/min_chasing_shot_hit"
+		}],
+		ef_abc_abyss_flame: [{
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame/abyss_flame",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame/min_abyss_flame",
+			wav: "effect/abc_abyss_flame"
+		}],
+		ef_abc_abyss_flame_cast: [{
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame_cast/abyss_flame_cast",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame_cast/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame_cast/min_abyss_flame_cast"
+		}, {
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/abyss_flame_cast_bottom",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame_cast_bottom/min_abyss_flame_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_abc_abyss_flame_hit: [{
+			type: "STR",
+			file: "abyss_chaser/abc_abyss_flame/abyss_flame_hit/abyss_flame_hit",
+			texturePath: "abyss_chaser/abc_abyss_flame/abyss_flame_hit/",
+			min: "abyss_chaser/abc_abyss_flame/abyss_flame_hit/min_abyss_flame_hit"
+		}],
 		ef_arrow_shower_projectile: [{
 			type: "3D",
 			alphaMax: 1,
@@ -274777,6 +280441,196 @@ var init_EffectTable = __esmMin((() => {
 			zIndex: 1,
 			posxEndRand: 1.5,
 			posyEndRand: 1.5
+		}],
+		ef_wh_wind_sign: [{
+			type: "STR",
+			file: "windsign/windsign/windsign",
+			texturePath: "windsign/windsign/",
+			min: "windsign/windsign/min_windsign",
+			wav: "effect/wh_wind_sign"
+		}],
+		ef_wh_hawkrush: [{
+			type: "STR",
+			file: "hawkrush/hawkrush/hawkrush",
+			texturePath: "hawkrush/hawkrush/",
+			wav: "effect/wh_hawkrush"
+		}],
+		ef_wh_calamitygale_cast: [{
+			type: "STR",
+			file: "windhawk/calamitygale/calumitygale_cast/calumitygale_cast",
+			texturePath: "windhawk/calamitygale/calumitygale_cast/",
+			min: "windhawk/calamitygale/calumitygale_cast/min_calumitygale_cast",
+			fallback: ["4wh_calumitygale/calumitygale_cast/calumitygale_cast"],
+			wav: "effect/wh_calamitygale"
+		}],
+		ef_wh_hawkboomerang: [{
+			wav: "effect/wh_hawkboomerang",
+			attachedEntity: true
+		}],
+		ef_wh_galestorm: [{
+			type: "STR",
+			file: "galestorm/galestorm/galestorm",
+			texturePath: "galestorm/galestorm/",
+			min: "galestorm/galestorm/min_galestorm",
+			wav: "effect/wh_galestorm"
+		}],
+		ef_wh_galestorm_cast: [{
+			type: "STR",
+			file: "galestorm/galestorm_cast/galestorm_cast",
+			texturePath: "galestorm/galestorm_cast/",
+			min: "galestorm/galestorm_cast/min_galestorm_cast"
+		}],
+		ef_wh_galestorm_hit: [{
+			type: "STR",
+			file: "galestorm/galestorm_hit/galestorm_hit",
+			texturePath: "galestorm/galestorm_hit/",
+			min: "galestorm/galestorm_hit/min_galestorm_hit"
+		}],
+		ef_wh_deepblindtrap: [{
+			type: "STR",
+			file: "deepblindtrap/deepblindtrap/deepblindtrap",
+			texturePath: "deepblindtrap/deepblindtrap/",
+			min: "deepblindtrap/deepblindtrap/min_deepblindtrap"
+		}, {
+			type: "STR",
+			file: "deepblindtrap/deepblindtrap_bottom/deepblindtrap_bottom",
+			texturePath: "deepblindtrap/deepblindtrap_bottom/",
+			min: "deepblindtrap/deepblindtrap_bottom/min_deepblindtrap_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_deepblindtrap_cast: [{
+			type: "STR",
+			file: "deepblindtrap/deepblindtrap_cast/deepblindtrap_cast",
+			texturePath: "deepblindtrap/deepblindtrap_cast/",
+			min: "deepblindtrap/deepblindtrap_cast/min_deepblindtrap_cast"
+		}],
+		ef_wh_deepblindtrap_hit: [{
+			type: "STR",
+			file: "deepblindtrap/deepblindtrap_hit/deepblindtrap_hit",
+			texturePath: "deepblindtrap/deepblindtrap_hit/",
+			min: "deepblindtrap/deepblindtrap_hit/min_deepblindtrap_hit"
+		}],
+		ef_wh_solidtrap: [{
+			type: "STR",
+			file: "solidtrap/solidtrap/solidtrap",
+			texturePath: "solidtrap/solidtrap/",
+			min: "solidtrap/solidtrap/min_solidtrap"
+		}, {
+			type: "STR",
+			file: "solidtrap/solidtrap_bottom/solidtrap_bottom",
+			texturePath: "solidtrap/solidtrap_bottom/",
+			min: "solidtrap/solidtrap_bottom/min_solidtrap_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_solidtrap_cast: [{
+			type: "STR",
+			file: "solidtrap/solidtrap_cast/solidtrap_cast",
+			texturePath: "solidtrap/solidtrap_cast/",
+			min: "solidtrap/solidtrap_cast/min_solidtrap_cast"
+		}, {
+			type: "STR",
+			file: "solidtrap/solidtrap_cast_bottom/solidtrap_cast_bottom",
+			texturePath: "solidtrap/solidtrap_cast_bottom/",
+			min: "solidtrap/solidtrap_cast_bottom/min_solidtrap_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_solidtrap_hit: [{
+			type: "STR",
+			file: "solidtrap/solidtrap_hit/solidtrap_hit",
+			texturePath: "solidtrap/solidtrap_hit/",
+			min: "solidtrap/solidtrap_hit/min_solidtrap_hit"
+		}],
+		ef_wh_swifttrap: [{
+			type: "STR",
+			file: "swifttrap/swifttrap/swifttrap",
+			texturePath: "swifttrap/swifttrap/",
+			min: "swifttrap/swifttrap/min_swifttrap"
+		}, {
+			type: "STR",
+			file: "swifttrap/swifttrap_bottom/swifttrap_bottom",
+			texturePath: "swifttrap/swifttrap_bottom/",
+			min: "swifttrap/swifttrap_bottom/min_swifttrap_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_swifttrap_cast: [{
+			type: "STR",
+			file: "swifttrap/swifttrap_cast/swifttrap_cast",
+			texturePath: "swifttrap/swifttrap_cast/",
+			min: "swifttrap/swifttrap_cast/min_swifttrap_cast"
+		}],
+		ef_wh_swifttrap_hit: [{
+			type: "STR",
+			file: "swifttrap/swifttrap_hit/swifttrap_hit",
+			texturePath: "swifttrap/swifttrap_hit/",
+			min: "swifttrap/swifttrap_hit/min_swifttrap_hit"
+		}],
+		ef_wh_crescive_bolt: [{
+			type: "STR",
+			file: "crescivebolt/crescivebolt/crescivebolt",
+			texturePath: "crescivebolt/crescivebolt/",
+			min: "crescivebolt/crescivebolt/min_crescivebolt",
+			wav: "effect/wh_crescive_bolt"
+		}],
+		ef_wh_crescive_bolt_cast: [{
+			type: "STR",
+			file: "crescivebolt/crescivebolt_cast/crescivebolt_cast",
+			texturePath: "crescivebolt/crescivebolt_cast/",
+			min: "crescivebolt/crescivebolt_cast/min_crescivebolt_cast"
+		}],
+		ef_wh_crescive_bolt_hit: [{
+			type: "STR",
+			file: "crescivebolt/crescivebolt_hit/crescivebolt_hit",
+			texturePath: "crescivebolt/crescivebolt_hit/",
+			min: "crescivebolt/crescivebolt_hit/min_crescivebolt_hit"
+		}],
+		ef_wh_flametrap: [{
+			type: "STR",
+			file: "flametrap/flametrap/flametrap",
+			texturePath: "flametrap/flametrap/",
+			min: "flametrap/flametrap/min_flametrap"
+		}, {
+			type: "STR",
+			file: "flametrap/flametrap_bottom/flametrap_bottom",
+			texturePath: "flametrap/flametrap_bottom/",
+			min: "flametrap/flametrap_bottom/min_flametrap_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_flametrap_cast: [{
+			type: "STR",
+			file: "flametrap/flametrap_cast/flametrap_cast",
+			texturePath: "flametrap/flametrap_cast/",
+			min: "flametrap/flametrap_cast/min_flametrap_cast"
+		}],
+		ef_wh_flametrap_hit: [{
+			type: "STR",
+			file: "flametrap/flametrap_hit/flametrap_hit",
+			texturePath: "flametrap/flametrap_hit/",
+			min: "flametrap/flametrap_hit/min_flametrap_hit"
+		}],
+		ef_wh_wild_walk: [{
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk/wild_walk",
+			texturePath: "windhawk/wh_wild_walk/wild_walk/",
+			min: "windhawk/wh_wild_walk/wild_walk/min_wild_walk",
+			wav: "effect/wh_wild_walk"
+		}],
+		ef_wh_wild_walk_cast: [{
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk_cast/wild_walk_cast",
+			texturePath: "windhawk/wh_wild_walk/wild_walk_cast/",
+			min: "windhawk/wh_wild_walk/wild_walk_cast/min_wild_walk_cast"
+		}, {
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk_cast_bottom/wild_walk_cast_bottom",
+			texturePath: "windhawk/wh_wild_walk/wild_walk_cast_bottom/",
+			min: "windhawk/wh_wild_walk/wild_walk_cast_bottom/min_wild_walk_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_wh_wild_walk_hit: [{
+			type: "STR",
+			file: "windhawk/wh_wild_walk/wild_walk_hit/wild_walk_hit",
+			texturePath: "windhawk/wh_wild_walk/wild_walk_hit/",
+			min: "windhawk/wh_wild_walk/wild_walk_hit/min_wild_walk_hit"
 		}],
 		ef_spear_projectile: [{
 			type: "3D",
@@ -275050,6 +280904,157 @@ var init_EffectTable = __esmMin((() => {
 			},
 			{ wav: "effect/RL_C_MARKER" }
 		],
+		ef_nw_intensive_aim: [{
+			type: "STR",
+			file: "night_watch/nw_intensive_aim/intensive_aim_full/intensiveaim_full",
+			texturePath: "night_watch/nw_intensive_aim/intensive_aim_full/",
+			min: "night_watch/nw_intensive_aim/intensive_aim_full/min_intensiveaim_full",
+			wav: "effect/night_watch/nw_intensive_aim"
+		}],
+		ef_nw_grenade_fragment: [{
+			type: "STR",
+			file: "night_watch/nw_grenade_fragment/grenade_fragment_fire/grenade_fragment_fire",
+			texturePath: "night_watch/nw_grenade_fragment/grenade_fragment_fire/",
+			min: "night_watch/nw_grenade_fragment/grenade_fragment_fire/min_grenade_fragment_fire"
+		}],
+		ef_nw_the_vigilante_at_night: [{
+			type: "STR",
+			file: "night_watch/nw_the_vigilante_at_night/the_vigilante_at_night_bottom/the_vigilante_at_night_bottom",
+			texturePath: "night_watch/nw_the_vigilante_at_night/the_vigilante_at_night_bottom/",
+			min: "night_watch/nw_the_vigilante_at_night/the_vigilante_at_night_bottom/min_the_vigilante_at_night_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_nw_only_one_bullet: [{
+			type: "STR",
+			file: "night_watch/nw_only_one_bullet/only_one_bullet/only_one_bullet",
+			texturePath: "night_watch/nw_only_one_bullet/only_one_bullet/",
+			min: "night_watch/nw_only_one_bullet/only_one_bullet/min_only_one_bullet",
+			wav: "effect/night_watch/nw_only_one_bullet"
+		}],
+		ef_nw_only_one_bullet_hit: [{
+			type: "STR",
+			file: "night_watch/nw_only_one_bullet/only_one_bullet_hit/only_one_bullet_hit",
+			texturePath: "night_watch/nw_only_one_bullet/only_one_bullet_hit/",
+			min: "night_watch/nw_only_one_bullet/only_one_bullet_hit/min_only_one_bullet_hit"
+		}],
+		ef_nw_spiral_shooting: [{
+			type: "STR",
+			file: "night_watch/nw_spiral_shooting/spiral_shooting",
+			texturePath: "night_watch/nw_spiral_shooting/",
+			min: "night_watch/nw_spiral_shooting/min_spiral_shooting",
+			wav: "effect/night_watch/nw_spiral_shooting"
+		}],
+		ef_nw_magazine_for_one: [{
+			type: "STR",
+			file: "night_watch/nw_magazine_for_one/magazine_for_one",
+			texturePath: "night_watch/nw_magazine_for_one/",
+			min: "night_watch/nw_magazine_for_one/min_magazine_for_one",
+			wav: "effect/night_watch/nw_magazine_for_one"
+		}],
+		ef_nw_wild_fire: [{
+			type: "STR",
+			file: "night_watch/nw_wild_fire/wild_fire/wild_fire",
+			texturePath: "night_watch/nw_wild_fire/wild_fire/",
+			min: "night_watch/nw_wild_fire/wild_fire/min_wild_fire",
+			wav: "effect/night_watch/nw_wild_fire"
+		}, {
+			type: "STR",
+			file: "night_watch/nw_wild_fire/wild_fire_bottom/wild_fire_bottom",
+			texturePath: "night_watch/nw_wild_fire/wild_fire_bottom/",
+			min: "night_watch/nw_wild_fire/wild_fire_bottom/min_wild_fire_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_nw_basic_grenade: [{
+			type: "STR",
+			file: "night_watch/nw_basic_grenade/basic_grenade/basic_grenade",
+			texturePath: "night_watch/nw_basic_grenade/basic_grenade/",
+			min: "night_watch/nw_basic_grenade/basic_grenade/min_basic_grenade",
+			wav: "effect/night_watch/nw_basic_grenade"
+		}, {
+			type: "STR",
+			file: "night_watch/nw_basic_grenade/basic_grenade_bottom/basic_grenade_bottom",
+			texturePath: "night_watch/nw_basic_grenade/basic_grenade_bottom/",
+			min: "night_watch/nw_basic_grenade/basic_grenade_bottom/min_basic_grenade_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_nw_grenades_dropping: [{
+			type: "STR",
+			file: "night_watch/nw_grenades_dropping/grenades_dropping/grenades_dropping",
+			texturePath: "night_watch/nw_grenades_dropping/grenades_dropping/",
+			min: "night_watch/nw_grenades_dropping/grenades_dropping/min_grenades_dropping"
+		}, {
+			type: "STR",
+			file: "night_watch/nw_grenades_dropping/grenades_dropping_bottom/grenades_dropping_bottom",
+			texturePath: "night_watch/nw_grenades_dropping/grenades_dropping_bottom/",
+			min: "night_watch/nw_grenades_dropping/grenades_dropping_bottom/min_grenades_dropping_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_nw_auto_firing_launcher: [{
+			type: "STR",
+			file: "night_watch/nw_auto_firing_launcher/auto_firing_launcher/auto_firing_launcher",
+			texturePath: "night_watch/nw_auto_firing_launcher/auto_firing_launcher/",
+			min: "night_watch/nw_auto_firing_launcher/auto_firing_launcher/min_auto_firing_launcher",
+			wav: "effect/night_watch/nw_auto_firing_launcher"
+		}, {
+			type: "STR",
+			file: "night_watch/nw_auto_firing_launcher/auto_firing_launcher_bottom/auto_firing_launcher_bottom",
+			texturePath: "night_watch/nw_auto_firing_launcher/auto_firing_launcher_bottom/",
+			min: "night_watch/nw_auto_firing_launcher/auto_firing_launcher_bottom/min_auto_firing_launcher_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_nw_hidden_card: [{
+			type: "STR",
+			file: "night_watch/nw_hidden_card/hidden_card/hiddencard",
+			texturePath: "night_watch/nw_hidden_card/hidden_card/",
+			min: "night_watch/nw_hidden_card/hidden_card/min_hiddencard",
+			wav: "effect/night_watch/nw_hidden_card"
+		}],
+		ef_nw_mission_bombard: [{
+			type: "STR",
+			file: "night_watch/nw_mission_bombard/mission_bombard/mission_bombard",
+			texturePath: "night_watch/nw_mission_bombard/mission_bombard/",
+			min: "night_watch/nw_mission_bombard/mission_bombard/min_mission_bombard",
+			wav: "effect/night_watch/nw_mission_bombard"
+		}],
+		ef_nw_mission_bombard_hit: [{
+			type: "STR",
+			file: "night_watch/nw_mission_bombard/mission_bombard/mission_bombard_hit",
+			texturePath: "night_watch/nw_mission_bombard/mission_bombard/",
+			min: "night_watch/nw_mission_bombard/mission_bombard/min_mission_bombard_hit"
+		}],
+		ef_nw_wild_shot: [{
+			type: "STR",
+			file: "night_watch/nw_wild_shot/wild_shot/wild_shot",
+			texturePath: "night_watch/nw_wild_shot/wild_shot/",
+			min: "night_watch/nw_wild_shot/wild_shot/min_wild_shot"
+		}],
+		ef_nw_wild_shot_cast: [{
+			type: "STR",
+			file: "night_watch/nw_wild_shot/wild_shot_cast/wild_shot_cast",
+			texturePath: "night_watch/nw_wild_shot/wild_shot_cast/",
+			min: "night_watch/nw_wild_shot/wild_shot_cast/min_wild_shot_cast"
+		}],
+		ef_nw_wild_shot_hit: [{
+			type: "STR",
+			file: "night_watch/nw_wild_shot/wild_shot_hit/wild_shot_hit",
+			texturePath: "night_watch/nw_wild_shot/wild_shot_hit/",
+			min: "night_watch/nw_wild_shot/wild_shot_hit/min_wild_shot_hit"
+		}],
+		ef_nw_midnight_fallen: [{
+			type: "STR",
+			file: "night_watch/nw_midnight_fallen/midnight_fallen_bottom/midnight_fallen_bottom",
+			texturePath: "night_watch/nw_midnight_fallen/midnight_fallen_bottom/",
+			min: "night_watch/nw_midnight_fallen/midnight_fallen_bottom/min_midnight_fallen_bottom",
+			renderBeforeEntities: true,
+			wav: "effect/night_watch/nw_midnight_fallen"
+		}],
+		ef_nw_midnight_fallen_cast: [{
+			type: "STR",
+			file: "night_watch/nw_midnight_fallen/midnight_fallen_cast_bottom/midnight_fallen_cast_bottom",
+			texturePath: "night_watch/nw_midnight_fallen/midnight_fallen_cast_bottom/",
+			min: "night_watch/nw_midnight_fallen/midnight_fallen_cast_bottom/min_midnight_fallen_cast_bottom",
+			renderBeforeEntities: true
+		}],
 		ef_c_marker2: [{
 			type: "2D",
 			file: "effect/RL_C_MAKER/ome.bmp",
@@ -275226,6 +281231,883 @@ var init_EffectTable = __esmMin((() => {
 		ef_: [{
 			wav: "effect/",
 			attachedEntity: true
+		}],
+		ef_ht_landmine: [{
+			type: "STR",
+			file: "landmine",
+			texturePath: ""
+		}],
+		ef_sa_instantdeath: [{
+			type: "STR",
+			file: "suicide",
+			texturePath: ""
+		}],
+		ef_tk_counter: [{
+			type: "STR",
+			file: "new_counter_slash/new_counter_slash/new_counter_slash",
+			texturePath: "new_counter_slash/new_counter_slash/"
+		}, {
+			type: "STR",
+			file: "new_counter_slash/new_counter_slash_bottom/new_counter_slash_bottom",
+			texturePath: "new_counter_slash/new_counter_slash_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sl_assasin: [{
+			type: "STR",
+			file: "assasin_poisonreact",
+			texturePath: ""
+		}, {
+			type: "STR",
+			file: "assasin_poisonreact_1st",
+			texturePath: ""
+		}],
+		ef_bs_adrenaline2: [{
+			type: "STR",
+			file: "adrenaline",
+			texturePath: ""
+		}],
+		ef_sl_hunter: [
+			{
+				type: "STR",
+				file: "hunter_loud",
+				texturePath: ""
+			},
+			{
+				type: "STR",
+				file: "hunter_poison",
+				texturePath: ""
+			},
+			{
+				type: "STR",
+				file: "hunter_shockwave_blue",
+				texturePath: ""
+			}
+		],
+		ef_sl_stun: [{
+			type: "STR",
+			file: "stun",
+			texturePath: "",
+			wav: "effect/_stun"
+		}],
+		ef_gs_increasing: [{
+			type: "STR",
+			file: "increasing_activity/increasing_activity/increasing_activity",
+			texturePath: "increasing_activity/increasing_activity/",
+			min: "increasing_activity/increasing_activity/min_increasing_activity"
+		}],
+		ef_gs_increasing_cast: [{
+			type: "STR",
+			file: "increasing_activity/increasing_activity_cast/increasing_activity_cast",
+			texturePath: "increasing_activity/increasing_activity_cast/",
+			min: "increasing_activity/increasing_activity_cast/min_increasing_activity_cast"
+		}, {
+			type: "STR",
+			file: "increasing_activity/increasing_activity_cast_bottom/increasing_activity_cast_bottom",
+			texturePath: "increasing_activity/increasing_activity_cast_bottom/",
+			min: "increasing_activity/increasing_activity_cast_bottom/min_increasing_activity_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_rk_windcutter: [{
+			type: "STR",
+			file: "new_windcutter/new_windcutter/new_windcutter",
+			texturePath: "new_windcutter/new_windcutter/"
+		}],
+		ef_wl_soulexpansion_cast: [{
+			type: "STR",
+			file: "new_soulexpansion/new_soulexpansion_cast/new_soulexpansion_cast",
+			texturePath: "new_soulexpansion/new_soulexpansion_cast/"
+		}, {
+			type: "STR",
+			file: "new_soulexpansion/new_soulexpansion_cast_bottom/new_soulexpansion_cast_bottom",
+			texturePath: "new_soulexpansion/new_soulexpansion_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_soulexpansion_hit: [{
+			type: "STR",
+			file: "new_soulexpansion/new_soulexpansion_hit/new_soulexpansion_hit",
+			texturePath: "new_soulexpansion/new_soulexpansion_hit/"
+		}, {
+			type: "STR",
+			file: "new_soulexpansion/new_soulexpansion_hit_bottom/new_soulexpansion_hit_bottom",
+			texturePath: "new_soulexpansion/new_soulexpansion_hit_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_hellinferno: [{
+			type: "STR",
+			file: "new_hellinferno/new_hellinferno/new_hellinferno",
+			texturePath: "new_hellinferno/new_hellinferno/"
+		}, {
+			type: "STR",
+			file: "new_hellinferno/new_hellinferno_bottom/new_hellinferno_bottom",
+			texturePath: "new_hellinferno/new_hellinferno_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_hellinferno_cast: [{
+			type: "STR",
+			file: "new_hellinferno/new_hellinferno_cast_bottom/new_hellinferno_cast_bottom",
+			texturePath: "new_hellinferno/new_hellinferno_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_comet: [{
+			type: "STR",
+			file: "new_comet/new_comet/new_comet",
+			texturePath: "new_comet/new_comet/"
+		}, {
+			type: "STR",
+			file: "new_comet/new_comet_bottom/new_comet_bottom",
+			texturePath: "new_comet/new_comet_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_comet_cast: [{
+			type: "STR",
+			file: "new_comet/new_comet_cast/new_comet_cast",
+			texturePath: "new_comet/new_comet_cast/"
+		}, {
+			type: "STR",
+			file: "new_comet/new_comet_cast_bottom/new_comet_cast_bottom",
+			texturePath: "new_comet/new_comet_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_chainlightning_cast: [{
+			type: "STR",
+			file: "new_chainlightning/new_chainlightning_cast/new_chainlightning_cast",
+			texturePath: "new_chainlightning/new_chainlightning_cast/"
+		}, {
+			type: "STR",
+			file: "new_chainlightning/new_chainlightning_cast_bottom/new_chainlightning_cast_bottom",
+			texturePath: "new_chainlightning/new_chainlightning_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wl_tetravortex_fire: [{
+			type: "STR",
+			file: "mineffect/new_tetravortex/new_tetravortex_fire/new_tetravortex_fire",
+			texturePath: "mineffect/new_tetravortex/new_tetravortex_fire/"
+		}],
+		ef_wl_tetravortex_water: [{
+			type: "STR",
+			file: "mineffect/new_tetravortex/new_tetravortex_water/new_tetravortex_water",
+			texturePath: "mineffect/new_tetravortex/new_tetravortex_water/"
+		}],
+		ef_wl_tetravortex_wind: [{
+			type: "STR",
+			file: "mineffect/new_tetravortex/new_tetravortex_wind/new_tetravortex_wind",
+			texturePath: "mineffect/new_tetravortex/new_tetravortex_wind/"
+		}],
+		ef_wl_summon_atk_fire: [{
+			type: "STR",
+			file: "fire",
+			texturePath: ""
+		}],
+		ef_gc_crossimpact: [{
+			type: "STR",
+			file: "new_crossimpact/new_crossimpact/new_crossimpact",
+			texturePath: "new_crossimpact/new_crossimpact/"
+		}],
+		ef_gc_poisoningweapon: [{
+			type: "STR",
+			file: "poison",
+			texturePath: ""
+		}],
+		ef_gc_counterslash: [{
+			type: "STR",
+			file: "new_counter_slash/new_counter_slash/new_counter_slash",
+			texturePath: "new_counter_slash/new_counter_slash/"
+		}, {
+			type: "STR",
+			file: "new_counter_slash/new_counter_slash_bottom/new_counter_slash_bottom",
+			texturePath: "new_counter_slash/new_counter_slash_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_gc_poisonsmoke: [{
+			type: "STR",
+			file: "new_poisonsmoke/new_poisonsmoke/new_poisonsmoke_%d",
+			rand: [1, 2],
+			texturePath: "new_poisonsmoke/new_poisonsmoke/"
+		}],
+		ef_gc_crossripperslasher: [{
+			type: "STR",
+			file: "new_crossripperslasher/new_crossripperslasher/new_crossripperslasher",
+			texturePath: "new_crossripperslasher/new_crossripperslasher/"
+		}],
+		ef_ab_secrament: [{
+			type: "STR",
+			file: "new_secrament/new_secrament/new_secrament",
+			texturePath: "new_secrament/new_secrament/"
+		}],
+		ef_ra_fearbreeze: [{
+			type: "STR",
+			file: "new_fearbreeze/new_fearbreeze",
+			texturePath: "new_fearbreeze/"
+		}],
+		ef_nc_vulcanarm: [{
+			type: "STR",
+			file: "new_vulcanarm/new_vulcanarm/new_vulcanarm",
+			texturePath: "new_vulcanarm/new_vulcanarm/"
+		}, {
+			type: "STR",
+			file: "new_vulcanarm/new_vulcanarm_bottom/new_vulcanarm_bottom",
+			texturePath: "new_vulcanarm/new_vulcanarm_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_nc_armscannon_cast: [{
+			type: "STR",
+			file: "new_armscannon/new_armscannon_cast/new_armscannon_cast",
+			texturePath: "new_armscannon/new_armscannon_cast/"
+		}, {
+			type: "STR",
+			file: "new_armscannon/new_armscannon_cast_bottom/new_armscannon_cast_bottom",
+			texturePath: "new_armscannon/new_armscannon_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_nc_repair: [{
+			type: "STR",
+			file: "repair weapon",
+			texturePath: ""
+		}, {
+			type: "STR",
+			file: "repairweapon",
+			texturePath: ""
+		}],
+		ef_nc_axeboomerang: [{
+			type: "STR",
+			file: "new_axeboomerang/new_axeboomerang/new_axeboomerang",
+			texturePath: "new_axeboomerang/new_axeboomerang/"
+		}],
+		ef_nc_axeboomerang_cast: [{
+			type: "STR",
+			file: "new_axeboomerang/new_axeboomerang_cast/new_axeboomerang_cast",
+			texturePath: "new_axeboomerang/new_axeboomerang_cast/"
+		}, {
+			type: "STR",
+			file: "new_axeboomerang/new_axeboomerang_cast_bottom/new_axeboomerang_cast_bottom",
+			texturePath: "new_axeboomerang/new_axeboomerang_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_nc_axeboomerang_hit: [{
+			type: "STR",
+			file: "new_axeboomerang/new_axeboomerang_hit/new_axeboomerang_hit",
+			texturePath: "new_axeboomerang/new_axeboomerang_hit/"
+		}],
+		ef_nc_axetornado: [{
+			type: "STR",
+			file: "new_axetornado/new_axetornado/new_axetornado",
+			texturePath: "new_axetornado/new_axetornado/"
+		}, {
+			type: "STR",
+			file: "new_axetornado/new_axetornado_bottom/new_axetornado_bottom",
+			texturePath: "new_axetornado/new_axetornado_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sc_fatalmenace: [{
+			type: "STR",
+			file: "new_fatal_menace/new_fatal_menace/new_fatal_menace",
+			texturePath: "new_fatal_menace/new_fatal_menace/"
+		}, {
+			type: "STR",
+			file: "new_fatal_menace/new_fatal_menace_bottom/new_fatal_menace_bottom",
+			texturePath: "new_fatal_menace/new_fatal_menace_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sc_fatalmenace_cast: [{
+			type: "STR",
+			file: "new_fatal_menace/new_fatal_menace_cast/new_fatal_menace_cast",
+			texturePath: "new_fatal_menace/new_fatal_menace_cast/"
+		}, {
+			type: "STR",
+			file: "new_fatal_menace/new_fatal_menace_cast_bottom/new_fatal_menace_cast_bottom",
+			texturePath: "new_fatal_menace/new_fatal_menace_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sc_reproduce: [{
+			type: "STR",
+			file: "new_reproduce/new_reproduce/new_reproduce",
+			texturePath: "new_reproduce/new_reproduce/",
+			wav: "effect/reproduce"
+		}, {
+			type: "STR",
+			file: "new_reproduce/new_reproduce_bottom/new_reproduce_bottom",
+			texturePath: "new_reproduce/new_reproduce_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sc_autoshadowspell: [{
+			type: "STR",
+			file: "new_autoshadowspell/new_autoshadowspell/new_autoshadowspell",
+			texturePath: "new_autoshadowspell/new_autoshadowspell/"
+		}, {
+			type: "STR",
+			file: "new_autoshadowspell/new_autoshadowspell_bottom/new_autoshadowspell_bottom",
+			texturePath: "new_autoshadowspell/new_autoshadowspell_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_cannonspear: [{
+			type: "STR",
+			file: "new_cannon_spear/new_cannon_spear_bottom/new_cannon_spear_bottom",
+			texturePath: "new_cannon_spear/new_cannon_spear_bottom/",
+			renderBeforeEntities: true,
+			wav: "effect/lg_cannonspear"
+		}],
+		ef_lg_banishingpoint_cast: [{
+			type: "STR",
+			file: "new_banishingpoint/new_banishingpoint_cast/new_banishingpoint_cast",
+			texturePath: "new_banishingpoint/new_banishingpoint_cast/",
+			wav: "effect/lg_banishingpoint"
+		}, {
+			type: "STR",
+			file: "new_banishingpoint/new_banishingpoint_cast_bottom/new_banishingpoint_cast_bottom",
+			texturePath: "new_banishingpoint/new_banishingpoint_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_overbrand_cast: [{
+			type: "STR",
+			file: "new_overbrand/new_overbrand_cast/new_overbrand_cast",
+			texturePath: "new_overbrand/new_overbrand_cast/",
+			wav: "effect/lg_overbrand"
+		}, {
+			type: "STR",
+			file: "new_overbrand/new_overbrand_cast_bottom/new_overbrand_cast_bottom",
+			texturePath: "new_overbrand/new_overbrand_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_overbrand_hit: [{
+			type: "STR",
+			file: "new_overbrand/new_overbrand_hit/new_overbrand_hit",
+			texturePath: "new_overbrand/new_overbrand_hit/"
+		}],
+		ef_lg_rayofgenesis: [{
+			type: "STR",
+			file: "new_rayofgenesis/new_rayofgenesis/new_rayofgenesis",
+			texturePath: "new_rayofgenesis/new_rayofgenesis/",
+			wav: "effect/lg_rayofgenesis"
+		}],
+		ef_lg_rayofgenesis_cast: [{
+			type: "STR",
+			file: "new_rayofgenesis/new_rayofgenesis_cast/new_rayofgenesis_cast",
+			texturePath: "new_rayofgenesis/new_rayofgenesis_cast/"
+		}, {
+			type: "STR",
+			file: "new_rayofgenesis/new_rayofgenesis_cast_bottom/new_rayofgenesis_cast_bottom",
+			texturePath: "new_rayofgenesis/new_rayofgenesis_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_rayofgenesis_hit: [{
+			type: "STR",
+			file: "new_rayofgenesis/new_rayofgenesis_hit/new_rayofgenesis_hit",
+			texturePath: "new_rayofgenesis/new_rayofgenesis_hit/"
+		}],
+		ef_lg_earthdrive: [{
+			type: "STR",
+			file: "new_earthdrive/new_earthdrive/new_earthdrive",
+			texturePath: "new_earthdrive/new_earthdrive/",
+			wav: "effect/lg_earthdrive"
+		}, {
+			type: "STR",
+			file: "new_earthdrive/new_earthdrive_bottom/new_earthdrive_bottom",
+			texturePath: "new_earthdrive/new_earthdrive_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_overbrand_brandish_cast: [{
+			type: "STR",
+			file: "new_overbrand/new_overbrand_cast/new_overbrand_cast",
+			texturePath: "new_overbrand/new_overbrand_cast/"
+		}, {
+			type: "STR",
+			file: "new_overbrand/new_overbrand_cast_bottom/new_overbrand_cast_bottom",
+			texturePath: "new_overbrand/new_overbrand_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_overbrand_brandish_hit: [{
+			type: "STR",
+			file: "new_overbrand/new_overbrand_hit/new_overbrand_hit",
+			texturePath: "new_overbrand/new_overbrand_hit/"
+		}],
+		ef_lg_overbrand_plusatk_cast: [{
+			type: "STR",
+			file: "new_overbrand/new_overbrand_cast/new_overbrand_cast",
+			texturePath: "new_overbrand/new_overbrand_cast/"
+		}, {
+			type: "STR",
+			file: "new_overbrand/new_overbrand_cast_bottom/new_overbrand_cast_bottom",
+			texturePath: "new_overbrand/new_overbrand_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_lg_overbrand_plusatk_hit: [{
+			type: "STR",
+			file: "new_overbrand/new_overbrand_hit/new_overbrand_hit",
+			texturePath: "new_overbrand/new_overbrand_hit/"
+		}],
+		ef_sr_fallenempire: [{
+			type: "STR",
+			file: "new_fallenempire/new_fallenempire/new_fallenempire",
+			texturePath: "new_fallenempire/new_fallenempire/",
+			wav: "effect/sr_fallenempire"
+		}, {
+			type: "STR",
+			file: "new_fallenempire/new_fallenempire_bottom/new_fallenempire_bottom",
+			texturePath: "new_fallenempire/new_fallenempire_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sr_fallenempire_hit: [{
+			type: "STR",
+			file: "new_fallenempire/new_fallenempire_hit/new_fallenempire_hit",
+			texturePath: "new_fallenempire/new_fallenempire_hit/"
+		}],
+		ef_sr_tigercannon: [{
+			type: "STR",
+			file: "new_tigercannon/new_tigercannon",
+			texturePath: "new_tigercannon/",
+			wav: "effect/sr_tigercannon"
+		}],
+		ef_sr_rampageblaster: [{
+			type: "STR",
+			file: "new_rampageblaster/new_rampageblaster/new_rampageblaster",
+			texturePath: "new_rampageblaster/new_rampageblaster/",
+			wav: "effect/sr_rampageblaster"
+		}, {
+			type: "STR",
+			file: "new_rampageblaster/new_rampageblaster_bottom/new_rampageblaster_bottom",
+			texturePath: "new_rampageblaster/new_rampageblaster_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sr_lightningwalk: [{
+			type: "STR",
+			file: "lightning",
+			texturePath: "",
+			wav: "effect/sr_lightningwalk"
+		}],
+		ef_sr_gateofhell_cast: [{
+			type: "STR",
+			file: "new_gateofhell/new_gateofhell_cast/new_gateofhell_cast",
+			texturePath: "new_gateofhell/new_gateofhell_cast/",
+			wav: "effect/sr_gateofhell"
+		}],
+		ef_sr_howlingoflion: [{
+			type: "STR",
+			file: "new_howlingoflion/new_howlingoflion/new_howlingoflion",
+			texturePath: "new_howlingoflion/new_howlingoflion/",
+			wav: "effect/sr_howlingoflion"
+		}, {
+			type: "STR",
+			file: "new_howlingoflion/new_howlingoflion_bottom/new_howlingoflion_bottom",
+			texturePath: "new_howlingoflion/new_howlingoflion_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sr_howlingoflion_cast: [{
+			type: "STR",
+			file: "new_howlingoflion/new_howlingoflion_cast/new_howlingoflion_cast",
+			texturePath: "new_howlingoflion/new_howlingoflion_cast/"
+		}, {
+			type: "STR",
+			file: "new_howlingoflion/new_howlingoflion_cast_bottom/new_howlingoflion_cast_bottom",
+			texturePath: "new_howlingoflion/new_howlingoflion_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_sr_howlingoflion_hit: [{
+			type: "STR",
+			file: "new_howlingoflion/new_howlingoflion_hit/new_howlingoflion_hit",
+			texturePath: "new_howlingoflion/new_howlingoflion_hit/"
+		}],
+		ef_wm_metalicsound: [{
+			type: "STR",
+			file: "new_metalicsound/new_metalicsound/new_metalicsound",
+			texturePath: "new_metalicsound/new_metalicsound/"
+		}, {
+			type: "STR",
+			file: "new_metalicsound/new_metalicsound_bottom/new_metalicsound_bottom",
+			texturePath: "new_metalicsound/new_metalicsound_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wm_metalicsound_hit: [{
+			type: "STR",
+			file: "new_metalicsound/new_metalicsound_hit/new_metalicsound_hit",
+			texturePath: "new_metalicsound/new_metalicsound_hit/"
+		}],
+		ef_wm_reverberation_magic_hit: [{
+			type: "STR",
+			file: "new_reverberation/new_reverberation_hit/new_reverberation_hit",
+			texturePath: "new_reverberation/new_reverberation_hit/"
+		}],
+		ef_wm_severe_rainstorm: [{
+			type: "STR",
+			file: "new_severerainstorm/new_severerainstorm/new_severerainstorm",
+			texturePath: "new_severerainstorm/new_severerainstorm/"
+		}],
+		ef_wm_severe_rainstorm_cast: [{
+			type: "STR",
+			file: "new_severerainstorm/new_severerainstorm_cast/new_severerainstorm_cast",
+			texturePath: "new_severerainstorm/new_severerainstorm_cast/"
+		}],
+		ef_wm_sound_of_destruction_cast: [{
+			type: "STR",
+			file: "new_soundofdestruction/new_soundofdestruction_cast/new_soundofdestruction_cast",
+			texturePath: "new_soundofdestruction/new_soundofdestruction_cast/"
+		}, {
+			type: "STR",
+			file: "new_soundofdestruction/new_soundofdestruction_cast_bottom/new_soundofdestruction_cast_bottom",
+			texturePath: "new_soundofdestruction/new_soundofdestruction_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wm_unlimited_humming_voice: [{
+			type: "STR",
+			file: "new_unlimit/new_unlimit/new_unlimit",
+			texturePath: "new_unlimit/new_unlimit/"
+		}, {
+			type: "STR",
+			file: "new_unlimit/new_unlimit_bottom/new_unlimit_bottom",
+			texturePath: "new_unlimit/new_unlimit_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_wm_severe_rainstorm_melee: [{
+			type: "STR",
+			file: "new_severerainstorm/new_severerainstorm/new_severerainstorm",
+			texturePath: "new_severerainstorm/new_severerainstorm/"
+		}],
+		ef_wm_severe_rainstorm_melee_cast: [{
+			type: "STR",
+			file: "new_severerainstorm/new_severerainstorm_cast/new_severerainstorm_cast",
+			texturePath: "new_severerainstorm/new_severerainstorm_cast/"
+		}],
+		ef_so_earthgrave: [{
+			type: "STR",
+			file: "new_earthgrave/new_earthgrave/new_earthgrave",
+			texturePath: "new_earthgrave/new_earthgrave/"
+		}, {
+			type: "STR",
+			file: "new_earthgrave/new_earthgrave_bottom/new_earthgrave_bottom",
+			texturePath: "new_earthgrave/new_earthgrave_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_so_earthgrave_hit: [{
+			type: "STR",
+			file: "new_earthgrave/new_earthgrave_hit/new_earthgrave_hit",
+			texturePath: "new_earthgrave/new_earthgrave_hit/"
+		}],
+		ef_so_diamonddust: [{
+			type: "STR",
+			file: "new_diamonddust/new_diamonddust/new_diamonddust",
+			texturePath: "new_diamonddust/new_diamonddust/"
+		}, {
+			type: "STR",
+			file: "new_diamonddust/new_diamonddust_bottom/new_diamonddust_bottom",
+			texturePath: "new_diamonddust/new_diamonddust_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_so_diamonddust_cast: [{
+			type: "STR",
+			file: "new_diamonddust/new_diamonddust_cast/new_diamonddust_cast",
+			texturePath: "new_diamonddust/new_diamonddust_cast/"
+		}],
+		ef_so_poison_buster: [{
+			type: "STR",
+			file: "poison",
+			texturePath: ""
+		}],
+		ef_so_psychic_wave: [{
+			type: "STR",
+			file: "new_psychicwave/new_psychicwave/new_psychicwave",
+			texturePath: "new_psychicwave/new_psychicwave/"
+		}, {
+			type: "STR",
+			file: "new_psychicwave/new_psychicwave_bottom/new_psychicwave_bottom",
+			texturePath: "new_psychicwave/new_psychicwave_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_so_psychic_wave_cast: [{
+			type: "STR",
+			file: "new_psychicwave/new_psychicwave_cast/new_psychicwave_cast",
+			texturePath: "new_psychicwave/new_psychicwave_cast/"
+		}],
+		ef_so_el_cure: [{
+			type: "STR",
+			file: "cure",
+			texturePath: ""
+		}],
+		ef_gn_cart_tornado: [{
+			type: "STR",
+			file: "new_cart_tornado/new_cart_tornado/new_cart_tornado",
+			texturePath: "new_cart_tornado/new_cart_tornado/"
+		}, {
+			type: "STR",
+			file: "new_cart_tornado/new_cart_tornado_bottom/new_cart_tornado_bottom",
+			texturePath: "new_cart_tornado/new_cart_tornado_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_gn_cartcannon: [{
+			type: "STR",
+			file: "new_cart_cannon/new_cart_cannon/new_cart_cannon",
+			texturePath: "new_cart_cannon/new_cart_cannon/"
+		}],
+		ef_gn_cartcannon_cast: [{
+			type: "STR",
+			file: "new_cart_cannon/new_cart_cannon_cast/new_cart_cannon_cast",
+			texturePath: "new_cart_cannon/new_cart_cannon_cast/"
+		}, {
+			type: "STR",
+			file: "new_cart_cannon/new_cart_cannon_cast_bottom/new_cart_cannon_cast_bottom",
+			texturePath: "new_cart_cannon/new_cart_cannon_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_gn_cartboost: [{
+			type: "STR",
+			file: "new_cartboost/new_cartboost/new_cartboost",
+			texturePath: "new_cartboost/new_cartboost/"
+		}, {
+			type: "STR",
+			file: "new_cartboost/new_cartboost_bottom/new_cartboost_bottom",
+			texturePath: "new_cartboost/new_cartboost_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_gn_wallofthorn_cast: [{
+			type: "STR",
+			file: "new_wallofthorn/new_wallofthorn_cast/new_wallofthorn_cast",
+			texturePath: "new_wallofthorn/new_wallofthorn_cast/"
+		}, {
+			type: "STR",
+			file: "new_wallofthorn/new_wallofthorn_cast_bottom/new_wallofthorn_cast_bottom",
+			texturePath: "new_wallofthorn/new_wallofthorn_cast_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_gn_mandragora: [{
+			type: "STR",
+			file: "new_mandragora/new_mandragora/new_mandragora",
+			texturePath: "new_mandragora/new_mandragora/"
+		}, {
+			type: "STR",
+			file: "new_mandragora/new_mandragora_bottom/new_mandragora_bottom",
+			texturePath: "new_mandragora/new_mandragora_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_gn_mandragora_cast: [{
+			type: "STR",
+			file: "new_mandragora/new_mandragora_cast/new_mandragora_cast",
+			texturePath: "new_mandragora/new_mandragora_cast/"
+		}],
+		ef_gn_changematerial: [{
+			type: "STR",
+			file: "changematerial_fa",
+			texturePath: ""
+		}, {
+			type: "STR",
+			file: "changematerial_su",
+			texturePath: ""
+		}],
+		ef_rl_e_chain: [{
+			type: "STR",
+			file: "rl_e_chain/eternal",
+			texturePath: "rl_e_chain/"
+		}],
+		ef_rl_firedance: [{
+			type: "STR",
+			file: "rl_fire_dance/firedance",
+			texturePath: "rl_fire_dance/"
+		}],
+		ef_rl_h_mine: [{
+			type: "STR",
+			file: "rl_h_mine/mine",
+			texturePath: "rl_h_mine/",
+			wav: "effect/rl_h_mine"
+		}],
+		ef_rl_p_alter: [{
+			type: "STR",
+			file: "rl_p_alter/platinum",
+			texturePath: "rl_p_alter/"
+		}],
+		ef_rl_fallen_angel: [{
+			type: "STR",
+			file: "rl_fallen_angel/penne",
+			texturePath: "rl_fallen_angel/"
+		}],
+		ef_rl_d_tail: [{
+			type: "STR",
+			file: "rl_d_tail/dtdt",
+			texturePath: "rl_d_tail/",
+			wav: "effect/rl_d_tail"
+		}],
+		ef_rl_fire_rain: [{
+			type: "STR",
+			file: "rl_fire_rain/fire_rain",
+			texturePath: "rl_fire_rain/",
+			wav: "effect/rl_fire_rain"
+		}],
+		ef_rl_heat_barrel: [{
+			type: "STR",
+			file: "rl_heat_barrel/htb",
+			texturePath: "rl_heat_barrel/"
+		}],
+		ef_rl_slugshot: [{
+			type: "STR",
+			file: "rl_slugshot/slug",
+			texturePath: "rl_slugshot/",
+			wav: "effect/rl_slugshot"
+		}],
+		ef_sj_fullmoonkick: [{
+			type: "STR",
+			file: "fullmoon_kick/fullmoon_kick",
+			texturePath: "fullmoon_kick/"
+		}],
+		ef_sj_newmoonkick: [{
+			type: "STR",
+			file: "newmoon_kick/newmoon_kick",
+			texturePath: "newmoon_kick/"
+		}],
+		ef_sj_flashkick: [{
+			type: "STR",
+			file: "flash_kick/flash_kick",
+			texturePath: "flash_kick/"
+		}],
+		ef_sj_fallingstar: [{
+			type: "STR",
+			file: "falling_star/falling_star",
+			texturePath: "falling_star/"
+		}],
+		ef_sj_document: [{
+			type: "STR",
+			file: "sj_document/sj_document",
+			texturePath: "sj_document/"
+		}],
+		ef_sj_solarburst: [{
+			type: "STR",
+			file: "solar_burst/solar_burst",
+			texturePath: "solar_burst/"
+		}],
+		ef_sj_prominencekick: [{
+			type: "STR",
+			file: "prominence_kick/prominence_kick",
+			texturePath: "prominence_kick/"
+		}],
+		ef_sp_soulgolem: [{
+			type: "STR",
+			file: "soul_golem/soul_golem",
+			texturePath: "soul_golem/"
+		}],
+		ef_sp_soulcurse: [{
+			type: "STR",
+			file: "soul_curse/soul_curse",
+			texturePath: "soul_curse/"
+		}],
+		ef_sp_soulrevolve: [{
+			type: "STR",
+			file: "soul_revolve/soul_revolve",
+			texturePath: "soul_revolve/"
+		}],
+		ef_ko_jyumonjikiri: [{
+			type: "STR",
+			file: "jyumonjikiri",
+			texturePath: ""
+		}],
+		ef_ko_setsudan: [{
+			type: "STR",
+			file: "setsudan",
+			texturePath: ""
+		}],
+		ef_ra_unlimit: [{
+			type: "STR",
+			file: "new_unlimit/new_unlimit/new_unlimit",
+			texturePath: "new_unlimit/new_unlimit/",
+			wav: "ra_unlimit"
+		}, {
+			type: "STR",
+			file: "new_unlimit/new_unlimit_bottom/new_unlimit_bottom",
+			texturePath: "new_unlimit/new_unlimit_bottom/",
+			renderBeforeEntities: true
+		}],
+		ef_su_bite: [{
+			type: "STR",
+			file: "su_bite/su_bite",
+			texturePath: "su_bite/"
+		}],
+		ef_su_scratch: [{
+			type: "STR",
+			file: "su_scratch/su_scratch",
+			texturePath: "su_scratch/",
+			wav: "effect/su_scratch"
+		}],
+		ef_su_sv_stemspear: [{
+			type: "STR",
+			file: "su_sv_stemspear/su_sv_stemspear",
+			texturePath: "su_sv_stemspear/"
+		}],
+		ef_su_scaroftarou: [{
+			type: "STR",
+			file: "su_scaroftarou/su_scaroftarou",
+			texturePath: "su_scaroftarou/",
+			wav: "effect/su_scaroftarou"
+		}],
+		ef_su_pickypeck: [{
+			type: "STR",
+			file: "su_pickypeck/su_pickypeck",
+			texturePath: "su_pickypeck/",
+			wav: "effect/su_pickypeck"
+		}],
+		ef_su_arclousedash: [{
+			type: "STR",
+			file: "su_arclousedash/su_arclousedash",
+			texturePath: "su_arclousedash/"
+		}],
+		ef_su_tunabelly: [{
+			type: "STR",
+			file: "su_tunabelly/su_scratch",
+			texturePath: "su_tunabelly/",
+			wav: "effect/su_tunabelly"
+		}, {
+			type: "STR",
+			file: "su_tunabelly/su_tunabelly",
+			texturePath: "su_tunabelly/"
+		}],
+		ef_su_bunchofshrimp: [{
+			type: "STR",
+			file: "su_bunchofshrimp/su_bunchofshrimp",
+			texturePath: "su_bunchofshrimp/"
+		}],
+		ef_su_freshshrimp: [{
+			type: "STR",
+			file: "su_freshshrimp/su_freshshrimp",
+			texturePath: "su_freshshrimp/"
+		}],
+		ef_su_powerofflock: [{
+			type: "STR",
+			file: "su_powerofflock/su_powerofflock",
+			texturePath: "su_powerofflock/",
+			wav: "effect/su_powerofflock"
+		}],
+		ef_su_svg_spirit: [{
+			type: "STR",
+			file: "su_svg_spirit/su_svg_spirit",
+			texturePath: "su_svg_spirit/",
+			wav: "effect/su_svg_spirit"
+		}],
+		ef_su_hiss: [{
+			type: "STR",
+			file: "su_hiss/su_hiss",
+			texturePath: "su_hiss/",
+			wav: "effect/su_hiss"
+		}],
+		ef_su_nyanggrass: [{
+			type: "STR",
+			file: "su_nyanggrass/su_nyanggrass",
+			texturePath: "su_nyanggrass/",
+			wav: "effect/su_nyanggrass"
+		}],
+		ef_su_grooming: [{
+			type: "STR",
+			file: "su_grooming/su_grooming",
+			texturePath: "su_grooming/",
+			wav: "effect/su_grooming"
+		}],
+		ef_su_chattering: [{
+			type: "STR",
+			file: "su_chattering/su_chattering",
+			texturePath: "su_chattering/",
+			wav: "effect/su_chattering"
+		}],
+		ef_nv_helpangel: [{
+			type: "STR",
+			file: "help_angel/help_angel/help_angel",
+			texturePath: "help_angel/help_angel/"
+		}, {
+			type: "STR",
+			file: "help_angel/help_angel_bottom/help_angel_bottom",
+			texturePath: "help_angel/help_angel_bottom/",
+			renderBeforeEntities: true
 		}]
 	};
 }));
@@ -296642,6 +303524,8 @@ function loadSkillTreeView(filename, callback, onEnd) {
 	}, onEnd);
 }
 function loadSkillTreeViewData(filename, callback, onEnd) {
+	resetSkillTree(SkillTreeView);
+	const fileJobs = /* @__PURE__ */ new Set();
 	Client.loadFile(filename, async function(file) {
 		try {
 			console.log("Loading file \"" + filename + "\"...");
@@ -296663,10 +303547,12 @@ function loadSkillTreeViewData(filename, callback, onEnd) {
 					list = 1;
 					console.error(`[loadSkillTreeViewData] Failed to find inherith list job: (${jobId})`);
 				}
-				SkillTreeView[jobId] = {
+				const entry = {
 					list,
 					beforeJob
 				};
+				fileJobs.add(jobId);
+				SkillTreeView[jobId] = entry;
 				return 1;
 			};
 			ctx.AddSkillToJob = function(jobId, pos, skillId) {
@@ -296728,6 +303614,7 @@ function loadSkillTreeViewData(filename, callback, onEnd) {
 						
 						main_skillTreeView()    
 					`);
+			keepBuiltInSkills(SkillTreeView, fileJobs);
 		} catch (error) {
 			console.error("[loadSkillTreeView] Error: ", error);
 		} finally {
@@ -297353,6 +304240,7 @@ var init_DBManager = __esmMin((() => {
 	init_SkillConst();
 	init_SkillInfo();
 	init_SkillTreeView();
+	init_SkillTreeMerge();
 	init_JobHitSoundTable();
 	init_WeaponTrailTable();
 	init_TownInfo();
@@ -297997,7 +304885,8 @@ var init_DBManager = __esmMin((() => {
 		*/
 		static getBodyPalPath(id, pal, sex) {
 			if (id === 0 || !(id in PalNameTable)) return null;
-			return "data/palette/¸ö/" + PalNameTable[id] + "_" + SexTable[sex] + "_" + pal + ".pal";
+			const costume = String(PalNameTable[id]).startsWith("costume_1/") ? "_1" : "";
+			return "data/palette/¸ö/" + PalNameTable[id] + "_" + SexTable[sex] + "_" + pal + costume + ".pal";
 		}
 		/**
 		* @return {string} path to head sprite/action
@@ -301015,7 +307904,7 @@ var init_EntityControl = __esmMin((() => {
 						Trade_default.reqExchange(entity.GID, entity.display.name);
 					});
 					if (SessionStorage_default.hasGuild) {
-						if (SessionStorage_default.guildRight & 1 && !this.GUID) ContextMenu_default.addElement(DB.getMessage(382).replace("%s", this.display.name), () => {
+						if (SessionStorage_default.guildPermission & 1 && !this.GUID) ContextMenu_default.addElement(DB.getMessage(382).replace("%s", this.display.name), () => {
 							GuildEngine.requestPlayerInvitation(entity.GID);
 						});
 						if (SessionStorage_default.isGuildMaster && this.GUID && SessionStorage_default.Entity.GUID !== this.GUID) {
@@ -301652,6 +308541,7 @@ var init_EntityDisplay = __esmMin((() => {
 			this.title_name = "";
 			this.emblem = null;
 			this.gifEmblem = null;
+			this.emblemY = 0;
 			this.display = false;
 			this.canvas = document.createElement("canvas");
 			this.canvas.className = "entity-display";
@@ -301690,14 +308580,15 @@ var init_EntityDisplay = __esmMin((() => {
 		/**
 		* Update the display
 		* @param {string} color
+		* @see docs/reference/guild/nameplate-emblem.md
 		*/
 		update(style) {
 			style = style || this.STYLE.DEFAULT;
 			const lines = new Array(2);
 			const fontSize = 12 * dpr;
 			const ctx = this.ctx;
-			const start_x = (this.emblem && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC) ? 26 : 0) + 5;
-			const paddingTop = 5;
+			const start_x = ((this.emblem && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC) ? 26 : 0) + 5) * dpr;
+			const paddingTop = 5 * dpr;
 			lines[0] = this.fakename ? this.fakename.split("#")[0] : this.name.split("#")[0];
 			lines[1] = "";
 			if (this.party_name.length && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC)) lines[0] += " (" + this.party_name + ")";
@@ -301707,16 +308598,18 @@ var init_EntityDisplay = __esmMin((() => {
 			} else if (this.guild_rank.length && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC)) lines[1] = this.guild_rank;
 			if (Map_default.showname && this.title_name.length && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC)) lines[0] = "[" + this.title_name + "] " + lines[0];
 			ctx.font = (Map_default.showname ? "bold " : "") + fontSize + "px Arial";
-			const width = Math.max(ctx.measureText(lines[0]).width, ctx.measureText(lines[1]).width) + start_x + 5;
+			const width = Math.max(ctx.measureText(lines[0]).width, ctx.measureText(lines[1]).width) + start_x + 5 * dpr;
 			const height = fontSize * 3 * (lines[1].length ? 2 : 1) + paddingTop;
 			ctx.canvas.width = width;
 			ctx.canvas.height = height;
+			const plateHeight = Math.max((fontSize + 2 * dpr) * (lines[1].length ? 2 : 1) + 6 * dpr, 24 * dpr);
+			this.emblemY = (plateHeight - 24 * dpr) / 2 + paddingTop - 4 * dpr;
 			if (this.emblem && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC)) {
 				if (this.gifEmblem) {
 					const fw = this.gifEmblem.frameWidth;
 					const fh = this.gifEmblem.frameHeight;
-					ctx.drawImage(this.gifEmblem, 0, 0, fw, fh, 0, paddingTop, 24, 24);
-				} else ctx.drawImage(this.emblem, 0, paddingTop, 24, 24);
+					ctx.drawImage(this.gifEmblem, 0, 0, fw, fh, 0, this.emblemY, 24 * dpr, 24 * dpr);
+				} else ctx.drawImage(this.emblem, 0, this.emblemY, 24 * dpr, 24 * dpr);
 			}
 			let color = "white";
 			switch (style) {
@@ -301744,7 +308637,7 @@ var init_EntityDisplay = __esmMin((() => {
 				multiShadow(ctx, lines[1], start_x, fontSize * 1.2 + paddingTop, 1, 0, 0);
 				ctx.fillStyle = color;
 				ctx.strokeStyle = "black";
-				ctx.strokeText(lines[0], start_x, 5);
+				ctx.strokeText(lines[0], start_x, 0 + paddingTop);
 				ctx.fillText(lines[0], start_x, paddingTop);
 				ctx.strokeText(lines[1], start_x, fontSize * 1.2 + paddingTop);
 				ctx.fillText(lines[1], start_x, fontSize * 1.2 + paddingTop);
@@ -301766,10 +308659,10 @@ var init_EntityDisplay = __esmMin((() => {
 		}
 		/**
 		* Rendering GUI
+		* @see docs/reference/guild/nameplate-emblem.md
 		*/
 		render(matrix) {
 			if (this.gifEmblem) {
-				const paddingTop = 5;
 				const now = Date.now();
 				const currentFrameIndex = this.gifEmblem.currentFrame || 0;
 				const frameDelay = this.gifEmblem.frameDelays ? this.gifEmblem.frameDelays[currentFrameIndex] : 100;
@@ -301784,9 +308677,9 @@ var init_EntityDisplay = __esmMin((() => {
 					const row = Math.floor(this.gifEmblem.currentFrame / fpr);
 					this.ctx.save();
 					this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-					this.ctx.clearRect(0, paddingTop * dpr, 24 * dpr, 24 * dpr);
+					this.ctx.clearRect(0, this.emblemY, 24 * dpr, 24 * dpr);
 					this.ctx.restore();
-					this.ctx.drawImage(this.gifEmblem, col * fw, row * fh, fw, fh, 0, paddingTop, 24, 24);
+					this.ctx.drawImage(this.gifEmblem, col * fw, row * fh, fw, fh, 0, this.emblemY, 24 * dpr, 24 * dpr);
 				}
 			}
 			const canvas = this.canvas;
@@ -302677,6 +309570,7 @@ function UpdateBody(job) {
 	let baseJob;
 	const transformationSeq = this._transformationSeq || 0;
 	if (job < 0) return;
+	this._bodyStyleJob = null;
 	const isTransformation = hasTransformation.call(this);
 	for (baseJob in MountTable) if (MountTable[baseJob] === job) {
 		this.costume = job;
@@ -302909,6 +309803,8 @@ function UpdateBodyStyle(look) {
 			}
 		}
 		path = this.isAdmin ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex, look, cashMountCostume);
+		const styled = !this.isAdmin && PacketVerManager_default.value > 20141022 && look > 0 && look !== job && !cashMountCostume;
+		this._bodyStyleJob = styled ? look : null;
 		Entity = this.constructor;
 		Client.loadFile(path + ".act");
 		Client.loadFile(path + ".spr", function() {
@@ -302932,7 +309828,8 @@ function UpdateBodyPalette(pal) {
 		return;
 	}
 	if (this._job === -1) return;
-	this.files.body.pal = DB.getBodyPalPath(this._job, this._bodypalette, this._sex);
+	const job = this._bodyStyleJob && !hasTransformation.call(this) ? this._bodyStyleJob : getEffectiveJob.call(this);
+	this.files.body.pal = DB.getBodyPalPath(job, this._bodypalette, this._sex);
 }
 /**
 * Update head
@@ -305168,7 +312065,7 @@ var init_EntityAttachments = __esmMin((() => {
 		*/
 		add(attachment) {
 			if (attachment.uid && !attachment.stackable) this.remove(attachment.uid);
-			attachment.startTick = Date.now();
+			attachment.startTick = attachment.startTick || Renderer.tick || Date.now();
 			attachment.opacity = !isNaN(attachment.opacity) ? attachment.opacity : 1;
 			attachment.direction = attachment.hasOwnProperty("frame") ? false : true;
 			attachment.frame = attachment.frame || 0;
@@ -305208,6 +312105,7 @@ var init_EntityAttachments = __esmMin((() => {
 				return;
 			}
 			Client.loadFile(attachment.spr, function onLoad() {
+				attachment.startTick = Renderer.tick || Date.now();
 				this.list.push(attachment);
 			}.bind(this), null, { to_rgba: true });
 		}
@@ -305332,15 +312230,18 @@ var init_EntityAttachments = __esmMin((() => {
 			}
 			frame = attachment.direction ? (Camera.direction + this.entity.direction + 8) % 8 : attachment.frame;
 			frame %= act.actions.length;
-			const animations = act.actions[frame].animations;
-			const delay = attachment.delay || act.actions[frame].delay;
+			const action = act.actions[frame];
+			const animations = action.animations;
+			const delay = Math.max(1, attachment.delay || action.delay || 100);
 			SpriteRenderer.depth = attachment.depth || 0;
+			const elapsed = Math.max(0, tick - attachment.startTick);
+			const animIndex = Math.floor(elapsed / delay);
 			if ("animationId" in attachment) layers = animations[attachment.animationId].layers;
 			else if (attachment.repeat) {
-				if (attachment.duration > 0 && tick - attachment.startTick >= attachment.duration) return true;
-				layers = animations[Math.floor((tick - attachment.startTick) / delay) % animations.length].layers;
+				if (attachment.duration > 0 && elapsed >= attachment.duration) return true;
+				layers = animations[animIndex % animations.length].layers;
 			} else {
-				animation = Math.min(Math.floor((tick - attachment.startTick) / delay), animations.length - 1);
+				animation = Math.min(animIndex, animations.length - 1);
 				layers = animations[animation].layers;
 				if (animation === animations.length - 1 && !attachment.stopAtEnd) clean = true;
 			}
@@ -307346,7 +314247,7 @@ function _ensureDeps() {
 	if (!_depsPromise) _depsPromise = _loadHeavyDeps();
 	return _depsPromise;
 }
-var _Cursor, _DB, _Client, _Renderer, _EntityManager, _ScrollBar, _depsPromise, _snapCache, MouseMode, CSS_NUMBER, GUIComponent;
+var _Cursor, _DB, _Client, _Renderer, _EntityManager, _ScrollBar, _depsPromise, _snapCache, MouseMode, DENIED_SELECTOR, CSS_NUMBER, GUIComponent;
 var init_GUIComponent = __esmMin((() => {
 	init_Common$1();
 	init_MouseEventHandler();
@@ -307368,6 +314269,7 @@ var init_GUIComponent = __esmMin((() => {
 		STOP: 1,
 		FREEZE: 2
 	});
+	DENIED_SELECTOR = ".denied";
 	CSS_NUMBER = {
 		zIndex: true,
 		opacity: true,
@@ -307836,6 +314738,7 @@ var init_GUIComponent = __esmMin((() => {
 				"label",
 				"select",
 				"textarea",
+				".checkbox",
 				".item-link",
 				".draggable",
 				".ro-custom-scrollbar",
@@ -307843,6 +314746,7 @@ var init_GUIComponent = __esmMin((() => {
 			].join(",");
 			let _hovering = false;
 			let _savedType = _Cursor?.ACTION?.DEFAULT ?? 0;
+			const cursorFor = (target) => (target.closest(DENIED_SELECTOR) ? _Cursor?.ACTION?.NOWALK : _Cursor?.ACTION?.CLICK) ?? 0;
 			container.addEventListener("mouseover", (e) => {
 				const target = e.target;
 				if (target.closest && target.closest(CLICKABLE_SELECTOR)) {
@@ -307850,7 +314754,8 @@ var init_GUIComponent = __esmMin((() => {
 						_savedType = _Cursor?.getActualType() ?? 0;
 						_hovering = true;
 					}
-					if ((_Cursor?.getActualType() ?? 0) !== (_Cursor?.ACTION?.CLICK ?? 0)) _Cursor?.setType(_Cursor?.ACTION?.CLICK ?? 0);
+					const wanted = cursorFor(target);
+					if ((_Cursor?.getActualType() ?? 0) !== wanted) _Cursor?.setType(wanted);
 				}
 			});
 			container.addEventListener("mouseout", (e) => {
@@ -307867,13 +314772,15 @@ var init_GUIComponent = __esmMin((() => {
 						_savedType = _Cursor?.getActualType() ?? 0;
 						_hovering = true;
 					}
-					_Cursor?.setType(_Cursor?.ACTION?.CLICK ?? 0, true, 1);
+					if (target.closest(DENIED_SELECTOR)) _Cursor?.setType(_Cursor?.ACTION?.NOWALK ?? 0);
+					else _Cursor?.setType(_Cursor?.ACTION?.CLICK ?? 0, true, 1);
 				}
 			});
 			container.addEventListener("mouseup", (e) => {
 				const target = e.target;
 				if (target.closest && target.closest(CLICKABLE_SELECTOR)) {
-					if ((_Cursor?.getActualType() ?? 0) !== (_Cursor?.ACTION?.CLICK ?? 0)) _Cursor?.setType(_Cursor?.ACTION?.CLICK ?? 0);
+					const wanted = cursorFor(target);
+					if ((_Cursor?.getActualType() ?? 0) !== wanted) _Cursor?.setType(wanted);
 					return;
 				}
 				if (_hovering) {
@@ -307916,7 +314823,14 @@ var init_GUIComponent = __esmMin((() => {
 						}
 					}
 				});
-				element.addEventListener("mousedown", () => this.focus());
+				element.addEventListener("mousedown", () => {
+					this.focus();
+					const host = this._host;
+					if (host && !host.contains(document.activeElement)) {
+						host.tabIndex = -1;
+						host.focus({ preventScroll: true });
+					}
+				});
 			}
 			if (this.mouseMode !== GUIComponent.MouseMode.CROSS) element.addEventListener("touchstart", (e) => e.stopImmediatePropagation());
 			this._setupShadowCursorEvents();
@@ -330716,7 +337630,8 @@ function onConnectionAccepted$2(pkt) {
 	SessionStorage_default.hasParty = false;
 	SessionStorage_default.isPartyLeader = false;
 	SessionStorage_default.hasGuild = false;
-	SessionStorage_default.guildRight = 0;
+	SessionStorage_default.guildPermission = 0;
+	GuildEngine.resetForNewCharacter();
 	SessionStorage_default.homunId = 0;
 	SessionStorage_default.mapState = {
 		property: 0,
