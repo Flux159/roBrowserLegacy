@@ -138730,6 +138730,53 @@ var init_SkillTreeView = __esmMin((() => {
 	duplicateEntry$2(JobConst_default.SKY_EMPEROR, JobConst_default.SKY_EMPEROR2);
 }));
 //#endregion
+//#region src/DB/Skills/SkillTreeMerge.js
+/**
+* Put the tree back to the built-in layout, dropping every job and position a
+* previously loaded client file added.
+*
+* @param {object} tree - SkillTreeView, changed in place
+* @param {object} [builtIn] - the layout to restore
+*/
+function resetSkillTree(tree, builtIn = BuiltInSkillTreeView) {
+	for (const jobId of Object.keys(tree)) if (!(jobId in builtIn)) delete tree[jobId];
+	for (const [jobId, entry] of Object.entries(builtIn)) tree[jobId] = { ...entry };
+}
+/**
+* For each job a client file defined, put back the built-in position of any
+* skill the file leaves out, or the next free slot when the file has taken
+* that one. Positions the file set are never moved.
+*
+* @param {object} tree - SkillTreeView after the file was read, changed in place
+* @param {Iterable} jobIds - the jobs the file defined
+* @param {object} [builtIn] - the built-in layout
+*/
+function keepBuiltInSkills(tree, jobIds, builtIn = BuiltInSkillTreeView) {
+	for (const jobId of jobIds) {
+		const entry = tree[jobId];
+		const base = builtIn[jobId];
+		if (!entry || !base) continue;
+		const taken = new Set(Object.keys(entry).filter(isSkill).map((key) => entry[key]));
+		let next = Math.max(-1, ...taken) + 1;
+		for (const [skillId, pos] of Object.entries(base)) {
+			if (!isSkill(skillId) || skillId in entry) continue;
+			let slot = pos;
+			if (taken.has(slot)) {
+				while (taken.has(next)) next++;
+				slot = next;
+			}
+			entry[skillId] = slot;
+			taken.add(slot);
+		}
+	}
+}
+var isSkill, BuiltInSkillTreeView;
+var init_SkillTreeMerge = __esmMin((() => {
+	init_SkillTreeView();
+	isSkill = (key) => /^\d+$/.test(key);
+	BuiltInSkillTreeView = Object.freeze(Object.fromEntries(Object.entries(SkillTreeView).map(([jobId, entry]) => [jobId, Object.freeze({ ...entry })])));
+}));
+//#endregion
 //#region src/DB/Jobs/JobHitSoundTable.js
 function duplicateEntry$1(origin) {
 	const value = JobHitSoundTable[origin];
@@ -297673,7 +297720,8 @@ function loadSkillTreeView(filename, callback, onEnd) {
 	}, onEnd);
 }
 function loadSkillTreeViewData(filename, callback, onEnd) {
-	const builtInTree = {};
+	resetSkillTree(SkillTreeView);
+	const fileJobs = /* @__PURE__ */ new Set();
 	Client.loadFile(filename, async function(file) {
 		try {
 			console.log("Loading file \"" + filename + "\"...");
@@ -297699,7 +297747,7 @@ function loadSkillTreeViewData(filename, callback, onEnd) {
 					list,
 					beforeJob
 				};
-				if (SkillTreeView[jobId] && !(jobId in builtInTree)) builtInTree[jobId] = SkillTreeView[jobId];
+				fileJobs.add(jobId);
 				SkillTreeView[jobId] = entry;
 				return 1;
 			};
@@ -297762,7 +297810,7 @@ function loadSkillTreeViewData(filename, callback, onEnd) {
 						
 						main_skillTreeView()    
 					`);
-			keepBuiltInSkills(builtInTree);
+			keepBuiltInSkills(SkillTreeView, fileJobs);
 		} catch (error) {
 			console.error("[loadSkillTreeView] Error: ", error);
 		} finally {
@@ -297771,31 +297819,6 @@ function loadSkillTreeViewData(filename, callback, onEnd) {
 			onEnd();
 		}
 	}, onEnd);
-}
-/**
-* Put back the built-in SkillTreeView positions of skills a loaded
-* skilltreeview.lub leaves out, keeping every position the file set.
-*
-* @param {object} builtInTree - jobId -> the built-in entry the file replaced
-*/
-function keepBuiltInSkills(builtInTree) {
-	for (const [jobId, builtIn] of Object.entries(builtInTree)) {
-		const entry = SkillTreeView[jobId];
-		if (!entry) continue;
-		const skillOf = (key) => /^\d+$/.test(key);
-		const taken = new Set(Object.keys(entry).filter(skillOf).map((key) => entry[key]));
-		let next = Math.max(-1, ...taken) + 1;
-		for (const [skillId, pos] of Object.entries(builtIn)) {
-			if (!skillOf(skillId) || skillId in entry) continue;
-			let slot = pos;
-			if (taken.has(slot)) {
-				while (taken.has(next)) next++;
-				slot = next;
-			}
-			entry[skillId] = slot;
-			taken.add(slot);
-		}
-	}
 }
 /**
 * Load State Icon Info (StatusInfo) from Lua files
@@ -298413,6 +298436,7 @@ var init_DBManager = __esmMin((() => {
 	init_SkillConst();
 	init_SkillInfo();
 	init_SkillTreeView();
+	init_SkillTreeMerge();
 	init_JobHitSoundTable();
 	init_WeaponTrailTable();
 	init_TownInfo();
