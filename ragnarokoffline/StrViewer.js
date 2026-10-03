@@ -156529,6 +156529,39 @@ var init_MapTable = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/DB/Map/SignboardMerge.js
+/**
+* DB/Map/SignboardMerge.js
+*
+* Organise SignBoardList.lub rows by map and cell, merging each table over the
+* ones loaded before it.
+*
+* This file is part of ROBrowser, (http://www.robrowser.com/).
+*/
+/**
+* Add signboard rows to a table keyed `[mapname][x][y]`.
+*
+* The base SignBoardList.lub is loaded first and each customSignBoardList
+* table after it, so a row on a cell that already has a sign replaces it and
+* every other sign is kept: a table only has to carry its own signs.
+*
+* @param {Array} signboardArray - rows as AddSignBoard builds them
+* @param {Object} [signboardDict] - signboards already loaded, changed in place
+* @return {Object} the table, with the rows added
+*/
+function mergeSignboards(signboardArray, signboardDict = {}) {
+	for (const signboard of signboardArray) {
+		if (!signboard.mapname) continue;
+		const { x, y } = signboard;
+		const mapname = signboard.mapname.toLowerCase();
+		if (!signboardDict[mapname]) signboardDict[mapname] = {};
+		if (!signboardDict[mapname][x]) signboardDict[mapname][x] = {};
+		signboardDict[mapname][x][y] = signboard;
+	}
+	return signboardDict;
+}
+var init_SignboardMerge = __esmMin((() => {}));
+//#endregion
 //#region src/Utils/BinaryWriter.js
 /**
 * BinaryWriter
@@ -257234,7 +257267,7 @@ var init_EntitySignboard = __esmMin((() => {
 			btn.addEventListener("dblclick", this._dblclickHandler);
 			btn.addEventListener("mousedown", this._mousedownHandler);
 		}
-		this._host.style.zIndex = "45";
+		this._host.style.zIndex = "30";
 	};
 	/**
 	* Remove data from UI
@@ -303875,6 +303908,7 @@ function loadSignBoardList(filename, callback, onEnd) {
 				return 1;
 			};
 			lua.mountFile("SignBoardList.lub", buffer);
+			lua.doStringSync("SignBoardList = nil");
 			await lua.doFile("SignBoardList.lub");
 			lua.doStringSync(`
 						function main_SignBoardList()
@@ -303895,7 +303929,7 @@ function loadSignBoardList(filename, callback, onEnd) {
 						end
                         main_SignBoardList()
 					`);
-			SignBoardTable = preprocessSignboardData(signBoardList);
+			mergeSignboards(signBoardList, SignBoardTable);
 		} catch (error) {
 			console.error("[loadSignBoardList] Error: ", error);
 		} finally {
@@ -303903,22 +303937,6 @@ function loadSignBoardList(filename, callback, onEnd) {
 			onEnd();
 		}
 	}, onEnd);
-}
-/**
-* Preprocesses an array of signboard objects and organizes them into a nested dictionary.
-*
-* @param {Array} signboardArray - The array of signboard objects.
-* @return {Object} The nested dictionary containing the preprocessed signboard data.
-*/
-function preprocessSignboardData(signboardArray) {
-	const signboardDict = {};
-	for (const signboard of signboardArray) {
-		const { mapname, x, y } = signboard;
-		if (!signboardDict[mapname]) signboardDict[mapname] = {};
-		if (!signboardDict[mapname][x]) signboardDict[mapname][x] = {};
-		signboardDict[mapname][x][y] = signboard;
-	}
-	return signboardDict;
 }
 /**
 * Load weapontable.lub to WeaponTable and WeaponHitSoundTable
@@ -304943,6 +304961,7 @@ var init_DBManager = __esmMin((() => {
 	init_PetFriendlyState();
 	init_PetMessageConst();
 	init_MapTable();
+	init_SignboardMerge();
 	init_NetworkManager();
 	init_PacketStructure();
 	init_PacketVerManager();
@@ -305171,9 +305190,10 @@ var init_DBManager = __esmMin((() => {
 					updateMapTable();
 				}, onLoad());
 				const onSignBoardEnd = onLoad();
-				loadSignBoardList(DB.LUA_PATH + "SignBoardList.lub", null, () => {
-					loadSignBoardData("SystemEN/Sign_Data.lub", null, onSignBoardEnd);
-				});
+				const customSignBoardList = Configs.get("customSignBoardList", []);
+				SignBoardTable = {};
+				const loadCustomSignBoardList = (index = 0) => index < customSignBoardList.length ? loadSignBoardList(customSignBoardList[index], null, () => loadCustomSignBoardList(index + 1)) : loadSignBoardData("SystemEN/Sign_Data.lub", null, onSignBoardEnd);
+				loadSignBoardList(DB.LUA_PATH + "SignBoardList.lub", null, () => loadCustomSignBoardList());
 				if (Configs.get("enableCheckAttendance") && PacketVerManager_default.value >= 20180307) loadAttendanceFile("System/CheckAttendance.lub", null, onLoad());
 				const onQuestEnd = onLoad();
 				const customQuestInfo = Configs.get("customQuestInfo", []);
@@ -312156,7 +312176,7 @@ var init_EntityRoom$1 = __esmMin((() => {
 			btn.addEventListener("dblclick", this._dblclickHandler);
 			btn.addEventListener("mousedown", this._mousedownHandler);
 		}
-		this._host.style.zIndex = "45";
+		this._host.style.zIndex = "30";
 	};
 	/**
 	* Remove data from UI
@@ -328153,6 +328173,7 @@ function onEntitySpam(pkt) {
 			}
 		}
 		EntityManager.add(entity);
+		if (questEffects.has(entity.GID)) attachQuestEffect(entity, questEffects.get(entity.GID));
 		const cachedLife = EntityManager.getLife(entity.GID);
 		if (cachedLife && entity.life.hp <= -1) {
 			if (cachedLife.hp !== void 0) entity.life.hp = cachedLife.hp;
@@ -328803,34 +328824,41 @@ function onEntityLifeUpdateTiny(pkt) {
 */
 function onEntityQuestNotifyEffect(pkt) {
 	const entity = EntityManager.get(pkt.npcID);
-	let color = 0;
-	if (pkt.effect !== 9999) {
-		const emotionId = pkt.effect + 81;
-		if (entity && pkt.effect in Emotions_default.indexes) entity.attachments.add({
-			frame: Emotions_default.indexes[emotionId],
-			file: "emotion",
-			play: true,
-			head: true,
-			repeat: true,
-			depth: 5
-		});
+	const hide = pkt.effect === QUEST_EFFECT_NONE || PacketVerManager_default.value < 20120410 && pkt.effect === 0 && pkt.color === 0;
+	if (hide) questEffects.delete(pkt.npcID);
+	else questEffects.set(pkt.npcID, pkt.effect);
+	if (entity) attachQuestEffect(entity, hide ? QUEST_EFFECT_NONE : pkt.effect);
+	const color = hide ? void 0 : QuestMarkColors[pkt.color];
+	if (color === void 0) Controller$5.getUI().removeNpcMark(pkt.npcID);
+	else Controller$5.getUI().addNpcMark(pkt.npcID, pkt.xPos, pkt.yPos, color, Infinity);
+}
+/**
+* Draw a quest icon over an NPC's head, replacing the one it has
+*
+* @param {Entity} entity
+* @param {number} effect - e_questinfo_types, QUEST_EFFECT_NONE to remove the icon
+*/
+function attachQuestEffect(entity, effect) {
+	const emotionId = effect + 81;
+	if (effect === QUEST_EFFECT_NONE || !(emotionId in Emotions_default.indexes)) {
+		entity.attachments.remove("questinfo");
+		return;
 	}
-	switch (pkt.color + 1) {
-		case 1:
-			color = 16776960;
-			break;
-		case 2:
-			color = 16753920;
-			break;
-		case 3:
-			color = 57706;
-			break;
-		case 4:
-			color = 8388736;
-			break;
-		default: return;
-	}
-	Controller$5.getUI().addNpcMark(pkt.npcID, pkt.xPos, pkt.yPos, color, Infinity);
+	entity.attachments.add({
+		uid: "questinfo",
+		frame: Emotions_default.indexes[emotionId],
+		file: "emotion",
+		play: true,
+		head: true,
+		repeat: true,
+		depth: 5
+	});
+}
+/**
+* Forget the quest icons of the map being left
+*/
+function clearQuestEffects() {
+	questEffects.clear();
 }
 /**
 * Updating entity direction
@@ -330042,7 +330070,7 @@ function EntityEngine() {
 	Network.hookPacket(PACKET.ZC.ACK_CHANGE_TITLE, onTitleChangeAck);
 	Network.hookPacket(PACKET.ZC.HAT_EFFECT, onHatEffects);
 }
-var SkillNameDisplayExclude, SkillBlueCombo, C_MULTIHIT_DELAY, C_DEATH_SYNC_OFFSET, AVG_ATTACK_SPEED, AVG_ATTACKED_SPEED, MAX_ATTACKMT, clanEmblems;
+var SkillNameDisplayExclude, SkillBlueCombo, C_MULTIHIT_DELAY, C_DEATH_SYNC_OFFSET, AVG_ATTACK_SPEED, AVG_ATTACKED_SPEED, MAX_ATTACKMT, clanEmblems, questEffects, QUEST_EFFECT_NONE, QuestMarkColors;
 var init_Entity = __esmMin((() => {
 	init_DBManager();
 	init_SkillConst();
@@ -330124,6 +330152,13 @@ var init_Entity = __esmMin((() => {
 	AVG_ATTACKED_SPEED = 288;
 	MAX_ATTACKMT = AVG_ATTACK_SPEED * 2;
 	clanEmblems = {};
+	questEffects = /* @__PURE__ */ new Map();
+	QUEST_EFFECT_NONE = 9999;
+	QuestMarkColors = {
+		1: 16776960,
+		2: 57706,
+		3: 8388736
+	};
 }));
 //#endregion
 //#region src/Renderer/ItemObject.js
@@ -338449,6 +338484,7 @@ function onConnectionRefused$2(pkt) {
 * @param {object} pkt - PACKET.ZC.NPCACK_MAPMOVE
 */
 function onMapChange(pkt) {
+	clearQuestEffects();
 	MapRenderer.onLoad = () => {
 		SessionStorage_default.Entity.set({
 			PosDir: [
