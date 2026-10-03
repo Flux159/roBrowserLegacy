@@ -31,25 +31,56 @@ import Emotions from 'DB/Emotions.js';
 /**
  * Calculate new color
  */
+
+/** Native alternating RGB flashes, composed with existing status and invisibility colors. */
+function playOriginalColorPulse(key, rgb, firstFrame, lastFrame, frameMs = 20) {
+	const token = {};
+	this._originalColorPulses.set(key, { token, rgb: [1, 1, 1] });
+	this.animations.add(tick => {
+		const entry = this._originalColorPulses.get(key);
+		if (!entry || entry.token !== token) {
+			return true;
+		}
+		const frame = Math.floor(tick / frameMs);
+		if (this.isDead() || frame >= lastFrame) {
+			this._originalColorPulses.delete(key);
+			this.recalculateBlendingColor();
+			return true;
+		}
+		entry.rgb = frame >= firstFrame && frame % 2 === 0 ? rgb : [1, 1, 1];
+		this.recalculateBlendingColor();
+		return false;
+	});
+}
+
 function recalculateBlendingColor() {
+	const pulse = [1, 1, 1];
+	for (const entry of this._originalColorPulses.values()) {
+		for (let i = 0; i < 3; i++) {
+			pulse[i] *= entry.rgb[i];
+		}
+	}
 	this.effectColor[0] =
 		this._bodyStateColor[0] *
 		this._healthStateColor[0] *
 		this._effectStateColor[0] *
 		this._virtueColor[0] *
-		this._flashColor[0];
+		this._flashColor[0] *
+		pulse[0];
 	this.effectColor[1] =
 		this._bodyStateColor[1] *
 		this._healthStateColor[1] *
 		this._effectStateColor[1] *
 		this._virtueColor[1] *
-		this._flashColor[1];
+		this._flashColor[1] *
+		pulse[1];
 	this.effectColor[2] =
 		this._bodyStateColor[2] *
 		this._healthStateColor[2] *
 		this._effectStateColor[2] *
 		this._virtueColor[2] *
-		this._flashColor[2];
+		this._flashColor[2] *
+		pulse[2];
 	this.effectColor[3] =
 		this._bodyStateColor[3] *
 		this._healthStateColor[3] *
@@ -563,6 +594,8 @@ export default function Init() {
 	this._virtueColor = new Float32Array([1, 1, 1, 1]);
 	this._flashColor = new Float32Array([1, 1, 1, 1]);
 	this.effectColor = new Float32Array([1, 1, 1, 1]);
+	this._originalColorPulses = new Map();
+	this.playOriginalColorPulse = playOriginalColorPulse.bind(this);
 	this.isVisible = isVisible.bind(this);
 	this.isDead = isDead.bind(this);
 

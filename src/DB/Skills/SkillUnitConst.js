@@ -8,6 +8,9 @@
  */
 
 export default {
+	UNT_KUNAIKUSSETSU: 299,
+	UNT_KUNAIKAITEN: 297,
+	UNT_STAR_BURST: 2409, // Exact STAR_BURST unit ID from this server protocol.
 	UNT_SAFETYWALL: 126, //0x7E
 	UNT_FIREWALL: 127, //0x7F
 	UNT_WARPPORTAL: 128, //0x80
