@@ -306234,7 +306234,7 @@ var init_DBManager = __esmMin((() => {
 		static getWeaponPath(id, job, sex, leftid = false) {
 			if (id === 0) return null;
 			const baseClass = WeaponJobTable[job] || WeaponJobTable[0];
-			id = DB.getWeaponType(id);
+			id = id >= WeaponType_default.MAX && WeaponName[id] !== void 0 ? id : DB.getWeaponType(id);
 			if (leftid) {
 				if (leftid in ItemTable_default && "ClassNum" in ItemTable_default[leftid]) leftid = ItemTable_default[leftid].ClassNum;
 				const right = Object.keys(WeaponType_default).find((key) => WeaponType_default[key] === id);
