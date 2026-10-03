@@ -331933,6 +331933,18 @@ function onRecoverPenaltyOverweight(pkt) {
 	if (SessionStorage_default.Entity) SessionStorage_default.Entity.overWeightPercent = pkt.percentage;
 }
 /**
+* Open the storage window, unless it is open already.
+*
+* The server sends SPLIT_SEND_ITEMLIST_NORMAL only when the storage holds a
+* stackable item, and SPLIT_SEND_ITEMLIST_EQUIP only when it holds equipment,
+* so either one can be the first, or the only, list to arrive. A storage of
+* nothing but equipment used to fill a window that was never built.
+*/
+function openStorage() {
+	const ui = StorageController.getUI();
+	if (!(ui.__loaded && ui.__active)) ui.append();
+}
+/**
 * Result of Inventory Expansion
 *
 * @param {object} pkt - PACKET.ZC.SPLIT_SEND_ITEMLIST_NORMAL
@@ -331946,7 +331958,7 @@ function onItemListNormal(pkt) {
 			CartItems_default.setItems(pkt.itemInfo || pkt.ItemInfo);
 			break;
 		case 2:
-			StorageController.getUI().append();
+			openStorage();
 			StorageController.getUI().setItems(pkt.itemInfo || pkt.ItemInfo);
 			break;
 		default: throw new Error("[PACKET.ZC.SPLIT_SEND_ITEMLIST_NORMAL] - Unknown invType '" + pkt.invType + "'.");
@@ -331966,6 +331978,7 @@ function onItemListEquip(pkt) {
 			CartItems_default.setItems(pkt.itemInfo || pkt.ItemInfo);
 			break;
 		case 2:
+			openStorage();
 			StorageController.getUI().setItems(pkt.itemInfo || pkt.ItemInfo);
 			break;
 		default: throw new Error("[PACKET.ZC.SPLIT_SEND_ITEMLIST_NORMAL] - Unknown invType '" + pkt.invType + "'.");
