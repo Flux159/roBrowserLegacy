@@ -89146,6 +89146,7 @@ var init_MonsterTable = __esmMin((() => {
 		3507: "DR_POM_SPIDER",
 		3508: "DR_EGGRING",
 		3509: "lunatic",
+		3528: "MER_POPE_CASUAL",
 		3529: "KHALITZBURG",
 		3530: "MG_M_UNDEAD_KNIGHT",
 		3531: "KNIGHT_OF_ABYSS",
@@ -89226,6 +89227,8 @@ var init_MonsterTable = __esmMin((() => {
 		3747: "e_cowraiders1",
 		3748: "e_cowraiders2",
 		3749: "e_cowraiders3",
+		3752: "ILL_ZOMBIE",
+		3755: "ILL_BLACK_MUSHROOM",
 		3787: "ARCLOUSE",
 		3788: "CRAMP",
 		3789: "escaped_letter",
@@ -89625,9 +89628,37 @@ var init_MonsterTable = __esmMin((() => {
 		10111: "4_JP_EDGA_H",
 		10112: "4_JP_BRAGOLEM_H",
 		10113: "4_EL_AQUA",
+		10114: "4_EP16_NIHIL",
+		10115: "4_EP16_SPICA",
+		10116: "4_EP16_SKIA",
+		10117: "4_EP16_PETER",
+		10118: "4_EP16_CRUX",
+		10119: "4_EP16_GRANZ",
+		10120: "4_EP16_STOLZ",
+		10121: "4_EP16_EGEO",
+		10122: "4_EP16_COOK",
+		10123: "4_EP16_MARK",
+		10124: "4_EP16_TAMARIN",
+		10125: "4_EP16_POE",
+		10126: "4_EP16_ISAAC",
+		10127: "4_EP16_HELMUT",
+		10128: "4_EP16_WOLF",
+		10129: "4_EP16_MEYER",
+		10130: "4_EP16_AGNES",
+		10131: "4_EP16_FOOD",
+		10132: "4_EP16_LOUVIERE",
+		10133: "4_EP16_MAX",
+		10134: "4_EP16_SPIEGEL",
+		10135: "4_MOONLIGHT",
+		10136: "4_MISTRESS",
+		10137: "4_DRACULA",
+		10138: "4_STORMKNIGHT",
 		10140: "4_AS_RAGGED_GOLEM",
 		10141: "4_AS_BLOODY_KNIGHT",
 		10142: "4_AS_WIND_GHOST",
+		10143: "4_F_BIJOU",
+		10144: "4_EP16_COOK2",
+		10147: "4_SCR_AT_ROBOTS",
 		10148: "4_F_RANGER",
 		10149: "4_WAG",
 		10150: "4_NPC_TRAP",
@@ -89649,7 +89680,12 @@ var init_MonsterTable = __esmMin((() => {
 		10166: "4_dr_f_02",
 		10167: "4_dr_kid_01",
 		10172: "4_cenere",
+		10173: "4_f_aruna_pop2",
 		10174: "4_jack_head",
+		10175: "4_injustice",
+		10176: "4_bloodyman",
+		10177: "4_gibbet",
+		10178: "4_dullahan",
 		10179: "4_m_lazy",
 		10180: "4_m_gony",
 		10181: "4_m_rookie",
@@ -89678,6 +89714,31 @@ var init_MonsterTable = __esmMin((() => {
 		10205: "4_elder",
 		10206: "4_lunatic",
 		10207: "4_f_novice2",
+		10210: "4_m_costell",
+		10211: "4_m_yattwarp",
+		10212: "4_m_evokascudi",
+		10213: "4_m_johnnyjames",
+		10214: "4_m_albertford",
+		10215: "4_m_seanmccurdy",
+		10217: "4_m_cactusman1",
+		10218: "4_m_cactusman2",
+		10219: "4_m_cactusman3",
+		10220: "4_m_cactuslady",
+		10222: "4_m_cactuschild",
+		10224: "4_f_bomi",
+		10225: "4_m_cactuschief",
+		10226: "4_f_cactuschild2",
+		10227: "4_f_cactuslady2",
+		10228: "4_f_cactuslady3",
+		10230: "4_m_cowraiders1",
+		10231: "4_m_cowraiders2",
+		10232: "4_m_cowraiders3",
+		10234: "4_m_poorscholar",
+		10237: "4_PURPLE_WARP",
+		10238: "4_F_NARIN",
+		10239: "4_M_URGENT_MAN",
+		10240: "4_M_KEEN_SOLDIER",
+		10241: "4_F_SLOPPY_WOMAN",
 		10242: "4_f_drkafra01",
 		10243: "4_m_drzonda01",
 		10244: "4_m_swd_reno",
@@ -89689,7 +89750,123 @@ var init_MonsterTable = __esmMin((() => {
 		10250: "4_woodbox",
 		10251: "4_m_popfesta",
 		10252: "4_bonfire",
-		10253: "clear_npc"
+		10253: "clear_npc",
+		10285: "4_hen",
+		10290: "4_teddy_bear",
+		10291: "4_teddy_bear_em",
+		10292: "4_teddy_bear_w",
+		10293: "4_teddy_bear_b",
+		10294: "4_teddy_bear_b_l",
+		10299: "4_ep17_kaya",
+		10300: "4_ep17_as",
+		10301: "4_ep17_elyumina",
+		10302: "4_ep17_morning",
+		10304: "4_ep17_nihil_k",
+		10305: "4_ep17_miguel_d",
+		10313: "4_f_anes_d",
+		10315: "4_m_silvano_d",
+		10317: "4_f_cecilia_d",
+		10344: "4_ep17_master_a",
+		10345: "4_ep17_basic_b",
+		10346: "4_ep17_guard_b",
+		10347: "4_ep17_basic_b_ng",
+		10349: "4_ep17_sweety",
+		10350: "4_ep17_boy_a",
+		10351: "4_ep17_boy_b",
+		10352: "4_ep17_tamarin",
+		10353: "4_ep17_scissore",
+		10354: "4_ep17_tablet",
+		10355: "4_ep17_buckets",
+		10356: "4_ep17_cleaner",
+		10357: "4_ep17_basket",
+		10358: "4_ep17_brokenbeta",
+		10359: "4_ep17_cleaner_w",
+		10360: "4_ep17_mermaid",
+		10365: "4_4job_maggi",
+		10368: "4_4job_leticia",
+		10375: "4_vending_machine",
+		10376: "4_ep18_maram",
+		10377: "4_ep18_miriam",
+		10378: "4_ep18_suad",
+		10379: "4_ep18_imril",
+		10380: "4_ep18_merchant",
+		10381: "4_ep18_tamarin",
+		10383: "4_ep18_mark",
+		10385: "4_ep18_shulang",
+		10386: "4_ep18_bagot",
+		10387: "4_ep18_demifreya",
+		10388: "4_ep18_kamil",
+		10390: "4_ep18_wagon",
+		10392: "4_ep18_halfflower",
+		10393: "4_ep18_gw_old01",
+		10394: "4_ep18_gw_old02",
+		10395: "4_ep18_gw_middle01",
+		10396: "4_ep18_gw_middle02",
+		10397: "4_ep18_gw_man01",
+		10398: "4_ep18_gw_man02",
+		10399: "4_ep18_gw_woman01",
+		10400: "4_ep18_gw_woman02",
+		10401: "4_ep18_gw_child01",
+		10402: "4_ep18_gw_child02",
+		10428: "4_point_red",
+		10429: "4_point_blue",
+		10430: "4_point_yellow",
+		10432: "4_point_white",
+		10439: "4_exjob_chul_ho",
+		10440: "4_exjob_ki_sul",
+		10443: "1_journey_stone_f",
+		10527: "invisible",
+		20353: "dolor",
+		20355: "bellare",
+		20357: "sanare",
+		20361: "dolor",
+		20363: "venenum",
+		20365: "caput",
+		20543: "md_ed_m_science",
+		20620: "redpepper",
+		20621: "redpepper",
+		20622: "assistant",
+		20629: "beta_basic",
+		20640: "omega_cleaner",
+		20653: "pitaya_g",
+		20661: "pitaya_y",
+		20662: "pitaya_b",
+		20681: "heart_hunter_n",
+		20696: "child_admin1",
+		20698: "assistant",
+		20847: "invisible",
+		20936: "disguiser",
+		20938: "ghost_cube",
+		20939: "lude_gal",
+		20941: "grote",
+		21292: "ep18_armed_villager01",
+		21293: "ep18_armed_villager02",
+		21294: "ep18_armed_villager03",
+		21295: "ep18_ash_toad",
+		21308: "ep18_md_hearthunter_a",
+		21310: "ep18_md_guard_a",
+		21312: "ep18_md_hearthunter_r",
+		21314: "ep18_md_schulang",
+		21316: "ep18_md_schulang",
+		21321: "ep18_npc_miriam",
+		21323: "ep18_grey_goat",
+		21324: "ep18_grey_wolf_baby",
+		21394: "ILL_VITATA",
+		21395: "ILL_MAYA"
+	};
+}));
+//#endregion
+//#region src/DB/Monsters/BodyFallbackTable.js
+var BodyFallbackTable_default;
+var init_BodyFallbackTable = __esmMin((() => {
+	BodyFallbackTable_default = {
+		10149: ["4056_WUG"],
+		10175: [1257],
+		10176: [1507],
+		10177: [1503],
+		10178: [1504],
+		10205: [1377],
+		10243: [874]
 	};
 }));
 //#endregion
@@ -306307,6 +306484,7 @@ var init_DBManager = __esmMin((() => {
 	init_BabyTable();
 	init_HairIndexTable();
 	init_MonsterTable();
+	init_BodyFallbackTable();
 	init_MonsterNameTable();
 	init_PetIllustration();
 	init_PetAction();
@@ -306962,6 +307140,31 @@ var init_DBManager = __esmMin((() => {
 				}
 			}
 			return "data/sprite/¸ó½ºÅÍ/" + (MonsterTable_default[id] || MonsterTable_default[1001]).toLowerCase();
+		}
+		/**
+		* Bodies to try, in order, when the one getBodyPath names fails to load.
+		*
+		* The client's data can lack a file its own tables still name (iRO 2026-09
+		* dropped 4_m_drzonda01, the Zonda teleporters). An NPC or monster is never
+		* left without a body: first the stand-ins BodyFallbackTable lists for that
+		* id, then the body getBodyPath already draws for an id it does not know
+		* (1_ETC_01 for an NPC), or for a monster the Poring a missing 3D model gets.
+		* Players, homunculi and mercenaries get none.
+		*
+		* @param {number|string} id entity
+		* @param {boolean} sex
+		* @return {Array<string>} paths without extension, never the body's own
+		*/
+		static getBodyFallbackPaths(id, sex) {
+			const own = DB.getBodyPath(id, sex);
+			if (!own || DB.isPlayer(id) || DB.isHomunculus(id) || DB.isMercenary(id) || typeof id !== "number") return [];
+			const ids = (BodyFallbackTable_default[id] || []).concat(DB.isNPC(id) ? 46 : 1002);
+			const paths = [];
+			for (const alt of ids) {
+				const path = DB.getBodyPath(alt, sex);
+				if (path && path !== own && !/\.gr2$/i.test(path) && !paths.includes(path)) paths.push(path);
+			}
+			return paths;
 		}
 		/**
 		* @return {string} path of admin clothes
@@ -311546,6 +311749,34 @@ var init_AllMountTable = __esmMin((() => {
 //#endregion
 //#region src/Renderer/Entity/EntityView.js
 /**
+* Load the first body in `paths` whose .spr and .act both load, and call onload
+* with that path (no extension). A body missing either file moves on to the
+* next path; a late answer about a path already given up on is ignored.
+*
+* @param {Array<string>} paths - body paths without extension, in order of preference
+* @param {function} onload - called once, with the path that loaded
+* @param {object} args - Client.loadFile arguments for the .spr
+*/
+function loadBody(paths, onload, args) {
+	let index = 0;
+	const attempt = () => {
+		const current = index;
+		const path = paths[current];
+		let pending = 2;
+		const done = () => {
+			if (current === index && --pending === 0) onload(path);
+		};
+		const fail = () => {
+			if (current !== index) return;
+			index++;
+			if (index < paths.length) attempt();
+		};
+		Client.loadFile(path + ".act", done, fail);
+		if (current === index) Client.loadFile(path + ".spr", done, fail, args);
+	};
+	attempt();
+}
+/**
 * Files to display a view
 *
 * @param {optional|string} sprite path
@@ -311681,7 +311912,8 @@ function UpdateBody(job) {
 	if (this.costume) job = this.costume;
 	this.xSize = this.ySize = DB.isBaby(job) ? 4 : 5;
 	this.files.shadow.size = job in ShadowTable_default ? ShadowTable_default[job] : 1;
-	let path = SessionStorage_default.showsAdmin(this, "sprite") && !shouldSuppressHead.call(this) ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex);
+	const showAdminSprite = SessionStorage_default.showsAdmin(this, "sprite") && !shouldSuppressHead.call(this);
+	let path = showAdminSprite ? DB.getAdminPath(this._sex) : DB.getBodyPath(job, this._sex);
 	const Entity = this.constructor;
 	if (this.objecttype === Entity.TYPE_UNKNOWN) {
 		let objecttype;
@@ -311743,19 +311975,18 @@ function UpdateBody(job) {
 		this.gr2 = null;
 		path = DB.getBodyPath(GR2_FALLBACK_JOB, this._sex);
 	} else this.gr2 = null;
-	Client.loadFile(path + ".act");
-	Client.loadFile(path + ".spr", function() {
+	loadBody([path].concat(showAdminSprite ? [] : DB.getBodyFallbackPaths(job, this._sex) || []), function(loaded) {
 		const isStaleCallback = this._transformationSeq && this._transformationSeq > transformationSeq;
 		const currentJob = getEffectiveJob.call(this);
 		if (!isStaleCallback && job === currentJob) {
-			this.files.body.spr = path + ".spr";
-			this.files.body.act = path + ".act";
+			this.files.body.spr = loaded + ".spr";
+			this.files.body.act = loaded + ".act";
 			refreshHeadState.call(this);
 		}
 		this.bodypalette = this._bodypalette;
 		this.weapon = this._weapon;
 		this.shield = this._shield;
-	}.bind(this), null, { to_rgba: this.objecttype !== Entity.TYPE_PC });
+	}.bind(this), { to_rgba: this.objecttype !== Entity.TYPE_PC });
 	if (PacketVerManager_default.value > 20141022 && this._body > 0) this.body = this._body;
 }
 /**
