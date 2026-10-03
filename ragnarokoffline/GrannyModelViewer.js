@@ -314992,7 +314992,7 @@ function _ensureDeps() {
 	if (!_depsPromise) _depsPromise = _loadHeavyDeps();
 	return _depsPromise;
 }
-var _Cursor, _DB, _Client, _Renderer, _EntityManager, _ScrollBar, _depsPromise, _snapCache, MouseMode, DENIED_SELECTOR, CSS_NUMBER, GUIComponent;
+var _Cursor, _DB, _Client, _Renderer, _EntityManager, _ScrollBar, _depsPromise, _snapCache, MouseMode, DENIED_SELECTOR, CSS_NUMBER, _frozenBy, GUIComponent;
 var init_GUIComponent = __esmMin((() => {
 	init_Common$1();
 	init_MouseEventHandler();
@@ -315026,6 +315026,7 @@ var init_GUIComponent = __esmMin((() => {
 		widows: true,
 		zoom: true
 	};
+	_frozenBy = /* @__PURE__ */ new Set();
 	GUIComponent = class GUIComponent {
 		/**
 		* @param {string} name       - Unique component name
@@ -315125,6 +315126,7 @@ var init_GUIComponent = __esmMin((() => {
 			parent.appendChild(this._host);
 			if (this.onKeyDown) this._bindKeyDown();
 			if (this.mouseMode === MouseMode.FREEZE) {
+				_frozenBy.add(this);
 				Mouse.intersect = false;
 				SessionStorage_default.FreezeUI = true;
 				_Cursor?.setType(_Cursor?.ACTION?.DEFAULT ?? 0);
@@ -315163,8 +315165,11 @@ var init_GUIComponent = __esmMin((() => {
 				});
 				this._host.remove();
 				if (this.mouseMode === MouseMode.FREEZE) {
-					Mouse.intersect = true;
-					SessionStorage_default.FreezeUI = false;
+					_frozenBy.delete(this);
+					if (_frozenBy.size === 0) {
+						Mouse.intersect = true;
+						SessionStorage_default.FreezeUI = false;
+					}
 				}
 				if (this.__scrollbarObserver) {
 					this.__scrollbarObserver.disconnect();
