@@ -159945,10 +159945,10 @@ var init_PacketStructure = __esmMin((() => {
 		return pkt;
 	};
 	PACKET.ZC.SE_PC_BUY_CASHITEM_RESULT = function PACKET_ZC_SE_PC_BUY_CASHITEM_RESULT(fp, end) {
-		this.kafraPoints = fp.readUShort();
-		this.itemId = fp.readShort();
-		this.result = fp.readShort();
-		this.cashPoints = fp.readUShort();
+		this.itemId = fp.readULong();
+		this.result = fp.readUShort();
+		this.cashPoints = fp.readULong();
+		this.kafraPoints = fp.readULong();
 	};
 	PACKET.ZC.SE_PC_BUY_CASHITEM_RESULT.size = 16;
 	PACKET.CA.SSO_LOGIN_REQa = function PACKET_CA_SSO_LOGIN_REQa() {
@@ -226426,13 +226426,13 @@ function onClickWriteMail(e) {
 }
 function onClickDeleteAll(e) {
 	e.stopImmediatePropagation();
-	UIManager.showPromptBox(DB.getMessage(3590), "ok", "cancel", () => {
+	UIManager.showPromptBox(DB.getMessage(3590).replace("%s", Rodex.getMailboxName()), "ok", "cancel", () => {
 		Rodex.deleteAll();
 	});
 }
 function onClickRetrieveAll(e) {
 	e.stopImmediatePropagation();
-	UIManager.showPromptBox(DB.getMessage(3594), "ok", "cancel", () => {
+	UIManager.showPromptBox(DB.getMessage(3594).replace("%s", Rodex.getMailboxName()), "ok", "cancel", () => {
 		Rodex.getAll();
 	});
 }
@@ -226546,12 +226546,29 @@ var init_Rodex$1 = __esmMin((() => {
 	* know what to search
 	*/
 	Rodex.searchType = 1;
-	Rodex.attachmentType = {
-		0: "",
-		2: "basic_interface/rodexsystem/renewal/icon_zeny.bmp",
-		4: "basic_interface/rodexsystem/renewal/icon_item.bmp",
-		6: "basic_interface/rodexsystem/renewal/icon_zeny_n_item.bmp",
-		12: "basic_interface/rodexsystem/renewal/icon_zeny_n_item.bmp"
+	/**
+	* A mail's type is a set of flags (rAthena enum mail_type), so a mail from an
+	* NPC or the server, such as an achievement reward, carries NPC on top of what
+	* it holds: 12 is an item sent by the server.
+	*/
+	Rodex.MAIL_TYPE = {
+		ZENY: 2,
+		ITEM: 4,
+		NPC: 8
+	};
+	/**
+	* Icon for what a mail holds
+	*
+	* @param {number} type - the mail's type flags
+	* @return {string} image path, or '' for a letter with nothing attached
+	*/
+	Rodex.getAttachmentIcon = function getAttachmentIcon(type) {
+		const zeny = type & Rodex.MAIL_TYPE.ZENY;
+		const item = type & Rodex.MAIL_TYPE.ITEM;
+		if (zeny && item) return "basic_interface/rodexsystem/renewal/icon_zeny_n_item.bmp";
+		if (item) return "basic_interface/rodexsystem/renewal/icon_item.bmp";
+		if (zeny) return "basic_interface/rodexsystem/renewal/icon_zeny.bmp";
+		return "";
 	};
 	_preferences$37 = Preferences.get("Rodex", {
 		x: 350,
@@ -226631,7 +226648,7 @@ var init_Rodex$1 = __esmMin((() => {
 			const title = mail.title.length > 18 ? mail.title.substring(0, 18) + "..." : mail.title;
 			const sender = mail.SenderName.length > 18 ? mail.SenderName.substring(0, 18) + "..." : mail.SenderName;
 			const mail_image = mail.Isread ? "icon_status_mail_read" : "icon_status_mail_received";
-			const mail_content = Rodex.attachmentType[mail.type];
+			const mail_content = Rodex.getAttachmentIcon(mail.type);
 			const remaining_days = parseInt(mail.expireDateTime / 60 / 60 / 24);
 			const mail_html = `<li class="mail-item">
 				<div class="mail-checkbox" data-background="basic_interface/rodexsystem/renewal/checkbox_off.bmp">
@@ -226668,17 +226685,38 @@ var init_Rodex$1 = __esmMin((() => {
 	Rodex.getMailByID = function getMailByID(mailID) {
 		return Rodex.list.find((mail) => mail.MailID == mailID);
 	};
+	/**
+	* Name of the open mailbox, as its tab shows it
+	*
+	* @return {string}
+	*/
+	Rodex.getMailboxName = function getMailboxName() {
+		const tabText = {
+			0: 3547,
+			1: 3546,
+			2: 3548
+		}[Number(Rodex.openType)];
+		return tabText ? DB.getMessage(tabText) : "";
+	};
+	/**
+	* Claim every attachment in the open mailbox
+	*/
 	Rodex.getAll = function getAll() {
-		for (let i = 0; i < Rodex.list.length; i++) {
-			const mail = Rodex.list[i];
-			if (mail.type > 0 && (mail.type === 4 || mail.type === 6)) Rodex.requestItemsFromRodex(mail.openType, mail.MailID);
-			if (mail.type > 0 && (mail.type === 2 || mail.type === 6)) Rodex.requestZenyFromRodex(mail.openType, mail.MailID);
+		const mails = Rodex.getMailsByTabID(Rodex.openType);
+		for (let i = 0; i < mails.length; i++) {
+			const mail = mails[i];
+			if (mail.type & Rodex.MAIL_TYPE.ITEM) Rodex.requestItemsFromRodex(mail.openType, mail.MailID);
+			if (mail.type & Rodex.MAIL_TYPE.ZENY) Rodex.requestZenyFromRodex(mail.openType, mail.MailID);
 		}
 	};
+	/**
+	* Delete every mail in the open mailbox that has nothing left to claim
+	*/
 	Rodex.deleteAll = function deleteAll() {
-		for (let i = 0; i < Rodex.list.length; i++) {
-			const mail = Rodex.list[i];
-			if (mail.type === 0) Rodex.requestDeleteRodex(mail.openType, mail.MailID);
+		const mails = Rodex.getMailsByTabID(Rodex.openType);
+		for (let i = 0; i < mails.length; i++) {
+			const mail = mails[i];
+			if (!(mail.type & (Rodex.MAIL_TYPE.ZENY | Rodex.MAIL_TYPE.ITEM))) Rodex.requestDeleteRodex(mail.openType, mail.MailID);
 			else ChatBox_default.addText(DB.getMessage(2612), ChatBox_default.TYPE.INFO_MAIL, ChatBox_default.FILTER.PUBLIC_LOG);
 		}
 	};
@@ -243989,7 +244027,11 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 			const switchEquipBtn = root.querySelector(".switch_equip");
 			if (switchEquipBtn) switchEquipBtn.addEventListener("click", onSwtichEquip);
 		}
-		if (titles) this.loadTitles();
+		if (titles) {
+			const titleList = root.querySelector("#title_list");
+			if (titleList) titleList.addEventListener("click", onTitleClick);
+			this.loadTitles();
+		}
 		this._host.addEventListener("dragover", onDragOver);
 		this._host.addEventListener("dragleave", onDragLeave);
 		this._host.addEventListener("drop", onDrop);
@@ -244027,16 +244069,7 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 			if (costumeSpan && costumeSpan.tagName === "SPAN") costumeSpan.style.display = "none";
 		}
 		if (damageSkin) {
-			const skinButtons = root.querySelectorAll("#damageskin .skin-option");
-			skinButtons.forEach((btn) => {
-				btn.setAttribute("data-background", "showdamage/btn_damage.bmp");
-				btn.setAttribute("data-hover", "showdamage/btn_damage_press.bmp");
-				btn.setAttribute("data-down", "showdamage/btn_damage_pick.bmp");
-			});
-			if (this.parseHTML) skinButtons.forEach((btn) => {
-				this.parseHTML.call(btn);
-			});
-			skinButtons.forEach((btn) => {
+			root.querySelectorAll("#damageskin .skin-option").forEach((btn) => {
 				btn.addEventListener("mousedown", function() {
 					const skinId = parseInt(this.getAttribute("data-skin"), 10);
 					Component.setDamageSkin(skinId);
@@ -244561,6 +244594,15 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 	} else Component.isInEquipList = function() {
 		return 0;
 	};
+	function onTitleClick(e) {
+		const option = e.target.closest(".title-option");
+		if (option) {
+			e.preventDefault();
+			e.stopPropagation();
+			const titleId = parseInt(option.getAttribute("data-title"));
+			Component.selectTitle(titleId);
+		}
+	}
 	if (titles) {
 		Component.loadTitles = function() {
 			const titleList = Component.getRoot().querySelector("#title_list");
@@ -244573,24 +244615,13 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 			removeEl.setAttribute("data-title", "0");
 			removeEl.textContent = removeTitleText;
 			titleList.appendChild(removeEl);
-			const allTitles = DB.getAllTitles();
-			for (const titleId in allTitles) if (allTitles.hasOwnProperty(titleId)) {
-				const titleName = allTitles[titleId];
-				const selectedClass = parseInt(titleId) === _currentTitleId ? " selected" : "";
+			(SessionStorage_default.Achievement && SessionStorage_default.Achievement.titles || []).slice().sort((a, b) => a - b).forEach((titleId) => {
+				const selectedClass = titleId === _currentTitleId ? " selected" : "";
 				const titleEl = document.createElement("div");
 				titleEl.className = `title-option${selectedClass}`;
 				titleEl.setAttribute("data-title", titleId);
-				titleEl.textContent = titleName;
+				titleEl.textContent = DB.getTitleString(titleId);
 				titleList.appendChild(titleEl);
-			}
-			titleList.addEventListener("click", (e) => {
-				const option = e.target.closest(".title-option");
-				if (option) {
-					e.preventDefault();
-					e.stopPropagation();
-					const titleId = parseInt(option.getAttribute("data-title"));
-					Component.selectTitle(titleId);
-				}
 			});
 		};
 		Component.selectTitle = function(titleId) {
@@ -244605,31 +244636,11 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 	}
 	if (damageSkin) {
 		Component.setDamageSkin = function setDamageSkin(skinId) {
-			const root = Component.getRoot();
-			const buttons = root.querySelectorAll("#damageskin .skin-option");
-			const buttonSelected = root.querySelector(`#damageskin .skin-option[data-skin="${skinId}"]`);
 			GraphicsSettings.damageSkin = skinId;
 			GraphicsSettings.save();
-			buttons.forEach((btn) => {
-				btn.setAttribute("data-background", "showdamage/btn_damage.bmp");
-				btn.setAttribute("data-hover", "showdamage/btn_damage_press.bmp");
-				btn.setAttribute("data-down", "showdamage/btn_damage_pick.bmp");
+			Component.getRoot().querySelectorAll("#damageskin .skin-option").forEach((btn) => {
+				btn.classList.toggle("active", parseInt(btn.getAttribute("data-skin"), 10) === skinId);
 			});
-			if (this.parseHTML) buttons.forEach((btn) => {
-				this.parseHTML.call(btn);
-			});
-			Client.loadFile(DB.INTERFACE_PATH + "showdamage/btn_damage.bmp", (data) => {
-				buttons.forEach((btn) => {
-					btn.style.backgroundImage = `url(${data})`;
-				});
-			});
-			if (buttonSelected) {
-				Client.loadFile(DB.INTERFACE_PATH + "showdamage/btn_damage_pick.bmp", (data) => {
-					buttonSelected.style.backgroundImage = `url(${data})`;
-				});
-				buttonSelected.onmouseover = null;
-				buttonSelected.onmouseout = null;
-			}
 		};
 		Component.setDamageMotion = function setDamageMotion(motionId) {
 			GraphicsSettings.damageMotion = motionId;
@@ -244783,13 +244794,13 @@ var init_EquipmentV3 = __esmMin((() => {
 //#region src/UI/Components/Equipment/EquipmentV4/EquipmentV4.html?raw
 var EquipmentV4_default$2;
 var init_EquipmentV4$2 = __esmMin((() => {
-	EquipmentV4_default$2 = "<div id=\"EquipmentV4\" data-repload=\"basic_interface/item_invert.bmp\">\r\n	<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n		<div class=\"left\">\r\n			<button\r\n				class=\"base\"\r\n				data-background=\"basic_interface/sys_base_off.bmp\"\r\n				data-hover=\"basic_interface/sys_base_on.bmp\"\r\n			></button>\r\n			<span class=\"text\" data-text=\"104\">Equipment</span>\r\n		</div>\r\n		<div class=\"right\">\r\n			<button\r\n				class=\"base mini\"\r\n				data-background=\"basic_interface/sys_mini_off.bmp\"\r\n				data-hover=\"basic_interface/sys_mini_on.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"base close\"\r\n				data-background=\"basic_interface/sys_close_off.bmp\"\r\n				data-hover=\"basic_interface/sys_close_on.bmp\"\r\n			></button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n	<div class=\"overlay\"></div>\r\n	<div class=\"tab-manager\" id=\"tabs\">\r\n		<div class=\"tab\">\r\n			<a href=\"#general\"><span data-text=\"3158\">General</span></a>\r\n		</div>\r\n		<div class=\"tab\">\r\n			<a href=\"#costume\"><span data-text=\"3159\">Costume</span></a>\r\n		</div>\r\n		<div class=\"tab\">\r\n			<a href=\"#title\"><span data-text=\"3160\">Title</span></a>\r\n		</div>\r\n		<div class=\"tab\">\r\n			<a href=\"#damageskin\"><span data-text=\"3990\">Damage Font</span></a>\r\n		</div>\r\n	</div>\r\n	<div class=\"panel\">\r\n		<table class=\"content\" id=\"general\" data-background=\"basic_interface/equipwin_bg.bmp\">\r\n			<tr>\r\n				<td class=\"head_top col1\"></td>\r\n				<td rowspan=\"6\">\r\n					<!-- avoid applying css on td directly-->\r\n					<div class=\"col2 ammo_container\">\r\n						<div class=\"ammo\"></div>\r\n						<button\r\n							class=\"cartitems\"\r\n							data-background=\"basic_interface/btn_items_off.bmp\"\r\n							data-hover=\"basic_interface/btn_items_on.bmp\"\r\n						></button>\r\n						<button class=\"removeOption\" data-background=\"basic_interface/btn_off.bmp\"></button>\r\n						<canvas width=\"55\" height=\"125\"></canvas>\r\n					</div>\r\n				</td>\r\n				<td class=\"head_mid col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"head_bottom col1\"></td>\r\n				<td class=\"armor col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"weapon col1\"></td>\r\n				<td class=\"shield col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"garment col1\"></td>\r\n				<td class=\"shoes col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"accessory1 col1\"></td>\r\n				<td class=\"accessory2 col3\"></td>\r\n			</tr>\r\n		</table>\r\n		<table class=\"content\" id=\"costume\" data-background=\"basic_interface/equipwin_special.bmp\">\r\n			<tr>\r\n				<td class=\"costume_head_top col1\"></td>\r\n				<td rowspan=\"6\">\r\n					<!-- avoid applying css on td directly-->\r\n					<div class=\"col2 ammo_container\">\r\n						<canvas width=\"55\" height=\"125\"></canvas>\r\n					</div>\r\n				</td>\r\n				<td class=\"costume_head_mid col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"costume_head_bottom col1\"></td>\r\n				<td class=\"shadow_armor col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"shadow_weapon col1\"></td>\r\n				<td class=\"shadow_shield col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"shadow_garment col1\"></td>\r\n				<td class=\"shadow_shoes col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"shadow_accessory1 col1\"></td>\r\n				<td class=\"shadow_accessory2 col3\"></td>\r\n			</tr>\r\n		</table>\r\n		<table class=\"content\" id=\"title\">\r\n			<tr>\r\n				<td colspan=\"3\">\r\n					<div class=\"title-list\" id=\"title_list\"></div>\r\n				</td>\r\n			</tr>\r\n		</table>\r\n		<table class=\"content\" id=\"damageskin\">\r\n			<!-- Select Damage Font -->\r\n			<tr>\r\n				<td colspan=\"3\">\r\n					<div class=\"damageskin-selector\" data-background=\"showdamage/bg_damage.bmp\">\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"0\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3994\">Default</span>\r\n							</div>\r\n							<!-- Damage Skin 0: Default -->\r\n							<button class=\"skin-option\" data-skin=\"0\">\r\n								<span>Default</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage00.bmp\"></div>\r\n							</button>\r\n						</div>\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"1\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3993\">Left</span>\r\n							</div>\r\n							<!-- Damage Skin 1: Color -->\r\n							<button class=\"skin-option\" data-skin=\"1\">\r\n								<span>Color</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage01.bmp\"></div>\r\n							</button>\r\n						</div>\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"2\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3992\">Top</span>\r\n							</div>\r\n							<!-- Damage Skin 2: Han -->\r\n							<button class=\"skin-option\" data-skin=\"2\">\r\n								<span>Han</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage02.bmp\"></div>\r\n							</button>\r\n						</div>\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"3\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3991\">Right</span>\r\n							</div>\r\n							<!-- Damage Skin 3: Hidden -->\r\n							<button class=\"skin-option\" data-skin=\"3\">\r\n								<span>Hidden</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage03.bmp\"></div>\r\n							</button>\r\n						</div>\r\n					</div>\r\n				</td>\r\n			</tr>\r\n		</table>\r\n		<div class=\"footer\" id=\"equipment_footer\" data-background=\"basic_interface/equipwin_bg2.bmp\">\r\n			<div class=\"left\">\r\n				<button class=\"show_equip\" data-background=\"checkbox_0.bmp\" data-preload=\"checkbox_1.bmp\"></button>\r\n				<span data-text=\"1362\">Show Equip</span>\r\n				<button class=\"show_costume\" data-background=\"checkbox_1.bmp\" data-preload=\"checkbox_0.bmp\"></button>\r\n				<span data-text=\"4103\">Show Costume</span>\r\n			</div>\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"switch_equip\"\r\n					data-background=\"basic_interface/btn_e_change_a.bmp\"\r\n					data-hover=\"basic_interface/btn_e_change_b.bmp\"\r\n				></button>\r\n				<button\r\n					class=\"remove_equip\"\r\n					data-background=\"basic_interface/btn_e_off_a.bmp\"\r\n					data-hover=\"basic_interface/btn_e_off_b.bmp\"\r\n				></button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n		<div class=\"status_component\">\r\n			<!-- Import status component -->\r\n		</div>\r\n	</div>\r\n	<button\r\n		id=\"lvlup_base\"\r\n		data-background=\"basic_interface/lv_up_off.bmp\"\r\n		data-sown=\"basic_interface/lv_up_on.bmp\"\r\n	></button>\r\n</div>\r\n";
+	EquipmentV4_default$2 = "<div id=\"EquipmentV4\" data-repload=\"basic_interface/item_invert.bmp\">\r\n	<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n		<div class=\"left\">\r\n			<button\r\n				class=\"base\"\r\n				data-background=\"basic_interface/sys_base_off.bmp\"\r\n				data-hover=\"basic_interface/sys_base_on.bmp\"\r\n			></button>\r\n			<span class=\"text\" data-text=\"104\">Equipment</span>\r\n		</div>\r\n		<div class=\"right\">\r\n			<button\r\n				class=\"base mini\"\r\n				data-background=\"basic_interface/sys_mini_off.bmp\"\r\n				data-hover=\"basic_interface/sys_mini_on.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"base close\"\r\n				data-background=\"basic_interface/sys_close_off.bmp\"\r\n				data-hover=\"basic_interface/sys_close_on.bmp\"\r\n			></button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n	<div class=\"overlay\"></div>\r\n	<div class=\"tab-manager\" id=\"tabs\">\r\n		<div class=\"tab\">\r\n			<a href=\"#general\"><span data-text=\"3158\">General</span></a>\r\n		</div>\r\n		<div class=\"tab\">\r\n			<a href=\"#costume\"><span data-text=\"3159\">Costume</span></a>\r\n		</div>\r\n		<div class=\"tab\">\r\n			<a href=\"#title\"><span data-text=\"3160\">Title</span></a>\r\n		</div>\r\n		<div class=\"tab\">\r\n			<a href=\"#damageskin\"><span data-text=\"3990\">Damage Font</span></a>\r\n		</div>\r\n	</div>\r\n	<div class=\"panel\">\r\n		<table class=\"content\" id=\"general\" data-background=\"basic_interface/equipwin_bg.bmp\">\r\n			<tr>\r\n				<td class=\"head_top col1\"></td>\r\n				<td rowspan=\"6\">\r\n					<!-- avoid applying css on td directly-->\r\n					<div class=\"col2 ammo_container\">\r\n						<div class=\"ammo\"></div>\r\n						<button\r\n							class=\"cartitems\"\r\n							data-background=\"basic_interface/btn_items_off.bmp\"\r\n							data-hover=\"basic_interface/btn_items_on.bmp\"\r\n						></button>\r\n						<button class=\"removeOption\" data-background=\"basic_interface/btn_off.bmp\"></button>\r\n						<canvas width=\"55\" height=\"125\"></canvas>\r\n					</div>\r\n				</td>\r\n				<td class=\"head_mid col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"head_bottom col1\"></td>\r\n				<td class=\"armor col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"weapon col1\"></td>\r\n				<td class=\"shield col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"garment col1\"></td>\r\n				<td class=\"shoes col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"accessory1 col1\"></td>\r\n				<td class=\"accessory2 col3\"></td>\r\n			</tr>\r\n		</table>\r\n		<table class=\"content\" id=\"costume\" data-background=\"basic_interface/equipwin_special.bmp\">\r\n			<tr>\r\n				<td class=\"costume_head_top col1\"></td>\r\n				<td rowspan=\"6\">\r\n					<!-- avoid applying css on td directly-->\r\n					<div class=\"col2 ammo_container\">\r\n						<canvas width=\"55\" height=\"125\"></canvas>\r\n					</div>\r\n				</td>\r\n				<td class=\"costume_head_mid col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"costume_head_bottom col1\"></td>\r\n				<td class=\"shadow_armor col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"shadow_weapon col1\"></td>\r\n				<td class=\"shadow_shield col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"shadow_garment col1\"></td>\r\n				<td class=\"shadow_shoes col3\"></td>\r\n			</tr>\r\n			<tr>\r\n				<td class=\"shadow_accessory1 col1\"></td>\r\n				<td class=\"shadow_accessory2 col3\"></td>\r\n			</tr>\r\n		</table>\r\n		<table class=\"content\" id=\"title\">\r\n			<tr>\r\n				<td colspan=\"3\">\r\n					<div class=\"title-list\" id=\"title_list\"></div>\r\n				</td>\r\n			</tr>\r\n		</table>\r\n		<table class=\"content\" id=\"damageskin\">\r\n			<!-- Select Damage Font -->\r\n			<tr>\r\n				<td colspan=\"3\">\r\n					<div class=\"damageskin-selector\" data-background=\"showdamage/bg_damage.bmp\">\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"0\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3994\">Default</span>\r\n							</div>\r\n							<!-- Damage Skin 0: Default -->\r\n							<button\r\n								class=\"skin-option\"\r\n								data-skin=\"0\"\r\n								data-background=\"showdamage/btn_damage.bmp\"\r\n								data-hover=\"showdamage/btn_damage_press.bmp\"\r\n								data-down=\"showdamage/btn_damage_pick.bmp\"\r\n								data-active=\"showdamage/btn_damage_pick.bmp\"\r\n							>\r\n								<span>Default</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage00.bmp\"></div>\r\n							</button>\r\n						</div>\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"1\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3993\">Left</span>\r\n							</div>\r\n							<!-- Damage Skin 1: Color -->\r\n							<button\r\n								class=\"skin-option\"\r\n								data-skin=\"1\"\r\n								data-background=\"showdamage/btn_damage.bmp\"\r\n								data-hover=\"showdamage/btn_damage_press.bmp\"\r\n								data-down=\"showdamage/btn_damage_pick.bmp\"\r\n								data-active=\"showdamage/btn_damage_pick.bmp\"\r\n							>\r\n								<span>Color</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage01.bmp\"></div>\r\n							</button>\r\n						</div>\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"2\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3992\">Top</span>\r\n							</div>\r\n							<!-- Damage Skin 2: Han -->\r\n							<button\r\n								class=\"skin-option\"\r\n								data-skin=\"2\"\r\n								data-background=\"showdamage/btn_damage.bmp\"\r\n								data-hover=\"showdamage/btn_damage_press.bmp\"\r\n								data-down=\"showdamage/btn_damage_pick.bmp\"\r\n								data-active=\"showdamage/btn_damage_pick.bmp\"\r\n							>\r\n								<span>Han</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage02.bmp\"></div>\r\n							</button>\r\n						</div>\r\n						<div class=\"skin-wrapper\">\r\n							<div>\r\n								<button\r\n									class=\"checkbox motion-check\"\r\n									data-motion=\"3\"\r\n									data-background=\"checkbox_0.bmp\"\r\n								></button>\r\n								<span data-text=\"3991\">Right</span>\r\n							</div>\r\n							<!-- Damage Skin 3: Hidden -->\r\n							<button\r\n								class=\"skin-option\"\r\n								data-skin=\"3\"\r\n								data-background=\"showdamage/btn_damage.bmp\"\r\n								data-hover=\"showdamage/btn_damage_press.bmp\"\r\n								data-down=\"showdamage/btn_damage_pick.bmp\"\r\n								data-active=\"showdamage/btn_damage_pick.bmp\"\r\n							>\r\n								<span>Hidden</span>\r\n								<div class=\"icon\" data-background=\"showdamage/icon_damage03.bmp\"></div>\r\n							</button>\r\n						</div>\r\n					</div>\r\n				</td>\r\n			</tr>\r\n		</table>\r\n		<div class=\"footer\" id=\"equipment_footer\" data-background=\"basic_interface/equipwin_bg2.bmp\">\r\n			<div class=\"left\">\r\n				<button class=\"show_equip\" data-background=\"checkbox_0.bmp\" data-preload=\"checkbox_1.bmp\"></button>\r\n				<span data-text=\"1362\">Show Equip</span>\r\n				<button class=\"show_costume\" data-background=\"checkbox_1.bmp\" data-preload=\"checkbox_0.bmp\"></button>\r\n				<span data-text=\"4103\">Show Costume</span>\r\n			</div>\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"switch_equip\"\r\n					data-background=\"basic_interface/btn_e_change_a.bmp\"\r\n					data-hover=\"basic_interface/btn_e_change_b.bmp\"\r\n				></button>\r\n				<button\r\n					class=\"remove_equip\"\r\n					data-background=\"basic_interface/btn_e_off_a.bmp\"\r\n					data-hover=\"basic_interface/btn_e_off_b.bmp\"\r\n				></button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n		<div class=\"status_component\">\r\n			<!-- Import status component -->\r\n		</div>\r\n	</div>\r\n	<button\r\n		id=\"lvlup_base\"\r\n		data-background=\"basic_interface/lv_up_off.bmp\"\r\n		data-sown=\"basic_interface/lv_up_on.bmp\"\r\n	></button>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/Equipment/EquipmentV4/EquipmentV4.css?raw
 var EquipmentV4_default$1;
 var init_EquipmentV4$1 = __esmMin((() => {
-	EquipmentV4_default$1 = ":host {\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n\r\n#EquipmentV4 {\r\n	position: relative;\r\n	width: 280px;\r\n}\r\n\r\n#EquipmentV4 .clear {\r\n	clear: both;\r\n}\r\n\r\n#EquipmentV4 .titlebar {\r\n	width: 280px;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n#EquipmentV4 .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n#EquipmentV4 .titlebar .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	/* chrome bug */\r\n	display: inline-block;\r\n	width: 32px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#EquipmentV4 .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n#EquipmentV4 .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#EquipmentV4 .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#EquipmentV4 .tab-manager {\r\n	position: relative;\r\n	width: inherit;\r\n	background-color: white;\r\n	height: 15px;\r\n	display: flex;\r\n}\r\n\r\n#EquipmentV4 .tab a {\r\n	width: 60px;\r\n	height: 100%;\r\n	color: #42454a;\r\n	border: 1px solid #c9c3ba;\r\n	border-bottom: none;\r\n	text-decoration: none;\r\n	display: inline-block;\r\n	vertical-align: bottom;\r\n	border-radius: 3px 3px 0 0;\r\n	text-align: center;\r\n}\r\n#EquipmentV4 .tab a.selected {\r\n	color: #000;\r\n	font-weight: bold;\r\n	border-bottom: 1px solid white;\r\n	position: relative;\r\n	z-index: 100;\r\n	background-color: white;\r\n}\r\n#EquipmentV4 .tab a.selected:after {\r\n	content: '';\r\n	display: block;\r\n	height: 1px;\r\n	width: 1px;\r\n	position: absolute;\r\n	bottom: -1px;\r\n	left: -1px;\r\n}\r\n\r\n#EquipmentV4 .panel {\r\n	background-color: white;\r\n	border-top: 1px solid gray;\r\n	height: 150px;\r\n}\r\n#EquipmentV4 .equipmentV0 .panel {\r\n	background-color: inherit;\r\n}\r\n#EquipmentV4 table.content {\r\n	width: 280px;\r\n	height: 130px;\r\n	border-spacing: 0;\r\n}\r\n#EquipmentV4 table.content.hide {\r\n	display: none;\r\n}\r\n#EquipmentV4 .content {\r\n	display: inline-block;\r\n	width: 280px;\r\n	height: 130px;\r\n	border-spacing: 0;\r\n}\r\n#EquipmentV4 .col1,\r\n#EquipmentV4 .col3 {\r\n	width: 115px;\r\n	height: 24px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#EquipmentV4 .col1 {\r\n	background-position: 5% 50%;\r\n	min-width: 110px;\r\n}\r\n#EquipmentV4 .col3 {\r\n	background-position: 95% 50%;\r\n	min-width: 110px;\r\n}\r\n\r\n#EquipmentV4 .overlay {\r\n	position: absolute;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n\r\n#EquipmentV4 .item button {\r\n	width: 24px;\r\n	height: 24px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	border: none;\r\n}\r\n#EquipmentV4 .item span {\r\n	width: 80px;\r\n	height: 24px;\r\n	display: inline-block;\r\n	line-height: 12px;\r\n	word-break: break-all;\r\n	overflow: hidden;\r\n	text-shadow: 1px 1px white;\r\n}\r\n\r\n#EquipmentV4 .col3 .item button,\r\n#EquipmentV4 .col3 .item span {\r\n	float: right;\r\n}\r\n#EquipmentV4 .col1 .item button,\r\n#EquipmentV4 .col1 .item span {\r\n	float: left;\r\n}\r\n#EquipmentV4 .col1 .item {\r\n	padding-left: 4px;\r\n}\r\n#EquipmentV4 .col3 .item {\r\n	padding-right: 4px;\r\n}\r\n#EquipmentV4 .col1 .item .itemName {\r\n	display: flex;\r\n	align-items: center;\r\n}\r\n#EquipmentV4 .col3 .item .itemName {\r\n	display: flex;\r\n	align-items: center;\r\n}\r\n\r\n#EquipmentV4 .ammo_container {\r\n	position: relative;\r\n}\r\n#EquipmentV4 .ammo {\r\n	position: absolute;\r\n	top: 30px;\r\n}\r\n#EquipmentV4 .ammo .item {\r\n	text-align: center;\r\n}\r\n#EquipmentV4 .ammo .item span {\r\n	width: 45px;\r\n}\r\n#EquipmentV4 .cartitems {\r\n	position: absolute;\r\n	top: 65px;\r\n	left: 14px;\r\n	width: 36px;\r\n	height: 36px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	display: none;\r\n}\r\n#EquipmentV4 .removeOption {\r\n	position: absolute;\r\n	top: 90px;\r\n	left: 12px;\r\n	width: 36px;\r\n	height: 36px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	display: none;\r\n}\r\n\r\n#EquipmentV4 .footer {\r\n	height: 20px;\r\n	border-bottom: 1px solid #c0c0c0;\r\n	background-position: 0px -130px;\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n#EquipmentV4 .footer .left {\r\n	float: left;\r\n	text-align: left;\r\n	margin-left: 5px;\r\n	margin-top: 3px;\r\n}\r\n#EquipmentV4 .footer .right {\r\n	float: right;\r\n	text-align: right;\r\n	margin-right: 5px;\r\n	margin-top: 3px;\r\n}\r\n#EquipmentV4 .footer .view_status {\r\n	width: 9px;\r\n	height: 14px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#EquipmentV4 .footer .show_equip {\r\n	width: 10px;\r\n	height: 12px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#EquipmentV4 .footer .show_costume {\r\n	width: 10px;\r\n	height: 12px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#EquipmentV4 .footer .switch_equip {\r\n	width: 40px;\r\n	height: 20px;\r\n	border: none;\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n#EquipmentV4 .footer .remove_equip {\r\n	width: 40px;\r\n	height: 20px;\r\n	border: none;\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n\r\n#lvlup_base {\r\n	z-index: 51;\r\n	position: absolute;\r\n	left: 0px;\r\n	bottom: 0px;\r\n	width: 43px;\r\n	height: 43px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#EquipmentV4 #damageskin .damageskin-selector {\r\n	display: flex;\r\n	justify-content: center;\r\n	align-items: center;\r\n	width: 280px;\r\n	margin: 0 auto;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-option {\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n	justify-content: center;\r\n\r\n	width: 64px;\r\n	height: 92px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	margin-top: 3px;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-option span {\r\n	position: relative;\r\n	top: -9px;\r\n	font-weight: bold;\r\n	text-align: center;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-option .icon {\r\n	width: 36px;\r\n	height: 36px;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-wrapper {\r\n	width: 64px;\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n	justify-content: center;\r\n	gap: 0;\r\n	padding: 0;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-wrapper > div:first-child {\r\n	margin-top: 8px;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-wrapper .label {\r\n	margin-top: 6px;\r\n	text-align: center;\r\n}\r\n\r\n#EquipmentV4 .motion-check {\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n	cursor: pointer;\r\n	width: 10px;\r\n	height: 12px;\r\n	margin-right: 4px;\r\n}\r\n\r\n#EquipmentV4 .item .grade {\r\n	position: relative;\r\n	width: 12px;\r\n	height: 12px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	pointer-events: none;\r\n	z-index: 2;\r\n	top: 5px;\r\n}\r\n\r\n#EquipmentV4 #title .title-list {\r\n	height: 125px;\r\n	width: 280px;\r\n	overflow-y: auto;\r\n	overflow-x: hidden;\r\n	padding: 8px 8px;\r\n	border: 1px solid #c0c0c0;\r\n	background-color: #f8f8f8;\r\n}\r\n\r\n#EquipmentV4 .title-option {\r\n	padding: 1px;\r\n	margin: 1px 0;\r\n	cursor: pointer;\r\n	background-color: transparent;\r\n	border: 1px solid transparent;\r\n	white-space: nowrap;\r\n	width: 100%;\r\n}\r\n\r\n#EquipmentV4 .title-option.selected {\r\n	background-color: #e0e0e0;\r\n	font-weight: bold;\r\n}\r\n\r\n#EquipmentV4 .title-option:hover {\r\n	background-color: #e0e0e0;\r\n}\r\n";
+	EquipmentV4_default$1 = ":host {\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n\r\n#EquipmentV4 {\r\n	position: relative;\r\n	width: 280px;\r\n}\r\n\r\n#EquipmentV4 .clear {\r\n	clear: both;\r\n}\r\n\r\n#EquipmentV4 .titlebar {\r\n	width: 280px;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n#EquipmentV4 .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n#EquipmentV4 .titlebar .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	/* chrome bug */\r\n	display: inline-block;\r\n	width: 32px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#EquipmentV4 .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n#EquipmentV4 .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#EquipmentV4 .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#EquipmentV4 .tab-manager {\r\n	position: relative;\r\n	width: inherit;\r\n	background-color: white;\r\n	height: 15px;\r\n	display: flex;\r\n}\r\n\r\n/* A tab is as wide as its label, so a long one (\"Damage Indicator\") stays on\r\n   one line instead of wrapping below the bar onto the window. The minimum fits\r\n   the short labels in bold, so selecting one doesn't move the tabs. A label too\r\n   long for the bar ends in an ellipsis. */\r\n#EquipmentV4 .tab {\r\n	flex: 0 1 auto;\r\n	min-width: 0;\r\n}\r\n#EquipmentV4 .tab a {\r\n	box-sizing: border-box;\r\n	min-width: 57px;\r\n	height: 100%;\r\n	padding: 0 2px;\r\n	color: #42454a;\r\n	border: 1px solid #c9c3ba;\r\n	border-bottom: none;\r\n	text-decoration: none;\r\n	display: block;\r\n	border-radius: 3px 3px 0 0;\r\n	text-align: center;\r\n	white-space: nowrap;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n}\r\n#EquipmentV4 .tab a.selected {\r\n	color: #000;\r\n	font-weight: bold;\r\n	border-bottom: 1px solid white;\r\n	position: relative;\r\n	z-index: 100;\r\n	background-color: white;\r\n}\r\n#EquipmentV4 .tab a.selected:after {\r\n	content: '';\r\n	display: block;\r\n	height: 1px;\r\n	width: 1px;\r\n	position: absolute;\r\n	bottom: -1px;\r\n	left: -1px;\r\n}\r\n\r\n#EquipmentV4 .panel {\r\n	background-color: white;\r\n	border-top: 1px solid gray;\r\n	height: 150px;\r\n}\r\n#EquipmentV4 .equipmentV0 .panel {\r\n	background-color: inherit;\r\n}\r\n#EquipmentV4 table.content {\r\n	width: 280px;\r\n	height: 130px;\r\n	border-spacing: 0;\r\n}\r\n#EquipmentV4 table.content.hide {\r\n	display: none;\r\n}\r\n#EquipmentV4 .content {\r\n	display: inline-block;\r\n	width: 280px;\r\n	height: 130px;\r\n	border-spacing: 0;\r\n}\r\n#EquipmentV4 .col1,\r\n#EquipmentV4 .col3 {\r\n	width: 115px;\r\n	height: 24px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#EquipmentV4 .col1 {\r\n	background-position: 5% 50%;\r\n	min-width: 110px;\r\n}\r\n#EquipmentV4 .col3 {\r\n	background-position: 95% 50%;\r\n	min-width: 110px;\r\n}\r\n\r\n#EquipmentV4 .overlay {\r\n	position: absolute;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n\r\n#EquipmentV4 .item button {\r\n	width: 24px;\r\n	height: 24px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	border: none;\r\n}\r\n#EquipmentV4 .item span {\r\n	width: 80px;\r\n	height: 24px;\r\n	display: inline-block;\r\n	line-height: 12px;\r\n	word-break: break-all;\r\n	overflow: hidden;\r\n	text-shadow: 1px 1px white;\r\n}\r\n\r\n#EquipmentV4 .col3 .item button,\r\n#EquipmentV4 .col3 .item span {\r\n	float: right;\r\n}\r\n#EquipmentV4 .col1 .item button,\r\n#EquipmentV4 .col1 .item span {\r\n	float: left;\r\n}\r\n#EquipmentV4 .col1 .item {\r\n	padding-left: 4px;\r\n}\r\n#EquipmentV4 .col3 .item {\r\n	padding-right: 4px;\r\n}\r\n#EquipmentV4 .col1 .item .itemName {\r\n	display: flex;\r\n	align-items: center;\r\n}\r\n#EquipmentV4 .col3 .item .itemName {\r\n	display: flex;\r\n	align-items: center;\r\n}\r\n\r\n#EquipmentV4 .ammo_container {\r\n	position: relative;\r\n}\r\n#EquipmentV4 .ammo {\r\n	position: absolute;\r\n	top: 30px;\r\n}\r\n#EquipmentV4 .ammo .item {\r\n	text-align: center;\r\n}\r\n#EquipmentV4 .ammo .item span {\r\n	width: 45px;\r\n}\r\n#EquipmentV4 .cartitems {\r\n	position: absolute;\r\n	top: 65px;\r\n	left: 14px;\r\n	width: 36px;\r\n	height: 36px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	display: none;\r\n}\r\n#EquipmentV4 .removeOption {\r\n	position: absolute;\r\n	top: 90px;\r\n	left: 12px;\r\n	width: 36px;\r\n	height: 36px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	display: none;\r\n}\r\n\r\n#EquipmentV4 .footer {\r\n	height: 20px;\r\n	border-bottom: 1px solid #c0c0c0;\r\n	background-position: 0px -130px;\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n#EquipmentV4 .footer .left {\r\n	float: left;\r\n	text-align: left;\r\n	margin-left: 5px;\r\n	margin-top: 3px;\r\n}\r\n#EquipmentV4 .footer .right {\r\n	float: right;\r\n	text-align: right;\r\n	margin-right: 5px;\r\n	margin-top: 3px;\r\n}\r\n#EquipmentV4 .footer .view_status {\r\n	width: 9px;\r\n	height: 14px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#EquipmentV4 .footer .show_equip {\r\n	width: 10px;\r\n	height: 12px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#EquipmentV4 .footer .show_costume {\r\n	width: 10px;\r\n	height: 12px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#EquipmentV4 .footer .switch_equip {\r\n	width: 40px;\r\n	height: 20px;\r\n	border: none;\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n#EquipmentV4 .footer .remove_equip {\r\n	width: 40px;\r\n	height: 20px;\r\n	border: none;\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n\r\n#lvlup_base {\r\n	z-index: 51;\r\n	position: absolute;\r\n	left: 0px;\r\n	bottom: 0px;\r\n	width: 43px;\r\n	height: 43px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#EquipmentV4 #damageskin .damageskin-selector {\r\n	display: flex;\r\n	justify-content: center;\r\n	align-items: center;\r\n	width: 280px;\r\n	margin: 0 auto;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-option {\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n	justify-content: center;\r\n\r\n	width: 64px;\r\n	height: 92px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	margin-top: 3px;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-option span {\r\n	position: relative;\r\n	top: -9px;\r\n	font-weight: bold;\r\n	text-align: center;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-option .icon {\r\n	width: 36px;\r\n	height: 36px;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-wrapper {\r\n	width: 64px;\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n	justify-content: center;\r\n	gap: 0;\r\n	padding: 0;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-wrapper > div:first-child {\r\n	margin-top: 8px;\r\n}\r\n\r\n#EquipmentV4 #damageskin .skin-wrapper .label {\r\n	margin-top: 6px;\r\n	text-align: center;\r\n}\r\n\r\n#EquipmentV4 .motion-check {\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n	cursor: pointer;\r\n	width: 10px;\r\n	height: 12px;\r\n	margin-right: 4px;\r\n}\r\n\r\n#EquipmentV4 .item .grade {\r\n	position: relative;\r\n	width: 12px;\r\n	height: 12px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	pointer-events: none;\r\n	z-index: 2;\r\n	top: 5px;\r\n}\r\n\r\n#EquipmentV4 #title .title-list {\r\n	height: 125px;\r\n	width: 280px;\r\n	overflow-y: auto;\r\n	overflow-x: hidden;\r\n	padding: 8px 8px;\r\n	border: 1px solid #c0c0c0;\r\n	background-color: #f8f8f8;\r\n}\r\n\r\n#EquipmentV4 .title-option {\r\n	padding: 1px;\r\n	margin: 1px 0;\r\n	cursor: pointer;\r\n	background-color: transparent;\r\n	border: 1px solid transparent;\r\n	white-space: nowrap;\r\n	width: 100%;\r\n}\r\n\r\n#EquipmentV4 .title-option.selected {\r\n	background-color: #e0e0e0;\r\n	font-weight: bold;\r\n}\r\n\r\n#EquipmentV4 .title-option:hover {\r\n	background-color: #e0e0e0;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/Equipment/EquipmentV4/EquipmentV4.js
@@ -315557,7 +315568,6 @@ var init_GUIComponent = __esmMin((() => {
 					attributes: true,
 					attributeFilter: ["class"]
 				});
-				node.addEventListener("x_remove", () => observer.disconnect(), { once: true });
 				if (!node._roActiveObserver) node._roActiveObserver = observer;
 			}
 			if (hover) {
@@ -322687,10 +322697,10 @@ function onClickSearch() {
 	const newList = [];
 	CashShop.isSearch = true;
 	CashShop.activeCashMenu = 9;
-	if (val && CashShop.cashShopListItem.length > 0) for (let i = 0; i < CashShop.cashShopListItem.length; ++i) {
-		const items = CashShop.cashShopListItem[i].items;
+	if (val && CashShop.cashShopListItem.length > 0) for (const tab of CashShop.cashShopListItem.filter(Boolean)) {
+		const items = tab.items;
 		for (let iit = 0; iit < items.length; ++iit) {
-			items[iit].tab = CashShop.cashShopListItem[i].tabNum;
+			items[iit].tab = tab.tabNum;
 			const it = DB.getItemInfo(items[iit].itemId);
 			if (it.identifiedDisplayName) {
 				if (new RegExp(val).test(it.identifiedDisplayName.toLowerCase())) newList.push(items[iit]);
@@ -322870,7 +322880,7 @@ function onClickActionBuyItem() {
 */
 function onClickMenu(target) {
 	const root = _root$6();
-	const selectedMenu = target.dataset.index.toUpperCase();
+	const selectedMenu = parseInt(target.dataset.index, 10);
 	const searchInput = root.querySelector("#cashshop-search");
 	if (searchInput) searchInput.value = "";
 	if (selectedMenu !== CashShop.activeCashMenu) {
@@ -323154,6 +323164,13 @@ var init_CashShop$1 = __esmMin((() => {
 			});
 		}
 		container.addEventListener("dragover", stopPropagation$6);
+		const searchInput = root.querySelector(".cashshop-search");
+		if (searchInput) searchInput.addEventListener("keydown", (e) => {
+			if (e.which === KEYS.ENTER || e.key === "Enter") {
+				e.preventDefault();
+				onClickSearch();
+			}
+		});
 		const cartListItems = root.querySelector("#cart-list .items");
 		if (cartListItems && cartListItems.children.length > 0) onResetCartListCashShop();
 		CashShop.loadCashShopBanner();
@@ -323288,11 +323305,7 @@ var init_CashShop$1 = __esmMin((() => {
 						CashShop.checkCartItemLen = 0;
 						UIManager.showMessageBox("Successfully done buying items from cash shop!", "ok");
 						ChatBox_default.addText("Successfully done buying items from cash shop!", ChatBox_default.TYPE.INFO, ChatBox_default.FILTER.PUBLIC_LOG);
-						const root = _root$6();
-						const cashpointSpan = root.querySelector("#cashpoint span");
-						if (cashpointSpan) cashpointSpan.textContent = res.cashPoints;
-						const cashpointFooter = root.querySelector(".cashpoint_footer");
-						if (cashpointFooter) cashpointFooter.textContent = res.cashPoints;
+						CashShop.readPoints(res.cashPoints, res.kafraPoints, CashShop.activeCashMenu);
 						onResetCartListCashShop();
 					}
 					break;
@@ -323310,12 +323323,26 @@ var init_CashShop$1 = __esmMin((() => {
 			}
 		}
 	};
-	CashShop.readCashShopItems = function readCashShopItems(items) {
-		CashShop.cashShopListItem.push({
-			count: items.count,
-			items: items.items,
-			tabNum: items.tabNum
-		});
+	/**
+	* Store a tab's items by its tab number, which is also the menu's data-index
+	*
+	* rAthena sends one ZC_ACK_SCHEDULER_CASHITEM per tab that has items, skipping
+	* empty tabs, and splits a tab too big for one packet over several.
+	*
+	* @param {object} pkt - PACKET.ZC.ACK_SCHEDULER_CASHITEM
+	*/
+	CashShop.readCashShopItems = function readCashShopItems(pkt) {
+		const tab = CashShop.cashShopListItem[pkt.tabNum];
+		if (tab) {
+			tab.items = tab.items.concat(pkt.items);
+			tab.count = tab.items.length;
+			return;
+		}
+		CashShop.cashShopListItem[pkt.tabNum] = {
+			count: pkt.count,
+			items: pkt.items,
+			tabNum: pkt.tabNum
+		};
 	};
 	/**
 	* Load Cash Shop Components
@@ -329478,6 +329505,10 @@ function onEntityIdentity(pkt) {
 			const titleText = DB.getTitleString(pkt.TitleID);
 			entity.display.title_name = titleText;
 		} else entity.display.title_name = "";
+		if (PacketVerManager_default.value >= 20170208 && entity === SessionStorage_default.Entity && pkt.TitleID !== void 0) {
+			const equipment = EquipmentController.getUI();
+			if (equipment && typeof equipment.setTitle === "function") equipment.setTitle(pkt.TitleID);
+		}
 		entity.display.party_name = pkt.PName || "";
 		entity.display.guild_name = pkt.GName || "";
 		entity.display.guild_rank = pkt.RName || "";
@@ -329507,7 +329538,7 @@ function onTitleChangeAck(pkt) {
 	if (pkt.result === 0) {
 		const comp = EquipmentController.getUI();
 		if (comp && typeof comp.setTitle === "function") comp.setTitle(pkt.title_id);
-	}
+	} else ChatBox_default.addText("You cannot use that title.", ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.PUBLIC_LOG);
 }
 /**
 * Update entity's life
@@ -338049,11 +338080,15 @@ var init_ReadRodex = __esmMin((() => {
 		this.focus();
 	};
 	ReadRodex.clearItemList = function clearItemList() {
-		const itemList = _root().querySelector(".item-list");
+		const root = _root();
+		if (!root) return;
+		const itemList = root.querySelector(".item-list");
 		if (itemList) itemList.innerHTML = "";
 	};
 	ReadRodex.clearZeny = function clearZeny() {
-		const valueEl = _root().querySelector(".value");
+		const root = _root();
+		if (!root) return;
+		const valueEl = root.querySelector(".value");
 		if (valueEl) valueEl.textContent = "";
 	};
 	ReadRodex.close = function close() {
@@ -338119,7 +338154,7 @@ function rodexGetZeny(pkt) {
 			break;
 		default:
 			ChatBox_default.addText(DB.getMessage(2591), ChatBox_default.TYPE.INFO_MAIL, ChatBox_default.FILTER.PUBLIC_LOG);
-			ReadRodex_default.clearZeny();
+			if (pkt.MailID === ReadRodex_default.MailID) ReadRodex_default.clearZeny();
 	}
 }
 /**
@@ -338137,7 +338172,7 @@ function rodexGetItem(pkt) {
 			break;
 		default:
 			ChatBox_default.addText(DB.getMessage(2588), ChatBox_default.TYPE.INFO_MAIL, ChatBox_default.FILTER.PUBLIC_LOG);
-			ReadRodex_default.clearItemList();
+			if (pkt.MailID === ReadRodex_default.MailID) ReadRodex_default.clearItemList();
 	}
 }
 /**
@@ -339014,8 +339049,26 @@ function initSessionAchievement() {
 		rank: 0,
 		current_rank_points: 0,
 		next_rank_points: 0,
-		list: {}
+		list: {},
+		titles: [],
+		loginListPending: true
 	};
+	if (!SessionStorage_default.Achievement.titles) SessionStorage_default.Achievement.titles = [];
+}
+/**
+* Give the player the title an achievement rewards, if it has one.
+* Mirrors the map-server's list (map_session_data::titles), which is what
+* CZ_REQ_CHANGE_TITLE is checked against.
+*
+* @param {object} ach - achievement from the session list
+*/
+function grantTitle(ach) {
+	const titleId = ach.info && ach.info.reward ? ach.info.reward.title : 0;
+	if (titleId && !SessionStorage_default.Achievement.titles.includes(titleId)) SessionStorage_default.Achievement.titles.push(titleId);
+}
+function refreshEquipmentTitles() {
+	const equipment = EquipmentController.getUI();
+	if (equipment && typeof equipment.loadTitles === "function") equipment.loadTitles();
 }
 function onAllAchievementList(pkt) {
 	initSessionAchievement();
@@ -339025,10 +339078,14 @@ function onAllAchievementList(pkt) {
 	SessionStorage_default.Achievement.current_rank_points = pkt.current_rank_points;
 	SessionStorage_default.Achievement.next_rank_points = pkt.next_rank_points;
 	const achTable = DB.getAchievementTable();
+	const isLoginList = SessionStorage_default.Achievement.loginListPending;
+	SessionStorage_default.Achievement.loginListPending = false;
 	pkt.ach_list.forEach((ach) => {
 		ach.info = achTable[ach.ach_id] || null;
 		SessionStorage_default.Achievement.list[ach.ach_id] = ach;
+		if (ach.reward || isLoginList && ach.completed) grantTitle(ach);
 	});
+	refreshEquipmentTitles();
 	const ui = UIManager.components.Achievement;
 	if (ui) ui.updateHeaderAndView();
 }
@@ -339038,12 +339095,17 @@ function onAchievementUpdate(pkt) {
 	SessionStorage_default.Achievement.rank = pkt.rank;
 	SessionStorage_default.Achievement.current_rank_points = pkt.current_rank_points;
 	SessionStorage_default.Achievement.next_rank_points = pkt.next_rank_points;
+	if (pkt.ach_list.length === 0) {
+		SessionStorage_default.Achievement.titles = [];
+		SessionStorage_default.Achievement.loginListPending = true;
+	} else SessionStorage_default.Achievement.loginListPending = false;
 	const achTable = DB.getAchievementTable();
 	pkt.ach_list.forEach((ach) => {
 		ach.info = achTable[ach.ach_id] || null;
 		const oldAch = SessionStorage_default.Achievement.list[ach.ach_id];
 		const isNewCompletion = ach.completed && (!oldAch || !oldAch.completed);
 		SessionStorage_default.Achievement.list[ach.ach_id] = ach;
+		if (ach.reward) grantTitle(ach);
 		if (isNewCompletion && ach.info && ach.info.title) {
 			Announce_default.append();
 			Announce_default.set(`${DB.getMessage(2681).replace("%s", ach.info.title)}`, "#FFFFFF", {
@@ -339059,11 +339121,11 @@ function onAchievementUpdate(pkt) {
 			EffectManager.spam(EF_Init_Par);
 		}
 	});
+	refreshEquipmentTitles();
 	const ui = UIManager.components.Achievement;
 	if (ui) ui.updateHeaderAndView();
 }
 function onRequestAchievementRewardACK(pkt) {
-	if (pkt.failed === 0 && SessionStorage_default.Achievement && SessionStorage_default.Achievement.list[pkt.ach_id]) SessionStorage_default.Achievement.list[pkt.ach_id].reward = 1;
 	const ui = UIManager.components.Achievement;
 	if (ui) ui.updateHeaderAndView();
 }
@@ -339085,6 +339147,7 @@ var init_Achievement = __esmMin((() => {
 	init_Achievement$1();
 	init_EffectConst();
 	init_EffectManager();
+	init_Equipment();
 }));
 //#endregion
 //#region src/Engine/MapEngine.js
@@ -339856,6 +339919,10 @@ var init_MapEngine = __esmMin((() => {
 			const current_ip = forceAddress ? server_info.address : Network.utils.longToIP(ip);
 			Network.connect(current_ip, port, (success) => {
 				MapRenderer.currentMap = "";
+				if (SessionStorage_default.Achievement) {
+					SessionStorage_default.Achievement.titles = [];
+					SessionStorage_default.Achievement.loginListPending = true;
+				}
 				if (!success) {
 					UIManager.showErrorBox(DB.getMessage(1));
 					return;
