@@ -78969,9 +78969,16 @@ var init_Controls = __esmMin((() => {
 		joyAimEnabled: false,
 		joyAimRing: false,
 		joyAimLine: false,
+		joyAimHideCursor: false,
 		joyRightStickMode: 0,
 		joyQuick: 0,
 		joyDeadline: .1,
+		joyDriftLX: 0,
+		joyDriftLY: 0,
+		joyDriftRX: 0,
+		joyDriftRY: 0,
+		joyStickCenter: null,
+		joyCameraSpeed: 90,
 		joyDisableVirtualMouse: false,
 		joyAutoHide: false,
 		joyReverseStick: false,
@@ -232661,13 +232668,13 @@ var init_GraphicsOption = __esmMin((() => {
 //#region src/UI/Components/ShortCutOption/ShortCutOption.html?raw
 var ShortCutOption_default$2;
 var init_ShortCutOption$2 = __esmMin((() => {
-	ShortCutOption_default$2 = "<div id=\"ShortCutOption\" class=\"pt-page-fadeIn1\">\r\n	<div class=\"border\">\r\n		<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n			<div class=\"left\"><span class=\"text\">Shortcut key setting window</span></div>\r\n\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"base close\"\r\n					data-background=\"basic_interface/sys_close_off.bmp\"\r\n					data-hover=\"basic_interface/sys_close_on.bmp\"\r\n				></button>\r\n			</div>\r\n\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"tabs\">\r\n			<button class=\"t_skillbar selectedtab\" data-index=\"t_skillbar\">Skill Bar</button\r\n			><button class=\"t_ui\" data-index=\"t_ui\">Interface</button\r\n			><button class=\"t_macro\" data-index=\"t_macro\">Macros</button\r\n			><button class=\"t_gamepad\" data-index=\"t_gamepad\">Gamepad</button>\r\n		</div>\r\n		<div class=\"panel\">\r\n			<div class=\"content t_skillbar selectedtab\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Skill bar 1-1</td>\r\n							<td data-button=\"F1_1\" class=\"customize\"></td>\r\n							<td>Skill bar 2-1</td>\r\n							<td data-button=\"F2_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-2</td>\r\n							<td data-button=\"F1_2\" class=\"customize\"></td>\r\n							<td>Skill bar 2-2</td>\r\n							<td data-button=\"F2_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-3</td>\r\n							<td data-button=\"F1_3\" class=\"customize\"></td>\r\n							<td>Skill bar 2-3</td>\r\n							<td data-button=\"F2_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-4</td>\r\n							<td data-button=\"F1_4\" class=\"customize\"></td>\r\n							<td>Skill bar 2-4</td>\r\n							<td data-button=\"F2_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-5</td>\r\n							<td data-button=\"F1_5\" class=\"customize\"></td>\r\n							<td>Skill bar 2-5</td>\r\n							<td data-button=\"F2_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-6</td>\r\n							<td data-button=\"F1_6\" class=\"customize\"></td>\r\n							<td>Skill bar 2-6</td>\r\n							<td data-button=\"F2_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-7</td>\r\n							<td data-button=\"F1_7\" class=\"customize\"></td>\r\n							<td>Skill bar 2-7</td>\r\n							<td data-button=\"F2_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-8</td>\r\n							<td data-button=\"F1_8\" class=\"customize\"></td>\r\n							<td>Skill bar 2-8</td>\r\n							<td data-button=\"F2_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-9</td>\r\n							<td data-button=\"F1_9\" class=\"customize\"></td>\r\n							<td>Skill bar 2-9</td>\r\n							<td data-button=\"F2_9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-1</td>\r\n							<td data-button=\"F3_1\" class=\"customize\"></td>\r\n							<td>Skill bar 4-1</td>\r\n							<td data-button=\"F4_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-2</td>\r\n							<td data-button=\"F3_2\" class=\"customize\"></td>\r\n							<td>Skill bar 4-2</td>\r\n							<td data-button=\"F4_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-3</td>\r\n							<td data-button=\"F3_3\" class=\"customize\"></td>\r\n							<td>Skill bar 4-3</td>\r\n							<td data-button=\"F4_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-4</td>\r\n							<td data-button=\"F3_4\" class=\"customize\"></td>\r\n							<td>Skill bar 4-4</td>\r\n							<td data-button=\"F4_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-5</td>\r\n							<td data-button=\"F3_5\" class=\"customize\"></td>\r\n							<td>Skill bar 4-5</td>\r\n							<td data-button=\"F4_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-6</td>\r\n							<td data-button=\"F3_6\" class=\"customize\"></td>\r\n							<td>Skill bar 4-6</td>\r\n							<td data-button=\"F4_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-7</td>\r\n							<td data-button=\"F3_7\" class=\"customize\"></td>\r\n							<td>Skill bar 4-7</td>\r\n							<td data-button=\"F4_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-8</td>\r\n							<td data-button=\"F3_8\" class=\"customize\"></td>\r\n							<td>Skill bar 4-8</td>\r\n							<td data-button=\"F4_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-9</td>\r\n							<td data-button=\"F3_9\" class=\"customize\"></td>\r\n							<td>Skill bar 4-9</td>\r\n							<td data-button=\"F4_9\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_ui\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Basic Info</td>\r\n							<td data-button=\"BasicInfo\" class=\"customize\"></td>\r\n							<td>Character Info</td>\r\n							<td data-button=\"Equipment\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill List</td>\r\n							<td data-button=\"SkillList\" class=\"customize\"></td>\r\n							<td>Emotion List</td>\r\n							<td data-button=\"Emotions\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Friends List</td>\r\n							<td data-button=\"Friends\" class=\"customize\"></td>\r\n							<td>Party Window</td>\r\n							<td data-button=\"Party\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Pet Info</td>\r\n							<td data-button=\"PetInfo\" class=\"customize\"></td>\r\n							<td>Chat Room</td>\r\n							<td data-button=\"ChatRoom\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Cart Window</td>\r\n							<td data-button=\"PushCart\" class=\"customize\"></td>\r\n							<td>Item Window</td>\r\n							<td data-button=\"Inventory\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>World Map</td>\r\n							<td data-button=\"WorldMap\" class=\"customize\"></td>\r\n							<td>Guild Info</td>\r\n							<td data-button=\"Guild\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus Info</td>\r\n							<td data-button=\"HomunInfo\" class=\"customize\"></td>\r\n							<td>Mercenary Info</td>\r\n							<td data-button=\"MercInfo\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus State</td>\r\n							<td data-button=\"HomunState\" class=\"customize\"></td>\r\n							<td>Mercenary State</td>\r\n							<td data-button=\"MercState\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Sit/Stand</td>\r\n							<td data-button=\"Sit\" class=\"customize\"></td>\r\n							<td>Short Cuts</td>\r\n							<td data-button=\"ShortCuts\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Chat Bar Size</td>\r\n							<td data-button=\"ChatSize\" class=\"customize\"></td>\r\n							<td>Skill Bar Size</td>\r\n							<td data-button=\"SkillBarSize\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Quest</td>\r\n							<td data-button=\"Quest\" class=\"customize\"></td>\r\n							<td>Bank</td>\r\n							<td data-button=\"Bank\" class=\"customize\"></td>\r\n						</tr>\r\n						<!--<tr>\r\n                     <td>MobileUI</td>\r\n                     <td data-button=\"M_UI\" class=\"customize\"></td>\r\n                     <td>MUi-Toggle</td>\r\n                     <td data-button=\"M_Toggle\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-TG</td>\r\n                     <td data-button=\"M_Targeting\" class=\"customize\"></td>\r\n                     <td>MUi-AT</td>\r\n                     <td data-button=\"M_AutoTarget\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-ATK</td>\r\n                     <td data-button=\"M_Attack\" class=\"customize\"></td>\r\n                  </tr>-->\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_macro\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Macro 1</td>\r\n							<td data-button=\"Macro1\" class=\"customize\"></td>\r\n							<td>Flag 1</td>\r\n							<td data-button=\"Flag1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 2</td>\r\n							<td data-button=\"Macro2\" class=\"customize\"></td>\r\n							<td>Flag 2</td>\r\n							<td data-button=\"Flag2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 3</td>\r\n							<td data-button=\"Macro3\" class=\"customize\"></td>\r\n							<td>Flag 3</td>\r\n							<td data-button=\"Flag3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 4</td>\r\n							<td data-button=\"Macro4\" class=\"customize\"></td>\r\n							<td>Flag 4</td>\r\n							<td data-button=\"Flag4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 5</td>\r\n							<td data-button=\"Macro5\" class=\"customize\"></td>\r\n							<td>Flag 5</td>\r\n							<td data-button=\"Flag5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 6</td>\r\n							<td data-button=\"Macro6\" class=\"customize\"></td>\r\n							<td>Flag 6</td>\r\n							<td data-button=\"Flag6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 7</td>\r\n							<td data-button=\"Macro7\" class=\"customize\"></td>\r\n							<td>Flag 7</td>\r\n							<td data-button=\"Flag7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 8</td>\r\n							<td data-button=\"Macro8\" class=\"customize\"></td>\r\n							<td>Flag 8</td>\r\n							<td data-button=\"Flag8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 9</td>\r\n							<td data-button=\"Macro9\" class=\"customize\"></td>\r\n							<td>Flag 9</td>\r\n							<td data-button=\"Flag9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 10</td>\r\n							<td data-button=\"Macro10\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_gamepad\">\r\n				<table class=\"joySettings\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr title=\"Show which button does what, and remap them\">\r\n							<td>Button Mapping</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyMappingOpen\">Mapping</button>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Define how targets are selected in combat\">\r\n							<td>Attack Target Mode</td>\r\n							<td>\r\n								<select class=\"attackTargetMode\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Lowest HP</option>\r\n									<option value=\"2\">Closest</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"What the D-pad left/right cycles through (L3 switches in game)\">\r\n							<td>D-pad Cycle Targets</td>\r\n							<td>\r\n								<select class=\"joyCycleMode\">\r\n									<option value=\"0\">Mobs</option>\r\n									<option value=\"1\">Items</option>\r\n									<option value=\"2\">Both</option>\r\n									<option value=\"3\">NPCs &amp; portals</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Choose how skills are cast with gamepad\">\r\n							<td>Quick-Cast Mode</td>\r\n							<td>\r\n								<select class=\"joyQuick\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Release Mode</option>\r\n									<option value=\"2\">Instant Mode</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Adjust mouse movement sensitivity for R3 stick\">\r\n							<td>Mouse Move</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Sensitivity:\r\n									<input\r\n										class=\"joySense\"\r\n										type=\"range\"\r\n										value=\"25.0\"\r\n										min=\"1.0\"\r\n										max=\"100.0\"\r\n										step=\"1.0\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Disable mouse input from gamepad for UI interaction\">\r\n							<td>Disable Virtual Mouse</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyDisableVirtualMouse\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Swap L3 and R3 stick functions\">\r\n							<td>Swap L3-R3 Sticks</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyReverseStick\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Automatically hide UI during gameplay mouse movement\">\r\n							<td>Auto Hide UI</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAutoHide\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Set deadzone threshold for analog sticks\">\r\n							<td>Axis Threshold</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Deadline:\r\n									<input\r\n										class=\"joyDeadline\"\r\n										type=\"range\"\r\n										value=\"0.10\"\r\n										min=\"0.0\"\r\n										max=\"1.0\"\r\n										step=\"0.1\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Aim Settings</td>\r\n						</tr>\r\n						<tr title=\"Push the right stick toward a monster or item to target the first one in that direction. In game, tap RS click to switch the right stick between aiming and the cursor; hold it to clear the target\">\r\n							<td>Right-Stick Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimEnabled\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, a red ring marks a newly selected target on the ground, then fades out within two seconds\">\r\n							<td>Show Target Ring</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimRing\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, draw a short line in the aimed direction, which connects to the target once the aim is on one\">\r\n							<td>Show Aim Line</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimLine\" />\r\n							</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<div class=\"joyMapping\">\r\n					<div class=\"joyMappingHeader\">\r\n						<button type=\"button\" class=\"joyBtn joyMappingBack\">&#9664; Back</button>\r\n						<span class=\"joyMappingTitle\">Button mapping</span>\r\n						<button type=\"button\" class=\"joyBtn joyMappingReset\">Reset to defaults</button>\r\n					</div>\r\n					<div class=\"joyMappingStatus\">Remap: press Remap, then a button on the gamepad. The two buttons trade places.</div>\r\n					<div class=\"joyMappingScroll\">\r\n						<table class=\"joyMappingRoles\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n						<div class=\"joyMappingSub\">Combinations (follow the buttons above)</div>\r\n						<table class=\"joyMappingCombos\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<button\r\n				class=\"button reset left\"\r\n				data-background=\"btn_reset.bmp\"\r\n				data-hover=\"btn_reset_a.bmp\"\r\n				data-down=\"btn_reset_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button ok right\"\r\n				data-background=\"btn_ok.bmp\"\r\n				data-hover=\"btn_ok_a.bmp\"\r\n				data-down=\"btn_ok_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button cancel right\"\r\n				data-background=\"btn_cancel.bmp\"\r\n				data-hover=\"btn_cancel_a.bmp\"\r\n				data-down=\"btn_cancel_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button close right\"\r\n				data-background=\"btn_close.bmp\"\r\n				data-hover=\"btn_close_a.bmp\"\r\n				data-down=\"btn_close_b.bmp\"\r\n			></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	ShortCutOption_default$2 = "<div id=\"ShortCutOption\" class=\"pt-page-fadeIn1\">\r\n	<div class=\"border\">\r\n		<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n			<div class=\"left\"><span class=\"text\">Shortcut key setting window</span></div>\r\n\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"base close\"\r\n					data-background=\"basic_interface/sys_close_off.bmp\"\r\n					data-hover=\"basic_interface/sys_close_on.bmp\"\r\n				></button>\r\n			</div>\r\n\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"tabs\">\r\n			<button class=\"t_skillbar selectedtab\" data-index=\"t_skillbar\">Skill Bar</button\r\n			><button class=\"t_ui\" data-index=\"t_ui\">Interface</button\r\n			><button class=\"t_macro\" data-index=\"t_macro\">Macros</button\r\n			><button class=\"t_gamepad\" data-index=\"t_gamepad\">Gamepad</button>\r\n		</div>\r\n		<div class=\"panel\">\r\n			<div class=\"content t_skillbar selectedtab\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Skill bar 1-1</td>\r\n							<td data-button=\"F1_1\" class=\"customize\"></td>\r\n							<td>Skill bar 2-1</td>\r\n							<td data-button=\"F2_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-2</td>\r\n							<td data-button=\"F1_2\" class=\"customize\"></td>\r\n							<td>Skill bar 2-2</td>\r\n							<td data-button=\"F2_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-3</td>\r\n							<td data-button=\"F1_3\" class=\"customize\"></td>\r\n							<td>Skill bar 2-3</td>\r\n							<td data-button=\"F2_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-4</td>\r\n							<td data-button=\"F1_4\" class=\"customize\"></td>\r\n							<td>Skill bar 2-4</td>\r\n							<td data-button=\"F2_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-5</td>\r\n							<td data-button=\"F1_5\" class=\"customize\"></td>\r\n							<td>Skill bar 2-5</td>\r\n							<td data-button=\"F2_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-6</td>\r\n							<td data-button=\"F1_6\" class=\"customize\"></td>\r\n							<td>Skill bar 2-6</td>\r\n							<td data-button=\"F2_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-7</td>\r\n							<td data-button=\"F1_7\" class=\"customize\"></td>\r\n							<td>Skill bar 2-7</td>\r\n							<td data-button=\"F2_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-8</td>\r\n							<td data-button=\"F1_8\" class=\"customize\"></td>\r\n							<td>Skill bar 2-8</td>\r\n							<td data-button=\"F2_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-9</td>\r\n							<td data-button=\"F1_9\" class=\"customize\"></td>\r\n							<td>Skill bar 2-9</td>\r\n							<td data-button=\"F2_9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-1</td>\r\n							<td data-button=\"F3_1\" class=\"customize\"></td>\r\n							<td>Skill bar 4-1</td>\r\n							<td data-button=\"F4_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-2</td>\r\n							<td data-button=\"F3_2\" class=\"customize\"></td>\r\n							<td>Skill bar 4-2</td>\r\n							<td data-button=\"F4_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-3</td>\r\n							<td data-button=\"F3_3\" class=\"customize\"></td>\r\n							<td>Skill bar 4-3</td>\r\n							<td data-button=\"F4_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-4</td>\r\n							<td data-button=\"F3_4\" class=\"customize\"></td>\r\n							<td>Skill bar 4-4</td>\r\n							<td data-button=\"F4_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-5</td>\r\n							<td data-button=\"F3_5\" class=\"customize\"></td>\r\n							<td>Skill bar 4-5</td>\r\n							<td data-button=\"F4_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-6</td>\r\n							<td data-button=\"F3_6\" class=\"customize\"></td>\r\n							<td>Skill bar 4-6</td>\r\n							<td data-button=\"F4_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-7</td>\r\n							<td data-button=\"F3_7\" class=\"customize\"></td>\r\n							<td>Skill bar 4-7</td>\r\n							<td data-button=\"F4_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-8</td>\r\n							<td data-button=\"F3_8\" class=\"customize\"></td>\r\n							<td>Skill bar 4-8</td>\r\n							<td data-button=\"F4_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-9</td>\r\n							<td data-button=\"F3_9\" class=\"customize\"></td>\r\n							<td>Skill bar 4-9</td>\r\n							<td data-button=\"F4_9\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_ui\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Basic Info</td>\r\n							<td data-button=\"BasicInfo\" class=\"customize\"></td>\r\n							<td>Character Info</td>\r\n							<td data-button=\"Equipment\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill List</td>\r\n							<td data-button=\"SkillList\" class=\"customize\"></td>\r\n							<td>Emotion List</td>\r\n							<td data-button=\"Emotions\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Friends List</td>\r\n							<td data-button=\"Friends\" class=\"customize\"></td>\r\n							<td>Party Window</td>\r\n							<td data-button=\"Party\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Pet Info</td>\r\n							<td data-button=\"PetInfo\" class=\"customize\"></td>\r\n							<td>Chat Room</td>\r\n							<td data-button=\"ChatRoom\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Cart Window</td>\r\n							<td data-button=\"PushCart\" class=\"customize\"></td>\r\n							<td>Item Window</td>\r\n							<td data-button=\"Inventory\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>World Map</td>\r\n							<td data-button=\"WorldMap\" class=\"customize\"></td>\r\n							<td>Guild Info</td>\r\n							<td data-button=\"Guild\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus Info</td>\r\n							<td data-button=\"HomunInfo\" class=\"customize\"></td>\r\n							<td>Mercenary Info</td>\r\n							<td data-button=\"MercInfo\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus State</td>\r\n							<td data-button=\"HomunState\" class=\"customize\"></td>\r\n							<td>Mercenary State</td>\r\n							<td data-button=\"MercState\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Sit/Stand</td>\r\n							<td data-button=\"Sit\" class=\"customize\"></td>\r\n							<td>Short Cuts</td>\r\n							<td data-button=\"ShortCuts\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Chat Bar Size</td>\r\n							<td data-button=\"ChatSize\" class=\"customize\"></td>\r\n							<td>Skill Bar Size</td>\r\n							<td data-button=\"SkillBarSize\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Quest</td>\r\n							<td data-button=\"Quest\" class=\"customize\"></td>\r\n							<td>Bank</td>\r\n							<td data-button=\"Bank\" class=\"customize\"></td>\r\n						</tr>\r\n						<!--<tr>\r\n                     <td>MobileUI</td>\r\n                     <td data-button=\"M_UI\" class=\"customize\"></td>\r\n                     <td>MUi-Toggle</td>\r\n                     <td data-button=\"M_Toggle\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-TG</td>\r\n                     <td data-button=\"M_Targeting\" class=\"customize\"></td>\r\n                     <td>MUi-AT</td>\r\n                     <td data-button=\"M_AutoTarget\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-ATK</td>\r\n                     <td data-button=\"M_Attack\" class=\"customize\"></td>\r\n                  </tr>-->\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_macro\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Macro 1</td>\r\n							<td data-button=\"Macro1\" class=\"customize\"></td>\r\n							<td>Flag 1</td>\r\n							<td data-button=\"Flag1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 2</td>\r\n							<td data-button=\"Macro2\" class=\"customize\"></td>\r\n							<td>Flag 2</td>\r\n							<td data-button=\"Flag2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 3</td>\r\n							<td data-button=\"Macro3\" class=\"customize\"></td>\r\n							<td>Flag 3</td>\r\n							<td data-button=\"Flag3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 4</td>\r\n							<td data-button=\"Macro4\" class=\"customize\"></td>\r\n							<td>Flag 4</td>\r\n							<td data-button=\"Flag4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 5</td>\r\n							<td data-button=\"Macro5\" class=\"customize\"></td>\r\n							<td>Flag 5</td>\r\n							<td data-button=\"Flag5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 6</td>\r\n							<td data-button=\"Macro6\" class=\"customize\"></td>\r\n							<td>Flag 6</td>\r\n							<td data-button=\"Flag6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 7</td>\r\n							<td data-button=\"Macro7\" class=\"customize\"></td>\r\n							<td>Flag 7</td>\r\n							<td data-button=\"Flag7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 8</td>\r\n							<td data-button=\"Macro8\" class=\"customize\"></td>\r\n							<td>Flag 8</td>\r\n							<td data-button=\"Flag8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 9</td>\r\n							<td data-button=\"Macro9\" class=\"customize\"></td>\r\n							<td>Flag 9</td>\r\n							<td data-button=\"Flag9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 10</td>\r\n							<td data-button=\"Macro10\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_gamepad\">\r\n				<table class=\"joySettings\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr title=\"Show which button does what, and remap them\">\r\n							<td>Button Mapping</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyMappingOpen\">Mapping</button>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Define how targets are selected in combat\">\r\n							<td>Attack Target Mode</td>\r\n							<td>\r\n								<select class=\"attackTargetMode\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Lowest HP</option>\r\n									<option value=\"2\">Closest</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"What the D-pad left/right cycles through (L3 switches in game)\">\r\n							<td>D-pad Cycle Targets</td>\r\n							<td>\r\n								<select class=\"joyCycleMode\">\r\n									<option value=\"0\">Mobs</option>\r\n									<option value=\"1\">Items</option>\r\n									<option value=\"2\">Both</option>\r\n									<option value=\"3\">NPCs &amp; portals</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Choose how skills are cast with gamepad. With Right-Stick Aiming on, Off is not available: skills go to the aimed target\"\r\n						>\r\n							<td>Quick-Cast Mode</td>\r\n							<td>\r\n								<select class=\"joyQuick\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Release Mode</option>\r\n									<option value=\"2\">Instant Mode</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Adjust mouse movement sensitivity for R3 stick\">\r\n							<td>Mouse Move</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Sensitivity:\r\n									<input\r\n										class=\"joySense\"\r\n										type=\"range\"\r\n										value=\"25.0\"\r\n										min=\"1.0\"\r\n										max=\"100.0\"\r\n										step=\"1.0\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Disable mouse input from gamepad for UI interaction\">\r\n							<td>Disable Virtual Mouse</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyDisableVirtualMouse\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Swap L3 and R3 stick functions\">\r\n							<td>Swap L3-R3 Sticks</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyReverseStick\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Automatically hide UI during gameplay mouse movement\">\r\n							<td>Auto Hide UI</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAutoHide\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Set deadzone threshold for analog sticks\">\r\n							<td>Axis Threshold</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Deadline:\r\n									<input\r\n										class=\"joyDeadline\"\r\n										type=\"range\"\r\n										value=\"0.10\"\r\n										min=\"0.0\"\r\n										max=\"1.0\"\r\n										step=\"0.1\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"How fast View + D-pad left/right turns the camera, in degrees per second\">\r\n							<td>Camera Turn Speed</td>\r\n							<td>\r\n								<input\r\n									class=\"joyCameraSpeed joyRange\"\r\n									type=\"range\"\r\n									value=\"90\"\r\n									min=\"30\"\r\n									max=\"360\"\r\n									step=\"10\"\r\n								/>\r\n								<span class=\"joyValue\" data-for=\"joyCameraSpeed\"></span>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Stick Drift</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Measure where the sticks rest and treat that as centre. Leave both sticks alone while it runs (one second)\"\r\n						>\r\n							<td>Calibrate Sticks</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrate\">Calibrate</button>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrateReset\">Reset</button>\r\n								<div class=\"joyCalibrateStatus\"></div>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Left stick: movement on each axis below this value is ignored\">\r\n							<td>Left Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftLX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftLY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Right stick: movement on each axis below this value is ignored\">\r\n							<td>Right Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftRX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftRY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Aim Settings</td>\r\n						</tr>\r\n						<tr title=\"Push the right stick toward a monster or item to target the first one in that direction. In game, tap RS click to switch the right stick between aiming and the cursor; hold it to clear the target\">\r\n							<td>Right-Stick Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimEnabled\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, a red ring marks a newly selected target on the ground, then fades out within two seconds\">\r\n							<td>Show Target Ring</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimRing\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, draw a short line in the aimed direction, which connects to the target once the aim is on one\">\r\n							<td>Show Aim Line</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimLine\" />\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"While the right stick aims, hide the game's cursor. Moving the mouse shows it again; tap RS click for the cursor mode\"\r\n						>\r\n							<td>Hide Cursor While Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimHideCursor\" />\r\n							</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<div class=\"joyMapping\">\r\n					<div class=\"joyMappingHeader\">\r\n						<button type=\"button\" class=\"joyBtn joyMappingBack\">&#9664; Back</button>\r\n						<span class=\"joyMappingTitle\">Button mapping</span>\r\n						<button type=\"button\" class=\"joyBtn joyMappingReset\">Reset to defaults</button>\r\n					</div>\r\n					<div class=\"joyMappingStatus\">Remap: press Remap, then a button on the gamepad. The two buttons trade places.</div>\r\n					<div class=\"joyMappingScroll\">\r\n						<table class=\"joyMappingRoles\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n						<div class=\"joyMappingSub\">Combinations (follow the buttons above)</div>\r\n						<table class=\"joyMappingCombos\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<button\r\n				class=\"button reset left\"\r\n				data-background=\"btn_reset.bmp\"\r\n				data-hover=\"btn_reset_a.bmp\"\r\n				data-down=\"btn_reset_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button ok right\"\r\n				data-background=\"btn_ok.bmp\"\r\n				data-hover=\"btn_ok_a.bmp\"\r\n				data-down=\"btn_ok_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button cancel right\"\r\n				data-background=\"btn_cancel.bmp\"\r\n				data-hover=\"btn_cancel_a.bmp\"\r\n				data-down=\"btn_cancel_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button close right\"\r\n				data-background=\"btn_close.bmp\"\r\n				data-hover=\"btn_close_a.bmp\"\r\n				data-down=\"btn_close_b.bmp\"\r\n			></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/ShortCutOption/ShortCutOption.css?raw
 var ShortCutOption_default$1;
 var init_ShortCutOption$1 = __esmMin((() => {
-	ShortCutOption_default$1 = ":host {\r\n	width: 430px;\r\n	height: 465px;\r\n	top: 300px;\r\n	left: 300px;\r\n}\r\n\r\n#ShortCutOption {\r\n	position: absolute;\r\n	width: 430px;\r\n	height: 465px;\r\n	background: white;\r\n	border-radius: 3px;\r\n	border: solid 1px #aaa;\r\n	border-top: none;\r\n}\r\n#ShortCutOption .border {\r\n}\r\n#ShortCutOption .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	border-bottom: solid 1px #eee;\r\n}\r\n#ShortCutOption .titlebar .base {\r\n	width: 20px;\r\n	height: 100%;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n	background-position: 8px 2px;\r\n}\r\n#ShortCutOption .titlebar .base.close {\r\n	color: #ccc;\r\n}\r\n#ShortCutOption .titlebar .text {\r\n	white-space: nowrap;\r\n	display: inline-block;\r\n	line-height: 17px;\r\n	margin-left: 5px;\r\n}\r\n#ShortCutOption .titlebar .left {\r\n	float: left;\r\n}\r\n#ShortCutOption .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n	height: 100%;\r\n}\r\n#ShortCutOption .titlebar .clear {\r\n	clear: both;\r\n}\r\n#ShortCutOption .tabs {\r\n	position: relative;\r\n	top: 1px;\r\n	border-right: solid 1px #ccc;\r\n}\r\n#ShortCutOption .tabs button.selectedtab {\r\n	border-bottom: solid 1px transparent;\r\n}\r\n#ShortCutOption .tabs button {\r\n	width: 57px;\r\n	height: 18px;\r\n	padding: 0;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n	background-color: #fff;\r\n	border: solid 1px #bbb;\r\n	border-top-right-radius: 3px;\r\n	border-top-left-radius: 3px;\r\n}\r\n#ShortCutOption .tabs button:nth-child(1) {\r\n	border-right: none;\r\n}\r\n#ShortCutOption .panel {\r\n	padding: 5px;\r\n	border-top: solid 1px #ccc;\r\n}\r\n#ShortCutOption .panel .content {\r\n	display: none;\r\n}\r\n#ShortCutOption .content.selectedtab {\r\n	display: block;\r\n}\r\n#ShortCutOption .content table {\r\n	width: 100%;\r\n	border-collapse: collapse;\r\n	color: #222;\r\n}\r\n#ShortCutOption .content table tr {\r\n	height: 22px;\r\n}\r\n#ShortCutOption .content table td {\r\n	text-align: center;\r\n}\r\n#ShortCutOption .content table td:nth-child(1),\r\n#ShortCutOption .content table td:nth-child(3) {\r\n	width: 30%;\r\n}\r\n#ShortCutOption .content table td:nth-child(2),\r\n#ShortCutOption .content table td:nth-child(4) {\r\n	width: 20%;\r\n	background-color: #eee;\r\n}\r\n#ShortCutOption .content table td.customize {\r\n	background-color: #ffffe0;\r\n}\r\n#ShortCutOption .content table td.changed {\r\n	background-color: #ffe4e1;\r\n}\r\n#ShortCutOption .content table td.selected {\r\n	background-color: #ffb6c1;\r\n}\r\n#ShortCutOption .content table tr.joySection td {\r\n	width: auto;\r\n	text-align: left;\r\n	padding-left: 4px;\r\n	font-weight: bold;\r\n	background-color: #f0f0f0;\r\n}\r\n#ShortCutOption .joyBtn {\r\n	padding: 0 6px;\r\n	height: 18px;\r\n	border: solid 1px #aaa;\r\n	border-radius: 3px;\r\n	background-color: #f4f4f4;\r\n	cursor: pointer;\r\n	font-size: 11px;\r\n}\r\n#ShortCutOption .joyBtn:hover {\r\n	background-color: #e4e4e4;\r\n}\r\n#ShortCutOption .joyBtn.capturing {\r\n	background-color: #ffb6c1;\r\n}\r\n#ShortCutOption .joyMapping {\r\n	display: none;\r\n}\r\n#ShortCutOption .t_gamepad.mapping-open .joySettings {\r\n	display: none;\r\n}\r\n#ShortCutOption .t_gamepad.mapping-open .joyMapping {\r\n	display: block;\r\n}\r\n#ShortCutOption .joyMappingHeader {\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: space-between;\r\n	margin-bottom: 4px;\r\n}\r\n#ShortCutOption .joyMappingTitle {\r\n	font-weight: bold;\r\n}\r\n#ShortCutOption .joyMappingStatus {\r\n	min-height: 28px;\r\n	margin-bottom: 4px;\r\n	color: #555;\r\n}\r\n#ShortCutOption .joyMappingStatus.capturing {\r\n	color: #b00020;\r\n	font-weight: bold;\r\n}\r\n#ShortCutOption .joyMappingScroll {\r\n	max-height: 320px;\r\n	overflow-y: auto;\r\n}\r\n#ShortCutOption .joyMappingSub {\r\n	margin: 6px 0 3px;\r\n	font-weight: bold;\r\n}\r\n#ShortCutOption .content .joyMapping table td:nth-child(1) {\r\n	width: 58%;\r\n	text-align: left;\r\n	padding-left: 4px;\r\n}\r\n#ShortCutOption .content .joyMapping table td:nth-child(2) {\r\n	width: 26%;\r\n}\r\n#ShortCutOption .content .joyMapping table td:nth-child(3) {\r\n	width: 16%;\r\n}\r\n#ShortCutOption .content .joyMappingCombos td:nth-child(1) {\r\n	width: 45%;\r\n	text-align: center;\r\n	padding-left: 0;\r\n	background-color: #eee;\r\n}\r\n#ShortCutOption .content .joyMappingCombos td:nth-child(2) {\r\n	width: 55%;\r\n	text-align: left;\r\n	padding-left: 4px;\r\n	background-color: transparent;\r\n}\r\n#ShortCutOption .resolution {\r\n	display: none;\r\n}\r\n#ShortCutOption .panel .button {\r\n	position: absolute;\r\n	bottom: 3px;\r\n	width: 42px;\r\n	height: 20px;\r\n	margin-top: 3px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#ShortCutOption .panel .button.reset {\r\n	left: 3px;\r\n}\r\n#ShortCutOption .panel .button.ok {\r\n	right: 93px;\r\n}\r\n#ShortCutOption .panel .button.cancel {\r\n	right: 48px;\r\n}\r\n#ShortCutOption .panel .button.close {\r\n	right: 3px;\r\n}\r\n";
+	ShortCutOption_default$1 = ":host {\r\n	width: 430px;\r\n	height: 465px;\r\n	top: 300px;\r\n	left: 300px;\r\n}\r\n\r\n#ShortCutOption {\r\n	position: absolute;\r\n	width: 430px;\r\n	height: 465px;\r\n	background: white;\r\n	border-radius: 3px;\r\n	border: solid 1px #aaa;\r\n	border-top: none;\r\n}\r\n#ShortCutOption .border {\r\n}\r\n#ShortCutOption .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	border-bottom: solid 1px #eee;\r\n}\r\n#ShortCutOption .titlebar .base {\r\n	width: 20px;\r\n	height: 100%;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n	background-position: 8px 2px;\r\n}\r\n#ShortCutOption .titlebar .base.close {\r\n	color: #ccc;\r\n}\r\n#ShortCutOption .titlebar .text {\r\n	white-space: nowrap;\r\n	display: inline-block;\r\n	line-height: 17px;\r\n	margin-left: 5px;\r\n}\r\n#ShortCutOption .titlebar .left {\r\n	float: left;\r\n}\r\n#ShortCutOption .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n	height: 100%;\r\n}\r\n#ShortCutOption .titlebar .clear {\r\n	clear: both;\r\n}\r\n#ShortCutOption .tabs {\r\n	position: relative;\r\n	top: 1px;\r\n	border-right: solid 1px #ccc;\r\n}\r\n#ShortCutOption .tabs button.selectedtab {\r\n	border-bottom: solid 1px transparent;\r\n}\r\n#ShortCutOption .tabs button {\r\n	width: 57px;\r\n	height: 18px;\r\n	padding: 0;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n	white-space: nowrap;\r\n	background-color: #fff;\r\n	border: solid 1px #bbb;\r\n	border-top-right-radius: 3px;\r\n	border-top-left-radius: 3px;\r\n}\r\n#ShortCutOption .tabs button:nth-child(1) {\r\n	border-right: none;\r\n}\r\n#ShortCutOption .panel {\r\n	padding: 5px;\r\n	border-top: solid 1px #ccc;\r\n}\r\n#ShortCutOption .panel .content {\r\n	display: none;\r\n}\r\n#ShortCutOption .content.selectedtab {\r\n	display: block;\r\n}\r\n#ShortCutOption .content table {\r\n	width: 100%;\r\n	border-collapse: collapse;\r\n	color: #222;\r\n}\r\n#ShortCutOption .content table tr {\r\n	height: 22px;\r\n}\r\n#ShortCutOption .content table td {\r\n	text-align: center;\r\n}\r\n#ShortCutOption .content table td:nth-child(1),\r\n#ShortCutOption .content table td:nth-child(3) {\r\n	width: 30%;\r\n}\r\n#ShortCutOption .content table td:nth-child(2),\r\n#ShortCutOption .content table td:nth-child(4) {\r\n	width: 20%;\r\n	background-color: #eee;\r\n}\r\n#ShortCutOption .content table td.customize {\r\n	background-color: #ffffe0;\r\n}\r\n#ShortCutOption .content table td.changed {\r\n	background-color: #ffe4e1;\r\n}\r\n#ShortCutOption .content table td.selected {\r\n	background-color: #ffb6c1;\r\n}\r\n#ShortCutOption .content table tr.joySection td {\r\n	width: auto;\r\n	text-align: left;\r\n	padding-left: 4px;\r\n	font-weight: bold;\r\n	background-color: #f0f0f0;\r\n}\r\n#ShortCutOption .joyBtn {\r\n	padding: 0 6px;\r\n	height: 18px;\r\n	border: solid 1px #aaa;\r\n	border-radius: 3px;\r\n	background-color: #f4f4f4;\r\n	cursor: pointer;\r\n	font-size: 11px;\r\n}\r\n#ShortCutOption .joyBtn:hover {\r\n	background-color: #e4e4e4;\r\n}\r\n#ShortCutOption .joyBtn.capturing {\r\n	background-color: #ffb6c1;\r\n}\r\n#ShortCutOption .content.t_gamepad {\r\n	max-height: 370px;\r\n	overflow-y: auto;\r\n}\r\n#ShortCutOption .joyRange {\r\n	width: 70px;\r\n	vertical-align: middle;\r\n}\r\n#ShortCutOption .joyAxis {\r\n	display: block;\r\n	white-space: nowrap;\r\n}\r\n#ShortCutOption .joyValue {\r\n	display: inline-block;\r\n	width: 26px;\r\n	text-align: left;\r\n	font-size: 10px;\r\n}\r\n#ShortCutOption .joyCalibrateStatus {\r\n	font-size: 10px;\r\n	color: #555;\r\n}\r\n#ShortCutOption .joyMapping {\r\n	display: none;\r\n}\r\n#ShortCutOption .t_gamepad.mapping-open .joySettings {\r\n	display: none;\r\n}\r\n#ShortCutOption .t_gamepad.mapping-open .joyMapping {\r\n	display: block;\r\n}\r\n#ShortCutOption .joyMappingHeader {\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: space-between;\r\n	margin-bottom: 4px;\r\n}\r\n#ShortCutOption .joyMappingTitle {\r\n	font-weight: bold;\r\n}\r\n#ShortCutOption .joyMappingStatus {\r\n	min-height: 28px;\r\n	margin-bottom: 4px;\r\n	color: #555;\r\n}\r\n#ShortCutOption .joyMappingStatus.capturing {\r\n	color: #b00020;\r\n	font-weight: bold;\r\n}\r\n#ShortCutOption .joyMappingScroll {\r\n	max-height: 320px;\r\n	overflow-y: auto;\r\n}\r\n#ShortCutOption .joyMappingSub {\r\n	margin: 6px 0 3px;\r\n	font-weight: bold;\r\n}\r\n#ShortCutOption .content .joyMapping table td:nth-child(1) {\r\n	width: 58%;\r\n	text-align: left;\r\n	padding-left: 4px;\r\n}\r\n#ShortCutOption .content .joyMapping table td:nth-child(2) {\r\n	width: 26%;\r\n}\r\n#ShortCutOption .content .joyMapping table td:nth-child(3) {\r\n	width: 16%;\r\n}\r\n#ShortCutOption .content .joyMappingCombos td:nth-child(1) {\r\n	width: 45%;\r\n	text-align: center;\r\n	padding-left: 0;\r\n	background-color: #eee;\r\n}\r\n#ShortCutOption .content .joyMappingCombos td:nth-child(2) {\r\n	width: 55%;\r\n	text-align: left;\r\n	padding-left: 4px;\r\n	background-color: transparent;\r\n}\r\n#ShortCutOption .resolution {\r\n	display: none;\r\n}\r\n#ShortCutOption .panel .button {\r\n	position: absolute;\r\n	bottom: 3px;\r\n	width: 42px;\r\n	height: 20px;\r\n	margin-top: 3px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#ShortCutOption .panel .button.reset {\r\n	left: 3px;\r\n}\r\n#ShortCutOption .panel .button.ok {\r\n	right: 93px;\r\n}\r\n#ShortCutOption .panel .button.cancel {\r\n	right: 48px;\r\n}\r\n#ShortCutOption .panel .button.close {\r\n	right: 3px;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/JoystickUI/JoystickButtonMap.js
@@ -235324,8 +235331,30 @@ function handleWorldRightClick() {
 		_dispatchMouseEvent(Renderer.canvas, "mouseup", 3);
 	}, 100);
 }
+/**
+* Turn the camera by some degrees, under the rules the mouse turn follows
+* (Camera.processMouseAction).
+*
+* The camera wraps its current angle to +-360 every frame but eases toward
+* angleFinal; a target past a full turn would keep it spinning forever.
+* So once the target passes +-180, both move a full turn back, which
+* changes nothing on screen. Then the map's limits apply: indoor maps only
+* turn a little.
+*
+* @param {number} angle degrees, positive turns right
+*/
 function changeCameraAngle(angle) {
-	Camera.angleFinal[1] += angle;
+	let target = Camera.angleFinal[1] + angle;
+	if (target > 180) {
+		target -= 360;
+		Camera.angle[1] -= 360;
+	} else if (target < -180) {
+		target += 360;
+		Camera.angle[1] += 360;
+	}
+	if (DB.isIndoor(Camera.currentMap)) target = Math.min(Math.max(target, Camera.indoorRotationFrom), Camera.indoorRotationTo);
+	else target = Math.min(Math.max(target, Camera.rotationFrom), Camera.rotationTo);
+	Camera.angleFinal[1] = target;
 	Camera.updateState();
 	Camera.save();
 }
@@ -235348,8 +235377,7 @@ function enter() {
 }
 function contextMenu() {
 	const el = elementAtCursor();
-	const draggableElement = el.closest(".item, .skill");
-	if (el && draggableElement) {
+	if (el && el.closest(".item, .skill")) {
 		const contextMenuEvent = new MouseEvent("contextmenu", {
 			bubbles: true,
 			cancelable: true,
@@ -235364,7 +235392,8 @@ function contextMenu() {
 	return false;
 }
 function navigateDraggableItems(direction) {
-	const container = elementAtCursor().closest(".item, .skill");
+	const el = elementAtCursor();
+	const container = el && el.closest(".item, .skill");
 	if (!container) {
 		let keyCode;
 		switch (direction) {
@@ -235446,7 +235475,7 @@ function quickCastClick(beforeClick) {
 /**
 * Snap the virtual cursor back to the middle of the viewport.
 */
-function recenter() {
+function recenter$1() {
 	Mouse.screen.x = Math.floor(Renderer.width / 2);
 	Mouse.screen.y = Math.floor(Renderer.height / 2);
 	const cursor = document.querySelector(".cursor");
@@ -235461,6 +235490,7 @@ var init_JoystickMouseCursorAdapter = __esmMin((() => {
 	init_MouseEventHandler();
 	init_gl_matrix$1();
 	init_Camera();
+	init_DBManager();
 	init_Controls();
 	init_JoystickInteractionService();
 	JoystickMouseCursorAdapter_default = {
@@ -235478,7 +235508,7 @@ var init_JoystickMouseCursorAdapter = __esmMin((() => {
 		rightClick,
 		elementAtCursor,
 		moveTo,
-		recenter
+		recenter: recenter$1
 	};
 }));
 //#endregion
@@ -236080,6 +236110,17 @@ function isActive() {
 	return isEnabled() && Controls_default.joyRightStickMode === MODE.AIM;
 }
 /**
+* The Quick-Cast mode in effect. With aiming available, Off is not: it
+* leaves a targeted skill waiting for an A click at the cursor, and the
+* aim does not keep the cursor on the target, so Instant stands in for it.
+*
+* @return {number} QUICK_CAST value
+*/
+function quickCastMode() {
+	const mode = Controls_default.joyQuick | 0;
+	return mode === QUICK_CAST.OFF && isEnabled() ? QUICK_CAST.INSTANT : mode;
+}
+/**
 * Turn a stick vector into a map direction.
 *
 * The camera's modelView is Rx(angle[0]) . Ry(angle[1]), so a map step
@@ -236249,12 +236290,36 @@ function getTarget() {
 	return JoystickTargetService_default.getMarked() || JoystickTargetService_default.getAttackableFocus();
 }
 /**
-* Aim mode left: remove the ring and forget the last hit.
+* Show or hide the game's cursor (CursorManager's .cursor element). Only
+* its visibility changes: Mouse.screen still follows the target, so A
+* clicks it as before.
+*/
+function setCursorHidden(hidden) {
+	if (hidden === _cursorHidden) return;
+	const cursor = document.querySelector(".cursor");
+	if (!cursor) return;
+	cursor.style.visibility = hidden ? "hidden" : "";
+	_cursorHidden = hidden;
+}
+/**
+* A real mouse move shows the cursor again, so the player taking the mouse
+* is never left without one. Synthetic events (isTrusted false) do not
+* count.
+*/
+function onMouseMove(event) {
+	if (event.isTrusted) {
+		_mouseMoved = true;
+		setCursorHidden(false);
+	}
+}
+/**
+* Aim mode left: remove the ring, forget the last hit, show the cursor.
 */
 function release() {
 	_aimLastHit = null;
 	_aimRingTarget = null;
 	clearOverlay();
+	setCursorHidden(false);
 }
 /**
 * One frame of aim mode (JoystickCursorMotion).
@@ -236263,12 +236328,18 @@ function release() {
 * @param {number} y right stick y
 * @param {boolean} held stick outside the deadzone
 */
-function update$1(x, y, held) {
+function update$2(x, y, held) {
 	const player = SessionStorage_default.Entity;
 	if (!player) {
 		release();
 		return;
 	}
+	if (held) _mouseMoved = false;
+	if (Controls_default.joyAimHideCursor && !_mouseListening) {
+		window.addEventListener("mousemove", onMouseMove);
+		_mouseListening = true;
+	}
+	setCursorHidden(!!Controls_default.joyAimHideCursor && !_mouseMoved);
 	const origin = [player.position[0], player.position[1]];
 	let hit = null;
 	let dir = null;
@@ -236322,11 +236393,12 @@ function toggle() {
 function setEnabled(enabled) {
 	Controls_default.joyAimEnabled = !!enabled;
 	Controls_default.joyRightStickMode = enabled ? MODE.AIM : MODE.CURSOR;
+	if (enabled && (Controls_default.joyQuick | 0) === QUICK_CAST.OFF) Controls_default.joyQuick = QUICK_CAST.INSTANT;
 	Controls_default.save();
 	release();
 	JoystickUIRenderer_default.updateStickMode();
 }
-var MODE, HIT_RADIUS, HIT_SPREAD, RING_RADIUS, RING_POINTS, RING_FADE_MS, LINE_STEP, LINE_IDLE_LENGTH, LINE_COLOR_HIT, LINE_COLOR_IDLE, _aimLastHit, _aimOverlay, _aimCtx, _aimDrawn, _aimRingTarget, _aimRingAt, _aimWorld, _aimView, JoystickAimMode_default;
+var MODE, QUICK_CAST, HIT_RADIUS, HIT_SPREAD, RING_RADIUS, RING_POINTS, RING_FADE_MS, LINE_STEP, LINE_IDLE_LENGTH, LINE_COLOR_HIT, LINE_COLOR_IDLE, _aimLastHit, _aimOverlay, _aimCtx, _aimDrawn, _aimRingTarget, _aimRingAt, _cursorHidden, _mouseMoved, _mouseListening, _aimWorld, _aimView, JoystickAimMode_default;
 var init_JoystickAimMode = __esmMin((() => {
 	init_gl_matrix$1();
 	init_SessionStorage();
@@ -236341,6 +236413,11 @@ var init_JoystickAimMode = __esmMin((() => {
 	MODE = {
 		CURSOR: 0,
 		AIM: 1
+	};
+	QUICK_CAST = {
+		OFF: 0,
+		RELEASE: 1,
+		INSTANT: 2
 	};
 	HIT_RADIUS = .9;
 	HIT_SPREAD = .075;
@@ -236357,14 +236434,19 @@ var init_JoystickAimMode = __esmMin((() => {
 	_aimDrawn = false;
 	_aimRingTarget = null;
 	_aimRingAt = 0;
+	_cursorHidden = false;
+	_mouseMoved = false;
+	_mouseListening = false;
 	_aimWorld = exports$3.vec4.create();
 	_aimView = exports$3.vec4.create();
 	JoystickAimMode_default = {
 		MODE,
+		QUICK_CAST,
 		isEnabled,
 		isActive,
+		quickCastMode,
 		setEnabled,
-		update: update$1,
+		update: update$2,
 		release,
 		toggle,
 		stickToMapDirection,
@@ -236477,17 +236559,19 @@ var init_JoystickInteractionService = __esmMin((() => {
 				if (targetEntity) JoystickMouseCursorAdapter_default.moveMouseToEntity(targetEntity);
 			}
 			ShortCut_default.onShortCut({ cmd: "EXECUTE" + index });
-			if (Controls_default.joyQuick === 2) {
+			const quickCast = JoystickAimMode_default.quickCastMode();
+			if (quickCast === JoystickAimMode_default.QUICK_CAST.INSTANT) {
 				if (!this.castAtFocus()) JoystickMouseCursorAdapter_default.quickCastClick(function() {
 					JoystickTargetService_default.snapCursorToFocus();
 				});
-			} else if (Controls_default.joyQuick === 1) {
+			} else if (quickCast === JoystickAimMode_default.QUICK_CAST.RELEASE) {
 				this.cancelQuick = false;
 				const waitforRelease = () => {
 					setTimeout(() => {
 						const buttons = JoystickInputService_default.buttonStates;
-						if (JoystickShortcutMapper_default.getGroup(buttons) !== group) JoystickMouseCursorAdapter_default.quickCastClick();
-						else if (!this.cancelQuick) waitforRelease();
+						if (JoystickShortcutMapper_default.getGroup(buttons) !== group) {
+							if (!this.castOnAim()) JoystickMouseCursorAdapter_default.quickCastClick();
+						} else if (!this.cancelQuick) waitforRelease();
 					}, 50);
 				};
 				waitforRelease();
@@ -236513,6 +236597,28 @@ var init_JoystickInteractionService = __esmMin((() => {
 			SkillTargetSelection_default.intersectEntityId(focus.GID);
 			SkillTargetSelection_default.remove();
 			return true;
+		},
+		/**
+		* A skill waits for a target while the right stick aims: cast it on the
+		* aimed target. The aim only moves the cursor onto the target while the
+		* stick is pushed, so a click at the cursor lands where the mob stood
+		* when the stick was let go; it has usually walked on, the click hits
+		* the ground, and the skill is dropped without a word.
+		*
+		* Enemy skills go straight to the target (castAtFocus). Anything else
+		* (ground skills, a refused focus) gets the cursor put on the target,
+		* and the caller's click follows. Over a window (a party member to
+		* heal, say) nothing changes: the click is meant for the window.
+		*
+		* @return {boolean} whether the skill was cast; false: click as usual
+		*/
+		castOnAim: function() {
+			if (!JoystickAimMode_default.isActive() || !SkillTargetSelection_default.getFlag()) return false;
+			const el = JoystickMouseCursorAdapter_default.elementAtCursor();
+			if (el && el.tagName.toLowerCase() !== "canvas") return false;
+			if (this.castAtFocus()) return true;
+			JoystickTargetService_default.snapCursorToFocus();
+			return false;
 		},
 		openSelectionWindow: function(draggableElement) {
 			const index = parseInt(draggableElement.getAttribute("data-index"), 10);
@@ -236549,11 +236655,13 @@ var init_JoystickInteractionService = __esmMin((() => {
 		* portals" mode) and the cursor over the map, a press talks to the NPC
 		* or walks into the portal, wherever the cursor is, and clears the
 		* selection so the next A is an ordinary click again (NPC dialogue
-		* buttons, for one). Otherwise A is a left click at the cursor.
+		* buttons, for one). Otherwise A is a left click at the cursor; with a
+		* skill waiting for a target in aim mode, see castOnAim().
 		*
 		* @param {boolean} holding A held rather than freshly pressed
 		*/
 		leftClick: function(holding) {
+			if (!holding && this.castOnAim()) return;
 			const target = JoystickTargetService_default.getInteractTarget();
 			if (target && !holding) {
 				const el = JoystickMouseCursorAdapter_default.elementAtCursor();
@@ -236666,7 +236774,7 @@ function setClickLock() {
 		clickLock = false;
 	}, lockTimeout);
 }
-var clickLock, lockTimeout, RS_HOLD_MS, rsDownAt, rsHoldFired, ButtonInput;
+var clickLock, lockTimeout, CAMERA_STEP_SMALL, CAMERA_STEP_LARGE, RS_HOLD_MS, rsDownAt, rsHoldFired, ButtonInput;
 var init_JoystickButtonInput = __esmMin((() => {
 	init_JoystickShortcutMapper();
 	init_JoystickInteractionService();
@@ -236676,6 +236784,8 @@ var init_JoystickButtonInput = __esmMin((() => {
 	init_Controls();
 	clickLock = false;
 	lockTimeout = 200;
+	CAMERA_STEP_SMALL = 45;
+	CAMERA_STEP_LARGE = 90;
 	RS_HOLD_MS = 400;
 	rsDownAt = 0;
 	rsHoldFired = false;
@@ -236747,7 +236857,7 @@ var init_JoystickButtonInput = __esmMin((() => {
 		_handleSetChange: function(btn) {
 			const l2 = btn[6] === "holding";
 			const r2 = btn[7] === "holding";
-			if (l2 && r2) {
+			if (l2 && r2 && btn[8] === "unpressed") {
 				JoystickSetManager_default.toggle();
 				JoystickUIRenderer_default.updateSetIndicator();
 				JoystickUIRenderer_default.sync();
@@ -236759,19 +236869,13 @@ var init_JoystickButtonInput = __esmMin((() => {
 		_handleSpecial: function(buttons) {
 			let pressed = false;
 			if (buttons[8] === "holding") {
-				if (buttons[12] !== "unpressed") {
-					JoystickInteractionService_default.cameraZoom(-2);
-					pressed = true;
-				} else if (buttons[13] !== "unpressed") {
-					JoystickInteractionService_default.cameraZoom(2);
-					pressed = true;
-				} else if (buttons[14] !== "unpressed") {
-					JoystickInteractionService_default.cameraAngle(-5);
-					pressed = true;
-				} else if (buttons[15] !== "unpressed") {
-					JoystickInteractionService_default.cameraAngle(5);
-					pressed = true;
-				} else if (buttons[9] !== "unpressed") {
+				if (buttons[12] !== "unpressed" || buttons[13] !== "unpressed" || buttons[14] !== "unpressed" || buttons[15] !== "unpressed") return true;
+				const turn = this._cameraStep(buttons);
+				if (turn) {
+					JoystickInteractionService_default.cameraAngle(turn);
+					return true;
+				}
+				if (buttons[9] !== "unpressed") {
 					JoystickInteractionService_default.escape();
 					pressed = true;
 				} else if (buttons[0] === "pressed") {
@@ -236810,6 +236914,17 @@ var init_JoystickButtonInput = __esmMin((() => {
 			}
 			if (pressed) setClickLock();
 			return pressed;
+		},
+		/**
+		* Degrees a fresh LB / RB / LT / RT press turns the camera (with View
+		* held), or 0.
+		*/
+		_cameraStep: function(btn) {
+			if (btn[4] === "pressed") return -45;
+			if (btn[5] === "pressed") return CAMERA_STEP_SMALL;
+			if (btn[6] === "pressed") return -90;
+			if (btn[7] === "pressed") return CAMERA_STEP_LARGE;
+			return 0;
 		},
 		_handleShortcuts: function(btn) {
 			const idx = JoystickShortcutMapper_default.getShortcutIndex(btn);
@@ -236868,6 +236983,163 @@ var init_JoystickAxisInput = __esmMin((() => {
 	} };
 }));
 //#endregion
+//#region src/UI/Components/JoystickUI/JoystickStickFilter.js
+/**
+* Subtract the rest position, stretching each side back to the full range.
+*
+* @param {number} value raw axis value, -1..1
+* @param {number} center measured rest position
+* @return {number}
+*/
+function recenter(value, center) {
+	if (!center) return value;
+	const v = value - center;
+	const range = v > 0 ? 1 - center : 1 + center;
+	return Math.max(-1, Math.min(1, v / range));
+}
+/**
+* Treat values within the threshold as centre; rescale the rest to 0..1.
+*
+* @param {number} value axis value, -1..1
+* @param {number} threshold 0..1
+* @return {number}
+*/
+function applyThreshold(value, threshold) {
+	if (!threshold || threshold <= 0) return value;
+	const magnitude = Math.abs(value);
+	if (magnitude <= threshold || threshold >= 1) return 0;
+	return Math.sign(value) * (magnitude - threshold) / (1 - threshold);
+}
+/**
+* The stored rest positions, or null when not calibrated.
+*
+* @return {Array<number>|null}
+*/
+function getCenter() {
+	const center = Controls_default.joyStickCenter;
+	if (!Array.isArray(center) || center.length !== AXIS_COUNT || !center.every(Number.isFinite)) return null;
+	return center;
+}
+/**
+* Cleaned copy of a gamepad's axes. Axes past the two sticks pass through.
+*
+* @param {ArrayLike<number>} axes Gamepad.axes
+* @return {Array<number>}
+*/
+function filterAxes(axes) {
+	const center = getCenter();
+	const out = Array.from(axes);
+	for (let i = 0; i < Math.min(AXIS_COUNT, out.length); i++) {
+		const value = recenter(out[i], center ? center[i] : 0);
+		out[i] = applyThreshold(value, Controls_default[DRIFT_KEYS[i]]);
+	}
+	return out;
+}
+/**
+* Average rest position per axis from calibration samples, or null if a
+* stick was touched while they were taken.
+*
+* @param {Array<Array<number>>} samples raw axes, one array per read
+* @return {Array<number>|null}
+*/
+function computeCenter(samples) {
+	if (!samples.length) return null;
+	const center = [];
+	for (let i = 0; i < AXIS_COUNT; i++) {
+		let sum = 0;
+		for (const sample of samples) {
+			const value = sample[i] || 0;
+			if (Math.abs(value) > CALIBRATE_MAX_OFFSET) return null;
+			sum += value;
+		}
+		center.push(sum / samples.length);
+	}
+	return center;
+}
+function getGamepad$1() {
+	const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+	for (let i = 0; i < gamepads.length; i++) if (gamepads[i]) return gamepads[i];
+	return null;
+}
+/**
+* Stop a running calibration without saving.
+*/
+function cancelCalibration() {
+	if (_calibration) {
+		clearInterval(_calibration);
+		_calibration = null;
+	}
+}
+/**
+* Read both sticks for a second while the player leaves them alone, and
+* store their rest positions.
+*
+* @param {function(string)} done called with 'ok', 'moved' (a stick was
+*   touched, nothing saved) or 'nopad'
+*/
+function calibrate(done) {
+	cancelCalibration();
+	if (!getGamepad$1()) {
+		done("nopad");
+		return;
+	}
+	const samples = [];
+	const startedAt = Date.now();
+	_calibration = setInterval(function() {
+		const gp = getGamepad$1();
+		if (!gp) {
+			cancelCalibration();
+			done("nopad");
+			return;
+		}
+		samples.push(Array.from(gp.axes).slice(0, AXIS_COUNT));
+		if (Date.now() - startedAt < CALIBRATE_DURATION_MS) return;
+		cancelCalibration();
+		const center = computeCenter(samples);
+		if (!center) {
+			done("moved");
+			return;
+		}
+		Controls_default.joyStickCenter = center;
+		Controls_default.save();
+		done("ok");
+	}, CALIBRATE_INTERVAL_MS);
+}
+/**
+* Forget the calibration.
+*/
+function resetCalibration() {
+	cancelCalibration();
+	Controls_default.joyStickCenter = null;
+	Controls_default.save();
+}
+var DRIFT_KEYS, AXIS_COUNT, CALIBRATE_INTERVAL_MS, CALIBRATE_DURATION_MS, CALIBRATE_MAX_OFFSET, _calibration, JoystickStickFilter_default;
+var init_JoystickStickFilter = __esmMin((() => {
+	init_Controls();
+	DRIFT_KEYS = [
+		"joyDriftLX",
+		"joyDriftLY",
+		"joyDriftRX",
+		"joyDriftRY"
+	];
+	AXIS_COUNT = DRIFT_KEYS.length;
+	CALIBRATE_INTERVAL_MS = 50;
+	CALIBRATE_DURATION_MS = 1e3;
+	CALIBRATE_MAX_OFFSET = .5;
+	_calibration = null;
+	JoystickStickFilter_default = {
+		DRIFT_KEYS,
+		recenter,
+		applyThreshold,
+		filterAxes,
+		computeCenter,
+		getCenter,
+		calibrate,
+		cancelCalibration,
+		resetCalibration
+	};
+}));
+//#endregion
 //#region src/UI/Components/JoystickUI/JoystickInputService.js
 var hideTimeout, hideTimeoutHandle, JoystickInputService_default;
 var init_JoystickInputService = __esmMin((() => {
@@ -236876,6 +237148,7 @@ var init_JoystickInputService = __esmMin((() => {
 	init_JoystickUIRenderer();
 	init_Controls();
 	init_JoystickButtonMap();
+	init_JoystickStickFilter();
 	hideTimeout = false;
 	hideTimeoutHandle = null;
 	JoystickInputService_default = {
@@ -236922,7 +237195,7 @@ var init_JoystickInputService = __esmMin((() => {
 			});
 			states.buttons = JoystickButtonMap_default.toLogical(states.raw);
 			self.buttonStates = states.buttons;
-			gp.axes.forEach(function(axis, index) {
+			JoystickStickFilter_default.filterAxes(gp.axes).forEach(function(axis, index) {
 				states.axes[index] = Math.abs(axis) > Controls_default.joyDeadline ? axis : 0;
 			});
 			return states;
@@ -237347,6 +237620,8 @@ function getMappingCombos() {
 		[n(B.LT) + " + " + n(B.RT), "Switch shortcut set (bars 1-2 / 3-4)"],
 		[n(B.VIEW) + " + " + n(B.UP) + " / " + n(B.DOWN), "Camera zoom"],
 		[n(B.VIEW) + " + " + n(B.LEFT) + " / " + n(B.RIGHT), "Camera rotate"],
+		[n(B.VIEW) + " + " + n(B.LB) + " / " + n(B.RB), "Turn camera 45 degrees left / right"],
+		[n(B.VIEW) + " + " + n(B.LT) + " / " + n(B.RT), "Turn camera 90 degrees left / right"],
 		[n(B.VIEW) + " + " + n(B.MENU), "Escape"],
 		[n(B.VIEW) + " + " + [
 			n(B.A),
@@ -237424,6 +237699,18 @@ function startRemap(root, logical, label, remapButton) {
 }
 function onUpdateAimEnabled() {
 	JoystickAimMode_default.setEnabled(this.checked);
+	showQuickCast(ShortCutOption.getRoot());
+}
+/**
+* Quick-Cast select: the mode in effect, with Off greyed out while aiming
+* is on (JoystickAimMode.quickCastMode).
+*/
+function showQuickCast(root) {
+	const select = root.querySelector(".joyQuick");
+	if (!select) return;
+	const off = select.querySelector("option[value=\"" + JoystickAimMode_default.QUICK_CAST.OFF + "\"]");
+	if (off) off.disabled = JoystickAimMode_default.isEnabled();
+	select.value = String(JoystickAimMode_default.quickCastMode());
 }
 function onUpdateAimRing() {
 	Controls_default.joyAimRing = this.checked;
@@ -237432,6 +237719,63 @@ function onUpdateAimRing() {
 function onUpdateAimLine() {
 	Controls_default.joyAimLine = this.checked;
 	Controls_default.save();
+}
+function onUpdateAimHideCursor() {
+	Controls_default.joyAimHideCursor = this.checked;
+	Controls_default.save();
+}
+/**
+* Put the stored gamepad settings into the controls. The HTML only holds
+* the defaults, and L3 or RS click change some settings while the window
+* is closed.
+*/
+function reflectGamepadSettings(root) {
+	const setValue = function(selector, value) {
+		const el = root.querySelector(selector);
+		if (el) el.value = String(value);
+	};
+	setValue(".joyCycleMode", Controls_default.joyCycleMode | 0);
+	setValue(".attackTargetMode", Controls_default.attackTargetMode | 0);
+	showQuickCast(root);
+	setValue(".joySense", Controls_default.joySense);
+	setValue(".joyDeadline", Controls_default.joyDeadline);
+	JOY_CHECKBOXES.forEach(function(key) {
+		const el = root.querySelector("." + key);
+		if (el) el.checked = !!Controls_default[key];
+	});
+	Object.keys(JOY_RANGES).forEach(function(key) {
+		setValue("." + key, Controls_default[key]);
+		showRangeValue(root, key);
+	});
+	showCalibration(root);
+}
+function showRangeValue(root, key) {
+	const label = root.querySelector(".joyValue[data-for=\"" + key + "\"]");
+	if (label) label.textContent = (Number(Controls_default[key]) || 0).toFixed(JOY_RANGES[key]);
+}
+/**
+* Calibration state under the Calibrate button.
+*
+* @param {Element} root
+* @param {string} [message] shown instead of the stored state
+*/
+function showCalibration(root, message) {
+	const status = root.querySelector(".joyCalibrateStatus");
+	if (!status) return;
+	if (message) {
+		status.textContent = message;
+		return;
+	}
+	const center = JoystickStickFilter_default.getCenter();
+	status.textContent = center ? "Rest offsets: L " + center[0].toFixed(2) + " / " + center[1].toFixed(2) + ", R " + center[2].toFixed(2) + " / " + center[3].toFixed(2) : "Not calibrated";
+}
+function onCalibrate(root) {
+	showCalibration(root, "Leave both sticks alone...");
+	JoystickStickFilter_default.calibrate(function(result) {
+		if (result === "ok") showCalibration(root);
+		else if (result === "moved") showCalibration(root, "A stick moved, nothing saved. Try again without touching them.");
+		else showCalibration(root, "No gamepad found. Press a button on it, then try again.");
+	});
 }
 function onUpdateCycleMode() {
 	Controls_default.joyCycleMode = parseInt(this.value, 10);
@@ -237446,7 +237790,7 @@ function onUpdateJoyQuick() {
 	Controls_default.save();
 }
 function onUpdateJoyDeadline() {
-	Controls_default.joyDeadline = parseInt(this.value, 10);
+	Controls_default.joyDeadline = parseFloat(this.value);
 	Controls_default.save();
 }
 function onUpdateAutoHide() {
@@ -237461,7 +237805,7 @@ function onUpdateDisableVirtualMouse() {
 	Controls_default.joyDisableVirtualMouse = !!this.checked;
 	Controls_default.save();
 }
-var ShortCutOption, ShortCuts$1, ShortCutsTemp, _preferences$30, MAPPING_ROLES, ShortCutOption_default;
+var JOY_RANGES, JOY_CHECKBOXES, ShortCutOption, ShortCuts$1, ShortCutsTemp, _preferences$30, MAPPING_ROLES, ShortCutOption_default;
 var init_ShortCutOption = __esmMin((() => {
 	init_KeyEventHandler();
 	init_Preferences$1();
@@ -237476,6 +237820,23 @@ var init_ShortCutOption = __esmMin((() => {
 	init_JoystickButtonMap();
 	init_JoystickUIRenderer();
 	init_JoystickAimMode();
+	init_JoystickStickFilter();
+	JOY_RANGES = {
+		joyCameraSpeed: 0,
+		joyDriftLX: 2,
+		joyDriftLY: 2,
+		joyDriftRX: 2,
+		joyDriftRY: 2
+	};
+	JOY_CHECKBOXES = [
+		"joyAimEnabled",
+		"joyAimRing",
+		"joyAimLine",
+		"joyAimHideCursor",
+		"joyReverseStick",
+		"joyAutoHide",
+		"joyDisableVirtualMouse"
+	];
 	ShortCutOption = new GUIComponent("ShortCutOption", ShortCutOption_default$1);
 	ShortCuts$1 = ShortCutControls_default.ShortCuts;
 	ShortCutsTemp = {};
@@ -237545,6 +237906,25 @@ var init_ShortCutOption = __esmMin((() => {
 		bindChange(".joyAimEnabled", onUpdateAimEnabled);
 		bindChange(".joyAimRing", onUpdateAimRing);
 		bindChange(".joyAimLine", onUpdateAimLine);
+		bindChange(".joyAimHideCursor", onUpdateAimHideCursor);
+		Object.keys(JOY_RANGES).forEach(function(key) {
+			const input = root.querySelector("." + key);
+			if (!input) return;
+			input.addEventListener("input", function() {
+				Controls_default[key] = parseFloat(this.value);
+				showRangeValue(root, key);
+			});
+			input.addEventListener("change", function() {
+				Controls_default.save();
+			});
+		});
+		root.querySelector(".joyCalibrate").addEventListener("click", function() {
+			onCalibrate(root);
+		});
+		root.querySelector(".joyCalibrateReset").addEventListener("click", function() {
+			JoystickStickFilter_default.resetCalibration();
+			showCalibration(root);
+		});
 		const gamepadTab = root.querySelector(".content.t_gamepad");
 		root.querySelector(".joyMappingOpen").addEventListener("click", function() {
 			renderMapping(root);
@@ -237587,12 +237967,7 @@ var init_ShortCutOption = __esmMin((() => {
 	ShortCutOption.onAppend = function() {
 		const cycleMode = this.getRoot().querySelector(".joyCycleMode");
 		if (cycleMode) cycleMode.value = String(Controls_default.joyCycleMode | 0);
-		const aimEnabled = this.getRoot().querySelector(".joyAimEnabled");
-		const aimRing = this.getRoot().querySelector(".joyAimRing");
-		if (aimRing) aimRing.checked = !!Controls_default.joyAimRing;
-		const aimLine = this.getRoot().querySelector(".joyAimLine");
-		if (aimLine) aimLine.checked = !!Controls_default.joyAimLine;
-		if (aimEnabled) aimEnabled.checked = !!Controls_default.joyAimEnabled;
+		reflectGamepadSettings(this.getRoot());
 		this._host.style.left = _preferences$30.x + "px";
 		this._host.style.top = _preferences$30.y + "px";
 		this._host.style.zIndex = 100;
@@ -237602,6 +237977,7 @@ var init_ShortCutOption = __esmMin((() => {
 	*/
 	ShortCutOption.onRemove = function() {
 		JoystickButtonMap_default.cancelCapture();
+		JoystickStickFilter_default.cancelCalibration();
 		_preferences$30.x = parseInt(this._host.style.left, 10);
 		_preferences$30.y = parseInt(this._host.style.top, 10);
 		_preferences$30.save();
@@ -261059,6 +261435,44 @@ var init_Damage = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/UI/Components/JoystickUI/JoystickCameraMotion.js
+/**
+* Whether the physical button playing a role is down.
+*/
+function isDown(gp, map, logical) {
+	const button = gp.buttons[map[logical]];
+	return !!button && button.pressed;
+}
+/**
+* One frame.
+*
+* @param {Gamepad} gp
+* @param {number} dt seconds since the last frame
+*/
+function update$1(gp, dt) {
+	if (!gp.buttons || JoystickButtonMap_default.isCapturing()) return;
+	const map = JoystickButtonMap_default.getMap();
+	const B = JoystickButtonMap_default.BUTTON;
+	if (!isDown(gp, map, B.VIEW) || JoystickSelectionUI_default.active()) return;
+	const turn = (isDown(gp, map, B.RIGHT) ? 1 : 0) - (isDown(gp, map, B.LEFT) ? 1 : 0);
+	if (turn) {
+		const speed = Number(Controls_default.joyCameraSpeed) || DEFAULT_TURN_PER_SEC;
+		JoystickMouseCursorAdapter_default.changeCameraAngle(turn * speed * dt);
+	}
+	const zoom = (isDown(gp, map, B.DOWN) ? 1 : 0) - (isDown(gp, map, B.UP) ? 1 : 0);
+	if (zoom) JoystickMouseCursorAdapter_default.changeCameraZoom(zoom * ZOOM_PER_SEC * dt);
+}
+var ZOOM_PER_SEC, DEFAULT_TURN_PER_SEC, JoystickCameraMotion_default;
+var init_JoystickCameraMotion = __esmMin((() => {
+	init_Controls();
+	init_JoystickButtonMap();
+	init_JoystickMouseCursorAdapter();
+	init_JoystickSelectionUI();
+	ZOOM_PER_SEC = 14;
+	DEFAULT_TURN_PER_SEC = 90;
+	JoystickCameraMotion_default = { update: update$1 };
+}));
+//#endregion
 //#region src/UI/Components/JoystickUI/JoystickCursorMotion.js
 function getGamepad() {
 	const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
@@ -261075,15 +261489,17 @@ function frame(time) {
 	frameHandle = requestAnimationFrame(frame);
 	const dt = Math.min(MAX_DT, (time - lastTime) / 1e3);
 	lastTime = time;
+	if (dt > 0) JoystickCameraMotion_default.update(gp, dt);
 	if (gp.axes.length < 4 || dt <= 0) {
 		JoystickAimMode_default.release();
 		return;
 	}
-	let x = gp.axes[2];
-	let y = gp.axes[3];
+	const axes = JoystickStickFilter_default.filterAxes(gp.axes);
+	let x = axes[2];
+	let y = axes[3];
 	if (Controls_default.joyReverseStick) {
-		x = gp.axes[0];
-		y = gp.axes[1];
+		x = axes[0];
+		y = axes[1];
 	}
 	const magnitude = Math.hypot(x, y);
 	const deadzone = Controls_default.joyDeadline;
@@ -261117,6 +261533,8 @@ var init_JoystickCursorMotion = __esmMin((() => {
 	init_Controls();
 	init_JoystickMouseCursorAdapter();
 	init_JoystickAimMode();
+	init_JoystickStickFilter();
+	init_JoystickCameraMotion();
 	SENSE_TO_PX_PER_SEC = 10;
 	MAX_DT = .05;
 	frameHandle = null;
@@ -261144,6 +261562,7 @@ var init_JoystickCursorMotion = __esmMin((() => {
 				cancelAnimationFrame(frameHandle);
 				frameHandle = null;
 			}
+			JoystickAimMode_default.release();
 		}
 	};
 }));
