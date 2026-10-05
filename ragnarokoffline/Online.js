@@ -323872,6 +323872,45 @@ var init_Vending$1 = __esmMin((() => {
 	Vending_default$1 = ":host {\r\n	width: 100%;\r\n	height: 100%;\r\n	top: 0;\r\n	left: 0;\r\n}\r\n\r\n#vending {\r\n	position: absolute;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n#vending .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n	text-shadow: 1px 1px white;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n#vending .titlebar .text {\r\n	position: relative;\r\n	top: 2px;\r\n	left: 15px;\r\n	white-space: nowrap;\r\n}\r\n#vending .footer {\r\n	width: 100%;\r\n	height: 27px;\r\n	background-repeat: repeat-x;\r\n	background-color: transparent;\r\n	position: relative;\r\n	border-radius: 0px 0px 3px 3px;\r\n}\r\n#vending .resize {\r\n	position: absolute;\r\n	right: 1px;\r\n	bottom: 1px;\r\n	width: 13px;\r\n	height: 13px;\r\n	border: none;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#vending .btn {\r\n	width: 42px;\r\n	height: 20px;\r\n	border: none;\r\n	margin: 0;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#vending .selectall {\r\n	vertical-align: 2px;\r\n	width: 10px;\r\n	height: 10px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#vending .ask_quantity {\r\n	padding-top: 7px;\r\n	padding-left: 20px;\r\n}\r\n\r\n#vending .nstore {\r\n	position: absolute;\r\n	top: 24px;\r\n	border: none;\r\n	padding-left: 2px;\r\n	outline: none;\r\n}\r\n#vending .limit {\r\n	position: absolute;\r\n	top: 8px;\r\n	border: none;\r\n	padding-left: 5px;\r\n	outline: none;\r\n}\r\n#vending input.shopname {\r\n	position: absolute;\r\n	left: 55px;\r\n	width: 310px;\r\n	border: none;\r\n	background-color: #e9e9e9;\r\n	padding-left: 2px;\r\n	outline: none;\r\n}\r\n#vending input.shopname {\r\n	top: 22px;\r\n}\r\n#vending input.limitZeny {\r\n	top: 6px;\r\n}\r\n#vending input.limitZeny {\r\n	position: absolute;\r\n	left: 120px;\r\n	width: 100px;\r\n	border: none;\r\n	background-color: #e9e9e9;\r\n	padding-left: 2px;\r\n	outline: none;\r\n}\r\n\r\n#vending .content .item-container {\r\n	width: 32px;\r\n	height: 32px;\r\n	display: block;\r\n	float: left;\r\n	clear: both;\r\n}\r\n#vending .content .damaged {\r\n	background-color: red;\r\n	background-blend-mode: luminosity;\r\n}\r\n#vending .container {\r\n	padding-left: 16px;\r\n	border-right: 1px solid #ccc;\r\n	background: white;\r\n	background-repeat: repeat-y;\r\n	padding-right: 2px;\r\n	padding-top: 5px;\r\n	padding-bottom: 5px;\r\n}\r\n#vending .container .overlay {\r\n	position: absolute;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 15px;\r\n	line-height: 15px;\r\n	border-radius: 3px;\r\n	padding: 4px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n#vending .content {\r\n	overflow-y: auto;\r\n	width: 100%;\r\n	height: 100%;\r\n	min-height: 65px;\r\n	background-color: transparent;\r\n	background-repeat: repeat-y;\r\n}\r\n#vending .content .add_shop {\r\n	margin-top: 10px;\r\n}\r\n#vending .content .item {\r\n	display: block;\r\n	position: relative;\r\n	height: 28px;\r\n	padding-top: 4px;\r\n}\r\n#vending .content .item.selected {\r\n	background-color: #346ae180;\r\n}\r\n\r\n#vending .content.available {\r\n	width: 100%;\r\n	height: 100%;\r\n	min-height: 65px;\r\n	background-color: transparent;\r\n	background-repeat: repeat;\r\n}\r\n#vending .content.available .item {\r\n	display: block;\r\n	float: left;\r\n	width: 28px;\r\n	position: relative;\r\n	height: 28px;\r\n	padding-top: 4px;\r\n}\r\n#vending .content.available .item.selected {\r\n	background-color: transparent;\r\n}\r\n\r\n#vending .content .item .icon {\r\n	position: absolute;\r\n	top: 6px;\r\n	left: 4px;\r\n	width: 24px;\r\n	height: 24px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n#vending .content .item .amount {\r\n	position: absolute;\r\n	white-space: nowrap;\r\n	top: 18px;\r\n	left: 18px;\r\n	text-align: left;\r\n	text-shadow: -1px -1px white;\r\n}\r\n#vending .content .item .amount_ {\r\n	position: absolute;\r\n	white-space: nowrap;\r\n	top: 13px;\r\n	left: 200px;\r\n	text-align: left;\r\n	text-shadow: -1px -1px white;\r\n}\r\n#vending .content .item .name {\r\n	position: absolute;\r\n	top: 13px;\r\n	left: 32px;\r\n	width: 115px;\r\n	white-space: nowrap;\r\n}\r\n#vending .content .item .price {\r\n	position: absolute;\r\n	top: 13px;\r\n	left: 260px;\r\n	white-space: nowrap;\r\n	text-align: right;\r\n}\r\n#vending .content .item .unity {\r\n	position: absolute;\r\n	top: 13px;\r\n	right: 2px;\r\n	width: 10px;\r\n}\r\n\r\n#vending .footer .total,\r\n#vending .footer .totalP,\r\n#vending .footer .cashuser {\r\n	padding-left: 10px;\r\n	padding-top: 8px;\r\n}\r\n#vending .footer .extend {\r\n	position: absolute;\r\n	right: 0px;\r\n	bottom: 1px;\r\n	width: 13px;\r\n	height: 13px;\r\n	border: none;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#vending .InputWindow {\r\n	width: 280px;\r\n	position: absolute;\r\n	z-index: 50;\r\n}\r\n#vending .OutputWindow {\r\n	width: 400px;\r\n	position: absolute;\r\n	z-index: 50;\r\n}\r\n#vending .btn.buy,\r\n#vending .btn.sell {\r\n	position: absolute;\r\n	top: 4px;\r\n	right: 62px;\r\n}\r\n#vending .zeny {\r\n	position: absolute;\r\n	top: 8px;\r\n	left: 230px;\r\n}\r\n#vending .btn.cancel {\r\n	position: absolute;\r\n	top: 4px;\r\n	right: 15px;\r\n}\r\n#vending .zenyLabel,\r\n#vending .zenySpan,\r\n#vending .weightLabel,\r\n#vending .weightSpan {\r\n	position: absolute;\r\n	top: 10px;\r\n}\r\n#vending .zenyLabel {\r\n	left: 5px;\r\n}\r\n#vending .zenySpan {\r\n	left: 40px;\r\n}\r\n#vending .weightLabel {\r\n	left: 215px;\r\n}\r\n#vending .weightSpan {\r\n	left: 260px;\r\n}\r\n";
 }));
 //#endregion
+//#region src/UI/ItemDoubleClick.js
+/**
+* Call `handler(item, event)` when an item matching `selector` inside
+* `container` is double-clicked.
+*
+* @param {HTMLElement} container the list
+* @param {string} selector the items, e.g. '.item'
+* @param {function(HTMLElement, MouseEvent)} handler
+* @param {object} [options]
+* @param {number} [options.gap] milliseconds between the two clicks
+* @param {function(): number} [options.now] the clock, for tests
+* @return {function} removes the listener
+*/
+function onItemDoubleClick(container, selector, handler, options = {}) {
+	const gap = options.gap ?? 500;
+	const now = options.now ?? (() => performance.now());
+	let last = null;
+	const onClick = (event) => {
+		if (event.button !== 0) return;
+		const item = event.target.closest && event.target.closest(selector);
+		if (!item || !container.contains(item)) {
+			last = null;
+			return;
+		}
+		const key = item.getAttribute("data-index");
+		const time = now();
+		if (last && last.key === key && time - last.time <= gap) {
+			last = null;
+			handler(item, event);
+		} else last = {
+			key,
+			time
+		};
+	};
+	container.addEventListener("click", onClick);
+	return () => container.removeEventListener("click", onClick);
+}
+var init_ItemDoubleClick = __esmMin((() => {}));
+//#endregion
 //#region src/UI/Components/Vending/Vending.js
 function escapeHtml(text) {
 	const div = document.createElement("div");
@@ -324135,6 +324174,7 @@ var init_Vending = __esmMin((() => {
 	init_Renderer();
 	init_Inventory();
 	init_BasicInfo();
+	init_ItemDoubleClick();
 	init_WheelSteps();
 	Vending = new GUIComponent("Vending", Vending_default$1);
 	Vending.render = () => Vending_default$2;
@@ -324199,10 +324239,7 @@ var init_Vending = __esmMin((() => {
 			content.addEventListener("mouseout", (e) => {
 				if (e.target.closest(".item")) onItemOut$9();
 			});
-			content.addEventListener("dblclick", (e) => {
-				const item = e.target.closest(".item");
-				if (item) onItemSelected$1.call(item);
-			});
+			onItemDoubleClick(content, ".item", (item) => onItemSelected$1.call(item));
 			content.addEventListener("mousedown", (e) => {
 				const item = e.target.closest(".item");
 				if (item) onItemFocus$1.call(item);
@@ -324585,6 +324622,7 @@ var init_VendingShop = __esmMin((() => {
 	init_VendingShop$2();
 	init_VendingShop$1();
 	init_VendingReport();
+	init_ItemDoubleClick();
 	init_WheelSteps();
 	VendingShop = new GUIComponent("VendingShop", VendingShop_default$1);
 	VendingShop.render = () => VendingShop_default$2;
@@ -324642,10 +324680,7 @@ var init_VendingShop = __esmMin((() => {
 				const itemEl = e.target.closest(".item");
 				if (itemEl) onItemInfo$10(e, itemEl);
 			});
-			content.addEventListener("dblclick", (e) => {
-				const itemEl = e.target.closest(".item");
-				if (itemEl) onItemUsed(e, itemEl);
-			});
+			onItemDoubleClick(content, ".item", (itemEl, e) => onItemUsed(e, itemEl));
 		}
 		this.draggable(".titlebar");
 		this._host.style.display = "none";
@@ -339931,6 +339966,7 @@ var init_NpcStore = __esmMin((() => {
 	init_InventoryItemTransfer();
 	init_NpcStore$2();
 	init_NpcStore$1();
+	init_ItemDoubleClick();
 	init_WheelSteps();
 	NpcStore = new GUIComponent("NpcStore", NpcStore_default$1);
 	NpcStore.render = () => NpcStore_default$2;
@@ -340037,10 +340073,7 @@ var init_NpcStore = __esmMin((() => {
 					onItemInfo.call(icon, e);
 				}
 			});
-			content.addEventListener("dblclick", (e) => {
-				const item = e.target.closest(".item");
-				if (item) onItemSelected.call(item);
-			});
+			onItemDoubleClick(content, ".item", (item) => onItemSelected.call(item));
 			content.addEventListener("mousedown", (e) => {
 				const item = e.target.closest(".item");
 				if (item) onItemFocus.call(item);
