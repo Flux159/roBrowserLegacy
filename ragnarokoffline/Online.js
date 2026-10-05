@@ -220660,6 +220660,66 @@ var init_ChatBoxSettings = __esmMin((() => {
 	ChatBoxSettings_default = UIManager.addComponent(ChatBoxSettings);
 }));
 //#endregion
+//#region src/UI/WheelSteps.js
+/**
+* How many steps this wheel event moves `element`: positive down, negative
+* up, often 0 while a smooth gesture is still adding up.
+*
+* @param {WheelEvent} event
+* @param {HTMLElement} element - the list being scrolled; each keeps its own count
+* @return {number}
+*/
+function steps(event, element) {
+	let dy = event.deltaY || 0;
+	if (!dy && event.wheelDelta) dy = -event.wheelDelta;
+	if (!dy) return 0;
+	if (event.deltaMode === 1) dy *= LINE;
+	else if (event.deltaMode === 2) dy *= element.clientHeight || NOTCH;
+	const now = typeof event.timeStamp === "number" && event.timeStamp > 0 ? event.timeStamp : performance.now();
+	const sign = Math.sign(dy);
+	const state = _gestures.get(element);
+	if (!state || now - state.time > GESTURE_GAP || state.sign !== sign) {
+		_gestures.set(element, {
+			acc: 0,
+			time: now,
+			sign
+		});
+		return sign;
+	}
+	state.time = now;
+	state.acc += dy;
+	const whole = Math.trunc(state.acc / NOTCH);
+	state.acc -= whole * NOTCH;
+	return whole;
+}
+/**
+* Scroll `element` by this wheel event, `rowHeight` pixels a step, snapped to
+* whole rows. Returns the number of steps taken.
+*
+* @param {WheelEvent} event
+* @param {HTMLElement} element
+* @param {number} rowHeight
+* @return {number}
+*/
+function scrollRows(event, element, rowHeight) {
+	const n = steps(event, element);
+	if (n) element.scrollTop = Math.floor(element.scrollTop / rowHeight) * rowHeight + n * rowHeight;
+	return n;
+}
+var NOTCH, LINE, GESTURE_GAP, _gestures, WheelSteps_default;
+var init_WheelSteps = __esmMin((() => {
+	NOTCH = 100;
+	LINE = 33;
+	GESTURE_GAP = 150;
+	_gestures = /* @__PURE__ */ new WeakMap();
+	WheelSteps_default = {
+		steps,
+		scrollRows,
+		NOTCH,
+		GESTURE_GAP
+	};
+}));
+//#endregion
 //#region src/UI/Components/ChatBox/ChatBox.js
 /**
 * Helper: query inside shadow root
@@ -220800,14 +220860,7 @@ function shouldLetChatInputHandleVerticalArrows(inputEl, direction) {
 * Update scroll by block (14px)
 */
 function onScroll$6(event) {
-	let delta;
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) delta = -delta;
-	} else if (event.detail) delta = -event.detail;
-	else if (event.deltaY) delta = -event.deltaY / Math.abs(event.deltaY);
-	const lineHeight = getScrollLineHeightPx(this);
-	this.scrollTop = Math.floor(this.scrollTop / lineHeight) * lineHeight - (delta || 0) * lineHeight;
+	WheelSteps_default.scrollRows(event, this, getScrollLineHeightPx(this));
 	event.preventDefault();
 }
 /**
@@ -220947,6 +221000,7 @@ var init_ChatBox = __esmMin((() => {
 	init_ChatBoxSettings();
 	init_Configs();
 	init_EntityManager();
+	init_WheelSteps();
 	MAX_MSG = 400;
 	MAX_LENGTH = 100;
 	MAGIC_NUMBER = 42;
@@ -247425,11 +247479,7 @@ function createStorage(config) {
 		return -1;
 	}
 	function onScroll(event, contentEl) {
-		let delta;
-		if (event.wheelDelta) delta = event.wheelDelta / 120;
-		else if (event.detail) delta = -event.detail;
-		else if (event.deltaY) delta = -event.deltaY / 100;
-		contentEl.scrollTop = Math.floor(contentEl.scrollTop / 32) * 32 - delta * 32;
+		WheelSteps_default.scrollRows(event, contentEl, 32);
 		event.preventDefault();
 	}
 	function onFilterWindowOpen(button) {
@@ -247556,6 +247606,7 @@ var init_StorageCommon = __esmMin((() => {
 	init_ItemInfo();
 	init_CartItems();
 	init_Inventory();
+	init_WheelSteps();
 }));
 //#endregion
 //#region src/UI/Components/Storage/StorageV0/Storage.html?raw
@@ -248005,9 +248056,8 @@ function onDrop$8(event) {
 * Block the scroll to move 32px at each move
 */
 function onScroll$5(event) {
-	const delta = event.deltaY > 0 ? -1 : 1;
 	const el = event.currentTarget;
-	el.scrollTop = Math.floor(el.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps_default.scrollRows(event, el, 32);
 	if (el._roScrollbarRestart) el._roScrollbarRestart();
 	event.stopImmediatePropagation();
 	event.preventDefault();
@@ -248148,6 +248198,7 @@ var init_CartItems = __esmMin((() => {
 	init_Storage$1();
 	init_Inventory();
 	init_Equipment();
+	init_WheelSteps();
 	CartItems = new GUIComponent("CartItems", CartItems_default$1);
 	CartItems.render = () => CartItems_default$2;
 	/**
@@ -317120,6 +317171,7 @@ var init_Scrollbar = __esmMin((() => {
 	init_DBManager();
 	init_Client();
 	init_UIScale();
+	init_WheelSteps();
 	ScrollBar = class ScrollBar {
 		/**
 		* @var {boolean} does the scrollbar completely loaded ?
@@ -317417,8 +317469,11 @@ var init_Scrollbar = __esmMin((() => {
 			element.addEventListener("wheel", (e) => {
 				const h = element.clientHeight;
 				if (element.scrollHeight <= h) return;
-				const delta = e.deltaY > 0 ? 1 : -1;
-				element.scrollTop += delta * 20;
+				if (e.defaultPrevented) {
+					e.stopPropagation();
+					return;
+				}
+				element.scrollTop += WheelSteps_default.steps(e, element) * 20;
 				updateThumb();
 				e.preventDefault();
 				e.stopPropagation();
@@ -323313,12 +323368,7 @@ function onItemFocus$1() {
 	this.classList.add("selected");
 }
 function onScroll$4(event) {
-	let delta;
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) delta = -delta;
-	} else if (event.detail) delta = -event.detail;
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps_default.scrollRows(event, this, 32);
 	event.preventDefault();
 }
 function onDragStart$1(event) {
@@ -323407,6 +323457,7 @@ var init_Vending = __esmMin((() => {
 	init_Renderer();
 	init_Inventory();
 	init_BasicInfo();
+	init_WheelSteps();
 	Vending = new GUIComponent("Vending", Vending_default$1);
 	Vending.render = () => Vending_default$2;
 	Vending.isOpen = false;
@@ -323775,13 +323826,7 @@ function onDrop$4(event) {
 * Block the scroll to move 32px at each move
 */
 function onScroll$3(event) {
-	let delta;
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) delta = -delta;
-	} else if (event.detail) delta = -event.detail;
-	else if (event.deltaY) delta = -event.deltaY / 100;
-	event.currentTarget.scrollTop = Math.floor(event.currentTarget.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps_default.scrollRows(event, event.currentTarget, 32);
 	event.stopImmediatePropagation();
 	event.preventDefault();
 }
@@ -323862,6 +323907,7 @@ var init_VendingShop = __esmMin((() => {
 	init_VendingShop$2();
 	init_VendingShop$1();
 	init_VendingReport();
+	init_WheelSteps();
 	VendingShop = new GUIComponent("VendingShop", VendingShop_default$1);
 	VendingShop.render = () => VendingShop_default$2;
 	/**
@@ -324186,10 +324232,9 @@ function onScrollWheel(event) {
 	event.preventDefault();
 	event.stopImmediatePropagation();
 	const ROW_HEIGHT = 24;
-	let delta = 0;
-	if (event.wheelDelta) delta = event.wheelDelta > 0 ? 1 : -1;
-	else if (event.deltaY) delta = event.deltaY < 0 ? 1 : -1;
-	let target = this.scrollTop - delta * ROW_HEIGHT;
+	const steps = WheelSteps_default.steps(event, this);
+	if (!steps) return;
+	let target = this.scrollTop + steps * ROW_HEIGHT;
 	const maxScroll = this.scrollHeight - this.clientHeight;
 	target = Math.max(0, Math.min(target, maxScroll));
 	target = Math.round(target / ROW_HEIGHT) * ROW_HEIGHT;
@@ -324270,6 +324315,7 @@ var init_VendingReport = __esmMin((() => {
 	init_Elements();
 	init_VendingReport$2();
 	init_VendingReport$1();
+	init_WheelSteps();
 	VendingReport = new GUIComponent("VendingReport", VendingReport_default$1);
 	VendingReportTable = {
 		list: [],
@@ -334457,13 +334503,8 @@ function stopPropagation$2(event) {
 * Update scroll by block (32px)
 */
 function onScroll$2(event) {
-	let delta;
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) delta = -delta;
-	} else if (event.detail) delta = -event.detail;
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
-	return false;
+	WheelSteps_default.scrollRows(event, this, 32);
+	event.preventDefault();
 }
 /**
 * Mouse over item, display name and informations
@@ -334499,6 +334540,7 @@ var init_ConvertItems = __esmMin((() => {
 	init_Elements();
 	init_ConvertItems$2();
 	init_ConvertItems$1();
+	init_WheelSteps();
 	_preferences$6 = Preferences.get("ConvertItems", {
 		x: 200,
 		y: 500,
@@ -334832,13 +334874,8 @@ function stopPropagation$1(event) {
 * Update scroll by block (32px)
 */
 function onScroll$1(event) {
-	let delta;
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) delta = -delta;
-	} else if (event.detail) delta = -event.detail;
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
-	return false;
+	WheelSteps_default.scrollRows(event, this, 32);
+	event.preventDefault();
 }
 /**
 * Mouse over item, display name and informations
@@ -334874,6 +334911,7 @@ var init_ItemListWindowSelection = __esmMin((() => {
 	init_Elements();
 	init_ItemListWindowSelection$2();
 	init_ItemListWindowSelection$1();
+	init_WheelSteps();
 	_preferences$5 = Preferences.get("ItemListWindowSelection", {
 		x: 200,
 		y: 500,
@@ -339148,11 +339186,7 @@ function onItemFocus() {
 * Update scroll by block (32px)
 */
 function onScroll(event) {
-	let delta;
-	if (event.deltaY) delta = event.deltaY > 0 ? -1 : 1;
-	else if (event.wheelDelta) delta = event.wheelDelta / 120;
-	else if (event.detail) delta = -event.detail;
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps_default.scrollRows(event, this, 32);
 	event.preventDefault();
 }
 /**
@@ -339219,6 +339253,7 @@ var init_NpcStore = __esmMin((() => {
 	init_InventoryItemTransfer();
 	init_NpcStore$2();
 	init_NpcStore$1();
+	init_WheelSteps();
 	NpcStore = new GUIComponent("NpcStore", NpcStore_default$1);
 	NpcStore.render = () => NpcStore_default$2;
 	/**
