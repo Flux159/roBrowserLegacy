@@ -215365,6 +215365,7 @@ var init_SkillEffect = __esmMin((() => {
 		effectId: "ef_nw_mission_bombard",
 		hitEffectId: "ef_nw_mission_bombard_hit"
 	};
+	SkillEffect[SkillConst_default.NW_HASTY_FIRE_IN_THE_HOLE] = { effectId: "ef_nw_hasty_fire_in_the_hole" };
 	SkillEffect[5500] = {
 		effectId: "ef_nw_wild_shot",
 		effectIdOnCaster: "ef_nw_wild_shot_cast",
@@ -241195,8 +241196,11 @@ function createBasicInfo(config) {
 	* @param {number} val2 maximum value
 	* @param {string} color bar color prefix
 	*/
+	const barUpdates = {};
 	function updateBar(root, type, val1, val2, color) {
 		const perc = Math.floor(val1 * 100 / val2);
+		const update = barUpdates[type] = (barUpdates[type] || 0) + 1;
+		const isLatest = () => barUpdates[type] === update;
 		root.querySelectorAll(`.${type}_value`).forEach((el) => {
 			el.textContent = val1;
 		});
@@ -241214,18 +241218,18 @@ function createBasicInfo(config) {
 		}
 		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/gze${color}_left.bmp`, (url) => {
 			const el = root.querySelector(`.${type}_bar_left`);
-			if (el) el.style.backgroundImage = `url(${url})`;
+			if (el && isLatest()) el.style.backgroundImage = `url(${url})`;
 		});
 		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/gze${color}_mid.bmp`, (url) => {
 			const el = root.querySelector(`.${type}_bar_middle`);
-			if (el) {
+			if (el && isLatest()) {
 				el.style.backgroundImage = `url(${url})`;
 				el.style.width = `${Math.floor(Math.min(perc, 100) * barScale)}px`;
 			}
 		});
 		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/gze${color}_right.bmp`, (url) => {
 			const el = root.querySelector(`.${type}_bar_right`);
-			if (el) {
+			if (el && isLatest()) {
 				el.style.backgroundImage = `url(${url})`;
 				el.style.left = `${Math.floor(Math.min(perc, 100) * barScale)}px`;
 			}
@@ -276559,10 +276563,26 @@ var init_EffectTable = __esmMin((() => {
 			min: "sky_emperor/ske_all_in_the_sky/min_ske_all_in_the_sky",
 			wav: "effect/sky_emperor/ske_all_in_the_sky"
 		}],
-		ef_ske_enchanting_sky: [{
-			wav: "effect/sky_emperor/ske_enchanting_sky",
-			attachedEntity: true
-		}],
+		ef_ske_enchanting_sky: [
+			{
+				wav: "effect/sky_emperor/ske_enchanting_sky",
+				attachedEntity: true
+			},
+			{
+				type: "STR",
+				file: "sky_emperor/ske_enchanting_sky/ske_enchanting_sky_00",
+				texturePath: "sky_emperor/ske_enchanting_sky/",
+				min: "sky_emperor/ske_enchanting_sky/min_ske_enchanting_sky_00",
+				attachedEntity: true
+			},
+			{
+				type: "STR",
+				file: "sky_emperor/ske_enchanting_sky/ske_enchanting_sky_01",
+				texturePath: "sky_emperor/ske_enchanting_sky/",
+				min: "sky_emperor/ske_enchanting_sky/min_ske_enchanting_sky_01",
+				attachedEntity: true
+			}
+		],
 		ef_ske_sky_sun: [{
 			type: "STR",
 			file: "sky_emperor/ske_sky_sun/sky_sun/sky_sun",
@@ -278891,10 +278911,26 @@ var init_EffectTable = __esmMin((() => {
 			min: "shinkiro_shiranui/ss_hitouakumu/hitouakumu/min_hitouakumu",
 			wav: "effect/shinkiro_shiranui/ss_hitouakumu"
 		}],
-		ef_ss_ankokuryuuakumu: [{
-			wav: "effect/shinkiro_shiranui/ss_ankokuryuuakumu",
-			attachedEntity: true
-		}],
+		ef_ss_ankokuryuuakumu: [
+			{
+				wav: "effect/shinkiro_shiranui/ss_ankokuryuuakumu",
+				attachedEntity: true
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_00/ankokuryuuakumu_00",
+				texturePath: "shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_00/",
+				min: "shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_00/min_ankokuryuuakumu_00",
+				attachedEntity: true
+			},
+			{
+				type: "STR",
+				file: "shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_01/ankokuryuuakumu_01",
+				texturePath: "shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_01/",
+				min: "shinkiro_shiranui/ss_ankokuryuuakumu/ankokuryuuakumu_01/min_ankokuryuuakumu_01",
+				attachedEntity: true
+			}
+		],
 		ef_ss_four_charm: [{
 			type: "STR",
 			file: "shinkiro_shiranui/ss_four_charm/four_charm_ice/four_charm_ice",
@@ -283796,6 +283832,19 @@ var init_EffectTable = __esmMin((() => {
 			file: "night_watch/nw_mission_bombard/mission_bombard/mission_bombard_hit",
 			texturePath: "night_watch/nw_mission_bombard/mission_bombard/",
 			min: "night_watch/nw_mission_bombard/mission_bombard/min_mission_bombard_hit"
+		}],
+		ef_nw_hasty_fire_in_the_hole: [{
+			type: "STR",
+			file: "night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/hasty_fire_in_the_hole_5x5",
+			texturePath: "night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/",
+			min: "night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole/min_hasty_fire_in_the_hole_5x5",
+			wav: "effect/night_watch/nw_hasty_fire_in_the_hole_0"
+		}, {
+			type: "STR",
+			file: "night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/hasty_fire_in_the_hole_5x5",
+			texturePath: "night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/",
+			min: "night_watch/nw_hasty_fire_in_the_hole/hasty_fire_in_the_hole_bottom/min_hasty_fire_in_the_hole_5x5",
+			renderBeforeEntities: true
 		}],
 		ef_nw_wild_shot: [{
 			type: "STR",
@@ -317835,6 +317884,16 @@ var init_GUIComponent = __esmMin((() => {
 				}
 			});
 		}
+		/**
+		* Tell the window's mouse guard the pointer has left.
+		*
+		* Hiding is display:none, and a browser fires no mouseleave for an element
+		* that disappears under the pointer. A STOP-mode window hidden while hovered
+		* kept the map from taking clicks until it was shown and left again.
+		*/
+		_releaseMouse() {
+			(this.__mouseStopBlock || this._host).dispatchEvent(new Event("mouseleave"));
+		}
 		_setupMouseMode() {
 			const element = this.__mouseStopBlock || this._host;
 			if (this.mouseMode === GUIComponent.MouseMode.STOP) {
@@ -318131,13 +318190,17 @@ var init_GUIComponent = __esmMin((() => {
 				},
 				hide() {
 					host.style.display = "none";
+					component._releaseMouse();
 					return proxy;
 				},
 				toggle() {
 					if (host.style.display === "none") {
 						host.style.display = "";
 						component._fixPositionOverflow();
-					} else host.style.display = "none";
+					} else {
+						host.style.display = "none";
+						component._releaseMouse();
+					}
 					return proxy;
 				},
 				parent() {
@@ -330030,6 +330093,7 @@ function onParameterChange$1(pkt) {
 			WinStatsController.getUI().update("aspd", amount);
 			break;
 		case StatusProperty_default.JOBLEVEL:
+			SessionStorage_default.Entity.joblevel = amount;
 			BasicInfoController.getUI().update("jlvl", amount);
 			Controller$4.getUI().onLevelUp();
 			break;
@@ -332089,15 +332153,32 @@ function onEntityViewChange(pkt) {
 				else entity.job = pkt.value;
 				if (entity === SessionStorage_default.Entity) {
 					if (PacketVerManager_default.value >= 20200520) {
-						BasicInfoController.getUI().remove();
+						const previous = BasicInfoController.getUI();
+						previous.remove();
 						BasicInfoController.selectUIVersionWithJob(DB.getJobClass(pkt.value));
-						BasicInfoController.getUI().prepare();
-						BasicInfoController.getUI().update("blvl", SessionStorage_default.Entity.clevel);
-						BasicInfoController.getUI().update("jlvl", SessionStorage_default.Entity.joblevel);
-						BasicInfoController.getUI().update("zeny", SessionStorage_default.Entity.money);
-						BasicInfoController.getUI().update("name", SessionStorage_default.Entity.display.name);
-						BasicInfoController.getUI().update("bexp", BasicInfoController.getUI().base_exp, BasicInfoController.getUI().base_exp_next);
-						BasicInfoController.getUI().append();
+						const ui = BasicInfoController.getUI();
+						if (ui !== previous) {
+							ui.base_exp = previous.base_exp;
+							ui.base_exp_next = previous.base_exp_next;
+							ui.job_exp = previous.job_exp;
+							ui.job_exp_next = previous.job_exp_next;
+						}
+						ui.prepare();
+						ui.update("blvl", SessionStorage_default.Entity.clevel);
+						ui.update("jlvl", SessionStorage_default.Entity.joblevel);
+						ui.update("zeny", SessionStorage_default.Entity.money);
+						ui.update("name", SessionStorage_default.Entity.display.name);
+						ui.update("bexp", ui.base_exp, ui.base_exp_next);
+						if (ui.job_exp_next > -1) ui.update("jexp", ui.job_exp, ui.job_exp_next);
+						const life = SessionStorage_default.Entity.life;
+						if (life.hp > -1 && life.hp_max > -1) ui.update("hp", life.hp, life.hp_max);
+						if (life.sp > -1 && life.sp_max > -1) ui.update("sp", life.sp, life.sp_max);
+						if (life.ap > -1 && life.ap_max > -1) ui.update("ap", life.ap, life.ap_max);
+						if (SessionStorage_default.Entity.max_weight) {
+							ui.weight_max = SessionStorage_default.Entity.max_weight;
+							ui.update("weight", SessionStorage_default.Entity.weight, ui.weight_max);
+						}
+						ui.append();
 					}
 					BasicInfoController.getUI().update("job", pkt.value);
 				}
