@@ -11359,6 +11359,149 @@ var init_MemoryManager = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/Core/ClothPalette.js
+/**
+* Whether a palette that failed to load is one this can build.
+*
+* @param {string} filename
+* @return {boolean}
+*/
+function canBuild(filename) {
+	return filename.startsWith(BODY_DIR) && NAME.test(filename.slice(16));
+}
+/**
+* Build the palette for a missing body palette file.
+*
+* @param {string} filename - the missing .pal
+* @param {function} callback - called with a 1024-byte Uint8Array, or null
+*/
+function build(filename, callback) {
+	const match = filename.match(NAME);
+	const colour = parseInt(match[2], 10);
+	const names = SIBLINGS.filter((n) => n !== colour).map((n) => match[1] + n + (match[3] || "") + ".pal");
+	const found = new Array(names.length).fill(null);
+	let pending = names.length;
+	names.forEach((name, i) => {
+		Thread.send("GET_FILE", {
+			filename: name,
+			args: null
+		}, (data, error) => {
+			if (!error && data && data.byteLength >= 1024) found[i] = new Uint8Array(data, 0, 1024);
+			if (--pending === 0) callback(recolour(found.filter(Boolean), colour));
+		});
+	});
+}
+/**
+* @param {Uint8Array[]} palettes - the job's own, first one first
+* @param {number} colour
+* @return {Uint8Array|null}
+*/
+function recolour(palettes, colour) {
+	if (palettes.length < 2) return null;
+	const base = palettes[0];
+	const cloth = [];
+	for (let i = FIRST_CLOTH_INDEX; i < 256; ++i) {
+		const o = i * 4;
+		if (palettes.some((p) => p[o] !== base[o] || p[o + 1] !== base[o + 1] || p[o + 2] !== base[o + 2])) cloth.push(i);
+	}
+	if (!cloth.length) return null;
+	const [hue, saturation, lightness] = LOOKS[((colour - 4) % LOOKS.length + LOOKS.length) % LOOKS.length];
+	const out = new Uint8Array(base);
+	for (const i of cloth) {
+		const o = i * 4;
+		const hls = rgbToHls(base[o] / 255, base[o + 1] / 255, base[o + 2] / 255);
+		const rgb = hlsToRgb(hue === null ? hls[0] : hue / 360, Math.min(1, hls[1] * lightness), hue === null ? 0 : Math.min(1, Math.max(hls[2], .35) * saturation));
+		out[o] = Math.round(rgb[0] * 255);
+		out[o + 1] = Math.round(rgb[1] * 255);
+		out[o + 2] = Math.round(rgb[2] * 255);
+	}
+	return out;
+}
+/** Python's colorsys.rgb_to_hls: all values 0..1. */
+function rgbToHls(r, g, b) {
+	const max = Math.max(r, g, b);
+	const min = Math.min(r, g, b);
+	const l = (max + min) / 2;
+	if (max === min) return [
+		0,
+		l,
+		0
+	];
+	const d = max - min;
+	const s = l <= .5 ? d / (max + min) : d / (2 - max - min);
+	const rc = (max - r) / d;
+	const gc = (max - g) / d;
+	const bc = (max - b) / d;
+	let h = r === max ? bc - gc : g === max ? 2 + rc - bc : 4 + gc - rc;
+	h = (h / 6 % 1 + 1) % 1;
+	return [
+		h,
+		l,
+		s
+	];
+}
+/** Python's colorsys.hls_to_rgb: all values 0..1. */
+function hlsToRgb(h, l, s) {
+	if (s === 0) return [
+		l,
+		l,
+		l
+	];
+	const m2 = l <= .5 ? l * (1 + s) : l + s - l * s;
+	const m1 = 2 * l - m2;
+	return [
+		channel(m1, m2, h + 1 / 3),
+		channel(m1, m2, h),
+		channel(m1, m2, h - 1 / 3)
+	];
+}
+function channel(m1, m2, h) {
+	h = (h % 1 + 1) % 1;
+	if (h < 1 / 6) return m1 + (m2 - m1) * h * 6;
+	if (h < .5) return m2;
+	if (h < 2 / 3) return m1 + (m2 - m1) * (2 / 3 - h) * 6;
+	return m1;
+}
+var BODY_DIR, NAME, SIBLINGS, LOOKS, FIRST_CLOTH_INDEX, ClothPalette_default;
+var init_ClothPalette = __esmMin((() => {
+	init_Thread();
+	BODY_DIR = "data/palette/¸ö/";
+	NAME = /^(.*_)(\d+)(_1)?\.pal$/i;
+	SIBLINGS = [
+		1,
+		2,
+		3
+	];
+	LOOKS = [
+		[
+			105,
+			.85,
+			1.05
+		],
+		[
+			28,
+			.6,
+			.65
+		],
+		[
+			null,
+			0,
+			.45
+		],
+		[
+			275,
+			.75,
+			.95
+		]
+	];
+	FIRST_CLOTH_INDEX = 2;
+	ClothPalette_default = {
+		canBuild,
+		build,
+		recolour
+	};
+}));
+//#endregion
 //#region src/Network/Packets/packets2003_len_main.js
 var packets2003_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2003_len_main_default });
 function init$38(packetver) {
@@ -352232,6 +352375,13 @@ async function onFileLoaded(data, error, input) {
 	let i, count, j, size;
 	let gl, frames, texture, layers, palette;
 	let precision;
+	if (error && ClothPalette_default.canBuild(input.filename)) {
+		ClothPalette_default.build(input.filename, function(built) {
+			if (built) onFileLoaded(built.buffer, null, input);
+			else MemoryManager.set(input.filename, data, error);
+		});
+		return;
+	}
 	if (data && !error) switch (input.filename.substr(-3)) {
 		case "bmp":
 			Texture.load(data, function() {
@@ -352312,6 +352462,7 @@ var init_Client = __esmMin((() => {
 	init_Configs();
 	init_Thread();
 	init_MemoryManager();
+	init_ClothPalette();
 	init_PacketVerManager();
 	init_Texture();
 	init_WebGL();
