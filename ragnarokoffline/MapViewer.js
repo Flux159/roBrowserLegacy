@@ -318414,7 +318414,7 @@ function _ensureDeps() {
 	if (!_depsPromise) _depsPromise = _loadHeavyDeps();
 	return _depsPromise;
 }
-var _Cursor, _DB, _Client, _Renderer, _EntityManager, _ScrollBar, _depsPromise, _snapCache, MouseMode, DENIED_SELECTOR, CSS_NUMBER, _frozenBy, GUIComponent;
+var _Cursor, _DB, _Client, _Renderer, _EntityManager, _ScrollBar, _depsPromise, _snapCache, MouseMode, _enteredGuards, _dragged, DENIED_SELECTOR, CSS_NUMBER, _frozenBy, GUIComponent;
 var init_GUIComponent = __esmMin((() => {
 	init_Common$1();
 	init_MouseEventHandler();
@@ -318437,6 +318437,17 @@ var init_GUIComponent = __esmMin((() => {
 		STOP: 1,
 		FREEZE: 2
 	});
+	_enteredGuards = /* @__PURE__ */ new Set();
+	_dragged = false;
+	if (typeof window !== "undefined") {
+		window.addEventListener("dragstart", () => _dragged = true, true);
+		window.addEventListener("mousemove", () => {
+			if (_dragged) {
+				_dragged = false;
+				_enteredGuards.forEach((check) => check());
+			}
+		}, true);
+	}
 	DENIED_SELECTOR = ".denied";
 	CSS_NUMBER = {
 		zIndex: true,
@@ -318991,10 +319002,14 @@ var init_GUIComponent = __esmMin((() => {
 			if (this.mouseMode === GUIComponent.MouseMode.STOP) {
 				let _intersect;
 				let _enter = 0;
+				const check = () => {
+					if (_enter > 0 && !(element.isConnected && element.matches(":hover"))) element.dispatchEvent(new Event("mouseleave"));
+				};
 				element.addEventListener("mouseenter", () => {
 					if (_enter === 0) {
 						_intersect = Mouse.intersect;
 						_enter++;
+						_enteredGuards.add(check);
 						if (_intersect) {
 							Mouse.intersect = false;
 							_Cursor?.setType(_Cursor?.ACTION?.DEFAULT ?? 0);
@@ -319005,6 +319020,7 @@ var init_GUIComponent = __esmMin((() => {
 				element.addEventListener("mouseleave", () => {
 					if (_enter > 0) {
 						_enter--;
+						_enteredGuards.delete(check);
 						if (_enter === 0 && _intersect) {
 							if (!SessionStorage_default.FreezeUI) Mouse.intersect = true;
 							_EntityManager?.setOverEntity(null);
@@ -319014,6 +319030,7 @@ var init_GUIComponent = __esmMin((() => {
 				element.addEventListener("x_remove", () => {
 					if (_enter > 0) {
 						_enter = 0;
+						_enteredGuards.delete(check);
 						if (_intersect) {
 							Mouse.intersect = true;
 							_EntityManager?.setOverEntity(null);
