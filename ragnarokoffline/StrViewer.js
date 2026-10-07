@@ -101189,6 +101189,114 @@ var init_ItemTable = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/DB/Items/ItemPackages.js
+/** Normalize client package tables without changing the server's zero-based group IDs. */
+function normalizeItemPackages({ names = [], items = [] } = {}) {
+	const packages = /* @__PURE__ */ new Map();
+	const labels = /* @__PURE__ */ new Map();
+	for (const [box, group, name] of Object.values(names)) labels.set(`${box}:${group}`, name);
+	const add = (box, group, item, name) => {
+		box = Number(box);
+		group = Number(group);
+		if (!Number.isInteger(box) || box <= 0 || !Number.isInteger(group) || group < 0 || !Number.isInteger(item.id) || item.id <= 0 || !Number.isInteger(item.amount) || item.amount <= 0) return;
+		if (!packages.has(box)) packages.set(box, /* @__PURE__ */ new Map());
+		const groups = packages.get(box);
+		if (!groups.has(group)) groups.set(group, {
+			id: group,
+			name: name || "",
+			items: []
+		});
+		groups.get(group).items.push(item);
+	};
+	for (const [box, group, id, amount, hours = 0, refine = 0, randomOption = 0, grade = 0] of Object.values(items)) add(box, group, {
+		id,
+		amount,
+		hours,
+		refine,
+		randomOption: Boolean(randomOption),
+		grade
+	}, labels.get(`${box}:${group}`));
+	return new Map([...packages].map(([box, groups]) => [box, [...groups.values()].sort((a, b) => a.id - b.id)]));
+}
+/** Read both Lua formats through the same bridge; compiled .lub files work too. */
+function readItemPackages(lua, decode) {
+	const names = [];
+	const items = [];
+	lua.ctx.roPackageName = (box, group, name) => names.push([
+		box,
+		group,
+		decode(name)
+	]);
+	lua.ctx.roPackageItem = (box, group, id, amount, hours, refine, randomOption, grade) => items.push([
+		box,
+		group,
+		id,
+		amount,
+		hours,
+		refine,
+		randomOption,
+		grade
+	]);
+	lua.doStringSync(`
+		if SelectPackageItemData then
+			for box, groups in pairs(SelectPackageItemData.TabNameTbl or {}) do
+				for group, name in pairs(groups) do roPackageName(box, group, name) end
+			end
+			for box, groups in pairs(SelectPackageItemData.PackageTbl or {}) do
+				for group, rewards in pairs(groups) do
+					for _, item in pairs(rewards) do
+						roPackageItem(box, group, item.item, item.cnt, item.hour or 0,
+							item.refine or 0, item.randomOption and 1 or 0, item.grade or 0)
+					end
+				end
+			end
+		else
+			for _, row in pairs(packageitemboxName or {}) do roPackageName(row[1], row[2], row[3]) end
+			for _, row in pairs(packageitemsetbox or {}) do
+				roPackageItem(row[1], row[2], row[3], row[4], row[5] or 0,
+					row[6] or 0, row[7] or 0, row[8] or 0)
+			end
+		end
+	`);
+	return normalizeItemPackages({
+		names,
+		items
+	});
+}
+async function loadItemPackages(lua, luaPath, packetver, loadFile, decode) {
+	const base = `${luaPath}selectpackage/`;
+	const files = packetver >= 20250618 ? [
+		"selectpackageitem_cln.lub",
+		"selectpackageitem_cln.lua",
+		"selectpackageitem.lub",
+		"selectpackageitem.lua"
+	] : ["selectpackageitem.lub", "selectpackageitem.lua"];
+	const attempt = async (index) => {
+		if (index === files.length) {
+			console.warn("Selection package metadata unavailable; package boxes cannot be opened.");
+			return /* @__PURE__ */ new Map();
+		}
+		const path = base + files[index];
+		let mounted = false;
+		try {
+			const file = await new Promise((resolve, reject) => loadFile(path, resolve, reject));
+			lua.mountFile(path, file instanceof ArrayBuffer ? new Uint8Array(file) : file);
+			mounted = true;
+			lua.doStringSync("SelectPackageItemData = nil; packageitemboxName = nil; packageitemsetbox = nil");
+			await lua.doFile(path);
+			const packages = readItemPackages(lua, decode);
+			if (!packages.size) throw new Error("Empty package table");
+			return packages;
+		} catch (_error) {
+			return await attempt(index + 1);
+		} finally {
+			if (mounted) lua.unmountFile(path);
+		}
+	};
+	return attempt(0);
+}
+var init_ItemPackages = __esmMin((() => {}));
+//#endregion
 //#region src/DB/Items/HatTable.js
 var HatTable_default;
 var init_HatTable = __esmMin((() => {
@@ -157660,6 +157768,21 @@ var init_PacketStructure = __esmMin((() => {
 		pkt.view.setUint32(ver[4], this.AID, true);
 		return pkt;
 	};
+	PACKET.CZ.USE_PACKAGEITEM = function PACKET_CZ_USE_PACKAGEITEM() {
+		this.index = 0;
+		this.AID = 0;
+		this.itemID = 0;
+		this.BoxIndex = 0;
+	};
+	PACKET.CZ.USE_PACKAGEITEM.prototype.build = function() {
+		const packet = new BinaryWriter(16);
+		packet.writeUShort(2991);
+		packet.writeUShort(this.index);
+		packet.writeULong(this.AID);
+		packet.writeULong(this.itemID);
+		packet.writeULong(this.BoxIndex);
+		return packet;
+	};
 	PACKET.CZ.REQ_WEAR_EQUIP = function PACKET_CZ_REQ_WEAR_EQUIP() {
 		this.index = 0;
 		this.wearLocation = 0;
@@ -203084,6 +203207,7 @@ var PacketRegister_default;
 var init_PacketRegister = __esmMin((() => {
 	init_PacketStructure();
 	PacketRegister_default = {
+		2991: PACKET.CZ.USE_PACKAGEITEM,
 		105: PACKET.AC.ACCEPT_LOGIN,
 		106: PACKET.AC.REFUSE_LOGIN,
 		107: PACKET.HC.ACCEPT_ENTER_NEO_UNION,
@@ -223289,6 +223413,120 @@ var init_InventoryV0$2 = __esmMin((() => {
 var InventoryV0_default$1;
 var init_InventoryV0$1 = __esmMin((() => {
 	InventoryV0_default$1 = ":host {\r\n	top: 100px;\r\n	left: 100px;\r\n}\r\n\r\n#InventoryV0 {\r\n	position: relative;\r\n	display: flex;\r\n	flex-direction: column;\r\n}\r\n\r\n#InventoryV0 table {\r\n	border-spacing: 0px;\r\n	display: inline-block;\r\n}\r\n\r\n#InventoryV0 .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n\r\n#InventoryV0 .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n\r\n#InventoryV0 .titlebar .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	/* chrome bug */\r\n	display: inline-block;\r\n	width: 32px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#InventoryV0 .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n\r\n#InventoryV0 .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n\r\n#InventoryV0 .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#InventoryV0 .panel {\r\n	border-radius: 0px 0px 3px 3px;\r\n	padding: 0px;\r\n	display: flex;\r\n	flex-direction: column;\r\n	flex: 1;\r\n	overflow: hidden;\r\n	background-color: transparent;\r\n}\r\n\r\n#InventoryV0 .middle {\r\n	display: flex;\r\n	flex: 1;\r\n	overflow: hidden;\r\n}\r\n\r\n#InventoryV0 .tabs {\r\n	display: flex;\r\n	flex-direction: column;\r\n	background-repeat: round;\r\n	background-size: auto 3px;\r\n}\r\n\r\n#InventoryV0 .tab-sprite {\r\n	width: 20px;\r\n	height: 82px;\r\n	background-repeat: no-repeat;\r\n	background-position: top left;\r\n	display: flex;\r\n	flex-direction: column;\r\n	flex-shrink: 0;\r\n	align-self: flex-end;\r\n	border-left: 1px solid white;\r\n}\r\n\r\n#InventoryV0 .tab-sprite button {\r\n	flex: 1;\r\n	width: 20px;\r\n	border: none;\r\n	background: transparent;\r\n	cursor: pointer;\r\n	padding: 0;\r\n}\r\n\r\n#InventoryV0 .container {\r\n	flex: 1;\r\n	padding-left: 17px;\r\n	border-right: 1px solid #ccc;\r\n	background-clip: padding-box;\r\n	box-shadow: inset 40px 0px 0px 2px #ffffff;\r\n	position: relative;\r\n	border-left: 1px solid #ccc;\r\n	background-color: white;\r\n	overflow: hidden;\r\n	white-space: nowrap;\r\n}\r\n\r\n#InventoryV0 .scroll-host {\r\n	overflow-y: auto;\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	right: 0;\r\n	bottom: 0;\r\n	display: block;\r\n\r\n	/* Hide native scrollbar but allow detection */\r\n	scrollbar-width: none;\r\n	-ms-overflow-style: none;\r\n}\r\n\r\n#InventoryV0 .scroll-host::-webkit-scrollbar {\r\n	display: none;\r\n}\r\n\r\n#InventoryV0 .content {\r\n	width: 100%;\r\n	display: grid;\r\n	grid-template-columns: repeat(auto-fill, 32px);\r\n	grid-auto-rows: 32px;\r\n	min-height: 90%;\r\n	background-color: white;\r\n	background-repeat: repeat;\r\n	background-origin: border-box;\r\n	background-clip: border-box;\r\n	box-sizing: border-box;\r\n	padding-top: 0px;\r\n	margin-left: 15px;\r\n	margin-top: 8px;\r\n}\r\n\r\n#InventoryV0 .content .item {\r\n	display: block;\r\n	width: 32px;\r\n	height: 32px;\r\n	margin: 0;\r\n	position: relative;\r\n}\r\n\r\n#InventoryV0 .content .item .icon {\r\n	position: absolute;\r\n	top: 4px;\r\n	left: 4px;\r\n	width: 24px;\r\n	height: 24px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#InventoryV0 .overlay {\r\n	position: absolute;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 15px;\r\n	line-height: 15px;\r\n	border-radius: 3px;\r\n	padding: 4px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n\r\n#InventoryV0 .overlay.grey {\r\n	color: #aaa;\r\n}\r\n\r\n#InventoryV0 .content .item .amount {\r\n	position: absolute;\r\n	top: 15px;\r\n	bottom: 9px;\r\n	right: 0px;\r\n	text-align: right;\r\n	text-shadow: -1px -1px white;\r\n}\r\n\r\n#InventoryV0 .footer {\r\n	width: 100%;\r\n	height: 27px;\r\n	background-repeat: repeat-x;\r\n	background-color: transparent;\r\n	position: relative;\r\n	flex-shrink: 0;\r\n	border-right: 1px solid #ccc;\r\n	border-bottom: 1px solid #ccc;\r\n}\r\n\r\n#InventoryV0 .footer .cnt {\r\n	position: absolute;\r\n	left: 10px;\r\n	bottom: 6px;\r\n}\r\n\r\n#InventoryV0 .footer button {\r\n	position: absolute;\r\n	right: 0px;\r\n	bottom: 1px;\r\n	width: 13px;\r\n	height: 13px;\r\n	border: none;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n#InventoryV0 .content .item .new_item {\r\n	position: absolute;\r\n	width: 32px;\r\n	height: 32px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	pointer-events: none;\r\n}\r\n";
+}));
+//#endregion
+//#region src/UI/Components/PackageSelection/PackageSelection.html?raw
+var PackageSelection_default$2;
+var init_PackageSelection$2 = __esmMin((() => {
+	PackageSelection_default$2 = "<div id=\"PackageSelection\">\r\n	<div class=\"head\"><ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image><span class=\"title\"></span></div>\r\n	<p>Choose one reward set:</p>\r\n	<div class=\"groups\"></div>\r\n	<div class=\"actions\">\r\n		<ui-button\r\n			class=\"confirm\"\r\n			aria-label=\"Confirm selection\"\r\n			bg=\"btn_ok.bmp\"\r\n			hover=\"btn_ok_a.bmp\"\r\n			down=\"btn_ok_b.bmp\"\r\n		></ui-button>\r\n		<ui-button\r\n			class=\"cancel\"\r\n			aria-label=\"Cancel\"\r\n			bg=\"btn_cancel.bmp\"\r\n			hover=\"btn_cancel_a.bmp\"\r\n			down=\"btn_cancel_b.bmp\"\r\n		></ui-button>\r\n	</div>\r\n</div>\r\n";
+}));
+//#endregion
+//#region src/UI/Components/PackageSelection/PackageSelection.css?raw
+var PackageSelection_default$1;
+var init_PackageSelection$1 = __esmMin((() => {
+	PackageSelection_default$1 = ":host {\r\n	width: min(340px, 100vw);\r\n	height: 320px;\r\n}\r\n#PackageSelection {\r\n	background: #f7f7f7;\r\n	height: 100%;\r\n	display: flex;\r\n	flex-direction: column;\r\n}\r\n.head {\r\n	position: relative;\r\n	height: 22px;\r\n	flex-shrink: 0;\r\n}\r\n.title {\r\n	position: relative;\r\n	padding: 3px 6px;\r\n	display: block;\r\n	overflow: hidden;\r\n	white-space: nowrap;\r\n	text-overflow: ellipsis;\r\n}\r\np {\r\n	margin: 8px;\r\n}\r\n.groups {\r\n	overflow-y: auto;\r\n	flex: 1;\r\n	min-height: 0;\r\n	padding: 0 8px;\r\n}\r\n.groups button {\r\n	display: block;\r\n	width: 100%;\r\n	text-align: left;\r\n	font: inherit;\r\n	padding: 6px;\r\n	margin-bottom: 4px;\r\n	cursor: pointer;\r\n}\r\n.groups button[aria-pressed='true'] {\r\n	background-color: #cde0ff;\r\n}\r\n.actions {\r\n	display: flex;\r\n	justify-content: flex-end;\r\n	gap: 8px;\r\n	padding: 8px;\r\n}\r\n.actions ui-button {\r\n	width: 42px;\r\n	height: 20px;\r\n}\r\n";
+}));
+//#endregion
+//#region src/UI/Components/PackageSelection/PackageSelection.js
+var Selection, request, submitted, PackageSelection_default;
+var init_PackageSelection = __esmMin((() => {
+	init_DBManager();
+	init_GUIComponent();
+	init_UIManager();
+	init_Renderer();
+	init_SessionStorage();
+	init_NetworkManager();
+	init_PacketStructure();
+	init_PacketVerManager();
+	init_Elements();
+	init_PackageSelection$2();
+	init_PackageSelection$1();
+	Selection = new GUIComponent("PackageSelection", PackageSelection_default$1);
+	Selection.render = () => PackageSelection_default$2;
+	request = null;
+	submitted = /* @__PURE__ */ new WeakMap();
+	Selection.init = function() {
+		const root = this.getRoot();
+		this.draggable(root.querySelector(".head"));
+		root.querySelector(".cancel").addEventListener("click", () => this.remove());
+		root.querySelector(".confirm").addEventListener("click", () => {
+			if (!request || request.group === null) return;
+			const { inventory, index, itemID, account, group } = request;
+			const item = inventory.getItemByIndex(index);
+			if (account === SessionStorage_default.AID && item?.ITID === itemID && item.count > 0) {
+				const packet = new PACKET.CZ.USE_PACKAGEITEM();
+				Object.assign(packet, {
+					index,
+					AID: account,
+					itemID,
+					BoxIndex: group
+				});
+				submitted.set(item, {
+					count: item.count,
+					until: Date.now() + 1500
+				});
+				request = null;
+				Network.sendPacket(packet);
+			}
+			this.remove();
+		});
+	};
+	Selection.open = function(item, inventory) {
+		const groups = DB.getItemPackage(item.ITID);
+		const pending = submitted.get(item);
+		if (PacketVerManager_default.value < 20220216 || !groups.length || item.count <= 0 || pending && pending.count === item.count && pending.until > Date.now()) return;
+		if (this.__active) {
+			this.focus();
+			return;
+		}
+		this.append();
+		request = {
+			inventory,
+			index: item.index,
+			itemID: item.ITID,
+			account: SessionStorage_default.AID,
+			group: null
+		};
+		const root = this.getRoot();
+		root.querySelector(".title").textContent = DB.getItemInfo(item.ITID).identifiedDisplayName;
+		const list = root.querySelector(".groups");
+		list.replaceChildren();
+		const confirm = root.querySelector(".confirm");
+		confirm.disabled = true;
+		for (const group of groups) {
+			const button = document.createElement("button");
+			button.type = "button";
+			button.dataset.group = group.id;
+			button.setAttribute("aria-pressed", "false");
+			const title = document.createElement("strong");
+			title.textContent = group.name || `Option ${group.id + 1}`;
+			button.appendChild(title);
+			for (const reward of group.items) {
+				const row = document.createElement("div");
+				const name = DB.getItemInfo(reward.id).identifiedDisplayName;
+				row.textContent = `${reward.refine ? `+${reward.refine} ` : ""}${name} ×${reward.amount}`;
+				if (reward.hours) row.textContent += ` (${reward.hours} hours)`;
+				if (reward.randomOption) row.textContent += " — Random options";
+				if (reward.grade) row.textContent += ` — Grade ${reward.grade}`;
+				button.appendChild(row);
+			}
+			button.addEventListener("click", () => {
+				if (!request) return;
+				request.group = group.id;
+				for (const option of list.children) option.setAttribute("aria-pressed", String(option === button));
+				confirm.disabled = false;
+			});
+			list.appendChild(button);
+		}
+	};
+	Selection.onAppend = function() {
+		this._host.style.left = `${Math.max(0, (Renderer.width - 340) / 2)}px`;
+		this._host.style.top = `${Math.max(0, (Renderer.height - 320) / 2)}px`;
+	};
+	Selection.onRemove = () => {
+		request = null;
+	};
+	PackageSelection_default = UIManager.addComponent(Selection);
 }));
 //#endregion
 //#region src/UI/Components/SwitchEquip/SwitchEquip.html?raw
@@ -248369,15 +248607,20 @@ function createInventory(config) {
 	*/
 	Component.useItem = function UseItem(item) {
 		switch (item.type) {
-			case ItemType_default.HEALING:
 			case ItemType_default.USABLE:
+				if (PacketVerManager_default.value >= 20220216 && DB.getItemPackage(item.ITID).length) PackageSelection_default.open(item, Component);
+				else Component.onUseItem(item.index);
+				break;
+			case ItemType_default.HEALING:
 			case ItemType_default.CASH:
 				Component.onUseItem(item.index);
 				break;
 			case ItemType_default.CARD:
 				Component.onUseCard(item.index);
 				break;
-			case ItemType_default.DELAYCONSUME: break;
+			case ItemType_default.DELAYCONSUME:
+				PackageSelection_default.open(item, Component);
+				break;
 			case ItemType_default.WEAPON:
 			case ItemType_default.ARMOR:
 			case ItemType_default.SHADOWGEAR: if (refineEnchant) {
@@ -248923,6 +249166,7 @@ function createInventory(config) {
 }
 var init_InventoryCommon = __esmMin((() => {
 	init_DBManager();
+	init_PackageSelection();
 	init_ItemType();
 	init_NetworkManager();
 	init_PacketStructure();
@@ -310005,7 +310249,7 @@ function updateMapTable() {
 		else MapTable[key] = { name: MapInfo[key].displayName };
 	}
 }
-var lua, HO_AI, MER_AI, default_HO_AI, default_MER_AI, MsgStringTable, JokeTable, ScreamTable, MapTable, SkillDescription, SexTable, PetTalkTable, CheckAttendanceTable, buyingStoreItemList, LaphineSysTable, LaphineUpgTable, ItemDBNameTbl, ItemReformTable, EnchantListTable, SignBoardTranslatedTable, SignBoardTable, NaviMapTable, NaviMobTable, NaviNpcTable, NaviLinkTable, NaviLinkDistanceTable, NaviNpcDistanceTable, QuestInfo, TitleTable, PetDBTable, EggIDToJobID, ReputeGroup, ReputeInfo, AchievementTable, MsgEmotionCSV, HatEffectID, HatEffectInfo, FootPrintEffectInfo, CashShopBannerTable, Ez2streffect, unknownItem, servers, langType, userCharpage, userStringDecoder, DB, SUFFIX_TO_FIELD, HARDCODED_FIELD_MAPPING;
+var lua, itemPackages, HO_AI, MER_AI, default_HO_AI, default_MER_AI, MsgStringTable, JokeTable, ScreamTable, MapTable, SkillDescription, SexTable, PetTalkTable, CheckAttendanceTable, buyingStoreItemList, LaphineSysTable, LaphineUpgTable, ItemDBNameTbl, ItemReformTable, EnchantListTable, SignBoardTranslatedTable, SignBoardTable, NaviMapTable, NaviMobTable, NaviNpcTable, NaviLinkTable, NaviLinkDistanceTable, NaviNpcDistanceTable, QuestInfo, TitleTable, PetDBTable, EggIDToJobID, ReputeGroup, ReputeInfo, AchievementTable, MsgEmotionCSV, HatEffectID, HatEffectInfo, FootPrintEffectInfo, CashShopBannerTable, Ez2streffect, unknownItem, servers, langType, userCharpage, userStringDecoder, DB, SUFFIX_TO_FIELD, HARDCODED_FIELD_MAPPING;
 var init_DBManager = __esmMin((() => {
 	init_Client();
 	init_Configs();
@@ -310023,6 +310267,7 @@ var init_DBManager = __esmMin((() => {
 	init_PetIllustration();
 	init_PetAction();
 	init_ItemTable();
+	init_ItemPackages();
 	init_HatTable();
 	init_ShieldTable();
 	init_WeaponTable();
@@ -310057,6 +310302,7 @@ var init_DBManager = __esmMin((() => {
 	init_MemoryManager();
 	init_HtmlHelper();
 	init_preload_helper();
+	itemPackages = /* @__PURE__ */ new Map();
 	MsgStringTable = [];
 	JokeTable = [];
 	ScreamTable = [];
@@ -310188,6 +310434,13 @@ var init_DBManager = __esmMin((() => {
 			}
 			if (PacketVerManager_default.value >= 20230302) loadCSV("data/simplemsg/msg_emotion.csv", MsgEmotionCSV, 0, 2, onLoad());
 			if (Configs.get("loadLua")) {
+				itemPackages = /* @__PURE__ */ new Map();
+				if (PacketVerManager_default.value >= 20220216) {
+					const done = onLoad();
+					loadItemPackages(lua, DB.LUA_PATH, PacketVerManager_default.value, Client.loadFile.bind(Client), (value) => userStringDecoder.decode(value, userCharpage)).then((packages) => {
+						itemPackages = packages;
+					}).finally(done);
+				}
 				let iteminfoNames = [];
 				const customII = Configs.get("customItemInfo", []);
 				if (Array.isArray(customII) && customII.length > 0) {
@@ -311497,6 +311750,10 @@ var init_DBManager = __esmMin((() => {
 		}
 		static isKatar(weaponType) {
 			return weaponType == WeaponType_default.KATAR;
+		}
+		/** Selection groups supplied by the client's package table. */
+		static getItemPackage(itemid) {
+			return itemPackages.get(itemid) || [];
 		}
 		/**
 		* Get back informations from id
