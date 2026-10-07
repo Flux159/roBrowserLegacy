@@ -206790,6 +206790,128 @@ var init_NetworkManager = __esmMin((() => {
 	})();
 }));
 //#endregion
+//#region src/Utils/HtmlHelper.js
+/**
+* Utils/HtmlHelper.js
+*
+* Shared HTML/DOM utility helpers.
+*
+* This file is part of ROBrowser, (http://www.robrowser.com/).
+*/
+/**
+* Escape HTML special characters in a string.
+*
+* @param {string} text
+* @returns {string} escaped HTML string
+*/
+function escapeHtml(text) {
+	const div = document.createElement("div");
+	div.appendChild(document.createTextNode(text));
+	return div.innerHTML;
+}
+function sanitizeHtml(text) {
+	const container = document.createElement("div");
+	container.innerHTML = text;
+	const walk = (node) => {
+		const children = Array.from(node.childNodes);
+		for (const child of children) if (child.nodeType === 1) {
+			if (_allowedTags$1.has(child.tagName.toLowerCase())) walk(child);
+			else {
+				while (child.firstChild) node.insertBefore(child.firstChild, child);
+				node.removeChild(child);
+			}
+		}
+	};
+	walk(container);
+	return container.innerHTML;
+}
+/**
+* Plain text of an HTML string, for places that only show text: the chat
+* box, prompt boxes. Parsed in a <template>, so nothing in it loads or runs.
+*
+* @param {string} html
+* @returns {string} text content
+*/
+function htmlToText(html) {
+	const template = document.createElement("template");
+	template.innerHTML = html;
+	return template.content.textContent;
+}
+/**
+* Truncate HTML to `limit` characters of text, adding an ellipsis, without
+* cutting through a tag. Markup around the text that is kept stays intact.
+*
+* @param {string} html
+* @param {number} limit
+* @returns {string} truncated HTML string
+*/
+function truncateHtml(html, limit) {
+	const template = document.createElement("template");
+	template.innerHTML = html;
+	if (template.content.textContent.length <= limit) return html;
+	const walker = document.createTreeWalker(template.content, NodeFilter.SHOW_TEXT);
+	const nodes = [];
+	while (walker.nextNode()) nodes.push(walker.currentNode);
+	let remaining = limit;
+	for (const node of nodes) if (remaining <= 0) node.remove();
+	else if (node.data.length > remaining) {
+		node.data = node.data.substring(0, remaining);
+		remaining = 0;
+	} else remaining -= node.data.length;
+	const container = document.createElement("div");
+	container.appendChild(template.content);
+	return container.innerHTML + "...";
+}
+function animateElement(element, props, duration, callback) {
+	const start = {};
+	const keys = Object.keys(props);
+	let cancelled = false;
+	for (const key of keys) start[key] = parseFloat(element.style[key]) || 0;
+	const startTime = performance.now();
+	function step(now) {
+		if (cancelled) return;
+		const elapsed = now - startTime;
+		const progress = Math.min(elapsed / duration, 1);
+		for (const key of keys) {
+			const from = start[key];
+			const value = from + (props[key] - from) * progress;
+			element.style[key] = _pixelProps.has(key) ? value + "px" : value;
+		}
+		if (progress < 1) requestAnimationFrame(step);
+		else if (callback) callback();
+	}
+	requestAnimationFrame(step);
+	return { stop() {
+		cancelled = true;
+	} };
+}
+var _allowedTags$1, _pixelProps;
+var init_HtmlHelper = __esmMin((() => {
+	_allowedTags$1 = /* @__PURE__ */ new Set([
+		"font",
+		"i",
+		"b"
+	]);
+	_pixelProps = /* @__PURE__ */ new Set([
+		"left",
+		"top",
+		"right",
+		"bottom",
+		"width",
+		"height",
+		"marginTop",
+		"marginLeft",
+		"marginRight",
+		"marginBottom",
+		"paddingTop",
+		"paddingLeft",
+		"paddingRight",
+		"paddingBottom",
+		"fontSize",
+		"borderWidth"
+	]);
+}));
+//#endregion
 //#region src/Core/Events.js
 var _events, _tick$1, _uid, Events;
 var init_Events = __esmMin((() => {
@@ -206855,73 +206977,6 @@ var init_Events = __esmMin((() => {
 			_events.length = 0;
 		}
 	};
-}));
-//#endregion
-//#region src/Utils/HtmlHelper.js
-function sanitizeHtml(text) {
-	const container = document.createElement("div");
-	container.innerHTML = text;
-	const walk = (node) => {
-		const children = Array.from(node.childNodes);
-		for (const child of children) if (child.nodeType === 1) {
-			if (_allowedTags$1.has(child.tagName.toLowerCase())) walk(child);
-			else {
-				while (child.firstChild) node.insertBefore(child.firstChild, child);
-				node.removeChild(child);
-			}
-		}
-	};
-	walk(container);
-	return container.innerHTML;
-}
-function animateElement(element, props, duration, callback) {
-	const start = {};
-	const keys = Object.keys(props);
-	let cancelled = false;
-	for (const key of keys) start[key] = parseFloat(element.style[key]) || 0;
-	const startTime = performance.now();
-	function step(now) {
-		if (cancelled) return;
-		const elapsed = now - startTime;
-		const progress = Math.min(elapsed / duration, 1);
-		for (const key of keys) {
-			const from = start[key];
-			const value = from + (props[key] - from) * progress;
-			element.style[key] = _pixelProps.has(key) ? value + "px" : value;
-		}
-		if (progress < 1) requestAnimationFrame(step);
-		else if (callback) callback();
-	}
-	requestAnimationFrame(step);
-	return { stop() {
-		cancelled = true;
-	} };
-}
-var _allowedTags$1, _pixelProps;
-var init_HtmlHelper = __esmMin((() => {
-	_allowedTags$1 = /* @__PURE__ */ new Set([
-		"font",
-		"i",
-		"b"
-	]);
-	_pixelProps = /* @__PURE__ */ new Set([
-		"left",
-		"top",
-		"right",
-		"bottom",
-		"width",
-		"height",
-		"marginTop",
-		"marginLeft",
-		"marginRight",
-		"marginBottom",
-		"paddingTop",
-		"paddingLeft",
-		"paddingRight",
-		"paddingBottom",
-		"fontSize",
-		"borderWidth"
-	]);
 }));
 //#endregion
 //#region src/UI/Background.js
@@ -222617,6 +222672,7 @@ var init_ItemCompare = __esmMin((() => {
 	init_ItemCompare$1();
 	init_ItemInfo();
 	init_Entity$1();
+	init_HtmlHelper();
 	_type$7 = 0;
 	_start$2 = 0;
 	ItemCompare = new GUIComponent("ItemCompare", ItemCompare_default$1);
@@ -222682,7 +222738,7 @@ var init_ItemCompare = __esmMin((() => {
 		if (title) {
 			if (item.IsDamaged) title.classList.add("damaged");
 			else title.classList.remove("damaged");
-			title.textContent = itemName;
+			title.innerHTML = sanitizeHtml(itemName);
 		}
 		if (item.Options && item.IsIdentified) {
 			if (optionContainer) optionContainer.innerHTML = "";
@@ -223281,14 +223337,6 @@ var init_SwitchEquip$1 = __esmMin((() => {
 //#endregion
 //#region src/UI/Components/SwitchEquip/SwitchEquip.js
 /**
-* Escape HTML entities
-*/
-function _escapeHtml(str) {
-	const div = document.createElement("div");
-	div.appendChild(document.createTextNode(str));
-	return div.innerHTML;
-}
-/**
 * Find elements in html base on item location
 *
 * @param {number} location
@@ -223412,7 +223460,7 @@ function onSwitchEquipOver() {
 	overlay.style.display = "";
 	overlay.style.top = `${posTop - 22}px`;
 	overlay.style.left = `${posLeft - 22}px`;
-	overlay.textContent = DB.getItemName(item);
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 }
 /**
 * Remove the item name
@@ -223448,6 +223496,7 @@ var init_SwitchEquip = __esmMin((() => {
 	init_Entity$1();
 	init_Equipment();
 	init_Inventory();
+	init_HtmlHelper();
 	SwitchEquip = new GUIComponent("SwitchEquip", SwitchEquip_default$1);
 	SwitchEquip.render = () => SwitchEquip_default$2;
 	/**
@@ -223571,14 +223620,10 @@ var init_SwitchEquip = __esmMin((() => {
 		const it = DB.getItemInfo(item.ITID);
 		item.equipped = location;
 		SwitchEquip._list[item.index] = item;
-		const add3Dots = (string, limit) => {
-			if (string.length > limit) return string.substring(0, limit) + "...";
-			return string;
-		};
 		const root = SwitchEquip.getRoot();
 		const selector = getSelectorFromLocation$2(location);
 		const el = root.querySelector(selector);
-		if (el) el.innerHTML = `<div class="item" data-index="${item.index}"><button></button><span class="itemName">${add3Dots(_escapeHtml(DB.getItemName(item)), 19)}</span></div>`;
+		if (el) el.innerHTML = `<div class="item" data-index="${item.index}"><button></button><span class="itemName">${truncateHtml(sanitizeHtml(DB.getItemName(item)), 19)}</span></div>`;
 		Client.loadFile(DB.INTERFACE_PATH + "item/" + it.identifiedResourceName + ".bmp", (data) => {
 			const button = root.querySelector(`.item[data-index="${item.index}"] button`);
 			if (button) {
@@ -223672,7 +223717,7 @@ var init_SwitchEquip = __esmMin((() => {
 				65280
 			].includes(item.slot.card1)) {
 				const nameEl = root.querySelector(`.item[data-index="${index}"] .itemName`);
-				if (nameEl) nameEl.textContent = _escapeHtml(DB.getItemName(item));
+				if (nameEl) nameEl.innerHTML = truncateHtml(sanitizeHtml(DB.getItemName(item)), 19);
 			}
 		}
 	};
@@ -228136,7 +228181,7 @@ function onItemOver$13() {
 	const overlay = root.querySelector(".container_item .overlay");
 	if (overlay) {
 		overlay.style.display = "block";
-		overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+		overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 		if (item.IsIdentified) overlay.classList.remove("grey");
 		else overlay.classList.add("grey");
 	}
@@ -228253,6 +228298,7 @@ var init_Mail$1 = __esmMin((() => {
 	init_Elements();
 	init_Mail$3();
 	init_Mail$2();
+	init_HtmlHelper();
 	Mail = new GUIComponent("Mail", Mail_default$1);
 	/**
 	* Store Mail items
@@ -235058,7 +235104,7 @@ function onContainerMouseEnter(event) {
 	if (tooltipText) {
 		const tooltip = ShortCut.getRoot().querySelector(".shortcut-tooltip");
 		const hostRect = ShortCut._host.getBoundingClientRect();
-		tooltip.textContent = tooltipText;
+		tooltip.innerHTML = sanitizeHtml(tooltipText);
 		tooltip.classList.add("show");
 		const scale = ShortCut.scale;
 		if (scale !== 1 && typeof tooltip.showPopover === "function") {
@@ -235487,6 +235533,7 @@ var init_ShortCut = __esmMin((() => {
 	init_SkillList();
 	init_ShortCut$2();
 	init_ShortCut$1();
+	init_HtmlHelper();
 	ShortCut = new GUIComponent("ShortCut", ShortCut_default$1);
 	ShortCut.render = () => ShortCut_default$2;
 	_list$5 = [];
@@ -240765,7 +240812,7 @@ var init_CheckAttendance$2 = __esmMin((() => {
 //#region src/UI/Components/CheckAttendance/CheckAttendance.css?raw
 var CheckAttendance_default$1;
 var init_CheckAttendance$1 = __esmMin((() => {
-	CheckAttendance_default$1 = ":host {\r\n	width: 488px;\r\n	height: 413px;\r\n}\r\n\r\n#CheckAttendance {\r\n	position: absolute;\r\n	width: 488px;\r\n	height: 413px;\r\n}\r\n\r\n#CheckAttendance .titlebar {\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel {\r\n	width: 100%;\r\n	height: 85px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel .top-panel-reward {\r\n	width: 100%;\r\n	height: 70px;\r\n	position: relative;\r\n	display: flex;\r\n	justify-content: center;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel .top-panel-reward .text {\r\n	font-weight: bolder;\r\n	color: #633921;\r\n	display: table;\r\n	position: absolute;\r\n	top: 55%;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel .top-panel-period {\r\n	width: 100%;\r\n	height: 15px;\r\n	text-align: center;\r\n	font-weight: bold;\r\n	color: #a55239;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel {\r\n	width: 335px;\r\n	height: 270px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list {\r\n	list-style: none;\r\n	padding-left: 25px;\r\n	margin-top: 8px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item {\r\n	float: left;\r\n	width: 58px;\r\n	height: 60px;\r\n	margin: 2px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item {\r\n	width: 100%;\r\n	height: 40px;\r\n	position: relative;\r\n	background-position: center;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item .item-quantity {\r\n	position: absolute;\r\n	bottom: 2px;\r\n	right: 15px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item .name {\r\n	position: relative;\r\n	display: none;\r\n	z-index: 1;\r\n	top: -10px;\r\n	left: 0px;\r\n	background-color: rgba(0, 0, 0, 0.6);\r\n	text-shadow: 1px 1px black;\r\n	color: white;\r\n	padding: 5px;\r\n	white-space: nowrap;\r\n	font-size: 0.6rem;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item:hover .name {\r\n	display: table;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item .name {\r\n	display: none;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .day {\r\n	width: 100%;\r\n	height: 20px;\r\n	text-align: center;\r\n	font-weight: bold;\r\n	color: #394aa5;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .checked,\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .checked-hidden,\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .completed {\r\n	position: absolute;\r\n	width: 58px;\r\n	height: 60px;\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .checked-hidden {\r\n	display: none;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel {\r\n	width: 152px;\r\n	height: 270px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .total-days {\r\n	width: 80%;\r\n	height: 85px;\r\n	text-align: center;\r\n	display: flex;\r\n	align-items: center;\r\n	font-weight: bold;\r\n	color: #a53963;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .npc {\r\n	width: 100%;\r\n	height: 105px;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days {\r\n	width: 100%;\r\n	height: 80px;\r\n	font-weight: bold;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-day {\r\n	height: 100%;\r\n	width: 85px;\r\n	float: left;\r\n	position: relative;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-day .remaining-day-text {\r\n	position: absolute;\r\n	right: 10px;\r\n	bottom: 20px;\r\n	font-weight: bolder;\r\n	font-size: 20px;\r\n	color: white;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-text {\r\n	height: 100%;\r\n	width: 35px;\r\n	float: left;\r\n	position: relative;\r\n	font-weight: bolder;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-text .remaining-text-div {\r\n	position: absolute;\r\n	left: 3px;\r\n	bottom: 20px;\r\n}\r\n\r\n#CheckAttendance .titlebar .bottom-panel {\r\n	width: 100%;\r\n	height: 58px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .bottom-panel .close-container {\r\n	width: 100%;\r\n	height: 100%;\r\n	position: relative;\r\n}\r\n\r\n#CheckAttendance .titlebar .bottom-panel .close-container .close-container-btn {\r\n	width: 146px;\r\n	height: 30px;\r\n	border: 0;\r\n	font-weight: bold;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	position: absolute;\r\n	top: 35%;\r\n	left: 35%;\r\n	display: inline-block;\r\n	text-align: center;\r\n	line-height: 30px;\r\n}\r\n";
+	CheckAttendance_default$1 = ":host {\r\n	width: 488px;\r\n	height: 413px;\r\n}\r\n\r\n#CheckAttendance {\r\n	position: absolute;\r\n	width: 488px;\r\n	height: 413px;\r\n}\r\n\r\n#CheckAttendance .titlebar {\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel {\r\n	width: 100%;\r\n	height: 85px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel .top-panel-reward {\r\n	width: 100%;\r\n	height: 70px;\r\n	position: relative;\r\n	display: flex;\r\n	justify-content: center;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel .top-panel-reward .text {\r\n	font-weight: bolder;\r\n	color: #633921;\r\n	display: table;\r\n	position: absolute;\r\n	top: 55%;\r\n}\r\n\r\n#CheckAttendance .titlebar .top-panel .top-panel-period {\r\n	width: 100%;\r\n	height: 15px;\r\n	text-align: center;\r\n	font-weight: bold;\r\n	color: #a55239;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel {\r\n	width: 335px;\r\n	height: 270px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list {\r\n	list-style: none;\r\n	padding-left: 25px;\r\n	margin-top: 8px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item {\r\n	/* the .checked and .completed overlays are placed against the slot */\r\n	position: relative;\r\n	float: left;\r\n	width: 58px;\r\n	height: 60px;\r\n	margin: 2px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item {\r\n	width: 100%;\r\n	height: 40px;\r\n	position: relative;\r\n	background-position: center;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item .item-quantity {\r\n	position: absolute;\r\n	bottom: 2px;\r\n	right: 15px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item .name {\r\n	position: relative;\r\n	display: none;\r\n	z-index: 1;\r\n	top: -10px;\r\n	left: 0px;\r\n	background-color: rgba(0, 0, 0, 0.6);\r\n	text-shadow: 1px 1px black;\r\n	color: white;\r\n	padding: 5px;\r\n	white-space: nowrap;\r\n	font-size: 0.6rem;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item:hover .name {\r\n	display: table;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .item .name {\r\n	display: none;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .day {\r\n	width: 100%;\r\n	height: 20px;\r\n	text-align: center;\r\n	font-weight: bold;\r\n	color: #394aa5;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .checked,\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .checked-hidden,\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .completed {\r\n	position: absolute;\r\n	width: 58px;\r\n	height: 60px;\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n\r\n#CheckAttendance .titlebar .left-panel .days-list .attendance-item .checked-hidden {\r\n	display: none;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel {\r\n	width: 152px;\r\n	height: 270px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .total-days {\r\n	width: 80%;\r\n	height: 85px;\r\n	text-align: center;\r\n	display: flex;\r\n	align-items: center;\r\n	font-weight: bold;\r\n	color: #a53963;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .npc {\r\n	width: 100%;\r\n	height: 105px;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days {\r\n	width: 100%;\r\n	height: 80px;\r\n	font-weight: bold;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-day {\r\n	height: 100%;\r\n	width: 85px;\r\n	float: left;\r\n	position: relative;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-day .remaining-day-text {\r\n	position: absolute;\r\n	right: 10px;\r\n	bottom: 20px;\r\n	font-weight: bolder;\r\n	font-size: 20px;\r\n	color: white;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-text {\r\n	height: 100%;\r\n	width: 35px;\r\n	float: left;\r\n	position: relative;\r\n	font-weight: bolder;\r\n}\r\n\r\n#CheckAttendance .titlebar .right-panel .remaining-days .remaining-text .remaining-text-div {\r\n	position: absolute;\r\n	left: 3px;\r\n	bottom: 20px;\r\n}\r\n\r\n#CheckAttendance .titlebar .bottom-panel {\r\n	width: 100%;\r\n	height: 58px;\r\n	float: left;\r\n}\r\n\r\n#CheckAttendance .titlebar .bottom-panel .close-container {\r\n	width: 100%;\r\n	height: 100%;\r\n	position: relative;\r\n}\r\n\r\n#CheckAttendance .titlebar .bottom-panel .close-container .close-container-btn {\r\n	width: 146px;\r\n	height: 30px;\r\n	border: 0;\r\n	font-weight: bold;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	position: absolute;\r\n	top: 35%;\r\n	left: 35%;\r\n	display: inline-block;\r\n	text-align: center;\r\n	line-height: 30px;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/CheckAttendance/CheckAttendance.js
@@ -240800,7 +240847,6 @@ var init_CheckAttendance = __esmMin((() => {
 	init_PacketStructure();
 	init_CheckAttendance$2();
 	init_CheckAttendance$1();
-	init_ChatBox();
 	init_Elements();
 	CheckAttendance = new GUIComponent("CheckAttendance", CheckAttendance_default$1);
 	CheckAttendance.render = () => CheckAttendance_default$2;
@@ -240836,7 +240882,7 @@ var init_CheckAttendance = __esmMin((() => {
 		if (_checkAttendanceData >= 0 && _CheckAttendanceInfo.Config) {
 			CheckAttendance.updateUI();
 			this.focus();
-		} else ChatBox_default.addText("Currently there is no attendance check event.", ChatBox_default.TYPE.ERROR | ChatBox_default.TYPE.SELF);
+		}
 	};
 	/**
 	* Window Shortcuts
@@ -240903,7 +240949,7 @@ var init_CheckAttendance = __esmMin((() => {
 				const background = !already_requested && day == current_day ? `data-background="check_attendance/bt_slot_a.bmp" data-down="check_attendance/bt_slot_press.bmp"` : "";
 				const checked = day <= attendance_count ? "checked" : "checked-hidden";
 				const slot_complete_string = day > (already_requested ? attendance_count - 1 : attendance_count) ? "bt_slot_complete" : "bt_slot_off";
-				const item_slot = `<li id="attendance_day_${i}" class="attendance-item" ${background}><div class="item" data-background="${DB.INTERFACE_PATH}item/${item.identifiedResourceName}.bmp"><span class="item-quantity">${_CheckAttendanceInfo.Rewards[i].quantity}</span><span class="name">${item.identifiedDisplayName}</span><div class="${checked}" data-background="check_attendance/${slot_complete_string}.tga"></div></div><div class="day">${day} Day</div></li>`;
+				const item_slot = `<li id="attendance_day_${i}" class="attendance-item" ${background}><div class="item" data-background="item/${item.identifiedResourceName}.bmp"><span class="item-quantity">${_CheckAttendanceInfo.Rewards[i].quantity}</span><span class="name">${item.identifiedDisplayName}</span><div class="${checked}" data-background="check_attendance/${slot_complete_string}.tga"></div></div><div class="day">${day} Day</div></li>`;
 				if (daysList) daysList.insertAdjacentHTML("beforeend", item_slot);
 				if (!already_requested && day == current_day) {
 					const dayEl = root.querySelector(`#attendance_day_${i}`);
@@ -243865,7 +243911,7 @@ function onRefineUIUpdateMaterials(pkt) {
 			if (grade) grade.style.backgroundImage = `url(${data})`;
 		});
 		const itemname = root.querySelector(".item_to_refine_name");
-		if (itemname) itemname.textContent = DB.getItemName(item);
+		if (itemname) itemname.innerHTML = sanitizeHtml(DB.getItemName(item));
 		if (Refine.hammer >= 1 && refine_item_mat) {
 			let materialFound = false;
 			let foundItem, foundMaterial;
@@ -244353,7 +244399,7 @@ function onUpdateRefineUI(result) {
 		const refineditem = InventoryController.getUI().getItemByIndex(refine_item_index);
 		if (refineditem) {
 			const itemToRefineName = root.querySelector(".item_to_refine_name");
-			if (itemToRefineName) itemToRefineName.textContent = DB.getItemName(refineditem);
+			if (itemToRefineName) itemToRefineName.innerHTML = sanitizeHtml(DB.getItemName(refineditem));
 		}
 	}
 	const itemToRefineName = root.querySelector(".item_to_refine_name");
@@ -244506,6 +244552,7 @@ var init_Refine = __esmMin((() => {
 	init_Elements();
 	init_Refine$2();
 	init_Refine$1();
+	init_HtmlHelper();
 	Refine = new GUIComponent("Refine", Refine_default$1);
 	BSB_ITID = 6635;
 	refiningMaterials = [];
@@ -246039,7 +246086,7 @@ function showHoverOverlay(text, identified, target) {
 	if (!overlay) return;
 	const hostRect = Enchant._host.getBoundingClientRect();
 	const targetRect = target.getBoundingClientRect();
-	overlay.textContent = text;
+	overlay.innerHTML = sanitizeHtml(text);
 	Object.assign(overlay.style, {
 		top: targetRect.top - hostRect.top + "px",
 		left: targetRect.left - hostRect.left + 35 + "px"
@@ -246541,7 +246588,7 @@ function renderItemList() {
 			showItemGrade: false,
 			showItemOptions: false
 		});
-		name.textContent = itemName;
+		name.innerHTML = sanitizeHtml(itemName);
 		info.appendChild(name);
 		info.appendChild(grade);
 		entry.dataset.index = item.index;
@@ -247087,6 +247134,7 @@ var init_Enchant = __esmMin((() => {
 	init_KeyEventHandler();
 	init_Enchant$2();
 	init_Enchant$1();
+	init_HtmlHelper();
 	Enchant = new GUIComponent("Enchant", Enchant_default$1);
 	Enchant.render = () => Enchant_default$2;
 	Enchant.captureKeyEvents = true;
@@ -247521,7 +247569,7 @@ function onItemOver$11(event) {
 	overlay.style.display = "";
 	overlay.style.top = `${pos.top}px`;
 	overlay.style.left = `${pos.left + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 }
@@ -247594,6 +247642,7 @@ var init_WriteRodex = __esmMin((() => {
 	init_InputBox();
 	init_Rodex$1();
 	init_Inventory();
+	init_HtmlHelper();
 	WriteRodex = new GUIComponent("WriteRodex", WriteRodex_default$1);
 	WriteRodex.list = [];
 	WriteRodex.receiver = null;
@@ -248787,7 +248836,7 @@ function createInventory(config) {
 				if (el) el.style.backgroundImage = `url(${data})`;
 			});
 			SwitchEquip_default.equip(item, item.location, true);
-			ChatBox_default.addText(DB.getItemName(item) + " " + DB.getMessage(3143), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
+			ChatBox_default.addText(htmlToText(DB.getItemName(item)) + " " + DB.getMessage(3143), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
 		};
 		Component.removeItemFromSwitch = function(index) {
 			const item = this.getItemByIndex(index);
@@ -248804,7 +248853,7 @@ function createInventory(config) {
 				if (sw2) sw2.style.backgroundImage = "none";
 				SwitchEquip_default.unEquip(item.index, item.location);
 				this.equipswitchlist.splice(existingItemIndex, 1);
-				ChatBox_default.addText(DB.getItemName(item) + " " + DB.getMessage(3144), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
+				ChatBox_default.addText(htmlToText(DB.getItemName(item)) + " " + DB.getMessage(3144), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
 				EquipmentController.getUI().equipItemsToSwitch();
 				Component.equipAllFromSwitchList();
 			}
@@ -248844,7 +248893,7 @@ function createInventory(config) {
 				case 0: {
 					const item = Component.getItemById(pkt.itemId);
 					if (!item) return false;
-					const itemname = DB.getItemName(item);
+					const itemname = htmlToText(DB.getItemName(item));
 					const mcntEl = Component.getRoot().querySelector(".mcnt");
 					const currentlimit = mcntEl ? parseInt(mcntEl.textContent, 10) : 100;
 					const newlimit = currentlimit + 10;
@@ -248932,6 +248981,7 @@ var init_InventoryCommon = __esmMin((() => {
 	init_WriteRodex();
 	init_TouchDrag();
 	init_InventoryItemTransfer();
+	init_HtmlHelper();
 }));
 //#endregion
 //#region src/UI/Components/Inventory/InventoryV0/InventoryV0.js
@@ -250009,7 +250059,7 @@ function onItemOver$10(_e) {
 		overlay.style.display = "block";
 		overlay.style.top = `${itemRect.top - rootRect.top}px`;
 		overlay.style.left = `${itemRect.left - rootRect.left + 35}px`;
-		overlay.textContent = `${DB.getItemName(item)}: ${item.count || 1}${quantity}`;
+		overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)}: ${item.count || 1}${quantity}`);
 		if (item.IsIdentified) overlay.classList.remove("grey");
 		else overlay.classList.add("grey");
 	}
@@ -250128,6 +250178,7 @@ var init_CartItems = __esmMin((() => {
 	init_Inventory();
 	init_Equipment();
 	init_WheelSteps();
+	init_HtmlHelper();
 	CartItems = new GUIComponent("CartItems", CartItems_default$1);
 	CartItems.render = () => CartItems_default$2;
 	/**
@@ -250406,11 +250457,6 @@ var init_CartItems = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/Equipment/EquipmentCommon.js
-function escapeHTML$1(str) {
-	const div = document.createElement("div");
-	div.textContent = str;
-	return div.innerHTML;
-}
 function getFirstChildWithTagName(element, tagName) {
 	for (let i = 0; i < element.childNodes.length; i++) if (element.childNodes[i].nodeName === tagName.toUpperCase()) return element.childNodes[i];
 }
@@ -250769,25 +250815,15 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 			if ("WearState" in item) location = item.WearState;
 			else if ("location" in item) location = item.location;
 		}
-		function add3Dots(string, limit) {
-			function stripHTML(str) {
-				const div = document.createElement("div");
-				div.innerHTML = str;
-				return div.textContent || div.innerText || "";
-			}
-			const text = stripHTML(string);
-			if (text.length > limit) return text.substring(0, limit) + "...";
-			return text;
-		}
 		const root = Component.getRoot();
 		const selector = getSelectorFromLocation$1(location);
 		const gradeInner = enchantGrade ? "<div class=\"grade\"></div>" : "";
 		root.querySelectorAll(selector).forEach((cell) => {
-			cell.innerHTML = "<div class=\"item\" data-index=\"" + item.index + "\" draggable=\"true\"><button>" + gradeInner + "</button><span class=\"itemName\">" + escapeHTML$1(add3Dots(DB.getItemName(item, {
+			cell.innerHTML = "<div class=\"item\" data-index=\"" + item.index + "\" draggable=\"true\"><button>" + gradeInner + "</button><span class=\"itemName\">" + truncateHtml(sanitizeHtml(DB.getItemName(item, {
 				showItemGrade: false,
 				showItemSlots: false,
 				showItemOptions: false
-			}), 25)) + "</span></div>";
+			})), 25) + "</span></div>";
 		});
 		Client.loadFile(DB.INTERFACE_PATH + "item/" + it.identifiedResourceName + ".bmp", (data) => {
 			root.querySelectorAll(`.item[data-index="${item.index}"] button`).forEach((btn) => {
@@ -251073,7 +251109,7 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 			overlay.style.display = "block";
 			overlay.style.top = `${top - 22}px`;
 			overlay.style.left = `${left - 22}px`;
-			overlay.textContent = DB.getItemName(item);
+			overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 		}
 	}
 	function onEquipmentOut() {
@@ -251089,7 +251125,11 @@ function createEquipment({ name, htmlText, cssText, entityRender = true, enchant
 				254,
 				65280
 			].includes(item.slot.card1)) root.querySelectorAll(`.item[data-index="${index}"] .itemName`).forEach((nameEl) => {
-				nameEl.textContent = DB.getItemName(item);
+				nameEl.innerHTML = truncateHtml(sanitizeHtml(DB.getItemName(item, {
+					showItemGrade: false,
+					showItemSlots: false,
+					showItemOptions: false
+				})), 25);
 			});
 		}
 	};
@@ -251204,6 +251244,7 @@ var init_EquipmentCommon = __esmMin((() => {
 	init_Graphics();
 	init_Inventory();
 	init_Entity$1();
+	init_HtmlHelper();
 }));
 //#endregion
 //#region src/UI/Components/Equipment/EquipmentV0/EquipmentV0.html?raw
@@ -251667,6 +251708,7 @@ var init_ItemInfo = __esmMin((() => {
 	init_Entity$1();
 	init_Equipment();
 	init_Inventory();
+	init_HtmlHelper();
 	ItemInfo = new GUIComponent("ItemInfo", ItemInfo_default$1);
 	ItemInfo.render = () => ItemInfo_default$2;
 	_type$5 = 0;
@@ -251778,7 +251820,7 @@ var init_ItemInfo = __esmMin((() => {
 		if (title) {
 			if (item.IsDamaged) title.classList.add("damaged");
 			else title.classList.remove("damaged");
-			title.textContent = itemName;
+			title.innerHTML = sanitizeHtml(itemName);
 		}
 		if (item.Options && item.IsIdentified) {
 			if (optionContainer) optionContainer.innerHTML = "";
@@ -310042,6 +310084,7 @@ var init_DBManager = __esmMin((() => {
 	init_PacketStructure();
 	init_PacketVerManager();
 	init_MemoryManager();
+	init_HtmlHelper();
 	init_preload_helper();
 	MsgStringTable = [];
 	JokeTable = [];
@@ -311571,7 +311614,7 @@ var init_DBManager = __esmMin((() => {
 						}
 						const GID = (item.slot.card4 << 16) + item.slot.card3;
 						name = "<font color=\"red\" class=\"owner-" + GID + "\">Unknown</font>";
-						if (DB.CNameTable[GID] && DB.CNameTable[GID] !== "Unknown") name = "<font color=\"#87cefa\" class=\"owner-" + GID + "\">" + DB.CNameTable[GID] + "</font>";
+						if (DB.CNameTable[GID] && DB.CNameTable[GID] !== "Unknown") name = "<font color=\"#87cefa\" class=\"owner-" + GID + "\">" + escapeHtml(DB.CNameTable[GID]) + "</font>";
 						else {
 							DB.UpdateOwnerName[GID] = function(pkt) {
 								delete DB.UpdateOwnerName[pkt.GID];
@@ -313001,17 +313044,6 @@ var init_Trade$2 = __esmMin((() => {
 //#endregion
 //#region src/UI/Components/Trade/Trade.js
 /**
-* Escape HTML special characters
-*
-* @param {string} text
-* @returns {string}
-*/
-function escapeHtml$1(text) {
-	const div = document.createElement("div");
-	div.appendChild(document.createTextNode(text));
-	return div.innerHTML;
-}
-/**
 * Reset the UI to its initial state
 */
 function resetUI() {
@@ -313141,7 +313173,7 @@ function onItemOver$9(itemEl) {
 	overlay.style.display = "";
 	overlay.style.top = `${posTop + 5}px`;
 	overlay.style.left = `${posLeft + 30}px`;
-	overlay.textContent = DB.getItemName(item);
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 }
@@ -313189,6 +313221,7 @@ var init_Trade$1 = __esmMin((() => {
 	init_InventoryItemTransfer();
 	init_Trade$3();
 	init_Trade$2();
+	init_HtmlHelper();
 	Trade = new GUIComponent("Trade", Trade_default$1);
 	/**
 	* HTML returned by render()
@@ -313306,7 +313339,7 @@ var init_Trade$1 = __esmMin((() => {
 		const itemDiv = document.createElement("div");
 		itemDiv.className = "item";
 		itemDiv.setAttribute("data-index", idx);
-		itemDiv.innerHTML = `<div class="icon"></div><div class="amount"><span class="count">${_tmpCount[index] || 1}</span></div><span class="name">${escapeHtml$1(DB.getItemName(item))}</span>`;
+		itemDiv.innerHTML = `<div class="icon"></div><div class="amount"><span class="count">${_tmpCount[index] || 1}</span></div><span class="name">${sanitizeHtml(DB.getItemName(item))}</span>`;
 		box.appendChild(itemDiv);
 		Client.loadFile(`${DB.INTERFACE_PATH}item/${item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName}.bmp`, (data) => {
 			const icon = root.querySelector(`.item[data-index="${idx}"] .icon`);
@@ -313331,7 +313364,7 @@ var init_Trade$1 = __esmMin((() => {
 		const itemDiv = document.createElement("div");
 		itemDiv.className = "item";
 		itemDiv.setAttribute("data-index", idx);
-		itemDiv.innerHTML = `<div class="icon"></div><div class="amount">${item.count}</div><span class="name">${escapeHtml$1(DB.getItemName(item))}</span>`;
+		itemDiv.innerHTML = `<div class="icon"></div><div class="amount">${item.count}</div><span class="name">${sanitizeHtml(DB.getItemName(item))}</span>`;
 		box.appendChild(itemDiv);
 		Client.loadFile(`${DB.INTERFACE_PATH}item/${item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName}.bmp`, (data) => {
 			const icon = root.querySelector(`.item[data-index="${idx}"] .icon`);
@@ -324986,11 +325019,6 @@ function onItemDoubleClick(container, selector, handler, options = {}) {
 var init_ItemDoubleClick = __esmMin((() => {}));
 //#endregion
 //#region src/UI/Components/Vending/Vending.js
-function escapeHtml(text) {
-	const div = document.createElement("div");
-	div.appendChild(document.createTextNode(text));
-	return div.innerHTML;
-}
 function isItemStackable(item) {
 	return item.type !== ItemType_default.WEAPON && item.type !== ItemType_default.ARMOR && item.type !== ItemType_default.SHADOWGEAR && item.type !== ItemType_default.PETEGG && item.type !== ItemType_default.PETARMOR;
 }
@@ -325047,7 +325075,7 @@ function addItem$1(content, item, isinput) {
 		container.className = "item-container";
 		const amountText = _type$3 === Vending.Type.BUYING_STORE ? item.total : item.IsStackable ? item.count : "";
 		const eaHtml = _type$3 === Vending.Type.BUYING_STORE ? `<div class="amount_">${item.count} ea</div>` : "";
-		container.innerHTML = `<div class="item output" draggable="true" data-index="${item.index}"><div class="icon"></div><div class="amount">${amountText}</div>` + eaHtml + `<div class="name">${escapeHtml(DB.getItemName(item))}</div><div class="price">${textPrice} ${price}</div></div>`;
+		container.innerHTML = `<div class="item output" draggable="true" data-index="${item.index}"><div class="icon"></div><div class="amount">${amountText}</div>` + eaHtml + `<div class="name">${sanitizeHtml(DB.getItemName(item))}</div><div class="price">${textPrice} ${price}</div></div>`;
 		itemObj = container;
 		if (_type$3 === Vending.Type.BUYING_STORE) {
 			const limitInput = Vending.getRoot().querySelector(".limitZeny");
@@ -325219,7 +325247,7 @@ function onItemOver$8() {
 	overlay.style.display = "";
 	overlay.style.top = `${this.offsetTop - 20}px`;
 	overlay.style.left = `${this.offsetLeft - 10}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 }
 function onItemOut$9() {
 	const overlay = Vending.getRoot().querySelector(".overlay");
@@ -325250,6 +325278,7 @@ var init_Vending = __esmMin((() => {
 	init_BasicInfo();
 	init_ItemDoubleClick();
 	init_WheelSteps();
+	init_HtmlHelper();
 	Vending = new GUIComponent("Vending", Vending_default$1);
 	Vending.render = () => Vending_default$2;
 	Vending.isOpen = false;
@@ -325631,7 +325660,7 @@ function onItemOver$7(itemEl, root) {
 	overlay.style.display = "";
 	overlay.style.top = `${itemEl.offsetTop}px`;
 	overlay.style.left = `${itemEl.offsetLeft + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${prettyZeny$2(item.price, false)} ${DB.getMessage(2328)}`;
+	overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${prettyZeny$2(item.price, false)} ${DB.getMessage(2328)}`);
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else if (_type$2 === VendingShop.Type.VENDING_LIST) overlay.classList.add("grey");
 }
@@ -325698,6 +325727,7 @@ var init_VendingShop = __esmMin((() => {
 	init_VendingReport();
 	init_ItemDoubleClick();
 	init_WheelSteps();
+	init_HtmlHelper();
 	VendingShop = new GUIComponent("VendingShop", VendingShop_default$1);
 	VendingShop.render = () => VendingShop_default$2;
 	/**
@@ -325905,7 +325935,7 @@ var init_VendingShop = __esmMin((() => {
 	VendingShop.removeItem = function removeItem(index, count) {
 		const item = this.getItemByIndex(index);
 		if (!item || count <= 0) return null;
-		const msg = DB.getMessage(231).replace("%s", DB.getItemName(item)).replace("%d", count);
+		const msg = DB.getMessage(231).replace("%s", htmlToText(DB.getItemName(item))).replace("%d", count);
 		ChatBox_default.addText(msg, ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.PUBLIC_LOG);
 		const root = this.getRoot();
 		if (item.count) {
@@ -326052,7 +326082,7 @@ function onItemOver$6() {
 	overlay.style.display = "block";
 	overlay.style.top = `${itemRect.top - rootRect.top}px`;
 	overlay.style.left = `${itemRect.left - rootRect.left + 35}px`;
-	overlay.textContent = DB.getItemName(item);
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 	if (item.IsIdentified) overlay.classList.remove("grey");
 }
 /**
@@ -326103,6 +326133,7 @@ var init_VendingReport = __esmMin((() => {
 	init_VendingReport$2();
 	init_VendingReport$1();
 	init_WheelSteps();
+	init_HtmlHelper();
 	VendingReport = new GUIComponent("VendingReport", VendingReport_default$1);
 	VendingReportTable = {
 		list: [],
@@ -328021,7 +328052,7 @@ function onOpenReformUI(pkt) {
 			checkReformCriteria();
 			ItemReform.append();
 			const itemText = _root$5().querySelector(".item_text");
-			if (itemText) itemText.textContent = DB.getItemName(item);
+			if (itemText) itemText.innerHTML = sanitizeHtml(DB.getItemName(item));
 		} else console.warn("Item with ID", pkt.itemId, "not found in Reform List.");
 	}
 }
@@ -328170,7 +328201,7 @@ function UpdatePossibleReformUI(item, info) {
 		});
 	}
 	const resultItemText = root.querySelector(".result_item_text");
-	if (resultItemText) resultItemText.textContent = DB.getItemName(resultItem, { showItemOptions: false });
+	if (resultItemText) resultItemText.innerHTML = sanitizeHtml(DB.getItemName(resultItem, { showItemOptions: false }));
 	const materialDiv = root.querySelector(".material_list");
 	if (!materialDiv) return;
 	materialDiv.innerHTML = "";
@@ -328297,7 +328328,7 @@ function onItemOver$5(event, element) {
 	const overlay = _root$5().querySelector(".overlay");
 	if (!overlay) return;
 	overlay.style.display = "block";
-	overlay.textContent = DB.getItemName(item, { showItemOptions: false });
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item, { showItemOptions: false }));
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 	const hostRect = ItemReform._host.getBoundingClientRect();
@@ -328386,6 +328417,7 @@ var init_ItemReform = __esmMin((() => {
 	init_ItemReform$2();
 	init_ItemReform$1();
 	init_PacketStructure();
+	init_HtmlHelper();
 	ItemReform = new GUIComponent("ItemReform", ItemReform_default$1);
 	/**
 	* Render HTML
@@ -328571,7 +328603,7 @@ function onUpdateLaphineUI() {
 	const item = InventoryController.getUI().getItemById(LaphineUIState.itemId);
 	if (!item) return false;
 	const root = _root$4();
-	root.querySelector(".item_text").textContent = DB.getItemName(item);
+	root.querySelector(".item_text").innerHTML = sanitizeHtml(DB.getItemName(item));
 	root.querySelector(".mat_info_list").textContent = LaphineUIState.needSourceString;
 	root.querySelector(".mat_count_needed").textContent = LaphineUIState.needCount;
 }
@@ -328853,7 +328885,7 @@ function onItemOver$4() {
 	overlay.style.display = "block";
 	overlay.style.top = `${top}px`;
 	overlay.style.left = `${left}px`;
-	overlay.textContent = DB.getItemName(item);
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 }
@@ -328981,6 +329013,7 @@ var init_LaphineSys = __esmMin((() => {
 	init_LaphineSys$2();
 	init_LaphineSys$1();
 	init_PacketStructure();
+	init_HtmlHelper();
 	LaphineSys = new GUIComponent("LaphineSys", LaphineSys_default$1);
 	LaphineUIState = {
 		itemId: null,
@@ -329181,7 +329214,7 @@ function onUpdateLaphineUpgUI() {
 	const item = InventoryController.getUI().getItemById(LaphineUpgUIState.itemId);
 	if (!item) return false;
 	const root = _root$3();
-	root.querySelector(".item_text").textContent = DB.getItemName(item);
+	root.querySelector(".item_text").innerHTML = sanitizeHtml(DB.getItemName(item));
 	root.querySelector(".mat_info_list").textContent = LaphineUpgUIState.needSourceString;
 }
 /**
@@ -329418,10 +329451,10 @@ function onItemOver$3() {
 	overlay.style.display = "block";
 	overlay.style.top = `${top}px`;
 	overlay.style.left = `${left}px`;
-	overlay.textContent = DB.getItemName(item, {
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item, {
 		showItemGrade: false,
 		showItemSlots: false
-	});
+	}));
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 }
@@ -329550,6 +329583,7 @@ var init_LaphineUpg = __esmMin((() => {
 	init_LaphineUpg$2();
 	init_LaphineUpg$1();
 	init_PacketStructure();
+	init_HtmlHelper();
 	LaphineUpg = new GUIComponent("LaphineUpg", LaphineUpg_default$1);
 	LaphineUpgUIState = {
 		itemId: null,
@@ -330935,21 +330969,6 @@ var init_PlayerViewEquip$1 = __esmMin((() => {
 //#endregion
 //#region src/UI/Components/PlayerViewEquip/PlayerViewEquipCommon.js
 /**
-* Escape HTML special characters
-*/
-function escapeHTML(str) {
-	const div = document.createElement("div");
-	div.appendChild(document.createTextNode(str));
-	return div.innerHTML;
-}
-/**
-* Truncate string with ellipsis
-*/
-function add3Dots(string, limit) {
-	if (string.length > limit) return string.substring(0, limit) + "...";
-	return string;
-}
-/**
 * Generate the general equipment table HTML
 */
 function generateGeneralTable() {
@@ -331191,7 +331210,7 @@ function createPlayerViewEquip({ name, cssText, hasTabs, costumeRows, costumeTab
 				_overlay.style.display = "";
 				_overlay.style.top = top - 22 + "px";
 				_overlay.style.left = left - 22 + "px";
-				_overlay.textContent = DB.getItemName(item);
+				_overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 			});
 			table.addEventListener("mouseout", (e) => {
 				if (!e.target.closest("button")) return;
@@ -331245,7 +331264,7 @@ function createPlayerViewEquip({ name, cssText, hasTabs, costumeRows, costumeTab
 		const selector = getSelectorFromLocation(location);
 		if (!selector) return;
 		const cells = _root.querySelectorAll(selector);
-		for (const cell of cells) cell.innerHTML = "<div class=\"item\" data-index=\"" + item.index + "\"><button></button><span class=\"itemName\">" + add3Dots(escapeHTML(DB.getItemName(item)), 19) + "</span></div>";
+		for (const cell of cells) cell.innerHTML = "<div class=\"item\" data-index=\"" + item.index + "\"><button></button><span class=\"itemName\">" + truncateHtml(sanitizeHtml(DB.getItemName(item)), 19) + "</span></div>";
 		Client.loadFile(DB.INTERFACE_PATH + "item/" + it.identifiedResourceName + ".bmp", function(data) {
 			const btn = _root.querySelector(".item[data-index=\"" + item.index + "\"] button");
 			if (btn) btn.style.backgroundImage = "url(" + data + ")";
@@ -331336,7 +331355,7 @@ function createPlayerViewEquip({ name, cssText, hasTabs, costumeRows, costumeTab
 				65280
 			].includes(item.slot.card1)) {
 				const nameEl = _root.querySelector(".item[data-index=\"" + index + "\"] .itemName");
-				if (nameEl) nameEl.textContent = DB.getItemName(item);
+				if (nameEl) nameEl.innerHTML = truncateHtml(sanitizeHtml(DB.getItemName(item)), 19);
 			}
 		}
 	};
@@ -331365,6 +331384,7 @@ var init_PlayerViewEquipCommon = __esmMin((() => {
 	init_GUIComponent();
 	init_ItemInfo();
 	init_Entity$1();
+	init_HtmlHelper();
 }));
 //#endregion
 //#region src/UI/Components/PlayerViewEquip/PlayerViewEquipV0/PlayerViewEquipV0.js
@@ -336307,7 +336327,7 @@ function onItemOver$2() {
 	overlay.style.display = "block";
 	overlay.style.top = `${rect.top - hostRect.top - 10}px`;
 	overlay.style.left = `${rect.left - hostRect.left + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = _sanitizeHtml$3(`${DB.getItemName(item)} ${item.count || 1} ea`);
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 }
@@ -336678,7 +336698,7 @@ function onItemOver$1() {
 	overlay.style.display = "block";
 	overlay.style.top = `${rect.top - hostRect.top - 10}px`;
 	overlay.style.left = `${rect.left - hostRect.left + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = _sanitizeHtml$2(`${DB.getItemName(item)} ${item.count || 1} ea`);
 	if (item.IsIdentified) overlay.classList.remove("grey");
 	else overlay.classList.add("grey");
 }
@@ -336915,7 +336935,7 @@ function onItemPickAnswer(pkt) {
 	}
 	ItemObtain_default.append();
 	ItemObtain_default.set(pkt);
-	const getTextItem = DB.getItemName(pkt, { showItemOptions: false });
+	const getTextItem = htmlToText(DB.getItemName(pkt, { showItemOptions: false }));
 	ChatBox_default.addText(DB.getMessage(153).replace("%s", getTextItem).replace("%d", pkt.count), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
 	InventoryController.getUI().addItem(pkt);
 }
@@ -336973,7 +336993,7 @@ function onItemEquip(pkt) {
 	if (pkt.result == 1) {
 		const item = InventoryController.getUI().removeItem(pkt.index, 1);
 		EquipmentController.getUI().equip(item, pkt.wearLocation);
-		ChatBox_default.addText(DB.getItemName(item) + " " + DB.getMessage(170), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
+		ChatBox_default.addText(htmlToText(DB.getItemName(item)) + " " + DB.getMessage(170), ChatBox_default.TYPE.BLUE, ChatBox_default.FILTER.ITEM);
 		const CostumeCheckTop = EquipmentController.getUI().checkEquipLoc(EquipmentLocation_default.COSTUME_HEAD_TOP);
 		const CostumeCheckMid = EquipmentController.getUI().checkEquipLoc(EquipmentLocation_default.COSTUME_HEAD_MID);
 		const CostumeCheckBot = EquipmentController.getUI().checkEquipLoc(EquipmentLocation_default.COSTUME_HEAD_BOTTOM);
@@ -337409,6 +337429,7 @@ var init_Item = __esmMin((() => {
 	init_MakeItemSelection();
 	init_ItemListWindowSelection();
 	init_EffectManager();
+	init_HtmlHelper();
 	init_preload_helper();
 	/**
 	* View other player's equipment - CZ_EQUIPWIN_MICROSCOPE
@@ -337552,7 +337573,7 @@ function onItemOver(event) {
 	const overlay = root.querySelector(".container_item .overlay");
 	if (overlay) {
 		overlay.style.display = "block";
-		overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+		overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 		if (item.IsIdentified) overlay.classList.remove("grey");
 		else overlay.classList.add("grey");
 	}
@@ -337641,6 +337662,7 @@ var init_ReadMail = __esmMin((() => {
 	init_Mail$1();
 	init_ReadMail$2();
 	init_ReadMail$1();
+	init_HtmlHelper();
 	ReadMail = new GUIComponent("ReadMail", ReadMail_default$1);
 	/**
 	* Store ReadMail items
@@ -340797,10 +340819,10 @@ function addItem(content, item) {
 		const amountClass = _type === NpcStore.Type.BUYING_STORE ? " amountBuying" : _type === NpcStore.Type.MARKETSHOP ? " amountStock" : "";
 		amountText = _type === NpcStore.Type.BUYING_STORE ? " ea." : "";
 		const amount = amountColumn(item);
-		const html = `<div class="item" draggable="true" data-index="${item.index}"><div class="icon"></div><div class="amount${amountClass}">` + (amount === "" && _type === NpcStore.Type.BUYING_STORE ? 0 : amount) + amountText + `</div><div class="name">${_escapeHTML(DB.getItemName(item))}</div><div class="price">${price}</div><div class="unity">Z</div></div>`;
+		const html = `<div class="item" draggable="true" data-index="${item.index}"><div class="icon"></div><div class="amount${amountClass}">` + (amount === "" && _type === NpcStore.Type.BUYING_STORE ? 0 : amount) + amountText + `</div><div class="name">${sanitizeHtml(DB.getItemName(item))}</div><div class="price">${price}</div><div class="unity">Z</div></div>`;
 		content.insertAdjacentHTML("beforeend", html);
 	} else if (_type === NpcStore.Type.BARTER_MARKET) {
-		const html = `<div class="item" draggable="true" data-index="${item.index}" data-weight="${item.weight}" data-location="${item.location}" data-viewSprite="${item.viewSprite}"><div class="icon"></div><div class="amount">${isFinite(item.count) ? item.count : ""}</div><div class="name">${_escapeHTML(DB.getItemName(item))}</div><div class="currency_icon" data-item="${item.currencyITID}"></div><div class="currency_amount">${item.currencyamount}</div><div class="currency_nameOverlay">${_escapeHTML(DB.getItemName(currency_item))} ${item.currencyamount} ea</div></div>`;
+		const html = `<div class="item" draggable="true" data-index="${item.index}" data-weight="${item.weight}" data-location="${item.location}" data-viewSprite="${item.viewSprite}"><div class="icon"></div><div class="amount">${isFinite(item.count) ? item.count : ""}</div><div class="name">${sanitizeHtml(DB.getItemName(item))}</div><div class="currency_icon" data-item="${item.currencyITID}"></div><div class="currency_amount">${item.currencyamount}</div><div class="currency_nameOverlay">${sanitizeHtml(DB.getItemName(currency_item))} ${item.currencyamount} ea</div></div>`;
 		content.insertAdjacentHTML("beforeend", html);
 	} else if (_type === NpcStore.Type.BARTER_MARKET_EXTENDED) {
 		let currencySlotsHTML = "";
@@ -340811,7 +340833,7 @@ function addItem(content, item) {
 			currencySlotsHTML += `<div class="currency_slot" data-item="${currency.ITID}"><div class="expanded_currency_holder"><div class="expanded_currency_icon"></div></div><div class="expanded_currency_amount">${currency.amount}</div>` + (currency.refine_level > 0 ? `<div class="expanded_currency_refinelvl">+${currency.refine_level}</div>` : "") + `</div>`;
 			currencyOverlay += `${_escapeHTML(currencyItem.identifiedDisplayName)} ${currency.amount} ea<br>`;
 		}
-		const html = `<div class="item expanded-barter" draggable="true" data-index="${item.index}" data-weight="${item.weight}" data-location="${item.location}" data-viewSprite="${item.viewSprite}"><div class="expanded_currency_holder"><div class="icon"></div></div><div class="amount">${isFinite(item.count) ? item.count : ""}</div><div class="name">${_escapeHTML(DB.getItemName(item))}</div><div class="currency_section">${currencySlotsHTML}</div><div class="expanded_price">${item.price}z</div><div class="expanded_currency_nameOverlay">${currencyOverlay}</div></div>`;
+		const html = `<div class="item expanded-barter" draggable="true" data-index="${item.index}" data-weight="${item.weight}" data-location="${item.location}" data-viewSprite="${item.viewSprite}"><div class="expanded_currency_holder"><div class="icon"></div></div><div class="amount">${isFinite(item.count) ? item.count : ""}</div><div class="name">${sanitizeHtml(DB.getItemName(item))}</div><div class="currency_section">${currencySlotsHTML}</div><div class="expanded_price">${item.price}z</div><div class="expanded_currency_nameOverlay">${currencyOverlay}</div></div>`;
 		content.insertAdjacentHTML("beforeend", html);
 		if (item.currencyList && item.currencyList.length > 0) for (let i = 0; i < item.currencyList.length; i++) {
 			const currency = item.currencyList[i];
@@ -340823,7 +340845,7 @@ function addItem(content, item) {
 			});
 		}
 	} else {
-		const html = `<div class="item itemAvailable" draggable="true" data-index="${item.index}"><div class="icon"></div><div class="amount">${isFinite(item.count) ? item.count : ""}</div><div class="nameOverlay">${_escapeHTML(DB.getItemName(item))}</div></div>`;
+		const html = `<div class="item itemAvailable" draggable="true" data-index="${item.index}"><div class="icon"></div><div class="amount">${isFinite(item.count) ? item.count : ""}</div><div class="nameOverlay">${sanitizeHtml(DB.getItemName(item))}</div></div>`;
 		content.insertAdjacentHTML("beforeend", html);
 	}
 	Client.loadFile(DB.INTERFACE_PATH + "item/" + (item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) + ".bmp", function(data) {
@@ -341042,6 +341064,7 @@ var init_NpcStore = __esmMin((() => {
 	init_NpcStore$1();
 	init_ItemDoubleClick();
 	init_WheelSteps();
+	init_HtmlHelper();
 	NpcStore = new GUIComponent("NpcStore", NpcStore_default$1);
 	NpcStore.render = () => NpcStore_default$2;
 	/**
@@ -342230,12 +342253,8 @@ function onUIOpen(pkt) {
 	switch (pkt.ui_type) {
 		case 7:
 			if (Configs.get("enableCheckAttendance") && PacketVerManager_default.value >= 20180307) {
-				CheckAttendance_default.prepare();
-				CheckAttendance_default.setData(pkt.data);
-				CheckAttendance_default.cleanUI();
-				CheckAttendance_default.append();
-				CheckAttendance_default.ui.show();
-				CheckAttendance_default.focus();
+				_pendingAttendance = pkt.data;
+				if (!MapRenderer.loading) openPendingUI();
 			}
 			break;
 		case 8:
@@ -342254,20 +342273,38 @@ function onUIOpen(pkt) {
 	}
 }
 /**
+* Open the windows the server asked for while the map was loading.
+* Called by the map engine once the map is loaded.
+*/
+function openPendingUI() {
+	if (_pendingAttendance === null) return;
+	const data = _pendingAttendance;
+	_pendingAttendance = null;
+	CheckAttendance_default.prepare();
+	CheckAttendance_default.setData(data);
+	CheckAttendance_default.cleanUI();
+	CheckAttendance_default.append();
+	CheckAttendance_default.ui.show();
+	CheckAttendance_default.focus();
+}
+/**
 * Initialize
 */
 function MainEngine$7() {
 	Network.hookPacket(PACKET.ZC.UI_OPEN, onUIOpen);
 	Network.hookPacket(PACKET.ZC.UI_OPEN_V3, onUIOpen);
 }
+var _pendingAttendance;
 var init_UIOpen = __esmMin((() => {
 	init_Configs();
 	init_NetworkManager();
 	init_PacketStructure();
 	init_PacketVerManager();
+	init_MapRenderer();
 	init_CheckAttendance();
 	init_EnchantGrade();
 	init_Enchant();
+	_pendingAttendance = null;
 }));
 //#endregion
 //#region src/Engine/MapEngine/Quest.js
@@ -343900,7 +343937,10 @@ function onMapChange(pkt) {
 		WinStatsController.getUI().append();
 		Controller$3.getUI().append();
 		if (Configs.get("enableCashShop")) CashShopIcon_default.append();
-		if (Configs.get("enableCheckAttendance") && PacketVerManager_default.value >= 20180307) CheckAttendance_default.append();
+		if (Configs.get("enableCheckAttendance") && PacketVerManager_default.value >= 20180307) {
+			CheckAttendance_default.append();
+			openPendingUI();
+		}
 		Plugins.init();
 		Network.sendPacket(new PACKET.CZ.NOTIFY_ACTORINIT());
 		if (SessionStorage_default.ratesInfo) {
