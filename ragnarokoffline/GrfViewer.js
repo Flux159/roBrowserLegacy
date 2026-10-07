@@ -233855,6 +233855,8 @@ function getPlannedLevel(plan, ownedSkills, skillId) {
 * is invalid or cannot be afforded.
 */
 function stageSkillPlan({ plan, skillId, ownedSkills, skillInfo, skillTreeView, jobId, availablePoints }) {
+	const owned = getOwnedSkill(ownedSkills, skillId);
+	if (owned?.level > 0 && !owned.upgradable) return null;
 	const candidate = clonePlan(plan);
 	const visiting = /* @__PURE__ */ new Set();
 	const stage = (currentSkillId, requiredLevel = null) => {
@@ -234354,6 +234356,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 		}
 		if (!listOnly) this.addSkillBig(skill);
 		this.addSkillMini(skill);
+		hasSkills[skill.SKID] = skill;
 	};
 	Component.prepareSkillTree = function prepareSkillTree(items, list) {
 		const root = this.getRoot();
