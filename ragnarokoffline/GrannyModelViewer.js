@@ -234356,7 +234356,6 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 				if (box) {
 					if (box.hasChildNodes()) box.innerHTML = "";
 					box.appendChild(element);
-					if (skill.upgradable) box.classList.add("upgradable");
 				}
 			}
 		});
@@ -234382,6 +234381,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 				}
 			}
 		}
+		highlightUpgradable(root, skill);
 		loadSkillIcon(sk, skill.SKID, (data) => {
 			const img = element.querySelector(".icon img");
 			if (img) img.src = data;
@@ -234466,6 +234466,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 			const levelupEl = element.querySelector(".levelup");
 			if (levelupEl) levelupEl.style.display = skill.upgradable && _points ? "" : "none";
 		});
+		highlightUpgradable(root, target);
 		this.onUpdateSkill(skill.SKID, skill.level);
 	};
 	Component.useSkillID = function useSkillID(id, level) {
@@ -234491,13 +234492,22 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 		}
 		_points = amount;
 		const count = _list.length;
-		for (let i = 0; i < count; ++i) root.querySelectorAll(`.skill.id${_list[i].SKID} .levelup`).forEach((lu) => {
-			lu.style.display = _list[i].upgradable && amount ? "" : "none";
-		});
+		for (let i = 0; i < count; ++i) {
+			root.querySelectorAll(`.skill.id${_list[i].SKID} .levelup`).forEach((lu) => {
+				lu.style.display = _list[i].upgradable && amount ? "" : "none";
+			});
+			highlightUpgradable(root, _list[i]);
+		}
 	};
 	Component.onLevelUp = function onLevelUp() {
 		if (_btnLevelUp) document.body.appendChild(_btnLevelUp);
 	};
+	function highlightUpgradable(root, skill) {
+		const on = !!(skill.upgradable && _points);
+		root.querySelectorAll(`.skillCol > .skill.id${skill.SKID}`).forEach((element) => {
+			element.parentElement.classList.toggle("upgradable", on);
+		});
+	}
 	function getSkillById(id) {
 		const count = _list.length;
 		for (let i = 0; i < count; ++i) if (_list[i].SKID === id) return _list[i];
