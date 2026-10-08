@@ -1,0 +1,12 @@
+[
+  {
+    "module": "src/DB/Effects/EffectTable.js",
+    "changedEntries": 1148,
+    "upstreamOnlyEntriesPreserved": 585
+  },
+  {
+    "module": "src/DB/Skills/SkillEffect.js",
+    "changedEntries": 571,
+    "upstreamOnlyEntriesPreserved": 42
+  }
+]

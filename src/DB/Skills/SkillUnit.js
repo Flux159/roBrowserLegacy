@@ -117,7 +117,7 @@ SkillUnit[SU.UNT_FIRE_INSIGNIA] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_WATER_INSIGNIA] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_WIND_INSIGNIA] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_EARTH_INSIGNIA] = EC.EF_NONE; // Todo
-SkillUnit[SU.UNT_POISON_MIST] = EC.EF_NONE; // Todo
+SkillUnit[SU.UNT_POISON_MIST] = 959; // Original persistent Poison Mist STR; removed with the server unit.
 SkillUnit[SU.UNT_LAVA_SLIDE] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_VOLCANIC_ASH] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_ZENKAI_WATER] = EC.EF_NONE; // Todo
@@ -127,4 +127,60 @@ SkillUnit[SU.UNT_ICEMINE] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_MAGMA_ERUPTION] = EC.EF_NONE; // Todo
 SkillUnit[SU.UNT_B_TRAP] = EC.EF_NONE; // Todo
 
+// Original single-center ground effects use the existing server-unit lifecycle.
+SkillUnit[SU.UNT_ABYSS_SQUARE] = 'original_all_abc_abyss_square_ground';
+SkillUnit[SU.UNT_ALL_BLOOM] = 'original_all_ag_all_bloom_ground';
+SkillUnit[SU.UNT_ASTRAL_STRIKE] = 'original_all_ag_astral_strike_ground';
+SkillUnit[SU.UNT_MYSTERY_ILLUSION] = 'original_all_ag_mystery_illusion_ground';
+SkillUnit[SU.UNT_STRANTUM_TREMOR] = 'original_all_ag_strantum_tremor_ground';
+SkillUnit[SU.UNT_TORNADO_STORM] = 'original_all_ag_tornado_storm_ground';
+SkillUnit[SU.UNT_PNEUMATICUS_PROCELLA] = 'original_all_cd_pneumaticus_procella_ground';
+SkillUnit[SU.UNT_CONFLAGRATION] = 'original_all_em_conflagration_ground';
+SkillUnit[SU.UNT_LIGHTNING_LAND] = 'original_all_em_lightning_land_ground';
+SkillUnit[SU.UNT_NYANGGRASS] = 'original_all_su_nyanggrass_ground';
+SkillUnit[SU.UNT_DEEPBLINDTRAP] = 'original_all_wh_deepblindtrap_ground';
+SkillUnit[SU.UNT_FLAMETRAP] = 'original_all_wh_flametrap_ground';
+SkillUnit[SU.UNT_SOLIDTRAP] = 'original_all_wh_solidtrap_ground';
+SkillUnit[SU.UNT_SWIFTTRAP] = 'original_all_wh_swifttrap_ground';
+
+// Original resources: casting events and server-owned ground lifecycles.
+SkillUnit[SU.UNT_RAIN_OF_CRYSTAL] = 'original_completion_ag_rain_of_crystal_ground';
+SkillUnit[SU.UNT_VIOLENT_QUAKE] = 'original_completion_ag_violent_quake_ground';
+SkillUnit[SU.UNT_VENOM_SWAMP] = 'original_completion_em_venom_swamp_ground';
+SkillUnit[SU.UNT_ACIDIFIED_ZONE_FIRE] = 'original_completion_bo_acidified_zone_fire_ground';
+SkillUnit[SU.UNT_ACIDIFIED_ZONE_WATER] = 'original_completion_bo_acidified_zone_water_ground';
+SkillUnit[SU.UNT_ACIDIFIED_ZONE_GROUND] = 'original_completion_bo_acidified_zone_ground_ground';
+SkillUnit[SU.UNT_ACIDIFIED_ZONE_WIND] = 'original_completion_bo_acidified_zone_wind_ground';
+SkillUnit[SU.UNT_B_TRAP] = 'original_completion_audio_rl_b_trap';
+SkillUnit[SU.UNT_FIRE_RAIN] = 'original_completion_audio_rl_fire_rain';
+SkillUnit[SU.UNT_HYUN_ROKS_BREEZE] = 'original_completion_audio_sh_hyun_roks_breeze';
+SkillUnit[SU.UNT_MISSION_BOMBARD] = 'original_completion_audio_nw_mission_bombard';
+SkillUnit[SU.UNT_JACK_FROST_NOVA] = 'original_completion_audio_hn_jack_frost_nova';
+SkillUnit[SU.UNT_GROUND_GRAVITATION] = 'original_completion_audio_hn_ground_gravitation';
+SkillUnit[SU.UNT_STAR_BURST] = 'original_completion_audio_ske_star_burst';
+SkillUnit[SU.UNT_STAR_CANNON] = 'original_completion_audio_ske_star_cannon';
+SkillUnit[SU.UNT_FUUMASHOUAKU] = 'original_completion_audio_ss_fuumashouaku';
+SkillUnit[SU.UNT_KUNAIWAIKYOKU] = 'original_completion_audio_ss_kunaiwaikyoku';
+SkillUnit[SU.UNT_TOTEM_OF_TUTELARY] = 'kro_phase_soa_totem_of_tutelary_unit';
+SkillUnit[SU.UNT_GRENADES_DROPPING] = 'kro_phase_nw_grenades_dropping_unit';
+SkillUnit[SU.UNT_MISSION_BOMBARD] = 'kro_phase_nw_mission_bombard_unit';
+SkillUnit[SU.UNT_TWINKLING_GALAXY] = 'kro_phase_ske_twinkling_galaxy_unit';
+
+SkillUnit[SU.UNT_KUNAIKAITEN] = 'fidelity_ss_kunaikaiten_unit';
+SkillUnit[SU.UNT_FUUMASHOUAKU] = 'fidelity_ss_fuumashouaku_unit';
+SkillUnit[299] = 'complete_refraction';
+SkillUnit[290] = 'complete_grasp_unit';
+SkillUnit[286] = 'complete_galaxy_unit';
+
+SkillUnit[SU.UNT_FLORAL_FLARE_ROAD] = 'five_floral_unit';
+SkillUnit[SU.UNT_POISONSMOKE] = 'five_poison_unit';
+SkillUnit[177] = 'four_am_demonstration_unit';
+SkillUnit[231] = 'four_gn_demonic_fire_unit';
+SkillUnit[204] = 'four_sc_manhole_unit';
+SkillUnit[205] = 'four_sc_dimensiondoor_unit';
+SkillUnit[206] = 'four_sc_chaospanic_unit';
+SkillUnit[207] = 'four_sc_maelstrom_unit';
+SkillUnit[208] = 'four_sc_bloodylust_unit';
+SkillUnit[275] = 'four_ig_cross_rain_unit';
+SkillUnit[222] = 'next_poem_unit';
 export default SkillUnit;
