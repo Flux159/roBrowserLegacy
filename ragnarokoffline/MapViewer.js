@@ -241186,7 +241186,9 @@ var init_CheckAttendance = __esmMin((() => {
 			const regex = /(\d{4})(\d{2})(\d{2})/;
 			const start = regex.exec(_CheckAttendanceInfo.Config.StartDate);
 			const end = regex.exec(_CheckAttendanceInfo.Config.EndDate);
-			const period_string = `Event Period: From ${start[2]}/${start[3]} ~ Until ${end[2]}/${end[3]} (Month/Day) 24:00`;
+			const end_date = /* @__PURE__ */ new Date(`${end[1]}-${end[2]}-${end[3]}`);
+			const ongoing = end_date.getTime() - (/* @__PURE__ */ new Date(`${start[1]}-${start[2]}-${start[3]}`)).getTime() > 316224e5;
+			const period_string = ongoing ? "Event Period: Ongoing" : `Event Period: From ${start[2]}/${start[3]} ~ Until ${end[2]}/${end[3]} (Month/Day) 24:00`;
 			const periodEl = root.querySelector(".top-panel-period");
 			if (periodEl) periodEl.innerHTML = period_string;
 			if (_checkAttendanceData >= 0) {
@@ -241194,13 +241196,14 @@ var init_CheckAttendance = __esmMin((() => {
 				attendance_count = parseInt(_checkAttendanceData / 10);
 				current_day = attendance_count + 1;
 				const total_days_string = attendance_count >= 20 || already_requested ? `${attendance_count} Day attendance success` : `Click the item to claim day ${current_day} reward`;
-				const end_date = /* @__PURE__ */ new Date(`${end[1]}-${end[2]}-${end[3]}`);
 				const now_date = /* @__PURE__ */ new Date();
 				const remaining_days = Math.round(Math.abs((end_date.getTime() - now_date.getTime()) / 864e5));
 				const totalDaysEl = root.querySelector(".total-days");
 				if (totalDaysEl) totalDaysEl.innerHTML = total_days_string;
 				const remainingEl = root.querySelector(".remaining-day-text");
-				if (remainingEl) remainingEl.textContent = remaining_days;
+				if (remainingEl) remainingEl.textContent = ongoing ? "∞" : remaining_days;
+				const remainingTextEl = root.querySelector(".remaining-text");
+				if (remainingTextEl) remainingTextEl.style.visibility = ongoing ? "hidden" : "";
 			}
 		}
 		if (_CheckAttendanceInfo.Rewards) {
