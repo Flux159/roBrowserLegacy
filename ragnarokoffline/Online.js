@@ -262655,6 +262655,7 @@ var init_EffectManager = __esmMin((() => {
 						Init: {
 							effectId: hatEffectID,
 							position: ownerEntity.position,
+							ownerAID: ownerAID != null ? ownerAID : ownerEntity.GID,
 							ownerEntity,
 							startTick,
 							duration: effectEntry.duration || 0,
@@ -262704,6 +262705,7 @@ var init_EffectManager = __esmMin((() => {
 				else attachments.remove("hat-str-" + ownerAID + "-" + effectID);
 				if (info && info.type === "effect" && info.effectTableId) attachments.remove(info.effectTableId);
 			}
+			if (info && info.type === "effect" && info.effectTableId) EffectManager.remove(null, ownerAID, info.effectTableId);
 			if (hatEffects) delete hatEffects[effectID];
 		}
 		static debug() {
@@ -268441,7 +268443,7 @@ function auraColor(rgb) {
 function tierColor(tier, settings) {
 	return auraColor(settings.colors && typeof settings.colors === "object" ? settings.colors[tier] : void 0) || auraColor(settings.color) || auraColor(TIER_COLORS[tier]);
 }
-var TIER_EFFECTS, ALL_TIER_EFFECTS, TIER_COLORS, NAMED_COLORS, DEFAULTS;
+var TIER_EFFECTS, ALL_TIER_EFFECTS, TIER_COLORS, NAMED_COLORS, JOB_COLORS, STAR_SOUL_COLORS, DEFAULTS;
 var init_AuraTiers = __esmMin((() => {
 	TIER_EFFECTS = {
 		99: {
@@ -268540,6 +268542,75 @@ var init_AuraTiers = __esmMin((() => {
 			255
 		]
 	};
+	JOB_COLORS = [
+		[
+			255,
+			40,
+			40
+		],
+		[
+			40,
+			70,
+			255
+		],
+		[
+			160,
+			60,
+			255
+		],
+		[
+			110,
+			190,
+			255
+		],
+		[
+			40,
+			200,
+			60
+		],
+		[
+			255,
+			120,
+			200
+		],
+		[
+			255,
+			255,
+			255
+		],
+		[
+			190,
+			200,
+			215
+		],
+		[
+			0,
+			0,
+			0
+		],
+		[
+			255,
+			200,
+			40
+		],
+		[
+			190,
+			240,
+			40
+		]
+	];
+	STAR_SOUL_COLORS = {
+		midnight_blue: [
+			25,
+			40,
+			140
+		],
+		gray: [
+			140,
+			140,
+			150
+		]
+	};
 	DEFAULTS = {
 		defaultLv: 99,
 		lv150: 150,
@@ -268590,7 +268661,7 @@ function classic(rgb) {
 		}
 	];
 }
-var COLOR_ORDER, table;
+var COLOR_ORDER, table, high;
 var init_LevelAuraEffects = __esmMin((() => {
 	init_MaxLevelAura();
 	init_SwirlingAura();
@@ -268624,6 +268695,14 @@ var init_LevelAuraEffects = __esmMin((() => {
 		table[1164 + i] = classic(NAMED_COLORS[name]);
 		table[1174 + i] = [maxPart("bubbles", NAMED_COLORS[name]), maxPart("rings", NAMED_COLORS[name])];
 	});
+	high = (rgb) => [maxPart("bubbles", rgb), maxPart("rings", rgb)];
+	JOB_COLORS.forEach((rgb, i) => {
+		table[1325 + i] = classic(rgb);
+		table[1336 + i] = high(rgb);
+	});
+	table[2282] = high(STAR_SOUL_COLORS.midnight_blue);
+	table[2283] = classic(STAR_SOUL_COLORS.gray);
+	table[2284] = high(STAR_SOUL_COLORS.gray);
 }));
 //#endregion
 //#region src/Renderer/Effects/Tiles.vs?raw
