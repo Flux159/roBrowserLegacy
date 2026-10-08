@@ -77976,7 +77976,7 @@ var init_PacketLength = __esmMin((() => {
 }));
 //#endregion
 //#region \0vite/preload-helper.js
-var scriptRel, assetsURL, seen, isCssPreloadUrl, __vitePreload;
+var scriptRel, assetsURL, seen, isCssPreloadUrl, preloadOnce, __vitePreload;
 var init_preload_helper = __esmMin((() => {
 	scriptRel = "modulepreload";
 	assetsURL = function(dep, importerUrl) {
@@ -77985,6 +77985,22 @@ var init_preload_helper = __esmMin((() => {
 	seen = {};
 	isCssPreloadUrl = function isCssPreloadUrl(url) {
 		return url.pathname.endsWith(".css");
+	};
+	preloadOnce = function preloadOnce(seen, href, preload) {
+		if (href in seen) return seen[href];
+		const promise = preload();
+		if (!promise) {
+			seen[href] = void 0;
+			return;
+		}
+		const preloadPromise = promise.then(() => {
+			seen[href] = void 0;
+		}, (err) => {
+			seen[href] = void 0;
+			throw err;
+		});
+		seen[href] = preloadPromise;
+		return preloadPromise;
 	};
 	__vitePreload = function preload(baseModule, deps, importerUrl) {
 		let promise = Promise.resolve();
@@ -78012,32 +78028,32 @@ var init_preload_helper = __esmMin((() => {
 			promise = allSettled(deps.map((depString) => {
 				depString = assetsURL(depString, importerUrl);
 				const dep = importMetaResolve(depString);
-				if (dep.href in seen) return;
-				seen[dep.href] = true;
 				const isCss = isCssPreloadUrl(dep);
-				if (preloadedHrefs === void 0) {
-					preloadedHrefs = {
-						all: /* @__PURE__ */ new Set(),
-						styles: /* @__PURE__ */ new Set()
-					};
-					const links = document.getElementsByTagName("link");
-					for (let i = links.length - 1; i >= 0; i--) {
-						const link = links[i];
-						preloadedHrefs.all.add(link.href);
-						if (link.rel === "stylesheet") preloadedHrefs.styles.add(link.href);
+				return preloadOnce(seen, dep.href, () => {
+					if (preloadedHrefs === void 0) {
+						preloadedHrefs = {
+							all: /* @__PURE__ */ new Set(),
+							styles: /* @__PURE__ */ new Set()
+						};
+						const links = document.getElementsByTagName("link");
+						for (let i = links.length - 1; i >= 0; i--) {
+							const link = links[i];
+							preloadedHrefs.all.add(link.href);
+							if (link.rel === "stylesheet") preloadedHrefs.styles.add(link.href);
+						}
 					}
-				}
-				if ((isCss ? preloadedHrefs.styles : preloadedHrefs.all).has(dep.href)) return;
-				const link = document.createElement("link");
-				link.rel = isCss ? "stylesheet" : scriptRel;
-				if (!isCss) link.as = "script";
-				link.crossOrigin = "";
-				link.href = dep.href;
-				if (cspNonce) link.setAttribute("nonce", cspNonce);
-				document.head.appendChild(link);
-				if (isCss) return new Promise((res, rej) => {
-					link.addEventListener("load", res);
-					link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
+					if ((isCss ? preloadedHrefs.styles : preloadedHrefs.all).has(dep.href)) return;
+					const link = document.createElement("link");
+					link.rel = isCss ? "stylesheet" : scriptRel;
+					if (!isCss) link.as = "script";
+					link.crossOrigin = "";
+					link.href = dep.href;
+					if (cspNonce) link.setAttribute("nonce", cspNonce);
+					document.head.appendChild(link);
+					if (isCss) return new Promise((res, rej) => {
+						link.addEventListener("load", res);
+						link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
+					});
 				});
 			}).filter((p) => p !== void 0));
 		}
@@ -348906,6 +348922,7 @@ function onConnectRequest(entity) {
 	Controller$2.getUI().remove();
 	UIManager.getComponent("WinLoading").append();
 	SessionStorage_default.Entity = new Player(entity);
+	_charBeforeDB = DB.isLoaded ? null : entity;
 	const pkt = new PACKET.CH.SELECT_CHAR();
 	pkt.CharNum = entity.CharNum;
 	Network.sendPacket(pkt);
@@ -348943,10 +348960,14 @@ function onReceiveMapInfo(pkt) {
 	}
 	DB.startedLazyInit = false;
 	retryCount = 0;
+	if (_charBeforeDB) {
+		SessionStorage_default.Entity = new Player(_charBeforeDB);
+		_charBeforeDB = null;
+	}
 	SessionStorage_default.GID = pkt.GID;
 	MapEngine.init(pkt.addr.ip, pkt.addr.port, pkt.mapName);
 }
-var _server$1, _creationSlot, _pincodeAttempts, _inAuthPincodeReset, _resettingPincode, _creatingPincode, CharEngine, retryCount;
+var _server$1, _creationSlot, _charBeforeDB, _pincodeAttempts, _inAuthPincodeReset, _resettingPincode, _creatingPincode, CharEngine, retryCount;
 var init_CharEngine = __esmMin((() => {
 	init_DBManager();
 	init_Configs();
@@ -348969,6 +348990,7 @@ var init_CharEngine = __esmMin((() => {
 	init_preload_helper();
 	_server$1 = null;
 	_creationSlot = 0;
+	_charBeforeDB = null;
 	_pincodeAttempts = 0;
 	_inAuthPincodeReset = false;
 	_resettingPincode = false;
