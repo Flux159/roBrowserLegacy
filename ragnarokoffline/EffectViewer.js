@@ -245825,7 +245825,7 @@ var init_StrEffect$2 = __esmMin((() => {
 //#region src/Renderer/Effects/StrEffect.fs?raw
 var StrEffect_default;
 var init_StrEffect$1 = __esmMin((() => {
-	StrEffect_default = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nout vec4 fragColor;\r\n\r\nuniform vec4 uSpriteColor;\r\nuniform sampler2D uDiffuse;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nvoid main(void) {\r\n	fragColor = texture( uDiffuse, vTextureCoord.st ) * uSpriteColor;\r\n	if ( fragColor.a == 0.0 || (fragColor.r == 0.0 && fragColor.g == 0.0 && fragColor.b == 0.0) ) {\r\n		discard;\r\n	}\r\n\r\n	if ( uFogUse ) {\r\n		float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n		float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n		fragColor    = mix( fragColor, vec4( uFogColor, fragColor.w ), fogFactor );\r\n	}\r\n}";
+	StrEffect_default = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nout vec4 fragColor;\r\n\r\nuniform vec4 uSpriteColor;\r\nuniform sampler2D uDiffuse;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nvoid main(void) {\r\n	// Drop a texture's black background, not a layer tinted black: a white\r\n	// shape coloured (0, 0, 0) is a shadow or a print, drawn by alpha blending.\r\n	vec4 texel = texture( uDiffuse, vTextureCoord.st );\r\n	if ( texel.a == 0.0 || (texel.r == 0.0 && texel.g == 0.0 && texel.b == 0.0) ) {\r\n		discard;\r\n	}\r\n	fragColor = texel * uSpriteColor;\r\n	if ( fragColor.a == 0.0 ) {\r\n		discard;\r\n	}\r\n\r\n	if ( uFogUse ) {\r\n		float depth     = gl_FragCoord.z / gl_FragCoord.w;\r\n		float fogFactor = smoothstep( uFogNear, uFogFar, depth );\r\n		fragColor    = mix( fragColor, vec4( uFogColor, fragColor.w ), fogFactor );\r\n	}\r\n}";
 }));
 //#endregion
 //#region src/Renderer/Effects/StrEffect.js
@@ -267180,7 +267180,20 @@ var init_SwirlingAura$1 = __esmMin((() => {
 *
 * The auras add light (SRC_ALPHA, ONE), which can make any colour but black:
 * black added is nothing. A dark colour (AuraTiers.auraColor marks it) is
-* drawn by darkening what is behind instead, by how bright the texture is.
+* drawn by darkening what is behind instead, and how depends on the texture's
+* shape:
+*
+* - 'alpha': a texture shaped by its alpha channel, bright in every pixel
+*   (ring_blue.tga, whitelight.tga, cir0002.tga). It is drawn in its own
+*   colour with alpha blending (SRC_ALPHA, ONE_MINUS_SRC_ALPHA), the blending
+*   the client gives its coloured hat-effect auras. Darkening by its colour
+*   instead would darken the whole quad, and tint it with the opposite of the
+*   texture's colour.
+* - 'brightness': a texture with no alpha, shaped by how bright it is on black
+*   (pikapika2.bmp). It darkens what is behind by that brightness
+*   (ZERO, ONE_MINUS_SRC_COLOR), which its shader gives as grey (uDarken in
+*   GroundAura.fs): darkening by the texture's own colour would leave the
+*   opposite colour behind, an orange fringe for pikapika2's blue.
 *
 * This file is part of ROBrowser, (http://www.robrowser.com/).
 */
@@ -267189,10 +267202,11 @@ var init_SwirlingAura$1 = __esmMin((() => {
 *
 * @param {{r: number, g: number, b: number, dark: boolean}} color
 * @param {number} alpha
+* @param {string} [shape] 'alpha' or 'brightness' (the default): see above
 * @return {number[]} r, g, b, a
 */
-function auraUniform(color, alpha) {
-	return color.dark ? [
+function auraUniform(color, alpha, shape = "brightness") {
+	return color.dark && shape !== "alpha" ? [
 		1,
 		1,
 		1,
@@ -267207,9 +267221,16 @@ function auraUniform(color, alpha) {
 /**
 * Switch to the blending `color` needs before drawing it. A no-op for every
 * colour but a dark one.
+*
+* @param {WebGL2RenderingContext} gl
+* @param {{dark: boolean}} color
+* @param {string} [shape] 'alpha' or 'brightness' (the default): see above
 */
-function beginAuraBlend(gl, color) {
-	if (color && color.dark) gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
+function beginAuraBlend(gl, color, shape = "brightness") {
+	if (color && color.dark) {
+		if (shape === "alpha") gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		else gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
+	}
 }
 /**
 * Put back the additive blending the auras share, after beginAuraBlend.
@@ -267395,7 +267416,7 @@ var init_SwirlingAura = __esmMin((() => {
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			const self = this;
 			const process = (tick - this.tick) / 25;
-			beginAuraBlend(gl, this.color);
+			beginAuraBlend(gl, this.color, "alpha");
 			SpriteRenderer.runWithDepth(true, false, false, function() {
 				for (let ec = 0; ec < self.bands.length; ec++) {
 					const band = self.bands[ec];
@@ -267407,7 +267428,7 @@ var init_SwirlingAura = __esmMin((() => {
 					gl.bufferSubData(gl.ARRAY_BUFFER, 0, self.vertices);
 					gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 					gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
-					gl.uniform4f(uniform.uColor, ...auraUniform(self.color, self.alphaB));
+					gl.uniform4f(uniform.uColor, ...auraUniform(self.color, self.alphaB, "alpha"));
 					gl.uniform1f(uniform.uZIndex, .01 + ec * .001);
 					gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, self.indexBuffer);
 					gl.drawElements(gl.TRIANGLES, self.indexCount, gl.UNSIGNED_SHORT, 0);
@@ -267469,7 +267490,7 @@ var init_GroundAura$2 = __esmMin((() => {
 //#region src/Renderer/Effects/GroundAura.fs?raw
 var GroundAura_default;
 var init_GroundAura$1 = __esmMin((() => {
-	GroundAura_default = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\nuniform vec4 uColor;\r\n\r\nvoid main(void) {\r\n	vec4 texColor = texture(uDiffuse, vTextureCoord);\r\n\r\n	if (texColor.a < 0.01) {\r\n		discard;\r\n	}\r\n\r\n	fragColor = texColor * uColor;\r\n}";
+	GroundAura_default = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\nuniform vec4 uColor;\r\nuniform bool uDarken;\r\n\r\nvoid main(void) {\r\n	vec4 texColor = texture(uDiffuse, vTextureCoord);\r\n\r\n	if (texColor.a < 0.01) {\r\n		discard;\r\n	}\r\n\r\n	if (uDarken) {\r\n		float k = max(max(texColor.r, texColor.g), texColor.b) * uColor.a;\r\n		fragColor = vec4(k, k, k, 1.0);\r\n		return;\r\n	}\r\n	fragColor = texColor * uColor;\r\n}";
 }));
 //#endregion
 //#region src/Renderer/Effects/GroundAura.js
@@ -267637,6 +267658,7 @@ var init_GroundAura = __esmMin((() => {
 					gl.uniform2f(uniform.uSize, self.aura[i].size[0], self.aura[i].size[1]);
 					gl.uniform1f(uniform.uAngle, auraAngle * Math.PI / 180);
 					gl.uniform4f(uniform.uColor, ...auraUniform(self.color, .8));
+					gl.uniform1i(uniform.uDarken, !!(self.color && self.color.dark));
 					gl.uniform1f(uniform.uZIndex, 1 + i);
 					gl.drawArrays(gl.TRIANGLES, 0, 6);
 				}
@@ -268063,10 +268085,10 @@ var init_Level99Bubble = __esmMin((() => {
 					this.fillQuad(this.tmpPoints, this.quadData);
 					gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.quadData);
 					const self = this;
-					beginAuraBlend(gl, this.color);
+					beginAuraBlend(gl, this.color, "alpha");
 					SpriteRenderer.runWithDepth(true, false, false, function() {
 						for (let pass = 0; pass < self.passCount; pass++) {
-							gl.uniform4f(uniform.uColor, ...auraUniform(self.color, alphaValue));
+							gl.uniform4f(uniform.uColor, ...auraUniform(self.color, alphaValue, "alpha"));
 							gl.uniform1f(uniform.uZIndex, .01 + ec * .002 + ai * 1e-4 + pass * 5e-5);
 							gl.drawArrays(gl.TRIANGLES, 0, 6);
 						}
@@ -268408,7 +268430,7 @@ var init_MaxLevelAura = __esmMin((() => {
 			const uniform = _program$6.uniform;
 			gl.bindTexture(gl.TEXTURE_2D, texture);
 			gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.quadData);
-			gl.uniform4f(uniform.uColor, ...auraUniform(this.color, alpha));
+			gl.uniform4f(uniform.uColor, ...auraUniform(this.color, alpha, "alpha"));
 			gl.uniform1f(uniform.uZIndex, zIndex);
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 		}
@@ -268422,7 +268444,7 @@ var init_MaxLevelAura = __esmMin((() => {
 				this.position[1] + .5
 			];
 			const self = this;
-			beginAuraBlend(gl, this.color);
+			beginAuraBlend(gl, this.color, "alpha");
 			SpriteRenderer.runWithDepth(true, false, false, function() {
 				if (self.part === "rings") self.renderRings(gl, base, elapsed);
 				else self.renderBubbles(gl, base, elapsed);
@@ -268564,7 +268586,8 @@ function auraTier(level, job, settings) {
 /**
 * A 0-255 RGB list as the colour the aura effects take, or null for none or
 * one that is not three numbers. Black (or near it) cannot be drawn by adding
-* light, so it is marked `dark`, and the effects darken instead.
+* light, so it is marked `dark`, and the effects darken instead. "Near it"
+* reaches the client's Shadow Chaser black, (19, 9, 14).
 *
 * @param {Array} rgb [r, g, b], 0-255
 * @return {{r: number, g: number, b: number, dark: boolean}|null}
@@ -268576,7 +268599,7 @@ function auraColor(rgb) {
 		r,
 		g,
 		b,
-		dark: r + g + b < .15
+		dark: r + g + b < .2
 	};
 }
 /**
@@ -268590,7 +268613,7 @@ function auraColor(rgb) {
 function tierColor(tier, settings) {
 	return auraColor(settings.colors && typeof settings.colors === "object" ? settings.colors[tier] : void 0) || auraColor(settings.color) || auraColor(TIER_COLORS[tier]);
 }
-var TIER_EFFECTS, ALL_TIER_EFFECTS, TIER_COLORS, NAMED_COLORS, JOB_COLORS, STAR_SOUL_COLORS, DEFAULTS;
+var TIER_EFFECTS, ALL_TIER_EFFECTS, TIER_COLORS, NAMED_COLORS, JOB_COLORS, TIGER_COLOR, STAR_SOUL_COLORS, DEFAULTS;
 var init_AuraTiers = __esmMin((() => {
 	TIER_EFFECTS = {
 		99: {
@@ -268640,43 +268663,43 @@ var init_AuraTiers = __esmMin((() => {
 	NAMED_COLORS = {
 		red: [
 			255,
-			40,
-			40
+			0,
+			0
 		],
 		ultramarine: [
-			40,
-			70,
+			0,
+			51,
 			255
 		],
 		cyan: [
 			0,
-			225,
+			255,
 			255
 		],
 		lime: [
-			140,
+			204,
 			255,
-			40
+			0
 		],
 		violet: [
-			160,
-			60,
+			139,
+			0,
 			255
 		],
 		lilac: [
-			215,
-			150,
+			179,
+			153,
 			255
 		],
 		sun_orange: [
 			255,
-			140,
+			115,
 			0
 		],
 		deep_pink: [
 			255,
-			30,
-			140
+			20,
+			147
 		],
 		black: [
 			0,
@@ -268691,71 +268714,81 @@ var init_AuraTiers = __esmMin((() => {
 	};
 	JOB_COLORS = [
 		[
-			255,
-			40,
-			40
-		],
-		[
-			40,
-			70,
-			255
-		],
-		[
-			160,
-			60,
-			255
-		],
-		[
-			110,
-			190,
-			255
-		],
-		[
-			40,
-			200,
-			60
-		],
-		[
-			255,
-			120,
-			200
-		],
-		[
-			255,
-			255,
-			255
-		],
-		[
-			190,
-			200,
-			215
-		],
-		[
-			0,
-			0,
+			214,
+			26,
 			0
 		],
 		[
-			255,
-			200,
-			40
+			0,
+			36,
+			216
 		],
 		[
-			190,
-			240,
-			40
+			141,
+			0,
+			228
+		],
+		[
+			0,
+			216,
+			255
+		],
+		[
+			0,
+			139,
+			22
+		],
+		[
+			255,
+			4,
+			169
+		],
+		[
+			224,
+			249,
+			255
+		],
+		[
+			175,
+			185,
+			211
+		],
+		[
+			19,
+			9,
+			14
+		],
+		[
+			251,
+			193,
+			0
+		],
+		[
+			186,
+			255,
+			0
 		]
 	];
+	TIGER_COLOR = [
+		237,
+		80,
+		49
+	];
 	STAR_SOUL_COLORS = {
-		midnight_blue: [
-			25,
-			40,
-			140
+		midnight_blue_99: [
+			0,
+			44,
+			67
+		],
+		midnight_blue_160: [
+			0,
+			30,
+			67
 		],
 		gray: [
-			140,
-			140,
-			150
+			125,
+			125,
+			125
 		]
 	};
 	DEFAULTS = {
@@ -268847,9 +268880,73 @@ var init_LevelAuraEffects = __esmMin((() => {
 		table[1325 + i] = classic(rgb);
 		table[1336 + i] = high(rgb);
 	});
-	table[2282] = high(STAR_SOUL_COLORS.midnight_blue);
+	table[1291] = classic(TIGER_COLOR);
+	table[1292] = high(TIGER_COLOR);
+	table[2281] = classic(STAR_SOUL_COLORS.midnight_blue_99);
+	table[2282] = high(STAR_SOUL_COLORS.midnight_blue_160);
 	table[2283] = classic(STAR_SOUL_COLORS.gray);
 	table[2284] = high(STAR_SOUL_COLORS.gray);
+}));
+//#endregion
+//#region src/DB/Effects/CostumeSpriteEffects.js
+/**
+* DB/Effects/CostumeSpriteEffects.js
+*
+* Effect table entries for the hat effects that costume items draw as a
+* sprite attached to the character, spread into EffectTable.js.
+*
+* The client names these effects only by number in hateffectinfo.lub; the
+* executable decides what each number draws. An iRO Ragexe.exe (October 2026)
+* plays each of these as one animation from data/sprite/이팩트/, attached to
+* its owner and looping while the hat effect is on: the mapping below is read
+* from its effect switches. Subject Aura is one sprite whose actions are its
+* colours: gold, white, red and a dark one, in that order.
+*
+* Effect 1184 (HAT_EF_GC_DARKCROW) draws crow_aura/crow_aura, which no client
+* data the effects were checked against ships, so it is left out.
+*
+* This file is part of ROBrowser, (http://www.robrowser.com/).
+*/
+/**
+* One looping sprite attached to the effect's owner, drawn behind it.
+*
+* @param {string} file path under data/sprite/이팩트/, without the extension
+* @param {number} [action] the action to play, for a sprite that has several
+*/
+function costume(file, action) {
+	const entry = {
+		type: "SPR",
+		file,
+		attachedEntity: true,
+		repeat: true,
+		renderBeforeEntities: true
+	};
+	if (action !== void 0) {
+		entry.direction = false;
+		entry.frame = action;
+	}
+	return [entry];
+}
+var CostumeSpriteEffects_default;
+var init_CostumeSpriteEffects = __esmMin((() => {
+	CostumeSpriteEffects_default = {
+		1211: costume("subject_aura/subject_aura", 0),
+		1212: costume("subject_aura/subject_aura", 1),
+		1213: costume("subject_aura/subject_aura", 2),
+		1377: costume("valkyrie_wing/valkyrie_wing"),
+		1531: costume("³ª¹µÀÙ_¿Ï¼º"),
+		2310: costume("cons_of_poison"),
+		2346: costume("black_thunder/black_thunder"),
+		2347: costume("black_thunder/black_thunder_dark"),
+		2394: costume("serpent_shadow/serpent_shadow"),
+		2413: costume("rainbow_poison_master"),
+		2424: costume("c_aura_of_ghost_s/c_aura_of_ghost_s"),
+		2428: costume("atque_poenitentia/atque_poenitentia"),
+		2429: costume("perm_frost_oblivion/perm_frost_oblivion"),
+		2430: costume("c_guide_of_dead_text/c_guide_of_dead_text"),
+		2431: costume("c_medjed_text/c_medjed_text"),
+		2458: costume("s_beelzebub_wing/s_beelzebub_wing")
+	};
 }));
 //#endregion
 //#region src/Renderer/Effects/Tiles.vs?raw
@@ -270681,6 +270778,7 @@ var init_EffectTable = __esmMin((() => {
 	init_GroundAura();
 	init_Level99Bubble();
 	init_LevelAuraEffects();
+	init_CostumeSpriteEffects();
 	init_Songs();
 	init_SoundManager();
 	init_Events();
@@ -288130,7 +288228,8 @@ var init_EffectTable = __esmMin((() => {
 			texturePath: "help_angel/help_angel_bottom/",
 			renderBeforeEntities: true
 		}],
-		...table
+		...table,
+		...CostumeSpriteEffects_default
 	};
 }));
 //#endregion
@@ -309195,8 +309294,8 @@ function loadHatEffectInfo(onEnd) {
 				strBottomRight: info.StrFile_Bottom_Right ? decodeLuaString(info.StrFile_Bottom_Right) : null,
 				strTopLeft: info.StrFile_Top_Left ? decodeLuaString(info.StrFile_Top_Left) : null,
 				strTopRight: info.StrFile_Top_Right ? decodeLuaString(info.StrFile_Top_Right) : null,
-				scaleBottom: info.Scale_Bottom ?? 0,
-				scaleTop: info.Scale_Top ?? 0,
+				scaleBottom: info.Scale_Bottom ?? .05,
+				scaleTop: info.Scale_Top ?? .05,
 				heightTop: info.Height_Top ?? 0,
 				stride: info.Stride ?? 50,
 				gap: info.Gap ?? 2,
@@ -313091,6 +313190,14 @@ var init_DBManager = __esmMin((() => {
 		*/
 		static getHatResource(id) {
 			return HatEffectInfo[id] || null;
+		}
+		/**
+		* Get a footprint hat effect's entry from footprinteffectinfo.lub
+		* @param {number} id - Hateffect ID
+		* @returns {Object|null} footprint info or null if not found
+		*/
+		static getFootprintEffect(id) {
+			return FootPrintEffectInfo[id] || null;
 		}
 		/**
 		* Get the CashShopBannerTable
@@ -333762,6 +333869,180 @@ var init_AttackEffectTable = __esmMin((() => {
 	AE.SPAWN[JOB.ENTWEIHEN] = AE.SPAWN[JOB.G_ENTWEIHEN_R] = AE.SPAWN[JOB.G_ENTWEIHEN_H] = AE.SPAWN[JOB.G_ENTWEIHEN_M] = AE.SPAWN[JOB.G_ENTWEIHEN_S] = AE.SPAWN[JOB.VH_ENTWEIHEN] = AE.SPAWN[JOB.VH_ENTWEIHEN_R] = AE.SPAWN[JOB.VH_ENTWEIHEN_H] = AE.SPAWN[JOB.VH_ENTWEIHEN_M] = AE.SPAWN[JOB.VH_ENTWEIHEN_S] = AE.SPAWN[JOB.MD_G_ENTWEIHEN_M] = "ef_entweihen_attack";
 }));
 //#endregion
+//#region src/Renderer/Effects/Footprints.js
+/**
+* Whether a print is due: the squared distance walked since the last one, in
+* the client's world units, past `stride`.
+*
+* @param {number[]} from last print's position, in cells
+* @param {number[]} to owner's position, in cells
+* @param {number} stride
+* @return {boolean}
+*/
+function strideReached(from, to, stride) {
+	const dx = (to[0] - from[0]) * UNITS_PER_CELL;
+	const dy = (to[1] - from[1]) * UNITS_PER_CELL;
+	const dz = (to[2] - from[2]) * UNITS_PER_CELL;
+	return dx * dx + dy * dy + dz * dz > stride;
+}
+/**
+* Where a print goes: `gap` world units to one side of the line from `from` to
+* `to`, the left for `left`.
+*
+* @param {number[]} from
+* @param {number[]} to
+* @param {number} gap
+* @param {boolean} left
+* @return {number[]} x, y in cells
+*/
+function printPosition(from, to, gap, left) {
+	const dx = to[0] - from[0];
+	const dy = to[1] - from[1];
+	const length = Math.sqrt(dx * dx + dy * dy) || 1;
+	const side = (left ? 1 : -1) * gap / UNITS_PER_CELL / length;
+	return [to[0] - dy * side, to[1] + dx * side];
+}
+/**
+* The angle that turns a print drawn walking up the screen to the direction
+* walked as it shows on screen, in a STR layer's degrees (counter-clockwise
+* on screen in roBrowser).
+*
+* @param {number[]} from
+* @param {number[]} to
+* @param {Float32Array} modelView the camera's
+* @return {number}
+*/
+function screenAngle(from, to, modelView) {
+	const vx = to[0] - from[0];
+	const vz = to[1] - from[1];
+	const sx = modelView[0] * vx + modelView[8] * vz;
+	const sy = modelView[1] * vx + modelView[9] * vz;
+	return Math.atan2(sy, sx) * 180 / Math.PI - 90;
+}
+/** The path a footprint's STR is loaded by, and its texture folder. */
+function strPath(file) {
+	const path = file.replace(/\\/g, "/");
+	return {
+		filename: "data/texture/effect/" + path,
+		texturePath: path.substring(0, path.lastIndexOf("/") + 1)
+	};
+}
+/**
+* Start the footprint `id` on `entity`, if the client's footprint table has it.
+*
+* @param {object} entity
+* @param {number} id the hat effect id
+* @param {object} info DB.getFootprintEffect(id)
+* @return {boolean} whether it started
+*/
+function startFootprints(entity, id, info) {
+	if (!info || !entity || !entity.position) return false;
+	const key = "footprint-" + id;
+	EffectManager.add(new FootprintTrail(entity, info), {
+		Inst: { effectID: key },
+		Init: { ownerAID: entity.GID }
+	});
+	if (!entity._hatEffects) entity._hatEffects = {};
+	entity._hatEffects[id] = {
+		type: "effect",
+		effectTableId: key
+	};
+	return true;
+}
+var UNITS_PER_CELL, STR_SCALE, FootprintStrEffect, FootprintTrail;
+var init_Footprints = __esmMin((() => {
+	init_StrEffect();
+	init_EffectManager();
+	init_EntityManager();
+	init_Altitude();
+	init_Camera();
+	UNITS_PER_CELL = 5;
+	STR_SCALE = 35 / UNITS_PER_CELL;
+	FootprintStrEffect = class extends StrEffect {
+		constructor(filename, position, startTick, texturePath, scale, angle) {
+			super(filename, position, startTick, texturePath);
+			this.scale = scale;
+			this.angle = angle || 0;
+		}
+		renderAnimation(gl, material, animat) {
+			const s = this.scale;
+			const r = this.angle / 180 * Math.PI;
+			const cos = Math.cos(r);
+			const sin = Math.sin(r);
+			const ox = (animat.pos[0] - 320) * s;
+			const oy = (animat.pos[1] - 320) * s;
+			super.renderAnimation(gl, material, {
+				...animat,
+				xy: animat.xy.map((v) => v * s),
+				pos: [320 + ox * cos + oy * sin, 320 - ox * sin + oy * cos],
+				angle: animat.angle + this.angle
+			});
+		}
+	};
+	FootprintTrail = class {
+		static ready = true;
+		static renderBeforeEntities = true;
+		static beforeRender() {}
+		static afterRender() {}
+		/**
+		* @param {object} owner the entity wearing the footprint
+		* @param {object} info DB.getFootprintEffect's entry
+		*/
+		constructor(owner, info) {
+			this.owner = owner;
+			this.info = info;
+			this.last = owner.position.slice(0, 3);
+			this.left = true;
+			this.ready = true;
+		}
+		render(gl, tick) {
+			const owner = this.owner;
+			if (!owner || EntityManager.get(owner.GID) !== owner) {
+				this.needCleanUp = true;
+				return;
+			}
+			const to = owner.position;
+			if (!strideReached(this.last, to, this.info.stride)) return;
+			this.drop(this.last, to, tick);
+			this.last = to.slice(0, 3);
+			this.left = !this.left;
+		}
+		/** One print, for the step from `from` to `to`. */
+		drop(from, to, tick) {
+			const info = this.info;
+			if (info.type !== 4) return;
+			const [x, y] = printPosition(from, to, info.gap, this.left);
+			const ground = Altitude.getCellHeight(x, y);
+			const bottom = this.left ? info.strBottomLeft : info.strBottomRight;
+			const top = this.left ? info.strTopLeft : info.strTopRight;
+			if (bottom && info.scaleBottom > 0) {
+				const angle = info.isAdjustAngle ? screenAngle(from, to, Camera.modelView) : 0;
+				this.spawn(bottom, [
+					x,
+					y,
+					ground
+				], tick, info.scaleBottom, angle);
+			}
+			if (top && info.scaleTop > 0) this.spawn(top, [
+				x,
+				y,
+				ground + info.heightTop / UNITS_PER_CELL
+			], tick, info.scaleTop, 0);
+		}
+		spawn(file, position, tick, scale, angle) {
+			const { filename, texturePath } = strPath(file);
+			const effect = new FootprintStrEffect(filename, position, tick, texturePath, scale * STR_SCALE, angle);
+			EffectManager.add(effect, {
+				Inst: {
+					effectID: -1,
+					startTick: tick
+				},
+				Init: { ownerAID: null }
+			});
+		}
+	};
+}));
+//#endregion
 //#region src/Engine/MapEngine/Entity.js
 /**
 * Spam an entity on the map
@@ -335573,7 +335854,10 @@ function onHatEffects(pkt) {
 		hatEffectID = effectIds[i];
 		if (entity._hatEffects[hatEffectID]) continue;
 		hatEffect = DB.getHatResource(hatEffectID);
-		if (!hatEffect) continue;
+		if (!hatEffect) {
+			startFootprints(entity, hatEffectID, DB.getFootprintEffect(hatEffectID));
+			continue;
+		}
 		EffectManager.spamHatEffect({
 			Init: {
 				ownerAID: pkt.GID,
@@ -335748,6 +336032,7 @@ var init_Entity = __esmMin((() => {
 	init_PartyFriends();
 	init_Equipment();
 	init_ScreenEffectManager();
+	init_Footprints();
 	SkillNameDisplayExclude = [
 		SkillConst_default.TF_HIDING,
 		SkillConst_default.AS_CLOAKING,
