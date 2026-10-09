@@ -16,6 +16,7 @@ import GroundAura from 'Renderer/Effects/GroundAura.js';
 import Level99Bubble from 'Renderer/Effects/Level99Bubble.js';
 import LevelAuraEffects from 'DB/Effects/LevelAuraEffects.js';
 import CostumeSpriteEffects from 'DB/Effects/CostumeSpriteEffects.js';
+import BodyEffects from 'DB/Effects/BodyEffects.js';
 
 import SongEffects from 'Renderer/Effects/Songs.js';
 import SoundManager from 'Audio/SoundManager.js';
@@ -23977,5 +23978,8 @@ export default {
 	...LevelAuraEffects,
 
 	// The costume hat effects drawn as a sprite: CostumeSpriteEffects.js.
-	...CostumeSpriteEffects
+	...CostumeSpriteEffects,
+
+	// The effects that change how their owner's body is drawn: BodyEffects.js.
+	...BodyEffects
 };

@@ -911,7 +911,8 @@ const renderElement = (function renderElementClosure() {
 			(type !== 'shadow' && entity.getOpt3(StatusConst.Status.BERSERK)) ||
 			entity.getOpt3(StatusConst.Status.MARIONETTE);
 
-		if (hasBerserkOrMarionette) {
+		// BodyGlow marks a body drawn the same way (EF_WHITEBODY).
+		if (hasBerserkOrMarionette || (type !== 'shadow' && entity._additiveBody > 0)) {
 			isBlendModeOne = true;
 		}
 
