@@ -84132,7 +84132,7 @@ var init_PostProcess = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/VerticalFlip.js
-var _program$30, _buffer$22, _active$3, VerticalFlip;
+var _program$31, _buffer$23, _active$3, VerticalFlip;
 var init_VerticalFlip = __esmMin((() => {
 	init_VerticalFlip$2();
 	init_VerticalFlip$1();
@@ -84141,15 +84141,15 @@ var init_VerticalFlip = __esmMin((() => {
 	_active$3 = false;
 	VerticalFlip = class {
 		static init(gl) {
-			if (_program$30) return;
+			if (_program$31) return;
 			try {
-				_program$30 = WebGL_default.createShaderProgram(gl, VerticalFlip_default$1, VerticalFlip_default);
+				_program$31 = WebGL_default.createShaderProgram(gl, VerticalFlip_default$1, VerticalFlip_default);
 			} catch (e) {
 				console.error("Error when compiling shader VerticalFlip.", e);
 				return;
 			}
-			_buffer$22 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$22);
+			_buffer$23 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$23);
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 				-1,
 				-1,
@@ -84176,19 +84176,19 @@ var init_VerticalFlip = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$22 || !_program$30 || !_active$3) return;
+			if (!_buffer$23 || !_program$31 || !_active$3) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$30);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$22);
-			let posLoc = _program$30.attribute.aPosition;
+			gl.useProgram(_program$31);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$23);
+			let posLoc = _program$31.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 16, 0);
-			posLoc = _program$30.attribute.aTextureCoord;
+			posLoc = _program$31.attribute.aTextureCoord;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 16, 8);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.uniform1i(_program$30.uniform.uTexture, 0);
+			gl.uniform1i(_program$31.uniform.uTexture, 0);
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 			PostProcess.afterRenderPass(gl);
 		}
@@ -84196,13 +84196,13 @@ var init_VerticalFlip = __esmMin((() => {
 		* @returns {WebGLProgram} Shader program
 		*/
 		static program() {
-			return _program$30;
+			return _program$31;
 		}
 		/** Resets effect state */
 		static clean(gl) {
 			_active$3 = false;
-			if (_buffer$22) gl.deleteBuffer(_buffer$22);
-			_program$30 = _buffer$22 = null;
+			if (_buffer$23) gl.deleteBuffer(_buffer$23);
+			_program$31 = _buffer$23 = null;
 		}
 		/** @returns {boolean} Whether the effect is active */
 		static isActive() {
@@ -207885,9 +207885,9 @@ function init$14(gl) {
 			if (enableMipmap) gl.generateMipmap(gl.TEXTURE_2D);
 		});
 	});
-	_buffer$21 = gl.createBuffer();
-	_program$29 = WebGL_default.createShaderProgram(gl, GridSelector_default$2, GridSelector_default$1);
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
+	_buffer$22 = gl.createBuffer();
+	_program$30 = WebGL_default.createShaderProgram(gl, GridSelector_default$2, GridSelector_default$1);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$22);
 	gl.bufferData(gl.ARRAY_BUFFER, _buffer_data.byteLength, gl.DYNAMIC_DRAW);
 }
 /**
@@ -207902,10 +207902,10 @@ function init$14(gl) {
 */
 function render$16(gl, modelView, projection, fog, x, y) {
 	if (!_texture$5) return;
-	const uniform = _program$29.uniform;
-	const attribute = _program$29.attribute;
+	const uniform = _program$30.uniform;
+	const attribute = _program$30.attribute;
 	let z;
-	gl.useProgram(_program$29);
+	gl.useProgram(_program$30);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -207914,7 +207914,7 @@ function render$16(gl, modelView, projection, fog, x, y) {
 	gl.uniform3fv(uniform.uFogColor, fog.color);
 	gl.enableVertexAttribArray(attribute.aPosition);
 	gl.enableVertexAttribArray(attribute.aTextCoord);
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$22);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 	gl.vertexAttribPointer(attribute.aTextCoord, 2, gl.FLOAT, false, 20, 12);
 	gl.activeTexture(gl.TEXTURE0);
@@ -207943,20 +207943,20 @@ function render$16(gl, modelView, projection, fog, x, y) {
 * @param {object} gl context
 */
 function free$9(gl) {
-	if (_buffer$21) {
-		gl.deleteBuffer(_buffer$21);
-		_buffer$21 = null;
+	if (_buffer$22) {
+		gl.deleteBuffer(_buffer$22);
+		_buffer$22 = null;
 	}
 	if (_texture$5) {
 		gl.deleteTexture(_texture$5);
 		_texture$5 = null;
 	}
-	if (_program$29) {
-		gl.deleteProgram(_program$29);
-		_program$29 = null;
+	if (_program$30) {
+		gl.deleteProgram(_program$30);
+		_program$30 = null;
 	}
 }
-var _program$29, _buffer$21, _texture$5, _xy, _buffer_data, GridSelector_default;
+var _program$30, _buffer$22, _texture$5, _xy, _buffer_data, GridSelector_default;
 var init_GridSelector = __esmMin((() => {
 	init_Altitude();
 	init_Client();
@@ -207965,8 +207965,8 @@ var init_GridSelector = __esmMin((() => {
 	init_Configs();
 	init_GridSelector$2();
 	init_GridSelector$1();
-	_program$29 = null;
-	_buffer$21 = null;
+	_program$30 = null;
+	_buffer$22 = null;
 	_texture$5 = null;
 	_xy = null;
 	_buffer_data = new Float32Array([
@@ -208048,6 +208048,13 @@ var init_Map = __esmMin((() => {
 		*/
 		aura: 1,
 		/**
+		* Draw only the player's own footprint hat effects, as the official
+		* client's "View my footprints only" does.
+		*
+		* Set in Graphics Settings.
+		*/
+		footprintmine: false,
+		/**
 		* Display different font style ?
 		*
 		* Toggle using "/showname" changes font styles.
@@ -208080,9 +208087,9 @@ var init_Ground$1 = __esmMin((() => {
 * @param {object} light structure
 */
 function render$15(gl, modelView, projection, normalMat, fog, light) {
-	const uniform = _program$28.uniform;
-	const attribute = _program$28.attribute;
-	gl.useProgram(_program$28);
+	const uniform = _program$29.uniform;
+	const attribute = _program$29.attribute;
+	gl.useProgram(_program$29);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform3fv(uniform.uLightDirection, light.direction);
@@ -208102,7 +208109,7 @@ function render$15(gl, modelView, projection, normalMat, fog, light) {
 	gl.enableVertexAttribArray(attribute.aTextureCoord);
 	gl.enableVertexAttribArray(attribute.aLightmapCoord);
 	gl.enableVertexAttribArray(attribute.aTileColorCoord);
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$20);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 48, 0);
 	gl.vertexAttribPointer(attribute.aVertexNormal, 3, gl.FLOAT, false, 48, 12);
 	gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 48, 24);
@@ -208252,9 +208259,9 @@ function init$13(gl, data) {
 	_width = data.width;
 	data.height;
 	_shadowMap = data.shadowMap;
-	if (!_buffer$20) _buffer$20 = gl.createBuffer();
-	if (!_program$28) _program$28 = WebGL_default.createShaderProgram(gl, Ground_default$2, Ground_default$1);
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$20);
+	if (!_buffer$21) _buffer$21 = gl.createBuffer();
+	if (!_program$29) _program$29 = WebGL_default.createShaderProgram(gl, Ground_default$2, Ground_default$1);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
 	gl.bufferData(gl.ARRAY_BUFFER, data.mesh, gl.STATIC_DRAW);
 	initLightmap(gl, data.lightmap, data.lightmapSize);
 	initTileColor(gl, data.tileColor, data.width, data.height);
@@ -208278,9 +208285,9 @@ function free$8(gl) {
 		gl.deleteTexture(_textureAtlas);
 		_textureAtlas = null;
 	}
-	if (_buffer$20) {
-		gl.deleteBuffer(_buffer$20);
-		_buffer$20 = null;
+	if (_buffer$21) {
+		gl.deleteBuffer(_buffer$21);
+		_buffer$21 = null;
 	}
 	_shadowMap = null;
 	_vertCount$1 = 0;
@@ -208317,7 +208324,7 @@ function textures() {
 		lightmap: _lightmap
 	};
 }
-var procCanvas$2, procCtx$2, _program$28, _buffer$20, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
+var procCanvas$2, procCtx$2, _program$29, _buffer$21, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
 var init_Ground = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
@@ -208327,8 +208334,8 @@ var init_Ground = __esmMin((() => {
 	init_Ground$1();
 	procCanvas$2 = document.createElement("canvas");
 	procCtx$2 = procCanvas$2.getContext("2d", { willReadFrequently: true });
-	_program$28 = null;
-	_buffer$20 = null;
+	_program$29 = null;
+	_buffer$21 = null;
 	_lightmap = null;
 	_tileColor = null;
 	_textureAtlas = null;
@@ -208493,7 +208500,7 @@ var init_SpriteRenderer$1 = __esmMin((() => {
 */
 function RenderCanvas3D(isBlendModeOne) {
 	if (!this.image.texture || !this.color[3]) return;
-	const uniform = _program$27.uniform;
+	const uniform = _program$28.uniform;
 	const gl = _gl$2;
 	const use_pal = this.image.palette !== null;
 	if (isBlendModeOne) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -208601,7 +208608,7 @@ function fillImageData(imageData, frame, pal, color) {
 		}
 	}
 }
-var mat4$24, RenderCanvas2D, _program$27, _buffer$19, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _fullPlaneDepth, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
+var mat4$24, RenderCanvas2D, _program$28, _buffer$20, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _fullPlaneDepth, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
 var init_SpriteRenderer = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -208674,8 +208681,8 @@ var init_SpriteRenderer = __esmMin((() => {
 			_ctx$5.restore();
 		};
 	})();
-	_program$27 = null;
-	_buffer$19 = null;
+	_program$28 = null;
+	_buffer$20 = null;
 	_ctx$5 = null;
 	_gl$2 = null;
 	_groupId = 0;
@@ -208764,9 +208771,9 @@ var init_SpriteRenderer = __esmMin((() => {
 		* @param {object} gl context
 		*/
 		static init(gl) {
-			if (!_buffer$19) {
-				_buffer$19 = gl.createBuffer();
-				gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$19);
+			if (!_buffer$20) {
+				_buffer$20 = gl.createBuffer();
+				gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$20);
 				gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 					-.5,
 					.5,
@@ -208786,7 +208793,7 @@ var init_SpriteRenderer = __esmMin((() => {
 					1
 				]), gl.STATIC_DRAW);
 			}
-			if (!_program$27) _program$27 = WebGL_default.createShaderProgram(gl, SpriteRenderer_default$1, SpriteRenderer_default);
+			if (!_program$28) _program$28 = WebGL_default.createShaderProgram(gl, SpriteRenderer_default$1, SpriteRenderer_default);
 		}
 		/**
 		* Initialize 3D Context
@@ -208797,9 +208804,9 @@ var init_SpriteRenderer = __esmMin((() => {
 		* @param {object} fog structure
 		*/
 		static bind3DContext(gl, modelView, projection, fog) {
-			const attribute = _program$27.attribute;
-			const uniform = _program$27.uniform;
-			gl.useProgram(_program$27);
+			const attribute = _program$28.attribute;
+			const uniform = _program$28.uniform;
+			gl.useProgram(_program$28);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uViewModelMat, false, mat4$24.invert(_matrix$7, modelView));
@@ -208816,7 +208823,7 @@ var init_SpriteRenderer = __esmMin((() => {
 			gl.uniform1i(uniform.uFullPlaneDepth, _fullPlaneDepth = true);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$19);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$20);
 			gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 16, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 16, 8);
 			this.render = RenderCanvas3D;
@@ -208832,7 +208839,7 @@ var init_SpriteRenderer = __esmMin((() => {
 		* @param {object} gl context
 		*/
 		static unbind(gl) {
-			const attribute = _program$27.attribute;
+			const attribute = _program$28.attribute;
 			gl.disableVertexAttribArray(attribute.aPosition);
 			gl.disableVertexAttribArray(attribute.aTextureCoord);
 		}
@@ -208929,12 +208936,12 @@ function init$12(gl, water) {
 	_wavePitch = water.wavePitch;
 	_waterOpacity = water.type !== 4 && water.type !== 6 ? .8 : 1;
 	if (!_vertCount) return;
-	if (!_program$26) _program$26 = WebGL_default.createShaderProgram(gl, Water_default$2, Water_default$1);
-	_buffer$18 = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$18);
+	if (!_program$27) _program$27 = WebGL_default.createShaderProgram(gl, Water_default$2, Water_default$1);
+	_buffer$19 = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$19);
 	gl.bufferData(gl.ARRAY_BUFFER, water.mesh, gl.STATIC_DRAW);
 	function onTextureLoaded(texture, index) {
-		_textures$3[index] = texture;
+		_textures$4[index] = texture;
 	}
 	for (let i = 0; i < 32; ++i) WebGL_default.texture(gl, water.images[i], onTextureLoaded, i);
 }
@@ -208950,10 +208957,10 @@ function init$12(gl, water) {
 */
 function render$14(gl, modelView, projection, fog, light, tick) {
 	if (!_vertCount) return;
-	const uniform = _program$26.uniform;
-	const attribute = _program$26.attribute;
+	const uniform = _program$27.uniform;
+	const attribute = _program$27.attribute;
 	const frame = tick / (1e3 / 60);
-	gl.useProgram(_program$26);
+	gl.useProgram(_program$27);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -208962,7 +208969,7 @@ function render$14(gl, modelView, projection, fog, light, tick) {
 	gl.uniform3fv(uniform.uFogColor, fog.color);
 	gl.enableVertexAttribArray(attribute.aPosition);
 	gl.enableVertexAttribArray(attribute.aTextureCoord);
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$18);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$19);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 	gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
 	gl.activeTexture(gl.TEXTURE0);
@@ -208971,7 +208978,7 @@ function render$14(gl, modelView, projection, fog, light, tick) {
 	gl.uniform1f(uniform.uOpacity, _waterOpacity);
 	gl.uniform1f(uniform.uWavePitch, _wavePitch);
 	gl.uniform1f(uniform.uWaterOffset, frame * _waveSpeed % 360 - 180);
-	gl.bindTexture(gl.TEXTURE_2D, _textures$3[frame / _animSpeed % 32 | 0]);
+	gl.bindTexture(gl.TEXTURE_2D, _textures$4[frame / _animSpeed % 32 | 0]);
 	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 	SpriteRenderer.runWithDepth(true, false, false, function() {
 		gl.drawArrays(gl.TRIANGLES, 0, _vertCount);
@@ -208986,17 +208993,17 @@ function render$14(gl, modelView, projection, fog, light, tick) {
 */
 function free$7(gl) {
 	let i;
-	if (_buffer$18) {
-		gl.deleteBuffer(_buffer$18);
-		_buffer$18 = null;
+	if (_buffer$19) {
+		gl.deleteBuffer(_buffer$19);
+		_buffer$19 = null;
 	}
-	if (_program$26) {
-		gl.deleteProgram(_program$26);
-		_program$26 = null;
+	if (_program$27) {
+		gl.deleteProgram(_program$27);
+		_program$27 = null;
 	}
-	for (i = 0; i < 32; ++i) if (_textures$3[i]) {
-		gl.deleteTexture(_textures$3[i]);
-		_textures$3[i] = null;
+	for (i = 0; i < 32; ++i) if (_textures$4[i]) {
+		gl.deleteTexture(_textures$4[i]);
+		_textures$4[i] = null;
 	}
 	_vertCount = 0;
 }
@@ -209031,9 +209038,9 @@ function hasWater() {
 function state() {
 	if (!_vertCount) return null;
 	return {
-		buffer: _buffer$18,
+		buffer: _buffer$19,
 		vertCount: _vertCount,
-		textures: _textures$3,
+		textures: _textures$4,
 		level: _waterLevel,
 		waveHeight: _waveHeight,
 		waveSpeed: _waveSpeed,
@@ -209042,17 +209049,17 @@ function state() {
 		opacity: _waterOpacity
 	};
 }
-var _program$26, _buffer$18, _vertCount, _textures$3, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, Water_default;
+var _program$27, _buffer$19, _vertCount, _textures$4, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, Water_default;
 var init_Water = __esmMin((() => {
 	init_WebGL();
 	init_SpriteRenderer();
 	init_Altitude();
 	init_Water$2();
 	init_Water$1();
-	_program$26 = null;
-	_buffer$18 = null;
+	_program$27 = null;
+	_buffer$19 = null;
 	_vertCount = 0;
-	_textures$3 = new Array(32);
+	_textures$4 = new Array(32);
 	_waveSpeed = 0;
 	_waveHeight = 0;
 	_wavePitch = 0;
@@ -209339,9 +209346,9 @@ function init$11(gl, data) {
 	_objects.length = count;
 	_batchesReady = false;
 	_pendingTextures = count;
-	if (!_buffer$17) _buffer$17 = gl.createBuffer();
-	if (!_program$25) _program$25 = WebGL_default.createShaderProgram(gl, Models_default$2, OccluderFade.injectShader(Models_default$1));
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
+	if (!_buffer$18) _buffer$18 = gl.createBuffer();
+	if (!_program$26) _program$26 = WebGL_default.createShaderProgram(gl, Models_default$2, OccluderFade.injectShader(Models_default$1));
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$18);
 	gl.bufferData(gl.ARRAY_BUFFER, data.buffer, gl.STATIC_DRAW);
 	function onTextureLoaded(texture, index) {
 		_objects[index].texture = texture;
@@ -209388,9 +209395,9 @@ function drawMeshes(gl) {
 * @param {object} light structure
 */
 function bind$1(gl, modelView, projection, fog, light) {
-	const uniform = _program$25.uniform;
-	const attribute = _program$25.attribute;
-	gl.useProgram(_program$25);
+	const uniform = _program$26.uniform;
+	const attribute = _program$26.attribute;
+	gl.useProgram(_program$26);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform3fv(uniform.uLightDirection, light.direction);
@@ -209407,7 +209414,7 @@ function bind$1(gl, modelView, projection, fog, light) {
 	gl.enableVertexAttribArray(attribute.aVertexNormal);
 	gl.enableVertexAttribArray(attribute.aTextureCoord);
 	gl.enableVertexAttribArray(attribute.aAlpha);
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$18);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 36, 0);
 	gl.vertexAttribPointer(attribute.aVertexNormal, 3, gl.FLOAT, false, 36, 12);
 	gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 36, 24);
@@ -209421,7 +209428,7 @@ function bind$1(gl, modelView, projection, fog, light) {
 * @param {object} gl context
 */
 function unbind(gl) {
-	const attribute = _program$25.attribute;
+	const attribute = _program$26.attribute;
 	gl.disableVertexAttribArray(attribute.aPosition);
 	gl.disableVertexAttribArray(attribute.aVertexNormal);
 	gl.disableVertexAttribArray(attribute.aTextureCoord);
@@ -209443,9 +209450,9 @@ function unbind(gl) {
 * coordinates only.
 */
 function renderDepth(gl, program) {
-	if (!_buffer$17 || !_objects.length) return;
+	if (!_buffer$18 || !_objects.length) return;
 	const attribute = program.attribute;
-	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
+	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$18);
 	gl.enableVertexAttribArray(attribute.aPosition);
 	gl.enableVertexAttribArray(attribute.aTextureCoord);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 36, 0);
@@ -209457,8 +209464,8 @@ function renderDepth(gl, program) {
 }
 function render$13(gl, modelView, projection, normalMat, fog, light) {
 	bind$1(gl, modelView, projection, fog, light);
-	OccluderFade.renderOpaque(gl, _program$25.uniform, () => drawMeshes(gl));
-	OccluderFade.renderQuery(gl, _program$25.uniform, () => drawMeshes(gl), OccluderFade.QUERY.MODELS);
+	OccluderFade.renderOpaque(gl, _program$26.uniform, () => drawMeshes(gl));
+	OccluderFade.renderQuery(gl, _program$26.uniform, () => drawMeshes(gl), OccluderFade.QUERY.MODELS);
 	unbind(gl);
 }
 /**
@@ -209475,7 +209482,7 @@ function render$13(gl, modelView, projection, normalMat, fog, light) {
 function renderFaded$1(gl, modelView, projection, normalMat, fog, light) {
 	if (!OccluderFade.needsBlendPass()) return;
 	bind$1(gl, modelView, projection, fog, light);
-	OccluderFade.renderBlend(gl, _program$25.uniform, () => drawMeshes(gl));
+	OccluderFade.renderBlend(gl, _program$26.uniform, () => drawMeshes(gl));
 	unbind(gl);
 }
 /**
@@ -209485,28 +209492,28 @@ function renderFaded$1(gl, modelView, projection, normalMat, fog, light) {
 */
 function free$6(gl) {
 	let i, count;
-	if (_buffer$17) {
-		gl.deleteBuffer(_buffer$17);
-		_buffer$17 = null;
+	if (_buffer$18) {
+		gl.deleteBuffer(_buffer$18);
+		_buffer$18 = null;
 	}
-	if (_program$25) {
-		gl.deleteProgram(_program$25);
-		_program$25 = null;
+	if (_program$26) {
+		gl.deleteProgram(_program$26);
+		_program$26 = null;
 	}
 	for (i = 0, count = _objects.length; i < count; ++i) gl.deleteTexture(_objects[i].texture);
 	_objects.length = 0;
 	_batches.length = 0;
 	_batchesReady = false;
 }
-var _program$25, _buffer$17, _objects, _batches, _batchesReady, _pendingTextures, Models_default;
+var _program$26, _buffer$18, _objects, _batches, _batchesReady, _pendingTextures, Models_default;
 var init_Models = __esmMin((() => {
 	init_Models$2();
 	init_Models$1();
 	init_WebGL();
 	init_Map();
 	init_OccluderFade();
-	_program$25 = null;
-	_buffer$17 = null;
+	_program$26 = null;
+	_buffer$18 = null;
 	_objects = [];
 	_batches = [];
 	_batchesReady = false;
@@ -209537,33 +209544,33 @@ var init_AnimatedModels$1 = __esmMin((() => {
 * Initialize shader program
 */
 function init$10(gl) {
-	_program$24 = WebGL_default.createShaderProgram(gl, AnimatedModels_default$2, OccluderFade.injectShader(AnimatedModels_default$1));
-	_program$24.uniform = {
-		uModelViewMat: gl.getUniformLocation(_program$24, "uModelViewMat"),
-		uProjectionMat: gl.getUniformLocation(_program$24, "uProjectionMat"),
-		uNormalMat: gl.getUniformLocation(_program$24, "uNormalMat"),
-		uLightDirection: gl.getUniformLocation(_program$24, "uLightDirection"),
-		uLightOpacity: gl.getUniformLocation(_program$24, "uLightOpacity"),
-		uLightAmbient: gl.getUniformLocation(_program$24, "uLightAmbient"),
-		uLightDiffuse: gl.getUniformLocation(_program$24, "uLightDiffuse"),
-		uLightEnv: gl.getUniformLocation(_program$24, "uLightEnv"),
-		uFogUse: gl.getUniformLocation(_program$24, "uFogUse"),
-		uFogNear: gl.getUniformLocation(_program$24, "uFogNear"),
-		uFogFar: gl.getUniformLocation(_program$24, "uFogFar"),
-		uFogColor: gl.getUniformLocation(_program$24, "uFogColor"),
-		uDiffuse: gl.getUniformLocation(_program$24, "uDiffuse"),
-		uOccluderFadeMode: gl.getUniformLocation(_program$24, "uOccluderFadeMode"),
-		uOccluderFadeEye: gl.getUniformLocation(_program$24, "uOccluderFadeEye"),
-		uOccluderFadeFocus: gl.getUniformLocation(_program$24, "uOccluderFadeFocus"),
-		uOccluderFadeRadius: gl.getUniformLocation(_program$24, "uOccluderFadeRadius"),
-		uOccluderFadeOpacity: gl.getUniformLocation(_program$24, "uOccluderFadeOpacity"),
-		uOccluderFadeStrength: gl.getUniformLocation(_program$24, "uOccluderFadeStrength")
+	_program$25 = WebGL_default.createShaderProgram(gl, AnimatedModels_default$2, OccluderFade.injectShader(AnimatedModels_default$1));
+	_program$25.uniform = {
+		uModelViewMat: gl.getUniformLocation(_program$25, "uModelViewMat"),
+		uProjectionMat: gl.getUniformLocation(_program$25, "uProjectionMat"),
+		uNormalMat: gl.getUniformLocation(_program$25, "uNormalMat"),
+		uLightDirection: gl.getUniformLocation(_program$25, "uLightDirection"),
+		uLightOpacity: gl.getUniformLocation(_program$25, "uLightOpacity"),
+		uLightAmbient: gl.getUniformLocation(_program$25, "uLightAmbient"),
+		uLightDiffuse: gl.getUniformLocation(_program$25, "uLightDiffuse"),
+		uLightEnv: gl.getUniformLocation(_program$25, "uLightEnv"),
+		uFogUse: gl.getUniformLocation(_program$25, "uFogUse"),
+		uFogNear: gl.getUniformLocation(_program$25, "uFogNear"),
+		uFogFar: gl.getUniformLocation(_program$25, "uFogFar"),
+		uFogColor: gl.getUniformLocation(_program$25, "uFogColor"),
+		uDiffuse: gl.getUniformLocation(_program$25, "uDiffuse"),
+		uOccluderFadeMode: gl.getUniformLocation(_program$25, "uOccluderFadeMode"),
+		uOccluderFadeEye: gl.getUniformLocation(_program$25, "uOccluderFadeEye"),
+		uOccluderFadeFocus: gl.getUniformLocation(_program$25, "uOccluderFadeFocus"),
+		uOccluderFadeRadius: gl.getUniformLocation(_program$25, "uOccluderFadeRadius"),
+		uOccluderFadeOpacity: gl.getUniformLocation(_program$25, "uOccluderFadeOpacity"),
+		uOccluderFadeStrength: gl.getUniformLocation(_program$25, "uOccluderFadeStrength")
 	};
-	_program$24.attribute = {
-		aPosition: gl.getAttribLocation(_program$24, "aPosition"),
-		aNormal: gl.getAttribLocation(_program$24, "aNormal"),
-		aTextureCoord: gl.getAttribLocation(_program$24, "aTextureCoord"),
-		aAlpha: gl.getAttribLocation(_program$24, "aAlpha")
+	_program$25.attribute = {
+		aPosition: gl.getAttribLocation(_program$25, "aPosition"),
+		aNormal: gl.getAttribLocation(_program$25, "aNormal"),
+		aTextureCoord: gl.getAttribLocation(_program$25, "aTextureCoord"),
+		aAlpha: gl.getAttribLocation(_program$25, "aAlpha")
 	};
 }
 /**
@@ -209586,7 +209593,7 @@ function isNodeStatic(node) {
 */
 function add$3(gl, modelData) {
 	if (!modelData || !modelData.nodes || modelData.nodes.length === 0) return;
-	if (!_program$24) init$10(gl);
+	if (!_program$25) init$10(gl);
 	const instances = [];
 	for (let i = 0; i < modelData.instances.length; i++) {
 		const instArray = modelData.instances[i];
@@ -209740,11 +209747,11 @@ function add$3(gl, modelData) {
 	}
 	gl.bindBuffer(gl.ARRAY_BUFFER, animModel.buffer);
 	gl.bufferData(gl.ARRAY_BUFFER, animModel._gpuBuffer.byteLength, gl.DYNAMIC_DRAW);
-	for (let t = 0; t < modelData.textures.length; t++) loadTexture$2(gl, animModel, "data\\texture\\" + modelData.textures[t], t);
+	for (let t = 0; t < modelData.textures.length; t++) loadTexture$3(gl, animModel, "data\\texture\\" + modelData.textures[t], t);
 	animModel.vao = gl.createVertexArray();
 	gl.bindVertexArray(animModel.vao);
 	gl.bindBuffer(gl.ARRAY_BUFFER, animModel.buffer);
-	const attribute = _program$24.attribute;
+	const attribute = _program$25.attribute;
 	const stride = 36;
 	gl.enableVertexAttribArray(attribute.aPosition);
 	gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, stride, 0);
@@ -209761,7 +209768,7 @@ function add$3(gl, modelData) {
 /**
 * Load a texture for a model
 */
-function loadTexture$2(gl, model, path, index) {
+function loadTexture$3(gl, model, path, index) {
 	Client.loadFile(path, function(data) {
 		WebGL_default.texture(gl, data, function(texture) {
 			model.textureObjects[index] = texture;
@@ -209941,8 +209948,8 @@ function updateModelBuffer(gl, model, frame, force) {
 * Bind program and per-frame uniforms shared by both model passes
 */
 function bind(gl, modelView, projection, normalMat, fog, light) {
-	const uniform = _program$24.uniform;
-	gl.useProgram(_program$24);
+	const uniform = _program$25.uniform;
+	gl.useProgram(_program$25);
 	gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniformMatrix3fv(uniform.uNormalMat, false, normalMat);
@@ -209981,14 +209988,14 @@ function drawModels(gl) {
 */
 function render$12(gl, modelView, projection, normalMat, fog, light, tick) {
 	if (_animatedModels.length === 0) return;
-	if (!_program$24) init$10(gl);
+	if (!_program$25) init$10(gl);
 	bind(gl, modelView, projection, normalMat, fog, light);
 	for (let m = 0; m < _animatedModels.length; m++) {
 		const model = _animatedModels[m];
 		updateModelBuffer(gl, model, tick % (model.animLen || 1), false);
 	}
-	OccluderFade.renderOpaque(gl, _program$24.uniform, () => drawModels(gl));
-	OccluderFade.renderQuery(gl, _program$24.uniform, () => drawModels(gl), OccluderFade.QUERY.ANIMATED);
+	OccluderFade.renderOpaque(gl, _program$25.uniform, () => drawModels(gl));
+	OccluderFade.renderQuery(gl, _program$25.uniform, () => drawModels(gl), OccluderFade.QUERY.ANIMATED);
 	gl.bindVertexArray(null);
 }
 /**
@@ -209996,9 +210003,9 @@ function render$12(gl, modelView, projection, normalMat, fog, light, tick) {
 * Reuses the vertex data uploaded by render() this frame.
 */
 function renderFaded(gl, modelView, projection, normalMat, fog, light) {
-	if (_animatedModels.length === 0 || !_program$24 || !OccluderFade.needsBlendPass()) return;
+	if (_animatedModels.length === 0 || !_program$25 || !OccluderFade.needsBlendPass()) return;
 	bind(gl, modelView, projection, normalMat, fog, light);
-	OccluderFade.renderBlend(gl, _program$24.uniform, () => drawModels(gl));
+	OccluderFade.renderBlend(gl, _program$25.uniform, () => drawModels(gl));
 	gl.bindVertexArray(null);
 }
 /**
@@ -210007,7 +210014,7 @@ function renderFaded(gl, modelView, projection, normalMat, fog, light) {
 function hasAnimatedModels() {
 	return _animatedModels.length > 0;
 }
-var mat3$5, mat4$22, vec3$5, quat$1, _tempVec3, _tempVec3Scale, _tempQuat, _tempMat4, _program$24, _animatedModels, AnimatedModels_default;
+var mat3$5, mat4$22, vec3$5, quat$1, _tempVec3, _tempVec3Scale, _tempQuat, _tempMat4, _program$25, _animatedModels, AnimatedModels_default;
 var init_AnimatedModels = __esmMin((() => {
 	init_Client();
 	init_gl_matrix();
@@ -210024,7 +210031,7 @@ var init_AnimatedModels = __esmMin((() => {
 	_tempVec3Scale = vec3$5.create();
 	_tempQuat = quat$1.create();
 	_tempMat4 = mat4$22.create();
-	_program$24 = null;
+	_program$25 = null;
 	_animatedModels = [];
 	AnimatedModels_default = {
 		init: init$10,
@@ -213736,31 +213743,31 @@ function grayBroadcast(src, out) {
 * Initialize the shader program.
 */
 function init$9(gl) {
-	_program$23 = WebGL_default.createShaderProgram(gl, GR2Model_default$1, GR2Model_default);
-	_program$23.uniform = {
-		uModelViewMat: gl.getUniformLocation(_program$23, "uModelViewMat"),
-		uProjectionMat: gl.getUniformLocation(_program$23, "uProjectionMat"),
-		uNormalMat: gl.getUniformLocation(_program$23, "uNormalMat"),
-		uBones: gl.getUniformLocation(_program$23, "uBones[0]"),
-		uLightDirection: gl.getUniformLocation(_program$23, "uLightDirection"),
-		uLightOpacity: gl.getUniformLocation(_program$23, "uLightOpacity"),
-		uLightAmbient: gl.getUniformLocation(_program$23, "uLightAmbient"),
-		uLightDiffuse: gl.getUniformLocation(_program$23, "uLightDiffuse"),
-		uLightEnv: gl.getUniformLocation(_program$23, "uLightEnv"),
-		uAlphaRef: gl.getUniformLocation(_program$23, "uAlphaRef"),
-		uAlpha: gl.getUniformLocation(_program$23, "uAlpha"),
-		uFogUse: gl.getUniformLocation(_program$23, "uFogUse"),
-		uFogNear: gl.getUniformLocation(_program$23, "uFogNear"),
-		uFogFar: gl.getUniformLocation(_program$23, "uFogFar"),
-		uFogColor: gl.getUniformLocation(_program$23, "uFogColor"),
-		uDiffuse: gl.getUniformLocation(_program$23, "uDiffuse")
+	_program$24 = WebGL_default.createShaderProgram(gl, GR2Model_default$1, GR2Model_default);
+	_program$24.uniform = {
+		uModelViewMat: gl.getUniformLocation(_program$24, "uModelViewMat"),
+		uProjectionMat: gl.getUniformLocation(_program$24, "uProjectionMat"),
+		uNormalMat: gl.getUniformLocation(_program$24, "uNormalMat"),
+		uBones: gl.getUniformLocation(_program$24, "uBones[0]"),
+		uLightDirection: gl.getUniformLocation(_program$24, "uLightDirection"),
+		uLightOpacity: gl.getUniformLocation(_program$24, "uLightOpacity"),
+		uLightAmbient: gl.getUniformLocation(_program$24, "uLightAmbient"),
+		uLightDiffuse: gl.getUniformLocation(_program$24, "uLightDiffuse"),
+		uLightEnv: gl.getUniformLocation(_program$24, "uLightEnv"),
+		uAlphaRef: gl.getUniformLocation(_program$24, "uAlphaRef"),
+		uAlpha: gl.getUniformLocation(_program$24, "uAlpha"),
+		uFogUse: gl.getUniformLocation(_program$24, "uFogUse"),
+		uFogNear: gl.getUniformLocation(_program$24, "uFogNear"),
+		uFogFar: gl.getUniformLocation(_program$24, "uFogFar"),
+		uFogColor: gl.getUniformLocation(_program$24, "uFogColor"),
+		uDiffuse: gl.getUniformLocation(_program$24, "uDiffuse")
 	};
-	_program$23.attribute = {
-		aPosition: gl.getAttribLocation(_program$23, "aPosition"),
-		aNormal: gl.getAttribLocation(_program$23, "aNormal"),
-		aTextureCoord: gl.getAttribLocation(_program$23, "aTextureCoord"),
-		aBoneIndex: gl.getAttribLocation(_program$23, "aBoneIndex"),
-		aBoneWeight: gl.getAttribLocation(_program$23, "aBoneWeight")
+	_program$24.attribute = {
+		aPosition: gl.getAttribLocation(_program$24, "aPosition"),
+		aNormal: gl.getAttribLocation(_program$24, "aNormal"),
+		aTextureCoord: gl.getAttribLocation(_program$24, "aTextureCoord"),
+		aBoneIndex: gl.getAttribLocation(_program$24, "aBoneIndex"),
+		aBoneWeight: gl.getAttribLocation(_program$24, "aBoneWeight")
 	};
 }
 /**
@@ -213918,7 +213925,7 @@ function acquire(path) {
 */
 function buildTypeGL(gl, type) {
 	type.textures = makeTypeTextures(gl, type.parsed);
-	const attr = _program$23.attribute;
+	const attr = _program$24.attribute;
 	type.submeshes = type.meshes.map(function(mesh) {
 		const vao = gl.createVertexArray();
 		gl.bindVertexArray(vao);
@@ -214038,13 +214045,13 @@ function normalize3(v) {
 function render$11(gl, modelView, projection, normalMat, fog, light, tick) {
 	_gl$1 = gl;
 	if (_instances.length === 0 || !light) return;
-	if (!_program$23) init$9(gl);
+	if (!_program$24) init$9(gl);
 	for (const path in _types) {
 		const type = _types[path];
 		if (type.cpuReady && !type.glReady) buildTypeGL(gl, type);
 	}
-	const uniform = _program$23.uniform;
-	gl.useProgram(_program$23);
+	const uniform = _program$24.uniform;
+	gl.useProgram(_program$24);
 	gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 	gl.uniform1f(uniform.uLightOpacity, light.opacity != null ? light.opacity : 1);
 	gl.uniform3fv(uniform.uLightEnv, light.env || _phaseEnv);
@@ -214389,7 +214396,7 @@ function clear() {
 	for (let i = 0; i < insts.length; i++) detach(insts[i]);
 	_poseCache = {};
 }
-var mat3$4, mat4$21, ALPHA_REF$1, _phaseDiffuse, _phaseAmbient, _phaseEnv, _gr2FlagDiffuse, _gr2EmpDiffuse, _gr2EmpAmbient, _gr2FlagAmbient, GR2_ROSTER, _program$23, _gl$1, _types, _missing, _instances, _poseCache, _dbgCellTile, _dbgTileInst, _dbgCellInited, _debugCell, BASE_SPHERE_HALF_EXTENT, _readyPromise, _mv$1, _mvp, _nmat$1, _lightView$1, _clip, CULL_MARGIN, CLIP_W_EPS, DIR_STEP_DEG, FADE, TEX_MISSING_PX$1, TEX_GREY_PX$1, A4_NIBBLE_EXPAND, _emblemCanvas, GR2_VERTEX_STRIDE$1, GR2_VERTEX_LAYOUT$1, GR2ModelRenderer_default;
+var mat3$4, mat4$21, ALPHA_REF$1, _phaseDiffuse, _phaseAmbient, _phaseEnv, _gr2FlagDiffuse, _gr2EmpDiffuse, _gr2EmpAmbient, _gr2FlagAmbient, GR2_ROSTER, _program$24, _gl$1, _types, _missing, _instances, _poseCache, _dbgCellTile, _dbgTileInst, _dbgCellInited, _debugCell, BASE_SPHERE_HALF_EXTENT, _readyPromise, _mv$1, _mvp, _nmat$1, _lightView$1, _clip, CULL_MARGIN, CLIP_W_EPS, DIR_STEP_DEG, FADE, TEX_MISSING_PX$1, TEX_GREY_PX$1, A4_NIBBLE_EXPAND, _emblemCanvas, GR2_VERTEX_STRIDE$1, GR2_VERTEX_LAYOUT$1, GR2ModelRenderer_default;
 var init_GR2ModelRenderer = __esmMin((() => {
 	init_Client();
 	init_gl_matrix();
@@ -214448,7 +214455,7 @@ var init_GR2ModelRenderer = __esmMin((() => {
 		sguardian90_9: "emp",
 		treasurebox_2: "emp"
 	};
-	_program$23 = null;
+	_program$24 = null;
 	_gl$1 = null;
 	_types = {};
 	_missing = {};
@@ -233349,7 +233356,7 @@ var init_Context = __esmMin((() => {
 //#region src/UI/Components/GraphicsOption/GraphicsOption.html?raw
 var GraphicsOption_default$2;
 var init_GraphicsOption$2 = __esmMin((() => {
-	GraphicsOption_default$2 = "<div id=\"GraphicsOption\">\r\n	<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n		<div class=\"left\">\r\n			<button\r\n				class=\"base\"\r\n				data-background=\"basic_interface/sys_base_off.bmp\"\r\n				data-hover=\"basic_interface/sys_base_on.bmp\"\r\n			></button>\r\n			<span class=\"text\" data-text=\"1484\">Graphics Settings</span>\r\n		</div>\r\n		<div class=\"right\">\r\n			<button\r\n				class=\"base close\"\r\n				data-background=\"basic_interface/sys_close_off.bmp\"\r\n				data-hover=\"basic_interface/sys_close_on.bmp\"\r\n			></button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n\r\n	<div class=\"tabs-container\">\r\n		<div class=\"tabs\">\r\n			<button class=\"tab-button selected\" data-tab=\"basic\">Basic</button>\r\n			<button class=\"tab-button\" data-tab=\"advanced\">Advanced</button>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"panel\">\r\n		<div class=\"tab-content selected\" id=\"basic\">\r\n			<table>\r\n				<tr>\r\n					<td>Details</td>\r\n					<td style=\"display: inline-block; width: 260px\">\r\n						<input\r\n							class=\"details\"\r\n							type=\"range\"\r\n							value=\"100\"\r\n							max=\"100\"\r\n							min=\"25\"\r\n							step=\"5\"\r\n							style=\"width: 90%\"\r\n						/>\r\n					</td>\r\n				</tr>\r\n				<tr class=\"resolution\">\r\n					<td>Resolution</td>\r\n					<td>\r\n						<select class=\"screensize\">\r\n							<option value=\"650x480\">640 x 480</option>\r\n							<option value=\"800x600\">800 x 600</option>\r\n							<option value=\"1024x768\">1024 x 768</option>\r\n							<option value=\"1280x800\">1280 x 800</option>\r\n							<option value=\"1400x900\">1400 x 900</option>\r\n							<option value=\"1680x1050\">1680 x 1050</option>\r\n							<option value=\"full\">Full Screen</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>Cursor</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"cursor-option\" type=\"checkbox\" />\r\n							Show official cursor\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Limit</td>\r\n					<td>\r\n						<select class=\"fpslimit\">\r\n							<option value=\"-1\">Unlimited</option>\r\n							<option value=\"30\">30</option>\r\n							<option value=\"60\">60</option>\r\n							<option value=\"90\">90</option>\r\n							<option value=\"120\">120</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Display</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"fps\" type=\"checkbox\" />\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n		</div>\r\n\r\n		<div class=\"tab-content\" id=\"advanced\">\r\n			<table>\r\n				<tr>\r\n					<td title=\"Force nearest neighbor filtering for pixel-perfect sprite rendering\">\r\n						Pixel Perfect Sprites\r\n					</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"pixel-perfect\" type=\"checkbox\" />\r\n							Force nearest neighbor filtering\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Add a glowing bloom effect to bright areas\">Bloom</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"bloom\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"bloom-intensity\"\r\n								type=\"range\"\r\n								value=\"0.5\"\r\n								min=\"0.1\"\r\n								max=\"3.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"How the map's baked light is drawn. Original keeps the classic client's 16 visible steps.\">Lighting</td>\r\n					<td>\r\n						<select class=\"smoothlight\">\r\n							<option value=\"1\">Smooth</option>\r\n							<option value=\"2\">Smooth (gamma)</option>\r\n							<option value=\"0\">Original (banded)</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Apply a blur effect to the screen\">Blur</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"blur\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Intensity:\r\n							<input\r\n								class=\"blur-intensity\"\r\n								type=\"range\"\r\n								value=\"3.0\"\r\n								min=\"2.0\"\r\n								max=\"10.0\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Area:\r\n							<input\r\n								class=\"blur-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"3.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Contrast Adaptive Sharpening for enhanced details\">Contr. Adapt. Sharp. (CAS)</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"casEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Contrast:\r\n							<input\r\n								class=\"casContrast\"\r\n								type=\"range\"\r\n								value=\"0.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Sharpening:\r\n							<input\r\n								class=\"casSharpening\"\r\n								type=\"range\"\r\n								value=\"1.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Fast Approximate Anti-Aliasing for smoother edges\">FXAA</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"fxaaEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Subpix:\r\n							<input\r\n								class=\"fxaaSubpix\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Threshold:\r\n							<input\r\n								class=\"fxaaEdgeThreshold\"\r\n								type=\"range\"\r\n								value=\"0.125\"\r\n								min=\"0.063\"\r\n								max=\"0.333\"\r\n								step=\"0.03\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Cartoon rendering effect for stylized visuals\">Cartoon</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"cartoonEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Power:\r\n							<input\r\n								class=\"cartoonPower\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"0.1\"\r\n								max=\"9.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Slope:\r\n							<input\r\n								class=\"cartoonEdgeSlope\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"1.5\"\r\n								max=\"5.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Increase color intensity and saturation\">Vibrance</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"vibranceEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"vibrance\"\r\n								type=\"range\"\r\n								value=\"0.15\"\r\n								min=\"-0.9\"\r\n								max=\"0.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Hide objects outside the viewing area, enable downsampling rendering and others to improve performance\"\r\n					>\r\n						Performance Mode\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"performanceMode\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Culling Area:\r\n							<input\r\n								class=\"view-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"4.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Make buildings and trees blocking the view of your character see-through (not in first person). Dither is cheaper, Alpha looks smoother.\"\r\n					>\r\n						See-through Occluders\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<select class=\"occluderFade\">\r\n								<option value=\"off\">Off</option>\r\n								<option value=\"dither\">Dither (fast)</option>\r\n								<option value=\"alpha\">Alpha (smooth)</option>\r\n							</select>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Opacity:\r\n							<input\r\n								class=\"occluderFadeOpacity\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"0.8\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Area:\r\n							<input\r\n								class=\"occluderFadeRadius\"\r\n								type=\"range\"\r\n								value=\"5.0\"\r\n								min=\"1.5\"\r\n								max=\"12.5\"\r\n								step=\"0.5\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n\r\n			<div class=\"reset-section\">\r\n				<button class=\"reset-button\">Reset to Default Values</button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	GraphicsOption_default$2 = "<div id=\"GraphicsOption\">\r\n	<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n		<div class=\"left\">\r\n			<button\r\n				class=\"base\"\r\n				data-background=\"basic_interface/sys_base_off.bmp\"\r\n				data-hover=\"basic_interface/sys_base_on.bmp\"\r\n			></button>\r\n			<span class=\"text\" data-text=\"1484\">Graphics Settings</span>\r\n		</div>\r\n		<div class=\"right\">\r\n			<button\r\n				class=\"base close\"\r\n				data-background=\"basic_interface/sys_close_off.bmp\"\r\n				data-hover=\"basic_interface/sys_close_on.bmp\"\r\n			></button>\r\n		</div>\r\n		<div class=\"clear\"></div>\r\n	</div>\r\n\r\n	<div class=\"tabs-container\">\r\n		<div class=\"tabs\">\r\n			<button class=\"tab-button selected\" data-tab=\"basic\">Basic</button>\r\n			<button class=\"tab-button\" data-tab=\"advanced\">Advanced</button>\r\n		</div>\r\n	</div>\r\n\r\n	<div class=\"panel\">\r\n		<div class=\"tab-content selected\" id=\"basic\">\r\n			<table>\r\n				<tr>\r\n					<td>Details</td>\r\n					<td style=\"display: inline-block; width: 260px\">\r\n						<input\r\n							class=\"details\"\r\n							type=\"range\"\r\n							value=\"100\"\r\n							max=\"100\"\r\n							min=\"25\"\r\n							step=\"5\"\r\n							style=\"width: 90%\"\r\n						/>\r\n					</td>\r\n				</tr>\r\n				<tr class=\"resolution\">\r\n					<td>Resolution</td>\r\n					<td>\r\n						<select class=\"screensize\">\r\n							<option value=\"650x480\">640 x 480</option>\r\n							<option value=\"800x600\">800 x 600</option>\r\n							<option value=\"1024x768\">1024 x 768</option>\r\n							<option value=\"1280x800\">1280 x 800</option>\r\n							<option value=\"1400x900\">1400 x 900</option>\r\n							<option value=\"1680x1050\">1680 x 1050</option>\r\n							<option value=\"full\">Full Screen</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>Cursor</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"cursor-option\" type=\"checkbox\" />\r\n							Show official cursor\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>Footprints</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"footprintmine\" type=\"checkbox\" />\r\n							View my footprints only\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Limit</td>\r\n					<td>\r\n						<select class=\"fpslimit\">\r\n							<option value=\"-1\">Unlimited</option>\r\n							<option value=\"30\">30</option>\r\n							<option value=\"60\">60</option>\r\n							<option value=\"90\">90</option>\r\n							<option value=\"120\">120</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td>FPS Display</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"fps\" type=\"checkbox\" />\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n		</div>\r\n\r\n		<div class=\"tab-content\" id=\"advanced\">\r\n			<table>\r\n				<tr>\r\n					<td title=\"Force nearest neighbor filtering for pixel-perfect sprite rendering\">\r\n						Pixel Perfect Sprites\r\n					</td>\r\n					<td>\r\n						<label>\r\n							<input class=\"pixel-perfect\" type=\"checkbox\" />\r\n							Force nearest neighbor filtering\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Add a glowing bloom effect to bright areas\">Bloom</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"bloom\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"bloom-intensity\"\r\n								type=\"range\"\r\n								value=\"0.5\"\r\n								min=\"0.1\"\r\n								max=\"3.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"How the map's baked light is drawn. Original keeps the classic client's 16 visible steps.\">Lighting</td>\r\n					<td>\r\n						<select class=\"smoothlight\">\r\n							<option value=\"1\">Smooth</option>\r\n							<option value=\"2\">Smooth (gamma)</option>\r\n							<option value=\"0\">Original (banded)</option>\r\n						</select>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Apply a blur effect to the screen\">Blur</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"blur\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Intensity:\r\n							<input\r\n								class=\"blur-intensity\"\r\n								type=\"range\"\r\n								value=\"3.0\"\r\n								min=\"2.0\"\r\n								max=\"10.0\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Area:\r\n							<input\r\n								class=\"blur-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"3.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Contrast Adaptive Sharpening for enhanced details\">Contr. Adapt. Sharp. (CAS)</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"casEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Contrast:\r\n							<input\r\n								class=\"casContrast\"\r\n								type=\"range\"\r\n								value=\"0.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Sharpening:\r\n							<input\r\n								class=\"casSharpening\"\r\n								type=\"range\"\r\n								value=\"1.0\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Fast Approximate Anti-Aliasing for smoother edges\">FXAA</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"fxaaEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Subpix:\r\n							<input\r\n								class=\"fxaaSubpix\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"1.0\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Threshold:\r\n							<input\r\n								class=\"fxaaEdgeThreshold\"\r\n								type=\"range\"\r\n								value=\"0.125\"\r\n								min=\"0.063\"\r\n								max=\"0.333\"\r\n								step=\"0.03\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Cartoon rendering effect for stylized visuals\">Cartoon</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"cartoonEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Power:\r\n							<input\r\n								class=\"cartoonPower\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"0.1\"\r\n								max=\"9.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 90px\">\r\n							Edge Slope:\r\n							<input\r\n								class=\"cartoonEdgeSlope\"\r\n								type=\"range\"\r\n								value=\"1.5\"\r\n								min=\"1.5\"\r\n								max=\"5.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td title=\"Increase color intensity and saturation\">Vibrance</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"vibranceEnabled\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Intensity:\r\n							<input\r\n								class=\"vibrance\"\r\n								type=\"range\"\r\n								value=\"0.15\"\r\n								min=\"-0.9\"\r\n								max=\"0.9\"\r\n								step=\"0.1\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Hide objects outside the viewing area, enable downsampling rendering and others to improve performance\"\r\n					>\r\n						Performance Mode\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<input class=\"performanceMode\" type=\"checkbox\" />\r\n						</label>\r\n						<label style=\"display: inline-block; width: 200px\">\r\n							Culling Area:\r\n							<input\r\n								class=\"view-area\"\r\n								type=\"range\"\r\n								value=\"14.0\"\r\n								min=\"4.0\"\r\n								max=\"20.0\"\r\n								step=\"1.0\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n				<tr>\r\n					<td\r\n						title=\"Make buildings and trees blocking the view of your character see-through (not in first person). Dither is cheaper, Alpha looks smoother.\"\r\n					>\r\n						See-through Occluders\r\n					</td>\r\n					<td>\r\n						<label style=\"display: inline-block; margin-right: 20px\">\r\n							<select class=\"occluderFade\">\r\n								<option value=\"off\">Off</option>\r\n								<option value=\"dither\">Dither (fast)</option>\r\n								<option value=\"alpha\">Alpha (smooth)</option>\r\n							</select>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Opacity:\r\n							<input\r\n								class=\"occluderFadeOpacity\"\r\n								type=\"range\"\r\n								value=\"0.25\"\r\n								min=\"0.0\"\r\n								max=\"0.8\"\r\n								step=\"0.05\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n						<label style=\"display: inline-block; width: 120px\">\r\n							Area:\r\n							<input\r\n								class=\"occluderFadeRadius\"\r\n								type=\"range\"\r\n								value=\"5.0\"\r\n								min=\"1.5\"\r\n								max=\"12.5\"\r\n								step=\"0.5\"\r\n								style=\"width: 90%; vertical-align: middle\"\r\n							/>\r\n						</label>\r\n					</td>\r\n				</tr>\r\n			</table>\r\n\r\n			<div class=\"reset-section\">\r\n				<button class=\"reset-button\">Reset to Default Values</button>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/GraphicsOption/GraphicsOption.css?raw
@@ -233423,6 +233430,13 @@ function onUpdateBloomIntensity() {
 */
 function onUpdateSmoothLight() {
 	Map_default.smoothlight = parseInt(this.value, 10) || 0;
+	Map_default.save();
+}
+/**
+* Footprints: draw only the player's own. Each trail checks it as it goes.
+*/
+function onToggleFootprintMine() {
+	Map_default.footprintmine = !!this.checked;
 	Map_default.save();
 }
 function onToggleBlur() {
@@ -233609,6 +233623,7 @@ var init_GraphicsOption = __esmMin((() => {
 		};
 		bindChange(".details", onUpdateQualityDetails);
 		bindChange(".cursor-option", onToggleGameCursor);
+		bindChange(".footprintmine", onToggleFootprintMine);
 		bindChange(".screensize", onUpdateScreenSize);
 		bindChange(".fpslimit", onUpdateFPSLimit);
 		bindChange(".fps", onToggleFPSDisplay);
@@ -233647,6 +233662,7 @@ var init_GraphicsOption = __esmMin((() => {
 		root.querySelector(".details").value = GraphicsSettings.quality;
 		root.querySelector(".screensize").value = GraphicsSettings.screensize;
 		root.querySelector(".cursor-option").checked = GraphicsSettings.cursor;
+		root.querySelector(".footprintmine").checked = Map_default.footprintmine;
 		root.querySelector(".fpslimit").value = GraphicsSettings.fpslimit;
 		root.querySelector(".fps").checked = FPS_default._host ? FPS_default._host.style.display !== "none" : false;
 		root.querySelector(".pixel-perfect").checked = GraphicsSettings.pixelPerfectSprites;
@@ -245932,7 +245948,7 @@ function calculateAnimation(layer, keyIndex, result) {
 	}
 	return true;
 }
-var mat4$20, D3DBLEND, _program$22, _buffer$16, _bufferData, _matrix$6, _lastAngle, PIXEL_TO_WORLD_Z, anim, StrEffect;
+var mat4$20, D3DBLEND, _program$23, _buffer$17, _bufferData, _matrix$6, _lastAngle, PIXEL_TO_WORLD_Z, anim, StrEffect;
 var init_StrEffect = __esmMin((() => {
 	init_StrEffect$2();
 	init_StrEffect$1();
@@ -245941,8 +245957,8 @@ var init_StrEffect = __esmMin((() => {
 	init_Client();
 	mat4$20 = gl_matrix_default.mat4;
 	D3DBLEND = {};
-	_program$22 = null;
-	_buffer$16 = null;
+	_program$23 = null;
+	_buffer$17 = null;
 	_bufferData = /* @__PURE__ */ new Float32Array(16);
 	_matrix$6 = mat4$20.create();
 	_lastAngle = -1;
@@ -246066,8 +246082,8 @@ var init_StrEffect = __esmMin((() => {
 		* @param {StrAnimation} animation object
 		*/
 		renderAnimation(gl, material, animat) {
-			const uniform = _program$22.uniform;
-			const attribute = _program$22.attribute;
+			const uniform = _program$23.uniform;
+			const attribute = _program$23.attribute;
 			let sizeScale = 1;
 			if (this.ownerEntity) sizeScale = (this.ownerEntity.xSize + this.ownerEntity.ySize) / 2 / 5;
 			_bufferData[0] = animat.xy[0] * sizeScale;
@@ -246106,7 +246122,7 @@ var init_StrEffect = __esmMin((() => {
 			gl.uniform1f(uniform.uVerticalBase, verticalBase);
 			gl.uniform3fv(uniform.uSpritePosition, this.position);
 			gl.uniformMatrix4fv(uniform.uSpriteAngle, false, _matrix$6);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
 			gl.bufferSubData(gl.ARRAY_BUFFER, 0, _bufferData);
 			gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 16, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 16, 8);
@@ -246120,12 +246136,12 @@ var init_StrEffect = __esmMin((() => {
 		* @param {object} gl context
 		*/
 		static init(gl) {
-			if (!_buffer$16) {
-				_buffer$16 = gl.createBuffer();
-				gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
+			if (!_buffer$17) {
+				_buffer$17 = gl.createBuffer();
+				gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
 				gl.bufferData(gl.ARRAY_BUFFER, _bufferData.byteLength, gl.DYNAMIC_DRAW);
 			}
-			if (!_program$22) _program$22 = WebGL_default.createShaderProgram(gl, StrEffect_default$1, StrEffect_default);
+			if (!_program$23) _program$23 = WebGL_default.createShaderProgram(gl, StrEffect_default$1, StrEffect_default);
 			D3DBLEND[1] = gl.ZERO;
 			D3DBLEND[2] = gl.ONE;
 			D3DBLEND[3] = gl.SRC_COLOR;
@@ -246147,13 +246163,13 @@ var init_StrEffect = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
-			if (_program$22) {
-				gl.deleteProgram(_program$22);
-				_program$22 = null;
+			if (_program$23) {
+				gl.deleteProgram(_program$23);
+				_program$23 = null;
 			}
-			if (_buffer$16) {
-				gl.deleteBuffer(_buffer$16);
-				_buffer$16 = null;
+			if (_buffer$17) {
+				gl.deleteBuffer(_buffer$17);
+				_buffer$17 = null;
 			}
 			this.ready = false;
 		}
@@ -246167,10 +246183,10 @@ var init_StrEffect = __esmMin((() => {
 		* @param {number} tick
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$22.uniform;
-			const attribute = _program$22.attribute;
+			const uniform = _program$23.uniform;
+			const attribute = _program$23.attribute;
 			gl.depthMask(false);
-			gl.useProgram(_program$22);
+			gl.useProgram(_program$23);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1f(uniform.uFogNear, fog.near * 100);
@@ -246188,8 +246204,8 @@ var init_StrEffect = __esmMin((() => {
 		*/
 		static afterRender(gl) {
 			gl.depthMask(true);
-			gl.disableVertexAttribArray(_program$22.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$22.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$23.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$23.attribute.aTextureCoord);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
 	};
@@ -258533,7 +258549,7 @@ function generateCylinder(totalCircleSides, circleSides, repeatTextureX) {
 	}
 	return new Float32Array(mesh);
 }
-var _program$21, blendMode$3, mat4$19, _matrix$5, Cylinder;
+var _program$22, blendMode$3, mat4$19, _matrix$5, Cylinder;
 var init_Cylinder = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -258637,8 +258653,8 @@ var init_Cylinder = __esmMin((() => {
 		render(gl, tick) {
 			const renderCount = tick - this.startTick;
 			const duration = this.endTick - this.startTick;
-			const uniform = _program$21.uniform;
-			const attribute = _program$21.attribute;
+			const uniform = _program$22.uniform;
+			const attribute = _program$22.attribute;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			if (this.repeatTextureX > 1) gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 			gl.enableVertexAttribArray(attribute.aPosition);
@@ -258758,7 +258774,7 @@ var init_Cylinder = __esmMin((() => {
 			blendMode$3[13] = gl.CONSTANT_ALPHA;
 			blendMode$3[14] = gl.ONE_MINUS_CONSTANT_ALPHA;
 			blendMode$3[15] = gl.SRC_ALPHA_SATURATE;
-			_program$21 = WebGL_default.createShaderProgram(gl, Cylinder_default$1, Cylinder_default);
+			_program$22 = WebGL_default.createShaderProgram(gl, Cylinder_default$1, Cylinder_default);
 			this.ready = true;
 			this.renderBeforeEntities = false;
 		}
@@ -258768,9 +258784,9 @@ var init_Cylinder = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
-			if (_program$21) {
-				gl.deleteProgram(_program$21);
-				_program$21 = null;
+			if (_program$22) {
+				gl.deleteProgram(_program$22);
+				_program$22 = null;
 			}
 			if (this.buffer) gl.deleteBuffer(this.buffer);
 			this.ready = false;
@@ -258781,8 +258797,8 @@ var init_Cylinder = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$21.uniform;
-			gl.useProgram(_program$21);
+			const uniform = _program$22.uniform;
+			gl.useProgram(_program$22);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -258798,8 +258814,8 @@ var init_Cylinder = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$21.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$21.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$22.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$22.attribute.aTextureCoord);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
 	};
@@ -260113,7 +260129,7 @@ function initModel(gl, data) {
 		WebGL_default.texture(gl, data.infos[i].texture, onTextureLoaded, i);
 	}
 }
-var _program$20, _normalMat, mat4$17, mat3$2, quat, vec3$3, _light$1, RsmEffect;
+var _program$21, _normalMat, mat4$17, mat3$2, quat, vec3$3, _light$1, RsmEffect;
 var init_RsmEffect = __esmMin((() => {
 	init_RsmEffect$2();
 	init_RsmEffect$1();
@@ -260121,7 +260137,7 @@ var init_RsmEffect = __esmMin((() => {
 	init_gl_matrix();
 	init_Client();
 	init_Model();
-	_program$20 = null;
+	_program$21 = null;
 	_normalMat = /* @__PURE__ */ new Float32Array(9);
 	mat4$17 = gl_matrix_default.mat4;
 	mat3$2 = gl_matrix_default.mat3;
@@ -260171,7 +260187,7 @@ var init_RsmEffect = __esmMin((() => {
 			this._Params = params;
 		}
 		static init(gl) {
-			_program$20 = WebGL_default.createShaderProgram(gl, RsmEffect_default$1, RsmEffect_default);
+			_program$21 = WebGL_default.createShaderProgram(gl, RsmEffect_default$1, RsmEffect_default);
 			this.ready = true;
 		}
 		init(gl, tick) {
@@ -260251,18 +260267,18 @@ var init_RsmEffect = __esmMin((() => {
 			this.ready = false;
 		}
 		static free(gl) {
-			if (_program$20) {
-				gl.deleteProgram(_program$20);
-				_program$20 = null;
+			if (_program$21) {
+				gl.deleteProgram(_program$21);
+				_program$21 = null;
 			}
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog, tick) {
 			mat4$17.toInverseMat3(modelView, _normalMat);
 			mat3$2.transpose(_normalMat, _normalMat);
-			const uniform = _program$20.uniform;
-			const attribute = _program$20.attribute;
-			gl.useProgram(_program$20);
+			const uniform = _program$21.uniform;
+			const attribute = _program$21.attribute;
+			gl.useProgram(_program$21);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix3fv(uniform.uNormalMat, false, _normalMat);
@@ -260282,7 +260298,7 @@ var init_RsmEffect = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 		}
 		render(gl, tick) {
-			const uniform = _program$20.uniform;
+			const uniform = _program$21.uniform;
 			if (this.isAnimated && this.model && this.animLen > 0) {
 				const elapsed = tick - this.startTick;
 				const frame = Math.floor(elapsed * this.fps / 1e3 % this.animLen);
@@ -260294,7 +260310,7 @@ var init_RsmEffect = __esmMin((() => {
 			gl.uniform3fv(uniform.uPosition, this.position);
 			gl.uniform1f(uniform.uSize, this.size);
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-			const attribute = _program$20.attribute;
+			const attribute = _program$21.attribute;
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 36, 0);
 			gl.vertexAttribPointer(attribute.aVertexNormal, 3, gl.FLOAT, false, 36, 12);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 36, 24);
@@ -260305,7 +260321,7 @@ var init_RsmEffect = __esmMin((() => {
 			}
 		}
 		static afterRender(gl) {
-			const attribute = _program$20.attribute;
+			const attribute = _program$21.attribute;
 			gl.disableVertexAttribArray(attribute.aPosition);
 			gl.disableVertexAttribArray(attribute.aVertexNormal);
 			gl.disableVertexAttribArray(attribute.aTextureCoord);
@@ -261329,7 +261345,7 @@ var init_QuadHorn$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/QuadHorn.js
-var _program$19, mat4$16, blendMode, vertices, texCoords, rand$1, QuadHorn;
+var _program$20, mat4$16, blendMode, vertices, texCoords, rand$1, QuadHorn;
 var init_QuadHorn = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -261465,8 +261481,8 @@ var init_QuadHorn = __esmMin((() => {
 			this.ready = false;
 		}
 		render(gl, tick) {
-			const uniform = _program$19.uniform;
-			const attribute = _program$19.attribute;
+			const uniform = _program$20.uniform;
+			const attribute = _program$20.attribute;
 			const deltaStart = (tick - this.startTick) / 1e3;
 			const deltaEnd = (tick - this.endTick) / 1e3;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -261553,7 +261569,7 @@ var init_QuadHorn = __esmMin((() => {
 			gl.flush();
 		}
 		static init(gl) {
-			_program$19 = WebGL_default.createShaderProgram(gl, QuadHorn_default$1, QuadHorn_default);
+			_program$20 = WebGL_default.createShaderProgram(gl, QuadHorn_default$1, QuadHorn_default);
 			blendMode[1] = gl.ZERO;
 			blendMode[2] = gl.ONE;
 			blendMode[3] = gl.SRC_COLOR;
@@ -261573,16 +261589,16 @@ var init_QuadHorn = __esmMin((() => {
 			this.renderBeforeEntities = true;
 		}
 		static free(gl) {
-			if (_program$19) {
-				gl.deleteProgram(_program$19);
-				_program$19 = null;
+			if (_program$20) {
+				gl.deleteProgram(_program$20);
+				_program$20 = null;
 			}
 			if (this.buffer) gl.deleteBuffer(this.buffer);
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$19.uniform;
-			gl.useProgram(_program$19);
+			const uniform = _program$20.uniform;
+			gl.useProgram(_program$20);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -261593,9 +261609,9 @@ var init_QuadHorn = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 		}
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$19.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$19.attribute.aTextureCoord);
-			gl.disableVertexAttribArray(_program$19.attribute.aColor);
+			gl.disableVertexAttribArray(_program$20.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$20.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$20.attribute.aColor);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
 	};
@@ -261810,7 +261826,7 @@ function setVertex(index, x, y, z, u, v) {
 	_vertices[offset + 3] = u;
 	_vertices[offset + 4] = v;
 }
-var mat4$15, _matrix$4, UNIT, LAYER_COUNT, SEGMENT_COUNT, TEXTURE_COUNT, SEGMENT_HEIGHT, EFFECT_TICK_MS, OPACITY, PARTICLE_TEXTURE, PARTICLE_CYCLE_MS, PARTICLE_SIZE, PARTICLE_COLOR, PARTICLE_FLOATS, PARTICLE_CORNERS, _program$18, _particleProgram, _textureCache, _vertices, WaterfallEffect;
+var mat4$15, _matrix$4, UNIT, LAYER_COUNT, SEGMENT_COUNT, TEXTURE_COUNT, SEGMENT_HEIGHT, EFFECT_TICK_MS, OPACITY, PARTICLE_TEXTURE, PARTICLE_CYCLE_MS, PARTICLE_SIZE, PARTICLE_COLOR, PARTICLE_FLOATS, PARTICLE_CORNERS, _program$19, _particleProgram, _textureCache, _vertices, WaterfallEffect;
 var init_WaterfallEffect = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -261883,8 +261899,8 @@ var init_WaterfallEffect = __esmMin((() => {
 			this.textureCache = loadTextures(gl, this.textureSet, this);
 		}
 		render(gl, tick) {
-			const uniform = _program$18.uniform;
-			const attribute = _program$18.attribute;
+			const uniform = _program$19.uniform;
+			const attribute = _program$19.attribute;
 			mat4$15.identity(_matrix$4);
 			mat4$15.translate(_matrix$4, _matrix$4, [
 				this.position[0] + .5,
@@ -261955,9 +261971,9 @@ var init_WaterfallEffect = __esmMin((() => {
 			gl.disableVertexAttribArray(attribute.aCorner);
 			gl.disableVertexAttribArray(attribute.aSeed);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.useProgram(_program$18);
-			gl.enableVertexAttribArray(_program$18.attribute.aPosition);
-			gl.enableVertexAttribArray(_program$18.attribute.aTextureCoord);
+			gl.useProgram(_program$19);
+			gl.enableVertexAttribArray(_program$19.attribute.aPosition);
+			gl.enableVertexAttribArray(_program$19.attribute.aTextureCoord);
 		}
 		/**
 		* Free WebGL resources
@@ -262002,9 +262018,9 @@ var init_WaterfallEffect = __esmMin((() => {
 			gl.uniform1f(_particleProgram.uniform.uFogFar, fog.far);
 			gl.uniform1i(_particleProgram.uniform.uTexture, 0);
 			gl.uniform3fv(_particleProgram.uniform.uColor, PARTICLE_COLOR);
-			const uniform = _program$18.uniform;
-			const attribute = _program$18.attribute;
-			gl.useProgram(_program$18);
+			const uniform = _program$19.uniform;
+			const attribute = _program$19.attribute;
+			gl.useProgram(_program$19);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fogUse);
@@ -262027,8 +262043,8 @@ var init_WaterfallEffect = __esmMin((() => {
 		*/
 		static afterRender(gl) {
 			gl.depthMask(true);
-			gl.disableVertexAttribArray(_program$18.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$18.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$19.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$19.attribute.aTextureCoord);
 		}
 		/**
 		* Initialize the effect type
@@ -262036,7 +262052,7 @@ var init_WaterfallEffect = __esmMin((() => {
 		* @param {WebGLRenderingContext} gl
 		*/
 		static init(gl) {
-			_program$18 = WebGL_default.createShaderProgram(gl, WaterfallEffect_default$1, WaterfallEffect_default);
+			_program$19 = WebGL_default.createShaderProgram(gl, WaterfallEffect_default$1, WaterfallEffect_default);
 			_particleProgram = WebGL_default.createShaderProgram(gl, WaterfallParticle_default$1, WaterfallParticle_default);
 			this.ready = true;
 		}
@@ -262054,9 +262070,9 @@ var init_WaterfallEffect = __esmMin((() => {
 				cache.waiters.clear();
 			});
 			_textureCache.clear();
-			if (_program$18) gl.deleteProgram(_program$18);
+			if (_program$19) gl.deleteProgram(_program$19);
 			if (_particleProgram) gl.deleteProgram(_particleProgram);
-			_program$18 = null;
+			_program$19 = null;
 			_particleProgram = null;
 			this.ready = false;
 			this.needInit = true;
@@ -263405,7 +263421,7 @@ var init_Blind$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/Blind.js
-var _program$17, _buffer$15, _active, Blind;
+var _program$18, _buffer$16, _active, Blind;
 var init_Blind = __esmMin((() => {
 	init_WebGL();
 	init_Camera();
@@ -263421,31 +263437,31 @@ var init_Blind = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target buffer
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$15 || !_program$17 || !Blind.isActive()) return;
+			if (!_buffer$16 || !_program$18 || !Blind.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$17);
+			gl.useProgram(_program$18);
 			const baseRadius = .2;
 			const baseFalloff = .5;
 			const zoom = Camera.zoomFinal;
 			const focusRadius = baseRadius + (63 - zoom) / 1e3;
 			const focusFalloff = baseFalloff + (63 - zoom) / 1e3;
-			gl.uniform1f(_program$17.uniform.uFocusRadius, focusRadius);
-			gl.uniform1f(_program$17.uniform.uFocusFalloff, focusFalloff);
-			gl.uniform2f(_program$17.uniform.uAspectRatio, gl.canvas.width / gl.canvas.height, 1);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$15);
-			const posLoc = _program$17.attribute.aPosition;
+			gl.uniform1f(_program$18.uniform.uFocusRadius, focusRadius);
+			gl.uniform1f(_program$18.uniform.uFocusFalloff, focusFalloff);
+			gl.uniform2f(_program$18.uniform.uAspectRatio, gl.canvas.width / gl.canvas.height, 1);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
+			const posLoc = _program$18.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.uniform1i(_program$17.uniform.uTexture, 0);
+			gl.uniform1i(_program$18.uniform.uTexture, 0);
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 			PostProcess.afterRenderPass(gl);
 		}
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$17 = WebGL_default.createShaderProgram(gl, Common_default, Blind_default);
+				_program$18 = WebGL_default.createShaderProgram(gl, Common_default, Blind_default);
 			} catch (e) {
 				console.error("Error compiling Blind shader.", e);
 				return;
@@ -263464,8 +263480,8 @@ var init_Blind = __esmMin((() => {
 				1,
 				1
 			]);
-			_buffer$15 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$15);
+			_buffer$16 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$16);
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 		}
 		static isActive() {
@@ -263475,11 +263491,11 @@ var init_Blind = __esmMin((() => {
 			_active = bool;
 		}
 		static program() {
-			return _program$17;
+			return _program$18;
 		}
 		static clean(gl) {
-			if (_buffer$15) gl.deleteBuffer(_buffer$15);
-			_program$17 = _buffer$15 = null;
+			if (_buffer$16) gl.deleteBuffer(_buffer$16);
+			_program$18 = _buffer$16 = null;
 		}
 	};
 }));
@@ -263688,8 +263704,8 @@ function init$8(gl, mapname) {
 	if (_color) _display = true;
 	else _display = false;
 	gl.clearColor(color[0], color[1], color[2], color[3]);
-	if (!_textures$2.length && _display) {
-		_textures$2.length = 8;
+	if (!_textures$3.length && _display) {
+		_textures$3.length = 8;
 		for (i = 0; i < 7; i++) loadCloudTexture(gl, i);
 	}
 }
@@ -263702,7 +263718,7 @@ function init$8(gl, mapname) {
 function loadCloudTexture(gl, i) {
 	Client.loadFile("data/texture/effect/cloud" + (i + 1) + ".tga", function(buffer) {
 		WebGL_default.texture(gl, buffer, function(texture) {
-			_textures$2[i] = texture;
+			_textures$3[i] = texture;
 		});
 	});
 }
@@ -263719,7 +263735,7 @@ function setUpCloudData() {
 			death_tick: 0
 		};
 		cloudInit(_clouds[i]);
-		_clouds[i].sprite = Math.random() * (_textures$2.length - 1) | 0;
+		_clouds[i].sprite = Math.random() * (_textures$3.length - 1) | 0;
 		_clouds[i].death_tick = _clouds[i].born_tick + Math.random() * 8e3;
 		_clouds[i].born_tick -= 2e3;
 	}
@@ -263774,7 +263790,7 @@ function render$8(gl, modelView, projection, fog, tick) {
 		else opacity = 1;
 		SpriteRenderer.zIndex = 0;
 		SpriteRenderer.color[3] = opacity;
-		SpriteRenderer.image.texture = _textures$2[cloud.sprite];
+		SpriteRenderer.image.texture = _textures$3[cloud.sprite];
 		const dt = Math.min(tick - (cloud._lastTick || cloud.born_tick), 250);
 		cloud._lastTick = tick;
 		vec3$8.scaleAndAdd(cloud.position, cloud.position, cloud.direction, dt / 25);
@@ -263785,7 +263801,7 @@ function render$8(gl, modelView, projection, fog, tick) {
 	}
 	SpriteRenderer.unbind(gl);
 }
-var MAX_CLOUDS, _clouds, _textures$2, _color, _display, Sky_default;
+var MAX_CLOUDS, _clouds, _textures$3, _color, _display, Sky_default;
 var init_Sky = __esmMin((() => {
 	init_WebGL();
 	init_WeatherEffect();
@@ -263795,7 +263811,7 @@ var init_Sky = __esmMin((() => {
 	init_gl_matrix();
 	MAX_CLOUDS = 150;
 	_clouds = new Array(MAX_CLOUDS);
-	_textures$2 = [];
+	_textures$3 = [];
 	_color = null;
 	_display = true;
 	Sky_default = {
@@ -264608,7 +264624,7 @@ var init_BloomUpsampling = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/Bloom.js
-var _programs, _buffer$14, _internalFbo, _downsampleFactor, _downsampleFactorPerformance, Bloom;
+var _programs, _buffer$15, _internalFbo, _downsampleFactor, _downsampleFactorPerformance, Bloom;
 var init_Bloom = __esmMin((() => {
 	init_Graphics();
 	init_WebGL();
@@ -264627,7 +264643,7 @@ var init_Bloom = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Destination (Screen or next effect)
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$14 || !_programs.prefilter || !Bloom.isActive()) return;
+			if (!_buffer$15 || !_programs.prefilter || !Bloom.isActive()) return;
 			const scale = GraphicsSettings.performanceMode ? .75 : 1;
 			const scaledWidth = Math.floor(gl.canvas.width * scale);
 			const scaledHeight = Math.floor(gl.canvas.height * scale);
@@ -264642,7 +264658,7 @@ var init_Bloom = __esmMin((() => {
 			gl.uniform1f(_programs.prefilter.uniform.uBloomSoftKnee, .45);
 			const boxsampleFactor = 4;
 			gl.uniform2f(_programs.prefilter.uniform.uTexelSize, 1 / _internalFbo.width * boxsampleFactor, 1 / _internalFbo.height * boxsampleFactor);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$14);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$15);
 			let posLoc = _programs.prefilter.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
@@ -264695,8 +264711,8 @@ var init_Bloom = __esmMin((() => {
 				1,
 				1
 			]);
-			_buffer$14 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$14);
+			_buffer$15 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$15);
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 			this.recreateFbo(gl, gl.canvas.width, gl.canvas.height);
 		}
@@ -264717,8 +264733,8 @@ var init_Bloom = __esmMin((() => {
 		/** Clears memory references */
 		static clean(gl) {
 			_programs = {};
-			if (_buffer$14) gl.deleteBuffer(_buffer$14);
-			_buffer$14 = null;
+			if (_buffer$15) gl.deleteBuffer(_buffer$15);
+			_buffer$15 = null;
 			if (_internalFbo) {
 				if (gl.isTexture(_internalFbo.texture)) gl.deleteTexture(_internalFbo.texture);
 				if (gl.isRenderbuffer(_internalFbo.rbo)) gl.deleteRenderbuffer(_internalFbo.rbo);
@@ -264736,7 +264752,7 @@ var init_GaussianBlur$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/GaussianBlur.js
-var _program$16, _buffer$13, GaussianBlur;
+var _program$17, _buffer$14, GaussianBlur;
 var init_GaussianBlur = __esmMin((() => {
 	init_Graphics();
 	init_WebGL();
@@ -264751,15 +264767,86 @@ var init_GaussianBlur = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target buffer
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$13 || !_program$16 || !GaussianBlur.isActive()) return;
+			if (!_buffer$14 || !_program$17 || !GaussianBlur.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$16);
+			gl.useProgram(_program$17);
 			const focusRadius = GraphicsSettings.blurArea / 100;
 			const focusFalloff = .5;
-			gl.uniform1f(_program$16.uniform.uFocusRadius, focusRadius);
-			gl.uniform1f(_program$16.uniform.uFocusFalloff, focusFalloff);
+			gl.uniform1f(_program$17.uniform.uFocusRadius, focusRadius);
+			gl.uniform1f(_program$17.uniform.uFocusFalloff, focusFalloff);
 			const boxsampleFactor = GraphicsSettings.blurIntensity;
-			gl.uniform2f(_program$16.uniform.uTexelSize, 1 / gl.canvas.width * boxsampleFactor, 1 / gl.canvas.height * boxsampleFactor);
+			gl.uniform2f(_program$17.uniform.uTexelSize, 1 / gl.canvas.width * boxsampleFactor, 1 / gl.canvas.height * boxsampleFactor);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$14);
+			const posLoc = _program$17.attribute.aPosition;
+			gl.enableVertexAttribArray(posLoc);
+			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+			gl.activeTexture(gl.TEXTURE0);
+			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
+			gl.uniform1i(_program$17.uniform.uTexture, 0);
+			gl.drawArrays(gl.TRIANGLES, 0, 6);
+			PostProcess.afterRenderPass(gl);
+		}
+		static init(gl) {
+			if (!gl) return;
+			try {
+				_program$17 = WebGL_default.createShaderProgram(gl, Common_default, GaussianBlur_default);
+			} catch (e) {
+				console.error("Error compiling Lens Blur shader.", e);
+				return;
+			}
+			const quadVertices = new Float32Array([
+				-1,
+				-1,
+				1,
+				-1,
+				-1,
+				1,
+				-1,
+				1,
+				1,
+				-1,
+				1,
+				1
+			]);
+			_buffer$14 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$14);
+			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
+		}
+		static isActive() {
+			return GraphicsSettings.blur;
+		}
+		static program() {
+			return _program$17;
+		}
+		static clean(gl) {
+			if (_buffer$14) gl.deleteBuffer(_buffer$14);
+			_program$17 = _buffer$14 = null;
+		}
+	};
+}));
+//#endregion
+//#region src/Renderer/Effects/Shaders/GLSL/CAS.fs?raw
+var CAS_default;
+var init_CAS$1 = __esmMin((() => {
+	CAS_default = "#version 300 es \r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uContrast;  \r\nuniform float uSharpening;  \r\nuniform vec2 uTexelSize;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nvoid main() {  \r\n    // Sampling 3x3  \r\n    //  a b c  \r\n    //  d(e)f  \r\n    //  g h i  \r\n      \r\n    vec3 a = texture(uTexture, vUv + vec2(-uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 b = texture(uTexture, vUv + vec2(0.0, -uTexelSize.y)).rgb;  \r\n    vec3 c = texture(uTexture, vUv + vec2(uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 d = texture(uTexture, vUv + vec2(-uTexelSize.x, 0.0)).rgb;  \r\n    vec3 e = texture(uTexture, vUv).rgb;  \r\n    vec3 f = texture(uTexture, vUv + vec2(uTexelSize.x, 0.0)).rgb;  \r\n    vec3 g = texture(uTexture, vUv + vec2(-uTexelSize.x, uTexelSize.y)).rgb;  \r\n    vec3 h = texture(uTexture, vUv + vec2(0.0, uTexelSize.y)).rgb;  \r\n    vec3 i = texture(uTexture, vUv + vec2(uTexelSize.x, uTexelSize.y)).rgb;  \r\n\r\n    // Soft min e max \r\n    vec3 mnRGB = min(min(min(d, e), min(f, b)), h);  \r\n    vec3 mnRGB2 = min(mnRGB, min(min(a, c), min(g, i)));  \r\n    mnRGB += mnRGB2;  \r\n\r\n    vec3 mxRGB = max(max(max(d, e), max(f, b)), h);  \r\n    vec3 mxRGB2 = max(mxRGB, max(max(a, c), max(g, i)));  \r\n    mxRGB += mxRGB2;  \r\n\r\n    vec3 rcpMRGB = 1.0 / mxRGB;  \r\n    vec3 ampRGB = clamp(min(mnRGB, 2.0 - mxRGB) * rcpMRGB, 0.0, 1.0);  \r\n\r\n    ampRGB = inversesqrt(ampRGB);  \r\n\r\n    float peak = -3.0 * uContrast + 8.0;  \r\n    vec3 wRGB = -1.0 / (ampRGB * peak);  \r\n    vec3 rcpWeightRGB = 1.0 / (4.0 * wRGB + 1.0);  \r\n\r\n    // Cross Filter \r\n    //  0 w 0  \r\n    //  w 1 w  \r\n    //  0 w 0  \r\n    vec3 window = (b + d) + (f + h);  \r\n    vec3 outColor = clamp((window * wRGB + e) * rcpWeightRGB, 0.0, 1.0);  \r\n\r\n    // Blend \r\n    fragColor = vec4(mix(e, outColor, uSharpening), 1.0);  \r\n}";
+}));
+//#endregion
+//#region src/Renderer/Effects/Shaders/CAS.js
+var _program$16, _buffer$13, CAS;
+var init_CAS = __esmMin((() => {
+	init_Graphics();
+	init_WebGL();
+	init_PostProcess();
+	init_Common();
+	init_CAS$1();
+	CAS = class CAS {
+		static render(gl, inputTexture, outputFbo) {
+			if (!_buffer$13 || !_program$16 || !CAS.isActive()) return;
+			PostProcess.beforeRenderPass(gl, outputFbo);
+			gl.useProgram(_program$16);
+			gl.uniform1f(_program$16.uniform.uContrast, GraphicsSettings.casContrast || 0);
+			gl.uniform1f(_program$16.uniform.uSharpening, GraphicsSettings.casSharpening || 1);
+			gl.uniform2f(_program$16.uniform.uTexelSize, 1 / gl.canvas.width, 1 / gl.canvas.height);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$13);
 			const posLoc = _program$16.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
@@ -264773,9 +264860,9 @@ var init_GaussianBlur = __esmMin((() => {
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$16 = WebGL_default.createShaderProgram(gl, Common_default, GaussianBlur_default);
+				_program$16 = WebGL_default.createShaderProgram(gl, Common_default, CAS_default);
 			} catch (e) {
-				console.error("Error compiling Lens Blur shader.", e);
+				console.error("Error compiling CAS shader.", e);
 				return;
 			}
 			const quadVertices = new Float32Array([
@@ -264797,7 +264884,7 @@ var init_GaussianBlur = __esmMin((() => {
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 		}
 		static isActive() {
-			return GraphicsSettings.blur;
+			return GraphicsSettings.casEnabled;
 		}
 		static program() {
 			return _program$16;
@@ -264809,27 +264896,28 @@ var init_GaussianBlur = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/GLSL/CAS.fs?raw
-var CAS_default;
-var init_CAS$1 = __esmMin((() => {
-	CAS_default = "#version 300 es \r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uContrast;  \r\nuniform float uSharpening;  \r\nuniform vec2 uTexelSize;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nvoid main() {  \r\n    // Sampling 3x3  \r\n    //  a b c  \r\n    //  d(e)f  \r\n    //  g h i  \r\n      \r\n    vec3 a = texture(uTexture, vUv + vec2(-uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 b = texture(uTexture, vUv + vec2(0.0, -uTexelSize.y)).rgb;  \r\n    vec3 c = texture(uTexture, vUv + vec2(uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 d = texture(uTexture, vUv + vec2(-uTexelSize.x, 0.0)).rgb;  \r\n    vec3 e = texture(uTexture, vUv).rgb;  \r\n    vec3 f = texture(uTexture, vUv + vec2(uTexelSize.x, 0.0)).rgb;  \r\n    vec3 g = texture(uTexture, vUv + vec2(-uTexelSize.x, uTexelSize.y)).rgb;  \r\n    vec3 h = texture(uTexture, vUv + vec2(0.0, uTexelSize.y)).rgb;  \r\n    vec3 i = texture(uTexture, vUv + vec2(uTexelSize.x, uTexelSize.y)).rgb;  \r\n\r\n    // Soft min e max \r\n    vec3 mnRGB = min(min(min(d, e), min(f, b)), h);  \r\n    vec3 mnRGB2 = min(mnRGB, min(min(a, c), min(g, i)));  \r\n    mnRGB += mnRGB2;  \r\n\r\n    vec3 mxRGB = max(max(max(d, e), max(f, b)), h);  \r\n    vec3 mxRGB2 = max(mxRGB, max(max(a, c), max(g, i)));  \r\n    mxRGB += mxRGB2;  \r\n\r\n    vec3 rcpMRGB = 1.0 / mxRGB;  \r\n    vec3 ampRGB = clamp(min(mnRGB, 2.0 - mxRGB) * rcpMRGB, 0.0, 1.0);  \r\n\r\n    ampRGB = inversesqrt(ampRGB);  \r\n\r\n    float peak = -3.0 * uContrast + 8.0;  \r\n    vec3 wRGB = -1.0 / (ampRGB * peak);  \r\n    vec3 rcpWeightRGB = 1.0 / (4.0 * wRGB + 1.0);  \r\n\r\n    // Cross Filter \r\n    //  0 w 0  \r\n    //  w 1 w  \r\n    //  0 w 0  \r\n    vec3 window = (b + d) + (f + h);  \r\n    vec3 outColor = clamp((window * wRGB + e) * rcpWeightRGB, 0.0, 1.0);  \r\n\r\n    // Blend \r\n    fragColor = vec4(mix(e, outColor, uSharpening), 1.0);  \r\n}";
+//#region src/Renderer/Effects/Shaders/GLSL/FXAA.fs?raw
+var FXAA_default;
+var init_FXAA$1 = __esmMin((() => {
+	FXAA_default = "#version 300 es\r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uSubpix;  \r\nuniform float uEdgeThreshold;  \r\nuniform float uEdgeThresholdMin;  \r\nuniform vec2 uTexelSize;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nfloat luminance(vec3 rgb) {  \r\n    return dot(rgb, vec3(0.299, 0.587, 0.114));  \r\n}  \r\n\r\nvoid main() {  \r\n    vec3 rgbM = texture(uTexture, vUv).rgb;  \r\n      \r\n    vec3 rgbNW = texture(uTexture, vUv + vec2(-uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 rgbNE = texture(uTexture, vUv + vec2(uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 rgbSW = texture(uTexture, vUv + vec2(-uTexelSize.x, uTexelSize.y)).rgb;  \r\n    vec3 rgbSE = texture(uTexture, vUv + vec2(uTexelSize.x, uTexelSize.y)).rgb;  \r\n\r\n    float lumaM = luminance(rgbM);  \r\n    float lumaNW = luminance(rgbNW);  \r\n    float lumaNE = luminance(rgbNE);  \r\n    float lumaSW = luminance(rgbSW);  \r\n    float lumaSE = luminance(rgbSE);  \r\n\r\n    float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));  \r\n    float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));  \r\n\r\n    float lumaRange = lumaMax - lumaMin;  \r\n    if(lumaRange < max(uEdgeThresholdMin, lumaMax * uEdgeThreshold)) {  \r\n        fragColor = vec4(rgbM, 1.0);  \r\n        return;  \r\n    }  \r\n\r\n    vec2 dir;  \r\n    dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));  \r\n    dir.y = ((lumaNW + lumaSW) - (lumaNE + lumaSE));  \r\n\r\n    float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.03125, 0.0078125);  \r\n    float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);  \r\n    dir = min(vec2(8.0), max(vec2(-8.0), dir * rcpDirMin)) * uTexelSize;  \r\n\r\n    vec3 rgbA = 0.5 * (  \r\n        texture(uTexture, vUv + dir * (1.0/3.0 - 0.5)).rgb +  \r\n        texture(uTexture, vUv + dir * (2.0/3.0 - 0.5)).rgb);  \r\n    vec3 rgbB = rgbA * 0.5 + 0.25 * (  \r\n        texture(uTexture, vUv + dir * -0.5).rgb +  \r\n        texture(uTexture, vUv + dir * 0.5).rgb);  \r\n\r\n    float lumaB = luminance(rgbB);  \r\n    if((lumaB < lumaMin) || (lumaB > lumaMax)) {  \r\n        fragColor = vec4(rgbA, 1.0);  \r\n    } else {  \r\n        fragColor = vec4(rgbB, 1.0);  \r\n    }  \r\n}";
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/CAS.js
-var _program$15, _buffer$12, CAS;
-var init_CAS = __esmMin((() => {
+//#region src/Renderer/Effects/Shaders/FXAA.js
+var _program$15, _buffer$12, FXAA;
+var init_FXAA = __esmMin((() => {
 	init_Graphics();
 	init_WebGL();
 	init_PostProcess();
 	init_Common();
-	init_CAS$1();
-	CAS = class CAS {
+	init_FXAA$1();
+	FXAA = class FXAA {
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$12 || !_program$15 || !CAS.isActive()) return;
+			if (!_buffer$12 || !_program$15 || !FXAA.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
 			gl.useProgram(_program$15);
-			gl.uniform1f(_program$15.uniform.uContrast, GraphicsSettings.casContrast || 0);
-			gl.uniform1f(_program$15.uniform.uSharpening, GraphicsSettings.casSharpening || 1);
+			gl.uniform1f(_program$15.uniform.uSubpix, GraphicsSettings.fxaaSubpix || .25);
+			gl.uniform1f(_program$15.uniform.uEdgeThreshold, GraphicsSettings.fxaaEdgeThreshold || .125);
+			gl.uniform1f(_program$15.uniform.uEdgeThresholdMin, 0);
 			gl.uniform2f(_program$15.uniform.uTexelSize, 1 / gl.canvas.width, 1 / gl.canvas.height);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$12);
 			const posLoc = _program$15.attribute.aPosition;
@@ -264844,9 +264932,9 @@ var init_CAS = __esmMin((() => {
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$15 = WebGL_default.createShaderProgram(gl, Common_default, CAS_default);
+				_program$15 = WebGL_default.createShaderProgram(gl, Common_default, FXAA_default);
 			} catch (e) {
-				console.error("Error compiling CAS shader.", e);
+				console.error("Error compiling FXAA shader.", e);
 				return;
 			}
 			const quadVertices = new Float32Array([
@@ -264868,7 +264956,7 @@ var init_CAS = __esmMin((() => {
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 		}
 		static isActive() {
-			return GraphicsSettings.casEnabled;
+			return GraphicsSettings.fxaaEnabled;
 		}
 		static program() {
 			return _program$15;
@@ -264880,29 +264968,27 @@ var init_CAS = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/GLSL/FXAA.fs?raw
-var FXAA_default;
-var init_FXAA$1 = __esmMin((() => {
-	FXAA_default = "#version 300 es\r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uSubpix;  \r\nuniform float uEdgeThreshold;  \r\nuniform float uEdgeThresholdMin;  \r\nuniform vec2 uTexelSize;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nfloat luminance(vec3 rgb) {  \r\n    return dot(rgb, vec3(0.299, 0.587, 0.114));  \r\n}  \r\n\r\nvoid main() {  \r\n    vec3 rgbM = texture(uTexture, vUv).rgb;  \r\n      \r\n    vec3 rgbNW = texture(uTexture, vUv + vec2(-uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 rgbNE = texture(uTexture, vUv + vec2(uTexelSize.x, -uTexelSize.y)).rgb;  \r\n    vec3 rgbSW = texture(uTexture, vUv + vec2(-uTexelSize.x, uTexelSize.y)).rgb;  \r\n    vec3 rgbSE = texture(uTexture, vUv + vec2(uTexelSize.x, uTexelSize.y)).rgb;  \r\n\r\n    float lumaM = luminance(rgbM);  \r\n    float lumaNW = luminance(rgbNW);  \r\n    float lumaNE = luminance(rgbNE);  \r\n    float lumaSW = luminance(rgbSW);  \r\n    float lumaSE = luminance(rgbSE);  \r\n\r\n    float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));  \r\n    float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));  \r\n\r\n    float lumaRange = lumaMax - lumaMin;  \r\n    if(lumaRange < max(uEdgeThresholdMin, lumaMax * uEdgeThreshold)) {  \r\n        fragColor = vec4(rgbM, 1.0);  \r\n        return;  \r\n    }  \r\n\r\n    vec2 dir;  \r\n    dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));  \r\n    dir.y = ((lumaNW + lumaSW) - (lumaNE + lumaSE));  \r\n\r\n    float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.03125, 0.0078125);  \r\n    float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);  \r\n    dir = min(vec2(8.0), max(vec2(-8.0), dir * rcpDirMin)) * uTexelSize;  \r\n\r\n    vec3 rgbA = 0.5 * (  \r\n        texture(uTexture, vUv + dir * (1.0/3.0 - 0.5)).rgb +  \r\n        texture(uTexture, vUv + dir * (2.0/3.0 - 0.5)).rgb);  \r\n    vec3 rgbB = rgbA * 0.5 + 0.25 * (  \r\n        texture(uTexture, vUv + dir * -0.5).rgb +  \r\n        texture(uTexture, vUv + dir * 0.5).rgb);  \r\n\r\n    float lumaB = luminance(rgbB);  \r\n    if((lumaB < lumaMin) || (lumaB > lumaMax)) {  \r\n        fragColor = vec4(rgbA, 1.0);  \r\n    } else {  \r\n        fragColor = vec4(rgbB, 1.0);  \r\n    }  \r\n}";
+//#region src/Renderer/Effects/Shaders/GLSL/Vibrance.fs?raw
+var Vibrance_default;
+var init_Vibrance$1 = __esmMin((() => {
+	Vibrance_default = "#version 300 es\r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uVibrance;  \r\nuniform vec3 uVibranceRGBBalance;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nvoid main() {  \r\n    vec3 color = texture(uTexture, vUv).rgb;  \r\n      \r\n    // (Rec. 709)  \r\n    vec3 coefLuma = vec3(0.212656, 0.715158, 0.072186);  \r\n    float luma = dot(coefLuma, color);  \r\n\r\n    float max_color = max(color.r, max(color.g, color.b));  \r\n    float min_color = min(color.r, min(color.g, color.b));  \r\n    float color_saturation = max_color - min_color;  \r\n\r\n    vec3 coeffVibrance = uVibranceRGBBalance * uVibrance;  \r\n\r\n    float strength = 1.0 + (coeffVibrance.r * (1.0 - (sign(coeffVibrance.r) * color_saturation)));  \r\n    color.r = mix(luma, color.r, strength);  \r\n      \r\n    strength = 1.0 + (coeffVibrance.g * (1.0 - (sign(coeffVibrance.g) * color_saturation)));  \r\n    color.g = mix(luma, color.g, strength);  \r\n      \r\n    strength = 1.0 + (coeffVibrance.b * (1.0 - (sign(coeffVibrance.b) * color_saturation)));  \r\n    color.b = mix(luma, color.b, strength);  \r\n\r\n    fragColor = vec4(color, 1.0);  \r\n} ";
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/FXAA.js
-var _program$14, _buffer$11, FXAA;
-var init_FXAA = __esmMin((() => {
+//#region src/Renderer/Effects/Shaders/Vibrance.js
+var _program$14, _buffer$11, Vibrance;
+var init_Vibrance = __esmMin((() => {
 	init_Graphics();
 	init_WebGL();
 	init_PostProcess();
 	init_Common();
-	init_FXAA$1();
-	FXAA = class FXAA {
+	init_Vibrance$1();
+	Vibrance = class Vibrance {
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$11 || !_program$14 || !FXAA.isActive()) return;
+			if (!_buffer$11 || !_program$14 || !Vibrance.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
 			gl.useProgram(_program$14);
-			gl.uniform1f(_program$14.uniform.uSubpix, GraphicsSettings.fxaaSubpix || .25);
-			gl.uniform1f(_program$14.uniform.uEdgeThreshold, GraphicsSettings.fxaaEdgeThreshold || .125);
-			gl.uniform1f(_program$14.uniform.uEdgeThresholdMin, 0);
-			gl.uniform2f(_program$14.uniform.uTexelSize, 1 / gl.canvas.width, 1 / gl.canvas.height);
+			gl.uniform1f(_program$14.uniform.uVibrance, GraphicsSettings.vibrance || .15);
+			gl.uniform3f(_program$14.uniform.uVibranceRGBBalance, 1, 1, 1);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$11);
 			const posLoc = _program$14.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
@@ -264916,9 +265002,9 @@ var init_FXAA = __esmMin((() => {
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$14 = WebGL_default.createShaderProgram(gl, Common_default, FXAA_default);
+				_program$14 = WebGL_default.createShaderProgram(gl, Common_default, Vibrance_default);
 			} catch (e) {
-				console.error("Error compiling FXAA shader.", e);
+				console.error("Error compiling Vibrance shader.", e);
 				return;
 			}
 			const quadVertices = new Float32Array([
@@ -264940,7 +265026,7 @@ var init_FXAA = __esmMin((() => {
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 		}
 		static isActive() {
-			return GraphicsSettings.fxaaEnabled;
+			return GraphicsSettings.vibranceEnabled;
 		}
 		static program() {
 			return _program$14;
@@ -264952,27 +265038,28 @@ var init_FXAA = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/GLSL/Vibrance.fs?raw
-var Vibrance_default;
-var init_Vibrance$1 = __esmMin((() => {
-	Vibrance_default = "#version 300 es\r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uVibrance;  \r\nuniform vec3 uVibranceRGBBalance;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nvoid main() {  \r\n    vec3 color = texture(uTexture, vUv).rgb;  \r\n      \r\n    // (Rec. 709)  \r\n    vec3 coefLuma = vec3(0.212656, 0.715158, 0.072186);  \r\n    float luma = dot(coefLuma, color);  \r\n\r\n    float max_color = max(color.r, max(color.g, color.b));  \r\n    float min_color = min(color.r, min(color.g, color.b));  \r\n    float color_saturation = max_color - min_color;  \r\n\r\n    vec3 coeffVibrance = uVibranceRGBBalance * uVibrance;  \r\n\r\n    float strength = 1.0 + (coeffVibrance.r * (1.0 - (sign(coeffVibrance.r) * color_saturation)));  \r\n    color.r = mix(luma, color.r, strength);  \r\n      \r\n    strength = 1.0 + (coeffVibrance.g * (1.0 - (sign(coeffVibrance.g) * color_saturation)));  \r\n    color.g = mix(luma, color.g, strength);  \r\n      \r\n    strength = 1.0 + (coeffVibrance.b * (1.0 - (sign(coeffVibrance.b) * color_saturation)));  \r\n    color.b = mix(luma, color.b, strength);  \r\n\r\n    fragColor = vec4(color, 1.0);  \r\n} ";
+//#region src/Renderer/Effects/Shaders/GLSL/Cartoon.fs?raw
+var Cartoon_default;
+var init_Cartoon$1 = __esmMin((() => {
+	Cartoon_default = "#version 300 es\r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uPower;  \r\nuniform float uEdgeSlope;  \r\nuniform vec2 uTexelSize;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nvoid main() {  \r\n    vec3 color = texture(uTexture, vUv).rgb;  \r\n\r\n    const vec3 coefLuma = vec3(0.2126, 0.7152, 0.0722);  \r\n\r\n    float diff1 = dot(coefLuma, texture(uTexture, vUv + uTexelSize).rgb);  \r\n    diff1 = dot(vec4(coefLuma, -1.0), vec4(texture(uTexture, vUv - uTexelSize).rgb, diff1));  \r\n      \r\n    float diff2 = dot(coefLuma, texture(uTexture, vUv + uTexelSize * vec2(1, -1)).rgb);  \r\n    diff2 = dot(vec4(coefLuma, -1.0), vec4(texture(uTexture, vUv + uTexelSize * vec2(-1, 1)).rgb, diff2));  \r\n\r\n    float edge = dot(vec2(diff1, diff2), vec2(diff1, diff2));  \r\n\r\n    vec3 result = clamp(pow(abs(edge), uEdgeSlope) * -uPower + color, 0.0, 1.0);  \r\n    fragColor = vec4(result, 1.0);  \r\n}";
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/Vibrance.js
-var _program$13, _buffer$10, Vibrance;
-var init_Vibrance = __esmMin((() => {
+//#region src/Renderer/Effects/Shaders/Cartoon.js
+var _program$13, _buffer$10, Cartoon;
+var init_Cartoon = __esmMin((() => {
 	init_Graphics();
 	init_WebGL();
 	init_PostProcess();
 	init_Common();
-	init_Vibrance$1();
-	Vibrance = class Vibrance {
+	init_Cartoon$1();
+	Cartoon = class Cartoon {
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$10 || !_program$13 || !Vibrance.isActive()) return;
+			if (!_buffer$10 || !_program$13 || !Cartoon.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
 			gl.useProgram(_program$13);
-			gl.uniform1f(_program$13.uniform.uVibrance, GraphicsSettings.vibrance || .15);
-			gl.uniform3f(_program$13.uniform.uVibranceRGBBalance, 1, 1, 1);
+			gl.uniform1f(_program$13.uniform.uPower, GraphicsSettings.cartoonPower || 1.5);
+			gl.uniform1f(_program$13.uniform.uEdgeSlope, GraphicsSettings.cartoonEdgeSlope || 1.5);
+			gl.uniform2f(_program$13.uniform.uTexelSize, 1 / gl.canvas.width, 1 / gl.canvas.height);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$10);
 			const posLoc = _program$13.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
@@ -264986,9 +265073,9 @@ var init_Vibrance = __esmMin((() => {
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$13 = WebGL_default.createShaderProgram(gl, Common_default, Vibrance_default);
+				_program$13 = WebGL_default.createShaderProgram(gl, Common_default, Cartoon_default);
 			} catch (e) {
-				console.error("Error compiling Vibrance shader.", e);
+				console.error("Error compiling Cartoon shader.", e);
 				return;
 			}
 			const quadVertices = new Float32Array([
@@ -265010,7 +265097,7 @@ var init_Vibrance = __esmMin((() => {
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 		}
 		static isActive() {
-			return GraphicsSettings.vibranceEnabled;
+			return GraphicsSettings.cartoonEnabled;
 		}
 		static program() {
 			return _program$13;
@@ -265022,44 +265109,52 @@ var init_Vibrance = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/GLSL/Cartoon.fs?raw
-var Cartoon_default;
-var init_Cartoon$1 = __esmMin((() => {
-	Cartoon_default = "#version 300 es\r\nprecision mediump float;  \r\n\r\nuniform sampler2D uTexture;  \r\nuniform float uPower;  \r\nuniform float uEdgeSlope;  \r\nuniform vec2 uTexelSize;  \r\n\r\nin vec2 vUv;  \r\nout vec4 fragColor;  \r\n\r\nvoid main() {  \r\n    vec3 color = texture(uTexture, vUv).rgb;  \r\n\r\n    const vec3 coefLuma = vec3(0.2126, 0.7152, 0.0722);  \r\n\r\n    float diff1 = dot(coefLuma, texture(uTexture, vUv + uTexelSize).rgb);  \r\n    diff1 = dot(vec4(coefLuma, -1.0), vec4(texture(uTexture, vUv - uTexelSize).rgb, diff1));  \r\n      \r\n    float diff2 = dot(coefLuma, texture(uTexture, vUv + uTexelSize * vec2(1, -1)).rgb);  \r\n    diff2 = dot(vec4(coefLuma, -1.0), vec4(texture(uTexture, vUv + uTexelSize * vec2(-1, 1)).rgb, diff2));  \r\n\r\n    float edge = dot(vec2(diff1, diff2), vec2(diff1, diff2));  \r\n\r\n    vec3 result = clamp(pow(abs(edge), uEdgeSlope) * -uPower + color, 0.0, 1.0);  \r\n    fragColor = vec4(result, 1.0);  \r\n}";
+//#region src/Renderer/Effects/Shaders/GLSL/CommonUpsampling.fs?raw
+var CommonUpsampling_default;
+var init_CommonUpsampling = __esmMin((() => {
+	CommonUpsampling_default = "#version 300 es\r\nprecision mediump float;\r\nuniform sampler2D uSceneTexture;\r\n\r\nin vec2 vUv;\r\nout vec4 fragColor;\r\n\r\nvoid main() {\r\n	vec3 original = texture(uSceneTexture, vUv).rgb; \r\n	fragColor = vec4(original, 1.0);\r\n}";
 }));
 //#endregion
-//#region src/Renderer/Effects/Shaders/Cartoon.js
-var _program$12, _buffer$9, Cartoon;
-var init_Cartoon = __esmMin((() => {
+//#region src/Renderer/Effects/Shaders/Upsampling.js
+var _program$12, _buffer$9, Upsampling;
+var init_Upsampling = __esmMin((() => {
 	init_Graphics();
 	init_WebGL();
 	init_PostProcess();
 	init_Common();
-	init_Cartoon$1();
-	Cartoon = class Cartoon {
+	init_CommonUpsampling();
+	Upsampling = class Upsampling {
+		/**
+		* Renders the Upsampling effect
+		* @param {WebGLRenderingContext} gl - WebGL Context
+		* @param {WebGLTexture} inputTexture - Low resolution scene texture
+		* @param {WebGLFramebuffer} outputFramebuffer - Destination (Screen or next effect)
+		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$9 || !_program$12 || !Cartoon.isActive()) return;
+			if (!_buffer$9 || !_program$12 || !Upsampling.isActive()) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
 			gl.useProgram(_program$12);
-			gl.uniform1f(_program$12.uniform.uPower, GraphicsSettings.cartoonPower || 1.5);
-			gl.uniform1f(_program$12.uniform.uEdgeSlope, GraphicsSettings.cartoonEdgeSlope || 1.5);
-			gl.uniform2f(_program$12.uniform.uTexelSize, 1 / gl.canvas.width, 1 / gl.canvas.height);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$9);
 			const posLoc = _program$12.attribute.aPosition;
 			gl.enableVertexAttribArray(posLoc);
 			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.uniform1i(_program$12.uniform.uTexture, 0);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+			gl.uniform1i(_program$12.uniform.uSceneTexture, 0);
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 			PostProcess.afterRenderPass(gl);
 		}
+		/**
+		* Initializes shaders and buffers
+		*/
 		static init(gl) {
 			if (!gl) return;
 			try {
-				_program$12 = WebGL_default.createShaderProgram(gl, Common_default, Cartoon_default);
+				_program$12 = WebGL_default.createShaderProgram(gl, Common_default, CommonUpsampling_default);
 			} catch (e) {
-				console.error("Error compiling Cartoon shader.", e);
+				console.error("Error compiling Upsampling shader.", e);
 				return;
 			}
 			const quadVertices = new Float32Array([
@@ -265080,98 +265175,19 @@ var init_Cartoon = __esmMin((() => {
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$9);
 			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
 		}
-		static isActive() {
-			return GraphicsSettings.cartoonEnabled;
-		}
-		static program() {
-			return _program$12;
-		}
-		static clean(gl) {
-			if (_buffer$9) gl.deleteBuffer(_buffer$9);
-			_program$12 = _buffer$9 = null;
-		}
-	};
-}));
-//#endregion
-//#region src/Renderer/Effects/Shaders/GLSL/CommonUpsampling.fs?raw
-var CommonUpsampling_default;
-var init_CommonUpsampling = __esmMin((() => {
-	CommonUpsampling_default = "#version 300 es\r\nprecision mediump float;\r\nuniform sampler2D uSceneTexture;\r\n\r\nin vec2 vUv;\r\nout vec4 fragColor;\r\n\r\nvoid main() {\r\n	vec3 original = texture(uSceneTexture, vUv).rgb; \r\n	fragColor = vec4(original, 1.0);\r\n}";
-}));
-//#endregion
-//#region src/Renderer/Effects/Shaders/Upsampling.js
-var _program$11, _buffer$8, Upsampling;
-var init_Upsampling = __esmMin((() => {
-	init_Graphics();
-	init_WebGL();
-	init_PostProcess();
-	init_Common();
-	init_CommonUpsampling();
-	Upsampling = class Upsampling {
-		/**
-		* Renders the Upsampling effect
-		* @param {WebGLRenderingContext} gl - WebGL Context
-		* @param {WebGLTexture} inputTexture - Low resolution scene texture
-		* @param {WebGLFramebuffer} outputFramebuffer - Destination (Screen or next effect)
-		*/
-		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$8 || !_program$11 || !Upsampling.isActive()) return;
-			PostProcess.beforeRenderPass(gl, outputFbo);
-			gl.useProgram(_program$11);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$8);
-			const posLoc = _program$11.attribute.aPosition;
-			gl.enableVertexAttribArray(posLoc);
-			gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-			gl.activeTexture(gl.TEXTURE0);
-			gl.bindTexture(gl.TEXTURE_2D, inputTexture);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.uniform1i(_program$11.uniform.uSceneTexture, 0);
-			gl.drawArrays(gl.TRIANGLES, 0, 6);
-			PostProcess.afterRenderPass(gl);
-		}
-		/**
-		* Initializes shaders and buffers
-		*/
-		static init(gl) {
-			if (!gl) return;
-			try {
-				_program$11 = WebGL_default.createShaderProgram(gl, Common_default, CommonUpsampling_default);
-			} catch (e) {
-				console.error("Error compiling Upsampling shader.", e);
-				return;
-			}
-			const quadVertices = new Float32Array([
-				-1,
-				-1,
-				1,
-				-1,
-				-1,
-				1,
-				-1,
-				1,
-				1,
-				-1,
-				1,
-				1
-			]);
-			_buffer$8 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$8);
-			gl.bufferData(gl.ARRAY_BUFFER, quadVertices, gl.STATIC_DRAW);
-		}
 		/** @returns {boolean} always false here */
 		static isActive() {
 			return GraphicsSettings.performanceMode;
 		}
 		/** @returns {WebGLProgram} The loaded shader program (returning one for validation check) */
 		static program() {
-			return _program$11;
+			return _program$12;
 		}
 		/** Clears memory references */
 		static clean(gl) {
-			_program$11 = null;
-			if (_buffer$8) gl.deleteBuffer(_buffer$8);
-			_buffer$8 = null;
+			_program$12 = null;
+			if (_buffer$9) gl.deleteBuffer(_buffer$9);
+			_buffer$9 = null;
 		}
 	};
 }));
@@ -267252,7 +267268,7 @@ function endAuraBlend(gl, color) {
 var init_AuraBlend = __esmMin((() => {}));
 //#endregion
 //#region src/Renderer/Effects/SwirlingAura.js
-var mat4$10, _program$10, _modelMatrix, E_DIVISION, FULL_DISPLAY_ANGLE, DEG_TO_RAD$2, SwirlingAura;
+var mat4$10, _program$11, _modelMatrix, E_DIVISION, FULL_DISPLAY_ANGLE, DEG_TO_RAD$2, SwirlingAura;
 var init_SwirlingAura = __esmMin((() => {
 	init_SwirlingAura$2();
 	init_SwirlingAura$1();
@@ -267412,8 +267428,8 @@ var init_SwirlingAura = __esmMin((() => {
 		* Render all three bands
 		*/
 		render(gl, tick) {
-			const uniform = _program$10.uniform;
-			const attribute = _program$10.attribute;
+			const uniform = _program$11.uniform;
+			const attribute = _program$11.attribute;
 			const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
 			mat4$10.identity(_modelMatrix);
 			mat4$10.translate(_modelMatrix, _modelMatrix, [
@@ -267451,7 +267467,7 @@ var init_SwirlingAura = __esmMin((() => {
 		* Initialize static resources
 		*/
 		static init(gl) {
-			_program$10 = WebGL_default.createShaderProgram(gl, SwirlingAura_default$1, SwirlingAura_default);
+			_program$11 = WebGL_default.createShaderProgram(gl, SwirlingAura_default$1, SwirlingAura_default);
 			this.ready = true;
 			this.renderBeforeEntities = true;
 		}
@@ -267459,9 +267475,9 @@ var init_SwirlingAura = __esmMin((() => {
 		* Free static resources
 		*/
 		static free(gl) {
-			if (_program$10) {
-				gl.deleteProgram(_program$10);
-				_program$10 = null;
+			if (_program$11) {
+				gl.deleteProgram(_program$11);
+				_program$11 = null;
 			}
 			this.ready = false;
 		}
@@ -267469,9 +267485,9 @@ var init_SwirlingAura = __esmMin((() => {
 		* Before render setup
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$10.uniform;
+			const uniform = _program$11.uniform;
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-			gl.useProgram(_program$10);
+			gl.useProgram(_program$11);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -267486,8 +267502,8 @@ var init_SwirlingAura = __esmMin((() => {
 		*/
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.disableVertexAttribArray(_program$10.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$10.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$11.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$11.attribute.aTextureCoord);
 		}
 	};
 }));
@@ -267562,7 +267578,7 @@ function calculateSize(self, aura, auraAngle, i) {
 	const endY = sin * (aura[i].distance * .8 + riseFactor);
 	return [Math.abs(endX - startX), Math.abs(endY - startY)];
 }
-var _program$9, _buffer$7, GroundAura;
+var _program$10, _buffer$8, GroundAura;
 var init_GroundAura = __esmMin((() => {
 	init_GroundAura$2();
 	init_GroundAura$1();
@@ -267627,7 +267643,7 @@ var init_GroundAura = __esmMin((() => {
 			this.ready = false;
 		}
 		render(gl, tick) {
-			const uniform = _program$9.uniform;
+			const uniform = _program$10.uniform;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			const RAG_TICK_MS = 25;
 			const dt = Math.min(tick - (this._lastTick || tick), 250);
@@ -267680,10 +267696,10 @@ var init_GroundAura = __esmMin((() => {
 		* Initialize static resources
 		*/
 		static init(gl) {
-			_program$9 = WebGL_default.createShaderProgram(gl, GroundAura_default$1, GroundAura_default);
+			_program$10 = WebGL_default.createShaderProgram(gl, GroundAura_default$1, GroundAura_default);
 			const vertices = generateGroundQuad();
-			_buffer$7 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$7);
+			_buffer$8 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$8);
 			gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 			this.ready = true;
 			this.renderBeforeEntities = true;
@@ -267692,13 +267708,13 @@ var init_GroundAura = __esmMin((() => {
 		* Free static resources
 		*/
 		static free(gl) {
-			if (_program$9) {
-				gl.deleteProgram(_program$9);
-				_program$9 = null;
+			if (_program$10) {
+				gl.deleteProgram(_program$10);
+				_program$10 = null;
 			}
-			if (_buffer$7) {
-				gl.deleteBuffer(_buffer$7);
-				_buffer$7 = null;
+			if (_buffer$8) {
+				gl.deleteBuffer(_buffer$8);
+				_buffer$8 = null;
 			}
 			this.ready = false;
 		}
@@ -267706,10 +267722,10 @@ var init_GroundAura = __esmMin((() => {
 		* Before render setup
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$9.uniform;
-			const attribute = _program$9.attribute;
+			const uniform = _program$10.uniform;
+			const attribute = _program$10.attribute;
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-			gl.useProgram(_program$9);
+			gl.useProgram(_program$10);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -267718,7 +267734,7 @@ var init_GroundAura = __esmMin((() => {
 			gl.uniform3fv(uniform.uFogColor, fog.color);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.uniform1i(uniform.uDiffuse, 0);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$7);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$8);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
@@ -267729,8 +267745,8 @@ var init_GroundAura = __esmMin((() => {
 		*/
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.disableVertexAttribArray(_program$9.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$9.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$10.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$10.attribute.aTextureCoord);
 		}
 	};
 }));
@@ -267800,7 +267816,7 @@ function createAnchor(isGhost, seedMaxUnits) {
 		z: 0
 	};
 }
-var DEG_TO_RAD$1, GAME_TO_WORLD, NUM_COLUMNS, ANCHORS_PER_COL, BASE_LIFT$1, REF_RADIUS, REF_SPEED, REF_DRIFT_K, REF_SEED_MAX, REF_RESET_Y, REF_ALPHA_OFFSET, REF_ALPHA_GAIN, ANCHOR_SIGNS, ANCHOR_PHASE_OFFSETS, debugConfig, _program$8, _buffer$6, BILLBOARD_CORNERS, Level99Bubble;
+var DEG_TO_RAD$1, GAME_TO_WORLD, NUM_COLUMNS, ANCHORS_PER_COL, BASE_LIFT$1, REF_RADIUS, REF_SPEED, REF_DRIFT_K, REF_SEED_MAX, REF_RESET_Y, REF_ALPHA_OFFSET, REF_ALPHA_GAIN, ANCHOR_SIGNS, ANCHOR_PHASE_OFFSETS, debugConfig, _program$9, _buffer$7, BILLBOARD_CORNERS, Level99Bubble;
 var init_Level99Bubble = __esmMin((() => {
 	init_Level99Bubble$2();
 	init_Level99Bubble$1();
@@ -268043,7 +268059,7 @@ var init_Level99Bubble = __esmMin((() => {
 		}
 		render(gl, tick) {
 			if (!this.ready || !this.texture) return;
-			const uniform = _program$8.uniform;
+			const uniform = _program$9.uniform;
 			const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
 			const basePos = [
 				this.position[0] + .5,
@@ -268109,7 +268125,7 @@ var init_Level99Bubble = __esmMin((() => {
 			}
 		}
 		renderBackground(gl, basePos) {
-			const uniform = _program$8.uniform;
+			const uniform = _program$9.uniform;
 			const radius = this.baseRadius * GAME_TO_WORLD * debugConfig.bgRadiusFactor;
 			const height = this.seedMax * GAME_TO_WORLD;
 			function drawQuad(v0, v1, v2, v3) {
@@ -268239,29 +268255,29 @@ var init_Level99Bubble = __esmMin((() => {
 			gl.uniform1i(uniform.uSolidBg, 0);
 		}
 		static init(gl) {
-			_program$8 = WebGL_default.createShaderProgram(gl, Level99Bubble_default$1, Level99Bubble_default);
-			_buffer$6 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$6);
+			_program$9 = WebGL_default.createShaderProgram(gl, Level99Bubble_default$1, Level99Bubble_default);
+			_buffer$7 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$7);
 			gl.bufferData(gl.ARRAY_BUFFER, 120, gl.DYNAMIC_DRAW);
 			this.ready = true;
 			this.renderBeforeEntities = true;
 		}
 		static free(gl) {
-			if (_program$8) {
-				gl.deleteProgram(_program$8);
-				_program$8 = null;
+			if (_program$9) {
+				gl.deleteProgram(_program$9);
+				_program$9 = null;
 			}
-			if (_buffer$6) {
-				gl.deleteBuffer(_buffer$6);
-				_buffer$6 = null;
+			if (_buffer$7) {
+				gl.deleteBuffer(_buffer$7);
+				_buffer$7 = null;
 			}
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog) {
-			const uniform = _program$8.uniform;
-			const attribute = _program$8.attribute;
+			const uniform = _program$9.uniform;
+			const attribute = _program$9.attribute;
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-			gl.useProgram(_program$8);
+			gl.useProgram(_program$9);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -268271,7 +268287,7 @@ var init_Level99Bubble = __esmMin((() => {
 			gl.activeTexture(gl.TEXTURE0);
 			gl.uniform1i(uniform.uDiffuse, 0);
 			gl.uniform1i(uniform.uSolidBg, 0);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$6);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$7);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
@@ -268279,26 +268295,26 @@ var init_Level99Bubble = __esmMin((() => {
 		}
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.disableVertexAttribArray(_program$8.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$8.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$9.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$9.attribute.aTextureCoord);
 		}
 	};
 }));
 //#endregion
 //#region src/Renderer/Effects/MaxLevelAura.js
-function loadTexture$1(gl, name) {
-	if (_textures$1.has(name)) return;
-	_textures$1.set(name, null);
+function loadTexture$2(gl, name) {
+	if (_textures$2.has(name)) return;
+	_textures$2.set(name, null);
 	Client.loadFile(`data/texture/effect/${name}`, (buffer) => {
 		WebGL_default.texture(gl, buffer, (texture) => {
-			_textures$1.set(name, texture);
+			_textures$2.set(name, texture);
 		});
 	});
 }
 function bubbleName(frame) {
 	return `w_bubble${String(frame + 1).padStart(2, "0")}.tga`;
 }
-var DEG_TO_RAD, BASE_LIFT, BUBBLE_FRAMES, FRAME_MS, RINGS, GROUND_RINGS, CORNERS, _program$7, _buffer$5, _textures$1, MaxLevelAura;
+var DEG_TO_RAD, BASE_LIFT, BUBBLE_FRAMES, FRAME_MS, RINGS, GROUND_RINGS, CORNERS, _program$8, _buffer$6, _textures$2, MaxLevelAura;
 var init_MaxLevelAura = __esmMin((() => {
 	init_Level99Bubble$2();
 	init_Level99Bubble$1();
@@ -268358,7 +268374,7 @@ var init_MaxLevelAura = __esmMin((() => {
 			y: 1
 		}
 	];
-	_textures$1 = /* @__PURE__ */ new Map();
+	_textures$2 = /* @__PURE__ */ new Map();
 	MaxLevelAura = class {
 		/**
 		* @param {vec3} position entity position (kept by reference, so it follows)
@@ -268401,8 +268417,8 @@ var init_MaxLevelAura = __esmMin((() => {
 			];
 		}
 		init(gl) {
-			if (this.part === "rings") GROUND_RINGS.forEach((r) => loadTexture$1(gl, r.texture));
-			else for (let i = 0; i < BUBBLE_FRAMES; i++) loadTexture$1(gl, bubbleName(i));
+			if (this.part === "rings") GROUND_RINGS.forEach((r) => loadTexture$2(gl, r.texture));
+			else for (let i = 0; i < BUBBLE_FRAMES; i++) loadTexture$2(gl, bubbleName(i));
 			this.ready = true;
 		}
 		free() {
@@ -268438,7 +268454,7 @@ var init_MaxLevelAura = __esmMin((() => {
 		}
 		draw(gl, texture, alpha, zIndex) {
 			if (!texture) return;
-			const uniform = _program$7.uniform;
+			const uniform = _program$8.uniform;
 			gl.bindTexture(gl.TEXTURE_2D, texture);
 			gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.quadData);
 			gl.uniform4f(uniform.uColor, ...auraUniform(this.color, alpha, "alpha"));
@@ -268477,7 +268493,7 @@ var init_MaxLevelAura = __esmMin((() => {
 					this.points[k][2] = base[2] + x * sin + z * cos;
 				}
 				this.fillQuad(this.points);
-				this.draw(gl, _textures$1.get(ring.texture), 1, .002 * (i + 1));
+				this.draw(gl, _textures$2.get(ring.texture), 1, .002 * (i + 1));
 			}
 		}
 		renderBubbles(gl, base, elapsed) {
@@ -268507,37 +268523,37 @@ var init_MaxLevelAura = __esmMin((() => {
 					this.points[3][1] = base[1];
 					this.points[3][2] = z0;
 					this.fillQuad(this.points);
-					const texture = _textures$1.get(bubbleName((frame + b * 3 + r * 9) % BUBBLE_FRAMES));
+					const texture = _textures$2.get(bubbleName((frame + b * 3 + r * 9) % BUBBLE_FRAMES));
 					this.draw(gl, texture, .55, .01 + r * .002 + b * 1e-4);
 				}
 			}
 		}
 		static init(gl) {
-			_program$7 = WebGL_default.createShaderProgram(gl, Level99Bubble_default$1, Level99Bubble_default);
-			_buffer$5 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$5);
+			_program$8 = WebGL_default.createShaderProgram(gl, Level99Bubble_default$1, Level99Bubble_default);
+			_buffer$6 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$6);
 			gl.bufferData(gl.ARRAY_BUFFER, 120, gl.DYNAMIC_DRAW);
 			this.ready = true;
 			this.renderBeforeEntities = true;
 		}
 		static free(gl) {
-			if (_program$7) {
-				gl.deleteProgram(_program$7);
-				_program$7 = null;
+			if (_program$8) {
+				gl.deleteProgram(_program$8);
+				_program$8 = null;
 			}
-			if (_buffer$5) {
-				gl.deleteBuffer(_buffer$5);
-				_buffer$5 = null;
+			if (_buffer$6) {
+				gl.deleteBuffer(_buffer$6);
+				_buffer$6 = null;
 			}
-			for (const texture of _textures$1.values()) if (texture) gl.deleteTexture(texture);
-			_textures$1.clear();
+			for (const texture of _textures$2.values()) if (texture) gl.deleteTexture(texture);
+			_textures$2.clear();
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog) {
-			const uniform = _program$7.uniform;
-			const attribute = _program$7.attribute;
+			const uniform = _program$8.uniform;
+			const attribute = _program$8.attribute;
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-			gl.useProgram(_program$7);
+			gl.useProgram(_program$8);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -268547,7 +268563,7 @@ var init_MaxLevelAura = __esmMin((() => {
 			gl.activeTexture(gl.TEXTURE0);
 			gl.uniform1i(uniform.uDiffuse, 0);
 			gl.uniform1i(uniform.uSolidBg, 0);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$5);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$6);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
@@ -268555,8 +268571,8 @@ var init_MaxLevelAura = __esmMin((() => {
 		}
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.disableVertexAttribArray(_program$7.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$7.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$8.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$8.attribute.aTextureCoord);
 		}
 	};
 }));
@@ -268973,7 +268989,7 @@ var init_Tiles$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Tiles.js
-function loadTexture(gl, texture, cb) {
+function loadTexture$1(gl, texture, cb) {
 	const _texture = gl.createTexture();
 	Client.loadFile(texture.filename, function(buffer) {
 		Texture.load(buffer, function(canvas) {
@@ -269044,7 +269060,7 @@ var init_Tiles = __esmMin((() => {
 				0,
 				0
 			]), gl.STATIC_DRAW);
-			loadTexture(gl, {
+			loadTexture$1(gl, {
 				filename: textureFilename,
 				size
 			}, (texture) => {
@@ -269326,7 +269342,7 @@ var init_LockOnTarget$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/LockOnTarget.js
-var _texture$3, _program$6, _buffer$4, mat4$9, _matrix$3, LockOnTarget;
+var _texture$3, _program$7, _buffer$5, mat4$9, _matrix$3, LockOnTarget;
 var init_LockOnTarget = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
@@ -269371,9 +269387,9 @@ var init_LockOnTarget = __esmMin((() => {
 			time /= 50;
 			time = Math.max(time, 1);
 			time = Math.min(time, 5);
-			gl.uniform3fv(_program$6.uniform.uPosition, this.target.position);
-			gl.uniform1f(_program$6.uniform.uSize, (6 - time) * 3);
-			gl.uniform1f(_program$6.uniform.uColor, color);
+			gl.uniform3fv(_program$7.uniform.uPosition, this.target.position);
+			gl.uniform1f(_program$7.uniform.uSize, (6 - time) * 3);
+			gl.uniform1f(_program$7.uniform.uColor, color);
 			gl.drawArrays(gl.TRIANGLES, 0, 6);
 			this.needCleanUp = this.endTick < tick;
 		}
@@ -269383,9 +269399,9 @@ var init_LockOnTarget = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static init(gl) {
-			_program$6 = WebGL_default.createShaderProgram(gl, LockOnTarget_default$1, LockOnTarget_default);
-			_buffer$4 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$4);
+			_program$7 = WebGL_default.createShaderProgram(gl, LockOnTarget_default$1, LockOnTarget_default);
+			_buffer$5 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$5);
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 				-.5,
 				-.5,
@@ -269442,11 +269458,11 @@ var init_LockOnTarget = __esmMin((() => {
 				gl.deleteTexture(_texture$3);
 				_texture$3 = null;
 			}
-			if (_program$6) {
-				gl.deleteProgram(_program$6);
-				_program$6 = null;
+			if (_program$7) {
+				gl.deleteProgram(_program$7);
+				_program$7 = null;
 			}
-			if (_buffer$4) gl.deleteBuffer(_buffer$4);
+			if (_buffer$5) gl.deleteBuffer(_buffer$5);
 			this.ready = false;
 		}
 		/**
@@ -269455,11 +269471,11 @@ var init_LockOnTarget = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$6.uniform;
-			const attribute = _program$6.attribute;
+			const uniform = _program$7.uniform;
+			const attribute = _program$7.attribute;
 			mat4$9.identity(_matrix$3);
 			mat4$9.rotateY(_matrix$3, _matrix$3, tick / 4 / 180 * Math.PI);
-			gl.useProgram(_program$6);
+			gl.useProgram(_program$7);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix4fv(uniform.uRotationMat, false, _matrix$3);
@@ -269472,7 +269488,7 @@ var init_LockOnTarget = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$4);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$5);
 			gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 16, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 16, 8);
 		}
@@ -269482,8 +269498,8 @@ var init_LockOnTarget = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$6.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$6.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$7.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$7.attribute.aTextureCoord);
 		}
 	};
 	/**
@@ -269583,7 +269599,7 @@ function generateMagicRing() {
 	}
 	return new Float32Array(mesh);
 }
-var _program$5, _buffer$3, mat4$8, _matrix$2, _verticeCount$1, MagicRing;
+var _program$6, _buffer$4, mat4$8, _matrix$2, _verticeCount$1, MagicRing;
 var init_MagicRing = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -269629,12 +269645,12 @@ var init_MagicRing = __esmMin((() => {
 		* @param {object} wegl context
 		*/
 		render(gl, tick) {
-			const uniform = _program$5.uniform;
-			const attribute = _program$5.attribute;
+			const uniform = _program$6.uniform;
+			const attribute = _program$6.attribute;
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$3);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$4);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
 			gl.uniform3fv(uniform.uPosition, this.target.position);
@@ -269653,11 +269669,11 @@ var init_MagicRing = __esmMin((() => {
 		static init(gl) {
 			const vertices = generateMagicRing();
 			_verticeCount$1 = vertices.length / 5;
-			_program$5 = WebGL_default.createShaderProgram(gl, MagicRing_default$1, MagicRing_default);
-			_buffer$3 = gl.createBuffer();
+			_program$6 = WebGL_default.createShaderProgram(gl, MagicRing_default$1, MagicRing_default);
+			_buffer$4 = gl.createBuffer();
 			this.ready = true;
 			this.renderBeforeEntities = false;
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$3);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$4);
 			gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 		}
 		/**
@@ -269666,11 +269682,11 @@ var init_MagicRing = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
-			if (_program$5) {
-				gl.deleteProgram(_program$5);
-				_program$5 = null;
+			if (_program$6) {
+				gl.deleteProgram(_program$6);
+				_program$6 = null;
 			}
-			if (_buffer$3) gl.deleteBuffer(_buffer$3);
+			if (_buffer$4) gl.deleteBuffer(_buffer$4);
 			this.ready = false;
 		}
 		/**
@@ -269679,10 +269695,10 @@ var init_MagicRing = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$5.uniform;
+			const uniform = _program$6.uniform;
 			mat4$8.identity(_matrix$2);
 			mat4$8.rotateY(_matrix$2, _matrix$2, tick / 4 / 180 * Math.PI);
-			gl.useProgram(_program$5);
+			gl.useProgram(_program$6);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix4fv(uniform.uRotationMat, false, _matrix$2);
@@ -269699,8 +269715,8 @@ var init_MagicRing = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$5.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$5.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$6.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$6.attribute.aTextureCoord);
 		}
 	};
 }));
@@ -269718,7 +269734,7 @@ var init_MagicTarget$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/MagicTarget.js
-var _texture$2, _program$4, mat4$7, _matrix$1, CastSize, MagicTarget;
+var _texture$2, _program$5, mat4$7, _matrix$1, CastSize, MagicTarget;
 var init_MagicTarget = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -269982,9 +269998,9 @@ var init_MagicTarget = __esmMin((() => {
 		* @param {object} wegl context
 		*/
 		render(gl, tick) {
-			const attribute = _program$4.attribute;
+			const attribute = _program$5.attribute;
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-			gl.uniform1f(_program$4.uniform.uCameraLatitude, Camera.getLatitude());
+			gl.uniform1f(_program$5.uniform.uCameraLatitude, Camera.getLatitude());
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
 			gl.drawArrays(gl.TRIANGLES, 0, this.vertCount);
@@ -269996,7 +270012,7 @@ var init_MagicTarget = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static init(gl) {
-			_program$4 = WebGL_default.createShaderProgram(gl, MagicTarget_default$1, MagicTarget_default);
+			_program$5 = WebGL_default.createShaderProgram(gl, MagicTarget_default$1, MagicTarget_default);
 			Client.loadFile("data/texture/effect/magic_target.tga", (buffer) => {
 				WebGL_default.texture(gl, buffer, (texture) => {
 					_texture$2 = texture;
@@ -270014,9 +270030,9 @@ var init_MagicTarget = __esmMin((() => {
 				gl.deleteTexture(_texture$2);
 				_texture$2 = null;
 			}
-			if (_program$4) {
-				gl.deleteProgram(_program$4);
-				_program$4 = null;
+			if (_program$5) {
+				gl.deleteProgram(_program$5);
+				_program$5 = null;
 			}
 			this.ready = false;
 		}
@@ -270026,11 +270042,11 @@ var init_MagicTarget = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$4.uniform;
-			const attribute = _program$4.attribute;
+			const uniform = _program$5.uniform;
+			const attribute = _program$5.attribute;
 			mat4$7.identity(_matrix$1);
 			mat4$7.rotateZ(_matrix$1, _matrix$1, tick / 1e3 * 40 / 180 * Math.PI);
-			gl.useProgram(_program$4);
+			gl.useProgram(_program$5);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniformMatrix4fv(uniform.uRotationMat, false, _matrix$1);
@@ -270050,8 +270066,8 @@ var init_MagicTarget = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$4.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$4.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$5.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$5.attribute.aTextureCoord);
 		}
 	};
 	/**
@@ -270112,7 +270128,7 @@ function generatePropertyGround() {
 	}
 	return new Float32Array(mesh);
 }
-var _program$3, _buffer$2, mat4$6, _rotationMatrices$2, _verticeCount, _num, PropertyGround;
+var _program$4, _buffer$3, mat4$6, _rotationMatrices$2, _verticeCount, _num, PropertyGround;
 var init_PropertyGround = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -270165,15 +270181,15 @@ var init_PropertyGround = __esmMin((() => {
 		* @param {object} wegl context
 		*/
 		render(gl, tick) {
-			const uniform = _program$3.uniform;
-			const attribute = _program$3.attribute;
+			const uniform = _program$4.uniform;
+			const attribute = _program$4.attribute;
 			let sizeMult = Math.sin(tick / (360 * Math.PI) + this.sizeRandomize);
 			if (sizeMult < .5) sizeMult = .5;
 			gl.uniformMatrix4fv(uniform.uRotationMat, false, _rotationMatrices$2[this.ix]);
 			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$2);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$3);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
 			gl.uniform3fv(uniform.uPosition, this.position);
@@ -270190,11 +270206,11 @@ var init_PropertyGround = __esmMin((() => {
 		static init(gl) {
 			const vertices = generatePropertyGround();
 			_verticeCount = vertices.length / 5;
-			_program$3 = WebGL_default.createShaderProgram(gl, PropertyGround_default$1, PropertyGround_default);
-			_buffer$2 = gl.createBuffer();
+			_program$4 = WebGL_default.createShaderProgram(gl, PropertyGround_default$1, PropertyGround_default);
+			_buffer$3 = gl.createBuffer();
 			this.ready = true;
 			this.renderBeforeEntities = false;
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$2);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$3);
 			gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 		}
 		/**
@@ -270203,11 +270219,11 @@ var init_PropertyGround = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
-			if (_program$3) {
-				gl.deleteProgram(_program$3);
-				_program$3 = null;
+			if (_program$4) {
+				gl.deleteProgram(_program$4);
+				_program$4 = null;
 			}
-			if (_buffer$2) gl.deleteBuffer(_buffer$2);
+			if (_buffer$3) gl.deleteBuffer(_buffer$3);
 			this.ready = false;
 		}
 		/**
@@ -270216,7 +270232,7 @@ var init_PropertyGround = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$3.uniform;
+			const uniform = _program$4.uniform;
 			let _matrix, offset;
 			for (let i = 0, _len = _rotationMatrices$2.length; i < _len; i++) {
 				_matrix = _rotationMatrices$2[i];
@@ -270224,7 +270240,7 @@ var init_PropertyGround = __esmMin((() => {
 				offset = i * 2 * Math.PI / _rotationMatrices$2.length;
 				mat4$6.rotateY(_matrix, _matrix, offset + tick / 8 / 180 * Math.PI);
 			}
-			gl.useProgram(_program$3);
+			gl.useProgram(_program$4);
 			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 			gl.uniform1i(uniform.uFogUse, fog.use && fog.exist);
@@ -270240,8 +270256,8 @@ var init_PropertyGround = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static afterRender(gl) {
-			gl.disableVertexAttribArray(_program$3.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$3.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$4.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$4.attribute.aTextureCoord);
 		}
 	};
 }));
@@ -270298,7 +270314,7 @@ var init_SpiritSphere$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/SpiritSphere.js
-var _texture$1, _program$2, _buffer$1, mat4$5, _rotationMatrices$1, SpiritSphere;
+var _texture$1, _program$3, _buffer$2, mat4$5, _rotationMatrices$1, SpiritSphere;
 var init_SpiritSphere = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
@@ -270333,9 +270349,9 @@ var init_SpiritSphere = __esmMin((() => {
 			this.ready = false;
 		}
 		static init(gl) {
-			_program$2 = WebGL_default.createShaderProgram(gl, SpiritSphere_default$1, SpiritSphere_default);
-			_buffer$1 = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$1);
+			_program$3 = WebGL_default.createShaderProgram(gl, SpiritSphere_default$1, SpiritSphere_default);
+			_buffer$2 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$2);
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 				-1,
 				-1,
@@ -270386,17 +270402,17 @@ var init_SpiritSphere = __esmMin((() => {
 				gl.deleteTexture(_texture$1);
 				_texture$1 = null;
 			}
-			if (_program$2) {
-				gl.deleteProgram(_program$2);
-				_program$2 = null;
+			if (_program$3) {
+				gl.deleteProgram(_program$3);
+				_program$3 = null;
 			}
-			if (_buffer$1) gl.deleteBuffer(_buffer$1);
+			if (_buffer$2) gl.deleteBuffer(_buffer$2);
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$2.uniform;
-			const attribute = _program$2.attribute;
-			gl.useProgram(_program$2);
+			const uniform = _program$3.uniform;
+			const attribute = _program$3.attribute;
+			gl.useProgram(_program$3);
 			let _matrix, offset;
 			for (let i = 0, _len = _rotationMatrices$1.length; i < _len; i++) {
 				const vcRad = (Camera.angle[0] - 90) * Math.PI / 180;
@@ -270417,14 +270433,14 @@ var init_SpiritSphere = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$1);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$2);
 			gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 16, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 16, 8);
 		}
 		render(gl, tick) {
-			const uniform = _program$2.uniform;
+			const uniform = _program$3.uniform;
 			gl.uniform3fv(uniform.uPosition, this.position);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$1);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$2);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 			gl.uniform1f(uniform.uCameraZoom, Camera.zoom);
 			SpriteRenderer.runWithDepth(true, false, false, () => {
@@ -270519,8 +270535,8 @@ var init_SpiritSphere = __esmMin((() => {
 		}
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.disableVertexAttribArray(_program$2.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$2.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$3.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$3.attribute.aTextureCoord);
 		}
 	};
 	SpiritSphere.renderBeforeEntities = false;
@@ -270539,7 +270555,7 @@ var init_WarlockSphere$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/WarlockSphere.js
-var _texture, _program$1, _buffer, mat4$4, _rotationMatrices, WLS, SphereFiles, WarlockSphere;
+var _texture, _program$2, _buffer$1, mat4$4, _rotationMatrices, WLS, SphereFiles, WarlockSphere;
 var init_WarlockSphere = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
@@ -270584,9 +270600,9 @@ var init_WarlockSphere = __esmMin((() => {
 			this.ready = false;
 		}
 		static init(gl) {
-			_program$1 = WebGL_default.createShaderProgram(gl, WarlockSphere_default$1, WarlockSphere_default);
-			_buffer = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+			_program$2 = WebGL_default.createShaderProgram(gl, WarlockSphere_default$1, WarlockSphere_default);
+			_buffer$1 = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$1);
 			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 				-1,
 				-1,
@@ -270637,17 +270653,17 @@ var init_WarlockSphere = __esmMin((() => {
 				gl.deleteTexture(_texture);
 				_texture = null;
 			}
-			if (_program$1) {
-				gl.deleteProgram(_program$1);
-				_program$1 = null;
+			if (_program$2) {
+				gl.deleteProgram(_program$2);
+				_program$2 = null;
 			}
-			if (_buffer) gl.deleteBuffer(_buffer);
+			if (_buffer$1) gl.deleteBuffer(_buffer$1);
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog, tick) {
-			const uniform = _program$1.uniform;
-			const attribute = _program$1.attribute;
-			gl.useProgram(_program$1);
+			const uniform = _program$2.uniform;
+			const attribute = _program$2.attribute;
+			gl.useProgram(_program$2);
 			let _matrix, offset;
 			for (let i = 0, _len = _rotationMatrices.length; i < _len; i++) {
 				const vcRad = (Camera.angle[0] - 90) * Math.PI / 180;
@@ -270668,14 +270684,14 @@ var init_WarlockSphere = __esmMin((() => {
 			gl.uniform1i(uniform.uDiffuse, 0);
 			gl.enableVertexAttribArray(attribute.aPosition);
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$1);
 			gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 16, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 16, 8);
 		}
 		render(gl, tick) {
-			const uniform = _program$1.uniform;
+			const uniform = _program$2.uniform;
 			gl.uniform3fv(uniform.uPosition, this.position);
-			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$1);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 			gl.uniform1f(uniform.uCameraZoom, Camera.zoom);
 			let _matrix;
@@ -270770,8 +270786,8 @@ var init_WarlockSphere = __esmMin((() => {
 		}
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-			gl.disableVertexAttribArray(_program$1.attribute.aPosition);
-			gl.disableVertexAttribArray(_program$1.attribute.aTextureCoord);
+			gl.disableVertexAttribArray(_program$2.attribute.aPosition);
+			gl.disableVertexAttribArray(_program$2.attribute.aTextureCoord);
 		}
 	};
 	WarlockSphere.renderBeforeEntities = false;
@@ -309301,6 +309317,9 @@ function loadHatEffectInfo(onEnd) {
 				type: info.Type || 0,
 				pngLeft: info.PngFile_Left ? decodeLuaString(info.PngFile_Left) : null,
 				pngRight: info.PngFile_Right ? decodeLuaString(info.PngFile_Right) : null,
+				pngScale: info.Scale ?? 5,
+				pngAlpha: info.Aplha ?? 250,
+				pngDuration: info.Duration ?? 10,
 				strBottomLeft: info.StrFile_Bottom_Left ? decodeLuaString(info.StrFile_Bottom_Left) : null,
 				strBottomRight: info.StrFile_Bottom_Right ? decodeLuaString(info.StrFile_Bottom_Right) : null,
 				strTopLeft: info.StrFile_Top_Left ? decodeLuaString(info.StrFile_Top_Left) : null,
@@ -333880,6 +333899,18 @@ var init_AttackEffectTable = __esmMin((() => {
 	AE.SPAWN[JOB.ENTWEIHEN] = AE.SPAWN[JOB.G_ENTWEIHEN_R] = AE.SPAWN[JOB.G_ENTWEIHEN_H] = AE.SPAWN[JOB.G_ENTWEIHEN_M] = AE.SPAWN[JOB.G_ENTWEIHEN_S] = AE.SPAWN[JOB.VH_ENTWEIHEN] = AE.SPAWN[JOB.VH_ENTWEIHEN_R] = AE.SPAWN[JOB.VH_ENTWEIHEN_H] = AE.SPAWN[JOB.VH_ENTWEIHEN_M] = AE.SPAWN[JOB.VH_ENTWEIHEN_S] = AE.SPAWN[JOB.MD_G_ENTWEIHEN_M] = "ef_entweihen_attack";
 }));
 //#endregion
+//#region src/Renderer/Effects/FootprintDecal.vs?raw
+var FootprintDecal_default$1;
+var init_FootprintDecal$1 = __esmMin((() => {
+	FootprintDecal_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin float aCorner;\r\nin vec2 aTextureCoord;\r\n\r\nout vec2 vTextureCoord;\r\n\r\nuniform mat4 uModelViewMat;\r\nuniform mat4 uProjectionMat;\r\nuniform vec3 uCorners[4];\r\n\r\nvoid main(void) {\r\n	gl_Position = uProjectionMat * uModelViewMat * vec4(uCorners[int(aCorner)], 1.0);\r\n	vTextureCoord = aTextureCoord;\r\n}\r\n";
+}));
+//#endregion
+//#region src/Renderer/Effects/FootprintDecal.fs?raw
+var FootprintDecal_default;
+var init_FootprintDecal = __esmMin((() => {
+	FootprintDecal_default = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec2 vTextureCoord;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\nuniform float uAlpha;\r\n\r\nvoid main(void) {\r\n	vec4 texel = texture(uDiffuse, vTextureCoord);\r\n	fragColor = vec4(texel.rgb, texel.a * uAlpha);\r\n\r\n	if (fragColor.a == 0.0) {\r\n		discard;\r\n	}\r\n}\r\n";
+}));
+//#endregion
 //#region src/Renderer/Effects/Footprints.js
 /**
 * Whether a print is due: the squared distance walked since the last one, in
@@ -333930,6 +333961,60 @@ function screenAngle(from, to, modelView) {
 	const sy = modelView[1] * vx + modelView[9] * vz;
 	return Math.atan2(sy, sx) * 180 / Math.PI - 90;
 }
+/**
+* A PNG print's corners: a square `scale` world units from the centre to each
+* side, at `position`, its top facing the step from `from` to `to`. Each corner
+* stands DECAL_LIFT above `heightAt` it.
+*
+* @param {number[]} position x, y in cells
+* @param {number[]} from
+* @param {number[]} to
+* @param {number} scale
+* @param {function} heightAt (x, y) => ground height there
+* @return {Float32Array} top left, top right, bottom left, bottom right, each
+*   x, y, z as roBrowser draws the world: x, -height, y, plus half a cell
+*/
+function decalCorners(position, from, to, scale, heightAt) {
+	const dx = to[0] - from[0];
+	const dy = to[1] - from[1];
+	const length = Math.sqrt(dx * dx + dy * dy) || 1;
+	const half = scale / UNITS_PER_CELL;
+	const fx = dx / length * half;
+	const fy = dy / length * half;
+	const rx = fy;
+	const ry = -fx;
+	const corners = /* @__PURE__ */ new Float32Array(12);
+	[
+		[-1, 1],
+		[1, 1],
+		[-1, -1],
+		[1, -1]
+	].forEach(([u, v], i) => {
+		const x = position[0] + u * rx + v * fx;
+		const y = position[1] + u * ry + v * fy;
+		corners[i * 3 + 0] = x + .5;
+		corners[i * 3 + 1] = -(heightAt(x, y) + DECAL_LIFT / UNITS_PER_CELL);
+		corners[i * 3 + 2] = y + .5;
+	});
+	return corners;
+}
+/**
+* A PNG print's alpha, out of 1, `elapsed` ms after it was dropped.
+*
+* @param {number} alpha out of 255
+* @param {number} duration in seconds
+* @param {number} elapsed in ms
+* @return {number}
+*/
+function decalAlpha(alpha, duration, elapsed) {
+	return Math.max(0, alpha / 255 * (1 - elapsed / (duration * 1e3)));
+}
+function loadTexture(gl, filename) {
+	if (!_textures$1.has(filename)) _textures$1.set(filename, new Promise((resolve) => {
+		Client.loadFile(filename, (buffer) => WebGL_default.texture(gl, buffer, resolve));
+	}));
+	return _textures$1.get(filename);
+}
 /** The path a footprint's STR is loaded by, and its texture folder. */
 function strPath(file) {
 	const path = file.replace(/\\/g, "/");
@@ -333960,15 +334045,23 @@ function startFootprints(entity, id, info) {
 	};
 	return true;
 }
-var UNITS_PER_CELL, STR_SCALE, FootprintStrEffect, FootprintTrail;
+var UNITS_PER_CELL, STR_SCALE, DECAL_LIFT, FootprintStrEffect, _program$1, _buffer, _textures$1, FootprintDecal, FootprintTrail;
 var init_Footprints = __esmMin((() => {
+	init_FootprintDecal$1();
+	init_FootprintDecal();
 	init_StrEffect();
 	init_EffectManager();
 	init_EntityManager();
 	init_Altitude();
 	init_Camera();
+	init_SpriteRenderer();
+	init_Client();
+	init_WebGL();
+	init_SessionStorage();
+	init_Map();
 	UNITS_PER_CELL = 5;
 	STR_SCALE = 35 / UNITS_PER_CELL;
+	DECAL_LIFT = 2;
 	FootprintStrEffect = class extends StrEffect {
 		constructor(filename, position, startTick, texturePath, scale, angle) {
 			super(filename, position, startTick, texturePath);
@@ -333988,6 +334081,94 @@ var init_Footprints = __esmMin((() => {
 				pos: [320 + ox * cos + oy * sin, 320 - ox * sin + oy * cos],
 				angle: animat.angle + this.angle
 			});
+		}
+	};
+	_program$1 = null;
+	_buffer = null;
+	_textures$1 = /* @__PURE__ */ new Map();
+	FootprintDecal = class {
+		static renderBeforeEntities = true;
+		/**
+		* @param {string} file the PNG, under data/texture/effect/
+		* @param {Float32Array} corners decalCorners'
+		* @param {number} startTick
+		* @param {number} alpha out of 255
+		* @param {number} duration in seconds
+		*/
+		constructor(file, corners, startTick, alpha, duration) {
+			this.filename = "data/texture/effect/" + file.replace(/\\/g, "/");
+			this.corners = corners;
+			this.startTick = startTick;
+			this.alpha = alpha;
+			this.duration = duration;
+		}
+		init(gl) {
+			loadTexture(gl, this.filename).then((texture) => {
+				this.texture = texture;
+				this.ready = true;
+			});
+		}
+		render(gl, tick) {
+			const alpha = decalAlpha(this.alpha, this.duration, tick - this.startTick);
+			if (alpha <= 0) {
+				this.needCleanUp = true;
+				return;
+			}
+			const uniform = _program$1.uniform;
+			gl.bindTexture(gl.TEXTURE_2D, this.texture);
+			gl.uniform3fv(uniform["uCorners[0]"], this.corners);
+			gl.uniform1f(uniform.uAlpha, alpha);
+			SpriteRenderer.runWithDepth(true, false, false, () => gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4));
+		}
+		static init(gl) {
+			_program$1 = WebGL_default.createShaderProgram(gl, FootprintDecal_default$1, FootprintDecal_default);
+			_buffer = gl.createBuffer();
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+				0,
+				0,
+				0,
+				1,
+				1,
+				0,
+				2,
+				0,
+				1,
+				3,
+				1,
+				1
+			]), gl.STATIC_DRAW);
+			this.ready = true;
+		}
+		static free(gl) {
+			if (_program$1) {
+				gl.deleteProgram(_program$1);
+				_program$1 = null;
+			}
+			if (_buffer) {
+				gl.deleteBuffer(_buffer);
+				_buffer = null;
+			}
+			this.ready = false;
+		}
+		static beforeRender(gl, modelView, projection) {
+			const uniform = _program$1.uniform;
+			const attribute = _program$1.attribute;
+			gl.useProgram(_program$1);
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+			gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
+			gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
+			gl.activeTexture(gl.TEXTURE0);
+			gl.uniform1i(uniform.uDiffuse, 0);
+			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+			gl.enableVertexAttribArray(attribute.aCorner);
+			gl.enableVertexAttribArray(attribute.aTextureCoord);
+			gl.vertexAttribPointer(attribute.aCorner, 1, gl.FLOAT, false, 12, 0);
+			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 12, 4);
+		}
+		static afterRender(gl) {
+			gl.disableVertexAttribArray(_program$1.attribute.aCorner);
+			gl.disableVertexAttribArray(_program$1.attribute.aTextureCoord);
 		}
 	};
 	FootprintTrail = class {
@@ -334013,6 +334194,10 @@ var init_Footprints = __esmMin((() => {
 				return;
 			}
 			const to = owner.position;
+			if (Map_default.footprintmine && owner !== SessionStorage_default.Entity) {
+				this.last = to.slice(0, 3);
+				return;
+			}
 			if (!strideReached(this.last, to, this.info.stride)) return;
 			this.drop(this.last, to, tick);
 			this.last = to.slice(0, 3);
@@ -334021,6 +334206,10 @@ var init_Footprints = __esmMin((() => {
 		/** One print, for the step from `from` to `to`. */
 		drop(from, to, tick) {
 			const info = this.info;
+			if (info.type === 3) {
+				this.dropPng(from, to, tick);
+				return;
+			}
 			if (info.type !== 4) return;
 			const [x, y] = printPosition(from, to, info.gap, this.left);
 			const ground = Altitude.getCellHeight(x, y);
@@ -334039,6 +334228,20 @@ var init_Footprints = __esmMin((() => {
 				y,
 				ground + info.heightTop / UNITS_PER_CELL
 			], tick, info.scaleTop, 0);
+		}
+		dropPng(from, to, tick) {
+			const info = this.info;
+			const file = this.left ? info.pngLeft : info.pngRight;
+			if (!file || info.pngScale <= 0) return;
+			const corners = decalCorners(to, from, to, info.pngScale, (x, y) => Altitude.getCellHeight(x, y));
+			const decal = new FootprintDecal(file, corners, tick, info.pngAlpha, info.pngDuration);
+			EffectManager.add(decal, {
+				Inst: {
+					effectID: -1,
+					startTick: tick
+				},
+				Init: { ownerAID: null }
+			});
 		}
 		spawn(file, position, tick, scale, angle) {
 			const { filename, texturePath } = strPath(file);
