@@ -267048,21 +267048,30 @@ var init_SwirlingAura$1 = __esmMin((() => {
 * three parts and the high-level aura (MaxLevelAura).
 *
 * The auras add light (SRC_ALPHA, ONE), which can make any colour but black:
-* black added is nothing. A dark colour (AuraTiers.auraColor marks it) is
-* drawn by darkening what is behind instead, and how depends on the texture's
-* shape:
+* black added is nothing. Two kinds of colour are drawn otherwise:
+*
+* - a hat-effect aura's (`hat`, which LevelAuraEffects sets): the client draws
+*   the coloured level-99 and level-160 hat auras with alpha blending, in any
+*   colour, where its level auras add light. An iRO Ragexe.exe (October 2026)
+*   sets that blending (5/6) for effects 1164-1183, 1291, 1292, 1325-1346 and
+*   2281-2284, beside their colour.
+* - a dark one (AuraTiers.auraColor marks it): black added would be nothing.
+*
+* How depends on the texture's shape:
 *
 * - 'alpha': a texture shaped by its alpha channel, bright in every pixel
 *   (ring_blue.tga, whitelight.tga, cir0002.tga). It is drawn in its own
-*   colour with alpha blending (SRC_ALPHA, ONE_MINUS_SRC_ALPHA), the blending
-*   the client gives its coloured hat-effect auras. Darkening by its colour
-*   instead would darken the whole quad, and tint it with the opposite of the
-*   texture's colour.
+*   colour with alpha blending (SRC_ALPHA, ONE_MINUS_SRC_ALPHA). Darkening by
+*   its colour instead would darken the whole quad, and tint it with the
+*   opposite of the texture's colour.
 * - 'brightness': a texture with no alpha, shaped by how bright it is on black
-*   (pikapika2.bmp). It darkens what is behind by that brightness
-*   (ZERO, ONE_MINUS_SRC_COLOR), which its shader gives as grey (uDarken in
-*   GroundAura.fs): darkening by the texture's own colour would leave the
-*   opposite colour behind, an orange fringe for pikapika2's blue.
+*   (pikapika2.bmp), which alpha blending would draw as a square. A hat colour
+*   keeps adding light; the client gives its hat auras a ready-coloured
+*   texture with alpha here instead (GroundAura's), and this is the fallback
+*   for a client without one. A dark colour darkens what is behind by that
+*   brightness (ZERO, ONE_MINUS_SRC_COLOR), which its shader gives as grey
+*   (uDarken in GroundAura.fs): darkening by the texture's own colour would
+*   leave the opposite colour behind, an orange fringe for pikapika2's blue.
 *
 * This file is part of ROBrowser, (http://www.robrowser.com/).
 */
@@ -267089,23 +267098,22 @@ function auraUniform(color, alpha, shape = "brightness") {
 }
 /**
 * Switch to the blending `color` needs before drawing it. A no-op for every
-* colour but a dark one.
+* colour but a hat aura's or a dark one.
 *
 * @param {WebGL2RenderingContext} gl
-* @param {{dark: boolean}} color
+* @param {{dark: boolean, hat: boolean}} color
 * @param {string} [shape] 'alpha' or 'brightness' (the default): see above
 */
 function beginAuraBlend(gl, color, shape = "brightness") {
-	if (color && color.dark) {
-		if (shape === "alpha") gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-		else gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
-	}
+	if (!color) return;
+	if (shape === "alpha" && (color.hat || color.dark)) gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	else if (shape !== "alpha" && color.dark) gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
 }
 /**
 * Put back the additive blending the auras share, after beginAuraBlend.
 */
 function endAuraBlend(gl, color) {
-	if (color && color.dark) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+	if (color && (color.hat || color.dark)) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 }
 var init_AuraBlend = __esmMin((() => {}));
 //#endregion
@@ -267432,8 +267440,11 @@ var init_GroundAura = __esmMin((() => {
 	GroundAura = class {
 		/**
 		* @param {object} color optional tint from AuraTiers.auraColor; white when left out
+		* @param {object} [fallback] makes `textureName` a ready-coloured texture
+		*   with alpha, drawn as it is (the client's pikapika_<colour>.tga for a hat
+		*   aura); {textureName, color} is drawn instead by a client without it
 		*/
-		constructor(position, size, distance, textureName, tick, color) {
+		constructor(position, size, distance, textureName, tick, color, fallback) {
 			this.color = color || {
 				r: 1,
 				g: 1,
@@ -267442,6 +267453,8 @@ var init_GroundAura = __esmMin((() => {
 			};
 			this.position = position;
 			this.textureName = textureName;
+			this.fallback = fallback || null;
+			this.shape = this.fallback ? "alpha" : "brightness";
 			this.tick = tick;
 			this.distance = distance;
 			this.size = size;
@@ -267471,12 +267484,20 @@ var init_GroundAura = __esmMin((() => {
 		* Initialize instance
 		*/
 		init(gl) {
+			const onerror = () => {
+				if (!this.fallback) return;
+				this.textureName = this.fallback.textureName;
+				this.color = this.fallback.color;
+				this.fallback = null;
+				this.shape = "brightness";
+				this.init(gl);
+			};
 			Client.loadFile(`data/texture/effect/${this.textureName}`, (buffer) => {
 				WebGL_default.texture(gl, buffer, (texture) => {
 					this.texture = texture;
 					this.ready = true;
 				});
-			});
+			}, onerror);
 		}
 		/**
 		* Free instance resources
@@ -267519,15 +267540,15 @@ var init_GroundAura = __esmMin((() => {
 			];
 			gl.uniform3fv(uniform.uWorldPosition, worldPos);
 			const self = this;
-			beginAuraBlend(gl, this.color);
+			beginAuraBlend(gl, this.color, this.shape);
 			SpriteRenderer.runWithDepth(true, false, false, function() {
 				for (let i = 0; i < self.aura.length; i++) {
 					if (!self.aura[i].life) continue;
 					const auraAngle = i * 23;
 					gl.uniform2f(uniform.uSize, self.aura[i].size[0], self.aura[i].size[1]);
 					gl.uniform1f(uniform.uAngle, auraAngle * Math.PI / 180);
-					gl.uniform4f(uniform.uColor, ...auraUniform(self.color, .8));
-					gl.uniform1i(uniform.uDarken, !!(self.color && self.color.dark));
+					gl.uniform4f(uniform.uColor, ...auraUniform(self.color, .8, self.shape));
+					gl.uniform1i(uniform.uDarken, !!(self.color && self.color.dark && self.shape !== "alpha"));
 					gl.uniform1f(uniform.uZIndex, 1 + i);
 					gl.drawArrays(gl.TRIANGLES, 0, 6);
 				}
@@ -268670,52 +268691,60 @@ var init_AuraTiers = __esmMin((() => {
 }));
 //#endregion
 //#region src/DB/Effects/LevelAuraEffects.js
+/** A hat aura's colour, which AuraBlend.js alpha-blends. */
+function hatColor(color) {
+	return color && {
+		...color,
+		hat: true
+	};
+}
 /**
 * One part of the high-level aura: 'bubbles' for a main effect, 'rings' for a
-* _SUB one.
+* _SUB one. `hat` for a hat aura's.
 */
-function maxPart(part, rgb) {
+function maxPart(part, rgb, hat) {
 	return {
 		type: "FUNC",
 		attachedEntity: true,
 		func: function(Params) {
-			this.add(new MaxLevelAura(Params.Init.ownerEntity.position, part, Params.Init.auraColor || auraColor(rgb), Params.Inst.startTick), Params);
+			const color = Params.Init.auraColor || auraColor(rgb);
+			this.add(new MaxLevelAura(Params.Init.ownerEntity.position, part, hat ? hatColor(color) : color, Params.Inst.startTick), Params);
 		}
 	};
 }
-/** The level-99 aura's three parts (EF_LEVEL99, _2 and _3), in one colour. */
-function classic(rgb) {
-	const color = (Params) => Params.Init.auraColor || auraColor(rgb);
-	return [
-		{
-			type: "FUNC",
-			attachedEntity: true,
-			func: function(Params) {
-				this.add(new SwirlingAura(Params.Init.ownerEntity.position, "ring_blue.tga", Params.Inst.startTick, void 0, color(Params)), Params);
-			}
-		},
-		{
-			type: "FUNC",
-			attachedEntity: true,
-			func: function(Params) {
-				this.add(new GroundAura(Params.Init.ownerEntity.position, 100, 15, "pikapika2.bmp", Params.Inst.startTick, color(Params)), Params);
-			}
-		},
-		{
-			type: "FUNC",
-			attachedEntity: true,
-			func: function(Params) {
-				this.add(new Level99Bubble(Params.Init.ownerEntity.position, "whitelight.tga", Params.Inst.startTick, 1, color(Params)), Params);
-			}
+/**
+* A coloured level-99 hat aura, in `rgb`: the ring and the ground. `ground`
+* names the client's texture for it, pikapika_<ground>.tga.
+*/
+function classic(rgb, ground) {
+	const color = (Params) => hatColor(Params.Init.auraColor || auraColor(rgb));
+	return [{
+		type: "FUNC",
+		attachedEntity: true,
+		func: function(Params) {
+			this.add(new SwirlingAura(Params.Init.ownerEntity.position, "ring_blue.tga", Params.Inst.startTick, void 0, color(Params)), Params);
 		}
-	];
+	}, {
+		type: "FUNC",
+		attachedEntity: true,
+		func: function(Params) {
+			this.add(Params.Init.auraColor ? new GroundAura(Params.Init.ownerEntity.position, 100, 15, "pikapika2.bmp", Params.Inst.startTick, color(Params)) : new GroundAura(Params.Init.ownerEntity.position, 100, 15, `pikapika_${ground}.tga`, Params.Inst.startTick, hatColor({
+				r: 1,
+				g: 1,
+				b: 1,
+				dark: false
+			}), {
+				textureName: "pikapika2.bmp",
+				color: color(Params)
+			}), Params);
+		}
+	}];
 }
-var COLOR_ORDER, table, high;
+var COLOR_ORDER, JOB_GROUNDS, high, table;
 var init_LevelAuraEffects = __esmMin((() => {
 	init_MaxLevelAura();
 	init_SwirlingAura();
 	init_GroundAura();
-	init_Level99Bubble();
 	init_AuraTiers();
 	COLOR_ORDER = [
 		"red",
@@ -268729,6 +268758,20 @@ var init_LevelAuraEffects = __esmMin((() => {
 		"black",
 		"white"
 	];
+	JOB_GROUNDS = [
+		"rune_knight_red",
+		"royal_guard_blue",
+		"warlock_violet",
+		"sorcerer_light_blue",
+		"ranger_green",
+		"minstrel_pink",
+		"archbishop_white",
+		"guillotine_cross_silver",
+		"shadow_chaser_black",
+		"mechanic_gold",
+		"genetic_yellowgreen"
+	];
+	high = (rgb) => [maxPart("bubbles", rgb, true), maxPart("rings", rgb, true)];
 	table = {
 		881: [maxPart("bubbles", TIER_COLORS[150]), maxPart("rings", TIER_COLORS[150])],
 		978: [maxPart("bubbles", TIER_COLORS[150])],
@@ -268741,19 +268784,18 @@ var init_LevelAuraEffects = __esmMin((() => {
 		2276: [maxPart("rings", TIER_COLORS.fourth)]
 	};
 	COLOR_ORDER.forEach((name, i) => {
-		table[1164 + i] = classic(NAMED_COLORS[name]);
-		table[1174 + i] = [maxPart("bubbles", NAMED_COLORS[name]), maxPart("rings", NAMED_COLORS[name])];
+		table[1164 + i] = classic(NAMED_COLORS[name], name);
+		table[1174 + i] = high(NAMED_COLORS[name]);
 	});
-	high = (rgb) => [maxPart("bubbles", rgb), maxPart("rings", rgb)];
 	JOB_COLORS.forEach((rgb, i) => {
-		table[1325 + i] = classic(rgb);
+		table[1325 + i] = classic(rgb, JOB_GROUNDS[i]);
 		table[1336 + i] = high(rgb);
 	});
-	table[1291] = classic(TIGER_COLOR);
+	table[1291] = classic(TIGER_COLOR, "tiger");
 	table[1292] = high(TIGER_COLOR);
-	table[2281] = classic(STAR_SOUL_COLORS.midnight_blue_99);
+	table[2281] = classic(STAR_SOUL_COLORS.midnight_blue_99, "midnight_blue");
 	table[2282] = high(STAR_SOUL_COLORS.midnight_blue_160);
-	table[2283] = classic(STAR_SOUL_COLORS.gray);
+	table[2283] = classic(STAR_SOUL_COLORS.gray, "gray");
 	table[2284] = high(STAR_SOUL_COLORS.gray);
 }));
 //#endregion
