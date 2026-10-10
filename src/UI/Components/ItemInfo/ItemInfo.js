@@ -188,18 +188,24 @@ ItemInfo.setItem = function setItem(item) {
 	const optionContainer = root.querySelector('.option-container');
 
 	this.item = it;
-	Client.loadFile(
+	// The window is reused from item to item: clear the last item's picture, so
+	// one this client's data lacks shows none rather than the previous item's,
+	// and drop an answer that arrives after another item has been opened.
+	const collectionPath =
 		DB.INTERFACE_PATH +
-			'collection/' +
-			(item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) +
-			'.bmp',
-		data => {
-			const collection = root.querySelector('.collection');
-			if (collection) {
-				collection.style.backgroundImage = `url(${data})`;
-			}
+		'collection/' +
+		(item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) +
+		'.bmp';
+	const collection = root.querySelector('.collection');
+	if (collection) {
+		collection.style.backgroundImage = '';
+		collection.dataset.src = collectionPath;
+	}
+	Client.loadFile(collectionPath, data => {
+		if (collection && collection.dataset.src === collectionPath) {
+			collection.style.backgroundImage = `url(${data})`;
 		}
-	);
+	});
 
 	const itemName = DB.getItemName(item, { showItemOptions: false });
 
