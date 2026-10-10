@@ -32,6 +32,16 @@ describe('BodyGlow', () => {
 		glow.render();
 		expect(glow.needCleanUp).toBe(true);
 	});
+
+	it('ends at its end tick, if it has one', () => {
+		const glow = new BodyGlow(current, 1000);
+		glow.render(null, 999);
+		expect(glow.needCleanUp).toBeUndefined();
+		glow.render(null, 1000);
+		expect(glow.needCleanUp).toBe(true);
+		glow.free();
+		expect(current._additiveBody).toBe(0);
+	});
 });
 
 describe('BodyEffects', () => {
@@ -39,10 +49,36 @@ describe('BodyEffects', () => {
 		for (const id of [1065, 1131]) {
 			const added = [];
 			const owner = { GID: 1 };
-			BodyEffects[id].forEach(part => part.func.call({ add: e => added.push(e) }, { Init: { ownerEntity: owner } }));
+			BodyEffects[id].forEach(part =>
+				part.func.call(
+					{ add: e => added.push(e) },
+					{ Init: { ownerEntity: owner }, Inst: { persistent: true, startTick: 0 } }
+				)
+			);
 			expect(added, `effect ${id}`).toHaveLength(1);
 			expect(added[0]).toBeInstanceOf(BodyGlow);
 			expect(owner._additiveBody).toBe(1);
 		}
+	});
+
+	it('lasts until removed as a hat effect, and 9999 client frames as a one-shot', () => {
+		const spawn = persistent => {
+			const added = [];
+			BodyEffects[1065][0].func.call(
+				{ add: e => added.push(e) },
+				{ Init: { ownerEntity: current }, Inst: { persistent, startTick: 500 } }
+			);
+			return added[0];
+		};
+
+		const hat = spawn(true);
+		hat.render(null, 1e9);
+		expect(hat.needCleanUp).toBeUndefined();
+
+		const once = spawn(false);
+		once.render(null, 500 + 9999 * 25 - 1);
+		expect(once.needCleanUp).toBeUndefined();
+		once.render(null, 500 + 9999 * 25);
+		expect(once.needCleanUp).toBe(true);
 	});
 });

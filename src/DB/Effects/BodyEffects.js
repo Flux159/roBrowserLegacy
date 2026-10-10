@@ -13,6 +13,13 @@
 
 import BodyGlow from 'Renderer/Effects/BodyGlow.js';
 
+/**
+ * How long a one-shot EF_WHITEBODY lasts: the client gives effect 1065 9999
+ * frames in its per-type duration table, at 25ms a frame. A hat effect is
+ * persistent and lasts until the hat effect is removed.
+ */
+const ONE_SHOT_MS = 9999 * 25;
+
 /** The owner's body drawn by adding light while the effect is on. */
 function additiveBody() {
 	return [
@@ -20,7 +27,8 @@ function additiveBody() {
 			type: 'FUNC',
 			attachedEntity: true,
 			func: function (Params) {
-				this.add(new BodyGlow(Params.Init.ownerEntity), Params);
+				const endTick = Params.Inst.persistent ? null : Params.Inst.startTick + ONE_SHOT_MS;
+				this.add(new BodyGlow(Params.Init.ownerEntity, endTick), Params);
 			}
 		}
 	];
