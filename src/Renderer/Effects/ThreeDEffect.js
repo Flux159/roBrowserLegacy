@@ -420,6 +420,7 @@ class ThreeDEffect {
 		} else {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 		}
+		SpriteRenderer.fogToBlack(this.blendMode === 2);
 
 		const start = tick - this.startTick;
 		const end = this.endTick - this.startTick;
@@ -799,6 +800,7 @@ class ThreeDEffect {
 
 	static afterRender(gl) {
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		SpriteRenderer.fogToBlack(false);
 		SpriteRenderer.unbind(gl);
 	}
 }
