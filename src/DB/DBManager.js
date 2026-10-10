@@ -5335,7 +5335,8 @@ function loadItemInfo(filename, callback, onEnd) {
 				};
 				// A table is what this file defines, not what the previous one left
 				// behind. Empty rather than nil, so `tbl[30000] = {...}` still works.
-				lua.doStringSync('tbl = {} tbl_custom = {} tbl_override = {}');
+				// Deduplicate inside this file; later item tables may override it.
+				lua.doStringSync('tbl = {} tbl_custom = {} tbl_override = {} _processedItems = {}');
 				// mount file
 				lua.mountFile(filename, buffer);
 				// execute file
