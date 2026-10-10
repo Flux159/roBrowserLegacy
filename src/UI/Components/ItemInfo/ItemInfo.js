@@ -33,6 +33,7 @@ import PACKET from 'Network/PacketStructure.js';
 import Entity from 'Renderer/Entity/Entity.js';
 import Equipment from 'UI/Components/Equipment/Equipment.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
+import Navigation from 'UI/Components/Navigation/Navigation.js';
 import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
@@ -173,6 +174,25 @@ ItemInfo.init = function init() {
 		});
 	}
 
+	// A place named in the description opens the navigation to it
+	const descInner = root.querySelector('.description-inner');
+	if (descInner) {
+		descInner.addEventListener('click', e => {
+			const naviLink = e.target.closest('.navi-link');
+			if (!naviLink || !naviLink.dataset.naviInfo) {
+				return;
+			}
+			const naviInfo = naviLink.dataset.naviInfo;
+			if (Navigation.uid === naviInfo && Navigation._host && Navigation._host.style.display !== 'none') {
+				Navigation.hide();
+				return;
+			}
+			Navigation.show();
+			Navigation.uid = naviInfo;
+			Navigation.setNaviInfo(naviInfo, naviLink.dataset.naviName);
+		});
+	}
+
 	this.draggable('.title');
 };
 
@@ -269,7 +289,7 @@ ItemInfo.setItem = function setItem(item) {
 	const descInner = root.querySelector('.description-inner');
 	if (descInner) {
 		const rawDesc = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
-		descInner.innerHTML = DB.formatMsgToHtml(_escapeHTML(rawDesc));
+		descInner.innerHTML = DB.formatMsgToHtml(DB.formatDescriptionTags(_escapeHTML(rawDesc)));
 	}
 
 	if (item.HireExpireDate) {

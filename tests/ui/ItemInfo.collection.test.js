@@ -59,6 +59,7 @@ vi.mock('UI/Components/ItemPreview/ItemPreview.js', () => ({ default: {} }));
 vi.mock('UI/Components/MakeReadBook/MakeReadBook.js', () => ({ default: {} }));
 vi.mock('UI/Components/Equipment/Equipment.js', () => ({ default: {} }));
 vi.mock('UI/Components/Inventory/Inventory.js', () => ({ default: {} }));
+vi.mock('UI/Components/Navigation/Navigation.js', () => ({ default: {} }));
 vi.mock('Renderer/Renderer.js', () => ({ default: { render: vi.fn(), stop: vi.fn() } }));
 vi.mock('Renderer/SpriteRenderer.js', () => ({ default: {} }));
 vi.mock('Renderer/Entity/Entity.js', () => ({ default: function Entity() {} }));

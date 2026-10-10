@@ -4020,6 +4020,29 @@ class DB {
 	}
 
 	/**
+	 * Convert the tags item descriptions carry into HTML, on text that has
+	 * already been escaped. Each is <TAG>shown text<INFO>data</INFO></TAG>:
+	 * NAVI becomes a .navi-link (data-navi-info, data-navi-name); URL and
+	 * TIPBOX, which roBrowser has nowhere to open, keep their text. Anything
+	 * else in angle brackets, such as "Energy <Guardian Dragon>", stays text.
+	 *
+	 * @param {string} html - escaped description
+	 * @returns {string} html with the tags converted
+	 */
+	static formatDescriptionTags(html) {
+		return html.replace(
+			/&lt;(NAVI|URL|TIPBOX)&gt;([\s\S]*?)&lt;INFO&gt;([\s\S]*?)&lt;\/INFO&gt;&lt;\/\1&gt;/g,
+			(match, tag, text, info) => {
+				if (tag !== 'NAVI') {
+					return text;
+				}
+				const attr = value => value.replace(/"/g, '&quot;');
+				return `<span class="navi-link" data-navi-info="${attr(info)}" data-navi-name="${attr(text)}">${text}</span>`;
+			}
+		);
+	}
+
+	/**
 	 * Get pet data by job ID
 	 *
 	 * @param {number} jobID - Job ID
