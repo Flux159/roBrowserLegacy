@@ -232,20 +232,18 @@ function onSelectEmoticon(canvas) {
 	const idx = canvas.getAttribute('data-index');
 	const cmd = EmoticonsDB.names[idx];
 	if (cmd && ShortCuts.ui.is(':visible')) {
-		if (ShortCuts.ui.find('.input_macro_focus').length) {
-			ShortCuts.ui
-				.find('.input_macro_focus')
-				.val('/' + cmd)
-				.select();
+		const macroInput = ShortCuts.getRoot().querySelector('.input_macro_focus');
+		if (macroInput) {
+			macroInput.value = '/' + cmd;
+			macroInput.select();
 			return;
 		}
 	}
 
 	if (cmd) {
-		ChatBox.ui
-			.find('.input .message')
-			.html('/' + cmd)
-			.focus();
+		const message = ChatBox.getRoot().querySelector('.input .message');
+		message.textContent = '/' + cmd;
+		message.focus();
 	}
 }
 
@@ -258,7 +256,9 @@ function onPlayEmoticon(canvas) {
 	const idx = canvas.getAttribute('data-index');
 	const cmd = EmoticonsDB.names[idx];
 
-	ChatBox.ui.find('.input .message').html('/' + cmd);
+	if (!cmd) return;
+
+	ChatBox.getRoot().querySelector('.input .message').textContent = '/' + cmd;
 	ChatBox.submit();
 }
 
