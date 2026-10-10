@@ -79,6 +79,17 @@
 	width: 150px;
 	white-space: pre-wrap;
 }
+
+.ItemInfo .description .navi-link {
+	color: #c00000;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.ItemInfo .description .navi-link:hover {
+	color: #ff0000;
+}
+
 .ItemInfo .extend {
 	position: absolute;
 	right: 4px;

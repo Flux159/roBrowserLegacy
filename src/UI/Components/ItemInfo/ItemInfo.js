@@ -33,6 +33,7 @@ import PACKET from 'Network/PacketStructure.js';
 import Entity from 'Renderer/Entity/Entity.js';
 import Equipment from 'UI/Components/Equipment/Equipment.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
+import Navigation from 'UI/Components/Navigation/Navigation.js';
 import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
@@ -173,6 +174,25 @@ ItemInfo.init = function init() {
 		});
 	}
 
+	// A place named in the description opens the navigation to it
+	const descInner = root.querySelector('.description-inner');
+	if (descInner) {
+		descInner.addEventListener('click', e => {
+			const naviLink = e.target.closest('.navi-link');
+			if (!naviLink || !naviLink.dataset.naviInfo) {
+				return;
+			}
+			const naviInfo = naviLink.dataset.naviInfo;
+			if (Navigation.uid === naviInfo && Navigation._host && Navigation._host.style.display !== 'none') {
+				Navigation.hide();
+				return;
+			}
+			Navigation.show();
+			Navigation.uid = naviInfo;
+			Navigation.setNaviInfo(naviInfo, naviLink.dataset.naviName);
+		});
+	}
+
 	this.draggable('.title');
 };
 
@@ -188,18 +208,24 @@ ItemInfo.setItem = function setItem(item) {
 	const optionContainer = root.querySelector('.option-container');
 
 	this.item = it;
-	Client.loadFile(
+	// The window is reused from item to item: clear the last item's picture, so
+	// one this client's data lacks shows none rather than the previous item's,
+	// and drop an answer that arrives after another item has been opened.
+	const collectionPath =
 		DB.INTERFACE_PATH +
-			'collection/' +
-			(item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) +
-			'.bmp',
-		data => {
-			const collection = root.querySelector('.collection');
-			if (collection) {
-				collection.style.backgroundImage = `url(${data})`;
-			}
+		'collection/' +
+		(item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) +
+		'.bmp';
+	const collection = root.querySelector('.collection');
+	if (collection) {
+		collection.style.backgroundImage = '';
+		collection.dataset.src = collectionPath;
+	}
+	Client.loadFile(collectionPath, data => {
+		if (collection && collection.dataset.src === collectionPath) {
+			collection.style.backgroundImage = `url(${data})`;
 		}
-	);
+	});
 
 	const itemName = DB.getItemName(item, { showItemOptions: false });
 
@@ -263,7 +289,7 @@ ItemInfo.setItem = function setItem(item) {
 	const descInner = root.querySelector('.description-inner');
 	if (descInner) {
 		const rawDesc = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
-		descInner.innerHTML = DB.formatMsgToHtml(_escapeHTML(rawDesc));
+		descInner.innerHTML = DB.formatMsgToHtml(DB.formatDescriptionTags(_escapeHTML(rawDesc)));
 	}
 
 	if (item.HireExpireDate) {
