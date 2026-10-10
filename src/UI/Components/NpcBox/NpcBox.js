@@ -51,7 +51,13 @@ function processNAVITags(text) {
 	}
 	text = String(text);
 	return text.replace(/<NAVI>([^<]+)<INFO>([^<]+)<\/INFO><\/NAVI>/g, (match, displayName, naviInfo) => {
-		return `<span class="navi-link" data-navi-info="${naviInfo}" data-navi-name="${displayName}">${displayName}</span>`;
+		// A colour code in the tag (^4D4DFF[Battle Trainer Subino]^000000) stays
+		// out of the attributes, where processColorCodes would write markup, and
+		// the spans it opens in the shown name are closed inside the link.
+		const attr = value => value.replace(/\^[0-9A-Fa-f]{6}/g, '').replace(/"/g, '&quot;');
+		const colours = (displayName.match(/\^[0-9A-Fa-f]{6}/g) || []).length;
+		const shown = processColorCodes(displayName) + '</span>'.repeat(colours);
+		return `<span class="navi-link" data-navi-info="${attr(naviInfo)}" data-navi-name="${attr(displayName)}">${shown}</span>`;
 	});
 }
 
