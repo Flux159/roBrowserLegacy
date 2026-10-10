@@ -37,8 +37,10 @@ function RenderCanvas3D(isBlendModeOne) {
 
 	if (isBlendModeOne) {
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+		SpriteRenderer.fogToBlack(true);
 	} else if (isBlendModeOne === false) {
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		SpriteRenderer.fogToBlack(false);
 	}
 
 	if (this.shadow !== _shadow) {
@@ -371,6 +373,13 @@ let _texture = null;
 let _usepal = null;
 
 /**
+ * The map's fog colour, and whether fog is fading to black instead (see fogToBlack)
+ */
+const _fogColor = new Float32Array(3);
+const _fogBlack = new Float32Array(3);
+let _fogToBlack = false;
+
+/**
  * @const {Int16Array} position in 2D canvas
  */
 const _pos = new Int16Array(2);
@@ -518,6 +527,8 @@ class SpriteRenderer {
 		gl.uniform1f(uniform.uFogNear, fog.near);
 		gl.uniform1f(uniform.uFogFar, fog.far);
 		gl.uniform3fv(uniform.uFogColor, fog.color);
+		_fogColor.set(fog.color);
+		_fogToBlack = false;
 
 		// Textures. Select unit 0 explicitly: uDiffuse samples it, but a previous
 		// pass may have left the active unit elsewhere, and only the palette path
@@ -550,6 +561,23 @@ class SpriteRenderer {
 		_gl = gl;
 		_depthMask = true;
 		_groupId++;
+	}
+
+	/**
+	 * Fade with distance to black rather than to the fog's colour. A sprite
+	 * that adds light (SRC_ALPHA, ONE) is drawn on black, and black must add
+	 * nothing: fogged towards the fog's colour, its whole quad adds that
+	 * colour, a pale square around Jupitel Thunder's ball on a foggy map.
+	 * Black, faded with distance, still fades the light the sprite adds.
+	 *
+	 * @param {boolean} on - the sprite about to be drawn adds light
+	 */
+	static fogToBlack(on) {
+		if (!_gl || _fogToBlack === on) {
+			return;
+		}
+		_fogToBlack = on;
+		_gl.uniform3fv(_program.uniform.uFogColor, on ? _fogBlack : _fogColor);
 	}
 
 	/**
