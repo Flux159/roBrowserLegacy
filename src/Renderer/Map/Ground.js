@@ -12,6 +12,7 @@ import WebGL from 'Utils/WebGL.js';
 import Texture from 'Utils/Texture.js';
 import Preferences from 'Preferences/Map.js';
 import Configs from 'Core/Configs.js';
+import Altitude from 'Renderer/Map/Altitude.js';
 import _vertexShader from './Ground.vs?raw';
 import _fragmentShader from './Ground.fs?raw';
 
@@ -47,6 +48,11 @@ let _textureAtlas = null;
  * @var {WebGLTexture}
  */
 let _shadowMap = null;
+
+/**
+ * @var {Float32Array} four corner heights of each ground cell
+ */
+let _cellHeights = null;
 
 /**
  * @var {number} total vertices count
@@ -330,6 +336,7 @@ function init(gl, data) {
 	_width = data.width;
 	_height = data.height;
 	_shadowMap = data.shadowMap;
+	_cellHeights = data.cellHeights || null;
 
 	// Bind buffer, sending mesh to GPU
 	if (!_buffer) {
@@ -381,6 +388,7 @@ function free(gl) {
 	}
 
 	_shadowMap = null;
+	_cellHeights = null;
 	_vertCount = 0;
 }
 
@@ -394,6 +402,13 @@ function free(gl) {
 function getShadowFactor(x, y) {
 	// Map not loadead yet
 	if (!_shadowMap) {
+		return 1.0;
+	}
+
+	// The shadow map is the ground's. Standing on a bridge or a deck, well
+	// above the ground, the dark patch the bridge casts below is not on us.
+	const raised = getHeightAboveGround(x, y);
+	if (raised >= RAISED_UNSHADED) {
 		return 1.0;
 	}
 
@@ -421,7 +436,54 @@ function getShadowFactor(x, y) {
 	}
 
 	// Get back value
-	return factor / (6 * 6) / 255;
+	factor = factor / (6 * 6) / 255;
+
+	// Fade the ground's shadow out as the walk surface rises above it
+	if (raised > RAISED_SHADED) {
+		factor += (1.0 - factor) * ((raised - RAISED_SHADED) / (RAISED_UNSHADED - RAISED_SHADED));
+	}
+
+	return factor;
+}
+
+/**
+ * Below this height above the ground, the ground's shadow applies in full;
+ * from the next one up, not at all. Walkable cells on open ground are within
+ * 0.2 of it; bridges and decks stand 2 and more above.
+ */
+const RAISED_SHADED = 0.5;
+const RAISED_UNSHADED = 1.5;
+
+/**
+ * How far the walk surface (gat) is above the ground mesh (gnd) at a cell
+ *
+ * @param {number} x
+ * @param {number} y
+ * @return {number} height above ground, 0 when unknown
+ */
+function getHeightAboveGround(x, y) {
+	if (!_cellHeights) {
+		return 0;
+	}
+
+	// A ground cell covers 2x2 gat cells; the entity is at its cell's center
+	const gx = (x + 0.5) / 2;
+	const gy = (y + 0.5) / 2;
+	const cx = Math.floor(gx);
+	const cy = Math.floor(gy);
+
+	if (cx < 0 || cy < 0 || cx >= _width || cy >= _height) {
+		return 0;
+	}
+
+	const index = (cx + cy * _width) * 4;
+	const fx = gx - cx;
+	const fy = gy - cy;
+	const h1 = _cellHeights[index + 0] + (_cellHeights[index + 1] - _cellHeights[index + 0]) * fx;
+	const h2 = _cellHeights[index + 2] + (_cellHeights[index + 3] - _cellHeights[index + 2]) * fx;
+
+	// Both are stored with up negative; getCellHeight already turns it around
+	return Altitude.getCellHeight(x, y) + (h1 + (h2 - h1) * fy);
 }
 
 /**
