@@ -4036,8 +4036,11 @@ class DB {
 				if (tag !== 'NAVI') {
 					return text;
 				}
-				const attr = value => value.replace(/"/g, '&quot;');
-				return `<span class="navi-link" data-navi-info="${attr(info)}" data-navi-name="${attr(text)}">${text}</span>`;
+				// A colour code in the tag (^4D4DFF[Battle Trainer Subino]^000000)
+				// is formatted here, so its spans close inside the link, and kept
+				// out of the attributes, where formatMsgToHtml would write markup.
+				const attr = value => value.replace(/\^[0-9a-fA-F]{6}/g, '').replace(/"/g, '&quot;');
+				return `<span class="navi-link" data-navi-info="${attr(info)}" data-navi-name="${attr(text)}">${DB.formatMsgToHtml(text)}</span>`;
 			}
 		);
 	}

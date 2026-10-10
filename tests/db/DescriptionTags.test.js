@@ -61,6 +61,17 @@ describe('DB.formatDescriptionTags', () => {
 		expect(div.querySelector('span[style] .navi-link').textContent).toBe('Elin');
 	});
 
+	// rAthena's npc/re/jobs/novice/academy.txt colours the name inside the tag
+	it('keeps the link whole when a colour code is inside its text', () => {
+		const div = render('Ask <NAVI>^4D4DFF[Battle Trainer Subino]^000000<INFO>iz_ac01,59,83,</INFO></NAVI> about it.');
+		const link = div.querySelector('.navi-link');
+		expect(link.textContent).toBe('[Battle Trainer Subino]');
+		expect(link.dataset.naviName).toBe('[Battle Trainer Subino]');
+		expect(link.dataset.naviInfo).toBe('iz_ac01,59,83,');
+		expect(link.querySelector('span[style]').style.color).toBe('rgb(77, 77, 255)');
+		expect(div.textContent).toBe('Ask [Battle Trainer Subino] about it.');
+	});
+
 	it('cannot be made to write markup through the tag', () => {
 		const div = render('<NAVI>"><img src=x><INFO>a" onclick="x</INFO></NAVI>');
 		expect(div.querySelector('img')).toBeNull();
