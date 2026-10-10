@@ -992,7 +992,7 @@ export default {
 			//duration: 1000,
 			fade: true,
 			height: 4,
-			rotate: false,
+			rotate: true,
 			textureName: 'ring_yellow',
 			topSize: 5,
 			wav: 'effect/ef_beginspell'
