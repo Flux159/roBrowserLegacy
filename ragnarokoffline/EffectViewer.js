@@ -327415,12 +327415,18 @@ function onSelectEmoticon(canvas) {
 	const idx = canvas.getAttribute("data-index");
 	const cmd = Emotions_default.names[idx];
 	if (cmd && ShortCuts_default.ui.is(":visible")) {
-		if (ShortCuts_default.ui.find(".input_macro_focus").length) {
-			ShortCuts_default.ui.find(".input_macro_focus").val("/" + cmd).select();
+		const macroInput = ShortCuts_default.getRoot().querySelector(".input_macro_focus");
+		if (macroInput) {
+			macroInput.value = "/" + cmd;
+			macroInput.select();
 			return;
 		}
 	}
-	if (cmd) ChatBox_default.ui.find(".input .message").html("/" + cmd).focus();
+	if (cmd) {
+		const message = ChatBox_default.getRoot().querySelector(".input .message");
+		message.textContent = "/" + cmd;
+		message.focus();
+	}
 }
 /**
 * Do an emoticon
@@ -327430,7 +327436,8 @@ function onSelectEmoticon(canvas) {
 function onPlayEmoticon(canvas) {
 	const idx = canvas.getAttribute("data-index");
 	const cmd = Emotions_default.names[idx];
-	ChatBox_default.ui.find(".input .message").html("/" + cmd);
+	if (!cmd) return;
+	ChatBox_default.getRoot().querySelector(".input .message").textContent = "/" + cmd;
 	ChatBox_default.submit();
 }
 /**
