@@ -345618,6 +345618,7 @@ function onConnectionRefused$2(pkt) {
 function onMapChange(pkt) {
 	clearQuestEffects();
 	MapRenderer.onLoad = () => {
+		SessionStorage_default.Entity.resetRoute();
 		SessionStorage_default.Entity.set({
 			PosDir: [
 				pkt.xPos,
