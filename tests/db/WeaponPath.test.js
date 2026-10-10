@@ -43,4 +43,13 @@ describe('DB.getWeaponPath', () => {
 		// 1201 is in the dagger range, and nothing named it.
 		expect(DB.getWeaponPath(1201, JobId.THIEF, 1)).toMatch(/_\xb4\xdc\xb0\xcb$/);
 	});
+	it('draws a doram weapon from the doram folder, where the client keeps it', () => {
+		const path = DB.getWeaponPath(WeaponType.ROD, JobId.DO_SUMMONER, 0);
+		expect(path.startsWith('data/sprite/\xb5\xb5\xb6\xf7\xc1\xb7/')).toBe(true);
+		expect(DB.getWeaponPath(WeaponType.ROD, JobId.SPIRIT_HANDLER, 1).startsWith('data/sprite/\xb5\xb5\xb6\xf7\xc1\xb7/')).toBe(true);
+	});
+
+	it('keeps every other class in the human folder', () => {
+		expect(DB.getWeaponPath(WeaponType.ROD, JobId.MAGICIAN, 0).startsWith('data/sprite/\xc0\xce\xb0\xa3\xc1\xb7/')).toBe(true);
+	});
 });
