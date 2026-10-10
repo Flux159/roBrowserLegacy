@@ -797,7 +797,9 @@ class RSM {
 		const nodes = new Array(count);
 		for (i = 0; i < count; ++i) {
 			nodes[i] = new RSM.Node(this, fp, count === 1);
-			if (mainNodeName && nodes[i].name === mainNodeName) {
+			// Children may share the main node's name (lasagna's house_h_01 has
+			// three nodes called house_h_01); the main node is the first of them.
+			if (mainNodeName && nodes[i].name === mainNodeName && this.main_node === null) {
 				this.main_node = nodes[i];
 			}
 		}

@@ -196,3 +196,64 @@ describe('RSM Loader', () => {
         expect(rsm.main_node.faces.length).toBe(2);
     });
 });
+
+/**
+ * Build an RSM v1.4 whose nodes are given as [name, parentname, pos]. Each
+ * node has one vertex at its origin and no faces.
+ */
+function buildNodesRSM(mainNodeName, nodes) {
+    const nodeSize = 80 + 4 + 36 + 12 + 12 + 4 + 12 + 12 + (4 + 12) + 4 + 4 + 4;
+    const size = 6 + 4 + 4 + 1 + 16 + 4 + 40 + 4 + nodes.length * nodeSize + 4 + 4;
+    const buf = new ArrayBuffer(size);
+    const view = new DataView(buf);
+    let off = 0;
+    const long = v => { view.setInt32(off, v, true); off += 4; };
+    const float = v => { view.setFloat32(off, v, true); off += 4; };
+
+    [0x47, 0x52, 0x53, 0x4D, 1, 4].forEach(b => view.setUint8(off++, b));
+    long(0); long(2); view.setUint8(off++, 255);
+    off += 16;
+    long(0);                                     // textures
+    writeFixedStr(view, off, mainNodeName, 40); off += 40;
+    long(nodes.length);
+    for (const [name, parentname, pos] of nodes) {
+        writeFixedStr(view, off, name, 40); off += 40;
+        writeFixedStr(view, off, parentname, 40); off += 40;
+        long(0);                                 // node textures
+        [1, 0, 0, 0, 1, 0, 0, 0, 1].forEach(float); // mat3
+        [0, 0, 0].forEach(float);                // offset
+        pos.forEach(float);                      // pos
+        float(0); [0, 0, 1].forEach(float);      // rotangle, rotaxis
+        [1, 1, 1].forEach(float);                // scale
+        long(1); [0, 0, 0].forEach(float);       // one vertex
+        long(0); long(0); long(0);               // tvertices, faces, rotKeyframes
+    }
+    long(0); long(0);                            // posKeyframes, volumeboxes
+    return buf;
+}
+
+describe('RSM node hierarchy', () => {
+    // lasagna's house_h_01 and store_h_02: every node is called house_h_01,
+    // and the children name it as their parent. Picking the last node as the
+    // main one left the root and its other child untransformed, so pieces of
+    // the house were drawn far from the rest.
+    it('places every node when children share the main node\'s name', () => {
+        const rsm = new RSM(buildNodesRSM('house', [
+            ['house', '', [10, 0, 0]],
+            ['house', 'house', [5, 0, 0]],
+            ['house', 'house', [10, 0, 0]]
+        ]));
+        expect(rsm.main_node).toBe(rsm.nodes[0]);
+        expect(rsm.nodes.map(node => node.matrix[12])).toEqual([10, 15, 20]);
+    });
+
+    it('still places uniquely named children under their parent', () => {
+        const rsm = new RSM(buildNodesRSM('root', [
+            ['root', '', [10, 0, 0]],
+            ['child', 'root', [5, 0, 0]],
+            ['grandchild', 'child', [1, 0, 0]]
+        ]));
+        expect(rsm.main_node).toBe(rsm.nodes[0]);
+        expect(rsm.nodes.map(node => node.matrix[12])).toEqual([10, 15, 16]);
+    });
+});
