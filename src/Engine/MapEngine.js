@@ -647,6 +647,10 @@ function onMapChange(pkt) {
 	clearQuestEffects();
 
 	MapRenderer.onLoad = () => {
+		// Drop any route from the previous map. A relocation skill (SU_LOPE,
+		// NJ_SHADOWJUMP, ...) onto a warp starts a fast move that walkProcess
+		// would otherwise finish here, at the old map's coordinates.
+		Session.Entity.resetRoute();
 		Session.Entity.set({
 			PosDir: [pkt.xPos, pkt.yPos, 0],
 			// Use Session.AID rather than Session.Entity.GID here:
