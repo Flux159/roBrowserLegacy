@@ -2183,8 +2183,9 @@ class DB {
 			}
 		}
 
+		// Doram weapons live in the doram folder, like their bodies, not the human one
 		return (
-			'data/sprite/\xc0\xce\xb0\xa3\xc1\xb7/' +
+			(DB.isDoram(job) ? 'data/sprite/\xb5\xb5\xb6\xf7\xc1\xb7/' : 'data/sprite/\xc0\xce\xb0\xa3\xc1\xb7/') +
 			baseClass +
 			'/' +
 			baseClass +
