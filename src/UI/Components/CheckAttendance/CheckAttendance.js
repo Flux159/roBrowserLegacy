@@ -184,6 +184,11 @@ CheckAttendance.updateUI = function updateUI() {
 
 	if (_CheckAttendanceInfo.Rewards) {
 		const daysList = root.querySelector('.days-list');
+		// The map engine appends the window on every map load, and that redraws
+		// the slots: start from an empty list, or each load adds another 20.
+		if (daysList) {
+			daysList.innerHTML = '';
+		}
 		for (let i = 0; i < 20; i++) {
 			const item = DB.getItemInfo(_CheckAttendanceInfo.Rewards[i].item_id);
 			const day = i + 1;
