@@ -10,6 +10,7 @@
 
 import JobId from './JobConst.js';
 import JobNameTable from './JobNameTable.js';
+import AllMountTable from './AllMountTable.js';
 
 const WeaponJobTable = {};
 
@@ -203,6 +204,20 @@ duplicateEntry(
 	JobId.TROUVERE,
 	JobId.TROUVERE_RIDING
 );
+
+// An all-class ride (fox, lion, sheep...) has a body of its own but no weapon
+// sprites: its rider holds the weapon of the job it mounted from. A ride that
+// two jobs can mount keeps the first one's.
+const mountsSeen = {};
+const allMountKeys = Object.keys(AllMountTable);
+for (let i = 0, count = allMountKeys.length; i < count; ++i) {
+	const mount = AllMountTable[allMountKeys[i]];
+	const base = WeaponJobTable[allMountKeys[i]];
+	if (mount !== undefined && base !== undefined && !(mount in mountsSeen)) {
+		WeaponJobTable[mount] = base;
+		mountsSeen[mount] = true;
+	}
+}
 
 // Exports
 export default WeaponJobTable;

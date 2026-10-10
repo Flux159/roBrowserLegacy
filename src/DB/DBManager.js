@@ -16,6 +16,7 @@ import ClassTable from './Jobs/JobNameTable.js';
 import PaletteTable from './Jobs/PalNameTable.js';
 import WeaponAction from './Jobs/WeaponAction.js';
 import WeaponJobTable from './Jobs/WeaponJobTable.js';
+import ShieldJobTable from './Jobs/ShieldJobTable.js';
 import BabyTable from './Jobs/BabyTable.js';
 import HairIndexTable from './Jobs/HairIndexTable.js';
 import MonsterTable from './Monsters/MonsterTable.js';
@@ -2129,7 +2130,7 @@ class DB {
 			return DB.getWeaponPath(id, job, sex);
 		}
 
-		const baseClass = WeaponJobTable[job] || WeaponJobTable[0];
+		const baseClass = ShieldJobTable[job] || ShieldJobTable[0];
 
 		// ItemID to View Id
 		if (id in ItemTable && 'ClassNum' in ItemTable[id]) {
