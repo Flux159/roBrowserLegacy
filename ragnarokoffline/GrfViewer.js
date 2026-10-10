@@ -131294,6 +131294,26 @@ var init_SkillInfo = __esmMin((() => {
 		],
 		_NeedSkillList: [[SkillConst_default.SU_SV_ROOTTWIST, 3]]
 	};
+	SkillInfo[SkillConst_default.SU_CN_METEOR2] = {
+		Name: "SU_CN_METEOR2",
+		SkillName: "CN Meteor",
+		MaxLv: 5,
+		SpAmount: [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		bSeperateLv: false,
+		AttackRange: [
+			9,
+			9,
+			9,
+			9,
+			9
+		]
+	};
 	SkillInfo[SkillConst_default.SU_CN_POWDERING] = {
 		Name: "SU_CN_POWDERING",
 		SkillName: "CN Powdering",
@@ -131398,6 +131418,26 @@ var init_SkillInfo = __esmMin((() => {
 			9
 		],
 		_NeedSkillList: [[SkillConst_default.SU_SCAROFTAROU, 3]]
+	};
+	SkillInfo[SkillConst_default.SU_LUNATICCARROTBEAT2] = {
+		Name: "SU_LUNATICCARROTBEAT2",
+		SkillName: "Lunatic Carrot Beat",
+		MaxLv: 5,
+		SpAmount: [
+			0,
+			0,
+			0,
+			0,
+			0
+		],
+		bSeperateLv: false,
+		AttackRange: [
+			9,
+			9,
+			9,
+			9,
+			9
+		]
 	};
 	SkillInfo[SkillConst_default.SU_POWEROFSEA] = {
 		Name: "SU_POWEROFSEA",
@@ -235693,6 +235733,20 @@ function onContainerMouseLeave() {
 	}
 }
 /**
+* Level a hotbar slot holding a skill shows, as the official client does:
+* a skill whose level can be chosen (bSeperateLv) keeps the slot's level,
+* up to the skill's level; any other skill follows the skill's level.
+*
+* @param {number} ID skill id
+* @param {number} slotLevel level stored in the slot
+* @param {number} level the skill's current level
+* @return {number} level
+*/
+function slotSkillLevel(ID, slotLevel, level) {
+	if (!slotLevel || !level || !SkillInfo[ID]?.bSeperateLv) return level || slotLevel;
+	return Math.min(slotLevel, level);
+}
+/**
 * Resizing hotkey window
 */
 function onResize$6(event) {
@@ -236238,7 +236292,7 @@ var init_ShortCut = __esmMin((() => {
 		for (let i = 0, count = list.length; i < count; ++i) if (list[i].isSkill) {
 			skill = ShortCut.getSkillById(list[i].ID);
 			if (getSkillOwner(list[i].ID) === Guild_default) needGuildSkills = true;
-			if (skill && skill.level) ShortCut.addElement(i, true, list[i].ID, list[i].count || skill.level);
+			if (skill && skill.level) ShortCut.addElement(i, true, list[i].ID, slotSkillLevel(list[i].ID, list[i].count, skill.level));
 			else {
 				if (!_list$5[i]) _list$5[i] = {};
 				_list$5[i].isSkill = true;
@@ -236280,7 +236334,7 @@ var init_ShortCut = __esmMin((() => {
 	};
 	ShortCut.setElement = function setElement(isSkill, ID, count) {
 		for (let i = 0, size = _list$5.length; i < size; ++i) if (_list$5[i] && _list$5[i].isSkill == isSkill && _list$5[i].ID === ID) {
-			if (isSkill && _list$5[i].count && _list$5[i].count <= count) ShortCut.addElement(i, isSkill, ID, _list$5[i].count);
+			if (isSkill && count) ShortCut.addElement(i, isSkill, ID, slotSkillLevel(ID, _list$5[i].count, count));
 			else ShortCut.addElement(i, isSkill, ID, count);
 		}
 	};
