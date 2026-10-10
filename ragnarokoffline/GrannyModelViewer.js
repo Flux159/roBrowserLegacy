@@ -208257,8 +208257,9 @@ function onTextureAtlasComplete(gl, atlas) {
 function init$13(gl, data) {
 	_vertCount$1 = data.meshVertCount;
 	_width = data.width;
-	data.height;
+	_height = data.height;
 	_shadowMap = data.shadowMap;
+	_cellHeights = data.cellHeights || null;
 	if (!_buffer$21) _buffer$21 = gl.createBuffer();
 	if (!_program$29) _program$29 = WebGL_default.createShaderProgram(gl, Ground_default$2, Ground_default$1);
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$21);
@@ -208290,6 +208291,7 @@ function free$8(gl) {
 		_buffer$21 = null;
 	}
 	_shadowMap = null;
+	_cellHeights = null;
 	_vertCount$1 = 0;
 }
 /**
@@ -208301,6 +208303,8 @@ function free$8(gl) {
 */
 function getShadowFactor(x, y) {
 	if (!_shadowMap) return 1;
+	const raised = getHeightAboveGround(x, y);
+	if (raised >= RAISED_UNSHADED) return 1;
 	let _x, _y, factor = 0;
 	x += .5;
 	y += .5;
@@ -208309,7 +208313,30 @@ function getShadowFactor(x, y) {
 	_x += Math.min((x & 1 ? 4 : 0) + Math.floor(x % 1 * 4), 6);
 	_y += Math.min((y & 1 ? 4 : 0) + Math.floor(y % 1 * 4), 6);
 	for (y = -3; y < 3; ++y) for (x = -3; x < 3; ++x) factor += _shadowMap[_x + x + (_y + y) * _width * 8];
-	return factor / 36 / 255;
+	factor = factor / 36 / 255;
+	if (raised > RAISED_SHADED) factor += (1 - factor) * ((raised - RAISED_SHADED) / (RAISED_UNSHADED - RAISED_SHADED));
+	return factor;
+}
+/**
+* How far the walk surface (gat) is above the ground mesh (gnd) at a cell
+*
+* @param {number} x
+* @param {number} y
+* @return {number} height above ground, 0 when unknown
+*/
+function getHeightAboveGround(x, y) {
+	if (!_cellHeights) return 0;
+	const gx = (x + .5) / 2;
+	const gy = (y + .5) / 2;
+	const cx = Math.floor(gx);
+	const cy = Math.floor(gy);
+	if (cx < 0 || cy < 0 || cx >= _width || cy >= _height) return 0;
+	const index = (cx + cy * _width) * 4;
+	const fx = gx - cx;
+	const fy = gy - cy;
+	const h1 = _cellHeights[index + 0] + (_cellHeights[index + 1] - _cellHeights[index + 0]) * fx;
+	const h2 = _cellHeights[index + 2] + (_cellHeights[index + 3] - _cellHeights[index + 2]) * fx;
+	return Altitude.getCellHeight(x, y) + (h1 + (h2 - h1) * fy);
 }
 /**
 * Export
@@ -208324,12 +208351,13 @@ function textures() {
 		lightmap: _lightmap
 	};
 }
-var procCanvas$2, procCtx$2, _program$29, _buffer$21, _lightmap, _tileColor, _textureAtlas, _shadowMap, _vertCount$1, _width, Ground_default;
+var procCanvas$2, procCtx$2, _program$29, _buffer$21, _lightmap, _tileColor, _textureAtlas, _shadowMap, _cellHeights, _vertCount$1, _width, _height, RAISED_SHADED, RAISED_UNSHADED, Ground_default;
 var init_Ground = __esmMin((() => {
 	init_WebGL();
 	init_Texture();
 	init_Map();
 	init_Configs();
+	init_Altitude();
 	init_Ground$2();
 	init_Ground$1();
 	procCanvas$2 = document.createElement("canvas");
@@ -208340,8 +208368,12 @@ var init_Ground = __esmMin((() => {
 	_tileColor = null;
 	_textureAtlas = null;
 	_shadowMap = null;
+	_cellHeights = null;
 	_vertCount$1 = 0;
 	_width = 0;
+	_height = 0;
+	RAISED_SHADED = .5;
+	RAISED_UNSHADED = 1.5;
 	Ground_default = {
 		init: init$13,
 		free: free$8,
@@ -259556,7 +259588,7 @@ var init_Model = __esmMin((() => {
 			const nodes = new Array(count);
 			for (i = 0; i < count; ++i) {
 				nodes[i] = new RSM.Node(this, fp, count === 1);
-				if (mainNodeName && nodes[i].name === mainNodeName) this.main_node = nodes[i];
+				if (mainNodeName && nodes[i].name === mainNodeName && this.main_node === null) this.main_node = nodes[i];
 			}
 			if (this.main_node === null) this.main_node = nodes[0];
 			if (this.version < 1.6) {
@@ -311867,7 +311899,7 @@ var init_DBManager = __esmMin((() => {
 				const left = Object.keys(WeaponType_default).find((key) => WeaponType_default[key] === leftid);
 				if (right && left) id = WeaponType_default[right + "_" + left];
 			}
-			return "data/sprite/ÀÎ°£Á·/" + baseClass + "/" + baseClass + "_" + SexTable[sex] + (WeaponName[id] || "_" + id);
+			return (DB.isDoram(job) ? "data/sprite/µµ¶÷Á·/" : "data/sprite/ÀÎ°£Á·/") + baseClass + "/" + baseClass + "_" + SexTable[sex] + (WeaponName[id] || "_" + id);
 		}
 		/**
 		* @return {string} Path to weapon trail
@@ -316045,6 +316077,7 @@ function UpdateBody(job) {
 		this.bodypalette = this._bodypalette;
 		this.weapon = this._weapon;
 		this.shield = this._shield;
+		this.robe = this._robe;
 	}.bind(this), { to_rgba: this.objecttype !== Entity.TYPE_PC });
 	if (PacketVerManager_default.value > 20141022 && this._body > 0) this.body = this._body;
 }

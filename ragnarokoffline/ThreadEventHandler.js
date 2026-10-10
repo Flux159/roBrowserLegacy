@@ -17476,7 +17476,7 @@ var RSM = class RSM {
 		const nodes = new Array(count);
 		for (i = 0; i < count; ++i) {
 			nodes[i] = new RSM.Node(this, fp, count === 1);
-			if (mainNodeName && nodes[i].name === mainNodeName) this.main_node = nodes[i];
+			if (mainNodeName && nodes[i].name === mainNodeName && this.main_node === null) this.main_node = nodes[i];
 		}
 		if (this.main_node === null) this.main_node = nodes[0];
 		if (this.version < 1.6) {
