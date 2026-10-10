@@ -208568,8 +208568,13 @@ function RenderCanvas3D(isBlendModeOne) {
 	const uniform = _program$27.uniform;
 	const gl = _gl$2;
 	const use_pal = this.image.palette !== null;
-	if (isBlendModeOne) gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-	else if (isBlendModeOne === false) gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	if (isBlendModeOne) {
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+		SpriteRenderer.fogToBlack(true);
+	} else if (isBlendModeOne === false) {
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		SpriteRenderer.fogToBlack(false);
+	}
 	if (this.shadow !== _shadow) gl.uniform1f(uniform.uShadow, _shadow = this.shadow);
 	gl.uniform3fv(uniform.uSpriteRendererPosition, this.position);
 	if (use_pal) {
@@ -208673,7 +208678,7 @@ function fillImageData(imageData, frame, pal, color) {
 		}
 	}
 }
-var mat4$22, RenderCanvas2D, _program$27, _buffer$20, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _fullPlaneDepth, _depthTest, _texture$4, _usepal, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
+var mat4$22, RenderCanvas2D, _program$27, _buffer$20, _ctx$5, _gl$2, _groupId, _lastGroupId, _shadow, _angle, _depth, _disableDepthCorrection, _depthMask, _fullPlaneDepth, _depthTest, _texture$4, _usepal, _fogColor, _fogBlack, _fogToBlack, _pos$8, _matrix$7, _size$7, _offset, SpriteRenderer;
 var init_SpriteRenderer = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -208761,6 +208766,9 @@ var init_SpriteRenderer = __esmMin((() => {
 	_depthTest = true;
 	_texture$4 = null;
 	_usepal = null;
+	_fogColor = /* @__PURE__ */ new Float32Array(3);
+	_fogBlack = /* @__PURE__ */ new Float32Array(3);
+	_fogToBlack = false;
 	_pos$8 = /* @__PURE__ */ new Int16Array(2);
 	_matrix$7 = /* @__PURE__ */ new Float32Array(16);
 	_size$7 = /* @__PURE__ */ new Float32Array(2);
@@ -208879,6 +208887,8 @@ var init_SpriteRenderer = __esmMin((() => {
 			gl.uniform1f(uniform.uFogNear, fog.near);
 			gl.uniform1f(uniform.uFogFar, fog.far);
 			gl.uniform3fv(uniform.uFogColor, fog.color);
+			_fogColor.set(fog.color);
+			_fogToBlack = false;
 			gl.activeTexture(gl.TEXTURE0);
 			gl.uniform1i(uniform.uDiffuse, 0);
 			gl.uniform1i(uniform.uPalette, 1);
@@ -208897,6 +208907,20 @@ var init_SpriteRenderer = __esmMin((() => {
 			_gl$2 = gl;
 			_depthMask = true;
 			_groupId++;
+		}
+		/**
+		* Fade with distance to black rather than to the fog's colour. A sprite
+		* that adds light (SRC_ALPHA, ONE) is drawn on black, and black must add
+		* nothing: fogged towards the fog's colour, its whole quad adds that
+		* colour, a pale square around Jupitel Thunder's ball on a foggy map.
+		* Black, faded with distance, still fades the light the sprite adds.
+		*
+		* @param {boolean} on - the sprite about to be drawn adds light
+		*/
+		static fogToBlack(on) {
+			if (!_gl$2 || _fogToBlack === on) return;
+			_fogToBlack = on;
+			_gl$2.uniform3fv(_program$27.uniform.uFogColor, on ? _fogBlack : _fogColor);
 		}
 		/**
 		* Unbind 3D Context
@@ -222931,7 +222955,7 @@ var init_ItemCompare = __esmMin((() => {
 		const descInner = root.querySelector(".description-inner");
 		if (descInner) {
 			const rawDesc = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
-			descInner.innerHTML = DB.formatMsgToHtml(_escapeHTML$5(rawDesc));
+			descInner.innerHTML = DB.formatMsgToHtml(DB.formatDescriptionTags(_escapeHTML$5(rawDesc)));
 		}
 		addEvent$1(item);
 		let hideslots = false;
@@ -223215,7 +223239,7 @@ var init_ItemInfo$2 = __esmMin((() => {
 //#region src/UI/Components/ItemInfo/ItemInfo.css?raw
 var ItemInfo_default$1;
 var init_ItemInfo$1 = __esmMin((() => {
-	ItemInfo_default$1 = ":host {\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n\r\n.ItemInfo {\r\n	position: relative;\r\n	width: 280px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n.ItemInfo .container {\r\n	height: 140px;\r\n	position: relative;\r\n	box-shadow:\r\n		white 0px 0px 0px 3px inset,\r\n		rgb(192, 192, 192) 0px 0px 0px 4px inset;\r\n	background-repeat: no-repeat;\r\n	background-color: white;\r\n	border-radius: 5px;\r\n}\r\n.ItemInfo .event_view {\r\n	position: absolute;\r\n}\r\n.ItemInfo .event_view .view {\r\n	position: absolute;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	top: 6px;\r\n	left: 6px;\r\n}\r\n.ItemInfo .collection {\r\n	position: absolute;\r\n	top: 11px;\r\n	left: 10px;\r\n	width: 75px;\r\n	height: 100px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n.ItemInfo .title {\r\n	position: absolute;\r\n	top: 3px;\r\n	left: 86px;\r\n	width: 185px;\r\n	height: 14px;\r\n	padding-left: 4px;\r\n	padding-top: 6px;\r\n	text-shadow: 1px 1px 0px white;\r\n	white-space: nowrap;\r\n	overflow: hidden;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n.ItemInfo .close {\r\n	position: absolute;\r\n	top: 3px;\r\n	right: 3px;\r\n	width: 11px;\r\n	height: 11px;\r\n	display: block;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n}\r\n.ItemInfo .description {\r\n	position: absolute;\r\n	top: 35px;\r\n	left: 100px;\r\n	line-height: 18px;\r\n	width: 170px;\r\n	height: 75px;\r\n	overflow-y: auto;\r\n}\r\n.ItemInfo .description .description-inner {\r\n	width: 150px;\r\n	white-space: pre-wrap;\r\n}\r\n.ItemInfo .extend {\r\n	position: absolute;\r\n	right: 4px;\r\n	bottom: 3px;\r\n	width: 13px;\r\n	height: 13px;\r\n	border: none;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n.ItemInfo .cardlist {\r\n	border-radius: 5px;\r\n	background: white;\r\n	padding: 2px;\r\n	margin-top: 3px;\r\n}\r\n.ItemInfo .cardlist .border {\r\n	border: 1px solid #c1c6c2;\r\n	padding-top: 2px;\r\n	padding-left: 5px;\r\n	border-radius: 5px;\r\n}\r\n.ItemInfo .cardlist .item {\r\n	position: relative;\r\n	display: inline-block;\r\n}\r\n.ItemInfo .cardlist .item .icon {\r\n	width: 24px;\r\n	height: 24px;\r\n}\r\n.ItemInfo .cardlist .item .name {\r\n	position: absolute;\r\n	top: -20px;\r\n	left: -20px;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n.ItemInfo .cardlist .item:hover .name {\r\n	display: block;\r\n}\r\n\r\n.ItemInfo .book_open {\r\n	margin-top: 6px;\r\n	margin-left: 7px;\r\n}\r\n.ItemInfo .book_read {\r\n	position: absolute;\r\n	margin-top: 7px;\r\n}\r\n\r\n.ItemInfo .overlay_open {\r\n	pointer-events: none;\r\n	position: absolute;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	color: white;\r\n	text-shadow: black 1px 1px;\r\n	top: -7px;\r\n	left: 7px;\r\n	text-align: center;\r\n	padding: 3px 4px 1px 4px;\r\n	display: none;\r\n}\r\n.ItemInfo .overlay_read {\r\n	pointer-events: none;\r\n	position: absolute;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	color: white;\r\n	text-shadow: black 1px 1px;\r\n	top: -7px;\r\n	left: 27px;\r\n	text-align: center;\r\n	padding: 3px 4px 1px 4px;\r\n	display: none;\r\n}\r\n\r\n.ItemInfo .optionlist {\r\n	border-radius: 5px;\r\n	background: white;\r\n	padding: 2px;\r\n	margin-top: 3px;\r\n}\r\n.ItemInfo .optionlist .border {\r\n	border: 1px solid #c1c6c2;\r\n	padding-top: 2px;\r\n	padding-left: 5px;\r\n	border-radius: 5px;\r\n}\r\n.ItemInfo .optionlist .item {\r\n	position: relative;\r\n	display: inline-block;\r\n}\r\n.ItemInfo .optionlist .item .icon {\r\n	width: 24px;\r\n	height: 24px;\r\n}\r\n.ItemInfo .optionlist .item .name {\r\n	position: absolute;\r\n	top: -20px;\r\n	left: -20px;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n.ItemInfo .optionlist .item:hover .name {\r\n	display: block;\r\n}\r\n\r\n.ItemInfo .title.damaged {\r\n	text-shadow: red 1px 1px 0px;\r\n}\r\n\r\n.ItemInfo .preview-action {\r\n	padding-top: 115px;\r\n	padding-left: 9px;\r\n}\r\n\r\n.moveinfo-label {\r\n	color: #000000;\r\n	display: block;\r\n	text-decoration: underline;\r\n}\r\n\r\n#moveinfo-tooltip {\r\n	position: absolute;\r\n	display: none;\r\n	pointer-events: none;\r\n	z-index: 9999;\r\n	background: #e6e7ef;\r\n	border: 2px solid #bdbdee;\r\n	padding: 6px 8px;\r\n	color: #183984;\r\n	white-space: nowrap;\r\n	border-radius: 8px;\r\n}\r\n\r\n.ItemInfo .btn_mounting {\r\n	border: 0;\r\n	width: 80px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n";
+	ItemInfo_default$1 = ":host {\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n\r\n.ItemInfo {\r\n	position: relative;\r\n	width: 280px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n.ItemInfo .container {\r\n	height: 140px;\r\n	position: relative;\r\n	box-shadow:\r\n		white 0px 0px 0px 3px inset,\r\n		rgb(192, 192, 192) 0px 0px 0px 4px inset;\r\n	background-repeat: no-repeat;\r\n	background-color: white;\r\n	border-radius: 5px;\r\n}\r\n.ItemInfo .event_view {\r\n	position: absolute;\r\n}\r\n.ItemInfo .event_view .view {\r\n	position: absolute;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n	top: 6px;\r\n	left: 6px;\r\n}\r\n.ItemInfo .collection {\r\n	position: absolute;\r\n	top: 11px;\r\n	left: 10px;\r\n	width: 75px;\r\n	height: 100px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n.ItemInfo .title {\r\n	position: absolute;\r\n	top: 3px;\r\n	left: 86px;\r\n	width: 185px;\r\n	height: 14px;\r\n	padding-left: 4px;\r\n	padding-top: 6px;\r\n	text-shadow: 1px 1px 0px white;\r\n	white-space: nowrap;\r\n	overflow: hidden;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n.ItemInfo .close {\r\n	position: absolute;\r\n	top: 3px;\r\n	right: 3px;\r\n	width: 11px;\r\n	height: 11px;\r\n	display: block;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: none;\r\n}\r\n.ItemInfo .description {\r\n	position: absolute;\r\n	top: 35px;\r\n	left: 100px;\r\n	line-height: 18px;\r\n	width: 170px;\r\n	height: 75px;\r\n	overflow-y: auto;\r\n}\r\n.ItemInfo .description .description-inner {\r\n	width: 150px;\r\n	white-space: pre-wrap;\r\n}\r\n\r\n.ItemInfo .description .navi-link {\r\n	color: #c00000;\r\n	cursor: pointer;\r\n	text-decoration: underline;\r\n}\r\n\r\n.ItemInfo .description .navi-link:hover {\r\n	color: #ff0000;\r\n}\r\n\r\n.ItemInfo .extend {\r\n	position: absolute;\r\n	right: 4px;\r\n	bottom: 3px;\r\n	width: 13px;\r\n	height: 13px;\r\n	border: none;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n.ItemInfo .cardlist {\r\n	border-radius: 5px;\r\n	background: white;\r\n	padding: 2px;\r\n	margin-top: 3px;\r\n}\r\n.ItemInfo .cardlist .border {\r\n	border: 1px solid #c1c6c2;\r\n	padding-top: 2px;\r\n	padding-left: 5px;\r\n	border-radius: 5px;\r\n}\r\n.ItemInfo .cardlist .item {\r\n	position: relative;\r\n	display: inline-block;\r\n}\r\n.ItemInfo .cardlist .item .icon {\r\n	width: 24px;\r\n	height: 24px;\r\n}\r\n.ItemInfo .cardlist .item .name {\r\n	position: absolute;\r\n	top: -20px;\r\n	left: -20px;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n.ItemInfo .cardlist .item:hover .name {\r\n	display: block;\r\n}\r\n\r\n.ItemInfo .book_open {\r\n	margin-top: 6px;\r\n	margin-left: 7px;\r\n}\r\n.ItemInfo .book_read {\r\n	position: absolute;\r\n	margin-top: 7px;\r\n}\r\n\r\n.ItemInfo .overlay_open {\r\n	pointer-events: none;\r\n	position: absolute;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	color: white;\r\n	text-shadow: black 1px 1px;\r\n	top: -7px;\r\n	left: 7px;\r\n	text-align: center;\r\n	padding: 3px 4px 1px 4px;\r\n	display: none;\r\n}\r\n.ItemInfo .overlay_read {\r\n	pointer-events: none;\r\n	position: absolute;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	color: white;\r\n	text-shadow: black 1px 1px;\r\n	top: -7px;\r\n	left: 27px;\r\n	text-align: center;\r\n	padding: 3px 4px 1px 4px;\r\n	display: none;\r\n}\r\n\r\n.ItemInfo .optionlist {\r\n	border-radius: 5px;\r\n	background: white;\r\n	padding: 2px;\r\n	margin-top: 3px;\r\n}\r\n.ItemInfo .optionlist .border {\r\n	border: 1px solid #c1c6c2;\r\n	padding-top: 2px;\r\n	padding-left: 5px;\r\n	border-radius: 5px;\r\n}\r\n.ItemInfo .optionlist .item {\r\n	position: relative;\r\n	display: inline-block;\r\n}\r\n.ItemInfo .optionlist .item .icon {\r\n	width: 24px;\r\n	height: 24px;\r\n}\r\n.ItemInfo .optionlist .item .name {\r\n	position: absolute;\r\n	top: -20px;\r\n	left: -20px;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n.ItemInfo .optionlist .item:hover .name {\r\n	display: block;\r\n}\r\n\r\n.ItemInfo .title.damaged {\r\n	text-shadow: red 1px 1px 0px;\r\n}\r\n\r\n.ItemInfo .preview-action {\r\n	padding-top: 115px;\r\n	padding-left: 9px;\r\n}\r\n\r\n.moveinfo-label {\r\n	color: #000000;\r\n	display: block;\r\n	text-decoration: underline;\r\n}\r\n\r\n#moveinfo-tooltip {\r\n	position: absolute;\r\n	display: none;\r\n	pointer-events: none;\r\n	z-index: 9999;\r\n	background: #e6e7ef;\r\n	border: 2px solid #bdbdee;\r\n	padding: 6px 8px;\r\n	color: #183984;\r\n	white-space: nowrap;\r\n	border-radius: 8px;\r\n}\r\n\r\n.ItemInfo .btn_mounting {\r\n	border: 0;\r\n	width: 80px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/UIVersionManager.js
@@ -252023,6 +252047,7 @@ var init_ItemInfo = __esmMin((() => {
 	init_Entity$1();
 	init_Equipment();
 	init_Inventory();
+	init_Navigation();
 	init_HtmlHelper();
 	ItemInfo = new GUIComponent("ItemInfo", ItemInfo_default$1);
 	ItemInfo.render = () => ItemInfo_default$2;
@@ -252113,6 +252138,19 @@ var init_ItemInfo = __esmMin((() => {
 			CardIllustration_default.append();
 			CardIllustration_default.setCard(this.item);
 		});
+		const descInner = root.querySelector(".description-inner");
+		if (descInner) descInner.addEventListener("click", (e) => {
+			const naviLink = e.target.closest(".navi-link");
+			if (!naviLink || !naviLink.dataset.naviInfo) return;
+			const naviInfo = naviLink.dataset.naviInfo;
+			if (Navigation_default.uid === naviInfo && Navigation_default._host && Navigation_default._host.style.display !== "none") {
+				Navigation_default.hide();
+				return;
+			}
+			Navigation_default.show();
+			Navigation_default.uid = naviInfo;
+			Navigation_default.setNaviInfo(naviInfo, naviLink.dataset.naviName);
+		});
 		this.draggable(".title");
 	};
 	/**
@@ -252126,9 +252164,14 @@ var init_ItemInfo = __esmMin((() => {
 		const cardList = root.querySelector(".cardlist .border");
 		const optionContainer = root.querySelector(".option-container");
 		this.item = it;
-		Client.loadFile(DB.INTERFACE_PATH + "collection/" + (item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) + ".bmp", (data) => {
-			const collection = root.querySelector(".collection");
-			if (collection) collection.style.backgroundImage = `url(${data})`;
+		const collectionPath = DB.INTERFACE_PATH + "collection/" + (item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName) + ".bmp";
+		const collection = root.querySelector(".collection");
+		if (collection) {
+			collection.style.backgroundImage = "";
+			collection.dataset.src = collectionPath;
+		}
+		Client.loadFile(collectionPath, (data) => {
+			if (collection && collection.dataset.src === collectionPath) collection.style.backgroundImage = `url(${data})`;
 		});
 		const itemName = DB.getItemName(item, { showItemOptions: false });
 		const title = root.querySelector(".title");
@@ -252155,7 +252198,7 @@ var init_ItemInfo = __esmMin((() => {
 		const descInner = root.querySelector(".description-inner");
 		if (descInner) {
 			const rawDesc = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
-			descInner.innerHTML = DB.formatMsgToHtml(_escapeHTML$1(rawDesc));
+			descInner.innerHTML = DB.formatMsgToHtml(DB.formatDescriptionTags(_escapeHTML$1(rawDesc)));
 		}
 		if (item.HireExpireDate) {
 			const dateText = DB.formatUnixDate(item.HireExpireDate);
@@ -252283,7 +252326,10 @@ function processNAVITags(text) {
 	if (!text) return "";
 	text = String(text);
 	return text.replace(/<NAVI>([^<]+)<INFO>([^<]+)<\/INFO><\/NAVI>/g, (match, displayName, naviInfo) => {
-		return `<span class="navi-link" data-navi-info="${naviInfo}" data-navi-name="${displayName}">${displayName}</span>`;
+		const attr = (value) => value.replace(/\^[0-9A-Fa-f]{6}/g, "").replace(/"/g, "&quot;");
+		const colours = (displayName.match(/\^[0-9A-Fa-f]{6}/g) || []).length;
+		const shown = processColorCodes(displayName) + "</span>".repeat(colours);
+		return `<span class="navi-link" data-navi-info="${attr(naviInfo)}" data-navi-name="${attr(displayName)}">${shown}</span>`;
 	});
 }
 /**
@@ -261132,6 +261178,7 @@ var init_ThreeDEffect = __esmMin((() => {
 			if (this.startTick > tick) return;
 			if (this.blendMode > 0 && this.blendMode < 16) gl.blendFunc(gl.SRC_ALPHA, blendMode$1[this.blendMode]);
 			else gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+			SpriteRenderer.fogToBlack(this.blendMode === 2);
 			const start = tick - this.startTick;
 			const end = this.endTick - this.startTick;
 			let steps = start / end * 100;
@@ -261381,6 +261428,7 @@ var init_ThreeDEffect = __esmMin((() => {
 		}
 		static afterRender(gl) {
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+			SpriteRenderer.fogToBlack(false);
 			SpriteRenderer.unbind(gl);
 		}
 	};
@@ -271455,7 +271503,7 @@ var init_EffectTable = __esmMin((() => {
 			bottomSize: 1,
 			fade: true,
 			height: 4,
-			rotate: false,
+			rotate: true,
 			textureName: "ring_yellow",
 			topSize: 5,
 			wav: "effect/ef_beginspell"
@@ -313241,6 +313289,23 @@ var init_DBManager = __esmMin((() => {
 			});
 			if (hasOpenSpan) msg += "</span>";
 			return msg;
+		}
+		/**
+		* Convert the tags item descriptions carry into HTML, on text that has
+		* already been escaped. Each is <TAG>shown text<INFO>data</INFO></TAG>:
+		* NAVI becomes a .navi-link (data-navi-info, data-navi-name); URL and
+		* TIPBOX, which roBrowser has nowhere to open, keep their text. Anything
+		* else in angle brackets, such as "Energy <Guardian Dragon>", stays text.
+		*
+		* @param {string} html - escaped description
+		* @returns {string} html with the tags converted
+		*/
+		static formatDescriptionTags(html) {
+			return html.replace(/&lt;(NAVI|URL|TIPBOX)&gt;([\s\S]*?)&lt;INFO&gt;([\s\S]*?)&lt;\/INFO&gt;&lt;\/\1&gt;/g, (match, tag, text, info) => {
+				if (tag !== "NAVI") return text;
+				const attr = (value) => value.replace(/\^[0-9a-fA-F]{6}/g, "").replace(/"/g, "&quot;");
+				return `<span class="navi-link" data-navi-info="${attr(info)}" data-navi-name="${attr(text)}">${DB.formatMsgToHtml(text)}</span>`;
+			});
 		}
 		/**
 		* Get pet data by job ID
