@@ -86163,40 +86163,264 @@ var init_WeaponAction = __esmMin((() => {
 	duplicateEntry$4(JobConst_default.LINKER, JobConst_default.LINKER_B, JobConst_default.SOUL_REAPER, JobConst_default.SOUL_REAPER_B, JobConst_default.SOUL_ASCETIC);
 }));
 //#endregion
-//#region src/DB/Jobs/WeaponJobTable.js
+//#region src/DB/Jobs/AllMountTable.js
 function duplicateEntry$3(origin) {
+	const value = AllMountTable[origin];
+	for (let i = 1, count = arguments.length; i < count; ++i) AllMountTable[arguments[i]] = value;
+}
+var AllMountTable;
+var init_AllMountTable = __esmMin((() => {
+	init_JobConst();
+	AllMountTable = {};
+	AllMountTable[JobConst_default.NOVICE] = JobConst_default.PORING_NOVICE;
+	AllMountTable[JobConst_default.ACOLYTE] = JobConst_default.SHEEP_ACO;
+	AllMountTable[JobConst_default.ARCHER] = JobConst_default.OSTRICH_ARCHER;
+	AllMountTable[JobConst_default.MAGICIAN] = JobConst_default.FOX_MAGICIAN;
+	AllMountTable[JobConst_default.MERCHANT] = JobConst_default.PIG_MERCHANT;
+	AllMountTable[JobConst_default.SWORDMAN] = JobConst_default.PECO_SWORD;
+	AllMountTable[JobConst_default.THIEF] = JobConst_default.DOG_THIEF;
+	AllMountTable[JobConst_default.PRIEST] = JobConst_default.SHEEP_PRIEST;
+	AllMountTable[JobConst_default.HUNTER] = JobConst_default.OSTRICH_HUNTER;
+	AllMountTable[JobConst_default.WIZARD] = JobConst_default.FOX_WIZ;
+	AllMountTable[JobConst_default.BLACKSMITH] = JobConst_default.PIG_BLACKSMITH;
+	AllMountTable[JobConst_default.KNIGHT] = JobConst_default.LION_KNIGHT;
+	AllMountTable[JobConst_default.ASSASSIN] = JobConst_default.DOG_ASSASSIN;
+	AllMountTable[JobConst_default.MONK] = JobConst_default.SHEEP_MONK;
+	AllMountTable[JobConst_default.BARD] = JobConst_default.OSTRICH_BARD;
+	AllMountTable[JobConst_default.DANCER] = JobConst_default.OSTRICH_DANCER;
+	AllMountTable[JobConst_default.SAGE] = JobConst_default.FOX_SAGE;
+	AllMountTable[JobConst_default.ALCHEMIST] = JobConst_default.PIG_ALCHE;
+	AllMountTable[JobConst_default.CRUSADER] = JobConst_default.LION_CRUSADER;
+	AllMountTable[JobConst_default.ROGUE] = JobConst_default.DOG_ROGUE;
+	AllMountTable[JobConst_default.ARCHBISHOP] = JobConst_default.SHEEP_ARCB;
+	AllMountTable[JobConst_default.RANGER] = JobConst_default.OSTRICH_RANGER;
+	AllMountTable[JobConst_default.WARLOCK] = JobConst_default.FOX_WARLOCK;
+	AllMountTable[JobConst_default.MECHANIC] = JobConst_default.PIG_MECHANIC;
+	AllMountTable[JobConst_default.RUNE_KNIGHT] = JobConst_default.LION_RUNE_KNIGHT;
+	AllMountTable[JobConst_default.GUILLOTINE_CROSS] = JobConst_default.DOG_G_CROSS;
+	AllMountTable[JobConst_default.SURA] = JobConst_default.SHEEP_SURA;
+	AllMountTable[JobConst_default.MINSTREL] = JobConst_default.OSTRICH_MINSTREL;
+	AllMountTable[JobConst_default.WANDERER] = JobConst_default.OSTRICH_WANDER;
+	AllMountTable[JobConst_default.SORCERER] = JobConst_default.FOX_SORCERER;
+	AllMountTable[JobConst_default.GENETIC] = JobConst_default.PIG_GENETIC;
+	AllMountTable[JobConst_default.ROYAL_GUARD] = JobConst_default.LION_ROYAL_GUARD;
+	AllMountTable[JobConst_default.SHADOW_CHASER] = JobConst_default.DOG_CHASER;
+	AllMountTable[JobConst_default.SUPERNOVICE] = JobConst_default.PORING_SNOVICE;
+	AllMountTable[JobConst_default.NINJA] = JobConst_default.FROG_NINJA;
+	AllMountTable[JobConst_default.GUNSLINGER] = JobConst_default.PECO_GUNNER;
+	AllMountTable[JobConst_default.TAEKWON] = JobConst_default.PORING_TAEKWON;
+	AllMountTable[JobConst_default.STAR] = JobConst_default.PORING_STAR;
+	AllMountTable[JobConst_default.LINKER] = JobConst_default.FROG_LINKER;
+	AllMountTable[JobConst_default.SUPERNOVICE2] = JobConst_default.PORING_SNOVICE2;
+	AllMountTable[JobConst_default.KAGEROU] = JobConst_default.FROG_KAGEROU;
+	AllMountTable[JobConst_default.OBORO] = JobConst_default.FROG_OBORO;
+	AllMountTable[JobConst_default.REBELLION] = JobConst_default.PECO_REBELLION;
+	AllMountTable[JobConst_default.SOUL_REAPER] = JobConst_default.SOUL_REAPER2;
+	AllMountTable[JobConst_default.STAR_EMPEROR] = JobConst_default.STAR_EMPEROR2;
+	AllMountTable[JobConst_default.DRAGON_KNIGHT] = JobConst_default.DRAGON_KNIGHT_RIDING;
+	AllMountTable[JobConst_default.MEISTER] = JobConst_default.MEISTER_RIDING;
+	AllMountTable[JobConst_default.SHADOW_CROSS] = JobConst_default.SHADOW_CROSS_RIDING;
+	AllMountTable[JobConst_default.ARCH_MAGE] = JobConst_default.ARCH_MAGE_RIDING;
+	AllMountTable[JobConst_default.CARDINAL] = JobConst_default.CARDINAL_RIDING;
+	AllMountTable[JobConst_default.WINDHAWK] = JobConst_default.WINDHAWK_RIDING;
+	AllMountTable[JobConst_default.IMPERIAL_GUARD] = JobConst_default.IMPERIAL_GUARD_RIDING;
+	AllMountTable[JobConst_default.BIOLO] = JobConst_default.BIOLO_RIDING;
+	AllMountTable[JobConst_default.ABYSS_CHASER] = JobConst_default.ABYSS_CHASER_RIDING;
+	AllMountTable[JobConst_default.ELEMENTAL_MASTER] = JobConst_default.ELEMENTAL_MASTER_RIDING;
+	AllMountTable[JobConst_default.INQUISITOR] = JobConst_default.INQUISITOR_RIDING;
+	AllMountTable[JobConst_default.TROUBADOUR] = JobConst_default.TROUBADOUR_RIDING;
+	AllMountTable[JobConst_default.TROUVERE] = JobConst_default.TROUVERE_RIDING;
+	AllMountTable[JobConst_default.DRUID] = JobConst_default.DRUID_RIDING;
+	AllMountTable[JobConst_default.ALITEA] = JobConst_default.ALITEA_RIDING;
+	AllMountTable[JobConst_default.KARNOS] = JobConst_default.KARNOS_RIDING;
+	AllMountTable[JobConst_default.NOVICE_H] = JobConst_default.PORING_NOVICE_H;
+	AllMountTable[JobConst_default.ACOLYTE_H] = JobConst_default.SHEEP_ACO_H;
+	AllMountTable[JobConst_default.ARCHER_H] = JobConst_default.OSTRICH_ARCHER_H;
+	AllMountTable[JobConst_default.MAGICIAN_H] = JobConst_default.FOX_MAGICIAN_H;
+	AllMountTable[JobConst_default.MERCHANT_H] = JobConst_default.PIG_MERCHANT_H;
+	AllMountTable[JobConst_default.SWORDMAN_H] = JobConst_default.PECO_SWORD_H;
+	AllMountTable[JobConst_default.THIEF_H] = JobConst_default.DOG_THIEF_H;
+	AllMountTable[JobConst_default.PRIEST_H] = JobConst_default.SHEEP_HPRIEST;
+	AllMountTable[JobConst_default.HUNTER_H] = JobConst_default.OSTRICH_SNIPER;
+	AllMountTable[JobConst_default.WIZARD_H] = JobConst_default.FOX_HWIZ;
+	AllMountTable[JobConst_default.BLACKSMITH_H] = JobConst_default.PIG_WHITESMITH;
+	AllMountTable[JobConst_default.KNIGHT_H] = JobConst_default.LION_KNIGHT_H;
+	AllMountTable[JobConst_default.ASSASSIN_H] = JobConst_default.DOG_ASSA_X;
+	AllMountTable[JobConst_default.MONK_H] = JobConst_default.SHEEP_CHAMP;
+	AllMountTable[JobConst_default.BARD_H] = JobConst_default.OSTRICH_CROWN;
+	AllMountTable[JobConst_default.DANCER_H] = JobConst_default.OSTRICH_ZIPSI;
+	AllMountTable[JobConst_default.SAGE_H] = JobConst_default.FOX_PROF;
+	AllMountTable[JobConst_default.ALCHEMIST_H] = JobConst_default.PIG_CREATOR;
+	AllMountTable[JobConst_default.CRUSADER_H] = JobConst_default.LION_CRUSADER_H;
+	AllMountTable[JobConst_default.ROGUE_H] = JobConst_default.DOG_STALKER;
+	AllMountTable[JobConst_default.NOVICE_B] = JobConst_default.PORING_NOVICE_B;
+	AllMountTable[JobConst_default.ACOLYTE_B] = JobConst_default.SHEEP_ACO_B;
+	AllMountTable[JobConst_default.ARCHER_B] = JobConst_default.OSTRICH_ARCHER_B;
+	AllMountTable[JobConst_default.MAGICIAN_B] = JobConst_default.FOX_MAGICIAN_B;
+	AllMountTable[JobConst_default.MERCHANT_B] = JobConst_default.PIG_MERCHANT_B;
+	AllMountTable[JobConst_default.SWORDMAN_B] = JobConst_default.PECO_SWORD_B;
+	AllMountTable[JobConst_default.THIEF_B] = JobConst_default.DOG_THIEF_B;
+	AllMountTable[JobConst_default.PRIEST_B] = JobConst_default.SHEEP_PRIEST_B;
+	AllMountTable[JobConst_default.HUNTER_B] = JobConst_default.OSTRICH_HUNTER_B;
+	AllMountTable[JobConst_default.WIZARD_B] = JobConst_default.FOX_WIZ_B;
+	AllMountTable[JobConst_default.BLACKSMITH_B] = JobConst_default.PIG_BLACKSMITH_B;
+	AllMountTable[JobConst_default.KNIGHT_B] = JobConst_default.LION_KNIGHT_B;
+	AllMountTable[JobConst_default.ASSASSIN_B] = JobConst_default.DOG_ASSASSIN_B;
+	AllMountTable[JobConst_default.MONK_B] = JobConst_default.SHEEP_MONK_B;
+	AllMountTable[JobConst_default.BARD_B] = JobConst_default.OSTRICH_BARD_B;
+	AllMountTable[JobConst_default.DANCER_B] = JobConst_default.OSTRICH_DANCER_B;
+	AllMountTable[JobConst_default.SAGE_B] = JobConst_default.FOX_SAGE_B;
+	AllMountTable[JobConst_default.ALCHEMIST_B] = JobConst_default.PIG_ALCHE_B;
+	AllMountTable[JobConst_default.CRUSADER_B] = JobConst_default.LION_CRUSADER_B;
+	AllMountTable[JobConst_default.ROGUE_B] = JobConst_default.DOG_ROGUE_B;
+	AllMountTable[JobConst_default.ARCHBISHOP_B] = JobConst_default.SHEEP_ARCB_B;
+	AllMountTable[JobConst_default.RANGER_B] = JobConst_default.OSTRICH_RANGER_B;
+	AllMountTable[JobConst_default.WARLOCK_B] = JobConst_default.FOX_WARLOCK_B;
+	AllMountTable[JobConst_default.MECHANIC_B] = JobConst_default.PIG_MECHANIC_B;
+	AllMountTable[JobConst_default.RUNE_KNIGHT_B] = JobConst_default.LION_RUNE_KNIGHT_B;
+	AllMountTable[JobConst_default.GUILLOTINE_CROSS_B] = JobConst_default.DOG_G_CROSS_B;
+	AllMountTable[JobConst_default.SURA_B] = JobConst_default.SHEEP_SURA_B;
+	AllMountTable[JobConst_default.MINSTREL_B] = JobConst_default.OSTRICH_MINSTREL_B;
+	AllMountTable[JobConst_default.WANDERER_B] = JobConst_default.OSTRICH_WANDER_B;
+	AllMountTable[JobConst_default.SORCERER_B] = JobConst_default.FOX_SORCERER_B;
+	AllMountTable[JobConst_default.GENETIC_B] = JobConst_default.PIG_GENETIC_B;
+	AllMountTable[JobConst_default.ROYAL_GUARD_B] = JobConst_default.LION_ROYAL_GUARD_B;
+	AllMountTable[JobConst_default.SHADOW_CHASER_B] = JobConst_default.DOG_CHASER_B;
+	AllMountTable[JobConst_default.SUPERNOVICE_B] = JobConst_default.PORING_SNOVICE_B;
+	AllMountTable[JobConst_default.NINJA_B] = JobConst_default.FROG_NINJA_B;
+	AllMountTable[JobConst_default.GUNSLINGER_B] = JobConst_default.PECO_GUNSLINGER_B;
+	AllMountTable[JobConst_default.TAEKWON_B] = JobConst_default.PORING_TAEKWON_B;
+	AllMountTable[JobConst_default.STAR_B] = JobConst_default.PORING_STAR_B;
+	AllMountTable[JobConst_default.LINKER_B] = JobConst_default.PORING_LINKER_B;
+	AllMountTable[JobConst_default.SUPERNOVICE2_B] = JobConst_default.PORING_SNOVICE2_B;
+	AllMountTable[JobConst_default.KAGEROU_B] = JobConst_default.FROG_KAGEROU_B;
+	AllMountTable[JobConst_default.OBORO_B] = JobConst_default.FROG_OBORO_B;
+	AllMountTable[JobConst_default.REBELLION_B] = JobConst_default.PECO_REBELLION_B;
+	AllMountTable[JobConst_default.SOUL_REAPER_B] = JobConst_default.SOUL_REAPER2_B;
+	AllMountTable[JobConst_default.STAR_EMPEROR_B] = JobConst_default.STAR_EMPEROR2_B;
+	duplicateEntry$3(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H);
+	duplicateEntry$3(JobConst_default.RANGER, JobConst_default.RANGER_H);
+	duplicateEntry$3(JobConst_default.WARLOCK, JobConst_default.WARLOCK_H);
+	duplicateEntry$3(JobConst_default.MECHANIC, JobConst_default.MECHANIC_H);
+	duplicateEntry$3(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H);
+	duplicateEntry$3(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H);
+	duplicateEntry$3(JobConst_default.SURA, JobConst_default.SURA_H);
+	duplicateEntry$3(JobConst_default.MINSTREL, JobConst_default.MINSTREL_H);
+	duplicateEntry$3(JobConst_default.WANDERER, JobConst_default.WANDERER_H);
+	duplicateEntry$3(JobConst_default.SORCERER, JobConst_default.SORCERER_H);
+	duplicateEntry$3(JobConst_default.GENETIC, JobConst_default.GENETIC_H);
+	duplicateEntry$3(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H);
+	duplicateEntry$3(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H);
+	duplicateEntry$3(JobConst_default.ARCHBISHOP, JobConst_default.ARCH_BISHOP_2ND);
+	duplicateEntry$3(JobConst_default.RANGER, JobConst_default.RANGER_2ND);
+	duplicateEntry$3(JobConst_default.WARLOCK, JobConst_default.WARLOCK_2ND);
+	duplicateEntry$3(JobConst_default.MECHANIC, JobConst_default.MECHANIC_2ND);
+	duplicateEntry$3(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_2ND);
+	duplicateEntry$3(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_2ND);
+	duplicateEntry$3(JobConst_default.SURA, JobConst_default.SURA_2ND);
+	duplicateEntry$3(JobConst_default.MINSTREL, JobConst_default.MINSTREL_2ND);
+	duplicateEntry$3(JobConst_default.WANDERER, JobConst_default.WANDERER_2ND);
+	duplicateEntry$3(JobConst_default.SORCERER, JobConst_default.SORCERER_2ND);
+	duplicateEntry$3(JobConst_default.GENETIC, JobConst_default.GENETIC_2ND);
+	duplicateEntry$3(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD2_2ND);
+	duplicateEntry$3(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_2ND);
+}));
+//#endregion
+//#region src/DB/Jobs/WeaponJobTable.js
+function duplicateEntry$2(origin) {
 	const value = JobNameTable[origin];
 	for (let i = 1, count = arguments.length; i < count; ++i) WeaponJobTable[arguments[i]] = value;
 }
-var WeaponJobTable, keys;
+var WeaponJobTable, keys$1, mountsSeen, allMountKeys;
 var init_WeaponJobTable = __esmMin((() => {
 	init_JobConst();
 	init_JobNameTable();
+	init_AllMountTable();
 	WeaponJobTable = {};
-	keys = Object.keys(JobNameTable);
-	for (let i = 0, count = keys.length; i < count; ++i) WeaponJobTable[keys[i]] = JobNameTable[keys[i]];
-	duplicateEntry$3(JobConst_default.NOVICE, JobConst_default.NOVICE_H, JobConst_default.NOVICE_B);
-	duplicateEntry$3(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_H, JobConst_default.SWORDMAN_B);
-	duplicateEntry$3(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_H, JobConst_default.MAGICIAN_B);
-	duplicateEntry$3(JobConst_default.ARCHER, JobConst_default.ARCHER_H, JobConst_default.ARCHER_B);
-	duplicateEntry$3(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_H, JobConst_default.ACOLYTE_B);
-	duplicateEntry$3(JobConst_default.MERCHANT, JobConst_default.MERCHANT_H, JobConst_default.MERCHANT_B);
-	duplicateEntry$3(JobConst_default.THIEF, JobConst_default.THIEF_H, JobConst_default.THIEF_B);
-	duplicateEntry$3(JobConst_default.KNIGHT, JobConst_default.KNIGHT_H, JobConst_default.KNIGHT_B, JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_B, JobConst_default.RUNE_KNIGHT_2ND, JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT_RIDING);
-	duplicateEntry$3(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_H, JobConst_default.KNIGHT2_B, JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_B, JobConst_default.RUNE_KNIGHT2_2ND, JobConst_default.DRAGON_KNIGHT2);
-	duplicateEntry$3(JobConst_default.PRIEST, JobConst_default.PRIEST_H, JobConst_default.PRIEST_B, JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_B, JobConst_default.ARCH_BISHOP_2ND, JobConst_default.CARDINAL, JobConst_default.CARDINAL_RIDING);
-	duplicateEntry$3(JobConst_default.WIZARD, JobConst_default.WIZARD_H, JobConst_default.WIZARD_B, JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_B, JobConst_default.WARLOCK_2ND, JobConst_default.ARCH_MAGE, JobConst_default.ARCH_MAGE_RIDING);
-	duplicateEntry$3(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_H, JobConst_default.BLACKSMITH_B, JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_B, JobConst_default.MECHANIC_2ND, JobConst_default.MECHANIC2_2ND, JobConst_default.MEISTER, JobConst_default.MEISTER2, JobConst_default.MEISTER_RIDING);
-	duplicateEntry$3(JobConst_default.HUNTER, JobConst_default.HUNTER_H, JobConst_default.HUNTER_B, JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_B, JobConst_default.RANGER_2ND, JobConst_default.RANGER2_2ND, JobConst_default.WINDHAWK, JobConst_default.WINDHAWK2, JobConst_default.WINDHAWK_RIDING);
-	duplicateEntry$3(JobConst_default.ASSASSIN, JobConst_default.ASSASSIN_H, JobConst_default.ASSASSIN_B, JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H, JobConst_default.GUILLOTINE_CROSS_B, JobConst_default.GUILLOTINE_CROSS_2ND, JobConst_default.SHADOW_CROSS, JobConst_default.SHADOW_CROSS_RIDING);
-	duplicateEntry$3(JobConst_default.CRUSADER, JobConst_default.CRUSADER_H, JobConst_default.CRUSADER_B, JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H, JobConst_default.ROYAL_GUARD_B, JobConst_default.ROYAL_GUARD_2ND, JobConst_default.IMPERIAL_GUARD, JobConst_default.IMPERIAL_GUARD_RIDING);
-	duplicateEntry$3(JobConst_default.CRUSADER2, JobConst_default.CRUSADER2_H, JobConst_default.CRUSADER2_B, JobConst_default.ROYAL_GUARD2, JobConst_default.ROYAL_GUARD2_H, JobConst_default.ROYAL_GUARD2_B, JobConst_default.ROYAL_GUARD2_2ND, JobConst_default.IMPERIAL_GUARD2);
-	duplicateEntry$3(JobConst_default.MONK, JobConst_default.MONK_H, JobConst_default.MONK_B, JobConst_default.SURA, JobConst_default.SURA_H, JobConst_default.SURA_B, JobConst_default.SURA_2ND, JobConst_default.INQUISITOR, JobConst_default.INQUISITOR_RIDING);
-	duplicateEntry$3(JobConst_default.SAGE, JobConst_default.SAGE_H, JobConst_default.SAGE_B, JobConst_default.SORCERER, JobConst_default.SORCERER_H, JobConst_default.SORCERER_B, JobConst_default.SORCERER_2ND, JobConst_default.ELEMENTAL_MASTER, JobConst_default.ELEMENTAL_MASTER_RIDING);
-	duplicateEntry$3(JobConst_default.ROGUE, JobConst_default.ROGUE_H, JobConst_default.ROGUE_B, JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H, JobConst_default.SHADOW_CHASER_B, JobConst_default.SHADOW_CHASER_2ND, JobConst_default.ABYSS_CHASER, JobConst_default.ABYSS_CHASER_RIDING);
-	duplicateEntry$3(JobConst_default.ALCHEMIST, JobConst_default.ALCHEMIST_H, JobConst_default.ALCHEMIST_B, JobConst_default.GENETIC, JobConst_default.GENETIC_H, JobConst_default.GENETIC_B, JobConst_default.GENETIC_2ND, JobConst_default.BIOLO, JobConst_default.BIOLO_RIDING);
-	duplicateEntry$3(JobConst_default.BARD, JobConst_default.BARD_H, JobConst_default.BARD_B, JobConst_default.MINSTREL, JobConst_default.MINSTREL_H, JobConst_default.MINSTREL_B, JobConst_default.MINSTREL_2ND, JobConst_default.TROUBADOUR, JobConst_default.TROUBADOUR_RIDING);
-	duplicateEntry$3(JobConst_default.DANCER, JobConst_default.DANCER_H, JobConst_default.DANCER_B, JobConst_default.WANDERER, JobConst_default.WANDERER_H, JobConst_default.WANDERER_B, JobConst_default.WANDERER_2ND, JobConst_default.TROUVERE, JobConst_default.TROUVERE_RIDING);
+	keys$1 = Object.keys(JobNameTable);
+	for (let i = 0, count = keys$1.length; i < count; ++i) WeaponJobTable[keys$1[i]] = JobNameTable[keys$1[i]];
+	duplicateEntry$2(JobConst_default.NOVICE, JobConst_default.NOVICE_H, JobConst_default.NOVICE_B);
+	duplicateEntry$2(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_H, JobConst_default.SWORDMAN_B);
+	duplicateEntry$2(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_H, JobConst_default.MAGICIAN_B);
+	duplicateEntry$2(JobConst_default.ARCHER, JobConst_default.ARCHER_H, JobConst_default.ARCHER_B);
+	duplicateEntry$2(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_H, JobConst_default.ACOLYTE_B);
+	duplicateEntry$2(JobConst_default.MERCHANT, JobConst_default.MERCHANT_H, JobConst_default.MERCHANT_B);
+	duplicateEntry$2(JobConst_default.THIEF, JobConst_default.THIEF_H, JobConst_default.THIEF_B);
+	duplicateEntry$2(JobConst_default.KNIGHT, JobConst_default.KNIGHT_H, JobConst_default.KNIGHT_B, JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_B, JobConst_default.RUNE_KNIGHT_2ND, JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT_RIDING);
+	duplicateEntry$2(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_H, JobConst_default.KNIGHT2_B, JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_B, JobConst_default.RUNE_KNIGHT2_2ND, JobConst_default.DRAGON_KNIGHT2);
+	duplicateEntry$2(JobConst_default.PRIEST, JobConst_default.PRIEST_H, JobConst_default.PRIEST_B, JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_B, JobConst_default.ARCH_BISHOP_2ND, JobConst_default.CARDINAL, JobConst_default.CARDINAL_RIDING);
+	duplicateEntry$2(JobConst_default.WIZARD, JobConst_default.WIZARD_H, JobConst_default.WIZARD_B, JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_B, JobConst_default.WARLOCK_2ND, JobConst_default.ARCH_MAGE, JobConst_default.ARCH_MAGE_RIDING);
+	duplicateEntry$2(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_H, JobConst_default.BLACKSMITH_B, JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_B, JobConst_default.MECHANIC_2ND, JobConst_default.MECHANIC2_2ND, JobConst_default.MEISTER, JobConst_default.MEISTER2, JobConst_default.MEISTER_RIDING);
+	duplicateEntry$2(JobConst_default.HUNTER, JobConst_default.HUNTER_H, JobConst_default.HUNTER_B, JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_B, JobConst_default.RANGER_2ND, JobConst_default.RANGER2_2ND, JobConst_default.WINDHAWK, JobConst_default.WINDHAWK2, JobConst_default.WINDHAWK_RIDING);
+	duplicateEntry$2(JobConst_default.ASSASSIN, JobConst_default.ASSASSIN_H, JobConst_default.ASSASSIN_B, JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H, JobConst_default.GUILLOTINE_CROSS_B, JobConst_default.GUILLOTINE_CROSS_2ND, JobConst_default.SHADOW_CROSS, JobConst_default.SHADOW_CROSS_RIDING);
+	duplicateEntry$2(JobConst_default.CRUSADER, JobConst_default.CRUSADER_H, JobConst_default.CRUSADER_B, JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H, JobConst_default.ROYAL_GUARD_B, JobConst_default.ROYAL_GUARD_2ND, JobConst_default.IMPERIAL_GUARD, JobConst_default.IMPERIAL_GUARD_RIDING);
+	duplicateEntry$2(JobConst_default.CRUSADER2, JobConst_default.CRUSADER2_H, JobConst_default.CRUSADER2_B, JobConst_default.ROYAL_GUARD2, JobConst_default.ROYAL_GUARD2_H, JobConst_default.ROYAL_GUARD2_B, JobConst_default.ROYAL_GUARD2_2ND, JobConst_default.IMPERIAL_GUARD2);
+	duplicateEntry$2(JobConst_default.MONK, JobConst_default.MONK_H, JobConst_default.MONK_B, JobConst_default.SURA, JobConst_default.SURA_H, JobConst_default.SURA_B, JobConst_default.SURA_2ND, JobConst_default.INQUISITOR, JobConst_default.INQUISITOR_RIDING);
+	duplicateEntry$2(JobConst_default.SAGE, JobConst_default.SAGE_H, JobConst_default.SAGE_B, JobConst_default.SORCERER, JobConst_default.SORCERER_H, JobConst_default.SORCERER_B, JobConst_default.SORCERER_2ND, JobConst_default.ELEMENTAL_MASTER, JobConst_default.ELEMENTAL_MASTER_RIDING);
+	duplicateEntry$2(JobConst_default.ROGUE, JobConst_default.ROGUE_H, JobConst_default.ROGUE_B, JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H, JobConst_default.SHADOW_CHASER_B, JobConst_default.SHADOW_CHASER_2ND, JobConst_default.ABYSS_CHASER, JobConst_default.ABYSS_CHASER_RIDING);
+	duplicateEntry$2(JobConst_default.ALCHEMIST, JobConst_default.ALCHEMIST_H, JobConst_default.ALCHEMIST_B, JobConst_default.GENETIC, JobConst_default.GENETIC_H, JobConst_default.GENETIC_B, JobConst_default.GENETIC_2ND, JobConst_default.BIOLO, JobConst_default.BIOLO_RIDING);
+	duplicateEntry$2(JobConst_default.BARD, JobConst_default.BARD_H, JobConst_default.BARD_B, JobConst_default.MINSTREL, JobConst_default.MINSTREL_H, JobConst_default.MINSTREL_B, JobConst_default.MINSTREL_2ND, JobConst_default.TROUBADOUR, JobConst_default.TROUBADOUR_RIDING);
+	duplicateEntry$2(JobConst_default.DANCER, JobConst_default.DANCER_H, JobConst_default.DANCER_B, JobConst_default.WANDERER, JobConst_default.WANDERER_H, JobConst_default.WANDERER_B, JobConst_default.WANDERER_2ND, JobConst_default.TROUVERE, JobConst_default.TROUVERE_RIDING);
+	mountsSeen = {};
+	allMountKeys = Object.keys(AllMountTable);
+	for (let i = 0, count = allMountKeys.length; i < count; ++i) {
+		const mount = AllMountTable[allMountKeys[i]];
+		const base = WeaponJobTable[allMountKeys[i]];
+		if (mount !== void 0 && base !== void 0 && !(mount in mountsSeen)) {
+			WeaponJobTable[mount] = base;
+			mountsSeen[mount] = true;
+		}
+	}
+}));
+//#endregion
+//#region src/DB/Jobs/MountTable.js
+var MountTable;
+var init_MountTable = __esmMin((() => {
+	init_JobConst();
+	MountTable = {};
+	MountTable[JobConst_default.KNIGHT] = JobConst_default.KNIGHT2;
+	MountTable[JobConst_default.KNIGHT_H] = JobConst_default.KNIGHT2_H;
+	MountTable[JobConst_default.KNIGHT_B] = JobConst_default.KNIGHT2_B;
+	MountTable[JobConst_default.CRUSADER] = JobConst_default.CRUSADER2;
+	MountTable[JobConst_default.CRUSADER_H] = JobConst_default.CRUSADER2_H;
+	MountTable[JobConst_default.CRUSADER_B] = JobConst_default.CRUSADER2_B;
+	MountTable[JobConst_default.CRUSADER_2ND] = JobConst_default.CRUSADER2_2ND;
+	MountTable[JobConst_default.RUNE_KNIGHT] = JobConst_default.RUNE_KNIGHT2;
+	MountTable[JobConst_default.RUNE_KNIGHT_H] = JobConst_default.RUNE_KNIGHT2_H;
+	MountTable[JobConst_default.RUNE_KNIGHT_B] = JobConst_default.RUNE_KNIGHT2_B;
+	MountTable[JobConst_default.RUNE_KNIGHT_2ND] = JobConst_default.RUNE_KNIGHT2_2ND;
+	MountTable[JobConst_default.ROYAL_GUARD] = JobConst_default.ROYAL_GUARD2;
+	MountTable[JobConst_default.ROYAL_GUARD_H] = JobConst_default.ROYAL_GUARD2_H;
+	MountTable[JobConst_default.ROYAL_GUARD_B] = JobConst_default.ROYAL_GUARD2_B;
+	MountTable[JobConst_default.ROYAL_GUARD_2ND] = JobConst_default.ROYAL_GUARD2_2ND;
+	MountTable[JobConst_default.RANGER] = JobConst_default.RANGER2;
+	MountTable[JobConst_default.RANGER_H] = JobConst_default.RANGER2_H;
+	MountTable[JobConst_default.RANGER_B] = JobConst_default.RANGER2_B;
+	MountTable[JobConst_default.RANGER_2ND] = JobConst_default.RANGER2_2ND;
+	MountTable[JobConst_default.MECHANIC] = JobConst_default.MECHANIC2;
+	MountTable[JobConst_default.MECHANIC_H] = JobConst_default.MECHANIC2_H;
+	MountTable[JobConst_default.MECHANIC_B] = JobConst_default.MECHANIC2_B;
+	MountTable[JobConst_default.MECHANIC_2ND] = JobConst_default.MECHANIC2_2ND;
+	MountTable[JobConst_default.WINDHAWK] = JobConst_default.WINDHAWK2;
+	MountTable[JobConst_default.MEISTER] = JobConst_default.MEISTER2;
+	MountTable[JobConst_default.DRAGON_KNIGHT] = JobConst_default.DRAGON_KNIGHT2;
+	MountTable[JobConst_default.IMPERIAL_GUARD] = JobConst_default.IMPERIAL_GUARD2;
+}));
+//#endregion
+//#region src/DB/Jobs/ShieldJobTable.js
+var ShieldJobTable, keys, baseKeys;
+var init_ShieldJobTable = __esmMin((() => {
+	init_WeaponJobTable();
+	init_MountTable();
+	ShieldJobTable = {};
+	keys = Object.keys(WeaponJobTable);
+	for (let i = 0, count = keys.length; i < count; ++i) ShieldJobTable[keys[i]] = WeaponJobTable[keys[i]];
+	baseKeys = Object.keys(MountTable);
+	for (let i = 0, count = baseKeys.length; i < count; ++i) {
+		const mount = MountTable[baseKeys[i]];
+		const base = WeaponJobTable[baseKeys[i]];
+		if (mount !== void 0 && base !== void 0) ShieldJobTable[mount] = base;
+	}
 }));
 //#endregion
 //#region src/DB/Jobs/BabyTable.js
@@ -137791,7 +138015,7 @@ var init_SkillInfo = __esmMin((() => {
 }));
 //#endregion
 //#region src/DB/Skills/SkillTreeView.js
-function duplicateEntry$2(origin) {
+function duplicateEntry$1(origin) {
 	const value = SkillTreeView[origin];
 	for (let i = 1, count = arguments.length; i < count; ++i) SkillTreeView[arguments[i]] = value;
 }
@@ -139476,112 +139700,112 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SS_ANKOKURYUUAKUMU]: 41,
 		[SkillConst_default.SS_FOUR_CHARM]: 42
 	};
-	duplicateEntry$2(JobConst_default.NOVICE, JobConst_default.NOVICE_B);
-	duplicateEntry$2(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_B);
-	duplicateEntry$2(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_B);
-	duplicateEntry$2(JobConst_default.ARCHER, JobConst_default.ARCHER_B);
-	duplicateEntry$2(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_B);
-	duplicateEntry$2(JobConst_default.MERCHANT, JobConst_default.MERCHANT_B);
-	duplicateEntry$2(JobConst_default.THIEF, JobConst_default.THIEF_B);
-	duplicateEntry$2(JobConst_default.KNIGHT, JobConst_default.KNIGHT_B);
-	duplicateEntry$2(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_B);
-	duplicateEntry$2(JobConst_default.PRIEST, JobConst_default.PRIEST_B);
-	duplicateEntry$2(JobConst_default.WIZARD, JobConst_default.WIZARD_B);
-	duplicateEntry$2(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_B);
-	duplicateEntry$2(JobConst_default.HUNTER, JobConst_default.HUNTER_B);
-	duplicateEntry$2(JobConst_default.ASSASSIN, JobConst_default.ASSASSIN_B);
-	duplicateEntry$2(JobConst_default.CRUSADER, JobConst_default.CRUSADER_B);
-	duplicateEntry$2(JobConst_default.CRUSADER2, JobConst_default.CRUSADER2_B);
-	duplicateEntry$2(JobConst_default.MONK, JobConst_default.MONK_B);
-	duplicateEntry$2(JobConst_default.SAGE, JobConst_default.SAGE_B);
-	duplicateEntry$2(JobConst_default.ROGUE, JobConst_default.ROGUE_B);
-	duplicateEntry$2(JobConst_default.ALCHEMIST, JobConst_default.ALCHEMIST_B);
-	duplicateEntry$2(JobConst_default.BARD, JobConst_default.BARD_B);
-	duplicateEntry$2(JobConst_default.DANCER, JobConst_default.DANCER_B);
-	duplicateEntry$2(JobConst_default.NINJA, JobConst_default.NINJA_B);
-	duplicateEntry$2(JobConst_default.KAGEROU, JobConst_default.KAGEROU_B);
-	duplicateEntry$2(JobConst_default.OBORO, JobConst_default.OBORO_B);
-	duplicateEntry$2(JobConst_default.TAEKWON, JobConst_default.TAEKWON_B);
-	duplicateEntry$2(JobConst_default.STAR_B, JobConst_default.STAR_B);
-	duplicateEntry$2(JobConst_default.STAR2_B, JobConst_default.STAR2_B);
-	duplicateEntry$2(JobConst_default.LINKER, JobConst_default.LINKER_B);
-	duplicateEntry$2(JobConst_default.GUNSLINGER, JobConst_default.GUNSLINGER_B);
-	duplicateEntry$2(JobConst_default.REBELLION, JobConst_default.REBELLION_B);
-	duplicateEntry$2(JobConst_default.STAR_EMPEROR, JobConst_default.EMPEROR_B);
-	duplicateEntry$2(JobConst_default.STAR_EMPEROR, JobConst_default.EMPEROR2_B);
-	duplicateEntry$2(JobConst_default.SOUL_REAPER, JobConst_default.REAPER_B);
-	duplicateEntry$2(JobConst_default.NOVICE, JobConst_default.NOVICE_H);
-	duplicateEntry$2(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_H);
-	duplicateEntry$2(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_H);
-	duplicateEntry$2(JobConst_default.ARCHER, JobConst_default.ARCHER_H);
-	duplicateEntry$2(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_H);
-	duplicateEntry$2(JobConst_default.MERCHANT, JobConst_default.MERCHANT_H);
-	duplicateEntry$2(JobConst_default.THIEF, JobConst_default.THIEF_H);
-	duplicateEntry$2(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_B);
-	duplicateEntry$2(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_B);
-	duplicateEntry$2(JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_B);
-	duplicateEntry$2(JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_B);
-	duplicateEntry$2(JobConst_default.RANGER, JobConst_default.RANGER2, JobConst_default.RANGER2_H, JobConst_default.RANGER2_B);
-	duplicateEntry$2(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_B);
-	duplicateEntry$2(JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_B);
-	duplicateEntry$2(JobConst_default.MECHANIC, JobConst_default.MECHANIC2, JobConst_default.MECHANIC2_H, JobConst_default.MECHANIC2_B);
-	duplicateEntry$2(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H, JobConst_default.GUILLOTINE_CROSS_B);
-	duplicateEntry$2(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H, JobConst_default.ROYAL_GUARD_B);
-	duplicateEntry$2(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD2, JobConst_default.ROYAL_GUARD2_H, JobConst_default.ROYAL_GUARD2_B);
-	duplicateEntry$2(JobConst_default.SORCERER, JobConst_default.SORCERER_H, JobConst_default.SORCERER_B);
-	duplicateEntry$2(JobConst_default.MINSTREL, JobConst_default.MINSTREL_H, JobConst_default.MINSTREL_B);
-	duplicateEntry$2(JobConst_default.WANDERER, JobConst_default.WANDERER_H, JobConst_default.WANDERER_B);
-	duplicateEntry$2(JobConst_default.SURA, JobConst_default.SURA_H, JobConst_default.SURA_B);
-	duplicateEntry$2(JobConst_default.GENETIC, JobConst_default.GENETIC_H, JobConst_default.GENETIC_B);
-	duplicateEntry$2(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H, JobConst_default.SHADOW_CHASER_B);
-	duplicateEntry$2(JobConst_default.DO_SUMMONER, JobConst_default.DO_SUMMONER_B);
-	duplicateEntry$2(JobConst_default.NOVICE, JobConst_default.PORING_NOVICE, JobConst_default.PORING_NOVICE_H, JobConst_default.PORING_NOVICE_B);
-	duplicateEntry$2(JobConst_default.ACOLYTE, JobConst_default.SHEEP_ACO, JobConst_default.SHEEP_ACO_H, JobConst_default.SHEEP_ACO_B);
-	duplicateEntry$2(JobConst_default.ARCHER, JobConst_default.OSTRICH_ARCHER, JobConst_default.OSTRICH_ARCHER_H, JobConst_default.OSTRICH_ARCHER_B);
-	duplicateEntry$2(JobConst_default.MAGICIAN, JobConst_default.FOX_MAGICIAN, JobConst_default.FOX_MAGICIAN_H, JobConst_default.FOX_MAGICIAN_B);
-	duplicateEntry$2(JobConst_default.MERCHANT, JobConst_default.PIG_MERCHANT, JobConst_default.PIG_MERCHANT_H, JobConst_default.PIG_MERCHANT_B);
-	duplicateEntry$2(JobConst_default.SWORDMAN, JobConst_default.PECO_SWORD, JobConst_default.PECO_SWORD_H, JobConst_default.PECO_SWORD_B);
-	duplicateEntry$2(JobConst_default.THIEF, JobConst_default.DOG_THIEF, JobConst_default.DOG_THIEF_H, JobConst_default.DOG_THIEF_B);
-	duplicateEntry$2(JobConst_default.PRIEST, JobConst_default.SHEEP_PRIEST, JobConst_default.SHEEP_PRIEST_B);
-	duplicateEntry$2(JobConst_default.HUNTER, JobConst_default.OSTRICH_HUNTER, JobConst_default.OSTRICH_HUNTER_B);
-	duplicateEntry$2(JobConst_default.WIZARD, JobConst_default.FOX_WIZ, JobConst_default.FOX_WIZ_B);
-	duplicateEntry$2(JobConst_default.BLACKSMITH, JobConst_default.PIG_BLACKSMITH, JobConst_default.PIG_BLACKSMITH_B);
-	duplicateEntry$2(JobConst_default.KNIGHT, JobConst_default.LION_KNIGHT, JobConst_default.LION_KNIGHT_B);
-	duplicateEntry$2(JobConst_default.ASSASSIN, JobConst_default.DOG_ASSASSIN, JobConst_default.DOG_ASSASSIN_B);
-	duplicateEntry$2(JobConst_default.MONK, JobConst_default.SHEEP_MONK, JobConst_default.SHEEP_MONK_B);
-	duplicateEntry$2(JobConst_default.BARD, JobConst_default.OSTRICH_BARD, JobConst_default.OSTRICH_BARD_B);
-	duplicateEntry$2(JobConst_default.DANCER, JobConst_default.OSTRICH_DANCER, JobConst_default.OSTRICH_DANCER_B);
-	duplicateEntry$2(JobConst_default.SAGE, JobConst_default.FOX_SAGE, JobConst_default.FOX_SAGE_B);
-	duplicateEntry$2(JobConst_default.ALCHEMIST, JobConst_default.PIG_ALCHE, JobConst_default.PIG_ALCHE_B);
-	duplicateEntry$2(JobConst_default.CRUSADER, JobConst_default.LION_CRUSADER, JobConst_default.LION_CRUSADER_B);
-	duplicateEntry$2(JobConst_default.ROGUE, JobConst_default.DOG_ROGUE, JobConst_default.DOG_ROGUE_B);
-	duplicateEntry$2(JobConst_default.ARCHBISHOP, JobConst_default.SHEEP_ARCB, JobConst_default.SHEEP_ARCB_B);
-	duplicateEntry$2(JobConst_default.RANGER, JobConst_default.OSTRICH_RANGER, JobConst_default.OSTRICH_RANGER_B);
-	duplicateEntry$2(JobConst_default.WARLOCK, JobConst_default.FOX_WARLOCK, JobConst_default.FOX_WARLOCK_B);
-	duplicateEntry$2(JobConst_default.MECHANIC, JobConst_default.PIG_MECHANIC, JobConst_default.PIG_MECHANIC_B);
-	duplicateEntry$2(JobConst_default.KNIGHT, JobConst_default.LION_RUNE_KNIGHT, JobConst_default.LION_RUNE_KNIGHT_B);
-	duplicateEntry$2(JobConst_default.GUILLOTINE_CROSS, JobConst_default.DOG_G_CROSS, JobConst_default.DOG_G_CROSS_B);
-	duplicateEntry$2(JobConst_default.SURA, JobConst_default.SHEEP_SURA, JobConst_default.SHEEP_SURA_B);
-	duplicateEntry$2(JobConst_default.MINSTREL, JobConst_default.OSTRICH_MINSTREL, JobConst_default.OSTRICH_MINSTREL_B);
-	duplicateEntry$2(JobConst_default.WANDER, JobConst_default.OSTRICH_WANDER, JobConst_default.OSTRICH_WANDER_B);
-	duplicateEntry$2(JobConst_default.SORCERER, JobConst_default.FOX_SORCERER, JobConst_default.FOX_SORCERER_B);
-	duplicateEntry$2(JobConst_default.GENETIC, JobConst_default.PIG_GENETIC, JobConst_default.PIG_GENETIC_B);
-	duplicateEntry$2(JobConst_default.ROYAL_GUARD, JobConst_default.LION_ROYAL_GUARD, JobConst_default.LION_ROYAL_GUARD_B);
-	duplicateEntry$2(JobConst_default.SHADOW_CHASER, JobConst_default.DOG_CHASER, JobConst_default.DOG_CHASER_B);
-	duplicateEntry$2(JobConst_default.SUPERNOVICE, JobConst_default.PORING_SNOVICE, JobConst_default.PORING_SNOVICE_B, JobConst_default.PORING_SNOVICE2, JobConst_default.PORING_SNOVICE2_B);
-	duplicateEntry$2(JobConst_default.NINJA, JobConst_default.FROG_NINJA, JobConst_default.FROG_NINJA_B);
-	duplicateEntry$2(JobConst_default.GUNSLINGER, JobConst_default.PECO_GUNNER, JobConst_default.PECO_GUNNER_B);
-	duplicateEntry$2(JobConst_default.TAEKWON, JobConst_default.PORING_TAEKWON, JobConst_default.PORING_TAEKWON_B);
-	duplicateEntry$2(JobConst_default.STAR, JobConst_default.PORING_STAR, JobConst_default.PORING_STAR_B);
-	duplicateEntry$2(JobConst_default.LINKER, JobConst_default.FROG_LINKER, JobConst_default.FROG_LINKER_B);
-	duplicateEntry$2(JobConst_default.KAGEROU, JobConst_default.FROG_KAGEROU, JobConst_default.FROG_KAGEROU_B);
-	duplicateEntry$2(JobConst_default.OBORO, JobConst_default.FROG_OBORO, JobConst_default.FROG_OBORO_B);
-	duplicateEntry$2(JobConst_default.REBELLION, JobConst_default.PECO_REBELLION, JobConst_default.PECO_REBELLION_B);
-	duplicateEntry$2(JobConst_default.WINDHAWK, JobConst_default.WINDHAWK2);
-	duplicateEntry$2(JobConst_default.MEISTER, JobConst_default.MEISTER2);
-	duplicateEntry$2(JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT2);
-	duplicateEntry$2(JobConst_default.IMPERIAL_GUARD, JobConst_default.IMPERIAL_GUARD2);
-	duplicateEntry$2(JobConst_default.SKY_EMPEROR, JobConst_default.SKY_EMPEROR2);
+	duplicateEntry$1(JobConst_default.NOVICE, JobConst_default.NOVICE_B);
+	duplicateEntry$1(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_B);
+	duplicateEntry$1(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_B);
+	duplicateEntry$1(JobConst_default.ARCHER, JobConst_default.ARCHER_B);
+	duplicateEntry$1(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_B);
+	duplicateEntry$1(JobConst_default.MERCHANT, JobConst_default.MERCHANT_B);
+	duplicateEntry$1(JobConst_default.THIEF, JobConst_default.THIEF_B);
+	duplicateEntry$1(JobConst_default.KNIGHT, JobConst_default.KNIGHT_B);
+	duplicateEntry$1(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_B);
+	duplicateEntry$1(JobConst_default.PRIEST, JobConst_default.PRIEST_B);
+	duplicateEntry$1(JobConst_default.WIZARD, JobConst_default.WIZARD_B);
+	duplicateEntry$1(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_B);
+	duplicateEntry$1(JobConst_default.HUNTER, JobConst_default.HUNTER_B);
+	duplicateEntry$1(JobConst_default.ASSASSIN, JobConst_default.ASSASSIN_B);
+	duplicateEntry$1(JobConst_default.CRUSADER, JobConst_default.CRUSADER_B);
+	duplicateEntry$1(JobConst_default.CRUSADER2, JobConst_default.CRUSADER2_B);
+	duplicateEntry$1(JobConst_default.MONK, JobConst_default.MONK_B);
+	duplicateEntry$1(JobConst_default.SAGE, JobConst_default.SAGE_B);
+	duplicateEntry$1(JobConst_default.ROGUE, JobConst_default.ROGUE_B);
+	duplicateEntry$1(JobConst_default.ALCHEMIST, JobConst_default.ALCHEMIST_B);
+	duplicateEntry$1(JobConst_default.BARD, JobConst_default.BARD_B);
+	duplicateEntry$1(JobConst_default.DANCER, JobConst_default.DANCER_B);
+	duplicateEntry$1(JobConst_default.NINJA, JobConst_default.NINJA_B);
+	duplicateEntry$1(JobConst_default.KAGEROU, JobConst_default.KAGEROU_B);
+	duplicateEntry$1(JobConst_default.OBORO, JobConst_default.OBORO_B);
+	duplicateEntry$1(JobConst_default.TAEKWON, JobConst_default.TAEKWON_B);
+	duplicateEntry$1(JobConst_default.STAR_B, JobConst_default.STAR_B);
+	duplicateEntry$1(JobConst_default.STAR2_B, JobConst_default.STAR2_B);
+	duplicateEntry$1(JobConst_default.LINKER, JobConst_default.LINKER_B);
+	duplicateEntry$1(JobConst_default.GUNSLINGER, JobConst_default.GUNSLINGER_B);
+	duplicateEntry$1(JobConst_default.REBELLION, JobConst_default.REBELLION_B);
+	duplicateEntry$1(JobConst_default.STAR_EMPEROR, JobConst_default.EMPEROR_B);
+	duplicateEntry$1(JobConst_default.STAR_EMPEROR, JobConst_default.EMPEROR2_B);
+	duplicateEntry$1(JobConst_default.SOUL_REAPER, JobConst_default.REAPER_B);
+	duplicateEntry$1(JobConst_default.NOVICE, JobConst_default.NOVICE_H);
+	duplicateEntry$1(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_H);
+	duplicateEntry$1(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_H);
+	duplicateEntry$1(JobConst_default.ARCHER, JobConst_default.ARCHER_H);
+	duplicateEntry$1(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_H);
+	duplicateEntry$1(JobConst_default.MERCHANT, JobConst_default.MERCHANT_H);
+	duplicateEntry$1(JobConst_default.THIEF, JobConst_default.THIEF_H);
+	duplicateEntry$1(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_B);
+	duplicateEntry$1(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_B);
+	duplicateEntry$1(JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_B);
+	duplicateEntry$1(JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_B);
+	duplicateEntry$1(JobConst_default.RANGER, JobConst_default.RANGER2, JobConst_default.RANGER2_H, JobConst_default.RANGER2_B);
+	duplicateEntry$1(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_B);
+	duplicateEntry$1(JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_B);
+	duplicateEntry$1(JobConst_default.MECHANIC, JobConst_default.MECHANIC2, JobConst_default.MECHANIC2_H, JobConst_default.MECHANIC2_B);
+	duplicateEntry$1(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H, JobConst_default.GUILLOTINE_CROSS_B);
+	duplicateEntry$1(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H, JobConst_default.ROYAL_GUARD_B);
+	duplicateEntry$1(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD2, JobConst_default.ROYAL_GUARD2_H, JobConst_default.ROYAL_GUARD2_B);
+	duplicateEntry$1(JobConst_default.SORCERER, JobConst_default.SORCERER_H, JobConst_default.SORCERER_B);
+	duplicateEntry$1(JobConst_default.MINSTREL, JobConst_default.MINSTREL_H, JobConst_default.MINSTREL_B);
+	duplicateEntry$1(JobConst_default.WANDERER, JobConst_default.WANDERER_H, JobConst_default.WANDERER_B);
+	duplicateEntry$1(JobConst_default.SURA, JobConst_default.SURA_H, JobConst_default.SURA_B);
+	duplicateEntry$1(JobConst_default.GENETIC, JobConst_default.GENETIC_H, JobConst_default.GENETIC_B);
+	duplicateEntry$1(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H, JobConst_default.SHADOW_CHASER_B);
+	duplicateEntry$1(JobConst_default.DO_SUMMONER, JobConst_default.DO_SUMMONER_B);
+	duplicateEntry$1(JobConst_default.NOVICE, JobConst_default.PORING_NOVICE, JobConst_default.PORING_NOVICE_H, JobConst_default.PORING_NOVICE_B);
+	duplicateEntry$1(JobConst_default.ACOLYTE, JobConst_default.SHEEP_ACO, JobConst_default.SHEEP_ACO_H, JobConst_default.SHEEP_ACO_B);
+	duplicateEntry$1(JobConst_default.ARCHER, JobConst_default.OSTRICH_ARCHER, JobConst_default.OSTRICH_ARCHER_H, JobConst_default.OSTRICH_ARCHER_B);
+	duplicateEntry$1(JobConst_default.MAGICIAN, JobConst_default.FOX_MAGICIAN, JobConst_default.FOX_MAGICIAN_H, JobConst_default.FOX_MAGICIAN_B);
+	duplicateEntry$1(JobConst_default.MERCHANT, JobConst_default.PIG_MERCHANT, JobConst_default.PIG_MERCHANT_H, JobConst_default.PIG_MERCHANT_B);
+	duplicateEntry$1(JobConst_default.SWORDMAN, JobConst_default.PECO_SWORD, JobConst_default.PECO_SWORD_H, JobConst_default.PECO_SWORD_B);
+	duplicateEntry$1(JobConst_default.THIEF, JobConst_default.DOG_THIEF, JobConst_default.DOG_THIEF_H, JobConst_default.DOG_THIEF_B);
+	duplicateEntry$1(JobConst_default.PRIEST, JobConst_default.SHEEP_PRIEST, JobConst_default.SHEEP_PRIEST_B);
+	duplicateEntry$1(JobConst_default.HUNTER, JobConst_default.OSTRICH_HUNTER, JobConst_default.OSTRICH_HUNTER_B);
+	duplicateEntry$1(JobConst_default.WIZARD, JobConst_default.FOX_WIZ, JobConst_default.FOX_WIZ_B);
+	duplicateEntry$1(JobConst_default.BLACKSMITH, JobConst_default.PIG_BLACKSMITH, JobConst_default.PIG_BLACKSMITH_B);
+	duplicateEntry$1(JobConst_default.KNIGHT, JobConst_default.LION_KNIGHT, JobConst_default.LION_KNIGHT_B);
+	duplicateEntry$1(JobConst_default.ASSASSIN, JobConst_default.DOG_ASSASSIN, JobConst_default.DOG_ASSASSIN_B);
+	duplicateEntry$1(JobConst_default.MONK, JobConst_default.SHEEP_MONK, JobConst_default.SHEEP_MONK_B);
+	duplicateEntry$1(JobConst_default.BARD, JobConst_default.OSTRICH_BARD, JobConst_default.OSTRICH_BARD_B);
+	duplicateEntry$1(JobConst_default.DANCER, JobConst_default.OSTRICH_DANCER, JobConst_default.OSTRICH_DANCER_B);
+	duplicateEntry$1(JobConst_default.SAGE, JobConst_default.FOX_SAGE, JobConst_default.FOX_SAGE_B);
+	duplicateEntry$1(JobConst_default.ALCHEMIST, JobConst_default.PIG_ALCHE, JobConst_default.PIG_ALCHE_B);
+	duplicateEntry$1(JobConst_default.CRUSADER, JobConst_default.LION_CRUSADER, JobConst_default.LION_CRUSADER_B);
+	duplicateEntry$1(JobConst_default.ROGUE, JobConst_default.DOG_ROGUE, JobConst_default.DOG_ROGUE_B);
+	duplicateEntry$1(JobConst_default.ARCHBISHOP, JobConst_default.SHEEP_ARCB, JobConst_default.SHEEP_ARCB_B);
+	duplicateEntry$1(JobConst_default.RANGER, JobConst_default.OSTRICH_RANGER, JobConst_default.OSTRICH_RANGER_B);
+	duplicateEntry$1(JobConst_default.WARLOCK, JobConst_default.FOX_WARLOCK, JobConst_default.FOX_WARLOCK_B);
+	duplicateEntry$1(JobConst_default.MECHANIC, JobConst_default.PIG_MECHANIC, JobConst_default.PIG_MECHANIC_B);
+	duplicateEntry$1(JobConst_default.KNIGHT, JobConst_default.LION_RUNE_KNIGHT, JobConst_default.LION_RUNE_KNIGHT_B);
+	duplicateEntry$1(JobConst_default.GUILLOTINE_CROSS, JobConst_default.DOG_G_CROSS, JobConst_default.DOG_G_CROSS_B);
+	duplicateEntry$1(JobConst_default.SURA, JobConst_default.SHEEP_SURA, JobConst_default.SHEEP_SURA_B);
+	duplicateEntry$1(JobConst_default.MINSTREL, JobConst_default.OSTRICH_MINSTREL, JobConst_default.OSTRICH_MINSTREL_B);
+	duplicateEntry$1(JobConst_default.WANDER, JobConst_default.OSTRICH_WANDER, JobConst_default.OSTRICH_WANDER_B);
+	duplicateEntry$1(JobConst_default.SORCERER, JobConst_default.FOX_SORCERER, JobConst_default.FOX_SORCERER_B);
+	duplicateEntry$1(JobConst_default.GENETIC, JobConst_default.PIG_GENETIC, JobConst_default.PIG_GENETIC_B);
+	duplicateEntry$1(JobConst_default.ROYAL_GUARD, JobConst_default.LION_ROYAL_GUARD, JobConst_default.LION_ROYAL_GUARD_B);
+	duplicateEntry$1(JobConst_default.SHADOW_CHASER, JobConst_default.DOG_CHASER, JobConst_default.DOG_CHASER_B);
+	duplicateEntry$1(JobConst_default.SUPERNOVICE, JobConst_default.PORING_SNOVICE, JobConst_default.PORING_SNOVICE_B, JobConst_default.PORING_SNOVICE2, JobConst_default.PORING_SNOVICE2_B);
+	duplicateEntry$1(JobConst_default.NINJA, JobConst_default.FROG_NINJA, JobConst_default.FROG_NINJA_B);
+	duplicateEntry$1(JobConst_default.GUNSLINGER, JobConst_default.PECO_GUNNER, JobConst_default.PECO_GUNNER_B);
+	duplicateEntry$1(JobConst_default.TAEKWON, JobConst_default.PORING_TAEKWON, JobConst_default.PORING_TAEKWON_B);
+	duplicateEntry$1(JobConst_default.STAR, JobConst_default.PORING_STAR, JobConst_default.PORING_STAR_B);
+	duplicateEntry$1(JobConst_default.LINKER, JobConst_default.FROG_LINKER, JobConst_default.FROG_LINKER_B);
+	duplicateEntry$1(JobConst_default.KAGEROU, JobConst_default.FROG_KAGEROU, JobConst_default.FROG_KAGEROU_B);
+	duplicateEntry$1(JobConst_default.OBORO, JobConst_default.FROG_OBORO, JobConst_default.FROG_OBORO_B);
+	duplicateEntry$1(JobConst_default.REBELLION, JobConst_default.PECO_REBELLION, JobConst_default.PECO_REBELLION_B);
+	duplicateEntry$1(JobConst_default.WINDHAWK, JobConst_default.WINDHAWK2);
+	duplicateEntry$1(JobConst_default.MEISTER, JobConst_default.MEISTER2);
+	duplicateEntry$1(JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT2);
+	duplicateEntry$1(JobConst_default.IMPERIAL_GUARD, JobConst_default.IMPERIAL_GUARD2);
+	duplicateEntry$1(JobConst_default.SKY_EMPEROR, JobConst_default.SKY_EMPEROR2);
 }));
 //#endregion
 //#region src/DB/Skills/SkillTreeMerge.js
@@ -139632,7 +139856,7 @@ var init_SkillTreeMerge = __esmMin((() => {
 }));
 //#endregion
 //#region src/DB/Jobs/JobHitSoundTable.js
-function duplicateEntry$1(origin) {
+function duplicateEntry(origin) {
 	const value = JobHitSoundTable[origin];
 	for (let i = 1, count = arguments.length; i < count; ++i) JobHitSoundTable[arguments[i]] = value;
 }
@@ -139781,96 +140005,96 @@ var init_JobHitSoundTable = __esmMin((() => {
 	JobHitSoundTable[JobConst_default.IMPERIAL_GUARD2] = ["player_metal.wav"];
 	JobHitSoundTable[JobConst_default.WINDHAWK2] = ["player_wooden_male.wav"];
 	JobHitSoundTable[JobConst_default.MEISTER2] = ["player_clothes.wav"];
-	duplicateEntry$1(JobConst_default.NOVICE, JobConst_default.NOVICE_H, JobConst_default.NOVICE_B);
-	duplicateEntry$1(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_H, JobConst_default.SWORDMAN_B);
-	duplicateEntry$1(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_H, JobConst_default.MAGICIAN_B);
-	duplicateEntry$1(JobConst_default.ARCHER, JobConst_default.ARCHER_H, JobConst_default.ARCHER_B);
-	duplicateEntry$1(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_H, JobConst_default.ACOLYTE_B);
-	duplicateEntry$1(JobConst_default.MERCHANT, JobConst_default.MERCHANT_H, JobConst_default.MERCHANT_B);
-	duplicateEntry$1(JobConst_default.THIEF, JobConst_default.THIEF_H, JobConst_default.THIEF_B);
-	duplicateEntry$1(JobConst_default.KNIGHT, JobConst_default.KNIGHT_B);
-	duplicateEntry$1(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_B);
-	duplicateEntry$1(JobConst_default.PRIEST, JobConst_default.PRIEST_B);
-	duplicateEntry$1(JobConst_default.WIZARD, JobConst_default.WIZARD_B);
-	duplicateEntry$1(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_B);
-	duplicateEntry$1(JobConst_default.HUNTER, JobConst_default.HUNTER_B);
-	duplicateEntry$1(JobConst_default.ASSASSIN, JobConst_default.ASSASSIN_B);
-	duplicateEntry$1(JobConst_default.CRUSADER, JobConst_default.CRUSADER_B);
-	duplicateEntry$1(JobConst_default.CRUSADER2, JobConst_default.CRUSADER2_B);
-	duplicateEntry$1(JobConst_default.MONK, JobConst_default.MONK_B);
-	duplicateEntry$1(JobConst_default.SAGE, JobConst_default.SAGE_B);
-	duplicateEntry$1(JobConst_default.ROGUE, JobConst_default.ROGUE_B);
-	duplicateEntry$1(JobConst_default.ALCHEMIST, JobConst_default.ALCHEMIST_B);
-	duplicateEntry$1(JobConst_default.BARD, JobConst_default.BARD_B);
-	duplicateEntry$1(JobConst_default.DANCER, JobConst_default.DANCER_B);
-	duplicateEntry$1(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_2ND, JobConst_default.RUNE_KNIGHT_B);
-	duplicateEntry$1(JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_2ND, JobConst_default.RUNE_KNIGHT2_B);
-	duplicateEntry$1(JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_2ND, JobConst_default.WARLOCK_B);
-	duplicateEntry$1(JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_2ND, JobConst_default.RANGER_B);
-	duplicateEntry$1(JobConst_default.RANGER2, JobConst_default.RANGER2_H, JobConst_default.RANGER2_2ND, JobConst_default.RANGER2_B);
-	duplicateEntry$1(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_2ND, JobConst_default.ARCHBISHOP_B);
-	duplicateEntry$1(JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_2ND, JobConst_default.MECHANIC_B);
-	duplicateEntry$1(JobConst_default.MECHANIC2, JobConst_default.MECHANIC2_H, JobConst_default.MECHANIC2_2ND, JobConst_default.MECHANIC2_B);
-	duplicateEntry$1(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H, JobConst_default.GUILLOTINE_CROSS_2ND, JobConst_default.GUILLOTINE_CROSS_B);
-	duplicateEntry$1(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H, JobConst_default.ROYAL_GUARD_2ND, JobConst_default.ROYAL_GUARD_B);
-	duplicateEntry$1(JobConst_default.ROYAL_GUARD2, JobConst_default.ROYAL_GUARD2_H, JobConst_default.ROYAL_GUARD2_2ND, JobConst_default.ROYAL_GUARD2_B);
-	duplicateEntry$1(JobConst_default.SORCERER, JobConst_default.SORCERER_H, JobConst_default.SORCERER_2ND, JobConst_default.SORCERER_B);
-	duplicateEntry$1(JobConst_default.MINSTREL, JobConst_default.MINSTREL_H, JobConst_default.MINSTREL_2ND, JobConst_default.MINSTREL_B);
-	duplicateEntry$1(JobConst_default.WANDERER, JobConst_default.WANDERER_H, JobConst_default.WANDERER_2ND, JobConst_default.WANDERER_B);
-	duplicateEntry$1(JobConst_default.SURA, JobConst_default.SURA_H, JobConst_default.SURA_2ND, JobConst_default.SURA_B);
-	duplicateEntry$1(JobConst_default.GENETIC, JobConst_default.GENETIC_H, JobConst_default.GENETIC_2ND, JobConst_default.GENETIC_B);
-	duplicateEntry$1(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H, JobConst_default.SHADOW_CHASER_2ND, JobConst_default.SHADOW_CHASER_B);
-	duplicateEntry$1(JobConst_default.DO_SUMMONER, JobConst_default.DO_SUMMONER_B);
-	duplicateEntry$1(JobConst_default.PORING_NOVICE, JobConst_default.PORING_NOVICE_H, JobConst_default.PORING_NOVICE_B);
-	duplicateEntry$1(JobConst_default.SHEEP_ACO, JobConst_default.SHEEP_ACO_H, JobConst_default.SHEEP_ACO_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_ARCHER, JobConst_default.OSTRICH_ARCHER_H, JobConst_default.OSTRICH_ARCHER_B);
-	duplicateEntry$1(JobConst_default.FOX_MAGICIAN, JobConst_default.FOX_MAGICIAN_H, JobConst_default.FOX_MAGICIAN_B);
-	duplicateEntry$1(JobConst_default.PIG_MERCHANT, JobConst_default.PIG_MERCHANT_H, JobConst_default.PIG_MERCHANT_B);
-	duplicateEntry$1(JobConst_default.PECO_SWORD, JobConst_default.PECO_SWORD_H, JobConst_default.PECO_SWORD_B);
-	duplicateEntry$1(JobConst_default.DOG_THIEF, JobConst_default.DOG_THIEF_H, JobConst_default.DOG_THIEF_B);
-	duplicateEntry$1(JobConst_default.SHEEP_PRIEST, JobConst_default.SHEEP_PRIEST_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_HUNTER, JobConst_default.OSTRICH_HUNTER_B);
-	duplicateEntry$1(JobConst_default.FOX_WIZ, JobConst_default.FOX_WIZ_B);
-	duplicateEntry$1(JobConst_default.PIG_BLACKSMITH, JobConst_default.PIG_BLACKSMITH_B);
-	duplicateEntry$1(JobConst_default.LION_KNIGHT, JobConst_default.LION_KNIGHT_B);
-	duplicateEntry$1(JobConst_default.DOG_ASSASSIN, JobConst_default.DOG_ASSASSIN_B);
-	duplicateEntry$1(JobConst_default.STAR, JobConst_default.STAR_EMPEROR);
-	duplicateEntry$1(JobConst_default.STAR, JobConst_default.SOUL_REAPER);
-	duplicateEntry$1(JobConst_default.STAR2, JobConst_default.STAR_EMPEROR2);
-	duplicateEntry$1(JobConst_default.STAR2, JobConst_default.SOUL_REAPER2);
-	duplicateEntry$1(JobConst_default.STAR, JobConst_default.STAR_EMPEROR_B);
-	duplicateEntry$1(JobConst_default.STAR, JobConst_default.SOUL_REAPER_B);
-	duplicateEntry$1(JobConst_default.STAR2, JobConst_default.STAR_EMPEROR2_B);
-	duplicateEntry$1(JobConst_default.STAR2, JobConst_default.SOUL_REAPER2_B);
-	duplicateEntry$1(JobConst_default.SHEEP_MONK, JobConst_default.SHEEP_MONK_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_BARD, JobConst_default.OSTRICH_BARD_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_DANCER, JobConst_default.OSTRICH_DANCER_B);
-	duplicateEntry$1(JobConst_default.FOX_SAGE, JobConst_default.FOX_SAGE_B);
-	duplicateEntry$1(JobConst_default.PIG_ALCHE, JobConst_default.PIG_ALCHE_B);
-	duplicateEntry$1(JobConst_default.LION_CRUSADER, JobConst_default.LION_CRUSADER_B);
-	duplicateEntry$1(JobConst_default.DOG_ROGUE, JobConst_default.DOG_ROGUE_B);
-	duplicateEntry$1(JobConst_default.SHEEP_ARCB, JobConst_default.SHEEP_ARCB_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_RANGER, JobConst_default.OSTRICH_RANGER_B);
-	duplicateEntry$1(JobConst_default.FOX_WARLOCK, JobConst_default.FOX_WARLOCK_B);
-	duplicateEntry$1(JobConst_default.PIG_MECHANIC, JobConst_default.PIG_MECHANIC_B);
-	duplicateEntry$1(JobConst_default.LION_RUNE_KNIGHT, JobConst_default.LION_RUNE_KNIGHT_B);
-	duplicateEntry$1(JobConst_default.DOG_G_CROSS, JobConst_default.DOG_G_CROSS_B);
-	duplicateEntry$1(JobConst_default.SHEEP_SURA, JobConst_default.SHEEP_SURA_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_MINSTREL, JobConst_default.OSTRICH_MINSTREL_B);
-	duplicateEntry$1(JobConst_default.OSTRICH_WANDER, JobConst_default.OSTRICH_WANDER_B);
-	duplicateEntry$1(JobConst_default.FOX_SORCERER, JobConst_default.FOX_SORCERER_B);
-	duplicateEntry$1(JobConst_default.PIG_GENETIC, JobConst_default.PIG_GENETIC_B);
-	duplicateEntry$1(JobConst_default.LION_ROYAL_GUARD, JobConst_default.LION_ROYAL_GUARD_B);
-	duplicateEntry$1(JobConst_default.DOG_CHASER, JobConst_default.DOG_CHASER_B);
-	duplicateEntry$1(JobConst_default.PORING_SNOVICE, JobConst_default.PORING_SNOVICE_B, JobConst_default.PORING_SNOVICE2, JobConst_default.PORING_SNOVICE2_B);
-	duplicateEntry$1(JobConst_default.FROG_NINJA, JobConst_default.FROG_NINJA_B);
-	duplicateEntry$1(JobConst_default.PECO_GUNNER, JobConst_default.PECO_GUNNER_B);
-	duplicateEntry$1(JobConst_default.PORING_TAEKWON, JobConst_default.PORING_TAEKWON_B);
-	duplicateEntry$1(JobConst_default.PORING_STAR, JobConst_default.PORING_STAR_B);
-	duplicateEntry$1(JobConst_default.FROG_LINKER, JobConst_default.FROG_LINKER_B);
-	duplicateEntry$1(JobConst_default.FROG_KAGEROU, JobConst_default.FROG_KAGEROU_B);
-	duplicateEntry$1(JobConst_default.FROG_OBORO, JobConst_default.FROG_OBORO_B);
-	duplicateEntry$1(JobConst_default.PECO_REBELLION, JobConst_default.PECO_REBELLION_B);
+	duplicateEntry(JobConst_default.NOVICE, JobConst_default.NOVICE_H, JobConst_default.NOVICE_B);
+	duplicateEntry(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_H, JobConst_default.SWORDMAN_B);
+	duplicateEntry(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_H, JobConst_default.MAGICIAN_B);
+	duplicateEntry(JobConst_default.ARCHER, JobConst_default.ARCHER_H, JobConst_default.ARCHER_B);
+	duplicateEntry(JobConst_default.ACOLYTE, JobConst_default.ACOLYTE_H, JobConst_default.ACOLYTE_B);
+	duplicateEntry(JobConst_default.MERCHANT, JobConst_default.MERCHANT_H, JobConst_default.MERCHANT_B);
+	duplicateEntry(JobConst_default.THIEF, JobConst_default.THIEF_H, JobConst_default.THIEF_B);
+	duplicateEntry(JobConst_default.KNIGHT, JobConst_default.KNIGHT_B);
+	duplicateEntry(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_B);
+	duplicateEntry(JobConst_default.PRIEST, JobConst_default.PRIEST_B);
+	duplicateEntry(JobConst_default.WIZARD, JobConst_default.WIZARD_B);
+	duplicateEntry(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_B);
+	duplicateEntry(JobConst_default.HUNTER, JobConst_default.HUNTER_B);
+	duplicateEntry(JobConst_default.ASSASSIN, JobConst_default.ASSASSIN_B);
+	duplicateEntry(JobConst_default.CRUSADER, JobConst_default.CRUSADER_B);
+	duplicateEntry(JobConst_default.CRUSADER2, JobConst_default.CRUSADER2_B);
+	duplicateEntry(JobConst_default.MONK, JobConst_default.MONK_B);
+	duplicateEntry(JobConst_default.SAGE, JobConst_default.SAGE_B);
+	duplicateEntry(JobConst_default.ROGUE, JobConst_default.ROGUE_B);
+	duplicateEntry(JobConst_default.ALCHEMIST, JobConst_default.ALCHEMIST_B);
+	duplicateEntry(JobConst_default.BARD, JobConst_default.BARD_B);
+	duplicateEntry(JobConst_default.DANCER, JobConst_default.DANCER_B);
+	duplicateEntry(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_2ND, JobConst_default.RUNE_KNIGHT_B);
+	duplicateEntry(JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_2ND, JobConst_default.RUNE_KNIGHT2_B);
+	duplicateEntry(JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_2ND, JobConst_default.WARLOCK_B);
+	duplicateEntry(JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_2ND, JobConst_default.RANGER_B);
+	duplicateEntry(JobConst_default.RANGER2, JobConst_default.RANGER2_H, JobConst_default.RANGER2_2ND, JobConst_default.RANGER2_B);
+	duplicateEntry(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_2ND, JobConst_default.ARCHBISHOP_B);
+	duplicateEntry(JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_2ND, JobConst_default.MECHANIC_B);
+	duplicateEntry(JobConst_default.MECHANIC2, JobConst_default.MECHANIC2_H, JobConst_default.MECHANIC2_2ND, JobConst_default.MECHANIC2_B);
+	duplicateEntry(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H, JobConst_default.GUILLOTINE_CROSS_2ND, JobConst_default.GUILLOTINE_CROSS_B);
+	duplicateEntry(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H, JobConst_default.ROYAL_GUARD_2ND, JobConst_default.ROYAL_GUARD_B);
+	duplicateEntry(JobConst_default.ROYAL_GUARD2, JobConst_default.ROYAL_GUARD2_H, JobConst_default.ROYAL_GUARD2_2ND, JobConst_default.ROYAL_GUARD2_B);
+	duplicateEntry(JobConst_default.SORCERER, JobConst_default.SORCERER_H, JobConst_default.SORCERER_2ND, JobConst_default.SORCERER_B);
+	duplicateEntry(JobConst_default.MINSTREL, JobConst_default.MINSTREL_H, JobConst_default.MINSTREL_2ND, JobConst_default.MINSTREL_B);
+	duplicateEntry(JobConst_default.WANDERER, JobConst_default.WANDERER_H, JobConst_default.WANDERER_2ND, JobConst_default.WANDERER_B);
+	duplicateEntry(JobConst_default.SURA, JobConst_default.SURA_H, JobConst_default.SURA_2ND, JobConst_default.SURA_B);
+	duplicateEntry(JobConst_default.GENETIC, JobConst_default.GENETIC_H, JobConst_default.GENETIC_2ND, JobConst_default.GENETIC_B);
+	duplicateEntry(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H, JobConst_default.SHADOW_CHASER_2ND, JobConst_default.SHADOW_CHASER_B);
+	duplicateEntry(JobConst_default.DO_SUMMONER, JobConst_default.DO_SUMMONER_B);
+	duplicateEntry(JobConst_default.PORING_NOVICE, JobConst_default.PORING_NOVICE_H, JobConst_default.PORING_NOVICE_B);
+	duplicateEntry(JobConst_default.SHEEP_ACO, JobConst_default.SHEEP_ACO_H, JobConst_default.SHEEP_ACO_B);
+	duplicateEntry(JobConst_default.OSTRICH_ARCHER, JobConst_default.OSTRICH_ARCHER_H, JobConst_default.OSTRICH_ARCHER_B);
+	duplicateEntry(JobConst_default.FOX_MAGICIAN, JobConst_default.FOX_MAGICIAN_H, JobConst_default.FOX_MAGICIAN_B);
+	duplicateEntry(JobConst_default.PIG_MERCHANT, JobConst_default.PIG_MERCHANT_H, JobConst_default.PIG_MERCHANT_B);
+	duplicateEntry(JobConst_default.PECO_SWORD, JobConst_default.PECO_SWORD_H, JobConst_default.PECO_SWORD_B);
+	duplicateEntry(JobConst_default.DOG_THIEF, JobConst_default.DOG_THIEF_H, JobConst_default.DOG_THIEF_B);
+	duplicateEntry(JobConst_default.SHEEP_PRIEST, JobConst_default.SHEEP_PRIEST_B);
+	duplicateEntry(JobConst_default.OSTRICH_HUNTER, JobConst_default.OSTRICH_HUNTER_B);
+	duplicateEntry(JobConst_default.FOX_WIZ, JobConst_default.FOX_WIZ_B);
+	duplicateEntry(JobConst_default.PIG_BLACKSMITH, JobConst_default.PIG_BLACKSMITH_B);
+	duplicateEntry(JobConst_default.LION_KNIGHT, JobConst_default.LION_KNIGHT_B);
+	duplicateEntry(JobConst_default.DOG_ASSASSIN, JobConst_default.DOG_ASSASSIN_B);
+	duplicateEntry(JobConst_default.STAR, JobConst_default.STAR_EMPEROR);
+	duplicateEntry(JobConst_default.STAR, JobConst_default.SOUL_REAPER);
+	duplicateEntry(JobConst_default.STAR2, JobConst_default.STAR_EMPEROR2);
+	duplicateEntry(JobConst_default.STAR2, JobConst_default.SOUL_REAPER2);
+	duplicateEntry(JobConst_default.STAR, JobConst_default.STAR_EMPEROR_B);
+	duplicateEntry(JobConst_default.STAR, JobConst_default.SOUL_REAPER_B);
+	duplicateEntry(JobConst_default.STAR2, JobConst_default.STAR_EMPEROR2_B);
+	duplicateEntry(JobConst_default.STAR2, JobConst_default.SOUL_REAPER2_B);
+	duplicateEntry(JobConst_default.SHEEP_MONK, JobConst_default.SHEEP_MONK_B);
+	duplicateEntry(JobConst_default.OSTRICH_BARD, JobConst_default.OSTRICH_BARD_B);
+	duplicateEntry(JobConst_default.OSTRICH_DANCER, JobConst_default.OSTRICH_DANCER_B);
+	duplicateEntry(JobConst_default.FOX_SAGE, JobConst_default.FOX_SAGE_B);
+	duplicateEntry(JobConst_default.PIG_ALCHE, JobConst_default.PIG_ALCHE_B);
+	duplicateEntry(JobConst_default.LION_CRUSADER, JobConst_default.LION_CRUSADER_B);
+	duplicateEntry(JobConst_default.DOG_ROGUE, JobConst_default.DOG_ROGUE_B);
+	duplicateEntry(JobConst_default.SHEEP_ARCB, JobConst_default.SHEEP_ARCB_B);
+	duplicateEntry(JobConst_default.OSTRICH_RANGER, JobConst_default.OSTRICH_RANGER_B);
+	duplicateEntry(JobConst_default.FOX_WARLOCK, JobConst_default.FOX_WARLOCK_B);
+	duplicateEntry(JobConst_default.PIG_MECHANIC, JobConst_default.PIG_MECHANIC_B);
+	duplicateEntry(JobConst_default.LION_RUNE_KNIGHT, JobConst_default.LION_RUNE_KNIGHT_B);
+	duplicateEntry(JobConst_default.DOG_G_CROSS, JobConst_default.DOG_G_CROSS_B);
+	duplicateEntry(JobConst_default.SHEEP_SURA, JobConst_default.SHEEP_SURA_B);
+	duplicateEntry(JobConst_default.OSTRICH_MINSTREL, JobConst_default.OSTRICH_MINSTREL_B);
+	duplicateEntry(JobConst_default.OSTRICH_WANDER, JobConst_default.OSTRICH_WANDER_B);
+	duplicateEntry(JobConst_default.FOX_SORCERER, JobConst_default.FOX_SORCERER_B);
+	duplicateEntry(JobConst_default.PIG_GENETIC, JobConst_default.PIG_GENETIC_B);
+	duplicateEntry(JobConst_default.LION_ROYAL_GUARD, JobConst_default.LION_ROYAL_GUARD_B);
+	duplicateEntry(JobConst_default.DOG_CHASER, JobConst_default.DOG_CHASER_B);
+	duplicateEntry(JobConst_default.PORING_SNOVICE, JobConst_default.PORING_SNOVICE_B, JobConst_default.PORING_SNOVICE2, JobConst_default.PORING_SNOVICE2_B);
+	duplicateEntry(JobConst_default.FROG_NINJA, JobConst_default.FROG_NINJA_B);
+	duplicateEntry(JobConst_default.PECO_GUNNER, JobConst_default.PECO_GUNNER_B);
+	duplicateEntry(JobConst_default.PORING_TAEKWON, JobConst_default.PORING_TAEKWON_B);
+	duplicateEntry(JobConst_default.PORING_STAR, JobConst_default.PORING_STAR_B);
+	duplicateEntry(JobConst_default.FROG_LINKER, JobConst_default.FROG_LINKER_B);
+	duplicateEntry(JobConst_default.FROG_KAGEROU, JobConst_default.FROG_KAGEROU_B);
+	duplicateEntry(JobConst_default.FROG_OBORO, JobConst_default.FROG_OBORO_B);
+	duplicateEntry(JobConst_default.PECO_REBELLION, JobConst_default.PECO_REBELLION_B);
 }));
 //#endregion
 //#region src/DB/Items/WeaponTrailTable.js
@@ -241096,6 +241320,7 @@ var init_CheckAttendance = __esmMin((() => {
 		}
 		if (_CheckAttendanceInfo.Rewards) {
 			const daysList = root.querySelector(".days-list");
+			if (daysList) daysList.innerHTML = "";
 			for (let i = 0; i < 20; i++) {
 				const item = DB.getItemInfo(_CheckAttendanceInfo.Rewards[i].item_id);
 				const day = i + 1;
@@ -268940,6 +269165,58 @@ var init_CostumeSpriteEffects = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/Renderer/Effects/BodyGlow.js
+var BodyGlow;
+var init_BodyGlow = __esmMin((() => {
+	init_EntityManager();
+	BodyGlow = class {
+		static ready = true;
+		static renderBeforeEntities = true;
+		static beforeRender() {}
+		static afterRender() {}
+		/**
+		* @param {object} owner the entity whose body is drawn added
+		* @param {number|null} endTick when the effect ends, or null to last until
+		*   it is removed (a hat effect)
+		*/
+		constructor(owner, endTick = null) {
+			this.owner = owner || null;
+			this.endTick = endTick;
+			if (this.owner) this.owner._additiveBody = (this.owner._additiveBody || 0) + 1;
+			this.ready = true;
+		}
+		render(gl, tick) {
+			if (!this.owner || EntityManager.get(this.owner.GID) !== this.owner || this.endTick !== null && tick >= this.endTick) this.needCleanUp = true;
+		}
+		free() {
+			if (this.owner && this.owner._additiveBody > 0) this.owner._additiveBody--;
+			this.owner = null;
+		}
+	};
+}));
+//#endregion
+//#region src/DB/Effects/BodyEffects.js
+/** The owner's body drawn by adding light while the effect is on. */
+function additiveBody() {
+	return [{
+		type: "FUNC",
+		attachedEntity: true,
+		func: function(Params) {
+			const endTick = Params.Inst.persistent ? null : Params.Inst.startTick + ONE_SHOT_MS;
+			this.add(new BodyGlow(Params.Init.ownerEntity, endTick), Params);
+		}
+	}];
+}
+var ONE_SHOT_MS, BodyEffects_default;
+var init_BodyEffects = __esmMin((() => {
+	init_BodyGlow();
+	ONE_SHOT_MS = 249975;
+	BodyEffects_default = {
+		1065: additiveBody(),
+		1131: additiveBody()
+	};
+}));
+//#endregion
 //#region src/Renderer/Effects/Tiles.vs?raw
 var Tiles_default$1;
 var init_Tiles$2 = __esmMin((() => {
@@ -270770,6 +271047,7 @@ var init_EffectTable = __esmMin((() => {
 	init_Level99Bubble();
 	init_LevelAuraEffects();
 	init_CostumeSpriteEffects();
+	init_BodyEffects();
 	init_Songs();
 	init_SoundManager();
 	init_Events();
@@ -288220,7 +288498,8 @@ var init_EffectTable = __esmMin((() => {
 			renderBeforeEntities: true
 		}],
 		...table,
-		...CostumeSpriteEffects_default
+		...CostumeSpriteEffects_default,
+		...BodyEffects_default
 	};
 }));
 //#endregion
@@ -310450,6 +310729,7 @@ var init_DBManager = __esmMin((() => {
 	init_PalNameTable();
 	init_WeaponAction();
 	init_WeaponJobTable();
+	init_ShieldJobTable();
 	init_BabyTable();
 	init_HairIndexTable();
 	init_MonsterTable();
@@ -311769,7 +312049,7 @@ var init_DBManager = __esmMin((() => {
 		static getShieldPath(id, job, sex) {
 			if (id === 0) return null;
 			if (!DB.isShield(id)) return DB.getWeaponPath(id, job, sex);
-			const baseClass = WeaponJobTable[job] || WeaponJobTable[0];
+			const baseClass = ShieldJobTable[job] || ShieldJobTable[0];
 			if (id in ItemTable_default && "ClassNum" in ItemTable_default[id]) id = ItemTable_default[id].ClassNum;
 			return "data/sprite/¹æÆÐ/" + baseClass + "/" + baseClass + "_" + SexTable[sex] + "_" + (ShieldTable_default[id] || ShieldTable_default[1]);
 		}
@@ -315548,203 +315828,6 @@ var init_ShadowTable = __esmMin((() => {
 	};
 }));
 //#endregion
-//#region src/DB/Jobs/MountTable.js
-var MountTable;
-var init_MountTable = __esmMin((() => {
-	init_JobConst();
-	MountTable = {};
-	MountTable[JobConst_default.KNIGHT] = JobConst_default.KNIGHT2;
-	MountTable[JobConst_default.KNIGHT_H] = JobConst_default.KNIGHT2_H;
-	MountTable[JobConst_default.KNIGHT_B] = JobConst_default.KNIGHT2_B;
-	MountTable[JobConst_default.CRUSADER] = JobConst_default.CRUSADER2;
-	MountTable[JobConst_default.CRUSADER_H] = JobConst_default.CRUSADER2_H;
-	MountTable[JobConst_default.CRUSADER_B] = JobConst_default.CRUSADER2_B;
-	MountTable[JobConst_default.CRUSADER_2ND] = JobConst_default.CRUSADER2_2ND;
-	MountTable[JobConst_default.RUNE_KNIGHT] = JobConst_default.RUNE_KNIGHT2;
-	MountTable[JobConst_default.RUNE_KNIGHT_H] = JobConst_default.RUNE_KNIGHT2_H;
-	MountTable[JobConst_default.RUNE_KNIGHT_B] = JobConst_default.RUNE_KNIGHT2_B;
-	MountTable[JobConst_default.RUNE_KNIGHT_2ND] = JobConst_default.RUNE_KNIGHT2_2ND;
-	MountTable[JobConst_default.ROYAL_GUARD] = JobConst_default.ROYAL_GUARD2;
-	MountTable[JobConst_default.ROYAL_GUARD_H] = JobConst_default.ROYAL_GUARD2_H;
-	MountTable[JobConst_default.ROYAL_GUARD_B] = JobConst_default.ROYAL_GUARD2_B;
-	MountTable[JobConst_default.ROYAL_GUARD_2ND] = JobConst_default.ROYAL_GUARD2_2ND;
-	MountTable[JobConst_default.RANGER] = JobConst_default.RANGER2;
-	MountTable[JobConst_default.RANGER_H] = JobConst_default.RANGER2_H;
-	MountTable[JobConst_default.RANGER_B] = JobConst_default.RANGER2_B;
-	MountTable[JobConst_default.RANGER_2ND] = JobConst_default.RANGER2_2ND;
-	MountTable[JobConst_default.MECHANIC] = JobConst_default.MECHANIC2;
-	MountTable[JobConst_default.MECHANIC_H] = JobConst_default.MECHANIC2_H;
-	MountTable[JobConst_default.MECHANIC_B] = JobConst_default.MECHANIC2_B;
-	MountTable[JobConst_default.MECHANIC_2ND] = JobConst_default.MECHANIC2_2ND;
-	MountTable[JobConst_default.WINDHAWK] = JobConst_default.WINDHAWK2;
-	MountTable[JobConst_default.MEISTER] = JobConst_default.MEISTER2;
-	MountTable[JobConst_default.DRAGON_KNIGHT] = JobConst_default.DRAGON_KNIGHT2;
-	MountTable[JobConst_default.IMPERIAL_GUARD] = JobConst_default.IMPERIAL_GUARD2;
-}));
-//#endregion
-//#region src/DB/Jobs/AllMountTable.js
-function duplicateEntry(origin) {
-	const value = AllMountTable[origin];
-	for (let i = 1, count = arguments.length; i < count; ++i) AllMountTable[arguments[i]] = value;
-}
-var AllMountTable;
-var init_AllMountTable = __esmMin((() => {
-	init_JobConst();
-	AllMountTable = {};
-	AllMountTable[JobConst_default.NOVICE] = JobConst_default.PORING_NOVICE;
-	AllMountTable[JobConst_default.ACOLYTE] = JobConst_default.SHEEP_ACO;
-	AllMountTable[JobConst_default.ARCHER] = JobConst_default.OSTRICH_ARCHER;
-	AllMountTable[JobConst_default.MAGICIAN] = JobConst_default.FOX_MAGICIAN;
-	AllMountTable[JobConst_default.MERCHANT] = JobConst_default.PIG_MERCHANT;
-	AllMountTable[JobConst_default.SWORDMAN] = JobConst_default.PECO_SWORD;
-	AllMountTable[JobConst_default.THIEF] = JobConst_default.DOG_THIEF;
-	AllMountTable[JobConst_default.PRIEST] = JobConst_default.SHEEP_PRIEST;
-	AllMountTable[JobConst_default.HUNTER] = JobConst_default.OSTRICH_HUNTER;
-	AllMountTable[JobConst_default.WIZARD] = JobConst_default.FOX_WIZ;
-	AllMountTable[JobConst_default.BLACKSMITH] = JobConst_default.PIG_BLACKSMITH;
-	AllMountTable[JobConst_default.KNIGHT] = JobConst_default.LION_KNIGHT;
-	AllMountTable[JobConst_default.ASSASSIN] = JobConst_default.DOG_ASSASSIN;
-	AllMountTable[JobConst_default.MONK] = JobConst_default.SHEEP_MONK;
-	AllMountTable[JobConst_default.BARD] = JobConst_default.OSTRICH_BARD;
-	AllMountTable[JobConst_default.DANCER] = JobConst_default.OSTRICH_DANCER;
-	AllMountTable[JobConst_default.SAGE] = JobConst_default.FOX_SAGE;
-	AllMountTable[JobConst_default.ALCHEMIST] = JobConst_default.PIG_ALCHE;
-	AllMountTable[JobConst_default.CRUSADER] = JobConst_default.LION_CRUSADER;
-	AllMountTable[JobConst_default.ROGUE] = JobConst_default.DOG_ROGUE;
-	AllMountTable[JobConst_default.ARCHBISHOP] = JobConst_default.SHEEP_ARCB;
-	AllMountTable[JobConst_default.RANGER] = JobConst_default.OSTRICH_RANGER;
-	AllMountTable[JobConst_default.WARLOCK] = JobConst_default.FOX_WARLOCK;
-	AllMountTable[JobConst_default.MECHANIC] = JobConst_default.PIG_MECHANIC;
-	AllMountTable[JobConst_default.RUNE_KNIGHT] = JobConst_default.LION_RUNE_KNIGHT;
-	AllMountTable[JobConst_default.GUILLOTINE_CROSS] = JobConst_default.DOG_G_CROSS;
-	AllMountTable[JobConst_default.SURA] = JobConst_default.SHEEP_SURA;
-	AllMountTable[JobConst_default.MINSTREL] = JobConst_default.OSTRICH_MINSTREL;
-	AllMountTable[JobConst_default.WANDERER] = JobConst_default.OSTRICH_WANDER;
-	AllMountTable[JobConst_default.SORCERER] = JobConst_default.FOX_SORCERER;
-	AllMountTable[JobConst_default.GENETIC] = JobConst_default.PIG_GENETIC;
-	AllMountTable[JobConst_default.ROYAL_GUARD] = JobConst_default.LION_ROYAL_GUARD;
-	AllMountTable[JobConst_default.SHADOW_CHASER] = JobConst_default.DOG_CHASER;
-	AllMountTable[JobConst_default.SUPERNOVICE] = JobConst_default.PORING_SNOVICE;
-	AllMountTable[JobConst_default.NINJA] = JobConst_default.FROG_NINJA;
-	AllMountTable[JobConst_default.GUNSLINGER] = JobConst_default.PECO_GUNNER;
-	AllMountTable[JobConst_default.TAEKWON] = JobConst_default.PORING_TAEKWON;
-	AllMountTable[JobConst_default.STAR] = JobConst_default.PORING_STAR;
-	AllMountTable[JobConst_default.LINKER] = JobConst_default.FROG_LINKER;
-	AllMountTable[JobConst_default.SUPERNOVICE2] = JobConst_default.PORING_SNOVICE2;
-	AllMountTable[JobConst_default.KAGEROU] = JobConst_default.FROG_KAGEROU;
-	AllMountTable[JobConst_default.OBORO] = JobConst_default.FROG_OBORO;
-	AllMountTable[JobConst_default.REBELLION] = JobConst_default.PECO_REBELLION;
-	AllMountTable[JobConst_default.SOUL_REAPER] = JobConst_default.SOUL_REAPER2;
-	AllMountTable[JobConst_default.STAR_EMPEROR] = JobConst_default.STAR_EMPEROR2;
-	AllMountTable[JobConst_default.DRAGON_KNIGHT] = JobConst_default.DRAGON_KNIGHT_RIDING;
-	AllMountTable[JobConst_default.MEISTER] = JobConst_default.MEISTER_RIDING;
-	AllMountTable[JobConst_default.SHADOW_CROSS] = JobConst_default.SHADOW_CROSS_RIDING;
-	AllMountTable[JobConst_default.ARCH_MAGE] = JobConst_default.ARCH_MAGE_RIDING;
-	AllMountTable[JobConst_default.CARDINAL] = JobConst_default.CARDINAL_RIDING;
-	AllMountTable[JobConst_default.WINDHAWK] = JobConst_default.WINDHAWK_RIDING;
-	AllMountTable[JobConst_default.IMPERIAL_GUARD] = JobConst_default.IMPERIAL_GUARD_RIDING;
-	AllMountTable[JobConst_default.BIOLO] = JobConst_default.BIOLO_RIDING;
-	AllMountTable[JobConst_default.ABYSS_CHASER] = JobConst_default.ABYSS_CHASER_RIDING;
-	AllMountTable[JobConst_default.ELEMENTAL_MASTER] = JobConst_default.ELEMENTAL_MASTER_RIDING;
-	AllMountTable[JobConst_default.INQUISITOR] = JobConst_default.INQUISITOR_RIDING;
-	AllMountTable[JobConst_default.TROUBADOUR] = JobConst_default.TROUBADOUR_RIDING;
-	AllMountTable[JobConst_default.TROUVERE] = JobConst_default.TROUVERE_RIDING;
-	AllMountTable[JobConst_default.DRUID] = JobConst_default.DRUID_RIDING;
-	AllMountTable[JobConst_default.ALITEA] = JobConst_default.ALITEA_RIDING;
-	AllMountTable[JobConst_default.KARNOS] = JobConst_default.KARNOS_RIDING;
-	AllMountTable[JobConst_default.NOVICE_H] = JobConst_default.PORING_NOVICE_H;
-	AllMountTable[JobConst_default.ACOLYTE_H] = JobConst_default.SHEEP_ACO_H;
-	AllMountTable[JobConst_default.ARCHER_H] = JobConst_default.OSTRICH_ARCHER_H;
-	AllMountTable[JobConst_default.MAGICIAN_H] = JobConst_default.FOX_MAGICIAN_H;
-	AllMountTable[JobConst_default.MERCHANT_H] = JobConst_default.PIG_MERCHANT_H;
-	AllMountTable[JobConst_default.SWORDMAN_H] = JobConst_default.PECO_SWORD_H;
-	AllMountTable[JobConst_default.THIEF_H] = JobConst_default.DOG_THIEF_H;
-	AllMountTable[JobConst_default.PRIEST_H] = JobConst_default.SHEEP_HPRIEST;
-	AllMountTable[JobConst_default.HUNTER_H] = JobConst_default.OSTRICH_SNIPER;
-	AllMountTable[JobConst_default.WIZARD_H] = JobConst_default.FOX_HWIZ;
-	AllMountTable[JobConst_default.BLACKSMITH_H] = JobConst_default.PIG_WHITESMITH;
-	AllMountTable[JobConst_default.KNIGHT_H] = JobConst_default.LION_KNIGHT_H;
-	AllMountTable[JobConst_default.ASSASSIN_H] = JobConst_default.DOG_ASSA_X;
-	AllMountTable[JobConst_default.MONK_H] = JobConst_default.SHEEP_CHAMP;
-	AllMountTable[JobConst_default.BARD_H] = JobConst_default.OSTRICH_CROWN;
-	AllMountTable[JobConst_default.DANCER_H] = JobConst_default.OSTRICH_ZIPSI;
-	AllMountTable[JobConst_default.SAGE_H] = JobConst_default.FOX_PROF;
-	AllMountTable[JobConst_default.ALCHEMIST_H] = JobConst_default.PIG_CREATOR;
-	AllMountTable[JobConst_default.CRUSADER_H] = JobConst_default.LION_CRUSADER_H;
-	AllMountTable[JobConst_default.ROGUE_H] = JobConst_default.DOG_STALKER;
-	AllMountTable[JobConst_default.NOVICE_B] = JobConst_default.PORING_NOVICE_B;
-	AllMountTable[JobConst_default.ACOLYTE_B] = JobConst_default.SHEEP_ACO_B;
-	AllMountTable[JobConst_default.ARCHER_B] = JobConst_default.OSTRICH_ARCHER_B;
-	AllMountTable[JobConst_default.MAGICIAN_B] = JobConst_default.FOX_MAGICIAN_B;
-	AllMountTable[JobConst_default.MERCHANT_B] = JobConst_default.PIG_MERCHANT_B;
-	AllMountTable[JobConst_default.SWORDMAN_B] = JobConst_default.PECO_SWORD_B;
-	AllMountTable[JobConst_default.THIEF_B] = JobConst_default.DOG_THIEF_B;
-	AllMountTable[JobConst_default.PRIEST_B] = JobConst_default.SHEEP_PRIEST_B;
-	AllMountTable[JobConst_default.HUNTER_B] = JobConst_default.OSTRICH_HUNTER_B;
-	AllMountTable[JobConst_default.WIZARD_B] = JobConst_default.FOX_WIZ_B;
-	AllMountTable[JobConst_default.BLACKSMITH_B] = JobConst_default.PIG_BLACKSMITH_B;
-	AllMountTable[JobConst_default.KNIGHT_B] = JobConst_default.LION_KNIGHT_B;
-	AllMountTable[JobConst_default.ASSASSIN_B] = JobConst_default.DOG_ASSASSIN_B;
-	AllMountTable[JobConst_default.MONK_B] = JobConst_default.SHEEP_MONK_B;
-	AllMountTable[JobConst_default.BARD_B] = JobConst_default.OSTRICH_BARD_B;
-	AllMountTable[JobConst_default.DANCER_B] = JobConst_default.OSTRICH_DANCER_B;
-	AllMountTable[JobConst_default.SAGE_B] = JobConst_default.FOX_SAGE_B;
-	AllMountTable[JobConst_default.ALCHEMIST_B] = JobConst_default.PIG_ALCHE_B;
-	AllMountTable[JobConst_default.CRUSADER_B] = JobConst_default.LION_CRUSADER_B;
-	AllMountTable[JobConst_default.ROGUE_B] = JobConst_default.DOG_ROGUE_B;
-	AllMountTable[JobConst_default.ARCHBISHOP_B] = JobConst_default.SHEEP_ARCB_B;
-	AllMountTable[JobConst_default.RANGER_B] = JobConst_default.OSTRICH_RANGER_B;
-	AllMountTable[JobConst_default.WARLOCK_B] = JobConst_default.FOX_WARLOCK_B;
-	AllMountTable[JobConst_default.MECHANIC_B] = JobConst_default.PIG_MECHANIC_B;
-	AllMountTable[JobConst_default.RUNE_KNIGHT_B] = JobConst_default.LION_RUNE_KNIGHT_B;
-	AllMountTable[JobConst_default.GUILLOTINE_CROSS_B] = JobConst_default.DOG_G_CROSS_B;
-	AllMountTable[JobConst_default.SURA_B] = JobConst_default.SHEEP_SURA_B;
-	AllMountTable[JobConst_default.MINSTREL_B] = JobConst_default.OSTRICH_MINSTREL_B;
-	AllMountTable[JobConst_default.WANDERER_B] = JobConst_default.OSTRICH_WANDER_B;
-	AllMountTable[JobConst_default.SORCERER_B] = JobConst_default.FOX_SORCERER_B;
-	AllMountTable[JobConst_default.GENETIC_B] = JobConst_default.PIG_GENETIC_B;
-	AllMountTable[JobConst_default.ROYAL_GUARD_B] = JobConst_default.LION_ROYAL_GUARD_B;
-	AllMountTable[JobConst_default.SHADOW_CHASER_B] = JobConst_default.DOG_CHASER_B;
-	AllMountTable[JobConst_default.SUPERNOVICE_B] = JobConst_default.PORING_SNOVICE_B;
-	AllMountTable[JobConst_default.NINJA_B] = JobConst_default.FROG_NINJA_B;
-	AllMountTable[JobConst_default.GUNSLINGER_B] = JobConst_default.PECO_GUNSLINGER_B;
-	AllMountTable[JobConst_default.TAEKWON_B] = JobConst_default.PORING_TAEKWON_B;
-	AllMountTable[JobConst_default.STAR_B] = JobConst_default.PORING_STAR_B;
-	AllMountTable[JobConst_default.LINKER_B] = JobConst_default.PORING_LINKER_B;
-	AllMountTable[JobConst_default.SUPERNOVICE2_B] = JobConst_default.PORING_SNOVICE2_B;
-	AllMountTable[JobConst_default.KAGEROU_B] = JobConst_default.FROG_KAGEROU_B;
-	AllMountTable[JobConst_default.OBORO_B] = JobConst_default.FROG_OBORO_B;
-	AllMountTable[JobConst_default.REBELLION_B] = JobConst_default.PECO_REBELLION_B;
-	AllMountTable[JobConst_default.SOUL_REAPER_B] = JobConst_default.SOUL_REAPER2_B;
-	AllMountTable[JobConst_default.STAR_EMPEROR_B] = JobConst_default.STAR_EMPEROR2_B;
-	duplicateEntry(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H);
-	duplicateEntry(JobConst_default.RANGER, JobConst_default.RANGER_H);
-	duplicateEntry(JobConst_default.WARLOCK, JobConst_default.WARLOCK_H);
-	duplicateEntry(JobConst_default.MECHANIC, JobConst_default.MECHANIC_H);
-	duplicateEntry(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H);
-	duplicateEntry(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_H);
-	duplicateEntry(JobConst_default.SURA, JobConst_default.SURA_H);
-	duplicateEntry(JobConst_default.MINSTREL, JobConst_default.MINSTREL_H);
-	duplicateEntry(JobConst_default.WANDERER, JobConst_default.WANDERER_H);
-	duplicateEntry(JobConst_default.SORCERER, JobConst_default.SORCERER_H);
-	duplicateEntry(JobConst_default.GENETIC, JobConst_default.GENETIC_H);
-	duplicateEntry(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H);
-	duplicateEntry(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H);
-	duplicateEntry(JobConst_default.ARCHBISHOP, JobConst_default.ARCH_BISHOP_2ND);
-	duplicateEntry(JobConst_default.RANGER, JobConst_default.RANGER_2ND);
-	duplicateEntry(JobConst_default.WARLOCK, JobConst_default.WARLOCK_2ND);
-	duplicateEntry(JobConst_default.MECHANIC, JobConst_default.MECHANIC_2ND);
-	duplicateEntry(JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_2ND);
-	duplicateEntry(JobConst_default.GUILLOTINE_CROSS, JobConst_default.GUILLOTINE_CROSS_2ND);
-	duplicateEntry(JobConst_default.SURA, JobConst_default.SURA_2ND);
-	duplicateEntry(JobConst_default.MINSTREL, JobConst_default.MINSTREL_2ND);
-	duplicateEntry(JobConst_default.WANDERER, JobConst_default.WANDERER_2ND);
-	duplicateEntry(JobConst_default.SORCERER, JobConst_default.SORCERER_2ND);
-	duplicateEntry(JobConst_default.GENETIC, JobConst_default.GENETIC_2ND);
-	duplicateEntry(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD2_2ND);
-	duplicateEntry(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_2ND);
-}));
-//#endregion
 //#region src/Renderer/Entity/EntityView.js
 /**
 * Load the first body in `paths` whose .spr and .act both load, and call onload
@@ -317700,7 +317783,7 @@ var init_EntityRender = __esmMin((() => {
 					_position[0] = -30;
 					_position[1] = -10;
 			}
-			if (type !== "shadow" && entity.getOpt3(StatusState_default.Status.BERSERK) || entity.getOpt3(StatusState_default.Status.MARIONETTE)) isBlendModeOne = true;
+			if (type !== "shadow" && entity.getOpt3(StatusState_default.Status.BERSERK) || entity.getOpt3(StatusState_default.Status.MARIONETTE) || type !== "shadow" && entity._additiveBody > 0) isBlendModeOne = true;
 			const isBUNSIN = entity.getOpt3(StatusState_default.Status.NJ_BUNSINJYUTSU);
 			const isHALLUCINATIONWALK = entity.getOpt3(StatusState_default.Status.HALLUCINATIONWALK);
 			const isENERGYCOAT = entity.getOpt3(StatusState_default.Status.ENERGYCOAT);
