@@ -295,7 +295,7 @@ ShortCut.setList = function setList(list) {
 			}
 
 			if (skill && skill.level) {
-				ShortCut.addElement(i, true, list[i].ID, list[i].count || skill.level);
+				ShortCut.addElement(i, true, list[i].ID, slotSkillLevel(list[i].ID, list[i].count, skill.level));
 			} else {
 				if (!_list[i]) {
 					_list[i] = {};
@@ -526,11 +526,28 @@ function onContainerMouseLeave() {
 	}
 }
 
+/**
+ * Level a hotbar slot holding a skill shows, as the official client does:
+ * a skill whose level can be chosen (bSeperateLv) keeps the slot's level,
+ * up to the skill's level; any other skill follows the skill's level.
+ *
+ * @param {number} ID skill id
+ * @param {number} slotLevel level stored in the slot
+ * @param {number} level the skill's current level
+ * @return {number} level
+ */
+function slotSkillLevel(ID, slotLevel, level) {
+	if (!slotLevel || !level || !SkillInfo[ID]?.bSeperateLv) {
+		return level || slotLevel;
+	}
+	return Math.min(slotLevel, level);
+}
+
 ShortCut.setElement = function setElement(isSkill, ID, count) {
 	for (let i = 0, size = _list.length; i < size; ++i) {
 		if (_list[i] && _list[i].isSkill == isSkill && _list[i].ID === ID) {
-			if (isSkill && _list[i].count && _list[i].count <= count) {
-				ShortCut.addElement(i, isSkill, ID, _list[i].count);
+			if (isSkill && count) {
+				ShortCut.addElement(i, isSkill, ID, slotSkillLevel(ID, _list[i].count, count));
 			} else {
 				ShortCut.addElement(i, isSkill, ID, count);
 			}
