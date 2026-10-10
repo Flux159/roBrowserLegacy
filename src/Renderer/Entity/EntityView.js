@@ -437,10 +437,12 @@ function UpdateBody(job) {
 				refreshHeadState.call(this);
 			}
 
-			// Update linked attachments (always update these)
+			// Update linked attachments (always update these). A garment has a
+			// file per class, mounts included, so it changes with the body too.
 			this.bodypalette = this._bodypalette;
 			this.weapon = this._weapon;
 			this.shield = this._shield;
+			this.robe = this._robe;
 		}.bind(this),
 		{
 			to_rgba: this.objecttype !== Entity.TYPE_PC
