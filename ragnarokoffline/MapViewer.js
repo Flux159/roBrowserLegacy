@@ -78715,7 +78715,7 @@ function emit$1(name, scale) {
 		name,
 		scale
 	});
-	_listeners$3.slice().forEach((listener) => {
+	_listeners$4.slice().forEach((listener) => {
 		try {
 			listener(event);
 		} catch (error) {
@@ -78755,17 +78755,17 @@ function setGlobal(value) {
 */
 function on$2(listener) {
 	if (typeof listener !== "function") throw new Error("UIScale.on takes a function");
-	_listeners$3.push(listener);
+	_listeners$4.push(listener);
 	return () => {
-		const index = _listeners$3.indexOf(listener);
-		if (index > -1) _listeners$3.splice(index, 1);
+		const index = _listeners$4.indexOf(listener);
+		if (index > -1) _listeners$4.splice(index, 1);
 	};
 }
 /**
 * A component is going on screen (GUIComponent.append). Draws it at its
 * factor before it places itself.
 */
-function attach$2(component) {
+function attach$3(component) {
 	if (!component?._host) return;
 	_mounted.set(component._host, component);
 	apply$1(component);
@@ -78773,10 +78773,10 @@ function attach$2(component) {
 /**
 * A component left the screen (GUIComponent.remove).
 */
-function detach$1(component) {
+function detach$2(component) {
 	if (component?._host) _mounted.delete(component._host);
 }
-var MIN, MAX, TOP_LEFT, TOP_RIGHT, TOP_CENTER, SCALABLE, _scales, _global, _mounted, _listeners$3, UIScale_default;
+var MIN, MAX, TOP_LEFT, TOP_RIGHT, TOP_CENTER, SCALABLE, _scales, _global, _mounted, _listeners$4, UIScale_default;
 var init_UIScale = __esmMin((() => {
 	MIN = .5;
 	MAX = 3;
@@ -78825,7 +78825,7 @@ var init_UIScale = __esmMin((() => {
 	_scales = /* @__PURE__ */ new Map();
 	_global = 1;
 	_mounted = /* @__PURE__ */ new Map();
-	_listeners$3 = [];
+	_listeners$4 = [];
 	UIScale_default = {
 		MIN,
 		MAX,
@@ -78839,8 +78839,8 @@ var init_UIScale = __esmMin((() => {
 		of,
 		ofElement,
 		on: on$2,
-		attach: attach$2,
-		detach: detach$1
+		attach: attach$3,
+		detach: detach$2
 	};
 }));
 //#endregion
@@ -101540,7 +101540,8 @@ function readItemPackages(lua, decode) {
 		items
 	});
 }
-async function loadItemPackages(lua, luaPath, packetver, loadFile, decode) {
+/** Optional supplement is a separate Lua file; native box definitions always win. */
+async function loadItemPackages(lua, luaPath, packetver, loadFile, decode, supplement = null) {
 	const base = `${luaPath}selectpackage/`;
 	const files = packetver >= 20250618 ? [
 		"selectpackageitem_cln.lub",
@@ -101548,12 +101549,9 @@ async function loadItemPackages(lua, luaPath, packetver, loadFile, decode) {
 		"selectpackageitem.lub",
 		"selectpackageitem.lua"
 	] : ["selectpackageitem.lub", "selectpackageitem.lua"];
-	const attempt = async (index) => {
-		if (index === files.length) {
-			console.warn("Selection package metadata unavailable; package boxes cannot be opened.");
-			return /* @__PURE__ */ new Map();
-		}
-		const path = base + files[index];
+	const attempt = async (paths, index = 0) => {
+		if (index === paths.length) return /* @__PURE__ */ new Map();
+		const path = paths[index];
 		let mounted = false;
 		try {
 			const file = await new Promise((resolve, reject) => loadFile(path, resolve, reject));
@@ -101565,12 +101563,17 @@ async function loadItemPackages(lua, luaPath, packetver, loadFile, decode) {
 			if (!packages.size) throw new Error("Empty package table");
 			return packages;
 		} catch (_error) {
-			return await attempt(index + 1);
+			return await attempt(paths, index + 1);
 		} finally {
 			if (mounted) lua.unmountFile(path);
 		}
 	};
-	return attempt(0);
+	const packages = await attempt(files.map((file) => base + file));
+	if (supplement) {
+		for (const [box, groups] of await attempt([supplement])) if (!packages.has(box)) packages.set(box, groups);
+	}
+	if (!packages.size) console.warn("Selection package metadata unavailable; package boxes cannot be opened.");
+	return packages;
 }
 var init_ItemPackages = __esmMin((() => {}));
 //#endregion
@@ -207087,7 +207090,7 @@ function onClose$9() {
 * Close connection with server
 * Is this needed ?
 */
-function close$1() {
+function close$2() {
 	let idx;
 	if (_socket) {
 		const s = _socket;
@@ -207188,7 +207191,7 @@ var init_NetworkManager = __esmMin((() => {
 			setPing,
 			connect,
 			hookPacket,
-			close: close$1,
+			close: close$2,
 			read: read$1,
 			set onDisconnect(callback) {
 				_onDisconnect = callback;
@@ -207324,6 +207327,133 @@ var init_HtmlHelper = __esmMin((() => {
 		"fontSize",
 		"borderWidth"
 	]);
+}));
+//#endregion
+//#region src/DB/LenientEnums.js
+function run(lua, code) {
+	lua.doStringSync(LUA);
+	return lua.doStringSync(code);
+}
+/**
+* Before a file that defines lists of names: remember what is there, so
+* defined() can tell which lists it added.
+*
+* @param {object} lua
+* @return {number} token for the calls that follow
+*/
+function mark(lua) {
+	const token = nextToken++;
+	run(lua, `__ro_lenient.mark(${token})`);
+	return token;
+}
+/**
+* After that file: the lists it defined are the ones begin() makes lenient.
+*/
+function defined(lua, token) {
+	run(lua, `__ro_lenient.defined(${token})`);
+}
+/**
+* Before the file that names entries in those lists. `lists` names them
+* instead, for a list another load defined (petinfo.lub's jobtbl).
+*
+* @return {number} token
+*/
+function begin(lua, token = null, lists = []) {
+	const t = token || nextToken++;
+	const names = lists.map((name) => JSON.stringify(String(name))).join(", ");
+	run(lua, `__ro_lenient.begin(${t}${names ? ", " + names : ""})`);
+	return t;
+}
+/**
+* After it, whether it ran or failed: put the lists back, drop the entries
+* that named something they lack, and say which.
+*
+* @param {string} filename for the warning
+* @return {string[]} the names skipped
+*/
+function finish(lua, token, filename) {
+	let skipped = run(lua, `return __ro_lenient.finish(${token})`);
+	if (skipped instanceof Uint8Array) skipped = new TextDecoder().decode(skipped);
+	const names = skipped ? [...new Set(String(skipped).split(", "))] : [];
+	if (names.length) console.warn(`(${filename}) names ${names.length} entries this client's tables do not have, left out: ${names.join(", ")}`);
+	return names;
+}
+var LUA, nextToken, LenientEnums_default;
+var init_LenientEnums = __esmMin((() => {
+	LUA = `
+if not __ro_lenient then
+	local MISSING = {}
+	local LIST = { MISSING }
+	local state = {}
+	local function tables()
+		local s = {}
+		for k, v in pairs(_G) do
+			if type(v) == "table" then s[k] = v end
+		end
+		return s
+	end
+	local function changed(since)
+		local out = {}
+		for k, v in pairs(_G) do
+			if type(v) == "table" and since[k] ~= v then out[#out + 1] = k end
+		end
+		return out
+	end
+	__ro_lenient = {}
+	function __ro_lenient.mark(token)
+		state[token] = { before = tables(), skipped = {} }
+	end
+	function __ro_lenient.defined(token)
+		local s = state[token]
+		if s then s.lists = changed(s.before) end
+	end
+	function __ro_lenient.begin(token, ...)
+		local s = state[token] or { skipped = {} }
+		state[token] = s
+		if select("#", ...) > 0 then s.lists = { ... } end
+		for _, name in ipairs(s.lists or {}) do
+			local t = rawget(_G, name)
+			if type(t) == "table" and getmetatable(t) == nil then
+				setmetatable(t, {
+					__ro_lenient = true,
+					__index = function(_, key)
+						s.skipped[#s.skipped + 1] = name .. "." .. tostring(key)
+						return LIST
+					end
+				})
+			end
+		end
+		s.before = tables()
+	end
+	function __ro_lenient.finish(token)
+		local s = state[token]
+		state[token] = nil
+		if not s then return "" end
+		for _, name in ipairs(s.lists or {}) do
+			local t = rawget(_G, name)
+			local m = type(t) == "table" and getmetatable(t)
+			if m and m.__ro_lenient then setmetatable(t, nil) end
+		end
+		if s.before then
+			for _, name in ipairs(changed(s.before)) do
+				local t = rawget(_G, name)
+				for k, v in pairs(t) do
+					if k == LIST or k == MISSING or v == LIST or v == MISSING then t[k] = nil end
+				end
+			end
+		end
+		return table.concat(s.skipped, ", ")
+	end
+end
+`;
+	nextToken = 1;
+	LenientEnums_default = {
+		mark,
+		defined,
+		begin,
+		finish,
+		LUA
+	};
 }));
 //#endregion
 //#region src/Core/Events.js
@@ -214620,7 +214750,7 @@ function syncFromEntity(inst, type, tick) {
 * by objecttype — NPC -> -1 (static poseAt(-1); SetAction never fires) vs MOB -> 0 (animated
 * idx-0 standby). The renderer pulls pos/dir/action from the entity each frame (syncFromEntity).
 */
-function attach$1(entity) {
+function attach$2(entity) {
 	acquire(entity.gr2);
 	const p = entity.position;
 	const isNpc = entity.objecttype === entity.constructor.TYPE_NPC;
@@ -214652,7 +214782,7 @@ function attach$1(entity) {
 * detach(inst): drop an entity's GR2 instance (called from EntityManager on removal). The type
 * GL resources stay cached until map unload (free); the type set is bounded, so no leak.
 */
-function detach(inst) {
+function detach$1(inst) {
 	const idx = _instances.indexOf(inst);
 	if (idx !== -1) _instances.splice(idx, 1);
 	const type = _types[inst.path];
@@ -214745,7 +214875,7 @@ function spawnMany(path, n, opts) {
 */
 function clear() {
 	const insts = _instances.slice();
-	for (let i = 0; i < insts.length; i++) detach(insts[i]);
+	for (let i = 0; i < insts.length; i++) detach$1(insts[i]);
 	_poseCache = {};
 }
 var mat3$3, mat4$19, ALPHA_REF, _phaseDiffuse, _phaseAmbient, _phaseEnv, _gr2FlagDiffuse, _gr2EmpDiffuse, _gr2EmpAmbient, _gr2FlagAmbient, GR2_ROSTER, _program$23, _gl$1, _types, _missing, _instances, _poseCache, _dbgCellTile, _dbgTileInst, _dbgCellInited, _debugCell, BASE_SPHERE_HALF_EXTENT, _readyPromise, _mv, _mvp, _nmat, _lightView, _clip, CULL_MARGIN, CLIP_W_EPS, DIR_STEP_DEG, FADE, TEX_MISSING_PX, TEX_GREY_PX, A4_NIBBLE_EXPAND, _emblemCanvas, GR2_VERTEX_STRIDE, GR2_VERTEX_LAYOUT, GR2ModelRenderer_default;
@@ -214886,8 +215016,8 @@ var init_GR2ModelRenderer = __esmMin((() => {
 		init: init$7,
 		free: free$3,
 		render: render$9,
-		attach: attach$1,
-		detach,
+		attach: attach$2,
+		detach: detach$1,
 		isMissing: function(path) {
 			return _missing[path] === true;
 		},
@@ -221116,7 +221246,7 @@ var init_History = __esmMin((() => {
 //#region src/UI/Components/ContextMenu/ContextMenu.css?raw
 var ContextMenu_default$1;
 var init_ContextMenu$1 = __esmMin((() => {
-	ContextMenu_default$1 = ":host {\r\n	top: 0;\r\n	left: 0;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#ContextMenu {\r\n	position: fixed;\r\n	top: 0;\r\n	left: 0;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#ContextMenu .menu {\r\n	position: absolute;\r\n	background-color: white;\r\n	border-radius: 5px;\r\n	padding: 2px;\r\n}\r\n\r\n#ContextMenu .menu hr {\r\n	background-color: #cecece;\r\n	height: 1px;\r\n	border: none;\r\n	margin: 2px;\r\n}\r\n\r\n#ContextMenu .menu div {\r\n	color: black;\r\n	white-space: nowrap;\r\n	padding: 1px;\r\n	height: 14px;\r\n}\r\n\r\n#ContextMenu .menu div:hover {\r\n	background-color: #739cef;\r\n}\r\n";
+	ContextMenu_default$1 = ":host {\r\n	top: 0;\r\n	left: 0;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#ContextMenu {\r\n	position: fixed;\r\n	top: 0;\r\n	left: 0;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#ContextMenu .menu {\r\n	position: absolute;\r\n	background-color: white;\r\n	border-radius: 5px;\r\n	padding: 2px;\r\n}\r\n\r\n#ContextMenu .menu hr {\r\n	background-color: #cecece;\r\n	height: 1px;\r\n	border: none;\r\n	margin: 2px;\r\n}\r\n\r\n#ContextMenu .menu div {\r\n	color: black;\r\n	white-space: nowrap;\r\n	padding: 1px;\r\n	height: 14px;\r\n}\r\n\r\n#ContextMenu .menu div:hover,\r\n#ContextMenu .menu div.pad-hover {\r\n	background-color: #739cef;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/ContextMenu/ContextMenu.js
@@ -221437,7 +221567,7 @@ var init_WheelSteps = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$20() {
+function _root$21() {
 	return ChatBox._shadow || ChatBox._host;
 }
 /**
@@ -221481,7 +221611,7 @@ function extractChatMessage$1(inputEl) {
 */
 function flushMessageBuffer() {
 	if (_messageBuffer.length === 0) return;
-	const root = _root$20();
+	const root = _root$21();
 	const messages = _messageBuffer.slice();
 	_messageBuffer = [];
 	const messagesByTab = {};
@@ -221604,7 +221734,7 @@ function stopPropagation$12(event) {
 */
 function onPrivateMessageUserSelection(name) {
 	return function onPrivateMessageUserSelectionClosure() {
-		const nickBox = _root$20().querySelector(".input .username");
+		const nickBox = _root$21().querySelector(".input .username");
 		if (nickBox) nickBox.value = name;
 	};
 }
@@ -221613,7 +221743,7 @@ function onPrivateMessageUserSelection(name) {
 */
 function onChangeTargetMessage(type) {
 	return function onChangeTargetMessageClosure() {
-		const $input = _root$20().querySelector(".input-chatbox");
+		const $input = _root$21().querySelector(".input-chatbox");
 		if ($input) {
 			$input.classList.remove("guild", "party", "clan");
 			if (type & ChatBox.TYPE.PARTY) $input.classList.add("party");
@@ -221659,7 +221789,7 @@ function getScrollLineHeightPx(element) {
 	return 14;
 }
 function makeResizableDiv() {
-	const root = _root$20();
+	const root = _root$21();
 	const resizer = root.querySelector(".event_add_cursor");
 	if (!resizer) return;
 	let originalHeight = 0;
@@ -221805,7 +221935,7 @@ var init_ChatBox = __esmMin((() => {
 	* Initialize UI
 	*/
 	ChatBox.init = function init() {
-		const root = _root$20();
+		const root = _root$21();
 		if (!ContextMenu_default.__loaded) ContextMenu_default.prepare();
 		_heightIndex = _preferences$41.height - 1;
 		ChatBox.updateHeight();
@@ -222137,7 +222267,7 @@ var init_ChatBox = __esmMin((() => {
 	* Clean up the box
 	*/
 	ChatBox.clean = function Clean() {
-		const root = _root$20();
+		const root = _root$21();
 		root.querySelectorAll(".content").forEach((content) => {
 			const matches = content.innerHTML.match(/(blob:[^"]+)/g);
 			if (matches) for (let i = 0, count = matches.length; i < count; ++i) window.URL.revokeObjectURL(matches[i]);
@@ -222151,13 +222281,13 @@ var init_ChatBox = __esmMin((() => {
 		_historyNickName.clear();
 	};
 	ChatBox.toggleChatBattleOption = function toggleChatBattleOption() {
-		const onInput = _root$20().querySelector(".header tr td div.on input");
+		const onInput = _root$21().querySelector(".header tr td div.on input");
 		const tabName = onInput ? onInput.value : "";
 		ChatBoxSettings_default.toggle();
 		ChatBoxSettings_default.updateTab(this.activeTab, tabName);
 	};
 	ChatBox.removeTab = function removeTab() {
-		const root = _root$20();
+		const root = _root$21();
 		const tabEl = root.querySelector(`table.header tr td.tab[data-tab="${this.activeTab}"]`);
 		if (tabEl) tabEl.remove();
 		const contentEl = root.querySelector(`.body .content[data-content="${this.activeTab}"]`);
@@ -222173,7 +222303,7 @@ var init_ChatBox = __esmMin((() => {
 		ChatBoxSettings_default.updateTab(this.activeTab, tabName);
 	};
 	ChatBox.addNewTab = function addNewTab(name, settings) {
-		const root = _root$20();
+		const root = _root$21();
 		if (!name) name = "New Tab";
 		if (!settings) settings = [
 			ChatBox.FILTER.PUBLIC_LOG,
@@ -222230,7 +222360,7 @@ var init_ChatBox = __esmMin((() => {
 		return tabID;
 	};
 	ChatBox.switchTab = function switchTab(tabID) {
-		const root = _root$20();
+		const root = _root$21();
 		root.querySelectorAll("table.header tr td.tab div").forEach((el) => el.classList.remove("on"));
 		root.querySelectorAll(".body .content").forEach((el) => el.classList.remove("active"));
 		this.activeTab = tabID;
@@ -222249,7 +222379,7 @@ var init_ChatBox = __esmMin((() => {
 	* Once append to HTML
 	*/
 	ChatBox.onAppend = function OnAppend() {
-		const root = _root$20();
+		const root = _root$21();
 		const inputEl = root.querySelector(".input");
 		if (inputEl) inputEl.style.display = "none";
 		const bmEl = root.querySelector(".battlemode");
@@ -222280,7 +222410,7 @@ var init_ChatBox = __esmMin((() => {
 	* @return {boolean} found a shortcut ?
 	*/
 	ChatBox.processBattleMode = function processBattleMode(keyId) {
-		const bmEl = _root$20().querySelector(".battlemode");
+		const bmEl = _root$21().querySelector(".battlemode");
 		if (bmEl && bmEl.style.display !== "none" || KEYS.ALT || KEYS.SHIFT || KEYS.CTRL || keyId >= KEYS.F1 && keyId <= KEYS.F24 || KEYS.INSERT) return BattleMode.process(keyId);
 		return false;
 	};
@@ -222288,7 +222418,7 @@ var init_ChatBox = __esmMin((() => {
 	* Key Event Handler
 	*/
 	ChatBox.onKeyDown = function OnKeyDown(event) {
-		const root = _root$20();
+		const root = _root$21();
 		const messageBox = root.querySelector(".input-chatbox");
 		const nickBox = root.querySelector(".input .username");
 		const onInput = root.querySelector(".header tr td div.on input");
@@ -222431,7 +222561,7 @@ var init_ChatBox = __esmMin((() => {
 		return false;
 	};
 	ChatBox.toggleChat = function toggleChat() {
-		const messageBox = _root$20().querySelector(".input-chatbox");
+		const messageBox = _root$21().querySelector(".input-chatbox");
 		const activeElement = KEYS.getDeepActiveElement();
 		if (activeElement.tagName === "INPUT" && activeElement !== messageBox) return true;
 		if (document.querySelector("#NpcMenu, #NpcBox")) return true;
@@ -222442,7 +222572,7 @@ var init_ChatBox = __esmMin((() => {
 	* Process ChatBox message
 	*/
 	ChatBox.submit = function Submit() {
-		const root = _root$20();
+		const root = _root$21();
 		const inputEl = root.querySelector(".input");
 		const $user = root.querySelector(".input .username");
 		const $text = root.querySelector(".input-chatbox");
@@ -222508,7 +222638,7 @@ var init_ChatBox = __esmMin((() => {
 	* Change chatbox's height
 	*/
 	ChatBox.updateHeight = function changeHeight(AlwaysVisible) {
-		const root = _root$20();
+		const root = _root$21();
 		const HeightList = [
 			0,
 			0,
@@ -222564,7 +222694,7 @@ var init_ChatBox = __esmMin((() => {
 	* Save chat from current tab into a file.
 	*/
 	ChatBox.saveCurrentTabChat = function saveCurrentTabChat() {
-		const root = _root$20();
+		const root = _root$21();
 		let data;
 		const tzoffset = (/* @__PURE__ */ new Date()).getTimezoneOffset() * 6e4;
 		let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
@@ -222579,7 +222709,7 @@ var init_ChatBox = __esmMin((() => {
 		ChatBox.addText(`Chat History [${ChatBox.tabs[ChatBox.activeTab].name}] ${date} can be saved by <a style="color:#F88" download="ChatHistory [${ChatBox.tabs[ChatBox.activeTab].name}] (${date.replace("/", "-")}).html" href="${url}" target="_blank">clicking here</a>.`, ChatBox.TYPE.PUBLIC, ChatBox.FILTER.PUBLIC_LOG, null, true);
 	};
 	ChatBox.applyFontScale = function applyFontScale() {
-		const root = _root$20();
+		const root = _root$21();
 		const scale = clampChatFontScale(_preferences$41.fontScale || 1);
 		const baseFont = 12;
 		const baseLineHeight = 14;
@@ -222600,7 +222730,7 @@ var init_ChatBox = __esmMin((() => {
 		if (message) message.style.lineHeight = `${inputLineHeight}px`;
 	};
 	ChatBox._setupItemLinkHandler = function _setupItemLinkHandler() {
-		const root = _root$20();
+		const root = _root$21();
 		if (!root) return;
 		root.addEventListener("click", (event) => {
 			const link = event.target.closest(".item-link");
@@ -222631,7 +222761,7 @@ var init_ChatBox = __esmMin((() => {
 		ItemInfo.setItem(item);
 	});
 	ChatBox.insertText = function(text) {
-		const input = _root$20().querySelector(".input-chatbox");
+		const input = _root$21().querySelector(".input-chatbox");
 		if (!input) return;
 		input.appendChild(document.createTextNode(text));
 		input.focus();
@@ -223962,7 +224092,7 @@ function getSelectorFromLocation$2(location) {
 /**
 * Drag an item over the equipment, show where to place the item
 */
-function onDragOver$1(event) {
+function onDragOver$2(event) {
 	if (window._OBJ_DRAG_) {
 		const data = window._OBJ_DRAG_;
 		if (data.type === "item") {
@@ -223983,7 +224113,7 @@ function onDragOver$1(event) {
 /**
 * Drag out the window
 */
-function onDragLeave(event) {
+function onDragLeave$1(event) {
 	SwitchEquip.getRoot().querySelectorAll("td").forEach((td) => {
 		td.style.backgroundImage = "none";
 	});
@@ -223993,7 +224123,7 @@ function onDragLeave(event) {
 /**
 * Drop an item in the equipment, equip it if possible
 */
-function onDrop$12(event) {
+function onDrop$13(event) {
 	let data;
 	try {
 		data = JSON.parse(event.dataTransfer.getData("Text"));
@@ -224106,9 +224236,9 @@ var init_SwitchEquip = __esmMin((() => {
 		_swapctx.push(canvases[1].getContext("2d"));
 		const panel = root.querySelector(".panel");
 		if (panel) {
-			panel.addEventListener("dragover", onDragOver$1);
-			panel.addEventListener("dragleave", onDragLeave);
-			panel.addEventListener("drop", onDrop$12);
+			panel.addEventListener("dragover", onDragOver$2);
+			panel.addEventListener("dragleave", onDragLeave$1);
+			panel.addEventListener("drop", onDrop$13);
 		}
 		const closeBtn = root.querySelector(".closeswap");
 		if (closeBtn) closeBtn.addEventListener("click", () => {
@@ -227156,14 +227286,14 @@ var init_WhisperBox = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$19() {
+function _root$20() {
 	return PartyHelper._shadow || PartyHelper._host;
 }
 /**
 * Validate and process form data
 */
 function onValidate$1() {
-	const root = _root$19();
+	const root = _root$20();
 	const PartyFriends = UIManager.getComponent("PartyFriends");
 	switch (_type$6) {
 		case PartyHelper.Type.CREATE: {
@@ -227226,7 +227356,7 @@ var init_PartyHelper = __esmMin((() => {
 	* Initialize component event listeners
 	*/
 	PartyHelper.init = function init() {
-		const root = _root$19();
+		const root = _root$20();
 		const baseBtn = root.querySelector(".base");
 		if (baseBtn) baseBtn.addEventListener("mousedown", (e) => {
 			e.stopImmediatePropagation();
@@ -227262,7 +227392,7 @@ var init_PartyHelper = __esmMin((() => {
 				off.classList.remove("off");
 				off.classList.add("on");
 				const prefs = WhisperBox.preferences;
-				const rootEl = _root$19();
+				const rootEl = _root$20();
 				const strangerOn = rootEl.querySelector(".open1to1Stranger .on");
 				const friendOn = rootEl.querySelector(".open1to1Friend .on");
 				const alarmOn = rootEl.querySelector(".alarm1to1 .on");
@@ -227325,7 +227455,7 @@ var init_PartyHelper = __esmMin((() => {
 	*/
 	PartyHelper.onAppend = function onAppend() {
 		const base = UIManager.getComponent("PartyFriends");
-		const root = _root$19();
+		const root = _root$20();
 		const partyContent = root.querySelector(".party-content");
 		const friendContent = root.querySelector(".friend-content");
 		if (partyContent) partyContent.style.display = "none";
@@ -227342,7 +227472,7 @@ var init_PartyHelper = __esmMin((() => {
 	* Cleanup on window removal
 	*/
 	PartyHelper.onRemove = function onRemove() {
-		const root = _root$19();
+		const root = _root$20();
 		const partyContent = root.querySelector(".party-content");
 		const friendContent = root.querySelector(".friend-content");
 		if (partyContent) partyContent.style.display = "none";
@@ -227356,7 +227486,7 @@ var init_PartyHelper = __esmMin((() => {
 	* @param {number} type
 	*/
 	PartyHelper.setType = function setType(type) {
-		const root = _root$19();
+		const root = _root$20();
 		root.querySelectorAll(".content").forEach((el) => el.classList.remove("disabled"));
 		const footer = root.querySelector(".footer");
 		if (footer) footer.style.display = "block";
@@ -227441,7 +227571,7 @@ var init_PartyHelper = __esmMin((() => {
 	* @param {boolean} editable
 	*/
 	PartyHelper.setOptions = function setOptions(options, editable) {
-		const root = _root$19();
+		const root = _root$20();
 		function swap(off) {
 			const on = off.parentNode.querySelector(".on");
 			const tmp = on.style.backgroundImage;
@@ -227472,7 +227602,7 @@ var init_PartyHelper = __esmMin((() => {
 	* @param {object} options
 	*/
 	PartyHelper.setFriendOptions = function setFriendOptions(options) {
-		const root = _root$19();
+		const root = _root$20();
 		function swap(off) {
 			const on = off.parentNode.querySelector(".on");
 			on.className = "off";
@@ -227871,7 +228001,7 @@ var init_Rodex$2 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$18() {
+function _root$19() {
 	return Rodex._shadow || Rodex._host;
 }
 function onClickClose$2(e) {
@@ -227921,7 +228051,7 @@ function onClickTab(e) {
 	Rodex.page = 0;
 	const element = e.currentTarget;
 	const id = element.id.replace("tab_", "");
-	const root = _root$18();
+	const root = _root$19();
 	root.querySelectorAll(".nav-item.active").forEach((el) => el.classList.remove("active"));
 	element.classList.add("active");
 	if (id >= 0 && id <= 2) {
@@ -227932,7 +228062,7 @@ function onClickTab(e) {
 function onClickSearchTitle(e) {
 	e.stopImmediatePropagation();
 	Rodex.searchType = 1;
-	const root = _root$18();
+	const root = _root$19();
 	Client.loadFile(DB.INTERFACE_PATH + "basic_interface/rodexsystem/renewal/checkbox_search_off.bmp", (data) => {
 		const el = root.querySelector(".search-sender");
 		if (el) el.style.backgroundImage = `url(${data})`;
@@ -227945,7 +228075,7 @@ function onClickSearchTitle(e) {
 function onClickSearchSender(e) {
 	e.stopImmediatePropagation();
 	Rodex.searchType = 2;
-	const root = _root$18();
+	const root = _root$19();
 	Client.loadFile(DB.INTERFACE_PATH + "basic_interface/rodexsystem/renewal/checkbox_search_on.bmp", (data) => {
 		const el = root.querySelector(".search-sender");
 		if (el) el.style.backgroundImage = `url(${data})`;
@@ -227957,7 +228087,7 @@ function onClickSearchSender(e) {
 }
 function onClickSearchButton(e) {
 	e.stopImmediatePropagation();
-	const root = _root$18();
+	const root = _root$19();
 	const search = root.querySelector(".search").value;
 	root.querySelectorAll(".nav-item.active").forEach((el) => el.classList.remove("active"));
 	root.querySelector("#tab_3").classList.add("active");
@@ -228050,7 +228180,7 @@ var init_Rodex$1 = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	Rodex.onAppend = function OnAppend() {
-		const root = _root$18();
+		const root = _root$19();
 		this._host.style.top = `${Math.min(Math.max(0, _preferences$37.y), Renderer.height - this._host.offsetHeight)}px`;
 		this._host.style.left = `${Math.min(Math.max(0, _preferences$37.x), Renderer.width - this._host.offsetWidth)}px`;
 		this.draggable(root.querySelector(".titlebar"));
@@ -228097,7 +228227,7 @@ var init_Rodex$1 = __esmMin((() => {
 		this.focus();
 	};
 	Rodex.createRodexList = function createRodexList(tabID = 0, search = false, term = "") {
-		const root = _root$18();
+		const root = _root$19();
 		const content = root.querySelector(".mail-list");
 		content.innerHTML = "";
 		let mail_list = [];
@@ -228188,7 +228318,7 @@ var init_Rodex$1 = __esmMin((() => {
 		}
 	};
 	Rodex.updateDeletedMailContent = function updateDeletedMailContent(openType, MailID) {
-		const root = _root$18();
+		const root = _root$19();
 		const mailEl = root.querySelector(`#mail_${MailID}`);
 		if (mailEl) {
 			mailEl.textContent = DB.getMessage(2907);
@@ -228221,7 +228351,7 @@ var init_Rodex$1 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$17(comp) {
+function _root$18(comp) {
 	return comp._shadow || comp._host;
 }
 /**
@@ -228312,7 +228442,7 @@ var init_PartyMemberExternal = __esmMin((() => {
 	*/
 	PartyMemberExternal.init = function init() {
 		const self = this;
-		const root = _root$17(this);
+		const root = _root$18(this);
 		root.addEventListener("mousedown", (event) => {
 			self._lastPos = {
 				top: self._host.offsetTop,
@@ -228405,7 +228535,7 @@ var init_PartyMemberExternal = __esmMin((() => {
 	* @param {object} player
 	*/
 	PartyMemberExternal.update = function update(player) {
-		const root = _root$17(this);
+		const root = _root$18(this);
 		if (!root) return;
 		const level = player.baseLevel || player.level || player.Level || 0;
 		const jobID = player.class_ || player.job || player.Job || 0;
@@ -228457,7 +228587,7 @@ var init_PartyMemberExternal = __esmMin((() => {
 	* @param {number} maxhp
 	*/
 	PartyMemberExternal.updateMemberLife = function updateMemberLife(hp, maxhp) {
-		const root = _root$17(this);
+		const root = _root$18(this);
 		if (root) updateCanvasLife(root, hp, maxhp);
 	};
 	PartyMemberExternal_default = UIManager.addComponent(PartyMemberExternal);
@@ -228479,11 +228609,11 @@ var init_Mail$2 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$16() {
+function _root$17() {
 	return Mail._shadow || Mail._host;
 }
 function updatePageMailItems() {
-	const root = _root$16();
+	const root = _root$17();
 	const nextBtn = root.querySelector(".next");
 	if (nextBtn) nextBtn.addEventListener("click", (e) => {
 		e.stopImmediatePropagation();
@@ -228508,7 +228638,7 @@ function updatePageMailItems() {
 * Create messages window size
 */
 function onWindowMailbox() {
-	const root = _root$16();
+	const root = _root$17();
 	Mail.parseMailrefreshinbox();
 	const sendBtn = root.querySelector("#create_mail_send");
 	if (sendBtn) sendBtn.disabled = false;
@@ -228536,7 +228666,7 @@ function onWindowMailbox() {
 	if (title) title.textContent = DB.getMessage(1025);
 }
 function createMailList() {
-	const root = _root$16();
+	const root = _root$17();
 	const content = root.querySelector(".list_item_mail");
 	root.querySelectorAll(".item_mail").forEach((el) => el.remove());
 	if (Mail.list.length == 0) return;
@@ -228591,7 +228721,7 @@ function createMailList() {
 	adjustButtons();
 }
 function adjustButtons() {
-	const root = _root$16();
+	const root = _root$17();
 	if (Mail.list.length == 0) return;
 	const mailLength = Mail.list.mailList.length;
 	if (!(Mail.page > mailLength / Mail.pageSize - 1)) addEventNextAndPrevAdd("next");
@@ -228604,7 +228734,7 @@ function adjustButtons() {
 	if (prevSpan) prevSpan.disabled = mailLength <= Mail.pageSize || Mail.page == 0;
 }
 function addEventNextAndPrevAdd(eventName) {
-	const root = _root$16();
+	const root = _root$17();
 	const overlay = root.querySelector(`.prev_next .overlay_${eventName}`);
 	const text = root.querySelector(`.prev_next .${eventName} span`);
 	if (text) text.classList.add("event_add_cursor");
@@ -228620,7 +228750,7 @@ function addEventNextAndPrevAdd(eventName) {
 	}
 }
 function addEventNextAndPrevRemove(eventName) {
-	const root = _root$16();
+	const root = _root$17();
 	const overlay = root.querySelector(`.prev_next .overlay_${eventName}`);
 	const text = root.querySelector(`.prev_next .${eventName} span`);
 	if (overlay) overlay.style.display = "none";
@@ -228632,7 +228762,7 @@ function offCreateMessagesOnWindowMailbox(event) {
 	removeCreateAllItem();
 }
 function sendCreateMessagesMail(event) {
-	const root = _root$16();
+	const root = _root$17();
 	event.stopImmediatePropagation();
 	const zenyOk = root.querySelector("#zeny_ok");
 	if (zenyOk && window.getComputedStyle(zenyOk).display !== "none") {
@@ -228667,7 +228797,7 @@ function openWindowCreateMessages(event) {
 * Open Create messages window size
 */
 function onWindowCreateMessages() {
-	const root = _root$16();
+	const root = _root$17();
 	removeCreateAllItem();
 	offWindowListMail();
 	Client.loadFile(DB.INTERFACE_PATH + "basic_interface/maillist2_bg.bmp", (url) => {
@@ -228678,7 +228808,7 @@ function onWindowCreateMessages() {
 	if (title) title.textContent = DB.getMessage(1026);
 }
 function offWindowListMail() {
-	const root = _root$16();
+	const root = _root$17();
 	const prevNext = root.querySelector(".prev_next");
 	if (prevNext) prevNext.style.display = "none";
 	const blockMail = root.querySelector(".block_mail");
@@ -228689,7 +228819,7 @@ function offWindowListMail() {
 	if (textarea) textarea.focus();
 }
 function onAddZenyInput(event) {
-	const root = _root$16();
+	const root = _root$17();
 	event.stopImmediatePropagation();
 	const zenyAmt = root.querySelector("#zeny_amt");
 	if (zenyAmt) zenyAmt.style.display = "none";
@@ -228704,7 +228834,7 @@ function onAddZenyInput(event) {
 	Mail.parseMailWinopen(2);
 }
 function onValidZenyInput(event) {
-	const root = _root$16();
+	const root = _root$17();
 	event.stopImmediatePropagation();
 	const zenyAmt = root.querySelector("#zeny_amt");
 	if (zenyAmt) zenyAmt.style.display = "inline-block";
@@ -228730,7 +228860,7 @@ function stopPropagation$10(event) {
 /**
 * Drop an item in the equipment, equip it if possible
 */
-function onDrop$11(event) {
+function onDrop$12(event) {
 	let item, data;
 	event.stopImmediatePropagation();
 	event.preventDefault();
@@ -228766,7 +228896,7 @@ function onDrop$11(event) {
 * Show item name when mouse is over
 */
 function onItemOver$13() {
-	const root = _root$16();
+	const root = _root$17();
 	const idx = parseInt(this.getAttribute("data-index"), 10);
 	const item = Mail.getItemByIndex(idx);
 	if (!item) return;
@@ -228782,7 +228912,7 @@ function onItemOver$13() {
 * Hide the item name
 */
 function onItemOut$14() {
-	const overlay = _root$16().querySelector(".container_item .overlay");
+	const overlay = _root$17().querySelector(".container_item .overlay");
 	if (overlay) overlay.style.display = "none";
 }
 /**
@@ -228929,7 +229059,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	Mail.onAppend = function OnAppend() {
-		const root = _root$16();
+		const root = _root$17();
 		const closeBtn = root.querySelector(".close");
 		if (closeBtn) closeBtn.addEventListener("click", this.onClosePressed.bind(this));
 		const inboxBtn = root.querySelector("#inbox");
@@ -228943,7 +229073,7 @@ var init_Mail$1 = __esmMin((() => {
 		updatePageMailItems();
 		const containerItem = root.querySelector(".container_item");
 		if (containerItem) {
-			containerItem.addEventListener("drop", onDrop$11);
+			containerItem.addEventListener("drop", onDrop$12);
 			containerItem.addEventListener("dragover", stopPropagation$10);
 			containerItem.addEventListener("mouseover", (event) => {
 				const item = event.target.closest(".item");
@@ -228990,7 +229120,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Add item to inventory
 	*/
 	Mail.addItemSub = function AddItemSub(Index) {
-		const root = _root$16();
+		const root = _root$17();
 		const item = _preferences$36.item_add_email;
 		if (item.index !== Index) return false;
 		if (item.WearState && item.type !== ItemType_default.AMMO && item.type !== ItemType_default.CARD) return false;
@@ -229011,14 +229141,14 @@ var init_Mail$1 = __esmMin((() => {
 	* Send from mail to inventory - Remove item
 	*/
 	Mail.removeItem = function removeItem() {
-		const item = _root$16().querySelector(".item");
+		const item = _root$17().querySelector(".item");
 		if (item) item.remove();
 	};
 	/**
 	* Send from mail to inventory - Remove zenys
 	*/
 	Mail.removeZeny = function removeZeny() {
-		const input = _root$16().querySelector(".input_zeny_amt");
+		const input = _root$17().querySelector(".input_zeny_amt");
 		if (input) input.value = "0";
 	};
 	/**
@@ -229040,7 +229170,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Extend Mail window size
 	*/
 	Mail.resize = function Resize(width, height) {
-		const root = _root$16();
+		const root = _root$17();
 		width = Math.min(Math.max(width, 6), 9);
 		height = Math.min(Math.max(height, 2), 6);
 		const mailEl = root.querySelector("#Mail");
@@ -229092,7 +229222,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Responder to a mail.
 	*/
 	Mail.replyNewMail = function replyNewMail(fromName) {
-		const root = _root$16();
+		const root = _root$17();
 		onWindowCreateMessages();
 		const textTo = root.querySelector(".text_to");
 		if (textTo) textTo.value = fromName.replace(/^(\$|\%)/, "").replace(/\t/g, "");
@@ -229101,7 +229231,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Responder to a mail from friends.
 	*/
 	Mail.replyNewMailFriends = async function replyNewMailFriends(fromName) {
-		const root = _root$16();
+		const root = _root$17();
 		Mail.append();
 		sleep(1).then(() => {
 			onWindowCreateMessages();
@@ -229126,7 +229256,7 @@ var init_Mail$1 = __esmMin((() => {
 		});
 	};
 	Mail.clearFieldsItemZeny = function clearFieldsItemZeny() {
-		const root = _root$16();
+		const root = _root$17();
 		const item = root.querySelector(".item");
 		if (item) item.remove();
 		const zenyInput = root.querySelector(".input_zeny_amt");
@@ -230711,13 +230841,13 @@ var init_GuildCompanion$1 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$15() {
+function _root$16() {
 	return GuildCompanion.getRoot();
 }
 function open$1(mode) {
 	_mode = mode;
 	if (!GuildCompanion.__active) GuildCompanion.append();
-	const root = _root$15();
+	const root = _root$16();
 	const companion = root.querySelector(".win.companion");
 	const nameWin = root.querySelector(".win.namebox");
 	const input = root.querySelector(".guildname");
@@ -230771,7 +230901,7 @@ var init_GuildCompanion = __esmMin((() => {
 		}
 	};
 	GuildCompanion.init = function init() {
-		const root = _root$15();
+		const root = _root$16();
 		const nameWin = root.querySelector(".win.namebox");
 		const input = root.querySelector(".guildname");
 		this.draggable(root.querySelector(".companion .titlebar"));
@@ -231391,7 +231521,7 @@ function _showsTaxPoint() {
 /**
 * Helper: query inside shadow root
 */
-function _root$14(comp) {
+function _root$15(comp) {
 	return comp.getRoot();
 }
 /**
@@ -231404,7 +231534,7 @@ function _root$14(comp) {
 */
 function _dropPendingPositions() {
 	_pendingPositions = {};
-	const root = _root$14(Guild);
+	const root = _root$15(Guild);
 	if (!root) return;
 	for (const row of root.querySelectorAll(".content.members .MemberView.pending")) row.classList.remove("pending");
 }
@@ -231429,7 +231559,7 @@ function _hasPendingPositions() {
 * @see docs/reference/guild/grade-change.md
 */
 function _clearPendingPositions() {
-	const root = _root$14(Guild);
+	const root = _root$15(Guild);
 	if (root) for (const GID in _pendingPositions) {
 		const pending = _pendingPositions[GID];
 		for (let i = 0, count = _members.length; i < count; ++i) {
@@ -231456,7 +231586,7 @@ function _resetPositionsTab() {
 	_clearPendingPositions();
 	_positionsDirty = false;
 	_positionsSelected = 0;
-	if (_root$14(Guild)) {
+	if (_root$15(Guild)) {
 		_hideApplyButton();
 		Guild.updatePositionView();
 	}
@@ -231492,14 +231622,14 @@ function _clearInfoTab(root) {
 * Helper: reveal the Apply button, the affordance for a pending change
 */
 function _showApplyButton() {
-	const btnOk = _root$14(Guild).querySelector(".footer .btn_ok");
+	const btnOk = _root$15(Guild).querySelector(".footer .btn_ok");
 	if (btnOk) btnOk.style.display = "block";
 }
 /**
 * Helper: take the Apply button back, there being nothing left to send
 */
 function _hideApplyButton() {
-	const btnOk = _root$14(Guild).querySelector(".footer .btn_ok");
+	const btnOk = _root$15(Guild).querySelector(".footer .btn_ok");
 	if (btnOk) btnOk.style.display = "none";
 }
 /**
@@ -231739,7 +231869,7 @@ function onRequestSkillInfo() {
 	SkillDescription_default.setSkill(skill.SKID);
 }
 function onSkillFocus() {
-	const root = _root$14(Guild);
+	const root = _root$15(Guild);
 	for (const el of root.querySelectorAll(".skill")) el.classList.remove("selected");
 	this.classList.add("selected");
 }
@@ -231806,7 +231936,7 @@ function updateTabAccess(root) {
 }
 function onChangeTab(event) {
 	const tab = parseInt(this.getAttribute("data-flag"), 10);
-	const root = _root$14(Guild);
+	const root = _root$15(Guild);
 	if (this.classList.contains("active") || tab && !(_guildAccess & AccessTypeBit[tab])) return false;
 	if (tab !== TAB_MEMBERS && tab !== TAB_POSITIONS || !_hasPendingPositions()) Guild.onGuildInfoRequest(tab);
 	for (const btn of root.querySelectorAll(".tabs button")) btn.classList.remove("active");
@@ -231847,7 +231977,7 @@ function tendencyMarker(honor, virtue) {
 * @see docs/reference/guild/info-tab-legacy.md
 */
 function renderTendency(honor, virtue) {
-	const canvas = _root$14(Guild).querySelector(".content.info .tendency canvas");
+	const canvas = _root$15(Guild).querySelector(".content.info .tendency canvas");
 	if (!canvas) return;
 	const ctx = canvas.getContext("2d");
 	ctx.fillStyle = "#c8c8c8";
@@ -231887,7 +232017,7 @@ function opaqueBounds$1(ctx, side) {
 	};
 }
 function onValidate() {
-	const root = _root$14(Guild);
+	const root = _root$15(Guild);
 	const visibleContent = Array.from(root.querySelectorAll(".content")).find((el) => {
 		return el.style.display !== "none" && getComputedStyle(el).display !== "none";
 	});
@@ -232102,7 +232232,7 @@ var init_Guild$1 = __esmMin((() => {
 	* Initialize component
 	*/
 	Guild.init = function init() {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		_memberViewTemplate = root.querySelector(".MemberView");
 		if (_memberViewTemplate) _memberViewTemplate.remove();
 		_positionViewTemplate = root.querySelector(".PositionView");
@@ -232197,7 +232327,7 @@ var init_Guild$1 = __esmMin((() => {
 				if (isSelf && !SessionStorage_default.isGuildMaster) ContextMenu_default.addElement(DB.getMessage(508), () => {
 					InputBox_default.append();
 					InputBox_default.setType("text");
-					const textEl = (_root$14(InputBox_default) || InputBox_default.ui?.[0])?.querySelector?.(".text");
+					const textEl = (_root$15(InputBox_default) || InputBox_default.ui?.[0])?.querySelector?.(".text");
 					if (textEl) textEl.textContent = DB.getMessage(523);
 					else InputBox_default.ui.find(".text").text(DB.getMessage(523));
 					InputBox_default.onSubmitRequest = (reason) => {
@@ -232219,7 +232349,7 @@ var init_Guild$1 = __esmMin((() => {
 				if (SessionStorage_default.guildPermission & 16 && !isSelf) ContextMenu_default.addElement(DB.getMessage(509), () => {
 					InputBox_default.append();
 					InputBox_default.setType("text");
-					const textEl = (_root$14(InputBox_default) || InputBox_default.ui?.[0])?.querySelector?.(".text");
+					const textEl = (_root$15(InputBox_default) || InputBox_default.ui?.[0])?.querySelector?.(".text");
 					if (textEl) textEl.textContent = DB.getMessage(524);
 					else InputBox_default.ui.find(".text").text(DB.getMessage(524));
 					InputBox_default.onSubmitRequest = (reason) => {
@@ -232324,7 +232454,7 @@ var init_Guild$1 = __esmMin((() => {
 	* @see docs/reference/guild/member-view.md
 	*/
 	Guild.reset = function reset() {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		if (!root) return;
 		_members.length = 0;
 		_positions.length = 0;
@@ -232371,7 +232501,7 @@ var init_Guild$1 = __esmMin((() => {
 		this.focus();
 		if (this.ui.is(":visible")) return;
 		this.ui.show();
-		const root = _root$14(this);
+		const root = _root$15(this);
 		updateInfoOptions(root);
 		if (!root.querySelector(".tabs .active")) {
 			const infoBtn = root.querySelector(".tabs .info");
@@ -232387,7 +232517,7 @@ var init_Guild$1 = __esmMin((() => {
 		_resetPositionsTab();
 	};
 	Guild.setGuildInformations = function setGuildInformations(info) {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		const general = root.querySelector(".content.info");
 		if (!general) return;
 		general.querySelector(".name .value").textContent = info.guildname;
@@ -232412,12 +232542,12 @@ var init_Guild$1 = __esmMin((() => {
 		if (_showsTendency()) renderTendency(info.honor, info.virtue);
 	};
 	Guild.setEmblem = function setEmblem(image) {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		const el = root ? root.querySelector(".content.info .emblem_container") : null;
 		if (el) el.style.backgroundImage = `url(${image.src})`;
 	};
 	Guild.setRelations = function setRelations(guilds) {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		const allyList = root.querySelector(".ally_list");
 		const hostileList = root.querySelector(".hostile_list");
 		if (allyList) allyList.innerHTML = "";
@@ -232425,7 +232555,7 @@ var init_Guild$1 = __esmMin((() => {
 		for (let i = 0, count = guilds.length; i < count; ++i) this.addRelation(guilds[i]);
 	};
 	Guild.addRelation = function addRelation(guild) {
-		const list = _root$14(this).querySelector(`.${guild.relation === 0 ? "ally" : "hostile"}_list`);
+		const list = _root$15(this).querySelector(`.${guild.relation === 0 ? "ally" : "hostile"}_list`);
 		if (!list) return;
 		const div = document.createElement("div");
 		div.setAttribute("data-guild-id", guild.GDID);
@@ -232433,7 +232563,7 @@ var init_Guild$1 = __esmMin((() => {
 		list.appendChild(div);
 	};
 	Guild.removeRelation = function removeRelation(guildId, relation) {
-		const list = _root$14(this).querySelector(`.content.info .${relation === 0 ? "ally" : "hostile"}_list`);
+		const list = _root$15(this).querySelector(`.content.info .${relation === 0 ? "ally" : "hostile"}_list`);
 		if (!list) return;
 		const el = list.querySelector(`div[data-guild-id="${guildId}"]`);
 		if (el) el.remove();
@@ -232445,7 +232575,7 @@ var init_Guild$1 = __esmMin((() => {
 		_totalExp = 0;
 		if (_hasPendingPositions()) ChatBox_default.addText("The guild member list changed. The grade waiting to be applied was dropped.", ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.GUILD);
 		_clearPendingPositions();
-		const root = _root$14(this);
+		const root = _root$15(this);
 		_hasMemo = !!hasMemo;
 		const membersContent = root.querySelector(".content.members");
 		if (membersContent) {
@@ -232469,7 +232599,7 @@ var init_Guild$1 = __esmMin((() => {
 	};
 	Guild.setMember = function setMember(member) {
 		let i, count;
-		const root = _root$14(this);
+		const root = _root$15(this);
 		for (i = 0, count = _members.length; i < count; ++i) if (_members[i].AID === member.AID && _members[i].GID === member.GID) break;
 		let view;
 		if (i < count) {
@@ -232570,7 +232700,7 @@ var init_Guild$1 = __esmMin((() => {
 	Guild.updateMemberStatus = function updateMemberStatus(member) {
 		let i, count;
 		let online = 0;
-		const root = _root$14(this);
+		const root = _root$15(this);
 		for (i = 0, count = _members.length; i < count; ++i) if (_members[i].AID === member.AID && _members[i].GID === member.GID) break;
 		if (i >= count) return;
 		const view = root.querySelector(`.MemberView[data-index="${i}"]`);
@@ -232680,7 +232810,7 @@ var init_Guild$1 = __esmMin((() => {
 		Guild.updatePositionView();
 	};
 	Guild.updatePositionView = function updatePositionView() {
-		const container = _root$14(this).querySelector(".content.positions tbody");
+		const container = _root$15(this).querySelector(".content.positions tbody");
 		if (!container) return;
 		const isMaster = SessionStorage_default.isGuildMaster;
 		if (_positionsDirty) {
@@ -232721,7 +232851,7 @@ var init_Guild$1 = __esmMin((() => {
 		}
 	};
 	Guild.setSkills = function setSkills(skills) {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		for (let i = 0, count = _skills.length; i < count; ++i) this.onUpdateSkill(_skills[i].SKID, 0);
 		_skills.length = 0;
 		const list = root.querySelector(".content.skills .skill_list");
@@ -232730,7 +232860,7 @@ var init_Guild$1 = __esmMin((() => {
 	};
 	Guild.addSkill = function addSkill(skill) {
 		if (!(skill.SKID in SkillInfo)) return;
-		const root = _root$14(this);
+		const root = _root$15(this);
 		if (root.querySelector(`.skill.id${skill.SKID}`)) {
 			this.updateSkill(skill);
 			return;
@@ -232767,7 +232897,7 @@ var init_Guild$1 = __esmMin((() => {
 		target.attackRange = skill.attackRange;
 		target.upgradable = skill.upgradable;
 		if (Number.isInteger(skill.type)) target.type = skill.type;
-		const element = _root$14(this).querySelector(`.skill.id${skill.SKID}`);
+		const element = _root$15(this).querySelector(`.skill.id${skill.SKID}`);
 		if (!element) return;
 		for (const el of element.querySelectorAll(".level .current")) el.textContent = skill.level;
 		const spcost = element.querySelector(".spcost");
@@ -232792,7 +232922,7 @@ var init_Guild$1 = __esmMin((() => {
 		}
 	};
 	Guild.setPoints = function setPoints(amount) {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		const el = root.querySelector(".skpoints_count");
 		if (el) el.textContent = amount;
 		if (!_skpoints === !amount) {
@@ -232809,7 +232939,7 @@ var init_Guild$1 = __esmMin((() => {
 		_notice.subject = subject;
 		_notice.body = notice;
 		Guild.updateNoticeView();
-		_writeNotice(_root$14(this)?.querySelector(".content.notice"));
+		_writeNotice(_root$15(this)?.querySelector(".content.notice"));
 	};
 	/**
 	* Draw the Notice tab for whoever is looking at it
@@ -232818,7 +232948,7 @@ var init_Guild$1 = __esmMin((() => {
 	* @see docs/reference/guild/member-view.md
 	*/
 	Guild.updateNoticeView = function updateNoticeView() {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		if (!root) return;
 		const content = root.querySelector(".content.notice");
 		if (!content || !_noticeSubjectTemplate || !_noticeBodyTemplate) return;
@@ -232848,7 +232978,7 @@ var init_Guild$1 = __esmMin((() => {
 	* @see docs/reference/guild/member-view.md
 	*/
 	Guild.updateMasterView = function updateMasterView() {
-		const root = _root$14(this);
+		const root = _root$15(this);
 		if (!root) return;
 		Guild.updatePositionView();
 		Guild.updateNoticeView();
@@ -232860,7 +232990,7 @@ var init_Guild$1 = __esmMin((() => {
 		if (_members.length) Guild.setMembers([..._members], _hasMemo);
 	};
 	Guild.setExpelList = function setExpelList(list) {
-		const container = _root$14(this).querySelector(".content.history tbody");
+		const container = _root$15(this).querySelector(".content.history tbody");
 		if (!container) return;
 		container.innerHTML = "";
 		for (let i = 0, count = list.length; i < count; ++i) {
@@ -232875,7 +233005,7 @@ var init_Guild$1 = __esmMin((() => {
 	Guild.setAccess = function setAccess(access) {
 		_guildAccess = access;
 		_accessRequested = false;
-		updateTabAccess(_root$14(this));
+		updateTabAccess(_root$15(this));
 	};
 	/**
 	* Ask which tabs this character may open, once
@@ -232905,7 +233035,7 @@ var init_Guild$1 = __esmMin((() => {
 		return function renderMemberFace(tick) {
 			if (tick < lastTick + 1e3) return;
 			lastTick = tick;
-			const root = _root$14(Guild);
+			const root = _root$15(Guild);
 			if (!scratch) {
 				scratch = document.createElement("canvas");
 				scratch.width = scratch.height = PORTRAIT_BOX$1;
@@ -233295,10 +233425,10 @@ var init_Bank$1 = __esmMin((() => {
 */
 function on(listener) {
 	if (typeof listener !== "function") throw new Error("ExitHooks.on takes a function");
-	_listeners$2.push(listener);
+	_listeners$3.push(listener);
 	return () => {
-		const index = _listeners$2.indexOf(listener);
-		if (index > -1) _listeners$2.splice(index, 1);
+		const index = _listeners$3.indexOf(listener);
+		if (index > -1) _listeners$3.splice(index, 1);
 	};
 }
 /**
@@ -233310,7 +233440,7 @@ function emit(to, from) {
 		to,
 		from
 	});
-	_listeners$2.slice().forEach((listener) => {
+	_listeners$3.slice().forEach((listener) => {
 		try {
 			listener(event);
 		} catch (error) {
@@ -233318,9 +233448,9 @@ function emit(to, from) {
 		}
 	});
 }
-var _listeners$2, ExitHooks_default;
+var _listeners$3, ExitHooks_default;
 var init_ExitHooks = __esmMin((() => {
-	_listeners$2 = [];
+	_listeners$3 = [];
 	ExitHooks_default = {
 		on,
 		emit
@@ -233333,7 +233463,7 @@ var init_ExitHooks = __esmMin((() => {
 * still run.
 */
 function changed() {
-	_listeners$1.slice().forEach((listener) => {
+	_listeners$2.slice().forEach((listener) => {
 		try {
 			listener();
 		} catch (error) {
@@ -233400,17 +233530,17 @@ function press(button) {
 */
 function onChange$1(listener) {
 	if (typeof listener !== "function") throw new Error("MenuHooks.onChange takes a function");
-	_listeners$1.push(listener);
+	_listeners$2.push(listener);
 	return () => {
-		const index = _listeners$1.indexOf(listener);
-		if (index > -1) _listeners$1.splice(index, 1);
+		const index = _listeners$2.indexOf(listener);
+		if (index > -1) _listeners$2.splice(index, 1);
 	};
 }
-var PICTURE, _buttons, _listeners$1, MenuHooks_default;
+var PICTURE, _buttons, _listeners$2, MenuHooks_default;
 var init_MenuHooks = __esmMin((() => {
 	PICTURE = /^(?!.*\.\.)[A-Za-z0-9_][A-Za-z0-9_./-]*\.(bmp|tga|png|jpe?g)$/i;
 	_buttons = [];
-	_listeners$1 = [];
+	_listeners$2 = [];
 	MenuHooks_default = {
 		add: add$1,
 		list,
@@ -234057,7 +234187,7 @@ var init_GraphicsOption = __esmMin((() => {
 //#region src/UI/Components/ShortCutOption/ShortCutOption.html?raw
 var ShortCutOption_default$2;
 var init_ShortCutOption$2 = __esmMin((() => {
-	ShortCutOption_default$2 = "<div id=\"ShortCutOption\" class=\"pt-page-fadeIn1\">\r\n	<div class=\"border\">\r\n		<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n			<div class=\"left\"><span class=\"text\">Shortcut key setting window</span></div>\r\n\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"base close\"\r\n					data-background=\"basic_interface/sys_close_off.bmp\"\r\n					data-hover=\"basic_interface/sys_close_on.bmp\"\r\n				></button>\r\n			</div>\r\n\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"tabs\">\r\n			<button class=\"t_skillbar selectedtab\" data-index=\"t_skillbar\">Skill Bar</button\r\n			><button class=\"t_ui\" data-index=\"t_ui\">Interface</button\r\n			><button class=\"t_macro\" data-index=\"t_macro\">Macros</button\r\n			><button class=\"t_gamepad\" data-index=\"t_gamepad\">Gamepad</button>\r\n		</div>\r\n		<div class=\"panel\">\r\n			<div class=\"content t_skillbar selectedtab\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Skill bar 1-1</td>\r\n							<td data-button=\"F1_1\" class=\"customize\"></td>\r\n							<td>Skill bar 2-1</td>\r\n							<td data-button=\"F2_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-2</td>\r\n							<td data-button=\"F1_2\" class=\"customize\"></td>\r\n							<td>Skill bar 2-2</td>\r\n							<td data-button=\"F2_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-3</td>\r\n							<td data-button=\"F1_3\" class=\"customize\"></td>\r\n							<td>Skill bar 2-3</td>\r\n							<td data-button=\"F2_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-4</td>\r\n							<td data-button=\"F1_4\" class=\"customize\"></td>\r\n							<td>Skill bar 2-4</td>\r\n							<td data-button=\"F2_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-5</td>\r\n							<td data-button=\"F1_5\" class=\"customize\"></td>\r\n							<td>Skill bar 2-5</td>\r\n							<td data-button=\"F2_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-6</td>\r\n							<td data-button=\"F1_6\" class=\"customize\"></td>\r\n							<td>Skill bar 2-6</td>\r\n							<td data-button=\"F2_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-7</td>\r\n							<td data-button=\"F1_7\" class=\"customize\"></td>\r\n							<td>Skill bar 2-7</td>\r\n							<td data-button=\"F2_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-8</td>\r\n							<td data-button=\"F1_8\" class=\"customize\"></td>\r\n							<td>Skill bar 2-8</td>\r\n							<td data-button=\"F2_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-9</td>\r\n							<td data-button=\"F1_9\" class=\"customize\"></td>\r\n							<td>Skill bar 2-9</td>\r\n							<td data-button=\"F2_9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-1</td>\r\n							<td data-button=\"F3_1\" class=\"customize\"></td>\r\n							<td>Skill bar 4-1</td>\r\n							<td data-button=\"F4_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-2</td>\r\n							<td data-button=\"F3_2\" class=\"customize\"></td>\r\n							<td>Skill bar 4-2</td>\r\n							<td data-button=\"F4_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-3</td>\r\n							<td data-button=\"F3_3\" class=\"customize\"></td>\r\n							<td>Skill bar 4-3</td>\r\n							<td data-button=\"F4_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-4</td>\r\n							<td data-button=\"F3_4\" class=\"customize\"></td>\r\n							<td>Skill bar 4-4</td>\r\n							<td data-button=\"F4_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-5</td>\r\n							<td data-button=\"F3_5\" class=\"customize\"></td>\r\n							<td>Skill bar 4-5</td>\r\n							<td data-button=\"F4_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-6</td>\r\n							<td data-button=\"F3_6\" class=\"customize\"></td>\r\n							<td>Skill bar 4-6</td>\r\n							<td data-button=\"F4_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-7</td>\r\n							<td data-button=\"F3_7\" class=\"customize\"></td>\r\n							<td>Skill bar 4-7</td>\r\n							<td data-button=\"F4_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-8</td>\r\n							<td data-button=\"F3_8\" class=\"customize\"></td>\r\n							<td>Skill bar 4-8</td>\r\n							<td data-button=\"F4_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-9</td>\r\n							<td data-button=\"F3_9\" class=\"customize\"></td>\r\n							<td>Skill bar 4-9</td>\r\n							<td data-button=\"F4_9\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_ui\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Basic Info</td>\r\n							<td data-button=\"BasicInfo\" class=\"customize\"></td>\r\n							<td>Character Info</td>\r\n							<td data-button=\"Equipment\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill List</td>\r\n							<td data-button=\"SkillList\" class=\"customize\"></td>\r\n							<td>Emotion List</td>\r\n							<td data-button=\"Emotions\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Friends List</td>\r\n							<td data-button=\"Friends\" class=\"customize\"></td>\r\n							<td>Party Window</td>\r\n							<td data-button=\"Party\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Pet Info</td>\r\n							<td data-button=\"PetInfo\" class=\"customize\"></td>\r\n							<td>Chat Room</td>\r\n							<td data-button=\"ChatRoom\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Cart Window</td>\r\n							<td data-button=\"PushCart\" class=\"customize\"></td>\r\n							<td>Item Window</td>\r\n							<td data-button=\"Inventory\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>World Map</td>\r\n							<td data-button=\"WorldMap\" class=\"customize\"></td>\r\n							<td>Guild Info</td>\r\n							<td data-button=\"Guild\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus Info</td>\r\n							<td data-button=\"HomunInfo\" class=\"customize\"></td>\r\n							<td>Mercenary Info</td>\r\n							<td data-button=\"MercInfo\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus State</td>\r\n							<td data-button=\"HomunState\" class=\"customize\"></td>\r\n							<td>Mercenary State</td>\r\n							<td data-button=\"MercState\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Sit/Stand</td>\r\n							<td data-button=\"Sit\" class=\"customize\"></td>\r\n							<td>Short Cuts</td>\r\n							<td data-button=\"ShortCuts\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Chat Bar Size</td>\r\n							<td data-button=\"ChatSize\" class=\"customize\"></td>\r\n							<td>Skill Bar Size</td>\r\n							<td data-button=\"SkillBarSize\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Quest</td>\r\n							<td data-button=\"Quest\" class=\"customize\"></td>\r\n							<td>Bank</td>\r\n							<td data-button=\"Bank\" class=\"customize\"></td>\r\n						</tr>\r\n						<!--<tr>\r\n                     <td>MobileUI</td>\r\n                     <td data-button=\"M_UI\" class=\"customize\"></td>\r\n                     <td>MUi-Toggle</td>\r\n                     <td data-button=\"M_Toggle\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-TG</td>\r\n                     <td data-button=\"M_Targeting\" class=\"customize\"></td>\r\n                     <td>MUi-AT</td>\r\n                     <td data-button=\"M_AutoTarget\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-ATK</td>\r\n                     <td data-button=\"M_Attack\" class=\"customize\"></td>\r\n                  </tr>-->\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_macro\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Macro 1</td>\r\n							<td data-button=\"Macro1\" class=\"customize\"></td>\r\n							<td>Flag 1</td>\r\n							<td data-button=\"Flag1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 2</td>\r\n							<td data-button=\"Macro2\" class=\"customize\"></td>\r\n							<td>Flag 2</td>\r\n							<td data-button=\"Flag2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 3</td>\r\n							<td data-button=\"Macro3\" class=\"customize\"></td>\r\n							<td>Flag 3</td>\r\n							<td data-button=\"Flag3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 4</td>\r\n							<td data-button=\"Macro4\" class=\"customize\"></td>\r\n							<td>Flag 4</td>\r\n							<td data-button=\"Flag4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 5</td>\r\n							<td data-button=\"Macro5\" class=\"customize\"></td>\r\n							<td>Flag 5</td>\r\n							<td data-button=\"Flag5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 6</td>\r\n							<td data-button=\"Macro6\" class=\"customize\"></td>\r\n							<td>Flag 6</td>\r\n							<td data-button=\"Flag6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 7</td>\r\n							<td data-button=\"Macro7\" class=\"customize\"></td>\r\n							<td>Flag 7</td>\r\n							<td data-button=\"Flag7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 8</td>\r\n							<td data-button=\"Macro8\" class=\"customize\"></td>\r\n							<td>Flag 8</td>\r\n							<td data-button=\"Flag8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 9</td>\r\n							<td data-button=\"Macro9\" class=\"customize\"></td>\r\n							<td>Flag 9</td>\r\n							<td data-button=\"Flag9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 10</td>\r\n							<td data-button=\"Macro10\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_gamepad\">\r\n				<table class=\"joySettings\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr title=\"Show which button does what, and remap them\">\r\n							<td>Button Mapping</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyMappingOpen\">Mapping</button>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Define how targets are selected in combat\">\r\n							<td>Attack Target Mode</td>\r\n							<td>\r\n								<select class=\"attackTargetMode\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Lowest HP</option>\r\n									<option value=\"2\">Closest</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"What the pad targets: D-pad left/right and the aim pick from it. D-pad up/down switches in game. Support: the right stick opens a radial with your party\">\r\n							<td>Target Category</td>\r\n							<td>\r\n								<select class=\"joyCycleMode\">\r\n									<option value=\"0\">Mobs</option>\r\n									<option value=\"3\">NPCs &amp; portals</option>\r\n									<option value=\"1\">Items</option>\r\n									<option value=\"4\">Support (party)</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Choose how skills are cast with gamepad. With Right-Stick Aiming on, Off is not available: skills go to the aimed target\"\r\n						>\r\n							<td>Quick-Cast Mode</td>\r\n							<td>\r\n								<select class=\"joyQuick\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Release Mode</option>\r\n									<option value=\"2\">Instant Mode</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Adjust mouse movement sensitivity for R3 stick\">\r\n							<td>Mouse Move</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Sensitivity:\r\n									<input\r\n										class=\"joySense\"\r\n										type=\"range\"\r\n										value=\"25.0\"\r\n										min=\"1.0\"\r\n										max=\"100.0\"\r\n										step=\"1.0\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Disable mouse input from gamepad for UI interaction\">\r\n							<td>Disable Virtual Mouse</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyDisableVirtualMouse\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Swap L3 and R3 stick functions\">\r\n							<td>Swap L3-R3 Sticks</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyReverseStick\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Automatically hide UI during gameplay mouse movement\">\r\n							<td>Auto Hide UI</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAutoHide\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Set deadzone threshold for analog sticks\">\r\n							<td>Axis Threshold</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Deadline:\r\n									<input\r\n										class=\"joyDeadline\"\r\n										type=\"range\"\r\n										value=\"0.10\"\r\n										min=\"0.0\"\r\n										max=\"1.0\"\r\n										step=\"0.1\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"How fast View + D-pad left/right turns the camera, in degrees per second\">\r\n							<td>Camera Turn Speed</td>\r\n							<td>\r\n								<input\r\n									class=\"joyCameraSpeed joyRange\"\r\n									type=\"range\"\r\n									value=\"90\"\r\n									min=\"30\"\r\n									max=\"360\"\r\n									step=\"10\"\r\n								/>\r\n								<span class=\"joyValue\" data-for=\"joyCameraSpeed\"></span>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Stick Drift</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Measure where the sticks rest and treat that as centre. Leave both sticks alone while it runs (one second)\"\r\n						>\r\n							<td>Calibrate Sticks</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrate\">Calibrate</button>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrateReset\">Reset</button>\r\n								<div class=\"joyCalibrateStatus\"></div>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Left stick: movement on each axis below this value is ignored\">\r\n							<td>Left Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftLX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftLY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Right stick: movement on each axis below this value is ignored\">\r\n							<td>Right Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftRX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftRY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Aim Settings</td>\r\n						</tr>\r\n						<tr title=\"Push the right stick toward a monster or item to target the first one in that direction. In game, tap RS click to switch the right stick between aiming and the cursor; hold it to recenter the cursor. Tap L3 to clear the target, hold L3 to sit or stand\">\r\n							<td>Right-Stick Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimEnabled\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, a red ring marks a newly selected target on the ground, then fades out within two seconds\">\r\n							<td>Show Target Ring</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimRing\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, draw a short line in the aimed direction, which connects to the target once the aim is on one\">\r\n							<td>Show Aim Line</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimLine\" />\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"While the right stick aims, hide the game's cursor. Moving the mouse shows it again; tap RS click for the cursor mode\"\r\n						>\r\n							<td>Hide Cursor While Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimHideCursor\" />\r\n							</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<div class=\"joyMapping\">\r\n					<div class=\"joyMappingHeader\">\r\n						<button type=\"button\" class=\"joyBtn joyMappingBack\">&#9664; Back</button>\r\n						<span class=\"joyMappingTitle\">Button mapping</span>\r\n						<button type=\"button\" class=\"joyBtn joyMappingReset\">Reset to defaults</button>\r\n					</div>\r\n					<div class=\"joyMappingStatus\">Remap: press Remap, then a button on the gamepad. The two buttons trade places.</div>\r\n					<div class=\"joyMappingScroll\">\r\n						<table class=\"joyMappingRoles\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n						<div class=\"joyMappingSub\">Combinations (follow the buttons above)</div>\r\n						<table class=\"joyMappingCombos\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<button\r\n				class=\"button reset left\"\r\n				data-background=\"btn_reset.bmp\"\r\n				data-hover=\"btn_reset_a.bmp\"\r\n				data-down=\"btn_reset_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button ok right\"\r\n				data-background=\"btn_ok.bmp\"\r\n				data-hover=\"btn_ok_a.bmp\"\r\n				data-down=\"btn_ok_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button cancel right\"\r\n				data-background=\"btn_cancel.bmp\"\r\n				data-hover=\"btn_cancel_a.bmp\"\r\n				data-down=\"btn_cancel_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button close right\"\r\n				data-background=\"btn_close.bmp\"\r\n				data-hover=\"btn_close_a.bmp\"\r\n				data-down=\"btn_close_b.bmp\"\r\n			></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	ShortCutOption_default$2 = "<div id=\"ShortCutOption\" class=\"pt-page-fadeIn1\">\r\n	<div class=\"border\">\r\n		<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n			<div class=\"left\"><span class=\"text\">Shortcut key setting window</span></div>\r\n\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"base close\"\r\n					data-background=\"basic_interface/sys_close_off.bmp\"\r\n					data-hover=\"basic_interface/sys_close_on.bmp\"\r\n				></button>\r\n			</div>\r\n\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"tabs\">\r\n			<button class=\"t_skillbar selectedtab\" data-index=\"t_skillbar\">Skill Bar</button\r\n			><button class=\"t_ui\" data-index=\"t_ui\">Interface</button\r\n			><button class=\"t_macro\" data-index=\"t_macro\">Macros</button\r\n			><button class=\"t_gamepad\" data-index=\"t_gamepad\">Gamepad</button>\r\n		</div>\r\n		<div class=\"panel\">\r\n			<div class=\"content t_skillbar selectedtab\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Skill bar 1-1</td>\r\n							<td data-button=\"F1_1\" class=\"customize\"></td>\r\n							<td>Skill bar 2-1</td>\r\n							<td data-button=\"F2_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-2</td>\r\n							<td data-button=\"F1_2\" class=\"customize\"></td>\r\n							<td>Skill bar 2-2</td>\r\n							<td data-button=\"F2_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-3</td>\r\n							<td data-button=\"F1_3\" class=\"customize\"></td>\r\n							<td>Skill bar 2-3</td>\r\n							<td data-button=\"F2_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-4</td>\r\n							<td data-button=\"F1_4\" class=\"customize\"></td>\r\n							<td>Skill bar 2-4</td>\r\n							<td data-button=\"F2_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-5</td>\r\n							<td data-button=\"F1_5\" class=\"customize\"></td>\r\n							<td>Skill bar 2-5</td>\r\n							<td data-button=\"F2_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-6</td>\r\n							<td data-button=\"F1_6\" class=\"customize\"></td>\r\n							<td>Skill bar 2-6</td>\r\n							<td data-button=\"F2_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-7</td>\r\n							<td data-button=\"F1_7\" class=\"customize\"></td>\r\n							<td>Skill bar 2-7</td>\r\n							<td data-button=\"F2_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-8</td>\r\n							<td data-button=\"F1_8\" class=\"customize\"></td>\r\n							<td>Skill bar 2-8</td>\r\n							<td data-button=\"F2_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-9</td>\r\n							<td data-button=\"F1_9\" class=\"customize\"></td>\r\n							<td>Skill bar 2-9</td>\r\n							<td data-button=\"F2_9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-1</td>\r\n							<td data-button=\"F3_1\" class=\"customize\"></td>\r\n							<td>Skill bar 4-1</td>\r\n							<td data-button=\"F4_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-2</td>\r\n							<td data-button=\"F3_2\" class=\"customize\"></td>\r\n							<td>Skill bar 4-2</td>\r\n							<td data-button=\"F4_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-3</td>\r\n							<td data-button=\"F3_3\" class=\"customize\"></td>\r\n							<td>Skill bar 4-3</td>\r\n							<td data-button=\"F4_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-4</td>\r\n							<td data-button=\"F3_4\" class=\"customize\"></td>\r\n							<td>Skill bar 4-4</td>\r\n							<td data-button=\"F4_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-5</td>\r\n							<td data-button=\"F3_5\" class=\"customize\"></td>\r\n							<td>Skill bar 4-5</td>\r\n							<td data-button=\"F4_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-6</td>\r\n							<td data-button=\"F3_6\" class=\"customize\"></td>\r\n							<td>Skill bar 4-6</td>\r\n							<td data-button=\"F4_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-7</td>\r\n							<td data-button=\"F3_7\" class=\"customize\"></td>\r\n							<td>Skill bar 4-7</td>\r\n							<td data-button=\"F4_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-8</td>\r\n							<td data-button=\"F3_8\" class=\"customize\"></td>\r\n							<td>Skill bar 4-8</td>\r\n							<td data-button=\"F4_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-9</td>\r\n							<td data-button=\"F3_9\" class=\"customize\"></td>\r\n							<td>Skill bar 4-9</td>\r\n							<td data-button=\"F4_9\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_ui\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Basic Info</td>\r\n							<td data-button=\"BasicInfo\" class=\"customize\"></td>\r\n							<td>Character Info</td>\r\n							<td data-button=\"Equipment\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill List</td>\r\n							<td data-button=\"SkillList\" class=\"customize\"></td>\r\n							<td>Emotion List</td>\r\n							<td data-button=\"Emotions\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Friends List</td>\r\n							<td data-button=\"Friends\" class=\"customize\"></td>\r\n							<td>Party Window</td>\r\n							<td data-button=\"Party\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Pet Info</td>\r\n							<td data-button=\"PetInfo\" class=\"customize\"></td>\r\n							<td>Chat Room</td>\r\n							<td data-button=\"ChatRoom\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Cart Window</td>\r\n							<td data-button=\"PushCart\" class=\"customize\"></td>\r\n							<td>Item Window</td>\r\n							<td data-button=\"Inventory\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>World Map</td>\r\n							<td data-button=\"WorldMap\" class=\"customize\"></td>\r\n							<td>Guild Info</td>\r\n							<td data-button=\"Guild\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus Info</td>\r\n							<td data-button=\"HomunInfo\" class=\"customize\"></td>\r\n							<td>Mercenary Info</td>\r\n							<td data-button=\"MercInfo\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus State</td>\r\n							<td data-button=\"HomunState\" class=\"customize\"></td>\r\n							<td>Mercenary State</td>\r\n							<td data-button=\"MercState\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Sit/Stand</td>\r\n							<td data-button=\"Sit\" class=\"customize\"></td>\r\n							<td>Short Cuts</td>\r\n							<td data-button=\"ShortCuts\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Chat Bar Size</td>\r\n							<td data-button=\"ChatSize\" class=\"customize\"></td>\r\n							<td>Skill Bar Size</td>\r\n							<td data-button=\"SkillBarSize\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Quest</td>\r\n							<td data-button=\"Quest\" class=\"customize\"></td>\r\n							<td>Bank</td>\r\n							<td data-button=\"Bank\" class=\"customize\"></td>\r\n						</tr>\r\n						<!--<tr>\r\n                     <td>MobileUI</td>\r\n                     <td data-button=\"M_UI\" class=\"customize\"></td>\r\n                     <td>MUi-Toggle</td>\r\n                     <td data-button=\"M_Toggle\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-TG</td>\r\n                     <td data-button=\"M_Targeting\" class=\"customize\"></td>\r\n                     <td>MUi-AT</td>\r\n                     <td data-button=\"M_AutoTarget\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-ATK</td>\r\n                     <td data-button=\"M_Attack\" class=\"customize\"></td>\r\n                  </tr>-->\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_macro\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Macro 1</td>\r\n							<td data-button=\"Macro1\" class=\"customize\"></td>\r\n							<td>Flag 1</td>\r\n							<td data-button=\"Flag1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 2</td>\r\n							<td data-button=\"Macro2\" class=\"customize\"></td>\r\n							<td>Flag 2</td>\r\n							<td data-button=\"Flag2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 3</td>\r\n							<td data-button=\"Macro3\" class=\"customize\"></td>\r\n							<td>Flag 3</td>\r\n							<td data-button=\"Flag3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 4</td>\r\n							<td data-button=\"Macro4\" class=\"customize\"></td>\r\n							<td>Flag 4</td>\r\n							<td data-button=\"Flag4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 5</td>\r\n							<td data-button=\"Macro5\" class=\"customize\"></td>\r\n							<td>Flag 5</td>\r\n							<td data-button=\"Flag5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 6</td>\r\n							<td data-button=\"Macro6\" class=\"customize\"></td>\r\n							<td>Flag 6</td>\r\n							<td data-button=\"Flag6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 7</td>\r\n							<td data-button=\"Macro7\" class=\"customize\"></td>\r\n							<td>Flag 7</td>\r\n							<td data-button=\"Flag7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 8</td>\r\n							<td data-button=\"Macro8\" class=\"customize\"></td>\r\n							<td>Flag 8</td>\r\n							<td data-button=\"Flag8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 9</td>\r\n							<td data-button=\"Macro9\" class=\"customize\"></td>\r\n							<td>Flag 9</td>\r\n							<td data-button=\"Flag9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 10</td>\r\n							<td data-button=\"Macro10\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_gamepad\">\r\n				<table class=\"joySettings\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr title=\"Show which button does what, and remap them\">\r\n							<td>Button Mapping</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyMappingOpen\">Mapping</button>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Define how targets are selected in combat\">\r\n							<td>Attack Target Mode</td>\r\n							<td>\r\n								<select class=\"attackTargetMode\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Lowest HP</option>\r\n									<option value=\"2\">Closest</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"What the pad targets: D-pad left/right and the aim pick from it. D-pad up/down switches in game. Support: the right stick opens a radial with your party\">\r\n							<td>Target Category</td>\r\n							<td>\r\n								<select class=\"joyCycleMode\">\r\n									<option value=\"0\">Mobs</option>\r\n									<option value=\"3\">NPCs &amp; portals</option>\r\n									<option value=\"5\">Players</option>\r\n									<option value=\"6\">NPCs, portals &amp; players</option>\r\n									<option value=\"1\">Items</option>\r\n									<option value=\"4\">Support (party)</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Choose how skills are cast with gamepad. With Right-Stick Aiming on, Off is not available: skills go to the aimed target\"\r\n						>\r\n							<td>Quick-Cast Mode</td>\r\n							<td>\r\n								<select class=\"joyQuick\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Release Mode</option>\r\n									<option value=\"2\">Instant Mode</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Adjust mouse movement sensitivity for R3 stick\">\r\n							<td>Mouse Move</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Sensitivity:\r\n									<input\r\n										class=\"joySense\"\r\n										type=\"range\"\r\n										value=\"25.0\"\r\n										min=\"1.0\"\r\n										max=\"100.0\"\r\n										step=\"1.0\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Disable mouse input from gamepad for UI interaction\">\r\n							<td>Disable Virtual Mouse</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyDisableVirtualMouse\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Swap L3 and R3 stick functions\">\r\n							<td>Swap L3-R3 Sticks</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyReverseStick\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Automatically hide UI during gameplay mouse movement\">\r\n							<td>Auto Hide UI</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAutoHide\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Set deadzone threshold for analog sticks\">\r\n							<td>Axis Threshold</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Deadline:\r\n									<input\r\n										class=\"joyDeadline\"\r\n										type=\"range\"\r\n										value=\"0.10\"\r\n										min=\"0.0\"\r\n										max=\"1.0\"\r\n										step=\"0.1\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"How fast View + D-pad left/right turns the camera, in degrees per second\">\r\n							<td>Camera Turn Speed</td>\r\n							<td>\r\n								<input\r\n									class=\"joyCameraSpeed joyRange\"\r\n									type=\"range\"\r\n									value=\"90\"\r\n									min=\"30\"\r\n									max=\"360\"\r\n									step=\"10\"\r\n								/>\r\n								<span class=\"joyValue\" data-for=\"joyCameraSpeed\"></span>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Stick Drift</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Measure where the sticks rest and treat that as centre. Leave both sticks alone while it runs (one second)\"\r\n						>\r\n							<td>Calibrate Sticks</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrate\">Calibrate</button>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrateReset\">Reset</button>\r\n								<div class=\"joyCalibrateStatus\"></div>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Left stick: movement on each axis below this value is ignored\">\r\n							<td>Left Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftLX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftLY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Right stick: movement on each axis below this value is ignored\">\r\n							<td>Right Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftRX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftRY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Aim Settings</td>\r\n						</tr>\r\n						<tr title=\"Push the right stick toward a monster or item to target the first one in that direction. In game, tap RS click to switch the right stick between aiming and the cursor; hold it to recenter the cursor. Tap L3 to clear the target, hold L3 to sit or stand\">\r\n							<td>Right-Stick Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimEnabled\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, a red ring marks a newly selected target on the ground, then fades out within two seconds\">\r\n							<td>Show Target Ring</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimRing\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, draw a short line in the aimed direction, which connects to the target once the aim is on one\">\r\n							<td>Show Aim Line</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimLine\" />\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"While the right stick aims, hide the game's cursor. Moving the mouse shows it again; tap RS click for the cursor mode\"\r\n						>\r\n							<td>Hide Cursor While Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimHideCursor\" />\r\n							</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<div class=\"joyMapping\">\r\n					<div class=\"joyMappingHeader\">\r\n						<button type=\"button\" class=\"joyBtn joyMappingBack\">&#9664; Back</button>\r\n						<span class=\"joyMappingTitle\">Button mapping</span>\r\n						<button type=\"button\" class=\"joyBtn joyMappingReset\">Reset to defaults</button>\r\n					</div>\r\n					<div class=\"joyMappingStatus\">Remap: press Remap, then a button on the gamepad. The two buttons trade places.</div>\r\n					<div class=\"joyMappingScroll\">\r\n						<table class=\"joyMappingRoles\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n						<div class=\"joyMappingSub\">Combinations (follow the buttons above)</div>\r\n						<table class=\"joyMappingCombos\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<button\r\n				class=\"button reset left\"\r\n				data-background=\"btn_reset.bmp\"\r\n				data-hover=\"btn_reset_a.bmp\"\r\n				data-down=\"btn_reset_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button ok right\"\r\n				data-background=\"btn_ok.bmp\"\r\n				data-hover=\"btn_ok_a.bmp\"\r\n				data-down=\"btn_ok_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button cancel right\"\r\n				data-background=\"btn_cancel.bmp\"\r\n				data-hover=\"btn_cancel_a.bmp\"\r\n				data-down=\"btn_cancel_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button close right\"\r\n				data-background=\"btn_close.bmp\"\r\n				data-hover=\"btn_close_a.bmp\"\r\n				data-down=\"btn_close_b.bmp\"\r\n			></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/ShortCutOption/ShortCutOption.css?raw
@@ -234113,7 +234243,7 @@ function nameOf$1(logical) {
 * Give a role to a physical button; the button's previous role moves to
 * the button the role had before.
 */
-function assign(logical, physical) {
+function assign$1(logical, physical) {
 	const map = getMap();
 	const other = map.indexOf(physical);
 	if (other === -1 || other === logical) return;
@@ -234210,7 +234340,7 @@ var init_JoystickButtonMap = __esmMin((() => {
 		getMap,
 		toLogical,
 		nameOf: nameOf$1,
-		assign,
+		assign: assign$1,
 		reset,
 		startCapture,
 		cancelCapture,
@@ -235842,42 +235972,27 @@ function setDelayOnIndex(index, delay) {
 * Does the client allow other source than shortcut, inventory
 * and skill window to save to shortcut ?
 */
-function onDrop$10(event, target) {
-	let data, element;
+function onDrop$11(event, target) {
+	let data;
 	const index = parseInt(target.getAttribute("data-index"), 10);
 	const row = Math.floor(index / 9);
 	event.stopImmediatePropagation();
 	event.preventDefault();
 	try {
 		data = JSON.parse(event.dataTransfer.getData("Text"));
-		element = data.data;
 	} catch (_e) {
 		return;
 	}
-	if (data.type !== "item" && data.type !== "skill") return;
-	switch (data.from) {
-		case "SkillList":
-		case "Guild":
-		case "SkillListMH":
-			ShortCut.removeElement(true, element.SKID, row, element.selectedLevel ? element.selectedLevel : element.level);
-			ShortCut.addElement(index, true, element.SKID, element.selectedLevel ? element.selectedLevel : element.level);
-			ShortCut.onChange(index, true, element.SKID, element.selectedLevel ? element.selectedLevel : element.level);
-			break;
-		case "Inventory":
-			ShortCut.removeElement(false, element.ITID, row);
-			ShortCut.addElement(index, false, element.ITID, 0);
-			ShortCut.onChange(index, false, element.ITID, 0);
-			break;
-		case "ShortCut":
-			ShortCut.removeElement(element.isSkill, element.ID, row, element.isSkill ? element.count : null);
-			ShortCut.addElement(index, element.isSkill, element.ID, element.count);
-			ShortCut.onChange(index, element.isSkill, element.ID, element.count);
-	}
+	const entry = ShortCut.fromDragData(data);
+	if (!entry) return;
+	ShortCut.removeElement(entry.isSkill, entry.ID, row, entry.isSkill ? entry.count : null);
+	ShortCut.addElement(index, entry.isSkill, entry.ID, entry.count);
+	ShortCut.onChange(index, entry.isSkill, entry.ID, entry.count);
 }
 /**
 * Stop the drag and drop
 */
-function onDragEnd(icon) {
+function onDragEnd$1(icon) {
 	delete window._OBJ_DRAG_;
 	icon.classList.remove("hide");
 }
@@ -235885,7 +236000,7 @@ function onDragEnd(icon) {
 * Prepare data to be stored in the dragged element
 * to change position in the shortcut.
 */
-function onDragStart$2(event, icon) {
+function onDragStart$3(event, icon) {
 	const index = parseInt(icon.parentNode.getAttribute("data-index"), 10);
 	icon.classList.add("hide");
 	const img = new Image();
@@ -236185,7 +236300,7 @@ var init_ShortCut = __esmMin((() => {
 		const container = root.querySelector("#ShortCut");
 		container.addEventListener("drop", (e) => {
 			const target = e.target.closest(".container");
-			if (target) onDrop$10(e, target);
+			if (target) onDrop$11(e, target);
 		});
 		container.addEventListener("dragover", (e) => {
 			if (e.target.closest(".container")) {
@@ -236195,11 +236310,11 @@ var init_ShortCut = __esmMin((() => {
 		});
 		container.addEventListener("dragstart", (e) => {
 			const icon = e.target.closest(".icon");
-			if (icon) onDragStart$2(e, icon);
+			if (icon) onDragStart$3(e, icon);
 		});
 		container.addEventListener("dragend", (e) => {
 			const icon = e.target.closest(".icon");
-			if (icon) onDragEnd(icon);
+			if (icon) onDragEnd$1(icon);
 		});
 		container.addEventListener("dblclick", (e) => {
 			const icon = e.target.closest(".icon");
@@ -236422,15 +236537,51 @@ var init_ShortCut = __esmMin((() => {
 	*/
 	ShortCut.removeElement = function removeElement(isSkill, ID, row, amount) {
 		if (!ID) return;
-		const root = ShortCut.getRoot();
-		for (let i = row * 9, count = Math.min(_list$5.length, row * 9 + 9); i < count; ++i) if (_list$5[i] && _list$5[i].isSkill == isSkill && _list$5[i].ID === ID && (!isSkill || _list$5[i].count == amount)) {
-			const container = root.querySelector(`.container[data-index="${i}"]`);
-			if (container) container.innerHTML = "";
-			_list$5[i].isSkill = 0;
-			_list$5[i].ID = 0;
-			_list$5[i].count = 0;
-			ShortCut.onChange(i, 0, 0, 0);
+		for (let i = row * 9, count = Math.min(_list$5.length, row * 9 + 9); i < count; ++i) if (_list$5[i] && _list$5[i].isSkill == isSkill && _list$5[i].ID === ID && (!isSkill || _list$5[i].count == amount)) ShortCut.removeAt(i);
+	};
+	/**
+	* Empty one shortcut slot and tell the server
+	*
+	* @param {number} index of the slot
+	*/
+	ShortCut.removeAt = function removeAt(index) {
+		if (!_list$5[index]) return;
+		const container = ShortCut.getRoot().querySelector(`.container[data-index="${index}"]`);
+		if (container) container.innerHTML = "";
+		_list$5[index].isSkill = 0;
+		_list$5[index].ID = 0;
+		_list$5[index].count = 0;
+		ShortCut.onChange(index, 0, 0, 0);
+	};
+	/**
+	* What a drag payload would put in a shortcut slot
+	*
+	* @param {object} data drag payload ({ type, from, data })
+	* @return {{isSkill: boolean|number, ID: number, count: number}|null} null when it can't go in a slot
+	*/
+	ShortCut.fromDragData = function fromDragData(data) {
+		if (!data || !data.data || data.type !== "item" && data.type !== "skill") return null;
+		const element = data.data;
+		switch (data.from) {
+			case "SkillList":
+			case "Guild":
+			case "SkillListMH": return {
+				isSkill: true,
+				ID: element.SKID,
+				count: element.selectedLevel ? element.selectedLevel : element.level
+			};
+			case "Inventory": return {
+				isSkill: false,
+				ID: element.ITID,
+				count: 0
+			};
+			case "ShortCut": return {
+				isSkill: element.isSkill,
+				ID: element.ID,
+				count: element.count
+			};
 		}
+		return null;
 	};
 	Guild_default.onUpdateSkill = (id, level) => {
 		ShortCut.setElement(true, id, level);
@@ -237070,7 +237221,7 @@ function set(category) {
 	const previous = get$1();
 	Controls_default.joyCycleMode = category;
 	Controls_default.save();
-	for (let i = 0; i < _listeners.length; i++) _listeners[i](category, previous);
+	for (let i = 0; i < _listeners$1.length; i++) _listeners$1[i](category, previous);
 }
 /**
 * One D-pad step: 'up' to the previous category, 'down' to the next,
@@ -237088,7 +237239,7 @@ function step(direction, anchor) {
 	showList(anchor);
 }
 function onChange(callback) {
-	_listeners.push(callback);
+	_listeners$1.push(callback);
 }
 function getList() {
 	if (_list$4 && _list$4.parentNode) return _list$4;
@@ -237155,7 +237306,7 @@ function dispose$3() {
 	if (_list$4 && _list$4.parentNode) _list$4.parentNode.removeChild(_list$4);
 	_list$4 = null;
 }
-var CATEGORY, ORDER, NAMES, LIST_VISIBLE_MS, BELOW_FEET$2, _list$4, _hideTimer, _listeners, JoystickTargetCategory_default;
+var CATEGORY, ORDER, NAMES, LIST_VISIBLE_MS, BELOW_FEET$2, _list$4, _hideTimer, _listeners$1, JoystickTargetCategory_default;
 var init_JoystickTargetCategory = __esmMin((() => {
 	init_Controls();
 	init_JoystickScreenAnchor();
@@ -237164,11 +237315,15 @@ var init_JoystickTargetCategory = __esmMin((() => {
 		ITEMS: 1,
 		BOTH: 2,
 		INTERACT: 3,
-		SUPPORT: 4
+		SUPPORT: 4,
+		PLAYERS: 5,
+		PEOPLE: 6
 	};
 	ORDER = [
 		CATEGORY.MOBS,
 		CATEGORY.INTERACT,
+		CATEGORY.PLAYERS,
+		CATEGORY.PEOPLE,
 		CATEGORY.ITEMS,
 		CATEGORY.SUPPORT
 	];
@@ -237177,13 +237332,15 @@ var init_JoystickTargetCategory = __esmMin((() => {
 		[CATEGORY.ITEMS]: "Items",
 		[CATEGORY.BOTH]: "Mobs & items",
 		[CATEGORY.INTERACT]: "NPCs",
-		[CATEGORY.SUPPORT]: "Support"
+		[CATEGORY.SUPPORT]: "Support",
+		[CATEGORY.PLAYERS]: "Players",
+		[CATEGORY.PEOPLE]: "NPCs & players"
 	};
 	LIST_VISIBLE_MS = 2e3;
 	BELOW_FEET$2 = 24;
 	_list$4 = null;
 	_hideTimer = null;
-	_listeners = [];
+	_listeners$1 = [];
 	JoystickTargetCategory_default = {
 		CATEGORY,
 		ORDER,
@@ -237208,6 +237365,13 @@ function getCycleTypes(Entity) {
 			Entity.TYPE_NPC2,
 			Entity.TYPE_WARP
 		];
+		case CYCLE_MODE.PLAYERS: return [Entity.TYPE_PC];
+		case CYCLE_MODE.PEOPLE: return [
+			Entity.TYPE_NPC,
+			Entity.TYPE_NPC2,
+			Entity.TYPE_WARP,
+			Entity.TYPE_PC
+		];
 		case CYCLE_MODE.SUPPORT: return [];
 		default: return [Entity.TYPE_MOB];
 	}
@@ -237220,18 +237384,30 @@ function isInteractable(entity) {
 		Entity.TYPE_WARP
 	].includes(entity.objecttype);
 }
+function isPlayer(entity) {
+	return entity.objecttype === entity.constructor.TYPE_PC;
+}
+/**
+* Whether the entity hides from the player: Hiding, Cloaking, Chase Walk,
+* Shadow Form, ... (EntityState). It can be neither selected nor attacked.
+*/
+function isHidden$1(entity) {
+	return typeof entity.isVisible === "function" && !entity.isVisible();
+}
 /**
 * What the cycle and aim may select for the current mode, nearest first.
+* EntityManager already leaves out hidden entities; script-trigger NPCs
+* go here.
 */
 function getCycleCandidates(player) {
 	return EntityManager.getEntitiesSortedByDistance(player, getCycleTypes(player.constructor)).filter((entity) => !(isInteractable(entity) && HIDDEN_NPC_JOBS.includes(entity.job)));
 }
 /**
-* The marked entity, or null once it was picked up, expired or left the
-* entity list.
+* The marked entity, or null once it was picked up, expired, left the
+* entity list or went into hiding.
 */
 function getMarked() {
-	if (_marked && (_marked.remove_tick !== 0 || EntityManager.get(_marked.GID) !== _marked)) _marked = null;
+	if (_marked && (_marked.remove_tick !== 0 || EntityManager.get(_marked.GID) !== _marked || isHidden$1(_marked))) releaseMark();
 	return _marked;
 }
 function getCycledItem() {
@@ -237241,6 +237417,15 @@ function getCycledItem() {
 function getInteractTarget() {
 	const marked = getMarked();
 	return marked && isInteractable(marked) ? marked : null;
+}
+/**
+* The marked player: one the cycle or aim selected that may not be
+* attacked. Null if none, or once it can be attacked (a PvP map's rules
+* changed): then it is the focus's job.
+*/
+function getMarkedPlayer() {
+	const marked = getMarked();
+	return marked && isPlayer(marked) && !isAttackable(marked) ? marked : null;
 }
 function releaseMark() {
 	if (_marked) {
@@ -237283,9 +237468,9 @@ function markEntity(item) {
 	_marked = item;
 }
 /**
-* Whether the entity is something X may attack: alive, still in the current
-* map's entity list, and a mob, or a player the map state lets us attack
-* (PvP / GvG, the same rule as the mouse's attack cursor).
+* Whether the entity is something X may attack: alive, not hidden, still in
+* the current map's entity list, and a mob, or a player the map state lets
+* us attack (PvP / GvG, the same rule as the mouse's attack cursor).
 *
 * The EntityManager.get() check matters: EntityManager.free() on a warp
 * cleans entities (remove_tick back to 0) but never clears the focus, so a
@@ -237296,7 +237481,7 @@ function markEntity(item) {
 */
 function isAttackable(entity) {
 	if (!entity || entity === SessionStorage_default.Entity) return false;
-	if (entity.action === entity.ACTION.DIE || entity.remove_tick !== 0) return false;
+	if (entity.action === entity.ACTION.DIE || entity.remove_tick !== 0 || isHidden$1(entity)) return false;
 	if (EntityManager.get(entity.GID) !== entity) return false;
 	const Entity = entity.constructor;
 	if (entity.objecttype === Entity.TYPE_MOB) return true;
@@ -237356,6 +237541,14 @@ function focusTarget(entity) {
 	} else if (!focus) focusEntity(entity);
 }
 /**
+* Select what the cycle or aim landed on: a mob, or a player you may
+* attack, becomes the focus (X attacks it); anything else is marked.
+*/
+function select(entity) {
+	if (entity.objecttype === entity.constructor.TYPE_MOB || isAttackable(entity)) focusTarget(entity);
+	else markEntity(entity);
+}
+/**
 * Step the focused target to the next (or previous) mob and/or ground item,
 * depending on ControlsSettings.joyCycleMode, by straight-line distance from
 * the player. Wraps at both ends. If nothing is focused, or the focused
@@ -237371,7 +237564,6 @@ function focusTarget(entity) {
 function cycle$1(direction) {
 	const player = SessionStorage_default.Entity;
 	if (!player) return;
-	const Entity = player.constructor;
 	const sorted = getCycleCandidates(player);
 	if (sorted.length === 0) return;
 	const current = getMarked() || EntityManager.getFocusEntity();
@@ -237381,12 +237573,7 @@ function cycle$1(direction) {
 	else if (direction === "next") newIndex = (index + 1) % sorted.length;
 	else newIndex = (index - 1 + sorted.length) % sorted.length;
 	const target = sorted[newIndex];
-	if (target.objecttype !== Entity.TYPE_MOB) {
-		markEntity(target);
-		JoystickMouseCursorAdapter_default.moveMouseToEntity(target);
-		return;
-	}
-	focusTarget(target);
+	select(target);
 	JoystickMouseCursorAdapter_default.moveMouseToEntity(target);
 }
 /**
@@ -237450,17 +237637,16 @@ var init_JoystickTargetService = __esmMin((() => {
 		getItem: getCycledItem,
 		getMarked,
 		getInteractTarget,
+		getMarkedPlayer,
 		releaseMark,
 		getCycleTypes,
 		getCycleCandidates,
 		/**
-		* Select an entity the aim hit: an item, NPC or portal gets the mark, a
-		* mob the focus. Never attacks and never stops a running attack.
+		* Select an entity the aim hit: a mob or attackable player gets the
+		* focus, anything else the mark. Never attacks and never stops a
+		* running attack.
 		*/
-		aimAt: function(entity) {
-			if (entity.objecttype !== entity.constructor.TYPE_MOB) markEntity(entity);
-			else focusTarget(entity);
-		},
+		aimAt: select,
 		snapCursorToFocus: function() {
 			const focus = EntityManager.getFocusEntity();
 			if (focus) JoystickMouseCursorAdapter_default.moveMouseToEntity(focus);
@@ -237865,6 +238051,41 @@ function findFirstHit(origin, dir, entities) {
 	return best;
 }
 /**
+* Decides, frame by frame, whether the stick may pick a new target: only
+* while pushed firmly, and not in the moment after a release or a sudden
+* turn-around, when the stick is springing back past the centre.
+*
+* @return {{step: function(number, number, number): boolean, isLocked: function(number): boolean, reset: function()}}
+*   step(x, y, now) once per frame, (0, 0) while the stick is in the deadzone
+*/
+function createRetargetGate() {
+	let firm = false;
+	let lastX = 0;
+	let lastY = 0;
+	let lockedUntil = 0;
+	return {
+		step(x, y, now) {
+			const magnitude = Math.hypot(x, y);
+			const nowFirm = magnitude >= Math.max(RETARGET_MAGNITUDE, Controls_default.joyDeadline || 0);
+			if (firm && !nowFirm) lockedUntil = now + RELEASE_LOCK_MS;
+			else if (firm && nowFirm && (x * lastX + y * lastY) / magnitude < FLIP_DOT) lockedUntil = now + RELEASE_LOCK_MS;
+			firm = nowFirm;
+			if (nowFirm) {
+				lastX = x / magnitude;
+				lastY = y / magnitude;
+			}
+			return nowFirm && now >= lockedUntil;
+		},
+		isLocked(now) {
+			return now < lockedUntil;
+		},
+		reset() {
+			firm = false;
+			lockedUntil = 0;
+		}
+	};
+}
+/**
 * Screen position of a ground point, or null behind the camera.
 */
 function project(x, y) {
@@ -238015,6 +238236,7 @@ function onMouseMove(event) {
 */
 function release$1() {
 	_aimLastHit = null;
+	if (_aimGate) _aimGate.reset();
 	_aimRingTarget = null;
 	clearOverlay$1();
 	setCursorHidden(false);
@@ -238041,21 +238263,29 @@ function update$3(x, y, held) {
 	const origin = [player.position[0], player.position[1]];
 	let hit = null;
 	let dir = null;
+	let locked = false;
+	if (!_aimGate) _aimGate = createRetargetGate();
 	if (held) {
+		const now = performance.now();
+		const canRetarget = _aimGate.step(x, y, now);
+		locked = _aimGate.isLocked(now);
 		dir = stickToMapDirection(x, y, Camera.angle[1]);
 		const candidates = JoystickTargetService_default.getCycleCandidates(player).filter(isOnScreen);
 		hit = findFirstHit(origin, dir, candidates);
-		if (hit && hit.entity !== _aimLastHit) {
+		if (canRetarget && hit && hit.entity !== _aimLastHit) {
 			JoystickTargetService_default.aimAt(hit.entity);
 			_aimLastHit = hit.entity;
 			_aimRingTarget = hit.entity;
-			_aimRingAt = performance.now();
+			_aimRingAt = now;
 		}
-	} else _aimLastHit = null;
+	} else {
+		_aimLastHit = null;
+		_aimGate.step(0, 0, performance.now());
+	}
 	const target = getTarget();
 	if (held && target) JoystickMouseCursorAdapter_default.moveMouseToEntity(target);
 	let line = null;
-	if (Controls_default.joyAimLine && held) line = hit && hit.entity === target ? {
+	if (Controls_default.joyAimLine && held && !locked) line = hit && hit.entity === target ? {
 		to: [target.position[0], target.position[1]],
 		color: LINE_COLOR_HIT
 	} : {
@@ -238096,7 +238326,7 @@ function setEnabled(enabled) {
 	release$1();
 	JoystickUIRenderer_default.updateStickMode();
 }
-var MODE, QUICK_CAST, HIT_RADIUS, HIT_SPREAD, RING_RADIUS, RING_POINTS, RING_FADE_MS, LINE_STEP, LINE_IDLE_LENGTH, LINE_COLOR_HIT, LINE_COLOR_IDLE, _aimLastHit, _aimOverlay, _aimCtx, _aimDrawn, _aimRingTarget, _aimRingAt, _cursorHidden, _mouseMoved, _mouseListening, _aimWorld, _aimView, JoystickAimMode_default;
+var MODE, QUICK_CAST, HIT_RADIUS, HIT_SPREAD, RETARGET_MAGNITUDE, RELEASE_LOCK_MS, FLIP_DOT, RING_RADIUS, RING_POINTS, RING_FADE_MS, LINE_STEP, LINE_IDLE_LENGTH, LINE_COLOR_HIT, LINE_COLOR_IDLE, _aimLastHit, _aimGate, _aimOverlay, _aimCtx, _aimDrawn, _aimRingTarget, _aimRingAt, _cursorHidden, _mouseMoved, _mouseListening, _aimWorld, _aimView, JoystickAimMode_default;
 var init_JoystickAimMode = __esmMin((() => {
 	init_gl_matrix$1();
 	init_SessionStorage();
@@ -238119,6 +238349,9 @@ var init_JoystickAimMode = __esmMin((() => {
 	};
 	HIT_RADIUS = .9;
 	HIT_SPREAD = .075;
+	RETARGET_MAGNITUDE = .5;
+	RELEASE_LOCK_MS = 150;
+	FLIP_DOT = -.5;
 	RING_RADIUS = .6;
 	RING_POINTS = 24;
 	RING_FADE_MS = 2e3;
@@ -238127,6 +238360,7 @@ var init_JoystickAimMode = __esmMin((() => {
 	LINE_COLOR_HIT = "rgba(255, 82, 82, 0.9)";
 	LINE_COLOR_IDLE = "rgba(255, 215, 64, 0.85)";
 	_aimLastHit = null;
+	_aimGate = null;
 	_aimOverlay = null;
 	_aimCtx = null;
 	_aimDrawn = false;
@@ -238149,6 +238383,7 @@ var init_JoystickAimMode = __esmMin((() => {
 		toggle,
 		stickToMapDirection,
 		findFirstHit,
+		createRetargetGate,
 		project,
 		isOnScreen,
 		drawRing
@@ -238171,6 +238406,7 @@ function isVisible$1(el) {
 	return el.style.display !== "none" && el.getClientRects().length > 0;
 }
 function hover(el, on) {
+	el.classList.toggle("pad-hover", on);
 	el.dispatchEvent(new MouseEvent(on ? "mouseover" : "mouseout", {
 		bubbles: true,
 		composed: true
@@ -238212,6 +238448,23 @@ function navigate(direction) {
 	JoystickMouseCursorAdapter_default.moveTo(rect.left + rect.width / 2, rect.top + rect.height / 2);
 	return true;
 }
+/**
+* B: close an open closable menu.
+*
+* @return {boolean} true when one was open and is closed now
+*/
+function close$1() {
+	for (let i = 0; i < MENUS.length; i++) {
+		const component = getComponent(MENUS[i].component);
+		if (MENUS[i].closable && isShown(component)) {
+			component.remove();
+			_menuCurrent = null;
+			_menuButton = null;
+			return true;
+		}
+	}
+	return false;
+}
 var MENUS, _menuCurrent, _menuButton, JoystickMenuNavigation_default;
 var init_JoystickMenuNavigation = __esmMin((() => {
 	init_UIManager();
@@ -238219,10 +238472,17 @@ var init_JoystickMenuNavigation = __esmMin((() => {
 	MENUS = [{
 		component: "Escape",
 		buttons: ".container button"
+	}, {
+		component: "ContextMenu",
+		buttons: ".menu > div",
+		closable: true
 	}];
 	_menuCurrent = null;
 	_menuButton = null;
-	JoystickMenuNavigation_default = { navigate };
+	JoystickMenuNavigation_default = {
+		navigate,
+		close: close$1
+	};
 }));
 //#endregion
 //#region src/UI/Components/JoystickUI/JoystickSupportMode.js
@@ -239228,7 +239488,7 @@ function open(anchor) {
 function close() {
 	_open$1 = false;
 	_repeatButton = -1;
-	if (_root$13) _root$13.style.display = "none";
+	if (_root$14) _root$14.style.display = "none";
 }
 function loadSprites() {
 	if (_action$4 || _loading) return;
@@ -239245,11 +239505,11 @@ function loadSprites() {
 	}
 }
 function getRoot() {
-	if (_root$13 && _root$13.parentNode) return _root$13;
+	if (_root$14 && _root$14.parentNode) return _root$14;
 	if (typeof document === "undefined" || !document.body) return null;
-	_root$13 = document.createElement("div");
-	_root$13.className = "joystick-emote-grid";
-	Object.assign(_root$13.style, {
+	_root$14 = document.createElement("div");
+	_root$14.className = "joystick-emote-grid";
+	Object.assign(_root$14.style, {
 		position: "absolute",
 		left: "50%",
 		top: "60%",
@@ -239263,8 +239523,8 @@ function getRoot() {
 		color: "#ddd",
 		display: "none"
 	});
-	document.body.appendChild(_root$13);
-	return _root$13;
+	document.body.appendChild(_root$14);
+	return _root$14;
 }
 /**
 * Draw one emote into a cell, as the Emoticons window does.
@@ -239348,10 +239608,10 @@ function render$7() {
 }
 function dispose$1() {
 	close();
-	if (_root$13 && _root$13.parentNode) _root$13.parentNode.removeChild(_root$13);
-	_root$13 = null;
+	if (_root$14 && _root$14.parentNode) _root$14.parentNode.removeChild(_root$14);
+	_root$14 = null;
 }
-var COLS, PER_PAGE, MAX_FAVORITES, CELL, BELOW_FEET, REPEAT_DELAY_MS, REPEAT_EVERY_MS, BTN, _root$13, _anchor, _open$1, _page$1, _row, _col, _repeatButton, _repeatAt, _action$4, _sprite$4, _loading, _entity$2, JoystickEmoteGrid_default;
+var COLS, PER_PAGE, MAX_FAVORITES, CELL, BELOW_FEET, REPEAT_DELAY_MS, REPEAT_EVERY_MS, BTN, _root$14, _anchor, _open$1, _page$1, _row, _col, _repeatButton, _repeatAt, _action$4, _sprite$4, _loading, _entity$2, JoystickEmoteGrid_default;
 var init_JoystickEmoteGrid = __esmMin((() => {
 	init_Emotions();
 	init_Client();
@@ -239382,7 +239642,7 @@ var init_JoystickEmoteGrid = __esmMin((() => {
 		LEFT: 14,
 		RIGHT: 15
 	};
-	_root$13 = null;
+	_root$14 = null;
 	_anchor = null;
 	_open$1 = false;
 	_page$1 = 0;
@@ -239466,7 +239726,7 @@ var init_JoystickInteractionService = __esmMin((() => {
 			if (this.watchSelfCastHold(index)) return;
 			const quickCast = JoystickAimMode_default.quickCastMode();
 			if (quickCast === JoystickAimMode_default.QUICK_CAST.INSTANT) {
-				if (!this.castInSupport(index) && !this.castAtFocus()) JoystickMouseCursorAdapter_default.quickCastClick(function() {
+				if (!this.castInSupport(index) && !this.castOnMarkedPlayer() && !this.castAtFocus()) JoystickMouseCursorAdapter_default.quickCastClick(function() {
 					JoystickTargetService_default.snapCursorToFocus();
 				});
 			} else if (quickCast === JoystickAimMode_default.QUICK_CAST.RELEASE) {
@@ -239475,7 +239735,7 @@ var init_JoystickInteractionService = __esmMin((() => {
 					setTimeout(() => {
 						const buttons = JoystickInputService_default.buttonStates;
 						if (JoystickShortcutMapper_default.getGroup(buttons) !== group) {
-							if (!this.castInSupport(index) && !this.castOnAim()) JoystickMouseCursorAdapter_default.quickCastClick();
+							if (!this.castInSupport(index) && !this.castOnMarkedPlayer() && !this.castOnAim()) JoystickMouseCursorAdapter_default.quickCastClick();
 						} else if (!this.cancelQuick) waitforRelease();
 					}, 50);
 				};
@@ -239578,6 +239838,21 @@ var init_JoystickInteractionService = __esmMin((() => {
 			return true;
 		},
 		/**
+		* A skill that takes a friend or a place waits while a player is
+		* marked (Players, NPCs & players): cast it on them, a ground skill
+		* where they stand. Over a window the click is meant for the window.
+		*
+		* @return {boolean} whether the skill was cast
+		*/
+		castOnMarkedPlayer: function() {
+			const flag = SkillTargetSelection_default.getFlag();
+			const player = JoystickTargetService_default.getMarkedPlayer();
+			if (!flag || !player || !JoystickSupportMode_default.isSupportSkill(flag)) return false;
+			const el = JoystickMouseCursorAdapter_default.elementAtCursor();
+			if (el && el.tagName.toLowerCase() !== "canvas") return false;
+			return JoystickSupportMode_default.castOn(player);
+		},
+		/**
 		* A skill waits for a target while the right stick aims: cast it on the
 		* aimed target. The aim only moves the cursor onto the target while the
 		* stick is pushed, so a click at the cursor lands where the mob stood
@@ -239634,14 +239909,16 @@ var init_JoystickInteractionService = __esmMin((() => {
 		* portals" mode) and the cursor over the map, a press talks to the NPC
 		* or walks into the portal, wherever the cursor is, and clears the
 		* selection so the next A is an ordinary click again (NPC dialogue
-		* buttons, for one). Otherwise A is a left click at the cursor; with a
+		* buttons, for one). With a player selected it opens their shop or chat
+		* room, or else their menu (whisper, trade, party, ...), which the D-pad
+		* steps through. Otherwise A is a left click at the cursor; with a
 		* skill waiting for a target in aim mode, see castOnAim().
 		*
 		* @param {boolean} holding A held rather than freshly pressed
 		*/
 		leftClick: function(holding) {
 			if (!holding && JoystickSupportMode_default.confirmPending()) return;
-			if (!holding && this.castOnAim()) return;
+			if (!holding && (this.castOnMarkedPlayer() || this.castOnAim())) return;
 			if (!holding && SkillTargetSelection_default.getFlag()) {
 				const el = JoystickMouseCursorAdapter_default.elementAtCursor();
 				if ((!el || el.tagName.toLowerCase() === "canvas") && this.castInSupport(-1)) return;
@@ -239656,7 +239933,32 @@ var init_JoystickInteractionService = __esmMin((() => {
 					return;
 				}
 			}
+			const player = JoystickTargetService_default.getMarkedPlayer();
+			if (player && !holding && !SkillTargetSelection_default.getFlag()) {
+				const el = JoystickMouseCursorAdapter_default.elementAtCursor();
+				if (!el || el.tagName.toLowerCase() === "canvas") {
+					this.interactWithPlayer(player);
+					return;
+				}
+			}
 			JoystickMouseCursorAdapter_default.leftClick(holding);
+		},
+		/**
+		* A on a marked player: their vending shop, buying store or chat room
+		* if they have one open, as a click on its sign does; otherwise their
+		* right-click menu, opened at them. The mark stays, so a skill cast
+		* next still goes to them.
+		*
+		* @param {Entity} player
+		*/
+		interactWithPlayer: function(player) {
+			const room = player.room;
+			if (room && room.display && room.node && room.node.onEnter) {
+				room.node.onEnter();
+				return;
+			}
+			JoystickMouseCursorAdapter_default.moveMouseToEntity(player);
+			player.onContextMenu();
 		},
 		/**
 		* Open or close a window, as its keyboard shortcut does (Alt+E, ...).
@@ -239675,6 +239977,7 @@ var init_JoystickInteractionService = __esmMin((() => {
 				return;
 			}
 			if (!holding && JoystickSupportMode_default.dismiss()) return;
+			if (!holding && JoystickMenuNavigation_default.close()) return;
 			JoystickMouseCursorAdapter_default.rightClick(holding);
 		},
 		/**
@@ -240381,6 +240684,7 @@ function setupUIHide() {
 	let lastMouseY = 0;
 	_mouseMoveHandler = (event) => {
 		if (!ui || !_isVisible$1()) return;
+		if (event.buttons && event.composedPath().includes(ui[0])) return;
 		const deltaX = Math.abs(event.clientX - lastMouseX);
 		const deltaY = Math.abs(event.clientY - lastMouseY);
 		if ((deltaX > 5 || deltaY > 5) && Controls_default.joyAutoHide) {
@@ -240398,7 +240702,7 @@ function _isVisible$1() {
 	if (!host) return false;
 	return host.style.display !== "none";
 }
-function attach(root) {
+function attach$1(root) {
 	ui = root;
 	setupUIHide();
 }
@@ -240572,7 +240876,7 @@ var init_JoystickUIRenderer = __esmMin((() => {
 	_mouseMoveHandler = null;
 	JoystickTargetCategory_default.onChange(updateCategory);
 	JoystickUIRenderer_default = {
-		attach,
+		attach: attach$1,
 		dispose,
 		sync,
 		updateById,
@@ -240583,7 +240887,8 @@ var init_JoystickUIRenderer = __esmMin((() => {
 		updateStickMode,
 		updateCategory,
 		show: show$1,
-		hide: hide$1
+		hide: hide$1,
+		isVisible: _isVisible$1
 	};
 }));
 //#endregion
@@ -241196,8 +241501,8 @@ var init_ShortCutOption = __esmMin((() => {
 		}
 	};
 	MAPPING_ROLES = [
-		[JoystickButtonMap_default.BUTTON.A, "Click / confirm (Support radial: cast the waiting skill on the chosen member)"],
-		[JoystickButtonMap_default.BUTTON.B, "Right click (hold on item/skill: options) - Support radial: close it, or cancel the waiting skill"],
+		[JoystickButtonMap_default.BUTTON.A, "Click / confirm - selected NPC: talk, selected player: shop or menu (Support radial: cast the waiting skill on the chosen member)"],
+		[JoystickButtonMap_default.BUTTON.B, "Right click (hold on item/skill: options) - Support radial: close it, or cancel the waiting skill - player menu: close it"],
 		[JoystickButtonMap_default.BUTTON.X, "Attack target"],
 		[JoystickButtonMap_default.BUTTON.Y, "Pick up item"],
 		[JoystickButtonMap_default.BUTTON.LEFT, "Previous target (Support: party member; grid left on items)"],
@@ -243256,14 +243561,14 @@ var init_Reputation$1 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$12() {
+function _root$13() {
 	return Reputation._shadow || Reputation._host;
 }
 /**
 * Build the group selector based on the ReputeGroupTable in DB
 */
 function buildGroupSelector() {
-	const groupSelector = _root$12().querySelector("#repute_groups");
+	const groupSelector = _root$13().querySelector("#repute_groups");
 	if (!groupSelector) return;
 	const ReputeGroupTable = DB.getReputeGroup();
 	Object.entries(ReputeGroupTable).forEach(([groupIndex, group]) => {
@@ -243278,7 +243583,7 @@ function buildGroupSelector() {
 * Bind the group selector with the reputation page
 */
 function bindGroupSelector() {
-	const root = _root$12();
+	const root = _root$13();
 	const groupSelector = root.querySelector("#repute_groups");
 	if (!groupSelector) return;
 	groupSelector.addEventListener("change", function() {
@@ -243293,7 +243598,7 @@ function bindGroupSelector() {
 * Bind search functionality to the input field and button
 */
 function bindSearch() {
-	const root = _root$12();
+	const root = _root$13();
 	const input = root.querySelector(".rep_group_searchbar");
 	const button = root.querySelector(".search");
 	if (input) input.addEventListener("keydown", function(e) {
@@ -243307,7 +243612,7 @@ function bindSearch() {
 * Build all reputation entries once
 */
 function buildAllReputeEntries() {
-	const content = _root$12().querySelector(".content");
+	const content = _root$13().querySelector(".content");
 	if (!content) return;
 	const reputeIds = Object.keys(DB.getReputeInfo()).map(Number);
 	Reputation.page.reputeIds = reputeIds;
@@ -243327,7 +243632,7 @@ function buildAllReputeEntries() {
 * @param {string} groupId
 */
 function updateGroupTotalPoints(groupId) {
-	const wrapper = _root$12().querySelector(".rep_group_total_points_wrapper");
+	const wrapper = _root$13().querySelector(".rep_group_total_points_wrapper");
 	if (!wrapper) return;
 	const indicator = wrapper.querySelector(".rep_indicator");
 	const pointsValue = wrapper.querySelector(".rep_group_total_points_value");
@@ -243372,7 +243677,7 @@ function isReputeVisible(info, points) {
 * @param {string} groupId
 */
 function filterByGroup(groupId) {
-	const root = _root$12();
+	const root = _root$13();
 	const items = root.querySelectorAll(".rep_group_wrapper");
 	const totalWrapper = root.querySelector(".rep_group_total_points_wrapper");
 	if (groupId === "all") {
@@ -243406,7 +243711,7 @@ function filterByGroup(groupId) {
 * Update the reputation pager UI.
 */
 function updateReputePager() {
-	const root = _root$12();
+	const root = _root$13();
 	const total = Reputation.page.reputeIds.length;
 	const perPage = Reputation.page.perPage;
 	const totalPages = Math.max(1, Math.ceil(total / perPage));
@@ -243427,7 +243732,7 @@ function updateReputePager() {
 * @param {number} pageIndex
 */
 function renderReputePage(pageIndex) {
-	const root = _root$12();
+	const root = _root$13();
 	const { perPage } = Reputation.page;
 	const items = root.querySelectorAll(".rep_group_wrapper");
 	Reputation.page.current = pageIndex;
@@ -243495,7 +243800,7 @@ function createReputeEntry(reputeId, info) {
 * @param {number} points
 */
 function updateReputeUI(reputeId, points) {
-	const wrapper = _root$12().querySelector(`.rep_group_wrapper[data-repute-id="${reputeId}"]`);
+	const wrapper = _root$13().querySelector(`.rep_group_wrapper[data-repute-id="${reputeId}"]`);
 	if (!wrapper) return;
 	const indicators = wrapper.querySelectorAll(".rep_group_indicator");
 	const absPoints = Math.abs(points);
@@ -243518,7 +243823,7 @@ function updateReputeUI(reputeId, points) {
 * @param {string} query
 */
 function performSearch(query) {
-	const root = _root$12();
+	const root = _root$13();
 	const items = root.querySelectorAll(".rep_group_wrapper");
 	const totalWrapper = root.querySelector(".rep_group_total_points_wrapper");
 	const groupSelector = root.querySelector("#repute_groups");
@@ -243558,7 +243863,7 @@ function onReputeInfo(pkt) {
 		Reputation.append();
 		Reputation._host.style.display = "none";
 	}
-	const groupSelector = _root$12().querySelector("#repute_groups");
+	const groupSelector = _root$13().querySelector("#repute_groups");
 	const selectedGroup = groupSelector ? groupSelector.value : "all";
 	let updateSelectedGroup = false;
 	pkt.reputeInfo.forEach((entry) => {
@@ -243582,7 +243887,7 @@ function onReputeOpen(pkt) {
 	Reputation.highlight.reputeId = highlightId;
 	Reputation.highlight.active = !!highlightId;
 	Reputation.highlight.consumed = false;
-	const groupSelector = _root$12().querySelector("#repute_groups");
+	const groupSelector = _root$13().querySelector("#repute_groups");
 	if (groupSelector) groupSelector.value = groupId;
 	filterByGroup(groupId);
 	Reputation._host.style.display = "";
@@ -243591,7 +243896,7 @@ function onReputeOpen(pkt) {
 * Clears all highlight effects from the reputation entries.
 */
 function clearHighlights() {
-	_root$12().querySelectorAll(".rep_group_wrapper").forEach((el) => {
+	_root$13().querySelectorAll(".rep_group_wrapper").forEach((el) => {
 		el.style.backgroundImage = `url(${bg})`;
 		el.dataset.highlight = "false";
 	});
@@ -243649,7 +243954,7 @@ var init_Reputation = __esmMin((() => {
 	* Initialize component
 	*/
 	Reputation.init = function init() {
-		const root = _root$12();
+		const root = _root$13();
 		Client.loadFile(DB.INTERFACE_PATH + "reputation/bg_info.bmp", (d) => bg = d);
 		Client.loadFile(DB.INTERFACE_PATH + "reputation/bg_highlight.bmp", (d) => bg_highlight = d);
 		Client.loadFile(DB.INTERFACE_PATH + "reputation/light_empty.bmp", (d) => indicator_empty = d);
@@ -243713,7 +244018,7 @@ var init_Reputation = __esmMin((() => {
 	* Request to toggle open/close reputation
 	*/
 	Reputation.toggle = function toggle() {
-		const root = _root$12();
+		const root = _root$13();
 		const selector = root.querySelector("#repute_groups");
 		const searchInput = root.querySelector(".rep_group_searchbar");
 		if (this._host.style.display !== "none" && this._host.offsetParent !== null) {
@@ -244397,7 +244702,7 @@ var Refine_exports = /* @__PURE__ */ __exportAll({ default: () => Refine_default
 /**
 * Helper: query inside shadow root
 */
-function _root$11() {
+function _root$12() {
 	return Refine._shadow || Refine._host;
 }
 /**
@@ -244469,7 +244774,7 @@ function controlPhase$1(phase, shouldLoop, interval, callback) {
 	}
 	function showImages() {
 		Client.loadFile(DB.INTERFACE_PATH + "refining_renewal/" + imageArray[currentImageIndex], function(data) {
-			const container = _root$11().querySelector(".image-container");
+			const container = _root$12().querySelector(".image-container");
 			if (container) container.style.backgroundImage = `url(${data})`;
 			currentImageIndex++;
 			if (currentImageIndex >= imageArray.length) {
@@ -244509,7 +244814,7 @@ function onRefineUIUpdateMaterials(pkt) {
 		console.warn("Renewal Refine is enabled in your server. Please enable refine UI in your configs.");
 		return false;
 	}
-	const root = _root$11();
+	const root = _root$12();
 	if (pkt && pkt.MaterialInfo.length > 0) {
 		if (root.querySelector(".item_to_refine .item")) onRemoveItem$1(false);
 		refine_item_index = pkt.itemIndex;
@@ -244568,7 +244873,7 @@ function onRefineUIUpdateMaterials(pkt) {
 * Handles populating materials needed for refining
 */
 function onPopulateMaterials$1() {
-	const root = _root$11();
+	const root = _root$12();
 	root.querySelectorAll(".materials .mat_overlay .material_0, .materials .mat_overlay .material_1, .materials .mat_overlay .material_2, .materials .mat_overlay .material_3").forEach((el) => {
 		el.innerHTML = "";
 	});
@@ -244678,7 +244983,7 @@ function onPopulateMaterials$1() {
 * Handles update of variables for UI changes based on Refine result
 */
 function selectMaterial(material, item) {
-	const root = _root$11();
+	const root = _root$12();
 	const count = item ? item.count || 0 : 0;
 	refine_can_cont = 1;
 	if (count) refine_no_mats = 0;
@@ -244720,7 +245025,7 @@ function selectMaterial(material, item) {
 * Show item name when mouse is over
 */
 function onItemOver$12(event) {
-	const root = _root$11();
+	const root = _root$12();
 	const idx = parseInt(this.getAttribute("data-index"), 10);
 	const it = DB.getItemInfo(idx);
 	if (!idx) return;
@@ -244749,14 +245054,14 @@ function onItemOver$12(event) {
 * Hide the item name
 */
 function onItemOut$13() {
-	const overlay = _root$11().querySelector(".overlay");
+	const overlay = _root$12().querySelector(".overlay");
 	if (overlay) overlay.style.display = "none";
 }
 /**
 * Handles clearance of variables and UI components when changing Item
 */
 function onRemoveItem$1(backtowait) {
-	const root = _root$11();
+	const root = _root$12();
 	refiningMaterials = [];
 	blacksmithBlessing = 0;
 	const itemToRefine = root.querySelector(".item_to_refine");
@@ -244806,7 +245111,7 @@ function onRemoveItem$1(backtowait) {
 * Handles clearing of material components after requesting to refine
 */
 function clearMaterials() {
-	const root = _root$11();
+	const root = _root$12();
 	const successEl = root.querySelector(".success");
 	if (successEl) {
 		successEl.innerHTML = "";
@@ -244836,7 +245141,7 @@ function clearMaterials() {
 * @param {string} type - The type of message ('error' or 'info')
 */
 function showMessage$3(messageID, timeout, type) {
-	const root = _root$11();
+	const root = _root$12();
 	const message = DB.getMessage(messageID);
 	let messageClass;
 	switch (type) {
@@ -244866,7 +245171,7 @@ function showMessage$3(messageID, timeout, type) {
 * Send the server request to refine the item
 */
 function onRequestRefine() {
-	const root = _root$11();
+	const root = _root$12();
 	const item = InventoryController.getUI().getItemByIndex(refine_item_index);
 	const material = InventoryController.getUI().getItemById(refine_item_mat);
 	if (!item) return;
@@ -244953,7 +245258,7 @@ function stopCurrentLoop() {
 * Handles how the UI changes depending on Refine result
 */
 function onUpdateRefineUI(result) {
-	const root = _root$11();
+	const root = _root$12();
 	onHideContRefineButtons();
 	switch (result) {
 		case "success": {
@@ -245032,7 +245337,7 @@ function onUpdateRefineUI(result) {
 * Handles hiding all buttons used in Continous Refine
 */
 function onHideContRefineButtons() {
-	const root = _root$11();
+	const root = _root$12();
 	const backButton = root.querySelector(".back_button");
 	if (backButton) backButton.style.display = "none";
 	const refineCont = root.querySelector(".refine_cont");
@@ -245060,7 +245365,7 @@ function onHideContRefineButtons() {
 * Check if the item being refined is broken
 */
 function onCheckItemBroken() {
-	const root = _root$11();
+	const root = _root$12();
 	if (!InventoryController.getUI().getItemByIndex(refine_item_index)) {
 		refine_result_div = "fail_refine_cont_disabled";
 		const itemToRefineName = root.querySelector(".item_to_refine_name");
@@ -245076,7 +245381,7 @@ function onCheckItemBroken() {
 * Handles event when Back button was pressed during Continous Refine
 */
 function onCancelContRefine() {
-	const root = _root$11();
+	const root = _root$12();
 	Refine.hammer = 0;
 	onHideContRefineButtons();
 	stopCurrentLoop();
@@ -245317,7 +245622,7 @@ var init_Refine = __esmMin((() => {
 	* Initialize UI
 	*/
 	Refine.init = function init() {
-		const root = _root$11();
+		const root = _root$12();
 		this._host.style.top = "200px";
 		this._host.style.left = "300px";
 		const titlebarBase = root.querySelector(".titlebar .base");
@@ -245393,7 +245698,7 @@ var init_Refine = __esmMin((() => {
 	* Append to body
 	*/
 	Refine.onAppend = function onAppend() {
-		const root = _root$11();
+		const root = _root$12();
 		Refine.hammer = 0;
 		const refineButton = root.querySelector(".refine_button");
 		if (refineButton) refineButton.style.display = "block";
@@ -245423,7 +245728,7 @@ var init_Refine = __esmMin((() => {
 	* @param {pkt} - PACKET.ZC.ACK_ITEMREFINING
 	*/
 	Refine.onRefineResult = function onRefineResult(pkt) {
-		const root = _root$11();
+		const root = _root$12();
 		if (pkt) {
 			const backButton = root.querySelector(".back_button");
 			if (backButton) backButton.style.display = "none";
@@ -245483,7 +245788,7 @@ var init_EnchantGrade$1 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$10() {
+function _root$11() {
 	return EnchantGrade._shadow || EnchantGrade._host;
 }
 /**
@@ -245536,7 +245841,7 @@ function controlPhase(phase, shouldLoop, interval, targetdiv, callback) {
 	}
 	function showImages() {
 		Client.loadFile(DB.INTERFACE_PATH + "grade_enchant/" + imageArray[currentImageIndex], function(data) {
-			const target = _root$10().querySelector(targetdiv);
+			const target = _root$11().querySelector(targetdiv);
 			if (target) {
 				target.style.backgroundImage = `url(${data})`;
 				target.style.visibility = "visible";
@@ -245586,7 +245891,7 @@ function onItemDrop(event) {
 * Enables the item drop proxy to add dropped items in the EnchantGrade window
 */
 function enableDropProxy() {
-	const root = _root$10();
+	const root = _root$11();
 	const proxy = root.querySelector(".enchant_drop_proxy");
 	if (proxy) proxy.style.display = "block";
 	const container = root.querySelector(".enchant_container");
@@ -245596,7 +245901,7 @@ function enableDropProxy() {
 * Disable the item drop proxy to add dropped items in the EnchantGrade window
 */
 function disableDropProxy() {
-	const root = _root$10();
+	const root = _root$11();
 	const proxy = root.querySelector(".enchant_drop_proxy");
 	if (proxy) proxy.style.display = "none";
 	const container = root.querySelector(".enchant_container");
@@ -245607,7 +245912,7 @@ function disableDropProxy() {
 * @param {pkt} - PACKET.ZC.REFINING_MATERIAL_LIST
 */
 function onEnchantGradeUIUpdateMaterials(pkt) {
-	const root = _root$10();
+	const root = _root$11();
 	if (pkt && pkt.materialList.length > 0) {
 		disableDropProxy();
 		if (root.querySelector(".enchant_container .item")) onRemoveItem();
@@ -245715,7 +246020,7 @@ function onEnchantGradeUIUpdateMaterials(pkt) {
 * Controls for selecting and de-selecting materials
 */
 function onPopulateMaterials() {
-	const root = _root$10();
+	const root = _root$11();
 	root.querySelectorAll(".material_slot").forEach((slot) => {
 		slot.innerHTML = "";
 	});
@@ -245801,7 +246106,7 @@ function onPopulateMaterials() {
 * Update the UI accordingly.
 */
 function onResetBlessing() {
-	const root = _root$10();
+	const root = _root$11();
 	EnchantGrade_blessing_used = false;
 	EnchantGrade_currentBlessing = 0;
 	const prob = root.querySelector(".probability");
@@ -245813,7 +246118,7 @@ function onResetBlessing() {
 * Handles clearance of variables and UI components when changing Item
 */
 function onRemoveItem() {
-	const root = _root$10();
+	const root = _root$11();
 	gradingMaterials = [];
 	if (EnchantGrade.imageLoopTimeout) Object.keys(EnchantGrade.imageLoopTimeout).forEach(stopPhase);
 	const tankContainer = root.querySelector(".grade_tank_container");
@@ -245916,7 +246221,7 @@ function onEnchantGradeResult(pkt) {
 * @param {...scenarioKeys} The keys of the messages to be displayed.
 */
 function setMessages(...scenarioKeys) {
-	const root = _root$10();
+	const root = _root$11();
 	const messages = [].concat(...scenarioKeys.map((key) => scenarioMsgMapping[key] || []));
 	const notificationArea = root.querySelector(".notification_container");
 	if (!notificationArea) return;
@@ -246100,7 +246405,7 @@ var init_EnchantGrade = __esmMin((() => {
 	* Initialize UI
 	*/
 	EnchantGrade.init = function init() {
-		const root = _root$10();
+		const root = _root$11();
 		this._host.style.top = "200px";
 		this._host.style.left = "300px";
 		const closeBtn = root.querySelector(".close_btn");
@@ -246156,7 +246461,7 @@ var init_EnchantGrade = __esmMin((() => {
 	* Append to body
 	*/
 	EnchantGrade.onAppend = function onAppend() {
-		const root = _root$10();
+		const root = _root$11();
 		EnchantGrade.hammer = 0;
 		const enchantGradeButton = root.querySelector(".EnchantGrade_button");
 		if (enchantGradeButton) enchantGradeButton.style.display = "block";
@@ -246591,7 +246896,7 @@ var init_Enchant$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/Enchant/Enchant.js
-function _root$9() {
+function _root$10() {
 	return Enchant._shadow || Enchant._host;
 }
 function clearState() {
@@ -246688,7 +246993,7 @@ function getUpgradeCandidates(item, group) {
 	return candidates;
 }
 function setStatus(message, isError) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const status = root.querySelector(".status");
 	if (!status) return;
@@ -246696,13 +247001,13 @@ function setStatus(message, isError) {
 	status.classList.toggle("error", !!isError);
 }
 function setCaution(message) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const caution = root.querySelector(".caution");
 	if (caution) caution.textContent = message || "";
 }
 function showHoverOverlay(text, identified, target) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root || !text) return;
 	const overlay = root.querySelector(".overlay");
 	if (!overlay) return;
@@ -246717,7 +247022,7 @@ function showHoverOverlay(text, identified, target) {
 	overlay.style.display = "block";
 }
 function hideHoverOverlay() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const overlay = root.querySelector(".overlay");
 	if (overlay) overlay.style.display = "none";
@@ -246734,7 +247039,7 @@ function showItemInfo(item) {
 	return false;
 }
 function updateSubpageSkin() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const target = root.querySelector(".subpage");
 	if (!target) return;
@@ -246744,7 +247049,7 @@ function updateSubpageSkin() {
 	if (skin) target.style.backgroundImage = `url(${skin})`;
 }
 function updateMenuSkin() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const target = root.querySelector(".action_tabs");
 	if (!target) return;
@@ -246761,7 +247066,7 @@ function updateActionButtonSkin(button, enabled) {
 	button.style.backgroundImage = `url(${EnchantAssets.actionButton.normal})`;
 }
 function bindActionButtonSkin() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const button = root.querySelector(".action_btn");
 	if (!button) return;
@@ -246784,7 +247089,7 @@ function bindActionButtonSkin() {
 	});
 }
 function applyScrollSkin(up, down, bg, thumb) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const inner = root.querySelector("#Enchant");
 	if (!inner) return;
@@ -247076,7 +247381,7 @@ function canAffordCost(zeny, materials) {
 	return hasEnoughZeny(zeny) && hasEnoughMaterials(materials);
 }
 function renderMaterials(materials) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const list = root.querySelector(".material_list");
 	if (!list) return;
@@ -247116,7 +247421,7 @@ function renderMaterials(materials) {
 	});
 }
 function renderEnchantList(entries, selectedKey) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const list = root.querySelector(".enchant_list");
 	if (!list) return;
@@ -247157,7 +247462,7 @@ function renderEnchantList(entries, selectedKey) {
 	});
 }
 function renderItemList() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const list = root.querySelector(".item_list");
 	if (!list) return;
@@ -247231,7 +247536,7 @@ function renderItemList() {
 	});
 }
 function renderItemPreview() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const preview = root.querySelector(".preview_item");
 	if (!preview) return;
@@ -247240,7 +247545,7 @@ function renderItemPreview() {
 	loadItemCollection(preview, EnchantState.item.ITID, EnchantState.item.IsIdentified);
 }
 function renderSlots() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const list = root.querySelector(".slot_list");
 	if (!list) return;
@@ -247267,7 +247572,7 @@ function renderSlots() {
 	});
 }
 function updateTabs(availability) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	root.querySelectorAll(".action_tabs .tab").forEach((tab) => {
 		const action = tab.dataset.action;
@@ -247278,7 +247583,7 @@ function updateTabs(availability) {
 	updateMenuSkin();
 }
 function updateActionSections() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	root.querySelectorAll(".action_section").forEach((section) => {
 		section.classList.remove("active");
@@ -247287,7 +247592,7 @@ function updateActionSections() {
 	if (activeSection) activeSection.classList.add("active");
 }
 function updateActionButton(enabled) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const button = root.querySelector(".action_btn");
 	if (!button) return;
@@ -247298,7 +247603,7 @@ function updateActionButton(enabled) {
 	updateActionButtonSkin(button, enabled);
 }
 function renderCosts(rate, zeny, materials) {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const zenyText = zeny != null ? formatZeny(zeny) : "";
 	const zenyCost = root.querySelector(".zeny_cost");
@@ -247306,7 +247611,7 @@ function renderCosts(rate, zeny, materials) {
 	renderMaterials(materials);
 }
 function refreshActionContent() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const group = EnchantState.group;
 	const item = EnchantState.item;
@@ -247631,7 +247936,7 @@ function onItemSelect$2(event) {
 	Enchant.onRequestItemEnchant(item);
 }
 function onRequestAction() {
-	const root = _root$9();
+	const root = _root$10();
 	if (!root) return;
 	const actionBtn = root.querySelector(".action_btn");
 	if (actionBtn && actionBtn.classList.contains("disabled")) return;
@@ -247852,7 +248157,7 @@ var init_Enchant = __esmMin((() => {
 		if ((event.which === KEYS.ESCAPE || event.key === "Escape") && Enchant.ui.is(":visible")) onRequestClose();
 	};
 	Enchant.init = function init() {
-		const root = _root$9();
+		const root = _root$10();
 		this.ui.css({
 			top: 200,
 			left: 360
@@ -247892,7 +248197,7 @@ var init_Enchant = __esmMin((() => {
 			EnchantAssets.actionButton.down = down;
 			EnchantAssets.actionButton.disabled = disabled;
 			bindActionButtonSkin();
-			const actionBtn = _root$9() ? _root$9().querySelector(".action_btn") : null;
+			const actionBtn = _root$10() ? _root$10().querySelector(".action_btn") : null;
 			if (actionBtn) updateActionButtonSkin(actionBtn, !actionBtn.classList.contains("disabled"));
 		});
 		Client.loadFiles([
@@ -247995,7 +248300,7 @@ var init_Enchant = __esmMin((() => {
 		refreshUI();
 	};
 	Enchant.onRemove = function onRemove() {
-		const root = _root$9();
+		const root = _root$10();
 		clearState();
 		if (root) {
 			root.querySelectorAll(".close, .close_btn").forEach((btn) => {
@@ -248075,12 +248380,12 @@ var init_WriteRodex$1 = __esmMin((() => {
 /**
 * Helper: query inside shadow root
 */
-function _root$8() {
+function _root$9() {
 	return WriteRodex._shadow || WriteRodex._host;
 }
 function onClickClose$1(e) {
 	e.stopImmediatePropagation();
-	const root = _root$8();
+	const root = _root$9();
 	WriteRodex.receiver = null;
 	root.querySelector(".name").value = "";
 	root.querySelector(".title-text").value = "";
@@ -248097,7 +248402,7 @@ function onClickClose$1(e) {
 }
 function onClickSend(e) {
 	e.stopImmediatePropagation();
-	const root = _root$8();
+	const root = _root$9();
 	if (WriteRodex.receiver == null || typeof WriteRodex.receiver === "string" && WriteRodex.receiver.trim().length === 0) {
 		ChatBox_default.addText(DB.getMessage(2611), ChatBox_default.TYPE.INFO_MAIL, ChatBox_default.FILTER.PUBLIC_LOG);
 		return;
@@ -248133,7 +248438,7 @@ function prettifyZeny$3(value) {
 }
 function onClickValidateName(e) {
 	e.stopImmediatePropagation();
-	const name = _root$8().querySelector(".name").value;
+	const name = _root$9().querySelector(".name").value;
 	WriteRodex.validateName(name.replace(/^(\$|\%)/, "").replace(/\t/g, ""));
 }
 /**
@@ -248141,7 +248446,7 @@ function onClickValidateName(e) {
 *
 * @param {event}
 */
-function onDrop$9(event) {
+function onDrop$10(event) {
 	let item, data;
 	event.stopImmediatePropagation();
 	event.preventDefault();
@@ -248182,7 +248487,7 @@ function onItemOver$11(event) {
 	const idx = parseInt(el.getAttribute("data-index"), 10);
 	const item = WriteRodex.getItemByIndex(idx);
 	if (!item) return;
-	const root = _root$8();
+	const root = _root$9();
 	const pos = {
 		top: el.offsetTop,
 		left: el.offsetLeft
@@ -248199,7 +248504,7 @@ function onItemOver$11(event) {
 * Hide the item name
 */
 function onItemOut$12() {
-	const overlay = _root$8().querySelector(".overlay");
+	const overlay = _root$9().querySelector(".overlay");
 	if (overlay) overlay.style.display = "none";
 }
 /**
@@ -248278,7 +248583,7 @@ var init_WriteRodex = __esmMin((() => {
 	* Initialize Component
 	*/
 	WriteRodex.onAppend = function onAppend() {
-		const root = _root$8();
+		const root = _root$9();
 		root.querySelector(".right .close").addEventListener("click", onClickClose$1);
 		root.querySelector(".send").addEventListener("click", onClickSend);
 		root.querySelector(".value").addEventListener("input", WriteRodex.updateTax);
@@ -248289,7 +248594,7 @@ var init_WriteRodex = __esmMin((() => {
 		this.draggable(root.querySelector(".titlebar"));
 	};
 	WriteRodex.initData = function initData(pkt) {
-		const root = _root$8();
+		const root = _root$9();
 		WriteRodex.receiver = null;
 		WriteRodex.CharID = 0;
 		WriteRodex.list = [];
@@ -248312,13 +248617,13 @@ var init_WriteRodex = __esmMin((() => {
 		valueInput.max = SessionStorage_default.zeny;
 		root.querySelector(".item-list").innerHTML = "";
 		const itemsEl = root.querySelector(".items");
-		itemsEl.addEventListener("drop", onDrop$9);
+		itemsEl.addEventListener("drop", onDrop$10);
 		itemsEl.addEventListener("dragover", stopPropagation$8);
 		this._host.style.display = "";
 		this.focus();
 	};
 	WriteRodex.characterInfo = function characterInfo(pkt) {
-		const root = _root$8();
+		const root = _root$9();
 		const text = `Lv${pkt.level}<br>${MonsterTable_default[pkt.Job]}<br>${pkt.CharID}`;
 		root.querySelector(".validate-name").style.display = "none";
 		const baloon = root.querySelector(".baloon");
@@ -248341,7 +248646,7 @@ var init_WriteRodex = __esmMin((() => {
 		return null;
 	};
 	WriteRodex.addItem = function addItem(item) {
-		const root = _root$8();
+		const root = _root$9();
 		let object = WriteRodex.getItemByIndex(item.index);
 		if (object) {
 			object.count += item.count;
@@ -248375,7 +248680,7 @@ var init_WriteRodex = __esmMin((() => {
 	* @param {number} count
 	*/
 	WriteRodex.removeItem = function RemoveItem(index, count, weight) {
-		const root = _root$8();
+		const root = _root$9();
 		const item = WriteRodex.getItemByIndex(index);
 		if (!item || count <= 0) return null;
 		if (item.count) {
@@ -248393,11 +248698,11 @@ var init_WriteRodex = __esmMin((() => {
 		WriteRodex.updateTax();
 	};
 	WriteRodex.updateWeight = function updateWeight(weight) {
-		const el = _root$8().querySelector(".weigth-text");
+		const el = _root$9().querySelector(".weigth-text");
 		if (el) el.textContent = `${weight}  2000`;
 	};
 	WriteRodex.updateTax = function updateTax() {
-		const root = _root$8();
+		const root = _root$9();
 		let tax = WriteRodex.list.length * 2500;
 		let zeny = parseInt(root.querySelector(".value").value, 10);
 		zeny = isNaN(zeny) ? 0 : zeny;
@@ -250627,7 +250932,7 @@ function onToggleReduction() {
 *
 * @param {event}
 */
-function onDrop$8(event) {
+function onDrop$9(event) {
 	let item, data;
 	event.stopImmediatePropagation();
 	try {
@@ -250837,7 +251142,7 @@ var init_CartItems = __esmMin((() => {
 		if (closeBtn) closeBtn.addEventListener("click", () => {
 			CartItems._host.style.display = "none";
 		});
-		this._host.addEventListener("drop", onDrop$8);
+		this._host.addEventListener("drop", onDrop$9);
 		this._host.addEventListener("dragover", (e) => {
 			e.stopImmediatePropagation();
 			e.preventDefault();
@@ -264961,13 +265266,216 @@ var init_JoystickModule = __esmMin((() => {
 //#region src/UI/Components/JoystickUI/JoystickUI.html?raw
 var JoystickUI_default$2;
 var init_JoystickUI$2 = __esmMin((() => {
-	JoystickUI_default$2 = "<div id=\"JoystickUI\">\r\n	<div class=\"set-indicator\">\r\n		<span class=\"set-btn active\">Set 1</span>\r\n		<span class=\"set-btn\">Set 2</span>\r\n		<span class=\"stick-mode\" title=\"Right stick mode (tap RS click to switch)\"></span>\r\n		<span class=\"target-category\" title=\"What the pad targets (D-pad up / down to switch)\"></span>\r\n	</div>\r\n\r\n	<div class=\"hotkey-bar\">\r\n		<div class=\"group-container\" data-group=\"L1\">\r\n			<div class=\"group-header\">L1</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container\" data-group=\"L2\">\r\n			<div class=\"group-header\">L2</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container center-group\" data-group=\"L1R1\">\r\n			<div class=\"group-header\">L1+R1</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container\" data-group=\"R2\">\r\n			<div class=\"group-header\">R2</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container\" data-group=\"R1\">\r\n			<div class=\"group-header\">R1</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	JoystickUI_default$2 = "<div id=\"JoystickUI\">\r\n	<div class=\"set-indicator\">\r\n		<span class=\"set-btn active\">Set 1</span>\r\n		<span class=\"set-btn\">Set 2</span>\r\n		<span class=\"stick-mode\" title=\"Right stick mode (tap RS click to switch)\"></span>\r\n		<span class=\"target-category\" title=\"What the pad targets (D-pad up / down to switch)\"></span>\r\n	</div>\r\n\r\n	<div class=\"hotkey-bar\">\r\n		<div class=\"group-container\" data-group=\"L1\">\r\n			<div class=\"group-header\">L1</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container\" data-group=\"L2\">\r\n			<div class=\"group-header\">L2</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container center-group\" data-group=\"L1R1\">\r\n			<div class=\"group-header\">L1+R1</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container\" data-group=\"R2\">\r\n			<div class=\"group-header\">R2</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n\r\n		<div class=\"group-container\" data-group=\"R1\">\r\n			<div class=\"group-header\">R1</div>\r\n			<div class=\"cross-layout\">\r\n				<div class=\"slot top\">\r\n					<span class=\"key-label\">Y</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot left\">\r\n					<span class=\"key-label\">X</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot right\">\r\n					<span class=\"key-label\">B</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n				<div class=\"slot bottom\">\r\n					<span class=\"key-label\">A</span>\r\n					<div class=\"icon\" draggable=\"true\" style=\"display: none\">\r\n						<div class=\"img\"></div>\r\n						<div class=\"amount\"></div>\r\n					</div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/JoystickUI/JoystickUI.css?raw
 var JoystickUI_default$1;
 var init_JoystickUI$1 = __esmMin((() => {
-	JoystickUI_default$1 = ":host {\r\n	position: absolute;\r\n	bottom: 20px;\r\n	left: 50%;\r\n	transform: translateX(-50%);\r\n	z-index: 1000;\r\n	pointer-events: none;\r\n}\r\n\r\n#JoystickUI {\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n}\r\n\r\n#JoystickUI .set-indicator {\r\n	margin-bottom: 5px;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	border-radius: 4px;\r\n	padding: 2px;\r\n	pointer-events: auto;\r\n}\r\n\r\n#JoystickUI .set-btn {\r\n	display: inline-block;\r\n	padding: 2px 10px;\r\n	color: #ccc;\r\n	font-family: sans-serif;\r\n	border-radius: 3px;\r\n	cursor: pointer;\r\n}\r\n\r\n#JoystickUI .stick-mode,\r\n#JoystickUI .target-category {\r\n	display: inline-block;\r\n	margin-left: 6px;\r\n	padding: 2px 8px;\r\n	color: #ccc;\r\n	font-family: sans-serif;\r\n	border-left: 1px solid rgba(255, 255, 255, 0.25);\r\n}\r\n\r\n#JoystickUI .stick-mode.aim {\r\n	color: #ffd740;\r\n	font-weight: bold;\r\n}\r\n\r\n#JoystickUI .set-btn.active {\r\n	background-color: #d32f2f;\r\n	color: white;\r\n	font-weight: bold;\r\n}\r\n\r\n#JoystickUI .hotkey-bar {\r\n	display: flex;\r\n	gap: 4px;\r\n	align-items: flex-end;\r\n}\r\n\r\n#JoystickUI .group-container {\r\n	background: linear-gradient(to bottom, rgba(60, 60, 60, 0.9), rgba(30, 30, 30, 0.9));\r\n	border: 1px solid #555;\r\n	border-radius: 6px;\r\n	width: 110px;\r\n	height: 100px;\r\n	position: relative;\r\n	pointer-events: auto;\r\n	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n#JoystickUI .group-header {\r\n	background: rgba(255, 255, 255, 0.1);\r\n	color: #e0e0e0;\r\n	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\r\n	/* Opt out of Common.css's font-size-adjust: keep Segoe UI's native x-height. Scoped to this\r\n	   header only — the .set-btn above uses generic sans-serif and stays normalized. */\r\n	font-size-adjust: none;\r\n	font-size: 14px;\r\n	font-weight: bold;\r\n	text-align: center;\r\n	padding: 2px 0;\r\n	border-bottom: 1px solid #555;\r\n	text-shadow: 1px 1px 2px black;\r\n}\r\n\r\n#JoystickUI .cross-layout {\r\n	position: relative;\r\n	width: 100%;\r\n	height: 75px;\r\n}\r\n\r\n#JoystickUI .slot {\r\n	position: absolute;\r\n	width: 32px;\r\n	height: 32px;\r\n	background-color: rgba(0, 0, 0, 0.6);\r\n	border: 1px solid #777;\r\n	border-radius: 3px;\r\n	display: flex;\r\n	justify-content: center;\r\n	align-items: center;\r\n	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);\r\n	transition: background 0.2s;\r\n}\r\n\r\n#JoystickUI .slot:active {\r\n	background-color: rgba(144, 238, 144, 0.3);\r\n	border-color: #90ee90;\r\n}\r\n\r\n#JoystickUI .slot.top {\r\n	top: 2px;\r\n	left: 50%;\r\n	transform: translateX(-60%);\r\n}\r\n\r\n#JoystickUI .slot.bottom {\r\n	bottom: 2px;\r\n	left: 50%;\r\n	transform: translateX(-60%);\r\n}\r\n\r\n#JoystickUI .slot.left {\r\n	top: 50%;\r\n	left: 2px;\r\n	transform: translateY(-60%);\r\n}\r\n\r\n#JoystickUI .slot.right {\r\n	top: 50%;\r\n	right: 4px;\r\n	transform: translateY(-60%);\r\n}\r\n\r\n#JoystickUI .key-label {\r\n	position: absolute;\r\n	top: 1px;\r\n	left: 3px;\r\n	font-weight: bold;\r\n	color: #fff;\r\n	text-shadow: 1px 1px 0 #000;\r\n	z-index: 2;\r\n	pointer-events: none;\r\n}\r\n\r\n#JoystickUI .group-container.active {\r\n	border-color: #00ff00;\r\n	background: linear-gradient(to bottom, rgba(80, 100, 80, 0.95), rgba(40, 60, 40, 0.95));\r\n	box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);\r\n	transform: translateY(-2px);\r\n	z-index: 10;\r\n}\r\n\r\n#JoystickUI .icon {\r\n	position: relative;\r\n}\r\n\r\n#JoystickUI .icon .img {\r\n	width: 24px;\r\n	height: 24px;\r\n	background-repeat: no-repeat;\r\n	border: none;\r\n	background-color: transparent;\r\n}\r\n\r\n#JoystickUI .icon .name {\r\n	display: none;\r\n	z-index: 1;\r\n	position: absolute;\r\n	top: 0px;\r\n	left: 0px;\r\n	background-color: rgba(0, 0, 0, 0.6);\r\n	text-shadow: 1px 1px black;\r\n	color: white;\r\n	padding: 5px;\r\n	white-space: nowrap;\r\n}\r\n\r\n#JoystickUI .icon:hover .name {\r\n	display: block;\r\n}\r\n\r\n#JoystickUI .icon.hide .name {\r\n	display: none;\r\n}\r\n\r\n#JoystickUI .icon .amount {\r\n	position: absolute;\r\n	right: 1px;\r\n	top: 20px;\r\n	text-shadow: 1px 1px 0px white;\r\n	text-align: right;\r\n	font-weight: bold;\r\n}\r\n\r\n#JoystickUI .target-category.support {\r\n	color: #9be29e;\r\n}\r\n";
+	JoystickUI_default$1 = ":host {\r\n	position: absolute;\r\n	bottom: 20px;\r\n	left: 50%;\r\n	transform: translateX(-50%);\r\n	z-index: 1000;\r\n	pointer-events: none;\r\n}\r\n\r\n#JoystickUI {\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n}\r\n\r\n#JoystickUI .set-indicator {\r\n	margin-bottom: 5px;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	border-radius: 4px;\r\n	padding: 2px;\r\n	pointer-events: auto;\r\n}\r\n\r\n#JoystickUI .set-btn {\r\n	display: inline-block;\r\n	padding: 2px 10px;\r\n	color: #ccc;\r\n	font-family: sans-serif;\r\n	border-radius: 3px;\r\n	cursor: pointer;\r\n}\r\n\r\n#JoystickUI .stick-mode,\r\n#JoystickUI .target-category {\r\n	display: inline-block;\r\n	margin-left: 6px;\r\n	padding: 2px 8px;\r\n	color: #ccc;\r\n	font-family: sans-serif;\r\n	border-left: 1px solid rgba(255, 255, 255, 0.25);\r\n}\r\n\r\n#JoystickUI .stick-mode.aim {\r\n	color: #ffd740;\r\n	font-weight: bold;\r\n}\r\n\r\n#JoystickUI .set-btn.active {\r\n	background-color: #d32f2f;\r\n	color: white;\r\n	font-weight: bold;\r\n}\r\n\r\n#JoystickUI .hotkey-bar {\r\n	display: flex;\r\n	gap: 4px;\r\n	align-items: flex-end;\r\n}\r\n\r\n#JoystickUI .group-container {\r\n	background: linear-gradient(to bottom, rgba(60, 60, 60, 0.9), rgba(30, 30, 30, 0.9));\r\n	border: 1px solid #555;\r\n	border-radius: 6px;\r\n	width: 110px;\r\n	height: 100px;\r\n	position: relative;\r\n	pointer-events: auto;\r\n	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n#JoystickUI .group-header {\r\n	background: rgba(255, 255, 255, 0.1);\r\n	color: #e0e0e0;\r\n	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\r\n	/* Opt out of Common.css's font-size-adjust: keep Segoe UI's native x-height. Scoped to this\r\n	   header only — the .set-btn above uses generic sans-serif and stays normalized. */\r\n	font-size-adjust: none;\r\n	font-size: 14px;\r\n	font-weight: bold;\r\n	text-align: center;\r\n	padding: 2px 0;\r\n	border-bottom: 1px solid #555;\r\n	text-shadow: 1px 1px 2px black;\r\n}\r\n\r\n#JoystickUI .cross-layout {\r\n	position: relative;\r\n	width: 100%;\r\n	height: 75px;\r\n}\r\n\r\n#JoystickUI .slot {\r\n	position: absolute;\r\n	width: 32px;\r\n	height: 32px;\r\n	background-color: rgba(0, 0, 0, 0.6);\r\n	border: 1px solid #777;\r\n	border-radius: 3px;\r\n	display: flex;\r\n	justify-content: center;\r\n	align-items: center;\r\n	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);\r\n	transition: background 0.2s;\r\n}\r\n\r\n#JoystickUI .slot.drop-target {\r\n	background-color: rgba(255, 215, 64, 0.3);\r\n	border-color: #ffd740;\r\n	box-shadow: 0 0 6px rgba(255, 215, 64, 0.8);\r\n}\r\n\r\n/* While a skill or item is dragged the gaps between groups take the drop too,\r\n   so it doesn't fall through to the map */\r\n:host(.dragging) #JoystickUI {\r\n	pointer-events: auto;\r\n}\r\n\r\n#JoystickUI .slot:active {\r\n	background-color: rgba(144, 238, 144, 0.3);\r\n	border-color: #90ee90;\r\n}\r\n\r\n#JoystickUI .slot.top {\r\n	top: 2px;\r\n	left: 50%;\r\n	transform: translateX(-60%);\r\n}\r\n\r\n#JoystickUI .slot.bottom {\r\n	bottom: 2px;\r\n	left: 50%;\r\n	transform: translateX(-60%);\r\n}\r\n\r\n#JoystickUI .slot.left {\r\n	top: 50%;\r\n	left: 2px;\r\n	transform: translateY(-60%);\r\n}\r\n\r\n#JoystickUI .slot.right {\r\n	top: 50%;\r\n	right: 4px;\r\n	transform: translateY(-60%);\r\n}\r\n\r\n#JoystickUI .key-label {\r\n	position: absolute;\r\n	top: 1px;\r\n	left: 3px;\r\n	font-weight: bold;\r\n	color: #fff;\r\n	text-shadow: 1px 1px 0 #000;\r\n	z-index: 2;\r\n	pointer-events: none;\r\n}\r\n\r\n#JoystickUI .group-container.active {\r\n	border-color: #00ff00;\r\n	background: linear-gradient(to bottom, rgba(80, 100, 80, 0.95), rgba(40, 60, 40, 0.95));\r\n	box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);\r\n	transform: translateY(-2px);\r\n	z-index: 10;\r\n}\r\n\r\n#JoystickUI .icon {\r\n	position: relative;\r\n}\r\n\r\n#JoystickUI .icon .img {\r\n	width: 24px;\r\n	height: 24px;\r\n	background-repeat: no-repeat;\r\n	border: none;\r\n	background-color: transparent;\r\n}\r\n\r\n#JoystickUI .icon .name {\r\n	display: none;\r\n	z-index: 1;\r\n	position: absolute;\r\n	top: 0px;\r\n	left: 0px;\r\n	background-color: rgba(0, 0, 0, 0.6);\r\n	text-shadow: 1px 1px black;\r\n	color: white;\r\n	padding: 5px;\r\n	white-space: nowrap;\r\n}\r\n\r\n#JoystickUI .icon:hover .name {\r\n	display: block;\r\n}\r\n\r\n#JoystickUI .icon.hide .name {\r\n	display: none;\r\n}\r\n\r\n#JoystickUI .icon .amount {\r\n	position: absolute;\r\n	right: 1px;\r\n	top: 20px;\r\n	text-shadow: 1px 1px 0px white;\r\n	text-align: right;\r\n	font-weight: bold;\r\n}\r\n\r\n#JoystickUI .target-category.support {\r\n	color: #9be29e;\r\n}\r\n";
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickSlotDrop.js
+/**
+* Shortcut indices of the 20 slots in the set on screen, in DOM order
+*
+* @return {Array<number>}
+*/
+function visibleIndices() {
+	const start = JoystickSetManager_default.getCurrentSet() === 1 ? 0 : 20;
+	return JoystickShortcutMapper_default.slotMap.slice(start, start + 20);
+}
+/**
+* @param {HTMLElement} slot
+* @return {number} shortcut index, -1 if not a slot
+*/
+function shortcutIndexOf(slot) {
+	const i = Array.from(_root$8.querySelectorAll(".slot")).indexOf(slot);
+	return i === -1 ? -1 : visibleIndices()[i];
+}
+/**
+* Put a shortcut entry in a slot, moving it if the shown set already has it
+*
+* @param {number} index shortcut index
+* @param {{isSkill: boolean|number, ID: number, count: number}} entry
+*/
+function assign(index, entry) {
+	const list = ShortCut_default.getList();
+	visibleIndices().forEach((i) => {
+		const other = list[i];
+		if (i !== index && other && other.ID === entry.ID && Boolean(other.isSkill) === Boolean(entry.isSkill) && (!entry.isSkill || other.count == entry.count)) ShortCut_default.removeAt(i);
+	});
+	ShortCut_default.addElement(index, entry.isSkill, entry.ID, entry.count);
+	ShortCut_default.onChange(index, entry.isSkill, entry.ID, entry.count);
+}
+function gamepadConnected() {
+	const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+	return Array.from(pads).some(Boolean);
+}
+function setHover(slot) {
+	if (_hoverSlot === slot) return;
+	if (_hoverSlot) _hoverSlot.classList.remove("drop-target");
+	_hoverSlot = slot;
+	if (slot) slot.classList.add("drop-target");
+}
+function cancelSetTimer() {
+	clearTimeout(_setTimer);
+	_setTimer = null;
+	_setTimerFor = null;
+}
+/**
+* Switch to the set of the hovered Set button once the drag rests on it
+*
+* @param {HTMLElement} button
+*/
+function hoverSetButton(button) {
+	if (_setTimerFor === button) return;
+	cancelSetTimer();
+	const set = Array.from(_root$8.querySelectorAll(".set-btn")).indexOf(button) + 1;
+	if (set === JoystickSetManager_default.getCurrentSet()) return;
+	_setTimerFor = button;
+	_setTimer = setTimeout(() => {
+		_setTimer = null;
+		JoystickSetManager_default.set(set);
+		JoystickUIRenderer_default.updateSetIndicator();
+		JoystickUIRenderer_default.sync();
+	}, SET_HOVER_DELAY);
+}
+function beginDrag() {
+	_dragging = true;
+	_dropped = false;
+	_host.classList.add("dragging");
+	if (!JoystickUIRenderer_default.isVisible() && gamepadConnected()) {
+		JoystickUIRenderer_default.show();
+		_revealed = true;
+	}
+}
+function endDrag() {
+	if (!_dragging) return;
+	_dragging = false;
+	_host.classList.remove("dragging");
+	setHover(null);
+	cancelSetTimer();
+	if (_revealed && !_dropped) JoystickUIRenderer_default.hide();
+	_revealed = false;
+}
+function onDocumentDragStart() {
+	if (ShortCut_default.fromDragData(window._OBJ_DRAG_)) beginDrag();
+}
+function onDocumentDrop() {
+	setTimeout(endDrag, 0);
+}
+function onDragOver$1(event) {
+	const slot = event.target.closest(".slot");
+	if (slot && ShortCut_default.fromDragData(window._OBJ_DRAG_)) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		setHover(slot);
+		cancelSetTimer();
+		return;
+	}
+	setHover(null);
+	const button = event.target.closest(".set-btn");
+	if (button && _dragging) hoverSetButton(button);
+	else cancelSetTimer();
+}
+function onDragLeave(event) {
+	const slot = event.target.closest(".slot");
+	if (slot && slot === _hoverSlot && !slot.contains(event.relatedTarget)) setHover(null);
+	const button = event.target.closest(".set-btn");
+	if (button && button === _setTimerFor && !button.contains(event.relatedTarget)) cancelSetTimer();
+}
+function onDrop$8(event) {
+	const slot = event.target.closest(".slot");
+	if (!slot) return;
+	event.preventDefault();
+	event.stopImmediatePropagation();
+	setHover(null);
+	let data;
+	try {
+		data = JSON.parse(event.dataTransfer.getData("Text"));
+	} catch (_e) {
+		return;
+	}
+	const entry = ShortCut_default.fromDragData(data);
+	const index = shortcutIndexOf(slot);
+	if (!entry || index === -1) return;
+	_dropped = true;
+	assign(index, entry);
+}
+function onDragStart$2(event) {
+	const icon = event.target.closest(".icon");
+	const slot = icon && icon.closest(".slot");
+	const index = slot ? shortcutIndexOf(slot) : -1;
+	const entry = ShortCut_default.getList()[index];
+	if (!entry || !entry.ID) {
+		event.preventDefault();
+		return;
+	}
+	const url = icon.querySelector(".img").style.backgroundImage.match(/\(([^)]+)/);
+	if (url) {
+		const img = new Image();
+		img.decoding = "async";
+		img.src = url[1].replace(/"/g, "");
+		event.dataTransfer.setDragImage(img, 12, 12);
+	}
+	event.dataTransfer.setData("Text", JSON.stringify(window._OBJ_DRAG_ = {
+		type: entry.isSkill ? "skill" : "item",
+		from: "ShortCut",
+		data: entry
+	}));
+}
+function onDragEnd() {
+	delete window._OBJ_DRAG_;
+}
+function listen(target, type, handler, capture) {
+	target.addEventListener(type, handler, capture);
+	_listeners.push(() => target.removeEventListener(type, handler, capture));
+}
+/**
+* @param {HTMLElement} host the JoystickUI element
+*/
+function attach(host) {
+	detach();
+	_host = host;
+	_root$8 = host.shadowRoot || host;
+	listen(_root$8, "dragstart", onDragStart$2);
+	listen(_root$8, "dragend", onDragEnd);
+	listen(_root$8, "dragover", onDragOver$1);
+	listen(_root$8, "dragleave", onDragLeave);
+	listen(_root$8, "drop", onDrop$8);
+	listen(document, "dragstart", onDocumentDragStart);
+	listen(document, "dragend", endDrag);
+	listen(document, "drop", onDocumentDrop, true);
+}
+function detach() {
+	endDrag();
+	_listeners.forEach((remove) => remove());
+	_listeners = [];
+	_host = null;
+	_root$8 = null;
+}
+var SET_HOVER_DELAY, _host, _root$8, _listeners, _dragging, _revealed, _dropped, _hoverSlot, _setTimer, _setTimerFor, JoystickSlotDrop_default;
+var init_JoystickSlotDrop = __esmMin((() => {
+	init_ShortCut();
+	init_JoystickSetManager();
+	init_JoystickShortcutMapper();
+	init_JoystickUIRenderer();
+	SET_HOVER_DELAY = 400;
+	_host = null;
+	_root$8 = null;
+	_listeners = [];
+	_dragging = false;
+	_revealed = false;
+	_dropped = false;
+	_hoverSlot = null;
+	_setTimer = null;
+	_setTimerFor = null;
+	JoystickSlotDrop_default = {
+		attach,
+		detach,
+		assign
+	};
 }));
 //#endregion
 //#region src/UI/Components/JoystickUI/JoystickUI.js
@@ -264980,14 +265488,17 @@ var init_JoystickUI = __esmMin((() => {
 	init_JoystickUI$2();
 	init_JoystickUI$1();
 	init_JoystickUIRenderer();
+	init_JoystickSlotDrop();
 	JoystickUI = new GUIComponent("JoystickUI", JoystickUI_default$1);
 	JoystickUI.render = () => JoystickUI_default$2;
 	JoystickUI.onAppend = function() {
 		JoystickUIRenderer_default.attach(this.ui);
+		JoystickSlotDrop_default.attach(this.ui[0]);
 		this._host.style.display = "none";
 		JoystickSelectionUI_default.append();
 	};
 	JoystickUI.onRemove = function() {
+		JoystickSlotDrop_default.detach();
 		JoystickModule_default.dispose();
 	};
 	JoystickUI.onRestore = function() {
@@ -310537,16 +311048,20 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 	const id_filename = file_list[0];
 	const value_table_filename = file_list[1];
 	const fail = typeof onError === "function" ? onError : function() {};
+	let lenient = null;
 	try {
 		console.log("Loading file \"" + id_filename + "\"...");
 		Client.loadFile(id_filename, async function(file) {
 			try {
 				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 				lua.mountFile(id_filename, buffer);
+				lenient = LenientEnums_default.mark(lua);
 				await lua.doFile(id_filename);
+				LenientEnums_default.defined(lua, lenient);
 				loadValueTable();
 			} catch (hException) {
 				console.error(`(${id_filename}) error: `, hException);
+				if (lenient) LenientEnums_default.finish(lua, lenient, id_filename);
 				fail(hException);
 			}
 		}, () => fail(/* @__PURE__ */ new Error(`${id_filename} not found`)));
@@ -310556,13 +311071,21 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isRes
 				try {
 					const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 					lua.mountFile(value_table_filename, buffer);
-					await lua.doFile(value_table_filename);
+					LenientEnums_default.begin(lua, lenient);
+					try {
+						await lua.doFile(value_table_filename);
+					} finally {
+						LenientEnums_default.finish(lua, lenient, value_table_filename);
+					}
 					parseTable();
 				} catch (hException) {
 					console.error(`(${value_table_filename}) error: `, hException);
 					fail(hException);
 				}
-			}, () => fail(/* @__PURE__ */ new Error(`${value_table_filename} not found`)));
+			}, () => {
+				LenientEnums_default.finish(lua, lenient, value_table_filename);
+				fail(/* @__PURE__ */ new Error(`${value_table_filename} not found`));
+			});
 		}
 		function parseTable() {
 			const table = {};
@@ -310762,7 +311285,12 @@ function loadPetInfo(filename, callback, onEnd) {
 			console.log("Loading file \"" + filename + "\"...");
 			const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 			lua.mountFile(filename, buffer);
-			await lua.doFile(filename);
+			const lenient = LenientEnums_default.begin(lua, null, ["jobtbl"]);
+			try {
+				await lua.doFile(filename);
+			} finally {
+				LenientEnums_default.finish(lua, lenient, filename);
+			}
 			const readLuaTable = (tableName) => {
 				const result = {};
 				const ctx = lua.ctx;
@@ -311028,6 +311556,7 @@ var init_DBManager = __esmMin((() => {
 	init_PacketVerManager();
 	init_MemoryManager();
 	init_HtmlHelper();
+	init_LenientEnums();
 	init_preload_helper();
 	lookTables = null;
 	itemPackages = /* @__PURE__ */ new Map();
@@ -311182,7 +311711,7 @@ var init_DBManager = __esmMin((() => {
 				itemPackages = /* @__PURE__ */ new Map();
 				if (PacketVerManager_default.value >= 20220216) {
 					const done = onLoad();
-					loadItemPackages(lua, DB.LUA_PATH, PacketVerManager_default.value, Client.loadFile.bind(Client), (value) => userStringDecoder.decode(value, userCharpage)).then((packages) => {
+					loadItemPackages(lua, DB.LUA_PATH, PacketVerManager_default.value, Client.loadFile.bind(Client), (value) => userStringDecoder.decode(value, userCharpage), Configs.get("itemPackageSupplement")).then((packages) => {
 						itemPackages = packages;
 					}).finally(done);
 				}
@@ -320052,7 +320581,7 @@ function getClosestEntity(sourceEntity, type) {
 	const view_range = GraphicsSettings.performanceMode ? GraphicsSettings.viewArea : 20;
 	const viewRangeSq = view_range * view_range;
 	_list.forEach((entity) => {
-		if (entity.GID !== sourceEntity.GID && entity.objecttype === type && entity.action !== entity.ACTION.DIE && entity.remove_tick === 0) {
+		if (entity.GID !== sourceEntity.GID && entity.objecttype === type && entity.action !== entity.ACTION.DIE && entity.remove_tick === 0 && !isHidden(entity)) {
 			const dx = entity.position[0] - srcX;
 			const dy = entity.position[1] - srcY;
 			const distSq = dx * dx + dy * dy;
@@ -320091,7 +320620,7 @@ function getLowestHpEntity(sourceEntity, type) {
 	const view_range = GraphicsSettings.performanceMode ? GraphicsSettings.viewArea : 20;
 	const viewRangeSq = view_range * view_range;
 	_list.forEach((entity) => {
-		if (entity.GID !== sourceEntity.GID && entity.objecttype === type && entity.life && entity.life.hp > 0 && entity.action !== entity.ACTION.DIE && entity.remove_tick === 0) {
+		if (entity.GID !== sourceEntity.GID && entity.objecttype === type && entity.life && entity.life.hp > 0 && entity.action !== entity.ACTION.DIE && entity.remove_tick === 0 && !isHidden(entity)) {
 			const dx = entity.position[0] - srcX;
 			const dy = entity.position[1] - srcY;
 			if (dx * dx + dy * dy > viewRangeSq) return;
@@ -320106,7 +320635,8 @@ function getLowestHpEntity(sourceEntity, type) {
 /**
 * Returns entities of the given type(s) sorted by straight-line distance from
 * the source entity, closest first. Same filters as getClosestEntity: not
-* self, right type, alive, not pending removal, within view range.
+* self, right type, alive, not pending removal, not hidden, within view
+* range.
 *
 * Straight-line (dx*dx + dy*dy), not PathFinding.search: running A* for
 * every nearby mob on every cycle step is too expensive, and visual
@@ -320123,7 +320653,7 @@ function getEntitiesSortedByDistance(sourceEntity, type) {
 	const viewRangeSq = view_range * view_range;
 	const candidates = [];
 	_list.forEach((entity) => {
-		if (entity.GID !== sourceEntity.GID && types.includes(entity.objecttype) && entity.action !== entity.ACTION.DIE && entity.remove_tick === 0) {
+		if (entity.GID !== sourceEntity.GID && types.includes(entity.objecttype) && entity.action !== entity.ACTION.DIE && entity.remove_tick === 0 && !isHidden(entity)) {
 			const dx = entity.position[0] - srcX;
 			const dy = entity.position[1] - srcY;
 			const distSq = dx * dx + dy * dy;
@@ -320135,6 +320665,18 @@ function getEntitiesSortedByDistance(sourceEntity, type) {
 	});
 	candidates.sort((a, b) => a.distSq - b.distSq);
 	return candidates.map((c) => c.entity);
+}
+/**
+* Whether the entity is hidden from the player (Hiding, Cloaking, Chase
+* Walk, invisible, Shadow Form, Camouflage, Stealth Field): the closest
+* and lowest-HP picks and the sorted list leave it out, as a mouse cannot
+* click it either.
+*
+* @param {entity} entity
+* @return {boolean}
+*/
+function isHidden(entity) {
+	return typeof entity.isVisible === "function" && !entity.isVisible();
 }
 /**
 * Returns the distance between two entities based on direct walkpath
