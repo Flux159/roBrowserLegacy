@@ -310488,6 +310488,18 @@ function customLuaTables(key) {
 * mod's headgear row existed -- the look was looked up, not found, and never
 * shown. A table that fails says so in the console and the chain goes on.
 */
+/** Headgear sprite names (accessoryid, accname) into HatTable. */
+function loadHatTable(onEnd) {
+	loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/accessoryid.lub", DB.LUA_PATH + "datainfo/accname.lub"], "AccNameTable", "accessory", function(json) {
+		Object.assign(HatTable_default, json);
+	}, onEnd, null, true);
+}
+/** Garment sprite names (spriterobeid, spriterobename) into RobeTable. */
+function loadRobeTable(onEnd) {
+	loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/spriterobeid.lub", DB.LUA_PATH + "datainfo/spriterobename.lub"], "RobeNameTable", "robe", function(json) {
+		Object.assign(RobeTable_default, json);
+	}, onEnd, null, true);
+}
 function loadLuaTableWithCustom(file_list, table_name, key, callback, onEnd, contextFunc, isResourceTable = false) {
 	const custom = customLuaTables(key);
 	const next = (index) => {
@@ -310959,7 +310971,7 @@ function updateMapTable() {
 		else MapTable[key] = { name: MapInfo[key].displayName };
 	}
 }
-var lua, itemPackages, HO_AI, MER_AI, default_HO_AI, default_MER_AI, MsgStringTable, JokeTable, ScreamTable, MapTable, SkillDescription, SexTable, PetTalkTable, CheckAttendanceTable, buyingStoreItemList, LaphineSysTable, LaphineUpgTable, ItemDBNameTbl, ItemReformTable, EnchantListTable, SignBoardTranslatedTable, SignBoardTable, NaviMapTable, NaviMobTable, NaviNpcTable, NaviLinkTable, NaviLinkDistanceTable, NaviNpcDistanceTable, QuestInfo, TitleTable, PetDBTable, EggIDToJobID, ReputeGroup, ReputeInfo, AchievementTable, MsgEmotionCSV, HatEffectID, HatEffectInfo, FootPrintEffectInfo, CashShopBannerTable, Ez2streffect, unknownItem, servers, langType, userCharpage, userStringDecoder, DB, SUFFIX_TO_FIELD, HARDCODED_FIELD_MAPPING;
+var lua, lookTables, itemPackages, HO_AI, MER_AI, default_HO_AI, default_MER_AI, MsgStringTable, JokeTable, ScreamTable, MapTable, SkillDescription, SexTable, PetTalkTable, CheckAttendanceTable, buyingStoreItemList, LaphineSysTable, LaphineUpgTable, ItemDBNameTbl, ItemReformTable, EnchantListTable, SignBoardTranslatedTable, SignBoardTable, NaviMapTable, NaviMobTable, NaviNpcTable, NaviLinkTable, NaviLinkDistanceTable, NaviNpcDistanceTable, QuestInfo, TitleTable, PetDBTable, EggIDToJobID, ReputeGroup, ReputeInfo, AchievementTable, MsgEmotionCSV, HatEffectID, HatEffectInfo, FootPrintEffectInfo, CashShopBannerTable, Ez2streffect, unknownItem, servers, langType, userCharpage, userStringDecoder, DB, SUFFIX_TO_FIELD, HARDCODED_FIELD_MAPPING;
 var init_DBManager = __esmMin((() => {
 	init_Client();
 	init_Configs();
@@ -311013,6 +311025,7 @@ var init_DBManager = __esmMin((() => {
 	init_MemoryManager();
 	init_HtmlHelper();
 	init_preload_helper();
+	lookTables = null;
 	itemPackages = /* @__PURE__ */ new Map();
 	MsgStringTable = [];
 	JokeTable = [];
@@ -311127,8 +311140,25 @@ var init_DBManager = __esmMin((() => {
 		static isLoaded = false;
 		static count = 0;
 		static index = 0;
+		/**
+		* The headgear and garment sprite names alone, without the rest of the
+		* database: what character select needs to draw a look newer than the
+		* built-in HatTable/RobeTable. They take a few milliseconds, where
+		* lazyInit's item tables hold the page for seconds. lazyInit loads them
+		* again with everything else.
+		*
+		* @return {Promise} settled once both tables are in or have failed
+		*/
+		static loadLookTables() {
+			if (!lookTables) lookTables = (async () => {
+				if (!lua) await startLua();
+				await Promise.all([new Promise(loadHatTable), new Promise(loadRobeTable)]);
+			})();
+			return lookTables;
+		}
 		static async lazyInit() {
 			console.log("Loading DB files...");
+			await lookTables?.catch(() => {});
 			await startLua();
 			DB.index = 0;
 			DB.count = 0;
@@ -311161,12 +311191,8 @@ var init_DBManager = __esmMin((() => {
 					iteminfoNames = iteminfoNames.concat(getSystemAliases("System/itemInfo.lub"));
 					tryLoadLuaAliases(loadItemInfo, iteminfoNames, null, onLoad());
 				}
-				loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/accessoryid.lub", DB.LUA_PATH + "datainfo/accname.lub"], "AccNameTable", "accessory", function(json) {
-					Object.assign(HatTable_default, json);
-				}, onLoad(), null, true);
-				loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/spriterobeid.lub", DB.LUA_PATH + "datainfo/spriterobename.lub"], "RobeNameTable", "robe", function(json) {
-					Object.assign(RobeTable_default, json);
-				}, onLoad(), null, true);
+				loadHatTable(onLoad());
+				loadRobeTable(onLoad());
 				if (PacketVerManager_default.value >= 20141008) loadLuaTableWithCustom([DB.LUA_PATH + "datainfo/npcidentity.lub", DB.LUA_PATH + "datainfo/jobname.lub"], "JobNameTable", "monster", function(json) {
 					Object.assign(MonsterTable_default, json);
 				}, onLoad(), function() {
@@ -346799,7 +346825,7 @@ function createCharSelect(config) {
 			_entitySlots[character.CharNum] = createSlotEntity(character);
 			Component.updateCharSlot(character.CharNum);
 			ScreenHooks_default.update("charSelect");
-			redrawOnceDBLoaded();
+			redrawWithLookTables(character);
 			return;
 		}
 		if (deleteReservation && character.DeleteDate) {
@@ -346829,7 +346855,7 @@ function createCharSelect(config) {
 			}
 		}
 		ScreenHooks_default.update("charSelect");
-		redrawOnceDBLoaded();
+		redrawWithLookTables(character);
 	};
 	/**
 	* The entity drawn for a character slot.
@@ -346848,22 +346874,18 @@ function createCharSelect(config) {
 	* On a cold start the character list arrives before the client's database
 	* has loaded (it otherwise starts only on entering the map), when only the
 	* built-in HatTable/RobeTable are there: a headgear or garment look newer
-	* than those is not found and the preview is drawn without it. Start the
-	* load now and build the previews again once it is in.
+	* than those is not found and the preview is drawn without it. Load just
+	* those two tables and build the previews again. Not the whole database:
+	* its item tables are parsed on this thread and froze the screen for
+	* seconds.
+	*
+	* @param {object} character data
 	*/
-	let _dbWait = null;
-	function redrawOnceDBLoaded() {
-		if (DB.isLoaded || _dbWait) return;
-		if (!DB.startedLazyInit) {
-			DB.lazyInit();
-			DB.startedLazyInit = true;
-		}
-		let tries = 0;
-		_dbWait = setInterval(() => {
-			if (!DB.isLoaded && ++tries < 300) return;
-			clearInterval(_dbWait);
-			_dbWait = null;
-			if (!DB.isLoaded) return;
+	let _lookTablesRequested = false;
+	function redrawWithLookTables(character) {
+		if (DB.isLoaded || _lookTablesRequested || !lookNeedsTables(character)) return;
+		_lookTablesRequested = true;
+		DB.loadLookTables().catch((error) => console.error("[CharSelect] headgear and garment tables:", error)).finally(() => {
 			for (let i = 0; i < _entitySlots.length; ++i) {
 				const old = _entitySlots[i];
 				if (!old || !_slots[i]) continue;
@@ -346877,7 +346899,21 @@ function createCharSelect(config) {
 				_entitySlots[i] = entity;
 			}
 			ScreenHooks_default.update("charSelect");
-		}, 200);
+		});
+	}
+	/**
+	* Whether a character wears a headgear or garment the built-in tables
+	* have no sprite for.
+	*
+	* @param {object} character data
+	* @return {boolean}
+	*/
+	function lookNeedsTables(character) {
+		return [
+			character.accessory,
+			character.accessory2,
+			character.accessory3
+		].some((id) => id > 0 && !DB.getHatPath(id, character.sex)) || character.Robe > 0 && !DB.getRobePath(character.Robe, character.job, character.sex);
 	}
 	/**
 	* Disable or Enable the UI.
