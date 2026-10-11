@@ -221595,8 +221595,10 @@ function flushMessageBuffer() {
 			const color = msg.color || getColorForType(msg.colorType);
 			const div = document.createElement("div");
 			div.style.color = color;
-			if (!msg.override) div.textContent = msg.text;
-			else div.innerHTML = msg.text;
+			if (!msg.override) {
+				div.style.whiteSpace = "pre-line";
+				div.textContent = msg.text;
+			} else div.innerHTML = msg.text;
 			fragment.appendChild(div);
 		});
 		content.appendChild(fragment);
@@ -309287,15 +309289,20 @@ function loadTownInfoFile(filename, callback, onEnd) {
 		try {
 			const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 			const ctx = lua.ctx;
+			const updatedMaps = /* @__PURE__ */ new Set();
 			ctx.AddTownInfo = function AddTownInfo(mapName, name, X, Y, TYPE) {
 				mapName = userStringDecoder.decode(mapName);
-				exports$2[mapName] = [];
+				if (!updatedMaps.has(mapName)) {
+					exports$2[mapName] = [];
+					updatedMaps.add(mapName);
+				}
 				exports$2[mapName].push({
 					Name: userStringDecoder.decode(name, userCharpage),
 					X,
 					Y,
 					Type: TYPE
 				});
+				return 1;
 			};
 			lua.mountFile(filename, buffer);
 			await lua.doFile(filename);
