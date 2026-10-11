@@ -234652,6 +234652,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 				}
 			});
 			container.addEventListener("click", (e) => {
+				if (e.target.closest(".level button")) return;
 				const target = e.target.closest(".skillCol .skill .icon, .skill .name");
 				if (target) onRememberChoice(target, root);
 			});
@@ -310424,7 +310425,7 @@ function loadSkillInfoList(filename, callback, onEnd) {
 					SkillName: userStringDecoder.decode(skillName, userCharpage),
 					MaxLv: maxLv,
 					SpAmount: toArray(spAmount),
-					bSeperateLv,
+					bSeperateLv: bSeperateLv ?? SkillInfo[skillId]?.bSeperateLv ?? false,
 					AttackRange: toArray(attackRange),
 					SkillScale: skillScale,
 					NeedSkillList: {},
@@ -310471,7 +310472,7 @@ function loadSkillInfoList(filename, callback, onEnd) {
 								local skillName = skillData.SkillName or ""  
 								local maxLv = skillData.MaxLv or 1  
 								local spAmount = skillData.SpAmount or {}  
-								local bSeperateLv = skillData.bSeperateLv or false  
+								local bSeperateLv = skillData.bSeperateLv
 								local attackRange = skillData.AttackRange or {}  
 								local skillScale = skillData.SkillScale or {}  
 
