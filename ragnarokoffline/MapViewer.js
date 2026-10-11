@@ -321627,6 +321627,7 @@ var init_GUIComponent = __esmMin((() => {
 				setTimeout(() => checkScrollbars(root), 50);
 				setTimeout(() => checkScrollbars(root), 150);
 				setTimeout(() => checkScrollbars(root), 500);
+				if (self.__scrollbarObserver) self.__scrollbarObserver.disconnect();
 				const observer = new MutationObserver((mutations) => {
 					let needsCheck = false;
 					for (const mutation of mutations) if (mutation.type === "childList") needsCheck = true;
