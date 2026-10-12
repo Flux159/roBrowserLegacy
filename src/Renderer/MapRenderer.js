@@ -64,6 +64,13 @@ const mat4 = glMatrix.mat4;
 const _pos = new Uint16Array(2);
 
 /**
+ * Set while a loaded map's loading image fades out (onMapComplete). A map
+ * asked for meanwhile waits in _nextMap until the image is gone.
+ */
+let _revealing = false;
+let _nextMap = null;
+
+/**
  * @param {string} mapname
  * @returns {string} map name without its extension
  */
@@ -131,6 +138,13 @@ class MapRenderer {
 	static setMap(mapname) {
 		// TODO: stop the map loading, and start to load the new map.
 		if (this.loading) {
+			return;
+		}
+
+		// The server can move us as soon as the last map has sent
+		// NOTIFY_ACTORINIT, which is before its loading image is gone.
+		if (_revealing) {
+			_nextMap = mapname;
 			return;
 		}
 
@@ -670,18 +684,32 @@ function onMapComplete(success, error) {
 	registerPostProcessModules(gl);
 	JoystickUI.onRestore();
 
-	// Starting to render
+	// Start the game now, behind the loading image, while the screen fades to
+	// black: the server sends the map's actors during the fade, and the first
+	// frames, with their set-up costs, are drawn before anyone can see them.
+	// Background.remove keeps the image over the game and its windows until
+	// the screen is black, so what the player sees is unchanged.
+	MapRenderer.loading = false;
+	_revealing = true;
+
+	MapRenderer.onLoad();
+	Sky.setUpCloudData();
+	ScreenEffectManager.startMapflagEffect(worldResource);
+
+	Renderer.show();
+	Renderer.render(MapRenderer.onRender);
+
+	// Display game
 	Background.remove(() => {
-		MapRenderer.loading = false;
+		_revealing = false;
 
-		MapRenderer.onLoad();
-		Sky.setUpCloudData();
-		ScreenEffectManager.startMapflagEffect(worldResource);
-
-		// Display game
-		Renderer.show();
-		Renderer.render(MapRenderer.onRender);
 		Mouse.intersect = true;
+
+		if (_nextMap) {
+			const mapname = _nextMap;
+			_nextMap = null;
+			MapRenderer.setMap(mapname);
+		}
 	});
 }
 
