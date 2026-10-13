@@ -85175,7 +85175,7 @@ var init_JobConst = __esmMin((() => {
 		MECHANIC_2ND: 4333,
 		GUILLOTINE_CROSS_2ND: 4334,
 		WARLOCK_2ND: 4335,
-		ARCH_BISHOP_2ND: 4336,
+		ARCHBISHOP_2ND: 4336,
 		RANGER_2ND: 4337,
 		ROYAL_GUARD_2ND: 4338,
 		GENETIC_2ND: 4339,
@@ -86307,7 +86307,7 @@ var init_AllMountTable = __esmMin((() => {
 	duplicateEntry$3(JobConst_default.GENETIC, JobConst_default.GENETIC_H);
 	duplicateEntry$3(JobConst_default.ROYAL_GUARD, JobConst_default.ROYAL_GUARD_H);
 	duplicateEntry$3(JobConst_default.SHADOW_CHASER, JobConst_default.SHADOW_CHASER_H);
-	duplicateEntry$3(JobConst_default.ARCHBISHOP, JobConst_default.ARCH_BISHOP_2ND);
+	duplicateEntry$3(JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_2ND);
 	duplicateEntry$3(JobConst_default.RANGER, JobConst_default.RANGER_2ND);
 	duplicateEntry$3(JobConst_default.WARLOCK, JobConst_default.WARLOCK_2ND);
 	duplicateEntry$3(JobConst_default.MECHANIC, JobConst_default.MECHANIC_2ND);
@@ -86344,7 +86344,7 @@ var init_WeaponJobTable = __esmMin((() => {
 	duplicateEntry$2(JobConst_default.THIEF, JobConst_default.THIEF_H, JobConst_default.THIEF_B);
 	duplicateEntry$2(JobConst_default.KNIGHT, JobConst_default.KNIGHT_H, JobConst_default.KNIGHT_B, JobConst_default.RUNE_KNIGHT, JobConst_default.RUNE_KNIGHT_H, JobConst_default.RUNE_KNIGHT_B, JobConst_default.RUNE_KNIGHT_2ND, JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT_RIDING);
 	duplicateEntry$2(JobConst_default.KNIGHT2, JobConst_default.KNIGHT2_H, JobConst_default.KNIGHT2_B, JobConst_default.RUNE_KNIGHT2, JobConst_default.RUNE_KNIGHT2_H, JobConst_default.RUNE_KNIGHT2_B, JobConst_default.RUNE_KNIGHT2_2ND, JobConst_default.DRAGON_KNIGHT2);
-	duplicateEntry$2(JobConst_default.PRIEST, JobConst_default.PRIEST_H, JobConst_default.PRIEST_B, JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_B, JobConst_default.ARCH_BISHOP_2ND, JobConst_default.CARDINAL, JobConst_default.CARDINAL_RIDING);
+	duplicateEntry$2(JobConst_default.PRIEST, JobConst_default.PRIEST_H, JobConst_default.PRIEST_B, JobConst_default.ARCHBISHOP, JobConst_default.ARCHBISHOP_H, JobConst_default.ARCHBISHOP_B, JobConst_default.ARCHBISHOP_2ND, JobConst_default.CARDINAL, JobConst_default.CARDINAL_RIDING);
 	duplicateEntry$2(JobConst_default.WIZARD, JobConst_default.WIZARD_H, JobConst_default.WIZARD_B, JobConst_default.WARLOCK, JobConst_default.WARLOCK_H, JobConst_default.WARLOCK_B, JobConst_default.WARLOCK_2ND, JobConst_default.ARCH_MAGE, JobConst_default.ARCH_MAGE_RIDING);
 	duplicateEntry$2(JobConst_default.BLACKSMITH, JobConst_default.BLACKSMITH_H, JobConst_default.BLACKSMITH_B, JobConst_default.MECHANIC, JobConst_default.MECHANIC_H, JobConst_default.MECHANIC_B, JobConst_default.MECHANIC_2ND, JobConst_default.MECHANIC2_2ND, JobConst_default.MEISTER, JobConst_default.MEISTER2, JobConst_default.MEISTER_RIDING);
 	duplicateEntry$2(JobConst_default.HUNTER, JobConst_default.HUNTER_H, JobConst_default.HUNTER_B, JobConst_default.RANGER, JobConst_default.RANGER_H, JobConst_default.RANGER_B, JobConst_default.RANGER_2ND, JobConst_default.RANGER2_2ND, JobConst_default.WINDHAWK, JobConst_default.WINDHAWK2, JobConst_default.WINDHAWK_RIDING);
@@ -317015,6 +317015,7 @@ function UpdateBody(job) {
 			Init$10.call(this);
 		}
 	}
+	const bodyLoad = this._bodyLoadSeq = (this._bodyLoadSeq || 0) + 1;
 	if (job === 111 || job === 139 || job === 45) {
 		this.files.body.spr = null;
 		this.files.body.act = null;
@@ -317042,8 +317043,10 @@ function UpdateBody(job) {
 		const isStaleCallback = this._transformationSeq && this._transformationSeq > transformationSeq;
 		const currentJob = getEffectiveJob.call(this);
 		if (!isStaleCallback && job === currentJob) {
-			this.files.body.spr = loaded + ".spr";
-			this.files.body.act = loaded + ".act";
+			if (bodyLoad === this._bodyLoadSeq) {
+				this.files.body.spr = loaded + ".spr";
+				this.files.body.act = loaded + ".act";
+			}
 			refreshHeadState.call(this);
 		}
 		this.bodypalette = this._bodypalette;
@@ -317098,7 +317101,7 @@ function getBodyVal() {
 		case JobConst_default.ARCHBISHOP:
 		case JobConst_default.ARCHBISHOP_H:
 		case JobConst_default.ARCHBISHOP_B:
-			job = JobConst_default.ARCH_BISHOP_2ND;
+			job = JobConst_default.ARCHBISHOP_2ND;
 			break;
 		case JobConst_default.WINDHAWK:
 		case JobConst_default.WINDHAWK_H:
@@ -317176,6 +317179,7 @@ function UpdateBodyStyle(look) {
 	if (look < 0) return;
 	setTimeout(function() {
 		this._body = look;
+		if (hasTransformation.call(this)) return;
 		let job = this._job;
 		let cashMountCostume = false;
 		if (PacketVerManager_default.value <= 20231220) {
@@ -317195,8 +317199,10 @@ function UpdateBodyStyle(look) {
 		const styled = !SessionStorage_default.showsAdmin(this, "sprite") && PacketVerManager_default.value > 20141022 && look > 0 && look !== job && !cashMountCostume;
 		this._bodyStyleJob = styled ? look : null;
 		Entity = this.constructor;
+		const bodyLoad = this._bodyLoadSeq = (this._bodyLoadSeq || 0) + 1;
 		Client.loadFile(path + ".act");
 		Client.loadFile(path + ".spr", function() {
+			if (bodyLoad !== this._bodyLoadSeq) return;
 			this.files.body.spr = path + ".spr";
 			this.files.body.act = path + ".act";
 			this.bodypalette = this._bodypalette;
@@ -349889,11 +349895,22 @@ function onConnectRequest(entity) {
 	SoundManager.play("¹öÆ°¼Ò¸®.wav");
 	Controller$2.getUI().remove();
 	UIManager.getComponent("WinLoading").append();
-	SessionStorage_default.Entity = new Player(entity);
+	SessionStorage_default.Entity = buildPlayer(entity);
 	_charBeforeDB = DB.isLoaded ? null : entity;
 	const pkt = new PACKET.CH.SELECT_CHAR();
 	pkt.CharNum = entity.CharNum;
 	Network.sendPacket(pkt);
+}
+/**
+* The player of a char-list entry
+*
+* @param {object} entity - char-list entry
+* @return {Player}
+*/
+function buildPlayer(entity) {
+	const player = new Player(entity);
+	if (entity.body > 0) player.body = entity.body;
+	return player;
 }
 /**
 * Server send char list info, ask for char list
@@ -349929,7 +349946,7 @@ function onReceiveMapInfo(pkt) {
 	DB.startedLazyInit = false;
 	retryCount = 0;
 	if (_charBeforeDB) {
-		SessionStorage_default.Entity = new Player(_charBeforeDB);
+		SessionStorage_default.Entity = buildPlayer(_charBeforeDB);
 		_charBeforeDB = null;
 	}
 	SessionStorage_default.GID = pkt.GID;
