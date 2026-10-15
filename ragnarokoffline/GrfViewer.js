@@ -221329,7 +221329,7 @@ var init_ChatBox$2 = __esmMin((() => {
 //#region src/UI/Components/ChatBox/ChatBox.css?raw
 var ChatBox_default$1;
 var init_ChatBox$1 = __esmMin((() => {
-	ChatBox_default$1 = ":host {\r\n	position: absolute;\r\n	/* Include the 5px root offset and 2px frame overflow in the window snap bounds. */\r\n	padding-right: 7px;\r\n}\r\n\r\n#chatbox {\r\n	position: relative;\r\n	left: 5px;\r\n	width: 595px;\r\n}\r\n\r\n/** Tabs **/\r\n#chatbox .header {\r\n	margin-left: 3px;\r\n	height: 17px;\r\n\r\n	max-width: 100%;\r\n}\r\n\r\n#chatbox .header .tab {\r\n	width: 75px;\r\n	color: white;\r\n	text-align: center;\r\n}\r\n\r\n#chatbox .header input {\r\n	border: none;\r\n	background-color: transparent;\r\n	color: white;\r\n	width: 75px;\r\n	height: 15px;\r\n	text-align: center;\r\n}\r\n\r\n#chatbox .header .tab div {\r\n	padding-top: 2px;\r\n	border-radius: 2px 2px 0px 0px;\r\n	background: rgba(0, 0, 0, 0.75);\r\n	border: 1px solid #959595;\r\n	border-bottom: 1px solid white;\r\n}\r\n\r\n#chatbox .header .tab div.on {\r\n	background: rgba(0, 0, 0, 0.5);\r\n	border: 1px solid white;\r\n	border-bottom: none;\r\n	border-right: none;\r\n	height: 18px;\r\n}\r\n\r\n#chatbox .header .options {\r\n	border-bottom: 1px solid white;\r\n	height: 18px;\r\n	margin-right: 4px;\r\n}\r\n\r\n/** Content **/\r\n#chatbox .body {\r\n	background: rgba(0, 0, 0, 0.5);\r\n	border-left: 1px solid white;\r\n	border-right: 1px solid white;\r\n	border-radius: 0px 3px 0px 0px;\r\n	padding: 0px 5px 5px 5px;\r\n	margin-left: 3px;\r\n	margin-right: -2px;\r\n	max-width: 100%;\r\n}\r\n#chatbox .contentwrapper {\r\n	height: 42px;\r\n}\r\n#chatbox .content {\r\n	text-shadow: 1px 1px 0px black;\r\n	height: 100%;\r\n	overflow-y: auto;\r\n	line-height: 14px;\r\n	display: none;\r\n}\r\n#chatbox .content.active {\r\n	display: block;\r\n}\r\n#chatbox .content a {\r\n	color: inherit;\r\n	text-decoration: underline;\r\n}\r\n\r\n#chatbox .content a,\r\n#chatbox .content .item-link {\r\n	cursor: pointer;\r\n}\r\n\r\n#chatbox .event_add_cursor {\r\n	height: 14px;\r\n	cursor: ns-resize;\r\n}\r\n\r\n#chatbox .battlemode {\r\n	width: 592px;\r\n	height: 25px;\r\n	position: relative;\r\n	border-left: 1px solid white;\r\n	border-right: 1px solid white;\r\n	border-top: 1px solid grey;\r\n	background-color: rgba(0, 0, 0, 0.5);\r\n	margin-left: 3px;\r\n	display: none;\r\n	max-width: 100%;\r\n}\r\n\r\n/** Input **/\r\n#chatbox .input {\r\n	width: 600px;\r\n	height: 25px;\r\n	position: relative;\r\n	max-width: 100%;\r\n}\r\n\r\n#chatbox .input.fix {\r\n	margin-top: 29px;\r\n}\r\n\r\n#chatbox .input input {\r\n	position: absolute;\r\n	top: 3px;\r\n	height: 18px;\r\n	background-color: transparent;\r\n	border: none;\r\n}\r\n\r\n#chatbox .input .username {\r\n	left: 4px;\r\n	width: 90px;\r\n	padding-left: 5px;\r\n}\r\n\r\n#chatbox .input .list {\r\n	width: 8px;\r\n	height: 18px;\r\n	border: none;\r\n	position: absolute;\r\n	top: 3px;\r\n	left: 97px;\r\n	background-repeat: no-repeat;\r\n	padding: 0;\r\n}\r\n#chatbox .input .wrapper {\r\n	display: flex;\r\n	align-items: center;\r\n	margin-left: 108px;\r\n	height: 100%;\r\n	overflow: hidden;\r\n	width: calc(100% - 140px);\r\n}\r\n\r\n#chatbox .input .message {\r\n	width: 100%;\r\n	padding-left: 5px;\r\n\r\n	line-height: 18px;\r\n	outline: none;\r\n	white-space: nowrap;\r\n	overflow-x: hidden;\r\n	overflow-y: hidden;\r\n	max-width: 100%;\r\n	vertical-align: middle;\r\n	display: inline-block;\r\n}\r\n#chatbox .input .message.party {\r\n	color: #840084;\r\n}\r\n#chatbox .input .message.guild {\r\n	color: #008484;\r\n}\r\n#chatbox .input .message.clan {\r\n	color: #ffa631;\r\n}\r\n\r\n#chatbox .input .filter,\r\n#chatbox .input .size {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	position: absolute;\r\n	right: 13px;\r\n	top: 8px;\r\n	background-color: transparent;\r\n}\r\n\r\n#chatbox .input .size {\r\n	right: 1px;\r\n}\r\n\r\n#chatbox .battlemode .bmtoggle {\r\n	height: 100%;\r\n}\r\n#chatbox .chat-function {\r\n	position: absolute;\r\n	right: 0px;\r\n	top: 0px;\r\n	/* Expand the \"no-walk\" header zone around buttons (but don't move them visually). */\r\n	padding: 6px;\r\n	margin: -6px;\r\n}\r\n#chatbox .chat-function button {\r\n	background-size: auto;\r\n	border: 0;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#chatbox .chat-function .chatmode {\r\n	width: 15px;\r\n	height: 9px;\r\n}\r\n#chatbox .chat-function .battleopt {\r\n	width: 10px;\r\n	height: 10px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .stickfucn {\r\n	width: 14px;\r\n	height: 10px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .battleopt2 {\r\n	width: 9px;\r\n	height: 9px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .wndminib {\r\n	width: 9px;\r\n	height: 9px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .lockdragwnd {\r\n	width: 15px;\r\n	height: 10px;\r\n}\r\n";
+	ChatBox_default$1 = ":host {\r\n	position: absolute;\r\n	width: 600px;\r\n}\r\n\r\n#chatbox {\r\n	--chat-header-height: 21px;\r\n	position: relative;\r\n	width: 100%;\r\n}\r\n\r\n#chatbox.minimal {\r\n	/* Keep one toolbar row above either input mode. */\r\n	padding-top: var(--chat-header-height);\r\n}\r\n\r\n/** Tabs **/\r\n#chatbox .header {\r\n	table-layout: fixed;\r\n	height: var(--chat-header-height);\r\n	width: 100%;\r\n}\r\n\r\n#chatbox .header td {\r\n	padding: 0;\r\n}\r\n\r\n#chatbox .header .tab {\r\n	width: 75px;\r\n	color: white;\r\n	text-align: center;\r\n}\r\n\r\n#chatbox .header input {\r\n	box-sizing: border-box;\r\n	display: block;\r\n	border: none;\r\n	padding: 0;\r\n	background-color: transparent;\r\n	color: white;\r\n	width: 100%;\r\n	min-width: 0;\r\n	height: 15px;\r\n	line-height: 15px;\r\n	text-align: center;\r\n}\r\n\r\n#chatbox .header .tab div {\r\n	position: relative;\r\n	box-sizing: border-box;\r\n	height: var(--chat-header-height);\r\n	padding: 2px;\r\n	border-radius: 3px 3px 0 0;\r\n	background: rgba(0, 0, 0, 0.75);\r\n	border: 1px solid #959595;\r\n	border-bottom-color: white;\r\n}\r\n\r\n/* Overlap shared borders so both top corners keep their shape. */\r\n#chatbox .header .tab + .tab div {\r\n	margin-left: -1px;\r\n}\r\n\r\n#chatbox .header .tab div.on {\r\n	/* Draw the selected tab's outline above either neighbouring tab. */\r\n	z-index: 1;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	border-color: white;\r\n	border-bottom-color: transparent;\r\n}\r\n\r\n#chatbox .header .options {\r\n	box-sizing: border-box;\r\n	border-bottom: 1px solid white;\r\n	height: var(--chat-header-height);\r\n}\r\n\r\n/** Content **/\r\n#chatbox .body {\r\n	position: relative;\r\n	box-sizing: border-box;\r\n	width: 100%;\r\n	background: rgba(0, 0, 0, 0.5);\r\n	border-left: 1px solid white;\r\n	border-right: 1px solid white;\r\n}\r\n#chatbox .contentwrapper {\r\n	height: 42px;\r\n}\r\n#chatbox .content {\r\n	box-sizing: border-box;\r\n	padding-left: 5px;\r\n	text-shadow: 1px 1px 0 black;\r\n	height: 100%;\r\n	overflow-y: auto;\r\n	line-height: 14px;\r\n	display: none;\r\n}\r\n#chatbox .content.active {\r\n	display: block;\r\n}\r\n#chatbox .content a {\r\n	color: inherit;\r\n	text-decoration: underline;\r\n}\r\n\r\n#chatbox .content a,\r\n#chatbox .content .item-link {\r\n	cursor: pointer;\r\n}\r\n\r\n#chatbox .event_add_cursor {\r\n	/* Overlay the log's top edge; reserve the scrollbar's hit area. */\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	right: 10px;\r\n	height: 4px;\r\n	z-index: 1;\r\n	cursor: ns-resize;\r\n}\r\n\r\n#chatbox .battlemode,\r\n#chatbox .input {\r\n	box-sizing: border-box;\r\n	width: 100%;\r\n	height: 24px;\r\n	position: relative;\r\n}\r\n\r\n#chatbox .battlemode {\r\n	border-left: 1px solid white;\r\n	border-right: 1px solid white;\r\n	border-top: 1px solid grey;\r\n	background-color: rgba(0, 0, 0, 0.5);\r\n	display: none;\r\n}\r\n\r\n/** Input **/\r\n#chatbox .input {\r\n	/* dialog_bg.bmp is 600x24; do not tile it if a skin differs in size. */\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#chatbox .input input {\r\n	position: absolute;\r\n	top: 3px;\r\n	height: 18px;\r\n	background-color: transparent;\r\n	border: none;\r\n}\r\n\r\n#chatbox .input .username {\r\n	left: 4px;\r\n	width: 90px;\r\n	padding-left: 5px;\r\n}\r\n\r\n#chatbox .input .list {\r\n	width: 8px;\r\n	height: 18px;\r\n	border: none;\r\n	position: absolute;\r\n	top: 3px;\r\n	left: 97px;\r\n	background-repeat: no-repeat;\r\n	padding: 0;\r\n}\r\n#chatbox .input .wrapper {\r\n	display: flex;\r\n	align-items: center;\r\n	margin-left: 108px;\r\n	height: 100%;\r\n	overflow: hidden;\r\n	width: calc(100% - 140px);\r\n}\r\n\r\n#chatbox .input .message {\r\n	width: 100%;\r\n	padding-left: 5px;\r\n\r\n	line-height: 18px;\r\n	outline: none;\r\n	white-space: nowrap;\r\n	overflow-x: hidden;\r\n	overflow-y: hidden;\r\n	max-width: 100%;\r\n	vertical-align: middle;\r\n	display: inline-block;\r\n}\r\n#chatbox .input .message.party {\r\n	color: #840084;\r\n}\r\n#chatbox .input .message.guild {\r\n	color: #008484;\r\n}\r\n#chatbox .input .message.clan {\r\n	color: #ffa631;\r\n}\r\n\r\n#chatbox .input .filter,\r\n#chatbox .input .size {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	position: absolute;\r\n	right: 13px;\r\n	top: 8px;\r\n	background-color: transparent;\r\n}\r\n\r\n#chatbox .input .size {\r\n	right: 1px;\r\n}\r\n\r\n#chatbox .battlemode .bmtoggle {\r\n	height: 100%;\r\n}\r\n#chatbox .chat-function {\r\n	position: absolute;\r\n	right: 0px;\r\n	top: 0px;\r\n	/* Expand the \"no-walk\" header zone around buttons (but don't move them visually). */\r\n	padding: 6px;\r\n	margin: -6px;\r\n}\r\n#chatbox .chat-function button {\r\n	background-size: auto;\r\n	border: 0;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#chatbox .chat-function .chatmode {\r\n	width: 15px;\r\n	height: 9px;\r\n}\r\n#chatbox .chat-function .battleopt {\r\n	width: 10px;\r\n	height: 10px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .stickfucn {\r\n	width: 14px;\r\n	height: 10px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .battleopt2 {\r\n	width: 9px;\r\n	height: 9px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .wndminib {\r\n	width: 9px;\r\n	height: 9px;\r\n	background-size: cover;\r\n}\r\n#chatbox .chat-function .lockdragwnd {\r\n	width: 15px;\r\n	height: 10px;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/ChatBoxSettings/ChatBoxSettings.html?raw
@@ -221997,8 +221997,8 @@ var init_ChatBox = __esmMin((() => {
 		});
 		const inputChatbox = root.querySelector(".input-chatbox");
 		if (Configs.get("restoreChatFocus", false) && inputChatbox) inputChatbox.addEventListener("blur", () => {
-			if (inputChatbox.dataset.escapeBlur) {
-				delete inputChatbox.dataset.escapeBlur;
+			if (inputChatbox.dataset.skipRestoreFocus) {
+				delete inputChatbox.dataset.skipRestoreFocus;
 				return;
 			}
 			Events.setTimeout(() => {
@@ -222191,12 +222191,7 @@ var init_ChatBox = __esmMin((() => {
 			if (event.target.closest(".content a, .content .item-link")) event.stopPropagation();
 		});
 		const bmtoggle = root.querySelector(".battlemode .bmtoggle");
-		if (bmtoggle) bmtoggle.addEventListener("click", () => {
-			const inputEl = root.querySelector(".input");
-			const bmEl = root.querySelector(".battlemode");
-			if (inputEl) inputEl.style.display = inputEl.style.display === "none" ? "block" : "none";
-			if (bmEl) bmEl.style.display = bmEl.style.display === "none" ? "block" : "none";
-		});
+		if (bmtoggle) bmtoggle.addEventListener("click", () => this.setInputActive(true));
 		const battleopt2 = root.querySelector(".chat-function .battleopt2");
 		if (battleopt2) battleopt2.addEventListener("click", () => {
 			if (ChatBox.tabCount <= 5) {
@@ -222378,10 +222373,7 @@ var init_ChatBox = __esmMin((() => {
 	*/
 	ChatBox.onAppend = function OnAppend() {
 		const root = _root$21();
-		const inputEl = root.querySelector(".input");
-		if (inputEl) inputEl.style.display = "none";
-		const bmEl = root.querySelector(".battlemode");
-		if (bmEl) bmEl.style.display = "block";
+		this.setInputActive(false);
 		const content = root.querySelector(".content.active");
 		if (content) content.scrollTop = content.scrollHeight;
 	};
@@ -222478,7 +222470,7 @@ var init_ChatBox = __esmMin((() => {
 						return true;
 					}
 					if (event.which === KEYS.ESCAPE || event.key === "Escape") {
-						activeElement.dataset.escapeBlur = "1";
+						activeElement.dataset.skipRestoreFocus = "1";
 						activeElement.blur();
 						event.stopImmediatePropagation();
 						return false;
@@ -222534,7 +222526,7 @@ var init_ChatBox = __esmMin((() => {
 					if (activeContent) activeContent.scrollTop = activeContent.scrollHeight;
 				}
 				break;
-			case KEYS.ENTER: {
+			case KEYS.ENTER:
 				if (activeElement && activeElement.tagName === "BUTTON" && !root.contains(activeElement)) return true;
 				if (document.activeElement.className === "message input-chatbox" && document.activeElement !== messageBox) return true;
 				if (document.querySelector("#NpcMenu, #NpcBox")) return true;
@@ -222543,17 +222535,9 @@ var init_ChatBox = __esmMin((() => {
 					event.stopImmediatePropagation();
 					return false;
 				}
-				const input = root.querySelector(".input");
-				if (input && input.style.display === "none") {
-					input.style.display = "block";
-					const bmEl = root.querySelector(".battlemode");
-					if (bmEl) bmEl.style.display = "none";
-				}
-				messageBox.focus();
-				setCaretToEnd$1(messageBox);
+				this.setInputActive(true);
 				event.stopImmediatePropagation();
 				return false;
-			}
 		}
 		event.stopImmediatePropagation();
 		return false;
@@ -222567,6 +222551,31 @@ var init_ChatBox = __esmMin((() => {
 		this.submit();
 	};
 	/**
+	* Switch the shared input slot without changing the chat frame's geometry.
+	*/
+	ChatBox.setInputActive = function setInputActive(active) {
+		const root = _root$21();
+		const input = root.querySelector(".input");
+		const battle = root.querySelector(".battlemode");
+		const message = root.querySelector(".input-chatbox");
+		const focused = KEYS.getDeepActiveElement();
+		if (!active && focused && input?.contains(focused)) {
+			if (focused === message) focused.dataset.skipRestoreFocus = "1";
+			focused.blur();
+			delete focused.dataset.skipRestoreFocus;
+		}
+		if (input) input.style.display = active ? "block" : "none";
+		if (battle) battle.style.display = active ? "none" : "block";
+		if (active && message) {
+			message.focus();
+			setCaretToEnd$1(message);
+		}
+		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/chatmode_${active ? "on" : "off"}.bmp`, (data) => {
+			const button = root.querySelector(".chat-function .chatmode");
+			if (button) button.style.backgroundImage = `url(${data})`;
+		});
+	};
+	/**
 	* Process ChatBox message
 	*/
 	ChatBox.submit = function Submit() {
@@ -222576,20 +222585,8 @@ var init_ChatBox = __esmMin((() => {
 		const $text = root.querySelector(".input-chatbox");
 		const user = $user ? $user.value : "";
 		const trimmedText = extractChatMessage$1($text).replace(/\u00A0/g, " ").trim();
-		let isChatOn = false;
 		if (!trimmedText.length) {
-			const bmEl = root.querySelector(".battlemode");
-			if (inputEl) inputEl.style.display = inputEl.style.display === "none" ? "block" : "none";
-			if (bmEl) bmEl.style.display = bmEl.style.display === "none" ? "block" : "none";
-			if (inputEl && inputEl.style.display !== "none") {
-				isChatOn = true;
-				$text.focus();
-			}
-			const chatmode = isChatOn ? "on" : "off";
-			Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/chatmode_${chatmode}.bmp`, (data) => {
-				const chatmodeBtn = root.querySelector(".chat-function .chatmode");
-				if (chatmodeBtn) chatmodeBtn.style.backgroundImage = `url(${data})`;
-			});
+			this.setInputActive(inputEl?.style.display === "none");
 			return;
 		}
 		if (user.length && trimmedText[0] !== "/") {
@@ -222653,7 +222650,7 @@ var init_ChatBox = __esmMin((() => {
 		if (content) content.style.height = `${HeightList[_heightIndex]}px`;
 		const header = root.querySelector(".header");
 		const body = root.querySelector(".body");
-		const inputEl = root.querySelector(".input");
+		root.querySelector("#chatbox")?.classList.toggle("minimal", _heightIndex === 1);
 		switch (_heightIndex) {
 			case 0:
 				this.__lastBottomY = bottomBefore;
@@ -222663,10 +222660,8 @@ var init_ChatBox = __esmMin((() => {
 				this._host.style.display = "block";
 				if (header) header.style.display = "none";
 				if (body) body.style.display = "none";
-				if (inputEl) inputEl.classList.add("fix");
 				break;
 			default:
-				if (inputEl) inputEl.classList.remove("fix");
 				if (header) header.style.display = "";
 				if (body) body.style.display = "";
 		}
