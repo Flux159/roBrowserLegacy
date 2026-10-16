@@ -315063,9 +315063,26 @@ var init_DBManager = __esmMin((() => {
 				tryLoadLuaAliases(loadQuestInfo, getSystemAliases("System/OngoingQuestInfoList.lub"), null, () => {
 					loadQuestInfo("SystemEN/OngoingQuests.lub", null, () => loadCustomQuestInfo());
 				});
-				if (Configs.get("enableAchievements") && PacketVerManager_default.value >= 20150513) loadLuaValue("System/achievement_list.lub", "achievement_tbl", function(json) {
-					if (json) Object.assign(AchievementTable, json);
-				}, onLoad());
+				if (Configs.get("enableAchievements") && PacketVerManager_default.value >= 20150513) {
+					const onAchievementEnd = onLoad();
+					const addAchievements = (json) => {
+						if (json) Object.assign(AchievementTable, json);
+					};
+					const customAchievementInfo = Configs.get("customAchievementInfo", []);
+					const loadCustomAchievementInfo = (index = 0) => {
+						if (!Array.isArray(customAchievementInfo) || index >= customAchievementInfo.length) {
+							onAchievementEnd();
+							return;
+						}
+						try {
+							lua.doStringSync("achievement_tbl = nil");
+						} catch (error) {
+							console.error("[customAchievementInfo] ", error);
+						}
+						loadLuaValue(customAchievementInfo[index], "achievement_tbl", addAchievements, () => loadCustomAchievementInfo(index + 1));
+					};
+					loadLuaValue("System/achievement_list.lub", "achievement_tbl", addAchievements, () => loadCustomAchievementInfo());
+				}
 				if (Configs.get("enableCashShop") && PacketVerManager_default.value >= 2018e4) loadCashShopBanner(DB.LUA_PATH + "datainfo/tb_cashshop_banner.lub", null, onLoad());
 			} else {
 				loadTable("data/num2itemdisplaynametable.txt", "#", 2, function(_index, key, val) {
