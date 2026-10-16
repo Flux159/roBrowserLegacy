@@ -223449,7 +223449,10 @@ function createMiniMap({ name, htmlText, cssText, worldMap = null, townInfoToggl
 						case 5:
 							img = _inn;
 							break;
-						case 6: img = _kafra;
+						case 6:
+							img = _kafra;
+							break;
+						default: continue;
 					}
 					if (img.complete && img.width) {
 						_ctx.save();
@@ -268346,6 +268349,7 @@ var init_MapRenderer = __esmMin((() => {
 			EntityManager.free();
 			Damage.free(gl);
 			EffectManager.free(gl);
+			SignboardManager.free();
 			JoystickUI_default.onRestore();
 			Mouse.intersect = false;
 			Background.remove(() => {
