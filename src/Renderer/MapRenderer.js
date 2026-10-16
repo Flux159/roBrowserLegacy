@@ -64,6 +64,13 @@ const mat4 = glMatrix.mat4;
 const _pos = new Uint16Array(2);
 
 /**
+ * Set while a loaded map's loading image fades out (onMapComplete). A map
+ * asked for meanwhile waits in _nextMap until the image is gone.
+ */
+let _revealing = false;
+let _nextMap = null;
+
+/**
  * @param {string} mapname
  * @returns {string} map name without its extension
  */
@@ -134,6 +141,13 @@ class MapRenderer {
 			return;
 		}
 
+		// The server can move us as soon as the last map has sent
+		// NOTIFY_ACTORINIT, which is before its loading image is gone.
+		if (_revealing) {
+			_nextMap = mapname;
+			return;
+		}
+
 		// Support for instance map
 		// Is it always 3 digits ?
 		mapname = mapname
@@ -159,21 +173,42 @@ class MapRenderer {
 			// Parse the filename (ugly RO)
 			const filename = mapname.replace(/\.gat$/i, '.rsw');
 
-			Background.setLoading(function () {
-				// Hooking Thread
-				Thread.hook('MAP_PROGRESS', onProgressUpdate.bind(MapRenderer));
-				Thread.hook('MAP_WORLD', onWorldComplete.bind(MapRenderer));
-				Thread.hook('MAP_GROUND', onGroundComplete.bind(MapRenderer));
-				Thread.hook('MAP_ALTITUDE', onAltitudeComplete.bind(MapRenderer));
-				Thread.hook('MAP_MODELS', onModelsComplete.bind(MapRenderer));
-				Thread.hook('MAP_ANIMATED_MODEL', onAnimatedModelComplete.bind(MapRenderer));
-				Thread.hook('MAP_REPLACED_MODELS', models => MapHooks.modelsReady(Renderer.getContext(), models));
+			// The worker starts on the map now, while the screen fades to the
+			// loading image, rather than after the fade. What it sends back
+			// waits until the fade is done and the old map is freed.
+			let faded = false;
+			const waiting = [];
+			const afterFade =
+				fn =>
+				(...args) => {
+					if (faded) {
+						fn(...args);
+					} else {
+						waiting.push(() => fn(...args));
+					}
+				};
 
-				// Start Loading
+			// Hooking Thread
+			Thread.hook('MAP_PROGRESS', afterFade(onProgressUpdate.bind(MapRenderer)));
+			Thread.hook('MAP_WORLD', afterFade(onWorldComplete.bind(MapRenderer)));
+			Thread.hook('MAP_GROUND', afterFade(onGroundComplete.bind(MapRenderer)));
+			Thread.hook('MAP_ALTITUDE', afterFade(onAltitudeComplete.bind(MapRenderer)));
+			Thread.hook('MAP_MODELS', afterFade(onModelsComplete.bind(MapRenderer)));
+			Thread.hook('MAP_ANIMATED_MODEL', afterFade(onAnimatedModelComplete.bind(MapRenderer)));
+			Thread.hook(
+				'MAP_REPLACED_MODELS',
+				afterFade(models => MapHooks.modelsReady(Renderer.getContext(), models))
+			);
+
+			// Start Loading
+			Thread.send('MAP_REPLACE_MODELS', MapHooks.modelNames());
+			Thread.send('LOAD_MAP', filename, afterFade(onMapComplete.bind(MapRenderer)));
+
+			Background.setLoading(function () {
 				MapRenderer.free();
 				Renderer.remove();
-				Thread.send('MAP_REPLACE_MODELS', MapHooks.modelNames());
-				Thread.send('LOAD_MAP', filename, onMapComplete.bind(MapRenderer));
+				faded = true;
+				waiting.splice(0).forEach(fn => fn());
 			});
 
 			return;
@@ -183,6 +218,8 @@ class MapRenderer {
 		EntityManager.free();
 		Damage.free(gl);
 		EffectManager.free(gl);
+		// The map's signboards are added again once it is set up (MapEngine)
+		SignboardManager.free();
 		JoystickUI.onRestore();
 
 		// Basic TP
@@ -647,18 +684,32 @@ function onMapComplete(success, error) {
 	registerPostProcessModules(gl);
 	JoystickUI.onRestore();
 
-	// Starting to render
+	// Start the game now, behind the loading image, while the screen fades to
+	// black: the server sends the map's actors during the fade, and the first
+	// frames, with their set-up costs, are drawn before anyone can see them.
+	// Background.remove keeps the image over the game and its windows until
+	// the screen is black, so what the player sees is unchanged.
+	MapRenderer.loading = false;
+	_revealing = true;
+
+	MapRenderer.onLoad();
+	Sky.setUpCloudData();
+	ScreenEffectManager.startMapflagEffect(worldResource);
+
+	Renderer.show();
+	Renderer.render(MapRenderer.onRender);
+
+	// Display game
 	Background.remove(() => {
-		MapRenderer.loading = false;
+		_revealing = false;
 
-		MapRenderer.onLoad();
-		Sky.setUpCloudData();
-		ScreenEffectManager.startMapflagEffect(worldResource);
-
-		// Display game
-		Renderer.show();
-		Renderer.render(MapRenderer.onRender);
 		Mouse.intersect = true;
+
+		if (_nextMap) {
+			const mapname = _nextMap;
+			_nextMap = null;
+			MapRenderer.setMap(mapname);
+		}
 	});
 }
 
