@@ -108577,7 +108577,91 @@ var init_SkillConst = __esmMin((() => {
 		CD_DIVINUS_FLOS: 6518,
 		IQ_BLAZING_FLAME_BLAST: 6519,
 		WH_WILD_WALK: 6520,
-		TR_RHYTHMICAL_WAVE: 6521
+		TR_RHYTHMICAL_WAVE: 6521,
+		DR_WEREWOLF: 6524,
+		DR_ENRAGE_WOLF: 6525,
+		DR_NOMERCY_CLAW: 6526,
+		DR_CRUEL_BITE: 6527,
+		DR_HUNGER: 6528,
+		DR_BLOOD_HOWLING: 6529,
+		DR_BEASTY_NOSE: 6530,
+		DR_WERERAPTOR: 6531,
+		DR_ENRAGE_RAPTOR: 6532,
+		DR_SHOOTING_FEATHER: 6533,
+		DR_FLICKING_TONADO: 6534,
+		DR_LOW_FLIGHT: 6535,
+		DR_PREENING: 6536,
+		DR_SHARPE_EYES: 6537,
+		DR_TRUTH_OF_ICE: 6538,
+		DR_ICE_TOTEM: 6539,
+		DR_ICE_CLOUD: 6540,
+		DR_TRUTH_OF_WIND: 6541,
+		DR_CUTTING_WIND: 6542,
+		DR_WIND_BOMB: 6543,
+		DR_TRUTH_OF_EARTH: 6544,
+		DR_EARTH_FLOWER: 6545,
+		DR_AROUND_FLOWER: 6546,
+		DR_NATURE_SHIELD: 6547,
+		DR_NATURE_LOGIC: 6548,
+		KR_NASTY_SLASH: 6549,
+		KR_DOUBLE_SLASH: 6550,
+		KR_CLAW_WAVE: 6551,
+		KR_CHOP_CHOP: 6552,
+		KR_IRON_HOWLING: 6553,
+		KR_WOLF_INSTINCT: 6554,
+		KR_SHARPEN_GUST: 6555,
+		KR_SHARPEN_HAIL: 6556,
+		KR_TYPHOON_WING: 6557,
+		KR_FEATHER_SPRINKLE: 6558,
+		KR_WIND_VEIL: 6559,
+		KR_RAPTORIAL_INSTINCT: 6560,
+		KR_ICE_PILLAR: 6561,
+		KR_ICE_SPLASH: 6562,
+		KR_THUNDERING_FOCUS: 6563,
+		KR_THUNDERING_FOCUS_S: 6564,
+		KR_THUNDERING_ORB: 6565,
+		KR_THUNDERING_ORB_S: 6566,
+		KR_THUNDERING_CALL: 6567,
+		KR_THUNDERING_CALL_S: 6568,
+		KR_EARTH_DRILL: 6569,
+		KR_EARTH_STAMP: 6570,
+		KR_EARTH_BUD: 6571,
+		KR_NATURE_VIGOUR: 6572,
+		KR_NATURE_PROTECTION: 6573,
+		KR_GROUND_BLOOM: 6574,
+		AT_SIXTH_SENSE: 6575,
+		AT_PULSE_OF_MADNESS: 6576,
+		AT_ALPHA_PHASE: 6577,
+		AT_PRIMAL_CLAW: 6578,
+		AT_FERAL_CLAW: 6579,
+		AT_ALPHA_CLAW: 6580,
+		AT_SAVAGE_LUNGE: 6581,
+		AT_FRENZY_FANG: 6582,
+		AT_FLIP_FLAP: 6583,
+		AT_FLIP_FLAP_TARGET: 6584,
+		AT_APEX_PHASE: 6585,
+		AT_PINION_SHOT: 6586,
+		AT_ZEPHYR_LINK: 6587,
+		AT_QUILL_SPEAR: 6588,
+		AT_QUILL_SPEAR_S: 6589,
+		AT_TEMPEST_FLAP: 6590,
+		AT_AERO_SYNC: 6591,
+		AT_GLACIER_MONOLITH: 6592,
+		AT_GLACIER_NOVA: 6593,
+		AT_GLACIER_SHARD: 6594,
+		AT_GLACIER_STOMP: 6595,
+		AT_CHILLING_BLAST: 6596,
+		AT_ROARING_PIERCER: 6597,
+		AT_ROARING_PIERCER_S: 6598,
+		AT_ROARING_CHARGE: 6599,
+		AT_ROARING_CHARGE_S: 6600,
+		AT_FURIOS_STORM: 6601,
+		AT_TERRA_WAVE: 6602,
+		AT_TERRA_HARVEST: 6603,
+		AT_SOLID_STOMP: 6604,
+		AT_GRAVITY_HOLE: 6605,
+		AT_NATURE_AID: 6606,
+		AT_NATURE_HARMONY: 6607
 	};
 }));
 //#endregion
@@ -139773,6 +139857,92 @@ var init_SkillTreeView = __esmMin((() => {
 		[SkillConst_default.SS_ANKOKURYUUAKUMU]: 41,
 		[SkillConst_default.SS_FOUR_CHARM]: 42
 	};
+	SkillTreeView[JobConst_default.DRUID] = {
+		list: 1,
+		beforeJob: JobConst_default.NOVICE,
+		[SkillConst_default.DR_WEREWOLF]: 1,
+		[SkillConst_default.DR_WERERAPTOR]: 2,
+		[SkillConst_default.DR_BEASTY_NOSE]: 3,
+		[SkillConst_default.DR_TRUTH_OF_ICE]: 4,
+		[SkillConst_default.DR_TRUTH_OF_WIND]: 5,
+		[SkillConst_default.DR_TRUTH_OF_EARTH]: 6,
+		[SkillConst_default.DR_BLOOD_HOWLING]: 8,
+		[SkillConst_default.DR_PREENING]: 9,
+		[SkillConst_default.DR_SHARPE_EYES]: 10,
+		[SkillConst_default.DR_ICE_TOTEM]: 11,
+		[SkillConst_default.DR_CUTTING_WIND]: 12,
+		[SkillConst_default.DR_EARTH_FLOWER]: 13,
+		[SkillConst_default.DR_ENRAGE_WOLF]: 15,
+		[SkillConst_default.DR_ENRAGE_RAPTOR]: 16,
+		[SkillConst_default.DR_ICE_CLOUD]: 18,
+		[SkillConst_default.DR_WIND_BOMB]: 19,
+		[SkillConst_default.DR_AROUND_FLOWER]: 20,
+		[SkillConst_default.DR_NOMERCY_CLAW]: 22,
+		[SkillConst_default.DR_SHOOTING_FEATHER]: 23,
+		[SkillConst_default.DR_NATURE_SHIELD]: 25,
+		[SkillConst_default.DR_NATURE_LOGIC]: 26,
+		[SkillConst_default.DR_CRUEL_BITE]: 29,
+		[SkillConst_default.DR_LOW_FLIGHT]: 30,
+		[SkillConst_default.DR_HUNGER]: 36,
+		[SkillConst_default.DR_FLICKING_TONADO]: 37
+	};
+	SkillTreeView[JobConst_default.KARNOS] = {
+		list: 2,
+		beforeJob: JobConst_default.DRUID,
+		[SkillConst_default.KR_DOUBLE_SLASH]: 0,
+		[SkillConst_default.KR_SHARPEN_GUST]: 1,
+		[SkillConst_default.KR_WOLF_INSTINCT]: 2,
+		[SkillConst_default.KR_ICE_PILLAR]: 4,
+		[SkillConst_default.KR_THUNDERING_FOCUS]: 5,
+		[SkillConst_default.KR_EARTH_BUD]: 6,
+		[SkillConst_default.KR_NASTY_SLASH]: 7,
+		[SkillConst_default.KR_SHARPEN_HAIL]: 8,
+		[SkillConst_default.KR_RAPTORIAL_INSTINCT]: 9,
+		[SkillConst_default.KR_ICE_SPLASH]: 11,
+		[SkillConst_default.KR_THUNDERING_ORB]: 12,
+		[SkillConst_default.KR_EARTH_DRILL]: 13,
+		[SkillConst_default.KR_CLAW_WAVE]: 14,
+		[SkillConst_default.KR_FEATHER_SPRINKLE]: 15,
+		[SkillConst_default.KR_THUNDERING_CALL]: 19,
+		[SkillConst_default.KR_EARTH_STAMP]: 20,
+		[SkillConst_default.KR_CHOP_CHOP]: 21,
+		[SkillConst_default.KR_TYPHOON_WING]: 22,
+		[SkillConst_default.KR_NATURE_VIGOUR]: 25,
+		[SkillConst_default.KR_NATURE_PROTECTION]: 26,
+		[SkillConst_default.KR_IRON_HOWLING]: 28,
+		[SkillConst_default.KR_WIND_VEIL]: 29
+	};
+	SkillTreeView[JobConst_default.ALITEA] = {
+		list: 3,
+		beforeJob: JobConst_default.KARNOS,
+		[SkillConst_default.AT_PULSE_OF_MADNESS]: 0,
+		[SkillConst_default.AT_FLIP_FLAP]: 1,
+		[SkillConst_default.AT_SIXTH_SENSE]: 2,
+		[SkillConst_default.AT_GLACIER_MONOLITH]: 4,
+		[SkillConst_default.AT_ROARING_CHARGE]: 5,
+		[SkillConst_default.AT_TERRA_HARVEST]: 6,
+		[SkillConst_default.AT_PRIMAL_CLAW]: 7,
+		[SkillConst_default.AT_PINION_SHOT]: 8,
+		[SkillConst_default.AT_ALPHA_PHASE]: 9,
+		[SkillConst_default.AT_GLACIER_SHARD]: 11,
+		[SkillConst_default.AT_ROARING_PIERCER]: 12,
+		[SkillConst_default.AT_TERRA_WAVE]: 13,
+		[SkillConst_default.AT_FERAL_CLAW]: 14,
+		[SkillConst_default.AT_QUILL_SPEAR]: 15,
+		[SkillConst_default.AT_APEX_PHASE]: 16,
+		[SkillConst_default.AT_GLACIER_STOMP]: 18,
+		[SkillConst_default.AT_FURIOS_STORM]: 19,
+		[SkillConst_default.AT_SOLID_STOMP]: 20,
+		[SkillConst_default.AT_ALPHA_CLAW]: 21,
+		[SkillConst_default.AT_TEMPEST_FLAP]: 22,
+		[SkillConst_default.AT_CHILLING_BLAST]: 25,
+		[SkillConst_default.AT_FRENZY_FANG]: 28,
+		[SkillConst_default.AT_AERO_SYNC]: 29,
+		[SkillConst_default.AT_NATURE_AID]: 32,
+		[SkillConst_default.AT_NATURE_HARMONY]: 33,
+		[SkillConst_default.AT_GRAVITY_HOLE]: 34,
+		[SkillConst_default.AT_SAVAGE_LUNGE]: 35
+	};
 	duplicateEntry$1(JobConst_default.NOVICE, JobConst_default.NOVICE_B);
 	duplicateEntry$1(JobConst_default.SWORDMAN, JobConst_default.SWORDMAN_B);
 	duplicateEntry$1(JobConst_default.MAGICIAN, JobConst_default.MAGICIAN_B);
@@ -139879,6 +140049,8 @@ var init_SkillTreeView = __esmMin((() => {
 	duplicateEntry$1(JobConst_default.DRAGON_KNIGHT, JobConst_default.DRAGON_KNIGHT2);
 	duplicateEntry$1(JobConst_default.IMPERIAL_GUARD, JobConst_default.IMPERIAL_GUARD2);
 	duplicateEntry$1(JobConst_default.SKY_EMPEROR, JobConst_default.SKY_EMPEROR2);
+	duplicateEntry$1(JobConst_default.DRUID, JobConst_default.DRUID_B);
+	duplicateEntry$1(JobConst_default.KARNOS, JobConst_default.KARNOS_B);
 }));
 //#endregion
 //#region src/DB/Skills/SkillTreeMerge.js
@@ -142922,7 +143094,9 @@ var init_StatusConst = __esmMin((() => {
 		C_RATE_PLUS: 1447,
 		RESIST_PLUS: 1448,
 		PVP_DUN_BUFF: 1449,
-		MAX: 1450
+		WEREWOLF: 1675,
+		WERERAPTOR: 1680,
+		MAX: 1681
 	};
 }));
 //#endregion
@@ -217392,6 +217566,234 @@ var init_SkillEffect = __esmMin((() => {
 	SkillEffect[SkillConst_default.SP_SOULCURSE] = { effectId: "ef_sp_soulcurse" };
 	SkillEffect[SkillConst_default.SP_SOULREVOLVE] = { effectId: "ef_sp_soulrevolve" };
 	SkillEffect[SkillConst_default.NV_HELPANGEL] = { effectId: "ef_nv_helpangel" };
+	SkillEffect[SkillConst_default.DR_WEREWOLF] = { effectId: "ef_druid_werewolf" };
+	SkillEffect[SkillConst_default.DR_WERERAPTOR] = { effectId: "ef_druid_wereraptor" };
+	SkillEffect[SkillConst_default.DR_ENRAGE_WOLF] = { effectId: "ef_druid_enrage_wolf" };
+	SkillEffect[SkillConst_default.DR_ENRAGE_RAPTOR] = { effectId: "ef_druid_enrage_raptor" };
+	SkillEffect[SkillConst_default.DR_BLOOD_HOWLING] = { effectId: "ef_druid_blood_howling" };
+	SkillEffect[SkillConst_default.DR_PREENING] = { effectId: "ef_druid_preening" };
+	SkillEffect[SkillConst_default.DR_TRUTH_OF_ICE] = { effectId: "ef_druid_truth_of_ice" };
+	SkillEffect[SkillConst_default.DR_TRUTH_OF_WIND] = { effectId: "ef_druid_truth_of_wind" };
+	SkillEffect[SkillConst_default.DR_TRUTH_OF_EARTH] = { effectId: "ef_druid_truth_of_earth" };
+	SkillEffect[SkillConst_default.DR_NATURE_SHIELD] = { effectId: "ef_druid_nature_shield" };
+	SkillEffect[SkillConst_default.DR_NOMERCY_CLAW] = {
+		effectIdOnCaster: "ef_druid_nomercy_claw",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.DR_CRUEL_BITE] = {
+		effectId: "ef_druid_cruel_bite",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.DR_HUNGER] = {
+		effectIdOnCaster: "ef_druid_hunger",
+		effectId: "ef_druid_hunger_target",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.DR_SHOOTING_FEATHER] = {
+		effectIdOnCaster: "ef_druid_shooting_feather",
+		effectId: "ef_druid_shooting_feather_hit",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.DR_FLICKING_TONADO] = {
+		effectIdOnCaster: "ef_druid_flicking_tonado",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.DR_LOW_FLIGHT] = {
+		effectIdOnCaster: "ef_druid_low_flight_up",
+		effectId: "ef_druid_low_flight",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.DR_ICE_TOTEM] = {
+		beginCastEffectId: "ef_druid_ice_cast",
+		effectId: "ef_druid_ice_totem",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.DR_ICE_CLOUD] = {
+		beginCastEffectId: "ef_druid_ice_cast",
+		effectId: "ef_druid_ice_cloud",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.DR_CUTTING_WIND] = {
+		effectId: "ef_druid_cutting_wind",
+		hitEffectId: "ef_druid_cutting_wind_hit"
+	};
+	SkillEffect[SkillConst_default.DR_WIND_BOMB] = {
+		effectId: "ef_druid_wind_bomb",
+		hitEffectId: "ef_druid_wind_bomb_hit"
+	};
+	SkillEffect[SkillConst_default.DR_EARTH_FLOWER] = { effectId: "ef_druid_earth_flower" };
+	SkillEffect[SkillConst_default.DR_AROUND_FLOWER] = { effectIdOnCaster: "ef_druid_around_flower" };
+	SkillEffect[SkillConst_default.KR_NASTY_SLASH] = {
+		effectId: "ef_druid_nasty_slash",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.KR_DOUBLE_SLASH] = {
+		effectId: "ef_druid_double_slash",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.KR_CLAW_WAVE] = {
+		effectId: "ef_druid_claw_wave",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.KR_CHOP_CHOP] = {
+		effectIdOnCaster: "ef_druid_chop_chop",
+		hitEffectId: "ef_druid_chop_chop_hit"
+	};
+	SkillEffect[SkillConst_default.KR_IRON_HOWLING] = { effectId: "ef_druid_iron_howling" };
+	SkillEffect[SkillConst_default.KR_SHARPEN_GUST] = {
+		effectId: "ef_druid_sharpen_gust",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.KR_SHARPEN_HAIL] = {
+		effectIdOnCaster: "ef_druid_sharpen_hail_shot",
+		effectId: "ef_druid_sharpen_hail",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.KR_TYPHOON_WING] = {
+		effectId: "ef_druid_typhoon_wing",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.KR_FEATHER_SPRINKLE] = {
+		effectIdOnCaster: "ef_druid_feather_sprinkle",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.KR_WIND_VEIL] = { effectId: "ef_druid_wind_veil" };
+	SkillEffect[SkillConst_default.KR_ICE_PILLAR] = {
+		beginCastEffectId: "ef_druid_ice_cast",
+		effectId: "ef_druid_ice_pillar_start",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.KR_ICE_SPLASH] = {
+		beginCastEffectId: "ef_druid_ice_cast",
+		effectId: "ef_druid_ice_splash",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.KR_THUNDERING_FOCUS] = {
+		beginCastEffectId: "ef_druid_thunder_cast",
+		effectIdOnCaster: "ef_druid_thundering_focus_g",
+		hitEffectId: "ef_druid_thunder_hit_g"
+	};
+	SkillEffect[SkillConst_default.KR_THUNDERING_FOCUS_S] = {
+		effectIdOnCaster: "ef_druid_thundering_focus_y",
+		hitEffectId: "ef_druid_thunder_hit_y"
+	};
+	SkillEffect[SkillConst_default.KR_THUNDERING_ORB] = {
+		beginCastEffectId: "ef_druid_thunder_cast",
+		effectId: "ef_druid_thundering_orb_g",
+		hitEffectId: "ef_druid_thunder_hit_g"
+	};
+	SkillEffect[SkillConst_default.KR_THUNDERING_ORB_S] = {
+		effectId: "ef_druid_thundering_orb_y",
+		hitEffectId: "ef_druid_thunder_hit_y"
+	};
+	SkillEffect[SkillConst_default.KR_THUNDERING_CALL] = {
+		beginCastEffectId: "ef_druid_thunder_cast",
+		effectId: "ef_druid_thundering_call_g",
+		hitEffectId: "ef_druid_thunder_hit_g"
+	};
+	SkillEffect[SkillConst_default.KR_THUNDERING_CALL_S] = {
+		effectId: "ef_druid_thundering_call_y",
+		hitEffectId: "ef_druid_thunder_hit_y"
+	};
+	SkillEffect[SkillConst_default.KR_EARTH_DRILL] = { effectId: "ef_druid_earth_drill" };
+	SkillEffect[SkillConst_default.KR_EARTH_STAMP] = { effectId: "ef_druid_earth_stamp" };
+	SkillEffect[SkillConst_default.KR_NATURE_PROTECTION] = { effectId: "ef_druid_nature_protection" };
+	SkillEffect[SkillConst_default.KR_GROUND_BLOOM] = { effectIdOnCaster: "ef_druid_ground_bloom" };
+	SkillEffect[SkillConst_default.AT_PULSE_OF_MADNESS] = { effectId: "ef_druid_pulse_of_madness" };
+	SkillEffect[SkillConst_default.AT_ALPHA_PHASE] = { effectId: "ef_druid_alpha_phase" };
+	SkillEffect[SkillConst_default.AT_APEX_PHASE] = { effectId: "ef_druid_apex_phase" };
+	SkillEffect[SkillConst_default.AT_FLIP_FLAP] = { effectId: "ef_druid_flip_flap" };
+	SkillEffect[SkillConst_default.AT_FLIP_FLAP_TARGET] = { effectId: "ef_druid_flip_flap" };
+	SkillEffect[SkillConst_default.AT_NATURE_HARMONY] = { effectId: "ef_druid_nature_harmony" };
+	SkillEffect[SkillConst_default.AT_PRIMAL_CLAW] = {
+		effectId: "ef_druid_primal_claw",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.AT_FERAL_CLAW] = {
+		effectIdOnCaster: "ef_druid_feral_claw",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.AT_ALPHA_CLAW] = {
+		effectIdOnCaster: "ef_druid_alpha_claw",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.AT_SAVAGE_LUNGE] = {
+		effectId: "ef_druid_savage_lunge",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.AT_FRENZY_FANG] = {
+		effectId: "ef_druid_frenzy_fang",
+		hitEffectId: "ef_druid_hit_wolf"
+	};
+	SkillEffect[SkillConst_default.AT_PINION_SHOT] = {
+		effectId: "ef_druid_pinion_shot",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.AT_QUILL_SPEAR] = {
+		effectId: "ef_druid_quill_spear",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.AT_QUILL_SPEAR_S] = {
+		effectId: "ef_druid_quill_spear_s",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.AT_TEMPEST_FLAP] = {
+		effectIdOnCaster: "ef_druid_tempest_flap_cast",
+		effectId: "ef_druid_tempest_flap",
+		hitEffectId: "ef_druid_hit_raptor"
+	};
+	SkillEffect[SkillConst_default.AT_AERO_SYNC] = {
+		effectIdOnCaster: "ef_druid_aero_sync_self",
+		effectId: "ef_druid_aero_sync"
+	};
+	SkillEffect[SkillConst_default.AT_ZEPHYR_LINK] = { effectId: "ef_druid_zephyr_link" };
+	SkillEffect[SkillConst_default.AT_GLACIER_MONOLITH] = {
+		beginCastEffectId: "ef_druid_ice_cast",
+		effectId: "ef_druid_glacier_monolith_start",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.AT_GLACIER_NOVA] = {
+		effectId: "ef_druid_glacier_nova",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.AT_GLACIER_SHARD] = {
+		beginCastEffectId: "ef_druid_ice_cast",
+		effectId: "ef_druid_glacier_shard",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.AT_GLACIER_STOMP] = {
+		effectIdOnCaster: "ef_druid_glacier_stomp",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.AT_CHILLING_BLAST] = {
+		effectIdOnCaster: "ef_druid_chilling_blast",
+		hitEffectId: "ef_druid_ice_hit"
+	};
+	SkillEffect[SkillConst_default.AT_ROARING_PIERCER] = {
+		beginCastEffectId: "ef_druid_thunder_cast",
+		effectId: "ef_druid_roaring_piercer_g",
+		hitEffectId: "ef_druid_thunder_hit_g"
+	};
+	SkillEffect[SkillConst_default.AT_ROARING_PIERCER_S] = {
+		effectId: "ef_druid_roaring_piercer_y",
+		hitEffectId: "ef_druid_thunder_hit_y"
+	};
+	SkillEffect[SkillConst_default.AT_ROARING_CHARGE] = {
+		effectIdOnCaster: "ef_druid_roaring_charge",
+		hitEffectId: "ef_druid_thunder_hit_g"
+	};
+	SkillEffect[SkillConst_default.AT_ROARING_CHARGE_S] = {
+		effectIdOnCaster: "ef_druid_roaring_charge_s",
+		hitEffectId: "ef_druid_thunder_hit_y"
+	};
+	SkillEffect[SkillConst_default.AT_FURIOS_STORM] = {
+		effectIdOnCaster: "ef_druid_furios_storm",
+		hitEffectId: "ef_druid_thunder_hit_g"
+	};
+	SkillEffect[SkillConst_default.AT_TERRA_WAVE] = { effectId: "ef_druid_terra_wave" };
+	SkillEffect[SkillConst_default.AT_TERRA_HARVEST] = { effectId: "ef_druid_terra_harvest" };
+	SkillEffect[SkillConst_default.AT_SOLID_STOMP] = { effectIdOnCaster: "ef_druid_solid_stomp" };
+	SkillEffect[SkillConst_default.AT_GRAVITY_HOLE] = { effectIdOnCaster: "ef_druid_gravity_hole" };
 }));
 //#endregion
 //#region src/DB/Skills/SkillUnitConst.js
@@ -217576,6 +217978,8 @@ var init_SkillUnitConst = __esmMin((() => {
 		UNT_GD_GLORYWOUNDS: 194,
 		UNT_GD_SOULCOLD: 195,
 		UNT_GD_HAWKEYES: 196,
+		UNT_ICE_PILLAR: 313,
+		UNT_GLACIAL_MONOLITH: 314,
 		UNT_MAX: 400
 	};
 }));
@@ -218855,6 +219259,8 @@ var init_SkillUnit = __esmMin((() => {
 	SkillUnit[SkillUnitConst_default.UNT_ICEMINE] = EffectConst_default.EF_NONE;
 	SkillUnit[SkillUnitConst_default.UNT_MAGMA_ERUPTION] = EffectConst_default.EF_NONE;
 	SkillUnit[SkillUnitConst_default.UNT_B_TRAP] = EffectConst_default.EF_NONE;
+	SkillUnit[SkillUnitConst_default.UNT_ICE_PILLAR] = "ef_druid_ice_pillar_loop";
+	SkillUnit[SkillUnitConst_default.UNT_GLACIAL_MONOLITH] = "ef_druid_glacier_monolith_loop";
 }));
 //#endregion
 //#region src/DB/Items/ItemEffect.js
@@ -291015,6 +291421,863 @@ var init_EffectTable = __esmMin((() => {
 			texturePath: "help_angel/help_angel_bottom/",
 			renderBeforeEntities: true
 		}],
+		ef_druid_werewolf: [{
+			type: "STR",
+			file: "druid/dr_werewolf/werewolf/werewolf",
+			texturePath: "druid/dr_werewolf/werewolf/",
+			min: "druid/dr_werewolf/werewolf/min_werewolf",
+			wav: "effect/druid/dr_werewolf"
+		}],
+		ef_druid_wereraptor: [{
+			type: "STR",
+			file: "druid/dr_wereraptor/wereraptor/wereraptor",
+			texturePath: "druid/dr_wereraptor/wereraptor/",
+			min: "druid/dr_wereraptor/wereraptor/min_wereraptor",
+			wav: "effect/druid/dr_wereraptor"
+		}],
+		ef_druid_enrage_wolf: [{
+			type: "STR",
+			file: "druid/dr_enrage_wolf/enrage_wolf/enrage_wolf",
+			texturePath: "druid/dr_enrage_wolf/enrage_wolf/",
+			min: "druid/dr_enrage_wolf/enrage_wolf/min_enrage_wolf",
+			wav: "effect/druid/dr_enrage_wolf"
+		}],
+		ef_druid_enrage_raptor: [{
+			type: "STR",
+			file: "druid/dr_enrage_raptor/enrage_raptor/enrage_raptor",
+			texturePath: "druid/dr_enrage_raptor/enrage_raptor/",
+			min: "druid/dr_enrage_raptor/enrage_raptor/min_enrage_raptor",
+			wav: "effect/druid/dr_enrage_raptor"
+		}],
+		ef_druid_blood_howling: [{
+			type: "STR",
+			file: "druid/dr_blood_howling/blood_howling/blood_howling",
+			texturePath: "druid/dr_blood_howling/blood_howling/",
+			min: "druid/dr_blood_howling/blood_howling/min_blood_howling",
+			wav: "effect/druid/dr_blood_howling"
+		}],
+		ef_druid_preening: [{
+			type: "STR",
+			file: "druid/dr_preening/preening/preening",
+			texturePath: "druid/dr_preening/preening/",
+			min: "druid/dr_preening/preening/min_preening",
+			wav: "effect/druid/dr_preening"
+		}],
+		ef_druid_truth_of_ice: [{
+			type: "STR",
+			file: "druid/dr_truth_of_ice/truth_of_ice/truth_of_ice",
+			texturePath: "druid/dr_truth_of_ice/truth_of_ice/",
+			min: "druid/dr_truth_of_ice/truth_of_ice/min_truth_of_ice",
+			wav: "effect/druid/dr_truth_of_ice"
+		}, {
+			type: "STR",
+			file: "druid/dr_truth_of_ice/truth_of_ice_bottom/truth_of_ice_bottom",
+			texturePath: "druid/dr_truth_of_ice/truth_of_ice_bottom/",
+			min: "druid/dr_truth_of_ice/truth_of_ice_bottom/min_truth_of_ice_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_truth_of_wind: [{
+			type: "STR",
+			file: "druid/dr_truth_of_wind/truth_of_wind/truth_of_wind",
+			texturePath: "druid/dr_truth_of_wind/truth_of_wind/",
+			min: "druid/dr_truth_of_wind/truth_of_wind/min_truth_of_wind",
+			wav: "effect/druid/dr_truth_of_wind"
+		}, {
+			type: "STR",
+			file: "druid/dr_truth_of_wind/truth_of_wind_bottom/truth_of_wind_bottom",
+			texturePath: "druid/dr_truth_of_wind/truth_of_wind_bottom/",
+			min: "druid/dr_truth_of_wind/truth_of_wind_bottom/min_truth_of_wind_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_truth_of_earth: [{
+			type: "STR",
+			file: "druid/dr_truth_of_earth/truth_of_earth/truth_of_earth",
+			texturePath: "druid/dr_truth_of_earth/truth_of_earth/",
+			min: "druid/dr_truth_of_earth/truth_of_earth/min_truth_of_earth",
+			wav: "effect/druid/dr_truth_of_earth"
+		}, {
+			type: "STR",
+			file: "druid/dr_truth_of_earth/truth_of_earth_bottom/truth_of_earth_bottom",
+			texturePath: "druid/dr_truth_of_earth/truth_of_earth_bottom/",
+			min: "druid/dr_truth_of_earth/truth_of_earth_bottom/min_truth_of_earth_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_nature_shield: [{
+			type: "STR",
+			file: "druid/dr_nature_shield/nature_shield/nature_shield",
+			texturePath: "druid/dr_nature_shield/nature_shield/",
+			min: "druid/dr_nature_shield/nature_shield/min_nature_shield",
+			wav: "effect/druid/dr_nature_shield"
+		}],
+		ef_druid_nature_protection: [{
+			type: "STR",
+			file: "druid/dr_nature_protection/nature_protection/nature_protection",
+			texturePath: "druid/dr_nature_protection/nature_protection/"
+		}],
+		ef_druid_hit_wolf: [{
+			type: "STR",
+			file: "druid/dr_hit/dr_hit_werewolf/dr_hit_werewolf",
+			texturePath: "druid/dr_hit/dr_hit_werewolf/",
+			min: "druid/dr_hit/dr_hit_werewolf/min_dr_hit_werewolf"
+		}],
+		ef_druid_hit_raptor: [{
+			type: "STR",
+			file: "druid/dr_hit/dr_hit_wereraptor/dr_hit_wereraptor",
+			texturePath: "druid/dr_hit/dr_hit_wereraptor/",
+			min: "druid/dr_hit/dr_hit_wereraptor/min_dr_hit_wereraptor"
+		}],
+		ef_druid_ice_hit: [{
+			type: "STR",
+			file: "druid/dr_ice_hit/ice_hit/ice_hit",
+			texturePath: "druid/dr_ice_hit/ice_hit/",
+			min: "druid/dr_ice_hit/ice_hit/min_ice_hit"
+		}],
+		ef_druid_ice_cast: [{
+			type: "STR",
+			file: "druid/ice_cast/ice_cast/ice_cast",
+			texturePath: "druid/ice_cast/ice_cast/",
+			min: "druid/ice_cast/ice_cast/min_ice_cast",
+			wav: "effect/druid/ice_cast"
+		}, {
+			type: "STR",
+			file: "druid/ice_cast/ice_cast_bottom/ice_cast_bottom",
+			texturePath: "druid/ice_cast/ice_cast_bottom/",
+			min: "druid/ice_cast/ice_cast_bottom/min_ice_cast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_thunder_cast: [{
+			type: "STR",
+			file: "druid/thundering_cast/thundering_cast/thundering_cast",
+			texturePath: "druid/thundering_cast/thundering_cast/",
+			min: "druid/thundering_cast/thundering_cast/min_thundering_cast",
+			wav: "effect/druid/thundering_cast"
+		}],
+		ef_druid_thunder_hit_g: [{
+			type: "STR",
+			file: "druid/thundering_attack/thundering_attack_g/thundering_attack_g",
+			texturePath: "druid/thundering_attack/thundering_attack_g/",
+			min: "druid/thundering_attack/thundering_attack_g/min_thundering_attack_g"
+		}],
+		ef_druid_thunder_hit_y: [{
+			type: "STR",
+			file: "druid/thundering_attack/thundering_attack_y/thundering_attack_y",
+			texturePath: "druid/thundering_attack/thundering_attack_y/",
+			min: "druid/thundering_attack/thundering_attack_y/min_thundering_attack_y"
+		}],
+		ef_druid_nomercy_claw: [{
+			type: "STR",
+			file: "druid/dr_nomercy_claw/nomercy_claw/nomercy_claw",
+			texturePath: "druid/dr_nomercy_claw/nomercy_claw/",
+			min: "druid/dr_nomercy_claw/nomercy_claw/min_nomercy_claw",
+			wav: "effect/druid/dr_nomercy_claw"
+		}],
+		ef_druid_cruel_bite: [{
+			type: "STR",
+			file: "druid/dr_cruel_bite/cruel_bite/cruel_bite",
+			texturePath: "druid/dr_cruel_bite/cruel_bite/",
+			min: "druid/dr_cruel_bite/cruel_bite/min_cruel_bite",
+			wav: "effect/druid/dr_cruel_bite"
+		}],
+		ef_druid_hunger: [{
+			type: "STR",
+			file: "druid/dr_hunger/hunger/hunger",
+			texturePath: "druid/dr_hunger/hunger/",
+			min: "druid/dr_hunger/hunger/min_hunger",
+			wav: "effect/druid/dr_hunger"
+		}],
+		ef_druid_hunger_target: [{
+			type: "STR",
+			file: "druid/dr_hunger/hunger_target/hunger_target",
+			texturePath: "druid/dr_hunger/hunger_target/",
+			min: "druid/dr_hunger/hunger_target/min_hunger_target"
+		}],
+		ef_druid_shooting_feather: [{
+			type: "STR",
+			file: "druid/dr_shooting_feather/shooting_feather/shooting_feather",
+			texturePath: "druid/dr_shooting_feather/shooting_feather/",
+			min: "druid/dr_shooting_feather/shooting_feather/min_shooting_feather",
+			wav: "effect/druid/dr_shooting_feather"
+		}],
+		ef_druid_shooting_feather_hit: [{
+			type: "STR",
+			file: "druid/dr_shooting_feather/shooting_feather_attack/shooting_feather_attack",
+			texturePath: "druid/dr_shooting_feather/shooting_feather_attack/",
+			min: "druid/dr_shooting_feather/shooting_feather_attack/min_shooting_feather_attack"
+		}],
+		ef_druid_flicking_tonado: [{
+			type: "STR",
+			file: "druid/dr_flicking_tonado/flicking_tonado/flicking_tonado",
+			texturePath: "druid/dr_flicking_tonado/flicking_tonado/",
+			min: "druid/dr_flicking_tonado/flicking_tonado/min_flicking_tonado",
+			wav: "effect/druid/dr_flicking_tonado"
+		}, {
+			type: "STR",
+			file: "druid/dr_flicking_tonado/flicking_tonado_bottom/flicking_tonado_bottom",
+			texturePath: "druid/dr_flicking_tonado/flicking_tonado_bottom/",
+			min: "druid/dr_flicking_tonado/flicking_tonado_bottom/min_flicking_tonado_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_low_flight: [{
+			type: "STR",
+			file: "druid/dr_low_flight/low_flight_horizon/low_flight_horizon",
+			texturePath: "druid/dr_low_flight/low_flight_horizon/",
+			min: "druid/dr_low_flight/low_flight_horizon/min_low_flight_horizon",
+			wav: "effect/druid/dr_low_flight"
+		}, {
+			type: "STR",
+			file: "druid/dr_low_flight/low_flight_bottom/low_flight_bottom",
+			texturePath: "druid/dr_low_flight/low_flight_bottom/",
+			min: "druid/dr_low_flight/low_flight_bottom/min_low_flight_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_low_flight_up: [{
+			type: "STR",
+			file: "druid/dr_low_flight/low_flight_vertical/low_flight_vertical",
+			texturePath: "druid/dr_low_flight/low_flight_vertical/",
+			min: "druid/dr_low_flight/low_flight_vertical/min_low_flight_vertical"
+		}],
+		ef_druid_ice_totem: [{
+			type: "STR",
+			file: "druid/dr_ice_totem/ice_totem/ice_totem",
+			texturePath: "druid/dr_ice_totem/ice_totem/",
+			min: "druid/dr_ice_totem/ice_totem/min_ice_totem",
+			wav: "effect/druid/dr_ice_totem"
+		}],
+		ef_druid_ice_cloud: [{
+			type: "STR",
+			file: "druid/dr_ice_cloud/ice_cloud/ice_cloud",
+			texturePath: "druid/dr_ice_cloud/ice_cloud/",
+			min: "druid/dr_ice_cloud/ice_cloud/min_ice_cloud",
+			wav: "effect/druid/dr_ice_cloud"
+		}],
+		ef_druid_cutting_wind: [{
+			type: "STR",
+			file: "druid/dr_cutting_wind/cutting_wind/cutting_wind",
+			texturePath: "druid/dr_cutting_wind/cutting_wind/",
+			min: "druid/dr_cutting_wind/cutting_wind/min_cutting_wind",
+			wav: "effect/druid/dr_cutting_wind"
+		}],
+		ef_druid_cutting_wind_hit: [{
+			type: "STR",
+			file: "druid/dr_cutting_wind/cutting_wind_hit/cutting_wind_hit",
+			texturePath: "druid/dr_cutting_wind/cutting_wind_hit/",
+			min: "druid/dr_cutting_wind/cutting_wind_hit/min_cutting_wind_hit"
+		}],
+		ef_druid_wind_bomb: [{
+			type: "STR",
+			file: "druid/dr_wind_bomb/wind_bomb_main/wind_bomb_main",
+			texturePath: "druid/dr_wind_bomb/wind_bomb_main/",
+			min: "druid/dr_wind_bomb/wind_bomb_main/min_wind_bomb_main",
+			wav: "effect/druid/dr_wind_bomb"
+		}, {
+			type: "STR",
+			file: "druid/dr_wind_bomb/wind_bomb_tornado/wind_bomb_tornado",
+			texturePath: "druid/dr_wind_bomb/wind_bomb_tornado/",
+			min: "druid/dr_wind_bomb/wind_bomb_tornado/min_wind_bomb_tornado"
+		}],
+		ef_druid_wind_bomb_hit: [{
+			type: "STR",
+			file: "druid/dr_wind_bomb/wind_bomb_hit/wind_bomb_hit",
+			texturePath: "druid/dr_wind_bomb/wind_bomb_hit/",
+			min: "druid/dr_wind_bomb/wind_bomb_hit/min_wind_bomb_hit"
+		}],
+		ef_druid_earth_flower: [{
+			type: "STR",
+			file: "druid/dr_earth_flower/earth_flower/earth_flower",
+			texturePath: "druid/dr_earth_flower/earth_flower/",
+			min: "druid/dr_earth_flower/earth_flower/min_earth_flower",
+			wav: "effect/druid/dr_earth_flower"
+		}, {
+			type: "STR",
+			file: "druid/dr_earth_flower/earth_flower_bottom/earth_flower_bottom",
+			texturePath: "druid/dr_earth_flower/earth_flower_bottom/",
+			min: "druid/dr_earth_flower/earth_flower_bottom/min_earth_flower_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_around_flower: [{
+			type: "STR",
+			file: "druid/dr_around_flower/around_flower/around_flower",
+			texturePath: "druid/dr_around_flower/around_flower/",
+			min: "druid/dr_around_flower/around_flower/min_around_flower",
+			wav: "effect/druid/dr_around_flower"
+		}, {
+			type: "STR",
+			file: "druid/dr_around_flower/around_flower_bottom/around_flower_bottom",
+			texturePath: "druid/dr_around_flower/around_flower_bottom/",
+			min: "druid/dr_around_flower/around_flower_bottom/min_around_flower_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_nasty_slash: [{
+			type: "STR",
+			file: "druid/kr_nasty_slash/nasty_slash/nasty_slash",
+			texturePath: "druid/kr_nasty_slash/nasty_slash/",
+			min: "druid/kr_nasty_slash/nasty_slash/min_nasty_slash",
+			wav: "effect/druid/kr_nasty_slash"
+		}],
+		ef_druid_double_slash: [{
+			type: "STR",
+			file: "druid/kr_double_slash/double_slash/double_slash",
+			texturePath: "druid/kr_double_slash/double_slash/",
+			min: "druid/kr_double_slash/double_slash/min_double_slash",
+			wav: "effect/druid/kr_double_slash"
+		}],
+		ef_druid_claw_wave: [{
+			type: "STR",
+			file: "druid/kr_claw_wave/claw_wave/claw_wave",
+			texturePath: "druid/kr_claw_wave/claw_wave/",
+			min: "druid/kr_claw_wave/claw_wave/min_claw_wave",
+			wav: "effect/druid/kr_claw_wave"
+		}],
+		ef_druid_chop_chop: [{
+			type: "STR",
+			file: "druid/kr_chop_chop/chop_chop/chop_chop",
+			texturePath: "druid/kr_chop_chop/chop_chop/",
+			min: "druid/kr_chop_chop/chop_chop/min_chop_chop",
+			wav: "effect/druid/kr_chop_chop"
+		}],
+		ef_druid_chop_chop_hit: [{
+			type: "STR",
+			file: "druid/kr_chop_chop/chop_chop_sub/chop_chop_sub",
+			texturePath: "druid/kr_chop_chop/chop_chop_sub/",
+			min: "druid/kr_chop_chop/chop_chop_sub/min_chop_chop_sub"
+		}],
+		ef_druid_iron_howling: [{
+			type: "STR",
+			file: "druid/kr_iron_howling/iron_howling/iron_howling",
+			texturePath: "druid/kr_iron_howling/iron_howling/",
+			min: "druid/kr_iron_howling/iron_howling/min_iron_howling",
+			wav: "effect/druid/kr_iron_howling"
+		}],
+		ef_druid_sharpen_gust: [{
+			type: "STR",
+			file: "druid/kr_sharpen_gust/sharpen_gust/sharpen_gust",
+			texturePath: "druid/kr_sharpen_gust/sharpen_gust/",
+			min: "druid/kr_sharpen_gust/sharpen_gust/min_sharpen_gust",
+			wav: "effect/druid/kr_sharpen_gust"
+		}, {
+			type: "STR",
+			file: "druid/kr_sharpen_gust/sharpen_gust_bottom/sharpen_gust_bottom",
+			texturePath: "druid/kr_sharpen_gust/sharpen_gust_bottom/",
+			min: "druid/kr_sharpen_gust/sharpen_gust_bottom/min_sharpen_gust_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_sharpen_hail: [{
+			type: "STR",
+			file: "druid/kr_sharpen_hail/sharpen_hail/sharpen_hail",
+			texturePath: "druid/kr_sharpen_hail/sharpen_hail/",
+			min: "druid/kr_sharpen_hail/sharpen_hail/min_sharpen_hail",
+			wav: "effect/druid/kr_sharpen_hail"
+		}, {
+			type: "STR",
+			file: "druid/kr_sharpen_hail/sharpen_hail_bottom/sharpen_hail_bottom",
+			texturePath: "druid/kr_sharpen_hail/sharpen_hail_bottom/",
+			min: "druid/kr_sharpen_hail/sharpen_hail_bottom/min_sharpen_hail_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_sharpen_hail_shot: [{
+			type: "STR",
+			file: "druid/kr_sharpen_hail/sharpen_hail_shot/sharpen_hail_shot",
+			texturePath: "druid/kr_sharpen_hail/sharpen_hail_shot/",
+			min: "druid/kr_sharpen_hail/sharpen_hail_shot/min_sharpen_hail_shot"
+		}, {
+			type: "STR",
+			file: "druid/kr_sharpen_hail/sharpen_hail_shot_bottom/sharpen_hail_shot_bottom",
+			texturePath: "druid/kr_sharpen_hail/sharpen_hail_shot_bottom/",
+			min: "druid/kr_sharpen_hail/sharpen_hail_shot_bottom/min_sharpen_hail_shot_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_typhoon_wing: [{
+			type: "STR",
+			file: "druid/kr_typhoon_wing/typhoon_wing_5x5/typhoon_wing_5x5",
+			texturePath: "druid/kr_typhoon_wing/typhoon_wing_5x5/",
+			min: "druid/kr_typhoon_wing/typhoon_wing_5x5/min_typhoon_wing_5x5",
+			wav: "effect/druid/kr_typhoon_wing"
+		}, {
+			type: "STR",
+			file: "druid/kr_typhoon_wing/typhoon_wing_5x5_bottom/typhoon_wing_5x5_bottom",
+			texturePath: "druid/kr_typhoon_wing/typhoon_wing_5x5_bottom/",
+			min: "druid/kr_typhoon_wing/typhoon_wing_5x5_bottom/min_typhoon_wing_5x5_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_feather_sprinkle: [{
+			type: "STR",
+			file: "druid/kr_feather_sprinkle/feather_sprinkle/feather_sprinkle",
+			texturePath: "druid/kr_feather_sprinkle/feather_sprinkle/",
+			min: "druid/kr_feather_sprinkle/feather_sprinkle/min_feather_sprinkle",
+			wav: "effect/druid/kr_feather_sprinkle"
+		}, {
+			type: "STR",
+			file: "druid/kr_feather_sprinkle/feather_sprinkle_bottom/feather_sprinkle_bottom",
+			texturePath: "druid/kr_feather_sprinkle/feather_sprinkle_bottom/",
+			min: "druid/kr_feather_sprinkle/feather_sprinkle_bottom/min_feather_sprinkle_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_wind_veil: [{
+			type: "STR",
+			file: "druid/kr_wind_veil/wild_veil/wild_veil",
+			texturePath: "druid/kr_wind_veil/wild_veil/",
+			min: "druid/kr_wind_veil/wild_veil/min_wild_veil",
+			wav: "effect/druid/kr_wind_veil"
+		}, {
+			type: "STR",
+			file: "druid/kr_wind_veil/wild_veil_bottom/wild_veil_bottom",
+			texturePath: "druid/kr_wind_veil/wild_veil_bottom/",
+			min: "druid/kr_wind_veil/wild_veil_bottom/min_wild_veil_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_ice_pillar_start: [{
+			type: "STR",
+			file: "druid/kr_ice_pillar/ice_pillar_start/ice_pillar_start",
+			texturePath: "druid/kr_ice_pillar/ice_pillar_start/",
+			min: "druid/kr_ice_pillar/ice_pillar_start/min_ice_pillar_start",
+			wav: "effect/druid/kr_ice_pillar_start"
+		}, {
+			type: "STR",
+			file: "druid/kr_ice_pillar/ice_pillar_start_bottom/ice_pillar_start_bottom",
+			texturePath: "druid/kr_ice_pillar/ice_pillar_start_bottom/",
+			min: "druid/kr_ice_pillar/ice_pillar_start_bottom/min_ice_pillar_start_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_ice_pillar_loop: [{
+			type: "STR",
+			file: "druid/kr_ice_pillar/ice_pillar_loop/ice_pillar_loop",
+			texturePath: "druid/kr_ice_pillar/ice_pillar_loop/",
+			min: "druid/kr_ice_pillar/ice_pillar_loop/min_ice_pillar_loop"
+		}, {
+			type: "STR",
+			file: "druid/kr_ice_pillar/ice_pillar_loop_bottom/ice_pillar_loop_bottom",
+			texturePath: "druid/kr_ice_pillar/ice_pillar_loop_bottom/",
+			min: "druid/kr_ice_pillar/ice_pillar_loop_bottom/min_ice_pillar_loop_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_ice_splash: [{
+			type: "STR",
+			file: "druid/kr_ice_splash/ice_splash/ice_splash",
+			texturePath: "druid/kr_ice_splash/ice_splash/",
+			min: "druid/kr_ice_splash/ice_splash/min_ice_splash",
+			wav: "effect/druid/kr_ice_splash"
+		}],
+		ef_druid_thundering_focus_g: [{
+			type: "STR",
+			file: "druid/kr_thundering_focus/thundering_focus_g/thundering_focus_g",
+			texturePath: "druid/kr_thundering_focus/thundering_focus_g/",
+			min: "druid/kr_thundering_focus/thundering_focus_g/min_thundering_focus_g",
+			wav: "effect/druid/kr_thundering_focus_g"
+		}],
+		ef_druid_thundering_focus_y: [{
+			type: "STR",
+			file: "druid/kr_thundering_focus/thundering_focus_y/thundering_focus_y",
+			texturePath: "druid/kr_thundering_focus/thundering_focus_y/",
+			min: "druid/kr_thundering_focus/thundering_focus_y/min_thundering_focus_y",
+			wav: "effect/druid/kr_thundering_focus_y"
+		}],
+		ef_druid_thundering_orb_g: [{
+			type: "STR",
+			file: "druid/kr_thundering_orb/thundering_orb_g/thundering_orb_g",
+			texturePath: "druid/kr_thundering_orb/thundering_orb_g/",
+			min: "druid/kr_thundering_orb/thundering_orb_g/min_thundering_orb_g",
+			wav: "effect/druid/kr_thundering_orb_g"
+		}, {
+			type: "STR",
+			file: "druid/kr_thundering_orb/thundering_orb_g_bottom/thundering_orb_g_bottom",
+			texturePath: "druid/kr_thundering_orb/thundering_orb_g_bottom/",
+			min: "druid/kr_thundering_orb/thundering_orb_g_bottom/min_thundering_orb_g_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_thundering_orb_y: [{
+			type: "STR",
+			file: "druid/kr_thundering_orb/thundering_orb_y/thundering_orb_y",
+			texturePath: "druid/kr_thundering_orb/thundering_orb_y/",
+			min: "druid/kr_thundering_orb/thundering_orb_y/min_thundering_orb_y",
+			wav: "effect/druid/kr_thundering_orb_y"
+		}, {
+			type: "STR",
+			file: "druid/kr_thundering_orb/thundering_orb_y_bottom/thundering_orb_y_bottom",
+			texturePath: "druid/kr_thundering_orb/thundering_orb_y_bottom/",
+			min: "druid/kr_thundering_orb/thundering_orb_y_bottom/min_thundering_orb_y_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_thundering_call_g: [{
+			type: "STR",
+			file: "druid/kr_thundering_call/thundering_call_g_3x3/thundering_call_g_3x3",
+			texturePath: "druid/kr_thundering_call/thundering_call_g_3x3/",
+			min: "druid/kr_thundering_call/thundering_call_g_3x3/min_thundering_call_g_3x3",
+			wav: "effect/druid/kr_thundering_call_g"
+		}, {
+			type: "STR",
+			file: "druid/kr_thundering_call/thundering_call_g_3x3_bottom/thundering_call_g_3x3_bottom",
+			texturePath: "druid/kr_thundering_call/thundering_call_g_3x3_bottom/",
+			min: "druid/kr_thundering_call/thundering_call_g_3x3_bottom/min_thundering_call_g_3x3_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_thundering_call_y: [{
+			type: "STR",
+			file: "druid/kr_thundering_call/thundering_call_y_3x3/thundering_call_y_3x3",
+			texturePath: "druid/kr_thundering_call/thundering_call_y_3x3/",
+			min: "druid/kr_thundering_call/thundering_call_y_3x3/min_thundering_call_y_3x3",
+			wav: "effect/druid/kr_thundering_call_y"
+		}, {
+			type: "STR",
+			file: "druid/kr_thundering_call/thundering_call_y_3x3_bottom/thundering_call_y_3x3_bottom",
+			texturePath: "druid/kr_thundering_call/thundering_call_y_3x3_bottom/",
+			min: "druid/kr_thundering_call/thundering_call_y_3x3_bottom/min_thundering_call_y_3x3_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_earth_drill: [{
+			type: "STR",
+			file: "druid/kr_earth_drill/earth_drill/earth_drill",
+			texturePath: "druid/kr_earth_drill/earth_drill/",
+			min: "druid/kr_earth_drill/earth_drill/min_earth_drill",
+			wav: "effect/druid/kr_earth_drill"
+		}, {
+			type: "STR",
+			file: "druid/kr_earth_drill/earth_drill_bottom/earth_drill_bottom",
+			texturePath: "druid/kr_earth_drill/earth_drill_bottom/",
+			min: "druid/kr_earth_drill/earth_drill_bottom/min_earth_drill_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_earth_stamp: [{
+			type: "STR",
+			file: "druid/kr_earth_stamp/earth_stamp/earth_stamp",
+			texturePath: "druid/kr_earth_stamp/earth_stamp/",
+			min: "druid/kr_earth_stamp/earth_stamp/min_earth_stamp",
+			wav: "effect/druid/kr_earth_stamp"
+		}, {
+			type: "STR",
+			file: "druid/kr_earth_stamp/earth_stamp_bottom/earth_stamp_bottom",
+			texturePath: "druid/kr_earth_stamp/earth_stamp_bottom/",
+			min: "druid/kr_earth_stamp/earth_stamp_bottom/min_earth_stamp_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_ground_bloom: [{
+			type: "STR",
+			file: "druid/kr_ground_bloom/ground_bloom/ground_bloom",
+			texturePath: "druid/kr_ground_bloom/ground_bloom/",
+			min: "druid/kr_ground_bloom/ground_bloom/min_ground_bloom",
+			wav: "effect/druid/kr_ground_bloom"
+		}, {
+			type: "STR",
+			file: "druid/kr_ground_bloom/ground_bloom_bottom/ground_bloom_bottom",
+			texturePath: "druid/kr_ground_bloom/ground_bloom_bottom/",
+			min: "druid/kr_ground_bloom/ground_bloom_bottom/min_ground_bloom_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_pulse_of_madness: [{
+			type: "STR",
+			file: "druid/at_pulse_of_madness/pulse_of_madness/pulse_of_madness",
+			texturePath: "druid/at_pulse_of_madness/pulse_of_madness/",
+			min: "druid/at_pulse_of_madness/pulse_of_madness/min_pulse_of_madness",
+			wav: "effect/druid/at_pulse_of_madness"
+		}],
+		ef_druid_alpha_phase: [{
+			type: "STR",
+			file: "druid/at_alpha_phase/alpha_phase/alpha_phase",
+			texturePath: "druid/at_alpha_phase/alpha_phase/",
+			min: "druid/at_alpha_phase/alpha_phase/min_alpha_phase",
+			wav: "effect/druid/at_alpha_phase"
+		}],
+		ef_druid_apex_phase: [{
+			type: "STR",
+			file: "druid/at_apex_phase/apex_phase/apex_phase",
+			texturePath: "druid/at_apex_phase/apex_phase/",
+			min: "druid/at_apex_phase/apex_phase/min_apex_phase",
+			wav: "effect/druid/at_apex_phase"
+		}],
+		ef_druid_flip_flap: [{
+			type: "STR",
+			file: "druid/at_flip_flap/flip_flap/flip_flap",
+			texturePath: "druid/at_flip_flap/flip_flap/",
+			min: "druid/at_flip_flap/flip_flap/min_flip_flap",
+			wav: "effect/druid/at_flip_flap"
+		}],
+		ef_druid_nature_harmony: [{
+			type: "STR",
+			file: "druid/at_nature_harmony/nature_harmony/nature_harmony",
+			texturePath: "druid/at_nature_harmony/nature_harmony/",
+			min: "druid/at_nature_harmony/nature_harmony/min_nature_harmony",
+			wav: "effect/druid/at_nature_harmony"
+		}],
+		ef_druid_primal_claw: [{
+			type: "STR",
+			file: "druid/at_primal_claw/primal_claw/primal_claw",
+			texturePath: "druid/at_primal_claw/primal_claw/",
+			min: "druid/at_primal_claw/primal_claw/min_primal_claw",
+			wav: "effect/druid/at_primal_claw"
+		}],
+		ef_druid_feral_claw: [{
+			type: "STR",
+			file: "druid/at_feral_claw/feral_claw/feral_claw",
+			texturePath: "druid/at_feral_claw/feral_claw/",
+			min: "druid/at_feral_claw/feral_claw/min_feral_claw",
+			wav: "effect/druid/at_feral_claw"
+		}],
+		ef_druid_alpha_claw: [{
+			type: "STR",
+			file: "druid/at_alpha_claw/alpha_claw/alpha_claw",
+			texturePath: "druid/at_alpha_claw/alpha_claw/",
+			min: "druid/at_alpha_claw/alpha_claw/min_alpha_claw",
+			wav: "effect/druid/at_alpha_claw"
+		}],
+		ef_druid_savage_lunge: [{
+			type: "STR",
+			file: "druid/at_savage_lunge/savage_lunge/savage_lunge",
+			texturePath: "druid/at_savage_lunge/savage_lunge/",
+			min: "druid/at_savage_lunge/savage_lunge/min_savage_lunge",
+			wav: "effect/druid/at_savage_lunge"
+		}, {
+			type: "STR",
+			file: "druid/at_savage_lunge/savage_lunge_bottom/savage_lunge_bottom",
+			texturePath: "druid/at_savage_lunge/savage_lunge_bottom/",
+			min: "druid/at_savage_lunge/savage_lunge_bottom/min_savage_lunge_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_frenzy_fang: [{
+			type: "STR",
+			file: "druid/at_frenzy_fang/frenzy_fang/frenzy_fang",
+			texturePath: "druid/at_frenzy_fang/frenzy_fang/",
+			min: "druid/at_frenzy_fang/frenzy_fang/min_frenzy_fang",
+			wav: "effect/druid/at_frenzy_fang"
+		}],
+		ef_druid_pinion_shot: [{
+			type: "STR",
+			file: "druid/at_pinion_shot/pinion_shot/pinion_shot",
+			texturePath: "druid/at_pinion_shot/pinion_shot/",
+			min: "druid/at_pinion_shot/pinion_shot/min_pinion_shot",
+			wav: "effect/druid/at_pinion_shot"
+		}],
+		ef_druid_quill_spear: [{
+			type: "STR",
+			file: "druid/at_quill_spear/quill_spear_3x7/quill_spear_3x7",
+			texturePath: "druid/at_quill_spear/quill_spear_3x7/",
+			min: "druid/at_quill_spear/quill_spear_3x7/min_quill_spear_3x7",
+			wav: "effect/druid/at_quill_spear"
+		}],
+		ef_druid_quill_spear_s: [{
+			type: "STR",
+			file: "druid/at_quill_spear/quill_spear_5x7/quill_spear_5x7",
+			texturePath: "druid/at_quill_spear/quill_spear_5x7/",
+			min: "druid/at_quill_spear/quill_spear_5x7/min_quill_spear_5x7",
+			wav: "effect/druid/at_quill_spear"
+		}],
+		ef_druid_tempest_flap: [{
+			type: "STR",
+			file: "druid/at_tempest_flap/tempest_flap/tempest_flap",
+			texturePath: "druid/at_tempest_flap/tempest_flap/",
+			min: "druid/at_tempest_flap/tempest_flap/min_tempest_flap",
+			wav: "effect/druid/at_tempest_flap"
+		}, {
+			type: "STR",
+			file: "druid/at_tempest_flap/tempest_flap_bottom/tempest_flap_bottom",
+			texturePath: "druid/at_tempest_flap/tempest_flap_bottom/",
+			min: "druid/at_tempest_flap/tempest_flap_bottom/min_tempest_flap_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_tempest_flap_cast: [{
+			type: "STR",
+			file: "druid/at_tempest_flap/tempest_flap_cast/tempest_flap_cast",
+			texturePath: "druid/at_tempest_flap/tempest_flap_cast/",
+			min: "druid/at_tempest_flap/tempest_flap_cast/min_tempest_flap_cast"
+		}],
+		ef_druid_aero_sync: [{
+			type: "STR",
+			file: "druid/at_aero_sync/aero_sync_main/aero_sync_main",
+			texturePath: "druid/at_aero_sync/aero_sync_main/",
+			min: "druid/at_aero_sync/aero_sync_main/min_aero_sync_main",
+			wav: "effect/druid/at_aero_sync"
+		}, {
+			type: "STR",
+			file: "druid/at_aero_sync/aero_sync_main_bottom/aero_sync_main_bottom",
+			texturePath: "druid/at_aero_sync/aero_sync_main_bottom/",
+			min: "druid/at_aero_sync/aero_sync_main_bottom/min_aero_sync_main_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_aero_sync_self: [{
+			type: "STR",
+			file: "druid/at_aero_sync/aero_sync_sync/aero_sync_sync",
+			texturePath: "druid/at_aero_sync/aero_sync_sync/",
+			min: "druid/at_aero_sync/aero_sync_sync/min_aero_sync_sync"
+		}],
+		ef_druid_zephyr_link: [{
+			type: "STR",
+			file: "druid/at_zephyr_link/zephyr_link/zephyr_link",
+			texturePath: "druid/at_zephyr_link/zephyr_link/",
+			min: "druid/at_zephyr_link/zephyr_link/min_zephyr_link",
+			wav: "effect/druid/at_zephyr_link"
+		}, {
+			type: "STR",
+			file: "druid/at_zephyr_link/zephyr_link_bottom/zephyr_link_bottom",
+			texturePath: "druid/at_zephyr_link/zephyr_link_bottom/",
+			min: "druid/at_zephyr_link/zephyr_link_bottom/min_zephyr_link_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_glacier_monolith_start: [{
+			type: "STR",
+			file: "druid/at_glacier_monolith/glacier_monolith_start/glacier_monolith_start",
+			texturePath: "druid/at_glacier_monolith/glacier_monolith_start/",
+			min: "druid/at_glacier_monolith/glacier_monolith_start/min_glacier_monolith_start",
+			wav: "effect/druid/at_glacier_monolith_start"
+		}, {
+			type: "STR",
+			file: "druid/at_glacier_monolith/glacier_monolith_start_bottom/glacier_monolith_start_bottom",
+			texturePath: "druid/at_glacier_monolith/glacier_monolith_start_bottom/",
+			min: "druid/at_glacier_monolith/glacier_monolith_start_bottom/min_glacier_monolith_start_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_glacier_monolith_loop: [{
+			type: "STR",
+			file: "druid/at_glacier_monolith/glacier_monolith_loop/glacier_monolith_loop",
+			texturePath: "druid/at_glacier_monolith/glacier_monolith_loop/",
+			min: "druid/at_glacier_monolith/glacier_monolith_loop/min_glacier_monolith_loop"
+		}, {
+			type: "STR",
+			file: "druid/at_glacier_monolith/glacier_monolith_loop_bottom/glacier_monolith_loop_bottom",
+			texturePath: "druid/at_glacier_monolith/glacier_monolith_loop_bottom/",
+			min: "druid/at_glacier_monolith/glacier_monolith_loop_bottom/min_glacier_monolith_loop_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_glacier_nova: [{
+			type: "STR",
+			file: "druid/at_glacier_nova/glacier_nova/glacier_nova",
+			texturePath: "druid/at_glacier_nova/glacier_nova/",
+			min: "druid/at_glacier_nova/glacier_nova/min_glacier_nova",
+			wav: "effect/druid/at_glacier_nova"
+		}],
+		ef_druid_glacier_shard: [{
+			type: "STR",
+			file: "druid/at_glacier_shard/glacier_shard/glacier_shard",
+			texturePath: "druid/at_glacier_shard/glacier_shard/",
+			min: "druid/at_glacier_shard/glacier_shard/min_glacier_shard",
+			wav: "effect/druid/at_glacier_shard"
+		}, {
+			type: "STR",
+			file: "druid/at_glacier_shard/glacier_shard_target/glacier_shard_target",
+			texturePath: "druid/at_glacier_shard/glacier_shard_target/",
+			min: "druid/at_glacier_shard/glacier_shard_target/min_glacier_shard_target"
+		}],
+		ef_druid_glacier_stomp: [{
+			type: "STR",
+			file: "druid/at_glacier_stomp/glacier_stomp/glacier_stomp",
+			texturePath: "druid/at_glacier_stomp/glacier_stomp/",
+			min: "druid/at_glacier_stomp/glacier_stomp/min_glacier_stomp"
+		}],
+		ef_druid_chilling_blast: [{
+			type: "STR",
+			file: "druid/at_chilling_blast/chilling_blast/chilling_blast",
+			texturePath: "druid/at_chilling_blast/chilling_blast/",
+			min: "druid/at_chilling_blast/chilling_blast/min_chilling_blast",
+			wav: "effect/druid/at_chilling_blast"
+		}, {
+			type: "STR",
+			file: "druid/at_chilling_blast/chilling_blast_bottom/chilling_blast_bottom",
+			texturePath: "druid/at_chilling_blast/chilling_blast_bottom/",
+			min: "druid/at_chilling_blast/chilling_blast_bottom/min_chilling_blast_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_roaring_piercer_g: [{
+			type: "STR",
+			file: "druid/at_roaring_piercer/roaring_piercer_g/roaring_piercer_g",
+			texturePath: "druid/at_roaring_piercer/roaring_piercer_g/",
+			min: "druid/at_roaring_piercer/roaring_piercer_g/min_roaring_piercer_g",
+			wav: "effect/druid/at_roaring_piercer_g"
+		}],
+		ef_druid_roaring_piercer_y: [{
+			type: "STR",
+			file: "druid/at_roaring_piercer/roaring_piercer_y/roaring_piercer_y",
+			texturePath: "druid/at_roaring_piercer/roaring_piercer_y/",
+			min: "druid/at_roaring_piercer/roaring_piercer_y/min_roaring_piercer_y",
+			wav: "effect/druid/at_roaring_piercer_y"
+		}],
+		ef_druid_roaring_charge: [{
+			type: "STR",
+			file: "druid/at_roaring_charge/roaring_charge/roaring_charge",
+			texturePath: "druid/at_roaring_charge/roaring_charge/",
+			min: "druid/at_roaring_charge/roaring_charge/min_roaring_charge",
+			wav: "effect/druid/at_roaring_charge_g"
+		}, {
+			type: "STR",
+			file: "druid/at_roaring_charge/roaring_charge_bottom/roaring_charge_bottom",
+			texturePath: "druid/at_roaring_charge/roaring_charge_bottom/",
+			min: "druid/at_roaring_charge/roaring_charge_bottom/min_roaring_charge_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_roaring_charge_s: [{
+			type: "STR",
+			file: "druid/at_roaring_charge/roaring_charge_s/roaring_charge_s",
+			texturePath: "druid/at_roaring_charge/roaring_charge_s/",
+			min: "druid/at_roaring_charge/roaring_charge_s/min_roaring_charge_s",
+			wav: "effect/druid/at_roaring_charge_y"
+		}, {
+			type: "STR",
+			file: "druid/at_roaring_charge/roaring_charge_s_bottom/roaring_charge_s_bottom",
+			texturePath: "druid/at_roaring_charge/roaring_charge_s_bottom/",
+			min: "druid/at_roaring_charge/roaring_charge_s_bottom/min_roaring_charge_s_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_furios_storm: [{
+			type: "STR",
+			file: "druid/at_furios_storm/furios_storm_a/furios_storm_a",
+			texturePath: "druid/at_furios_storm/furios_storm_a/",
+			min: "druid/at_furios_storm/furios_storm_a/min_furios_storm_a",
+			wav: "effect/druid/at_furios_storm"
+		}, {
+			type: "STR",
+			file: "druid/at_furios_storm/furios_storm_a_bottom/furios_storm_a_bottom",
+			texturePath: "druid/at_furios_storm/furios_storm_a_bottom/",
+			min: "druid/at_furios_storm/furios_storm_a_bottom/min_furios_storm_a_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_terra_wave: [{
+			type: "STR",
+			file: "druid/at_terra_wave/terra_wave/terra_wave",
+			texturePath: "druid/at_terra_wave/terra_wave/",
+			min: "druid/at_terra_wave/terra_wave/min_terra_wave",
+			wav: "effect/druid/at_terra_wave"
+		}, {
+			type: "STR",
+			file: "druid/at_terra_wave/terra_wave_bottom/terra_wave_bottom",
+			texturePath: "druid/at_terra_wave/terra_wave_bottom/",
+			min: "druid/at_terra_wave/terra_wave_bottom/min_terra_wave_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_terra_harvest: [{
+			type: "STR",
+			file: "druid/at_terra_harvest/terra_harvest_yellow/terra_harvest_yellow",
+			texturePath: "druid/at_terra_harvest/terra_harvest_yellow/",
+			min: "druid/at_terra_harvest/terra_harvest_yellow/min_terra_harvest_yellow",
+			wav: "effect/druid/at_terra_harvest"
+		}, {
+			type: "STR",
+			file: "druid/at_terra_harvest/terra_harvest_yellow_bottom/terra_harvest_yellow_bottom",
+			texturePath: "druid/at_terra_harvest/terra_harvest_yellow_bottom/",
+			min: "druid/at_terra_harvest/terra_harvest_yellow_bottom/min_terra_harvest_yellow_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_solid_stomp: [{
+			type: "STR",
+			file: "druid/at_solid_stomp/solid_stomp/solid_stomp",
+			texturePath: "druid/at_solid_stomp/solid_stomp/",
+			min: "druid/at_solid_stomp/solid_stomp/min_solid_stomp",
+			wav: "effect/druid/at_solid_stomp"
+		}, {
+			type: "STR",
+			file: "druid/at_solid_stomp/solid_stomp_bottom/solid_stomp_bottom",
+			texturePath: "druid/at_solid_stomp/solid_stomp_bottom/",
+			min: "druid/at_solid_stomp/solid_stomp_bottom/min_solid_stomp_bottom",
+			renderBeforeEntities: true
+		}],
+		ef_druid_gravity_hole: [{
+			type: "STR",
+			file: "druid/at_gravity_hole/gravity_hole/gravity_hole",
+			texturePath: "druid/at_gravity_hole/gravity_hole/",
+			min: "druid/at_gravity_hole/gravity_hole/min_gravity_hole",
+			wav: "effect/druid/at_gravity_hole"
+		}, {
+			type: "STR",
+			file: "druid/at_gravity_hole/gravity_hole_bottom/gravity_hole_bottom",
+			texturePath: "druid/at_gravity_hole/gravity_hole_bottom/",
+			min: "druid/at_gravity_hole/gravity_hole_bottom/min_gravity_hole_bottom",
+			renderBeforeEntities: true
+		}],
 		...table,
 		...CostumeSpriteEffects_default,
 		...BodyEffects_default
@@ -315543,6 +316806,8 @@ var init_DBManager = __esmMin((() => {
 				case JobConst_default.SUPERNOVICE: return "Second_Class";
 				case JobConst_default.GUNSLINGER:
 				case JobConst_default.NINJA:
+				case JobConst_default.DRUID:
+				case JobConst_default.DRUID_B:
 				case JobConst_default.TAEKWON: return "Expanded_First_Class";
 				case JobConst_default.NOVICE_H: return "Rebirth_Class";
 				case JobConst_default.SWORDMAN_H:
@@ -315571,6 +316836,8 @@ var init_DBManager = __esmMin((() => {
 				case JobConst_default.LINKER:
 				case JobConst_default.KAGEROU:
 				case JobConst_default.OBORO:
+				case JobConst_default.KARNOS:
+				case JobConst_default.KARNOS_B:
 				case JobConst_default.REBELLION: return "Expanded_Second_Class";
 				case JobConst_default.RUNE_KNIGHT:
 				case JobConst_default.WARLOCK:
@@ -315628,6 +316895,7 @@ var init_DBManager = __esmMin((() => {
 				case JobConst_default.NIGHT_WATCH:
 				case JobConst_default.HYPER_NOVICE:
 				case JobConst_default.SPIRIT_HANDLER:
+				case JobConst_default.ALITEA:
 				case JobConst_default.SKY_EMPEROR2: return "Fourth_Class";
 				default: return "Base_Class";
 			}
