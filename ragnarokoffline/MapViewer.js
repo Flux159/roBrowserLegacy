@@ -245874,7 +245874,7 @@ function calculateAnimation(layer, keyIndex, result) {
 	}
 	return true;
 }
-var mat4$18, D3DBLEND, _program$22, _buffer$17, _bufferData, _matrix$6, _lastAngle, PIXEL_TO_WORLD_Z, anim, StrEffect;
+var mat4$18, D3DBLEND, _program$22, _buffer$17, _bufferData, _users, _matrix$6, _lastAngle, PIXEL_TO_WORLD_Z, anim, StrEffect;
 var init_StrEffect = __esmMin((() => {
 	init_StrEffect$2();
 	init_StrEffect$1();
@@ -245886,6 +245886,7 @@ var init_StrEffect = __esmMin((() => {
 	_program$22 = null;
 	_buffer$17 = null;
 	_bufferData = /* @__PURE__ */ new Float32Array(16);
+	_users = /* @__PURE__ */ new Set();
 	_matrix$6 = mat4$18.create();
 	_lastAngle = -1;
 	PIXEL_TO_WORLD_Z = 1 / 5;
@@ -246081,6 +246082,7 @@ var init_StrEffect = __esmMin((() => {
 			D3DBLEND[11] = gl.SRC_ALPHA_SATURATE;
 			D3DBLEND[14] = gl.CONSTANT_COLOR;
 			D3DBLEND[15] = gl.ONE_MINUS_CONSTANT_ALPHA;
+			_users.add(this);
 			this.ready = true;
 		}
 		/**
@@ -246089,6 +246091,9 @@ var init_StrEffect = __esmMin((() => {
 		* @param {object} webgl context
 		*/
 		static free(gl) {
+			this.ready = false;
+			_users.delete(this);
+			if (_users.size) return;
 			if (_program$22) {
 				gl.deleteProgram(_program$22);
 				_program$22 = null;
@@ -246097,7 +246102,6 @@ var init_StrEffect = __esmMin((() => {
 				gl.deleteBuffer(_buffer$17);
 				_buffer$17 = null;
 			}
-			this.ready = false;
 		}
 		/**
 		* Bind context
