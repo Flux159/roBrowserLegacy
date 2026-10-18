@@ -265324,7 +265324,7 @@ var init_EffectManager = __esmMin((() => {
 			if (typeof Params.effect.repeat !== "undefined" && Params.effect.repeat !== null) Params.Inst.persistent = Params.effect.repeat;
 			Params.Inst.repeatEnd = Params.Init.repeatEnd ? Params.Init.repeatEnd : Params.effect.repeatEnd || 0;
 			Params.Inst.repeatDelay = Params.effect.repeatDelay ? Params.effect.repeatDelay : Params.Init.repeatDelay;
-			if (Params.effect.wav) {
+			if (Params.effect.wav && !(Params.Inst.noDelay && Params.effect.soundLoop === false)) {
 				filename = Params.effect.wav;
 				if (Params.effect.rand) filename = filename.replace("%d", Math.round(Params.effect.rand[0] + (Params.effect.rand[1] - Params.effect.rand[0]) * Math.random()));
 				Events.setTimeout(function() {
@@ -312144,6 +312144,7 @@ function mergeEz2Effects(EffectTable, SkillEffect) {
 			xOffset: entry.PosX || 0,
 			yOffset: entry.PosY || 0,
 			wav: entry.SoundPath ? entry.SoundPath.replace(/\\/g, "/").replace(/\.wav$/i, "") : null,
+			soundLoop: entry.IsSoundLoop == null ? void 0 : !!entry.IsSoundLoop,
 			delayStart: entry.StartDelayTime || 0,
 			repeat: !!entry.IsInfinite,
 			attachedEntity: true
@@ -349474,6 +349475,9 @@ function onConnectionRefused$2(pkt) {
 * @param {object} pkt - PACKET.ZC.NPCACK_MAPMOVE
 */
 function onMapChange(pkt) {
+	_mapReady = false;
+	SessionStorage_default.ping.pingTime = 0;
+	SessionStorage_default.ping.returned = false;
 	clearQuestEffects();
 	MapRenderer.onLoad = () => {
 		SessionStorage_default.Entity.resetRoute();
@@ -349576,6 +349580,7 @@ function onMapChange(pkt) {
 		}
 		Plugins.init();
 		Network.sendPacket(new PACKET.CZ.NOTIFY_ACTORINIT());
+		_mapReady = true;
 		if (SessionStorage_default.ratesInfo) {
 			Announce_default.append();
 			Announce_default.set(SessionStorage_default.ratesInfo, "#FFFF00", true);
@@ -349969,7 +349974,7 @@ function onReassemblyAuth(pkt) {
 		return;
 	}
 }
-var _mapName, _isInitialised, _exiting, _exitTimer, snCounter, chatLines, packetMap, MapEngine, _walkTimer, _walkLastTick;
+var _mapName, _isInitialised, _mapReady, _exiting, _exitTimer, snCounter, chatLines, packetMap, MapEngine, _walkTimer, _walkLastTick;
 var init_MapEngine = __esmMin((() => {
 	init_DBManager();
 	init_Configs();
@@ -350082,6 +350087,7 @@ var init_MapEngine = __esmMin((() => {
 	init_preload_helper();
 	_mapName = "";
 	_isInitialised = false;
+	_mapReady = false;
 	_exiting = false;
 	_exitTimer = null;
 	snCounter = 0;
@@ -350101,6 +350107,7 @@ var init_MapEngine = __esmMin((() => {
 		*/
 		static init(ip, port, mapName) {
 			_mapName = mapName;
+			_mapReady = false;
 			_exiting = false;
 			_exitTimer = null;
 			const forceAddress = Configs.get("forceUseAddress");
@@ -350135,12 +350142,15 @@ var init_MapEngine = __esmMin((() => {
 				const is_sec_hbt = Configs.get("sec_HBT", null);
 				let ping;
 				const SP = SessionStorage_default.ping;
+				SP.pingTime = 0;
+				SP.returned = false;
 				if (PacketVerManager_default.value >= 20180307) ping = new PACKET.CZ.REQUEST_TIME2();
 				else ping = new PACKET.CZ.REQUEST_TIME();
 				const startTick = Date.now();
 				SessionStorage_default.serverTickSynced = false;
 				Network.setPing(() => {
 					if (is_sec_hbt) Network.sendPacket(hbt);
+					if (!_mapReady) return;
 					ping.clientTime = Date.now() - startTick;
 					if (!SP.returned && SP.pingTime) console.warn("[Network] The server did not answer the previous PING!");
 					SP.pingTime = ping.clientTime;
