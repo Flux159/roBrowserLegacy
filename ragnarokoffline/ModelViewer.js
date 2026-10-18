@@ -165701,6 +165701,15 @@ var init_PacketStructure = __esmMin((() => {
 		this.limitZeny = fp.readLong();
 	};
 	PACKET.ZC.UPDATE_ITEM_FROM_BUYING_STORE.size = 10;
+	PACKET.ZC.UPDATE_ITEM_FROM_BUYING_STORE2 = function PACKET_ZC_UPDATE_ITEM_FROM_BUYING_STORE2(fp, end) {
+		this.ITID = PacketVerManager_default.value >= 20181121 ? fp.readULong() : fp.readUShort();
+		this.count = fp.readUShort();
+		this.zeny = fp.readULong();
+		this.limitZeny = fp.readULong();
+		this.charId = fp.readULong();
+		this.updateTime = fp.readULong();
+	};
+	Object.defineProperty(PACKET.ZC.UPDATE_ITEM_FROM_BUYING_STORE2, "size", { get: () => PacketVerManager_default.value >= 20181121 ? 24 : 22 });
 	PACKET.ZC.ITEM_DELETE_BUYING_STORE = function PACKET_ZC_ITEM_DELETE_BUYING_STORE(fp, end) {
 		this.index = fp.readShort();
 		this.count = fp.readShort();
@@ -204399,6 +204408,7 @@ var init_PacketRegister = __esmMin((() => {
 		2526: PACKET.ZC.WHISPER2,
 		2527: PACKET.ZC.ACK_WHISPER2,
 		2533: PACKET.ZC.DELETEITEM_FROM_MCSTORE2,
+		2534: PACKET.ZC.UPDATE_ITEM_FROM_BUYING_STORE2,
 		2535: PACKET.ZC.RODEX_ICON,
 		2536: PACKET.CZ.OPEN_RODEXBOX,
 		2537: PACKET.CZ.CLOSE_RODEXBOX,
@@ -329717,11 +329727,7 @@ var init_Vending = __esmMin((() => {
 			cancelBtn.addEventListener("mousedown", (e) => e.stopImmediatePropagation());
 			cancelBtn.addEventListener("click", (e) => {
 				e.stopImmediatePropagation();
-				let pkt;
-				if (_type$2 === Vending.Type.VENDING_STORE) pkt = new PACKET.CZ.REQ_OPENSTORE2();
-				else pkt = new PACKET.CZ.REQ_OPEN_BUYING_STORE();
-				submitNetworkPacket(pkt);
-				Vending.onRemove();
+				Vending.onCancel();
 			});
 		}
 		const extendBtn = root.querySelector(".InputWindow .footer .extend");
@@ -329851,16 +329857,12 @@ var init_Vending = __esmMin((() => {
 		Vending.isOpen = false;
 	};
 	Vending.onKeyDown = function onKeyDown(event) {
-		if (this.isEditableFocused()) {
-			if (event.which === KEYS.ESCAPE || event.key === "Escape") {
-				this.remove();
-				event.stopImmediatePropagation();
-				return false;
-			}
+		if ((event.which === KEYS.ESCAPE || event.key === "Escape") && this.isOpen && this._host.style.display !== "none") {
+			this.onCancel();
 			event.stopImmediatePropagation();
-			return true;
+			return false;
 		}
-		if ((event.which === KEYS.ESCAPE || event.key === "Escape") && this._host.style.display !== "none") this.remove();
+		if (this.isEditableFocused()) event.stopImmediatePropagation();
 		return true;
 	};
 	Vending.setList = function setList(items) {
@@ -329933,6 +329935,11 @@ var init_Vending = __esmMin((() => {
 		this._host.style.display = "";
 		this._fixPositionOverflow();
 		Vending.isOpen = true;
+	};
+	Vending.onCancel = function onCancel() {
+		if (!this.isOpen) return;
+		submitNetworkPacket(_type$2 === Vending.Type.VENDING_STORE ? new PACKET.CZ.REQ_OPENSTORE2() : new PACKET.CZ.REQ_OPEN_BUYING_STORE());
+		this.onRemove();
 	};
 	Vending.onClose = function onClose() {
 		this.cancelDrag();
@@ -330211,6 +330218,16 @@ var init_VendingShop = __esmMin((() => {
 	*/
 	VendingShop.setType = function setType(type) {
 		_type$1 = type;
+	};
+	/** Apply a buyer notification by item ID, rather than its inventory index. */
+	VendingShop.updateBuyingItem = function updateBuyingItem(itemId, count) {
+		if (_type$1 !== VendingShop.Type.BUYING_LIST || count <= 0) return;
+		const item = this.getItemById(itemId);
+		if (item) this.updateItem(item.index, item.count - count);
+	};
+	/** The server already closed this store; do not send a second close request. */
+	VendingShop.closeBuyingStore = function closeBuyingStore() {
+		if (_type$1 === VendingShop.Type.BUYING_LIST) this.remove();
 	};
 	/**
 	* Remove Inventory from window (and so clean up items)
@@ -346540,6 +346557,12 @@ function onBuyingList(pkt) {
 	VendingShop_default.setType(VendingShop_default.Type.BUYING_LIST);
 	VendingShop_default.setItems(pkt.itemList);
 }
+function onBuyingStoreUpdate(pkt) {
+	VendingShop_default.updateBuyingItem(pkt.ITID, pkt.count);
+}
+function onBuyingStoreClosed(pkt) {
+	if (pkt.Result === 3 || pkt.Result === 4) VendingShop_default.closeBuyingStore();
+}
 function onDeleteVendingItem(pkt) {
 	if (PacketVerManager_default.value >= 20141016) VendingReport_default.add(pkt);
 	VendingShop_default.removeItem(pkt.index, pkt.count);
@@ -346898,6 +346921,9 @@ function MainEngine$9() {
 	Network.hookPacket(PACKET.ZC.OPEN_BUYING_STORE, onOpenBuying);
 	Network.hookPacket(PACKET.ZC.FAILED_OPEN_BUYING_STORE_TO_BUYER, onOpenBuyingResult);
 	Network.hookPacket(PACKET.ZC.MYITEMLIST_BUYING_STORE, onBuyingList);
+	Network.hookPacket(PACKET.ZC.UPDATE_ITEM_FROM_BUYING_STORE, onBuyingStoreUpdate);
+	Network.hookPacket(PACKET.ZC.UPDATE_ITEM_FROM_BUYING_STORE2, onBuyingStoreUpdate);
+	Network.hookPacket(PACKET.ZC.FAILED_TRADE_BUYING_STORE_TO_BUYER, onBuyingStoreClosed);
 	Network.hookPacket(PACKET.ZC.PC_PURCHASE_ITEMLIST_FROMMC3, onVendingStoreList);
 	Network.hookPacket(PACKET.ZC.ACK_ITEMLIST_BUYING_STORE, onBuyingStoreList);
 	Network.hookPacket(PACKET.ZC.FAILED_TRADE_BUYING_STORE_TO_SELLER, onSellToBuyingStoreResult);
