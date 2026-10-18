@@ -207134,7 +207134,7 @@ function defaultSocketFactory(host, port) {
 	return new Socket$1(host, port, proxy);
 }
 function _scheduleLogCallback(cb) {
-	if (typeof window !== "undefined" && window.requestIdleCallback) requestIdleCallback(cb);
+	if (typeof window !== "undefined" && window.requestIdleCallback) requestIdleCallback(cb, { timeout: 1e3 });
 	else setTimeout(() => cb({
 		timeRemaining: () => 0,
 		didTimeout: true
@@ -317742,7 +317742,7 @@ function onRequestAddItem(index, count) {
 		ChatBox_default.addText(DB.getMessage(51), ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.PUBLIC_LOG);
 		return;
 	}
-	if (_send.length >= 10) {
+	if (index !== 0 && _send.length >= 10) {
 		ChatBox_default.addText(DB.getMessage(297), ChatBox_default.TYPE.ERROR, ChatBox_default.FILTER.PUBLIC_LOG);
 		return;
 	}
@@ -317990,7 +317990,7 @@ var init_Trade$1 = __esmMin((() => {
 		itemDiv.innerHTML = `<div class="icon"></div><div class="amount"><span class="count">${_tmpCount[index] || 1}</span></div><span class="name">${sanitizeHtml(DB.getItemName(item))}</span>`;
 		box.appendChild(itemDiv);
 		Client.loadFile(`${DB.INTERFACE_PATH}item/${item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName}.bmp`, (data) => {
-			const icon = root.querySelector(`.item[data-index="${idx}"] .icon`);
+			const icon = itemDiv.querySelector(".icon");
 			if (icon && icon.closest(".box.send")) icon.style.backgroundImage = `url(${data})`;
 		});
 	};
@@ -318015,7 +318015,7 @@ var init_Trade$1 = __esmMin((() => {
 		itemDiv.innerHTML = `<div class="icon"></div><div class="amount">${item.count}</div><span class="name">${sanitizeHtml(DB.getItemName(item))}</span>`;
 		box.appendChild(itemDiv);
 		Client.loadFile(`${DB.INTERFACE_PATH}item/${item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName}.bmp`, (data) => {
-			const icon = root.querySelector(`.item[data-index="${idx}"] .icon`);
+			const icon = itemDiv.querySelector(".icon");
 			if (icon && icon.closest(".box.recv")) icon.style.backgroundImage = `url(${data})`;
 		});
 	};
