@@ -312134,7 +312134,7 @@ function mergeEz2Effects(EffectTable, SkillEffect) {
 			xOffset: entry.PosX || 0,
 			yOffset: entry.PosY || 0,
 			wav: entry.SoundPath ? entry.SoundPath.replace(/\\/g, "/").replace(/\.wav$/i, "") : null,
-			delayLate: entry.StartDelayTime || 0,
+			delayStart: entry.StartDelayTime || 0,
 			repeat: !!entry.IsInfinite,
 			attachedEntity: true
 		}];
@@ -330514,22 +330514,18 @@ var init_Vending = __esmMin((() => {
 				Vending.focus();
 			});
 		});
-		if (inputWin) this.draggable.call({
-			_host: inputWin,
-			_shadow: null,
-			_container: inputWin,
-			magnet: {},
-			needFocus: false,
-			manager: null
-		}, inputWin.querySelector(".titlebar"));
-		if (outputWin) this.draggable.call({
-			_host: outputWin,
-			_shadow: null,
-			_container: outputWin,
-			magnet: {},
-			needFocus: false,
-			manager: null
-		}, outputWin.querySelector(".titlebar"));
+		this._windowDrags = [inputWin, outputWin].filter(Boolean).map((win) => {
+			const drag = Object.assign(Object.create(GUIComponent.prototype), {
+				_host: win,
+				_shadow: null,
+				_container: win,
+				magnet: {},
+				needFocus: false,
+				manager: null
+			});
+			drag.draggable(win.querySelector(".titlebar"));
+			return drag;
+		});
 		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/itemwin_mid.bmp`, (data) => {
 			Vending.itemBg = data;
 		});
@@ -330574,7 +330570,12 @@ var init_Vending = __esmMin((() => {
 		}
 		_type$2 = type;
 	};
+	Vending.cancelDrag = function cancelDrag() {
+		GUIComponent.prototype.cancelDrag.call(this);
+		this._windowDrags?.forEach((drag) => drag.cancelDrag());
+	};
 	Vending.onRemove = function onRemove() {
+		this.cancelDrag();
 		VendingModelMessage_default.onRemove();
 		const root = Vending.getRoot();
 		const inputWin = root.querySelector(".InputWindow");
@@ -330679,6 +330680,7 @@ var init_Vending = __esmMin((() => {
 		Vending.isOpen = true;
 	};
 	Vending.onClose = function onClose() {
+		this.cancelDrag();
 		this._host.style.display = "none";
 		Vending.isOpen = false;
 	};
