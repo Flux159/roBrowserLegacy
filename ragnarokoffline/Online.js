@@ -209800,14 +209800,21 @@ function render$16() {
 function transition(callback) {
 	const transitionDuration = Configs.get("transitionDuration") ? Configs.get("transitionDuration") : 500;
 	if (Background._overlayAnim) Background._overlayAnim.stop();
-	_overlay$1.style.opacity = "0.01";
-	document.body.appendChild(_overlay$1);
-	Background._overlayAnim = animateElement(_overlay$1, { opacity: 1 }, transitionDuration, () => {
+	let duration = transitionDuration;
+	if (_overlay$1.parentNode) {
+		if (parseFloat(_overlay$1.style.opacity) >= .99) duration = 1;
+	} else {
+		_overlay$1.style.opacity = "0.01";
+		document.body.appendChild(_overlay$1);
+	}
+	const anim = animateElement(_overlay$1, { opacity: 1 }, duration, () => {
 		callback();
+		if (Background._overlayAnim !== anim) return;
 		Background._overlayAnim = animateElement(_overlay$1, { opacity: .01 }, transitionDuration, () => {
 			if (_overlay$1.parentNode) _overlay$1.parentNode.removeChild(_overlay$1);
 		});
 	});
+	Background._overlayAnim = anim;
 }
 var _overlay$1, _container, _canvas, _ctx$5, Background;
 var init_Background = __esmMin((() => {
@@ -275049,19 +275056,30 @@ var init_MapRenderer = __esmMin((() => {
 				BGM.stop();
 				this.currentMap = mapname;
 				const filename = mapname.replace(/\.gat$/i, ".rsw");
+				let faded = false;
+				const waiting = [];
+				const afterFade = (fn) => (...args) => {
+					if (faded) fn(...args);
+					else waiting.push(() => fn(...args));
+				};
+				Thread.hook("MAP_PROGRESS", afterFade(loadEvent(onProgressUpdate)));
+				Thread.hook("MAP_WORLD", afterFade(loadEvent(onWorldComplete)));
+				Thread.hook("MAP_GROUND", afterFade(loadEvent(onGroundComplete)));
+				Thread.hook("MAP_ALTITUDE", afterFade(loadEvent(onAltitudeComplete)));
+				Thread.hook("MAP_MODELS", afterFade(loadEvent(onModelsComplete)));
+				Thread.hook("MAP_ANIMATED_MODEL", afterFade(loadEvent(onAnimatedModelComplete)));
+				Thread.hook("MAP_REPLACED_MODELS", afterFade(loadEvent((models) => MapHooks_default.modelsReady(Renderer.getContext(), models))));
+				Thread.send("MAP_REPLACE_MODELS", MapHooks_default.modelNames());
+				MapRenderer._loadRequest = Thread.send("LOAD_MAP", filename, afterFade(loadStep(loadId, onMapComplete)));
 				Background.setLoading(function() {
-					if (loadId !== MapRenderer._loadId) return;
-					Thread.hook("MAP_PROGRESS", loadEvent(onProgressUpdate));
-					Thread.hook("MAP_WORLD", loadEvent(onWorldComplete));
-					Thread.hook("MAP_GROUND", loadEvent(onGroundComplete));
-					Thread.hook("MAP_ALTITUDE", loadEvent(onAltitudeComplete));
-					Thread.hook("MAP_MODELS", loadEvent(onModelsComplete));
-					Thread.hook("MAP_ANIMATED_MODEL", loadEvent(onAnimatedModelComplete));
-					Thread.hook("MAP_REPLACED_MODELS", loadEvent((models) => MapHooks_default.modelsReady(Renderer.getContext(), models)));
+					if (loadId !== MapRenderer._loadId) {
+						waiting.length = 0;
+						return;
+					}
 					MapRenderer.free();
 					Renderer.remove();
-					Thread.send("MAP_REPLACE_MODELS", MapHooks_default.modelNames());
-					MapRenderer._loadRequest = Thread.send("LOAD_MAP", filename, loadStep(loadId, onMapComplete));
+					faded = true;
+					waiting.splice(0).forEach((fn) => fn());
 				});
 				return;
 			}
