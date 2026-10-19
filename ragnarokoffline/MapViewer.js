@@ -85717,11 +85717,12 @@ var init_WebGL = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/PostProcess.js
-var _effects, _activeEffects, _external, _externalAt, _gl$4, _sceneDepth, _inPasses, _readFbo, _writeFbo, PostProcess;
+var _effects, _activeEffects, _ready, _external, _externalAt, _gl$4, _sceneDepth, _inPasses, _readFbo, _writeFbo, PostProcess;
 var init_PostProcess = __esmMin((() => {
 	init_Graphics();
 	_effects = [];
 	_activeEffects = [];
+	_ready = /* @__PURE__ */ new Set();
 	_external = [];
 	_externalAt = -1;
 	_gl$4 = null;
@@ -85748,7 +85749,14 @@ var init_PostProcess = __esmMin((() => {
 			}
 			_gl$4 = gl;
 			_effects.push(module);
-			module.init(gl);
+		}
+		/**
+		* Whether the built-in passes are registered. They stay registered across
+		* map changes, until clean().
+		* @return {boolean}
+		*/
+		static isRegistered() {
+			return _externalAt >= 0;
 		}
 		/**
 		* Register the external passes here, in the order they were added.
@@ -85759,7 +85767,7 @@ var init_PostProcess = __esmMin((() => {
 			_externalAt = _effects.length;
 			_external.forEach((module) => {
 				_effects.push(module);
-				module.init(gl);
+				PostProcess.setUp(module, gl);
 			});
 		}
 		/**
@@ -85777,7 +85785,7 @@ var init_PostProcess = __esmMin((() => {
 			_external.push(module);
 			if (_gl$4 && _externalAt >= 0) {
 				_effects.splice(_externalAt + _external.length - 1, 0, module);
-				module.init(_gl$4);
+				PostProcess.setUp(module, _gl$4);
 			}
 		}
 		/**
@@ -85789,7 +85797,7 @@ var init_PostProcess = __esmMin((() => {
 			const index = _effects.indexOf(module);
 			if (index >= 0) {
 				_effects.splice(index, 1);
-				if (_gl$4) module.clean(_gl$4);
+				if (_gl$4 && _ready.delete(module)) module.clean(_gl$4);
 			}
 		}
 		/**
@@ -85801,12 +85809,24 @@ var init_PostProcess = __esmMin((() => {
 			return _sceneDepth;
 		}
 		/**
+		* Run a module's init() once, until it is cleaned.
+		* @param {ShaderModule} module
+		* @param {WebGLRenderingContext} gl
+		*/
+		static setUp(module, gl) {
+			if (!_ready.has(module)) {
+				_ready.add(module);
+				module.init(gl);
+			}
+		}
+		/**
 		* Prepare the pipeline for the scene rendering.
 		* Always binds a full-resolution buffer to ensure the 3D scene is sharp.
 		* @param {WebGLRenderingContext} gl - The WebGL context.
 		*/
 		static prepare(gl) {
 			_activeEffects = _effects.filter((e) => e.isActive());
+			for (let i = 0; i < _activeEffects.length; i++) PostProcess.setUp(_activeEffects[i], gl);
 			this.validateBuffers(gl);
 			if (_activeEffects.length > 0) PostProcess.beforeRenderPass(gl, _writeFbo);
 			else PostProcess.beforeRenderPass(gl, null);
@@ -85881,11 +85901,10 @@ var init_PostProcess = __esmMin((() => {
 		* restart Modules when crashs
 		*/
 		static restartModules(gl) {
-			_activeEffects.forEach((module) => {
-				module.clean(gl);
-				module.init(gl);
-			});
+			_ready.forEach((module) => module.clean(gl));
+			_ready.clear();
 			_activeEffects = [];
+			if (_externalAt >= 0) _external.forEach((module) => PostProcess.setUp(module, gl));
 			if (_readFbo) {
 				if (gl.isTexture(_readFbo.texture)) gl.deleteTexture(_readFbo.texture);
 				if (gl.isRenderbuffer(_readFbo.rbo)) gl.deleteRenderbuffer(_readFbo.rbo);
@@ -85910,7 +85929,7 @@ var init_PostProcess = __esmMin((() => {
 			const scaledHeight = Math.floor(height * scale);
 			_readFbo = this.createFbo(gl, scaledWidth, scaledHeight, _readFbo);
 			_writeFbo = this.createFbo(gl, scaledWidth, scaledHeight, _writeFbo);
-			_effects.forEach((module) => {
+			_ready.forEach((module) => {
 				if (module.recreateFbo) module.recreateFbo(gl, scaledWidth, scaledHeight);
 			});
 		}
@@ -85918,7 +85937,8 @@ var init_PostProcess = __esmMin((() => {
 		* Clean current registered modules
 		*/
 		static clean(gl) {
-			_effects.forEach((module) => module.clean(gl));
+			_ready.forEach((module) => module.clean(gl));
+			_ready.clear();
 			_effects = [];
 			_activeEffects = [];
 			_externalAt = -1;
@@ -209013,7 +209033,7 @@ function _scheduleLogCallback(cb) {
 function _processLogEntry(entry) {
 	if (entry.type === LOG_ENTRY_KNOWN) {
 		if (entry.dumpBytes) console.log("%c[Network] Dump Recv:\n%cPacket ID: 0x%s\nPacket Name: %s\nLength: %d\nContent:\n%s", "color:#900090", "color:inherit", entry.pktId.toString(16), entry.pktName, entry.pktLen, utilsBufferToHexString(entry.dumpBytes).toUpperCase());
-		console.log("%c[Network] Recv:", "color:#900090", entry.instance, entry.hasCallback ? "" : "(no callback)");
+		console.log("%c[Network] Recv: %s", "color:#900090", "0x" + entry.pktId.toString(16) + " " + entry.pktName, entry.instance, entry.hasCallback ? "" : "(no callback)");
 	} else if (entry.type === LOG_ENTRY_UNKNOWN) {
 		if (entry.dumpBytes) console.log("%c[Network] Dump Recv:\n%cPacket ID: 0x%s\nPacket Name: [UNKNOWN]\nLength: %d\nContent:\n%s", "color:#900090", "color:inherit", entry.pktId.toString(16), entry.pktLen, utilsBufferToHexString(entry.dumpBytes).toUpperCase());
 		console.error("[Network] Packet \"%c0x%s%c\" not registered, skipping %d bytes.", "font-weight:bold", entry.pktId.toString(16), "font-weight:normal", entry.pktLen);
@@ -209091,7 +209111,7 @@ function sendPacket(Packet) {
 		const id = new BinaryReader(pkt.buffer).readUShort();
 		console.log("%c[Network] Dump Send: \n%cPacket ID: 0x%s\nPacket Name: %s\nLength: %d\nContent:\n%s", "color:#007070", "color:inherit", id.toString(16), Packet.constructor.name, pkt.buffer.byteLength, utilsBufferToHexString(pkt.buffer).toUpperCase());
 	}
-	console.log("%c[Network] Send:", "color:#007070", Packet);
+	console.log("%c[Network] Send: %s", "color:#007070", Packet.constructor.name, Packet);
 	if (_socket && _socket.isZone) PacketCrypt_default.process(pkt.view);
 	send$1(pkt.buffer);
 }
@@ -211697,7 +211717,7 @@ function init$10(gl, water) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$19);
 	gl.bufferData(gl.ARRAY_BUFFER, water.mesh, gl.STATIC_DRAW);
 	function onTextureLoaded(texture, index) {
-		_textures$3[index] = texture;
+		_textures$6[index] = texture;
 	}
 	for (let i = 0; i < 32; ++i) WebGL_default.texture(gl, water.images[i], onTextureLoaded, i);
 }
@@ -211734,7 +211754,7 @@ function render$13(gl, modelView, projection, fog, light, tick) {
 	gl.uniform1f(uniform.uOpacity, _waterOpacity);
 	gl.uniform1f(uniform.uWavePitch, _wavePitch);
 	gl.uniform1f(uniform.uWaterOffset, frame * _waveSpeed % 360 - 180);
-	gl.bindTexture(gl.TEXTURE_2D, _textures$3[frame / _animSpeed % 32 | 0]);
+	gl.bindTexture(gl.TEXTURE_2D, _textures$6[frame / _animSpeed % 32 | 0]);
 	gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 	SpriteRenderer.runWithDepth(true, false, false, function() {
 		gl.drawArrays(gl.TRIANGLES, 0, _vertCount);
@@ -211757,9 +211777,9 @@ function free$6(gl) {
 		gl.deleteProgram(_program$26);
 		_program$26 = null;
 	}
-	for (i = 0; i < 32; ++i) if (_textures$3[i]) {
-		gl.deleteTexture(_textures$3[i]);
-		_textures$3[i] = null;
+	for (i = 0; i < 32; ++i) if (_textures$6[i]) {
+		gl.deleteTexture(_textures$6[i]);
+		_textures$6[i] = null;
 	}
 	_vertCount = 0;
 }
@@ -211796,7 +211816,7 @@ function state() {
 	return {
 		buffer: _buffer$19,
 		vertCount: _vertCount,
-		textures: _textures$3,
+		textures: _textures$6,
 		level: _waterLevel,
 		waveHeight: _waveHeight,
 		waveSpeed: _waveSpeed,
@@ -211805,7 +211825,7 @@ function state() {
 		opacity: _waterOpacity
 	};
 }
-var _program$26, _buffer$19, _vertCount, _textures$3, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, Water_default;
+var _program$26, _buffer$19, _vertCount, _textures$6, _waveSpeed, _waveHeight, _wavePitch, _waterLevel, _animSpeed, _waterOpacity, Water_default;
 var init_Water = __esmMin((() => {
 	init_WebGL();
 	init_SpriteRenderer();
@@ -211815,7 +211835,7 @@ var init_Water = __esmMin((() => {
 	_program$26 = null;
 	_buffer$19 = null;
 	_vertCount = 0;
-	_textures$3 = new Array(32);
+	_textures$6 = new Array(32);
 	_waveSpeed = 0;
 	_waveHeight = 0;
 	_wavePitch = 0;
@@ -273132,8 +273152,8 @@ function init$6(gl, mapname) {
 	if (_color) _display = true;
 	else _display = false;
 	gl.clearColor(color[0], color[1], color[2], color[3]);
-	if (!_textures$2.length && _display) {
-		_textures$2.length = 8;
+	if (!_textures$5.length && _display) {
+		_textures$5.length = 8;
 		for (i = 0; i < 7; i++) loadCloudTexture(gl, i);
 	}
 }
@@ -273146,7 +273166,7 @@ function init$6(gl, mapname) {
 function loadCloudTexture(gl, i) {
 	Client.loadFile("data/texture/effect/cloud" + (i + 1) + ".tga", function(buffer) {
 		WebGL_default.texture(gl, buffer, function(texture) {
-			_textures$2[i] = texture;
+			_textures$5[i] = texture;
 		});
 	});
 }
@@ -273163,7 +273183,7 @@ function setUpCloudData() {
 			death_tick: 0
 		};
 		cloudInit(_clouds[i]);
-		_clouds[i].sprite = Math.random() * (_textures$2.length - 1) | 0;
+		_clouds[i].sprite = Math.random() * (_textures$5.length - 1) | 0;
 		_clouds[i].death_tick = _clouds[i].born_tick + Math.random() * 8e3;
 		_clouds[i].born_tick -= 2e3;
 	}
@@ -273218,7 +273238,7 @@ function render$6(gl, modelView, projection, fog, tick) {
 		else opacity = 1;
 		SpriteRenderer.zIndex = 0;
 		SpriteRenderer.color[3] = opacity;
-		SpriteRenderer.image.texture = _textures$2[cloud.sprite];
+		SpriteRenderer.image.texture = _textures$5[cloud.sprite];
 		const dt = Math.min(tick - (cloud._lastTick || cloud.born_tick), 250);
 		cloud._lastTick = tick;
 		vec3$8.scaleAndAdd(cloud.position, cloud.position, cloud.direction, dt / 25);
@@ -273229,7 +273249,7 @@ function render$6(gl, modelView, projection, fog, tick) {
 	}
 	SpriteRenderer.unbind(gl);
 }
-var MAX_CLOUDS, _clouds, _textures$2, _color, _display, Sky_default;
+var MAX_CLOUDS, _clouds, _textures$5, _color, _display, Sky_default;
 var init_Sky = __esmMin((() => {
 	init_WebGL();
 	init_WeatherEffect();
@@ -273239,7 +273259,7 @@ var init_Sky = __esmMin((() => {
 	init_gl_matrix();
 	MAX_CLOUDS = 150;
 	_clouds = new Array(MAX_CLOUDS);
-	_textures$2 = [];
+	_textures$5 = [];
 	_color = null;
 	_display = true;
 	Sky_default = {
@@ -275030,8 +275050,10 @@ function onAnimatedModelComplete(data) {
 * Register PostProcessing Modules in pass order
 */
 function registerPostProcessModules(gl) {
-	if (WebGL_default.detectBadWebGL(gl)) GraphicsSettings.bloom = false;
-	else PostProcess.register(Bloom, gl);
+	const badWebGL = WebGL_default.detectBadWebGL(gl);
+	if (badWebGL) GraphicsSettings.bloom = false;
+	if (PostProcess.isRegistered()) return;
+	if (!badWebGL) PostProcess.register(Bloom, gl);
 	PostProcess.register(GaussianBlur, gl);
 	PostProcess.registerExternal(gl);
 	PostProcess.register(FXAA, gl);
@@ -275267,7 +275289,7 @@ var init_MapRenderer = __esmMin((() => {
 			SignboardManager.free();
 			SoundManager.stop();
 			BGM.stop();
-			PostProcess.clean(gl);
+			VerticalFlip.setActive(false);
 			Mouse.intersect = false;
 			Cursor.setType(Cursor.ACTION.DEFAULT);
 			this.light = null;
@@ -276939,20 +276961,16 @@ var init_SwirlingAura$1 = __esmMin((() => {
 * @param {{r: number, g: number, b: number, dark: boolean}} color
 * @param {number} alpha
 * @param {string} [shape] 'alpha' or 'brightness' (the default): see above
+* @param {number[]} [out] written and returned instead of a new array
 * @return {number[]} r, g, b, a
 */
-function auraUniform(color, alpha, shape = "brightness") {
-	return color.dark && shape !== "alpha" ? [
-		1,
-		1,
-		1,
-		alpha
-	] : [
-		color.r,
-		color.g,
-		color.b,
-		alpha
-	];
+function auraUniform(color, alpha, shape = "brightness", out = new Array(4)) {
+	const white = color.dark && shape !== "alpha";
+	out[0] = white ? 1 : color.r;
+	out[1] = white ? 1 : color.g;
+	out[2] = white ? 1 : color.b;
+	out[3] = alpha;
+	return out;
 }
 /**
 * Switch to the blending `color` needs before drawing it. A no-op for every
@@ -276963,9 +276981,32 @@ function auraUniform(color, alpha, shape = "brightness") {
 * @param {string} [shape] 'alpha' or 'brightness' (the default): see above
 */
 function beginAuraBlend(gl, color, shape = "brightness") {
-	if (!color) return;
-	if (shape === "alpha" && (color.hat || color.dark)) gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-	else if (shape !== "alpha" && color.dark) gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
+	const blend = auraBlend(color, shape);
+	if (blend !== 0) setAuraBlend(gl, blend);
+}
+/**
+* The blending `color` needs, as beginAuraBlend switches to it.
+*
+* @param {{dark: boolean, hat: boolean}} color
+* @param {string} [shape] 'alpha' or 'brightness' (the default): see above
+* @return {number} BLEND_ADD, BLEND_ALPHA or BLEND_DARKEN
+*/
+function auraBlend(color, shape = "brightness") {
+	if (!color) return 0;
+	if (shape === "alpha" && (color.hat || color.dark)) return 1;
+	if (shape !== "alpha" && color.dark) return 2;
+	return 0;
+}
+/**
+* Switch to one of the blendings above.
+*
+* @param {WebGL2RenderingContext} gl
+* @param {number} blend BLEND_ADD, BLEND_ALPHA or BLEND_DARKEN
+*/
+function setAuraBlend(gl, blend) {
+	if (blend === 1) gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	else if (blend === 2) gl.blendFunc(gl.ZERO, gl.ONE_MINUS_SRC_COLOR);
+	else gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 }
 /**
 * Put back the additive blending the auras share, after beginAuraBlend.
@@ -276975,22 +277016,473 @@ function endAuraBlend(gl, color) {
 }
 var init_AuraBlend = __esmMin((() => {}));
 //#endregion
+//#region src/Renderer/Effects/AuraBatch.vs?raw
+var AuraBatch_default$1;
+var init_AuraBatch$2 = __esmMin((() => {
+	AuraBatch_default$1 = "#version 300 es\r\nprecision highp float;\r\n\r\nin vec3 aPosition;\r\nin vec2 aTextureCoord;\r\nin vec4 aColor;\r\nin float aDepthOffset;\r\n\r\nout vec2 vTextureCoord;\r\nflat out vec4 vColor;\r\n\r\nuniform mat4 uModelViewMat;\r\nuniform mat4 uProjectionMat;\r\n\r\nvoid main(void) {\r\n	gl_Position = uProjectionMat * uModelViewMat * vec4(aPosition, 1.0);\r\n	gl_Position.z -= aDepthOffset;\r\n	vTextureCoord = aTextureCoord;\r\n	vColor = aColor;\r\n}\r\n";
+}));
+//#endregion
+//#region src/Renderer/Effects/AuraBatch.fs?raw
+var AuraBatch_default;
+var init_AuraBatch$1 = __esmMin((() => {
+	AuraBatch_default = "#version 300 es\r\nprecision highp float;\r\n\r\n// AuraBatch.js puts its effect's defines here: FOG, DISCARD_CLEAR,\r\n// DISCARD_BLACK, DARKEN. Each matches what that effect's own shader does.\r\n\r\nin vec2 vTextureCoord;\r\nflat in vec4 vColor;\r\nout vec4 fragColor;\r\n\r\nuniform sampler2D uDiffuse;\r\nuniform bool uDarken;\r\n\r\nuniform bool  uFogUse;\r\nuniform float uFogNear;\r\nuniform float uFogFar;\r\nuniform vec3  uFogColor;\r\n\r\nvoid main(void) {\r\n	vec4 texColor = texture(uDiffuse, vTextureCoord);\r\n\r\n#ifdef DISCARD_CLEAR\r\n	if (texColor.a < 0.01) {\r\n		discard;\r\n	}\r\n#endif\r\n\r\n#ifdef DISCARD_BLACK\r\n	if (texColor.r < 0.01 && texColor.g < 0.01 && texColor.b < 0.01) {\r\n		discard;\r\n	}\r\n#endif\r\n\r\n#ifdef DARKEN\r\n	if (uDarken) {\r\n		float k = max(max(texColor.r, texColor.g), texColor.b) * vColor.a;\r\n		fragColor = vec4(k, k, k, 1.0);\r\n		return;\r\n	}\r\n#endif\r\n\r\n	fragColor = texColor * vColor;\r\n\r\n#ifdef FOG\r\n	if (uFogUse) {\r\n		float depth = gl_FragCoord.z / gl_FragCoord.w;\r\n		float fogFactor = smoothstep(uFogNear, uFogFar, depth);\r\n		fragColor = mix(fragColor, vec4(uFogColor, fragColor.w), fogFactor);\r\n	}\r\n#endif\r\n}\r\n";
+}));
+//#endregion
+//#region src/Renderer/Effects/AuraBatch.js
+/**
+* Load an effect texture once for every instance that asks for it, so they
+* share one GL texture (and one run in a batch). `cache` is the class's Map;
+* freeSharedTextures deletes what is in it.
+*
+* @param {Map} cache
+* @param {WebGL2RenderingContext} gl
+* @param {string} name file name under data/texture/effect/
+* @param {function} onload receives the texture
+* @param {function} [onerror] the file could not be loaded
+*/
+function sharedTexture(cache, gl, name, onload, onerror) {
+	let entry = cache.get(name);
+	if (!entry) {
+		entry = {
+			texture: null,
+			failed: false,
+			waiting: []
+		};
+		cache.set(name, entry);
+		Client.loadFile(`data/texture/effect/${name}`, (buffer) => {
+			WebGL_default.texture(gl, buffer, (texture) => {
+				if (cache.get(name) !== entry) {
+					gl.deleteTexture(texture);
+					return;
+				}
+				entry.texture = texture;
+				const waiting = entry.waiting;
+				entry.waiting = [];
+				waiting.forEach((w) => w.onload(texture));
+			});
+		}, () => {
+			entry.failed = true;
+			const waiting = entry.waiting;
+			entry.waiting = [];
+			waiting.forEach((w) => w.onerror && w.onerror());
+		});
+	}
+	if (entry.texture) onload(entry.texture);
+	else if (entry.failed) {
+		if (onerror) onerror();
+	} else entry.waiting.push({
+		onload,
+		onerror
+	});
+}
+/**
+* Delete the textures sharedTexture loaded into `cache`.
+*/
+function freeSharedTextures(cache, gl) {
+	for (const entry of cache.values()) if (entry.texture) gl.deleteTexture(entry.texture);
+	cache.clear();
+}
+var FLOATS, STRIDE, QUAD_UV, QUAD_FAN, AuraBatch;
+var init_AuraBatch = __esmMin((() => {
+	init_AuraBatch$2();
+	init_AuraBatch$1();
+	init_WebGL();
+	init_Client();
+	init_Configs();
+	init_SpriteRenderer();
+	init_AuraBlend();
+	FLOATS = 10;
+	STRIDE = 40;
+	QUAD_UV = [
+		0,
+		0,
+		1,
+		0,
+		1,
+		1,
+		0,
+		1
+	];
+	QUAD_FAN = [
+		0,
+		1,
+		2,
+		2,
+		3,
+		0
+	];
+	AuraBatch = class {
+		/**
+		* @param {object} options the effect's fragment shader, as defines
+		* @param {boolean} [options.fog] fog, as SpriteRenderer draws it
+		* @param {boolean} [options.discardClear] discard texels with alpha under 0.01
+		* @param {boolean} [options.discardBlack] discard black texels
+		* @param {boolean} [options.darken] BLEND_DARKEN draws grey from the texture's brightness
+		* @param {boolean} [options.mergeAdditive] draw each texture's additive triangles together (see above)
+		*/
+		constructor(options) {
+			const { mergeAdditive, ...defines } = options;
+			this.mergeAdditive = !!mergeAdditive;
+			this.defines = Object.keys(defines).filter((key) => defines[key]).map((key) => `#define ${key.replace(/[A-Z]/g, (c) => `_${c}`).toUpperCase()}\n`).join("");
+			this.vertices = new Float32Array(FLOATS * 1024);
+			this.indices = /* @__PURE__ */ new Uint32Array(1536);
+			this.vertexCount = 0;
+			this.indexCount = 0;
+			this.runs = [];
+			this.runCount = 0;
+			this.mergedIndices = /* @__PURE__ */ new Uint32Array(0);
+			this.mergedRuns = [];
+			this.mergedRunCount = 0;
+			this.textureRun = /* @__PURE__ */ new Map();
+			this.modelView = /* @__PURE__ */ new Float32Array(16);
+			this.projection = /* @__PURE__ */ new Float32Array(16);
+			this.fog = {
+				use: false,
+				near: 0,
+				far: 0,
+				color: /* @__PURE__ */ new Float32Array(3)
+			};
+			this.active = false;
+			this.gl = null;
+			this.program = null;
+			this.vao = null;
+			this.vertexBuffer = null;
+			this.indexBuffer = null;
+		}
+		/**
+		* Start recording the frame's instances. Call in the class's beforeRender.
+		*
+		* @param {WebGL2RenderingContext} gl
+		* @param {mat4} modelView
+		* @param {mat4} projection
+		* @param {object} fog
+		*/
+		begin(gl, modelView, projection, fog) {
+			this.vertexCount = 0;
+			this.indexCount = 0;
+			this.runCount = 0;
+			this.active = Configs.get("auraBatching", true) !== false && typeof gl.createVertexArray === "function";
+			if (!this.active) return;
+			this.modelView.set(modelView);
+			this.projection.set(projection);
+			this.fog.use = !!(fog.use && fog.exist);
+			this.fog.near = fog.near;
+			this.fog.far = fog.far;
+			this.fog.color.set(fog.color);
+		}
+		/**
+		* Room for `vertices` more vertices and `indices` more indices, in the run
+		* of `texture` drawn with `blend`. Returns the index of the first new vertex.
+		*/
+		reserve(texture, blend, vertices, indices) {
+			if ((this.vertexCount + vertices) * FLOATS > this.vertices.length) {
+				const grown = new Float32Array(Math.max(this.vertices.length * 2, (this.vertexCount + vertices) * FLOATS));
+				grown.set(this.vertices.subarray(0, this.vertexCount * FLOATS));
+				this.vertices = grown;
+			}
+			if (this.indexCount + indices > this.indices.length) {
+				const grown = new Uint32Array(Math.max(this.indices.length * 2, this.indexCount + indices));
+				grown.set(this.indices.subarray(0, this.indexCount));
+				this.indices = grown;
+			}
+			let run = this.runCount ? this.runs[this.runCount - 1] : null;
+			if (!run || run.texture !== texture || run.blend !== blend) {
+				run = this.runs[this.runCount];
+				if (!run) run = this.runs[this.runCount] = {
+					texture: null,
+					blend: 0,
+					first: 0,
+					count: 0
+				};
+				run.texture = texture;
+				run.blend = blend;
+				run.first = this.indexCount;
+				run.count = 0;
+				this.runCount++;
+			}
+			run.count += indices;
+			return this.vertexCount;
+		}
+		/**
+		* Write one vertex.
+		*/
+		vertex(x, y, z, u, v, r, g, b, a, depth) {
+			const d = this.vertices;
+			let o = this.vertexCount * FLOATS;
+			d[o++] = x;
+			d[o++] = y;
+			d[o++] = z;
+			d[o++] = u;
+			d[o++] = v;
+			d[o++] = r;
+			d[o++] = g;
+			d[o++] = b;
+			d[o++] = a;
+			d[o] = depth;
+			this.vertexCount++;
+		}
+		/**
+		* Record a quad.
+		*
+		* @param {WebGLTexture} texture
+		* @param {number} blend AuraBlend's BLEND_*
+		* @param {Array} points four corners [x, y, z] in world space, textured (0,0) (1,0) (1,1) (0,1)
+		* @param {Array} order the six corners of its two triangles
+		* @param {number} r colour, as the effect gave its shader's uColor
+		* @param {number} g
+		* @param {number} b
+		* @param {number} a
+		* @param {number} depth what the effect took off gl_Position.z
+		*/
+		quad(texture, blend, points, order, r, g, b, a, depth) {
+			const base = this.reserve(texture, blend, 4, 6);
+			for (let k = 0; k < 4; k++) {
+				const p = points[k];
+				this.vertex(p[0], p[1], p[2], QUAD_UV[k * 2], QUAD_UV[k * 2 + 1], r, g, b, a, depth);
+			}
+			for (let i = 0; i < 6; i++) this.indices[this.indexCount++] = base + order[i];
+		}
+		/**
+		* Record an indexed mesh, moved by (x, y, z).
+		*
+		* @param {WebGLTexture} texture
+		* @param {number} blend AuraBlend's BLEND_*
+		* @param {Float32Array} vertices x, y, z, u, v each
+		* @param {number} vertexCount
+		* @param {Uint16Array} indices
+		* @param {number} x
+		* @param {number} y
+		* @param {number} z
+		* @param {number} r colour, as the effect gave its shader's uColor
+		* @param {number} g
+		* @param {number} b
+		* @param {number} a
+		* @param {number} depth what the effect took off gl_Position.z
+		*/
+		mesh(texture, blend, vertices, vertexCount, indices, x, y, z, r, g, b, a, depth) {
+			const base = this.reserve(texture, blend, vertexCount, indices.length);
+			for (let i = 0, o = 0; i < vertexCount; i++, o += 5) this.vertex(vertices[o] + x, vertices[o + 1] + y, vertices[o + 2] + z, vertices[o + 3], vertices[o + 4], r, g, b, a, depth);
+			for (let i = 0; i < indices.length; i++) this.indices[this.indexCount++] = base + indices[i];
+		}
+		/**
+		* Draw what was recorded. Call in the class's afterRender, which then puts
+		* its blending back.
+		*
+		* @param {WebGL2RenderingContext} gl
+		*/
+		flush(gl) {
+			if (!this.active) return;
+			this.active = false;
+			if (!this.runCount) return;
+			if (!this.program || this.gl !== gl) this.init(gl);
+			const uniform = this.program.uniform;
+			gl.useProgram(this.program);
+			gl.uniformMatrix4fv(uniform.uModelViewMat, false, this.modelView);
+			gl.uniformMatrix4fv(uniform.uProjectionMat, false, this.projection);
+			gl.uniform1i(uniform.uFogUse, this.fog.use);
+			gl.uniform1f(uniform.uFogNear, this.fog.near);
+			gl.uniform1f(uniform.uFogFar, this.fog.far);
+			gl.uniform3fv(uniform.uFogColor, this.fog.color);
+			gl.activeTexture(gl.TEXTURE0);
+			gl.uniform1i(uniform.uDiffuse, 0);
+			gl.bindVertexArray(this.vao);
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+			gl.bufferData(gl.ARRAY_BUFFER, this.vertices.subarray(0, this.vertexCount * FLOATS), gl.STREAM_DRAW);
+			let runs = this.runs;
+			let runCount = this.runCount;
+			let indices = this.indices;
+			if (this.mergeAdditive && this.merge()) {
+				runs = this.mergedRuns;
+				runCount = this.mergedRunCount;
+				indices = this.mergedIndices;
+			}
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices.subarray(0, this.indexCount), gl.STREAM_DRAW);
+			SpriteRenderer.runWithDepth(true, false, false, function() {
+				let blend = -1;
+				for (let i = 0; i < runCount; i++) {
+					const run = runs[i];
+					if (run.blend !== blend) {
+						blend = run.blend;
+						setAuraBlend(gl, blend);
+						if (uniform.uDarken) gl.uniform1i(uniform.uDarken, blend === 2);
+					}
+					gl.bindTexture(gl.TEXTURE_2D, run.texture);
+					gl.drawElements(gl.TRIANGLES, run.count, gl.UNSIGNED_INT, run.first * 4);
+				}
+			});
+			gl.bindVertexArray(null);
+			for (let i = 0; i < this.runCount; i++) this.runs[i].texture = null;
+			for (let i = 0; i < this.mergedRunCount; i++) this.mergedRuns[i].texture = null;
+			this.runCount = 0;
+			this.mergedRunCount = 0;
+			this.vertexCount = 0;
+			this.indexCount = 0;
+		}
+		/**
+		* Regroup the recorded runs for mergeAdditive into mergedRuns and
+		* mergedIndices: each span of consecutive BLEND_ADD runs becomes one run
+		* per texture, in the order the textures first appear in it, with that
+		* texture's triangles in the order they were recorded. Other runs stay
+		* as they are, where they are. Returns false when nothing would merge.
+		*
+		* @return {boolean}
+		*/
+		merge() {
+			const runs = this.runs;
+			const runCount = this.runCount;
+			if (this.mergedIndices.length < this.indexCount) this.mergedIndices = new Uint32Array(this.indices.length);
+			const textureRun = this.textureRun;
+			let merged = 0;
+			let offset = 0;
+			for (let start = 0; start < runCount;) {
+				if (runs[start].blend !== 0) {
+					const run = runs[start];
+					const target = this.mergedRun(merged++, run.texture, run.blend, offset);
+					this.copyIndices(run, offset);
+					target.count = run.count;
+					offset += run.count;
+					start++;
+					continue;
+				}
+				let end = start;
+				const first = merged;
+				for (; end < runCount && runs[end].blend === 0; end++) {
+					const run = runs[end];
+					let target = textureRun.get(run.texture);
+					if (target === void 0) {
+						target = this.mergedRun(merged++, run.texture, 0, 0);
+						textureRun.set(run.texture, target);
+					}
+					target.count += run.count;
+				}
+				for (let i = first; i < merged; i++) {
+					const target = this.mergedRuns[i];
+					target.first = offset;
+					offset += target.count;
+					target.count = 0;
+				}
+				for (let i = start; i < end; i++) {
+					const run = runs[i];
+					const target = textureRun.get(run.texture);
+					this.copyIndices(run, target.first + target.count);
+					target.count += run.count;
+				}
+				textureRun.clear();
+				start = end;
+			}
+			this.mergedRunCount = merged;
+			return merged < runCount;
+		}
+		/**
+		* Copy a recorded run's indices into mergedIndices at `offset`, without
+		* the garbage of a subarray a run.
+		*/
+		copyIndices(run, offset) {
+			const indices = this.indices;
+			const out = this.mergedIndices;
+			for (let i = run.first, end = run.first + run.count; i < end; i++) out[offset++] = indices[i];
+		}
+		/**
+		* mergedRuns[index], set to start empty at `first`.
+		*/
+		mergedRun(index, texture, blend, first) {
+			let run = this.mergedRuns[index];
+			if (!run) run = this.mergedRuns[index] = {
+				texture: null,
+				blend: 0,
+				first: 0,
+				count: 0
+			};
+			run.texture = texture;
+			run.blend = blend;
+			run.first = first;
+			run.count = 0;
+			return run;
+		}
+		/**
+		* Create the program, the buffers and the vertex array.
+		*/
+		init(gl) {
+			if (this.program && this.gl === gl) return;
+			this.gl = gl;
+			const fragment = AuraBatch_default.replace(/^(#version[^\n]*\n)/, `$1${this.defines}`);
+			this.program = WebGL_default.createShaderProgram(gl, AuraBatch_default$1, fragment);
+			this.vertexBuffer = gl.createBuffer();
+			this.indexBuffer = gl.createBuffer();
+			this.vao = gl.createVertexArray();
+			const attribute = this.program.attribute;
+			gl.bindVertexArray(this.vao);
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+			gl.enableVertexAttribArray(attribute.aPosition);
+			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, STRIDE, 0);
+			gl.enableVertexAttribArray(attribute.aTextureCoord);
+			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, STRIDE, 12);
+			gl.enableVertexAttribArray(attribute.aColor);
+			gl.vertexAttribPointer(attribute.aColor, 4, gl.FLOAT, false, STRIDE, 20);
+			gl.enableVertexAttribArray(attribute.aDepthOffset);
+			gl.vertexAttribPointer(attribute.aDepthOffset, 1, gl.FLOAT, false, STRIDE, 36);
+			gl.bindVertexArray(null);
+		}
+		/**
+		* Delete the program and the buffers. Call in the class's static free.
+		*/
+		free(gl) {
+			if (this.program) {
+				gl.deleteProgram(this.program);
+				gl.deleteBuffer(this.vertexBuffer);
+				gl.deleteBuffer(this.indexBuffer);
+				gl.deleteVertexArray(this.vao);
+			}
+			this.program = null;
+			this.vao = null;
+			this.vertexBuffer = null;
+			this.indexBuffer = null;
+			this.gl = null;
+			this.active = false;
+			this.runCount = 0;
+			this.mergedRunCount = 0;
+			this.textureRun.clear();
+			this.vertexCount = 0;
+			this.indexCount = 0;
+		}
+	};
+}));
+//#endregion
 //#region src/Renderer/Effects/SwirlingAura.js
-var mat4$8, _program$10, _modelMatrix, E_DIVISION, FULL_DISPLAY_ANGLE, DEG_TO_RAD$2, SwirlingAura;
+var mat4$8, _program$10, _modelMatrix, E_DIVISION, FULL_DISPLAY_ANGLE, DEG_TO_RAD$2, VERTICES_PER_BAND, _batch$3, _textures$4, BAND_INDICES, SwirlingAura;
 var init_SwirlingAura = __esmMin((() => {
 	init_SwirlingAura$2();
 	init_SwirlingAura$1();
 	init_WebGL();
 	init_gl_matrix();
-	init_Client();
 	init_Altitude();
 	init_SpriteRenderer();
 	init_AuraBlend();
+	init_AuraBatch();
 	mat4$8 = gl_matrix_default.mat4;
 	_modelMatrix = mat4$8.create();
 	E_DIVISION = 21;
 	FULL_DISPLAY_ANGLE = 315;
 	DEG_TO_RAD$2 = Math.PI / 180;
+	VERTICES_PER_BAND = 42;
+	_batch$3 = new AuraBatch({
+		fog: true,
+		discardClear: true,
+		discardBlack: true
+	});
+	_textures$4 = /* @__PURE__ */ new Map();
+	BAND_INDICES = (function() {
+		const indices = [];
+		for (let k = 0; k < 20; k++) {
+			const i0 = k * 2;
+			const i1 = k * 2 + 1;
+			const i2 = k * 2 + 2;
+			const i3 = k * 2 + 3;
+			indices.push(i0, i1, i2, i1, i3, i2);
+		}
+		return new Uint16Array(indices);
+	})();
 	SwirlingAura = class {
 		/**
 		* @param {object} color optional tint from AuraTiers.auraColor, over the blue or green
@@ -277027,6 +277519,12 @@ var init_SwirlingAura = __esmMin((() => {
 			});
 			this.basicAngle = FULL_DISPLAY_ANGLE / 20;
 			this.vertices = /* @__PURE__ */ new Float32Array(210);
+			this.rgba = [
+				0,
+				0,
+				0,
+				0
+			];
 			this.buffers = null;
 			this.indexBuffer = null;
 			this.indexCount = 0;
@@ -277082,23 +277580,18 @@ var init_SwirlingAura = __esmMin((() => {
 			}
 		}
 		/**
-		* Generate index buffer
-		*/
-		generateIndices() {
-			const indices = [];
-			for (let k = 0; k < 20; k++) {
-				const i0 = k * 2;
-				const i1 = k * 2 + 1;
-				const i2 = k * 2 + 2;
-				const i3 = k * 2 + 3;
-				indices.push(i0, i1, i2, i1, i3, i2);
-			}
-			return new Uint16Array(indices);
-		}
-		/**
 		* Initialize instance
 		*/
 		init(gl) {
+			sharedTexture(_textures$4, gl, this.textureName, (texture) => {
+				this.texture = texture;
+				this.ready = true;
+			});
+		}
+		/**
+		* The band buffers, for drawing without the batch
+		*/
+		createBuffers(gl) {
 			this.buffers = [];
 			for (let i = 0; i < this.bands.length; i++) {
 				const buf = gl.createBuffer();
@@ -277106,17 +277599,10 @@ var init_SwirlingAura = __esmMin((() => {
 				gl.bufferData(gl.ARRAY_BUFFER, this.vertices.byteLength, gl.DYNAMIC_DRAW);
 				this.buffers.push(buf);
 			}
-			const indices = this.generateIndices();
 			this.indexBuffer = gl.createBuffer();
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-			this.indexCount = indices.length;
-			Client.loadFile(`data/texture/effect/${this.textureName}`, (buffer) => {
-				WebGL_default.texture(gl, buffer, (texture) => {
-					this.texture = texture;
-					this.ready = true;
-				});
-			});
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, BAND_INDICES, gl.STATIC_DRAW);
+			this.indexCount = BAND_INDICES.length;
 		}
 		/**
 		* Free instance resources
@@ -277139,6 +277625,11 @@ var init_SwirlingAura = __esmMin((() => {
 			const uniform = _program$10.uniform;
 			const attribute = _program$10.attribute;
 			const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
+			if (_batch$3.active) {
+				this.record(tick, groundZ);
+				return;
+			}
+			if (!this.buffers) this.createBuffers(gl);
 			mat4$8.identity(_modelMatrix);
 			mat4$8.translate(_modelMatrix, _modelMatrix, [
 				this.position[0] + .5,
@@ -277172,6 +277663,25 @@ var init_SwirlingAura = __esmMin((() => {
 			endAuraBlend(gl, this.color);
 		}
 		/**
+		* Record the three bands in the batch, as render draws them
+		*/
+		record(tick, groundZ) {
+			const process = (tick - this.tick) / 25;
+			const blend = auraBlend(this.color, "alpha");
+			const color = auraUniform(this.color, this.alphaB, "alpha", this.rgba);
+			const x = this.position[0] + .5;
+			const y = -groundZ;
+			const z = this.position[1] + .5;
+			for (let ec = 0; ec < this.bands.length; ec++) {
+				const band = this.bands[ec];
+				if (!band.life) continue;
+				band.rotStart = (band.initialRotStart + process * band.spinSpeed) % 360;
+				this.updateHeightProfile(band, process);
+				this.fillBandMesh(band);
+				_batch$3.mesh(this.texture, blend, this.vertices, VERTICES_PER_BAND, BAND_INDICES, x, y, z, color[0], color[1], color[2], color[3], .01 + ec * .001);
+			}
+		}
+		/**
 		* Initialize static resources
 		*/
 		static init(gl) {
@@ -277187,6 +277697,8 @@ var init_SwirlingAura = __esmMin((() => {
 				gl.deleteProgram(_program$10);
 				_program$10 = null;
 			}
+			_batch$3.free(gl);
+			freeSharedTextures(_textures$4, gl);
 			this.ready = false;
 		}
 		/**
@@ -277204,11 +277716,13 @@ var init_SwirlingAura = __esmMin((() => {
 			gl.uniform3fv(uniform.uFogColor, fog.color);
 			gl.activeTexture(gl.TEXTURE0);
 			gl.uniform1i(uniform.uDiffuse, 0);
+			_batch$3.begin(gl, modelView, projection, fog);
 		}
 		/**
 		* After render cleanup
 		*/
 		static afterRender(gl) {
+			_batch$3.flush(gl);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 			gl.disableVertexAttribArray(_program$10.attribute.aPosition);
 			gl.disableVertexAttribArray(_program$10.attribute.aTextureCoord);
@@ -277286,15 +277800,38 @@ function calculateSize(self, aura, auraAngle, i) {
 	const endY = sin * (aura[i].distance * .8 + riseFactor);
 	return [Math.abs(endX - startX), Math.abs(endY - startY)];
 }
-var _program$9, _buffer$8, GroundAura;
+var _program$9, _buffer$8, _batch$2, _textures$3, GROUND_ORDER, GROUND_CORNERS, GroundAura;
 var init_GroundAura = __esmMin((() => {
 	init_GroundAura$2();
 	init_GroundAura$1();
 	init_WebGL();
-	init_Client();
 	init_Altitude();
 	init_SpriteRenderer();
 	init_AuraBlend();
+	init_AuraBatch();
+	_batch$2 = new AuraBatch({
+		discardClear: true,
+		darken: true
+	});
+	_textures$3 = /* @__PURE__ */ new Map();
+	GROUND_ORDER = [
+		0,
+		1,
+		3,
+		1,
+		2,
+		3
+	];
+	GROUND_CORNERS = [
+		-.5,
+		-.5,
+		.5,
+		-.5,
+		.5,
+		.5,
+		-.5,
+		.5
+	];
 	GroundAura = class {
 		/**
 		* @param {object} color optional tint from AuraTiers.auraColor; white when left out
@@ -277337,6 +277874,39 @@ var init_GroundAura = __esmMin((() => {
 			this.sinCache = {};
 			this._lastTick = tick;
 			this._accumTime = 0;
+			this.worldPos = [
+				0,
+				0,
+				0
+			];
+			this.rgba = [
+				0,
+				0,
+				0,
+				0
+			];
+			this.points = [
+				[
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0
+				],
+				[
+					0,
+					0,
+					0
+				]
+			];
 		}
 		/**
 		* Initialize instance
@@ -277350,11 +277920,9 @@ var init_GroundAura = __esmMin((() => {
 				this.shape = "brightness";
 				this.init(gl);
 			};
-			Client.loadFile(`data/texture/effect/${this.textureName}`, (buffer) => {
-				WebGL_default.texture(gl, buffer, (texture) => {
-					this.texture = texture;
-					this.ready = true;
-				});
+			sharedTexture(_textures$3, gl, this.textureName, (texture) => {
+				this.texture = texture;
+				this.ready = true;
 			}, onerror);
 		}
 		/**
@@ -277365,7 +277933,6 @@ var init_GroundAura = __esmMin((() => {
 		}
 		render(gl, tick) {
 			const uniform = _program$9.uniform;
-			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			const RAG_TICK_MS = 25;
 			const dt = Math.min(tick - (this._lastTick || tick), 250);
 			this._lastTick = tick;
@@ -277391,11 +277958,15 @@ var init_GroundAura = __esmMin((() => {
 				}
 			}
 			const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
-			const worldPos = [
-				this.position[0],
-				this.position[1],
-				groundZ + .05
-			];
+			const worldPos = this.worldPos;
+			worldPos[0] = this.position[0];
+			worldPos[1] = this.position[1];
+			worldPos[2] = groundZ + .05;
+			if (_batch$2.active) {
+				this.record(worldPos);
+				return;
+			}
+			gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			gl.uniform3fv(uniform.uWorldPosition, worldPos);
 			const self = this;
 			beginAuraBlend(gl, this.color, this.shape);
@@ -277412,6 +277983,29 @@ var init_GroundAura = __esmMin((() => {
 				}
 			});
 			endAuraBlend(gl, this.color);
+		}
+		/**
+		* Record the quads in the batch, placed as GroundAura.vs places them
+		*/
+		record(worldPos) {
+			const blend = auraBlend(this.color, this.shape);
+			const color = auraUniform(this.color, .8, this.shape, this.rgba);
+			for (let i = 0; i < this.aura.length; i++) {
+				if (!this.aura[i].life) continue;
+				const sizeX = this.aura[i].size[0] / 35;
+				const sizeY = this.aura[i].size[1] / 35;
+				const angle = i * 23 * Math.PI / 180;
+				const cos = Math.cos(angle);
+				const sin = Math.sin(angle);
+				for (let k = 0; k < 4; k++) {
+					const x = GROUND_CORNERS[k * 2] * sizeX;
+					const z = GROUND_CORNERS[k * 2 + 1] * sizeY;
+					this.points[k][0] = worldPos[0] + .5 + (x * cos - z * sin);
+					this.points[k][1] = -worldPos[2];
+					this.points[k][2] = worldPos[1] + .5 + (x * sin + z * cos);
+				}
+				_batch$2.quad(this.texture, blend, this.points, GROUND_ORDER, color[0], color[1], color[2], color[3], (1 + i) * .01);
+			}
 		}
 		/**
 		* Initialize static resources
@@ -277437,6 +278031,8 @@ var init_GroundAura = __esmMin((() => {
 				gl.deleteBuffer(_buffer$8);
 				_buffer$8 = null;
 			}
+			_batch$2.free(gl);
+			freeSharedTextures(_textures$3, gl);
 			this.ready = false;
 		}
 		/**
@@ -277460,11 +278056,13 @@ var init_GroundAura = __esmMin((() => {
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
+			_batch$2.begin(gl, modelView, projection, fog);
 		}
 		/**
 		* After render cleanup
 		*/
 		static afterRender(gl) {
+			_batch$2.flush(gl);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 			gl.disableVertexAttribArray(_program$9.attribute.aPosition);
 			gl.disableVertexAttribArray(_program$9.attribute.aTextureCoord);
@@ -277494,21 +278092,19 @@ function wrapDegrees(angle) {
 	return angle;
 }
 /**
-* Advance a phase angle toward a random target, reseed when reached.
-* Returns { angle, target }
+* Advance phase `i` toward its random target, reseed the target when reached.
+* Writes in place: this runs 16 times a column a frame for every aura.
 */
-function advancePhase(current, target, stepScale = 1) {
+function advancePhase(phases, targets, i, stepScale = 1) {
+	const current = phases[i];
+	const target = targets[i];
 	let diff = target - current;
 	diff = (diff + 540) % 360 - 180;
 	const step = (2 + Math.random()) * stepScale;
 	if (Math.abs(diff) <= step) {
-		current = target;
-		target = randRange(0, 360);
-	} else current = wrapDegrees(current + Math.sign(diff) * step);
-	return {
-		angle: current,
-		target
-	};
+		phases[i] = target;
+		targets[i] = randRange(0, 360);
+	} else phases[i] = wrapDegrees(current + Math.sign(diff) * step);
 }
 function pickColor(flag1) {
 	if (flag1 === 1) return {
@@ -277537,16 +278133,16 @@ function createAnchor(isGhost, seedMaxUnits) {
 		z: 0
 	};
 }
-var DEG_TO_RAD$1, GAME_TO_WORLD, NUM_COLUMNS, ANCHORS_PER_COL, BASE_LIFT$1, REF_RADIUS, REF_SPEED, REF_DRIFT_K, REF_SEED_MAX, REF_RESET_Y, REF_ALPHA_OFFSET, REF_ALPHA_GAIN, ANCHOR_SIGNS, ANCHOR_PHASE_OFFSETS, debugConfig, _program$8, _buffer$7, BILLBOARD_CORNERS, Level99Bubble;
+var DEG_TO_RAD$1, GAME_TO_WORLD, NUM_COLUMNS, ANCHORS_PER_COL, BASE_LIFT$1, REF_RADIUS, REF_SPEED, REF_DRIFT_K, REF_SEED_MAX, REF_RESET_Y, REF_ALPHA_OFFSET, REF_ALPHA_GAIN, ANCHOR_SIGNS, ANCHOR_PHASE_OFFSETS, debugConfig, _program$8, _buffer$7, _batch$1, _textures$2, BILLBOARD_CORNERS, Level99Bubble;
 var init_Level99Bubble = __esmMin((() => {
 	init_Level99Bubble$2();
 	init_Level99Bubble$1();
 	init_WebGL();
-	init_Client();
 	init_Camera();
 	init_Altitude();
 	init_SpriteRenderer();
 	init_AuraBlend();
+	init_AuraBatch();
 	DEG_TO_RAD$1 = Math.PI / 180;
 	GAME_TO_WORLD = .1 * 2.2;
 	NUM_COLUMNS = 4;
@@ -277608,6 +278204,8 @@ var init_Level99Bubble = __esmMin((() => {
 		alphaGain: REF_ALPHA_GAIN,
 		floorLimit: Math.abs(REF_RESET_Y)
 	};
+	_batch$1 = new AuraBatch({ fog: true });
+	_textures$2 = /* @__PURE__ */ new Map();
 	BILLBOARD_CORNERS = [
 		{
 			x: -1,
@@ -277662,6 +278260,17 @@ var init_Level99Bubble = __esmMin((() => {
 				this.columns.push(column);
 			}
 			this.quadData = /* @__PURE__ */ new Float32Array(30);
+			this.basePos = [
+				0,
+				0,
+				0
+			];
+			this.rgba = [
+				0,
+				0,
+				0,
+				0
+			];
 			this.tmpPoints = [
 				[
 					0,
@@ -277686,11 +278295,9 @@ var init_Level99Bubble = __esmMin((() => {
 			];
 		}
 		init(gl) {
-			Client.loadFile(`data/texture/effect/${this.textureName}`, (buffer) => {
-				WebGL_default.texture(gl, buffer, (texture) => {
-					this.texture = texture;
-					this.ready = true;
-				});
+			sharedTexture(_textures$2, gl, this.textureName, (texture) => {
+				this.texture = texture;
+				this.ready = true;
 			});
 		}
 		free(gl) {
@@ -277711,11 +278318,7 @@ var init_Level99Bubble = __esmMin((() => {
 		* Update all phases in a column (advance toward random targets)
 		*/
 		updatePhases(column, stepScale = 1) {
-			for (let i = 0; i < 16; i++) {
-				const result = advancePhase(column.phases[i], column.phaseTargets[i], stepScale);
-				column.phases[i] = result.angle;
-				column.phaseTargets[i] = result.target;
-			}
+			for (let i = 0; i < 16; i++) advancePhase(column.phases, column.phaseTargets, i, stepScale);
 		}
 		/**
 		* Update a single anchor within a column
@@ -277782,11 +278385,10 @@ var init_Level99Bubble = __esmMin((() => {
 			if (!this.ready || !this.texture) return;
 			const uniform = _program$8.uniform;
 			const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
-			const basePos = [
-				this.position[0] + .5,
-				-groundZ - BASE_LIFT$1,
-				this.position[1] + .5
-			];
+			const basePos = this.basePos;
+			basePos[0] = this.position[0] + .5;
+			basePos[1] = -groundZ - BASE_LIFT$1;
+			basePos[2] = this.position[1] + .5;
 			const viewPitch = Camera.angle[0];
 			const viewYaw = Camera.angle[1];
 			const beta = (360 - viewPitch + 90) % 360 * DEG_TO_RAD$1;
@@ -277795,7 +278397,10 @@ var init_Level99Bubble = __esmMin((() => {
 			const cosBeta = Math.cos(beta);
 			const sinAlpha = Math.sin(alpha);
 			const cosAlpha = Math.cos(alpha);
-			gl.bindTexture(gl.TEXTURE_2D, this.texture);
+			const batched = _batch$1.active;
+			const blend = auraBlend(this.color, "alpha");
+			const rgb = auraUniform(this.color, 1, "alpha", this.rgba);
+			if (!batched) gl.bindTexture(gl.TEXTURE_2D, this.texture);
 			if (debugConfig.showRedBg) this.renderBackground(gl, basePos);
 			const radius = this.baseRadius * GAME_TO_WORLD * debugConfig.scaleMult;
 			const RAG_TICK_MS = 25;
@@ -277830,6 +278435,10 @@ var init_Level99Bubble = __esmMin((() => {
 					if (anchor.y > 0) continue;
 					const alphaValue = this.computeAlpha(anchor.y);
 					if (alphaValue <= 0) continue;
+					if (batched) {
+						for (let pass = 0; pass < this.passCount; pass++) _batch$1.quad(this.texture, blend, this.tmpPoints, QUAD_FAN, rgb[0], rgb[1], rgb[2], alphaValue, .01 + ec * .002 + ai * 1e-4 + pass * 5e-5);
+						continue;
+					}
 					this.fillQuad(this.tmpPoints, this.quadData);
 					gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.quadData);
 					const self = this;
@@ -277992,6 +278601,8 @@ var init_Level99Bubble = __esmMin((() => {
 				gl.deleteBuffer(_buffer$7);
 				_buffer$7 = null;
 			}
+			_batch$1.free(gl);
+			freeSharedTextures(_textures$2, gl);
 			this.ready = false;
 		}
 		static beforeRender(gl, modelView, projection, fog) {
@@ -278013,8 +278624,10 @@ var init_Level99Bubble = __esmMin((() => {
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
+			_batch$1.begin(gl, modelView, projection, fog);
 		}
 		static afterRender(gl) {
+			_batch$1.flush(gl);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 			gl.disableVertexAttribArray(_program$8.attribute.aPosition);
 			gl.disableVertexAttribArray(_program$8.attribute.aTextureCoord);
@@ -278035,7 +278648,7 @@ function loadTexture$2(gl, name) {
 function bubbleName(frame) {
 	return `w_bubble${String(frame + 1).padStart(2, "0")}.tga`;
 }
-var DEG_TO_RAD, BASE_LIFT, BUBBLE_FRAMES, FRAME_MS, RINGS, GROUND_RINGS, CORNERS, _program$7, _buffer$6, _textures$1, MaxLevelAura;
+var DEG_TO_RAD, BASE_LIFT, BUBBLE_FRAMES, FRAME_MS, RINGS, GROUND_RINGS, CORNERS, _program$7, _buffer$6, _textures$1, _batch, MaxLevelAura;
 var init_MaxLevelAura = __esmMin((() => {
 	init_Level99Bubble$2();
 	init_Level99Bubble$1();
@@ -278043,6 +278656,7 @@ var init_MaxLevelAura = __esmMin((() => {
 	init_Client();
 	init_Altitude();
 	init_SpriteRenderer();
+	init_AuraBatch();
 	init_AuraBlend();
 	DEG_TO_RAD = Math.PI / 180;
 	BASE_LIFT = .05;
@@ -278096,6 +278710,10 @@ var init_MaxLevelAura = __esmMin((() => {
 		}
 	];
 	_textures$1 = /* @__PURE__ */ new Map();
+	_batch = new AuraBatch({
+		fog: true,
+		mergeAdditive: true
+	});
 	MaxLevelAura = class {
 		/**
 		* @param {vec3} position entity position (kept by reference, so it follows)
@@ -278114,6 +278732,7 @@ var init_MaxLevelAura = __esmMin((() => {
 			};
 			this.startTick = tick || 0;
 			this.quadData = /* @__PURE__ */ new Float32Array(30);
+			this.rgba = new Array(4);
 			this.points = [
 				[
 					0,
@@ -278175,6 +278794,12 @@ var init_MaxLevelAura = __esmMin((() => {
 		}
 		draw(gl, texture, alpha, zIndex) {
 			if (!texture) return;
+			if (_batch.active) {
+				const rgba = auraUniform(this.color, alpha, "alpha", this.rgba);
+				_batch.quad(texture, auraBlend(this.color, "alpha"), this.points, QUAD_FAN, rgba[0], rgba[1], rgba[2], rgba[3], zIndex);
+				return;
+			}
+			this.fillQuad(this.points);
 			const uniform = _program$7.uniform;
 			gl.bindTexture(gl.TEXTURE_2D, texture);
 			gl.bufferSubData(gl.ARRAY_BUFFER, 0, this.quadData);
@@ -278191,6 +278816,11 @@ var init_MaxLevelAura = __esmMin((() => {
 				-groundZ - BASE_LIFT,
 				this.position[1] + .5
 			];
+			if (_batch.active) {
+				if (this.part === "rings") this.renderRings(gl, base, elapsed);
+				else this.renderBubbles(gl, base, elapsed);
+				return;
+			}
 			const self = this;
 			beginAuraBlend(gl, this.color, "alpha");
 			SpriteRenderer.runWithDepth(true, false, false, function() {
@@ -278213,7 +278843,6 @@ var init_MaxLevelAura = __esmMin((() => {
 					this.points[k][1] = base[1] - .01 * (i + 1);
 					this.points[k][2] = base[2] + x * sin + z * cos;
 				}
-				this.fillQuad(this.points);
 				this.draw(gl, _textures$1.get(ring.texture), 1, .002 * (i + 1));
 			}
 		}
@@ -278243,7 +278872,6 @@ var init_MaxLevelAura = __esmMin((() => {
 					this.points[3][0] = x0;
 					this.points[3][1] = base[1];
 					this.points[3][2] = z0;
-					this.fillQuad(this.points);
 					const texture = _textures$1.get(bubbleName((frame + b * 3 + r * 9) % BUBBLE_FRAMES));
 					this.draw(gl, texture, .55, .01 + r * .002 + b * 1e-4);
 				}
@@ -278266,6 +278894,7 @@ var init_MaxLevelAura = __esmMin((() => {
 				gl.deleteBuffer(_buffer$6);
 				_buffer$6 = null;
 			}
+			_batch.free(gl);
 			for (const texture of _textures$1.values()) if (texture) gl.deleteTexture(texture);
 			_textures$1.clear();
 			this.ready = false;
@@ -278289,8 +278918,10 @@ var init_MaxLevelAura = __esmMin((() => {
 			gl.enableVertexAttribArray(attribute.aTextureCoord);
 			gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 20, 0);
 			gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 20, 12);
+			_batch.begin(gl, modelView, projection, fog);
 		}
 		static afterRender(gl) {
+			_batch.flush(gl);
 			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 			gl.disableVertexAttribArray(_program$7.attribute.aPosition);
 			gl.disableVertexAttribArray(_program$7.attribute.aTextureCoord);
