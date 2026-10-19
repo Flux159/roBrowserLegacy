@@ -896,17 +896,22 @@ var init_iconv_lite = __esmMin((() => {
 				while (i < len) res += String.fromCharCode.apply(String, codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH));
 				return res;
 			}
+			function decodeCharCodes(codes) {
+				const len = codes.length;
+				if (len <= MAX_ARGUMENTS_LENGTH) return String.fromCharCode.apply(String, codes);
+				let res = "";
+				for (let i = 0; i < len; i += MAX_ARGUMENTS_LENGTH) res += String.fromCharCode.apply(String, codes.subarray(i, i + MAX_ARGUMENTS_LENGTH));
+				return res;
+			}
 			function asciiSlice(buf, start, end) {
-				let ret = "";
 				end = Math.min(buf.length, end);
-				for (let i = start; i < end; ++i) ret += String.fromCharCode(buf[i] & 127);
-				return ret;
+				const codes = new Uint8Array(Math.max(0, end - start));
+				for (let i = 0; i < codes.length; ++i) codes[i] = buf[start + i] & 127;
+				return decodeCharCodes(codes);
 			}
 			function latin1Slice(buf, start, end) {
-				let ret = "";
 				end = Math.min(buf.length, end);
-				for (let i = start; i < end; ++i) ret += String.fromCharCode(buf[i]);
-				return ret;
+				return decodeCharCodes(new Uint8Array(buf.buffer, buf.byteOffset + start, Math.max(0, end - start)));
 			}
 			function hexSlice(buf, start, end) {
 				const len = buf.length;
@@ -918,9 +923,9 @@ var init_iconv_lite = __esmMin((() => {
 			}
 			function utf16leSlice(buf, start, end) {
 				const bytes = buf.slice(start, end);
-				let res = "";
-				for (let i = 0; i < bytes.length - 1; i += 2) res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256);
-				return res;
+				const codes = new Uint16Array(bytes.length >> 1);
+				for (let i = 0; i < codes.length; ++i) codes[i] = bytes[2 * i] + bytes[2 * i + 1] * 256;
+				return decodeCharCodes(codes);
 			}
 			Buffer2.prototype.slice = function slice(start, end) {
 				const len = this.length;
@@ -327536,6 +327541,7 @@ function WalkStructure() {
 	this.onEnd = null;
 	this.index = 0;
 	this.total = 0;
+	this.stuckWarned = false;
 }
 /**
 * Convert dx/dy offset to a floating-point direction in [0..8).
@@ -327831,7 +327837,8 @@ function walkProcess() {
 	const TICK = Date.now();
 	const falconGliding = 5;
 	if (total == 0) return;
-	if (total > 0 && !this.isFastMoving && this.action !== this.ACTION.WALK && this.objecttype !== this.constructor.TYPE_FALCON && this.objecttype !== this.constructor.TYPE_WUG) {
+	if (total > 0 && !this.isFastMoving && this.action !== this.ACTION.WALK && this.objecttype !== this.constructor.TYPE_FALCON && this.objecttype !== this.constructor.TYPE_WUG && !walk.stuckWarned) {
+		walk.stuckWarned = true;
 		let actionName = "UNKNOWN";
 		for (const key in this.ACTION) if (this.ACTION[key] === this.action) {
 			actionName = key;
@@ -328027,6 +328034,7 @@ function resetRoute(keepDistance) {
 	this.walk.onEnd = null;
 	this.walk.index = 0;
 	this.walk.total = 0;
+	this.walk.stuckWarned = false;
 }
 function calculateOverShot(from_x, from_y, to_x, to_y) {
 	const overshot = 5;
@@ -328190,10 +328198,12 @@ function renderWaterDepth$1() {
 * @param {object} files
 * @param {string} type
 * @param {number[]} _position
-* @param {object} options
+* @param {boolean} enableHalo - halo type Assumptio (BL_DOUBLE_BODY)
+* @param {boolean} enableTrail - trail behind the character (EF_MAKEBLUR)
+* @param {number} blurType - 1 (standard) EF_MAKEBLUR , 3 (spaced) - EF_MAKEBLUR3, 4 (once), 5 (attack only) - EF_MAKEBLUR5
 */
-function renderSecondBody(entity, layers, spr, pal, files, type, _position, options = {}) {
-	const { enableHalo = false, enableTrail = false, trailLength = 5, blurType = 1 } = options;
+function renderSecondBody(entity, layers, spr, pal, files, type, _position, enableHalo, enableTrail, blurType) {
+	const trailLength = 5;
 	if (!enableHalo && !enableTrail) return;
 	if (type === "shadow" || type === "cartshadow") return;
 	if (enableHalo) {
@@ -328786,11 +328796,7 @@ var init_EntityRender = __esmMin((() => {
 			const isOVERTHRUST = entity.getOpt3(StatusState_default.Status.OVERTHRUST);
 			const isEXPLOSIONSPIRITS = entity.getOpt3(StatusState_default.Status.EXPLOSIONSPIRITS);
 			const isBERSERK = entity.getOpt3(StatusState_default.Status.BERSERK);
-			renderSecondBody(entity, layers, spr, pal, files, type, _position, {
-				enableHalo: entity.getOpt3(StatusState_default.Status.ASSUMPTIO) || !!entity._enableHalo,
-				enableTrail: isENERGYCOAT || isBUNSIN || isHALLUCINATIONWALK || isQUICKEN || isOVERTHRUST || isEXPLOSIONSPIRITS || isBERSERK || !!entity._fastMoveTrail || !!entity._enableTrail,
-				blurType: isBUNSIN ? 5 : isHALLUCINATIONWALK ? 3 : entity._blurType || 1
-			});
+			renderSecondBody(entity, layers, spr, pal, files, type, _position, entity.getOpt3(StatusState_default.Status.ASSUMPTIO) || !!entity._enableHalo, isENERGYCOAT || isBUNSIN || isHALLUCINATIONWALK || isQUICKEN || isOVERTHRUST || isEXPLOSIONSPIRITS || isBERSERK || !!entity._fastMoveTrail || !!entity._enableTrail, isBUNSIN ? 5 : isHALLUCINATIONWALK ? 3 : entity._blurType || 1);
 			for (let i = 0, count = layers.length; i < count; ++i) entity.renderLayer(layers[i], spr, pal, files.size, _position, type, isBlendModeOne);
 			if (is_main && type === "body" && entity.waterDepthFrame === null) {
 				const frame = entity._waterDepthFrameBuffer || (entity._waterDepthFrameBuffer = { position: /* @__PURE__ */ new Int32Array(2) });
@@ -329570,7 +329576,12 @@ var init_EntityAttachments = __esmMin((() => {
 		* Render attachments filtered by renderBefore flag
 		*/
 		_renderFiltered(tick, renderBeforeEntity) {
-			if (!this.list.some((item) => item.renderBefore === renderBeforeEntity)) return;
+			let any = false;
+			for (let i = 0; i < this.list.length; ++i) if (this.list[i].renderBefore === renderBeforeEntity) {
+				any = true;
+				break;
+			}
+			if (!any) return;
 			SpriteRenderer.shadow = Ground_default.getShadowFactor(this.entity.position[0], this.entity.position[1]);
 			_effectColor[0] = this.entity.effectColor[0];
 			_effectColor[1] = this.entity.effectColor[1];
@@ -333206,10 +333217,10 @@ var init_Client = __esmMin((() => {
 		* @param {function} onerror
 		* @param {Array} args - optional
 		*/
-		static loadFile(filename, onload, onerror, args = {}) {
+		static loadFile(filename, onload, onerror, args) {
 			if (!MemoryManager.exist(filename)) Thread.send("LOAD_FILE", {
 				filename,
-				args: args || null
+				args: args === void 0 ? {} : args || null
 			}, onFileLoaded);
 			return MemoryManager.get(filename, onload, onerror);
 		}

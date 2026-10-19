@@ -1465,17 +1465,22 @@ var iconv = (() => {
 			while (i < len) res += String.fromCharCode.apply(String, codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH));
 			return res;
 		}
+		function decodeCharCodes(codes) {
+			const len = codes.length;
+			if (len <= MAX_ARGUMENTS_LENGTH) return String.fromCharCode.apply(String, codes);
+			let res = "";
+			for (let i = 0; i < len; i += MAX_ARGUMENTS_LENGTH) res += String.fromCharCode.apply(String, codes.subarray(i, i + MAX_ARGUMENTS_LENGTH));
+			return res;
+		}
 		function asciiSlice(buf, start, end) {
-			let ret = "";
 			end = Math.min(buf.length, end);
-			for (let i = start; i < end; ++i) ret += String.fromCharCode(buf[i] & 127);
-			return ret;
+			const codes = new Uint8Array(Math.max(0, end - start));
+			for (let i = 0; i < codes.length; ++i) codes[i] = buf[start + i] & 127;
+			return decodeCharCodes(codes);
 		}
 		function latin1Slice(buf, start, end) {
-			let ret = "";
 			end = Math.min(buf.length, end);
-			for (let i = start; i < end; ++i) ret += String.fromCharCode(buf[i]);
-			return ret;
+			return decodeCharCodes(new Uint8Array(buf.buffer, buf.byteOffset + start, Math.max(0, end - start)));
 		}
 		function hexSlice(buf, start, end) {
 			const len = buf.length;
@@ -1487,9 +1492,9 @@ var iconv = (() => {
 		}
 		function utf16leSlice(buf, start, end) {
 			const bytes = buf.slice(start, end);
-			let res = "";
-			for (let i = 0; i < bytes.length - 1; i += 2) res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256);
-			return res;
+			const codes = new Uint16Array(bytes.length >> 1);
+			for (let i = 0; i < codes.length; ++i) codes[i] = bytes[2 * i] + bytes[2 * i + 1] * 256;
+			return decodeCharCodes(codes);
 		}
 		Buffer2.prototype.slice = function slice(start, end) {
 			const len = this.length;
