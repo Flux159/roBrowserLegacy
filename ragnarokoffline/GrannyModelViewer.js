@@ -11501,7 +11501,7 @@ var init_ClothPalette = __esmMin((() => {
 //#endregion
 //#region src/Network/Packets/packets2003_len_main.js
 var packets2003_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2003_len_main_default });
-function init$38(packetver) {
+function init$39(packetver) {
 	length_list$22[100] = 55;
 	length_list$22[101] = 17;
 	length_list$22[102] = 3;
@@ -11909,12 +11909,12 @@ function init$38(packetver) {
 var length_list$22, packets2003_len_main_default;
 var init_packets2003_len_main = __esmMin((() => {
 	length_list$22 = new Array();
-	packets2003_len_main_default = { init: init$38 };
+	packets2003_len_main_default = { init: init$39 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2004_len_main.js
 var packets2004_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2004_len_main_default });
-function init$37(packetver) {
+function init$38(packetver) {
 	length_list$21[100] = 55;
 	length_list$21[101] = 17;
 	length_list$21[102] = 3;
@@ -12522,12 +12522,12 @@ function init$37(packetver) {
 var length_list$21, packets2004_len_main_default;
 var init_packets2004_len_main = __esmMin((() => {
 	length_list$21 = new Array();
-	packets2004_len_main_default = { init: init$37 };
+	packets2004_len_main_default = { init: init$38 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2005_len_main.js
 var packets2005_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2005_len_main_default });
-function init$36(packetver) {
+function init$37(packetver) {
 	length_list$20[100] = 55;
 	length_list$20[101] = 17;
 	length_list$20[102] = 3;
@@ -13152,12 +13152,12 @@ function init$36(packetver) {
 var length_list$20, packets2005_len_main_default;
 var init_packets2005_len_main = __esmMin((() => {
 	length_list$20 = new Array();
-	packets2005_len_main_default = { init: init$36 };
+	packets2005_len_main_default = { init: init$37 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2006_len_main.js
 var packets2006_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2006_len_main_default });
-function init$35(packetver) {
+function init$36(packetver) {
 	length_list$19[100] = 55;
 	length_list$19[101] = 17;
 	length_list$19[102] = 3;
@@ -13751,12 +13751,12 @@ function init$35(packetver) {
 var length_list$19, packets2006_len_main_default;
 var init_packets2006_len_main = __esmMin((() => {
 	length_list$19 = new Array();
-	packets2006_len_main_default = { init: init$35 };
+	packets2006_len_main_default = { init: init$36 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2007_len_main.js
 var packets2007_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2007_len_main_default });
-function init$34(packetver) {
+function init$35(packetver) {
 	length_list$18[100] = 55;
 	length_list$18[101] = 17;
 	length_list$18[102] = 3;
@@ -14443,12 +14443,12 @@ function init$34(packetver) {
 var length_list$18, packets2007_len_main_default;
 var init_packets2007_len_main = __esmMin((() => {
 	length_list$18 = new Array();
-	packets2007_len_main_default = { init: init$34 };
+	packets2007_len_main_default = { init: init$35 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2008_len_main.js
 var packets2008_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2008_len_main_default });
-function init$33(packetver) {
+function init$34(packetver) {
 	length_list$17[100] = 55;
 	length_list$17[101] = 17;
 	length_list$17[102] = 3;
@@ -32632,12 +32632,12 @@ function init$33(packetver) {
 var length_list$17, packets2008_len_main_default;
 var init_packets2008_len_main = __esmMin((() => {
 	length_list$17 = new Array();
-	packets2008_len_main_default = { init: init$33 };
+	packets2008_len_main_default = { init: init$34 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2009_len_main.js
 var packets2009_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2009_len_main_default });
-function init$32(packetver) {
+function init$33(packetver) {
 	length_list$16[100] = 55;
 	length_list$16[101] = 17;
 	length_list$16[102] = 3;
@@ -38874,12 +38874,12 @@ function init$32(packetver) {
 var length_list$16, packets2009_len_main_default;
 var init_packets2009_len_main = __esmMin((() => {
 	length_list$16 = new Array();
-	packets2009_len_main_default = { init: init$32 };
+	packets2009_len_main_default = { init: init$33 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2010_len_main.js
 var packets2010_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2010_len_main_default });
-function init$31(packetver) {
+function init$32(packetver) {
 	length_list$15[100] = 55;
 	length_list$15[101] = 17;
 	length_list$15[102] = 3;
@@ -40353,12 +40353,12 @@ function init$31(packetver) {
 var length_list$15, packets2010_len_main_default;
 var init_packets2010_len_main = __esmMin((() => {
 	length_list$15 = new Array();
-	packets2010_len_main_default = { init: init$31 };
+	packets2010_len_main_default = { init: init$32 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2011_len_main.js
 var packets2011_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2011_len_main_default });
-function init$30(packetver) {
+function init$31(packetver) {
 	length_list$14[100] = 55;
 	length_list$14[101] = 17;
 	length_list$14[102] = 3;
@@ -43288,12 +43288,12 @@ function init$30(packetver) {
 var length_list$14, packets2011_len_main_default;
 var init_packets2011_len_main = __esmMin((() => {
 	length_list$14 = new Array();
-	packets2011_len_main_default = { init: init$30 };
+	packets2011_len_main_default = { init: init$31 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2012_len_main.js
 var packets2012_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2012_len_main_default });
-function init$29(packetver) {
+function init$30(packetver) {
 	length_list$13[100] = 55;
 	length_list$13[101] = 17;
 	length_list$13[102] = 3;
@@ -46708,12 +46708,12 @@ function init$29(packetver) {
 var length_list$13, packets2012_len_main_default;
 var init_packets2012_len_main = __esmMin((() => {
 	length_list$13 = new Array();
-	packets2012_len_main_default = { init: init$29 };
+	packets2012_len_main_default = { init: init$30 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2013_len_main.js
 var packets2013_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2013_len_main_default });
-function init$28(packetver) {
+function init$29(packetver) {
 	length_list$12[100] = 55;
 	length_list$12[101] = 17;
 	length_list$12[102] = 3;
@@ -50202,12 +50202,12 @@ function init$28(packetver) {
 var length_list$12, packets2013_len_main_default;
 var init_packets2013_len_main = __esmMin((() => {
 	length_list$12 = new Array();
-	packets2013_len_main_default = { init: init$28 };
+	packets2013_len_main_default = { init: init$29 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2014_len_main.js
 var packets2014_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2014_len_main_default });
-function init$27(packetver) {
+function init$28(packetver) {
 	length_list$11[100] = 55;
 	length_list$11[101] = 17;
 	length_list$11[102] = 3;
@@ -53787,12 +53787,12 @@ function init$27(packetver) {
 var length_list$11, packets2014_len_main_default;
 var init_packets2014_len_main = __esmMin((() => {
 	length_list$11 = new Array();
-	packets2014_len_main_default = { init: init$27 };
+	packets2014_len_main_default = { init: init$28 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2015_len_main.js
 var packets2015_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2015_len_main_default });
-function init$26(packetver) {
+function init$27(packetver) {
 	length_list$10[100] = 55;
 	length_list$10[101] = 17;
 	length_list$10[102] = 3;
@@ -57224,12 +57224,12 @@ function init$26(packetver) {
 var length_list$10, packets2015_len_main_default;
 var init_packets2015_len_main = __esmMin((() => {
 	length_list$10 = new Array();
-	packets2015_len_main_default = { init: init$26 };
+	packets2015_len_main_default = { init: init$27 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2016_len_main.js
 var packets2016_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2016_len_main_default });
-function init$25(packetver) {
+function init$26(packetver) {
 	length_list$9[100] = 55;
 	length_list$9[101] = 17;
 	length_list$9[102] = 3;
@@ -60827,12 +60827,12 @@ function init$25(packetver) {
 var length_list$9, packets2016_len_main_default;
 var init_packets2016_len_main = __esmMin((() => {
 	length_list$9 = new Array();
-	packets2016_len_main_default = { init: init$25 };
+	packets2016_len_main_default = { init: init$26 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2017_len_main.js
 var packets2017_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2017_len_main_default });
-function init$24(packetver) {
+function init$25(packetver) {
 	length_list$8[100] = 55;
 	length_list$8[101] = 17;
 	length_list$8[102] = 3;
@@ -64410,12 +64410,12 @@ function init$24(packetver) {
 var length_list$8, packets2017_len_main_default;
 var init_packets2017_len_main = __esmMin((() => {
 	length_list$8 = new Array();
-	packets2017_len_main_default = { init: init$24 };
+	packets2017_len_main_default = { init: init$25 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2018_len_main.js
 var packets2018_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2018_len_main_default });
-function init$23(packetver) {
+function init$24(packetver) {
 	length_list$7[100] = 55;
 	length_list$7[101] = 17;
 	length_list$7[102] = 3;
@@ -66319,12 +66319,12 @@ function init$23(packetver) {
 var length_list$7, packets2018_len_main_default;
 var init_packets2018_len_main = __esmMin((() => {
 	length_list$7 = new Array();
-	packets2018_len_main_default = { init: init$23 };
+	packets2018_len_main_default = { init: init$24 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2019_len_main.js
 var packets2019_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2019_len_main_default });
-function init$22(packetver) {
+function init$23(packetver) {
 	length_list$6[100] = 55;
 	length_list$6[101] = 17;
 	length_list$6[102] = 3;
@@ -67902,12 +67902,12 @@ function init$22(packetver) {
 var length_list$6, packets2019_len_main_default;
 var init_packets2019_len_main = __esmMin((() => {
 	length_list$6 = new Array();
-	packets2019_len_main_default = { init: init$22 };
+	packets2019_len_main_default = { init: init$23 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2020_len_main.js
 var packets2020_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2020_len_main_default });
-function init$21(packetver) {
+function init$22(packetver) {
 	length_list$5[100] = 55;
 	length_list$5[101] = 17;
 	length_list$5[102] = 3;
@@ -69492,12 +69492,12 @@ function init$21(packetver) {
 var length_list$5, packets2020_len_main_default;
 var init_packets2020_len_main = __esmMin((() => {
 	length_list$5 = new Array();
-	packets2020_len_main_default = { init: init$21 };
+	packets2020_len_main_default = { init: init$22 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2021_len_main.js
 var packets2021_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2021_len_main_default });
-function init$20(packetver) {
+function init$21(packetver) {
 	length_list$4[100] = 55;
 	length_list$4[101] = 17;
 	length_list$4[102] = 3;
@@ -71103,12 +71103,12 @@ function init$20(packetver) {
 var length_list$4, packets2021_len_main_default;
 var init_packets2021_len_main = __esmMin((() => {
 	length_list$4 = new Array();
-	packets2021_len_main_default = { init: init$20 };
+	packets2021_len_main_default = { init: init$21 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2022_len_main.js
 var packets2022_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2022_len_main_default });
-function init$19(packetver) {
+function init$20(packetver) {
 	length_list$3[100] = 55;
 	length_list$3[101] = 17;
 	length_list$3[102] = 3;
@@ -72720,12 +72720,12 @@ function init$19(packetver) {
 var length_list$3, packets2022_len_main_default;
 var init_packets2022_len_main = __esmMin((() => {
 	length_list$3 = new Array();
-	packets2022_len_main_default = { init: init$19 };
+	packets2022_len_main_default = { init: init$20 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2023_len_main.js
 var packets2023_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2023_len_main_default });
-function init$18(packetver) {
+function init$19(packetver) {
 	length_list$2[100] = 55;
 	length_list$2[101] = 17;
 	length_list$2[102] = 3;
@@ -74391,12 +74391,12 @@ function init$18(packetver) {
 var length_list$2, packets2023_len_main_default;
 var init_packets2023_len_main = __esmMin((() => {
 	length_list$2 = new Array();
-	packets2023_len_main_default = { init: init$18 };
+	packets2023_len_main_default = { init: init$19 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2024_len_main.js
 var packets2024_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2024_len_main_default });
-function init$17(packetver) {
+function init$18(packetver) {
 	length_list$1[100] = 55;
 	length_list$1[101] = 17;
 	length_list$1[102] = 3;
@@ -76102,12 +76102,12 @@ function init$17(packetver) {
 var length_list$1, packets2024_len_main_default;
 var init_packets2024_len_main = __esmMin((() => {
 	length_list$1 = new Array();
-	packets2024_len_main_default = { init: init$17 };
+	packets2024_len_main_default = { init: init$18 };
 }));
 //#endregion
 //#region src/Network/Packets/packets2025_len_main.js
 var packets2025_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2025_len_main_default });
-function init$16(packetver) {
+function init$17(packetver) {
 	length_list[100] = 55;
 	length_list[101] = 17;
 	length_list[102] = 3;
@@ -77853,7 +77853,1830 @@ function init$16(packetver) {
 var length_list, packets2025_len_main_default;
 var init_packets2025_len_main = __esmMin((() => {
 	length_list = new Array();
-	packets2025_len_main_default = { init: init$16 };
+	packets2025_len_main_default = { init: init$17 };
+}));
+//#endregion
+//#region src/Network/Packets/packets2026_len_main.js
+var packets2026_len_main_exports = /* @__PURE__ */ __exportAll({ default: () => packets2026_len_main_default });
+/**
+* Network/Packets/packets2026_len_main.js
+*
+* Network Packet Length
+* Manage packets length
+*
+* This file is part of ROBrowser, (http://www.robrowser.com/).
+*
+* Thanks to Andrei Karas (4144)
+*
+* @author Alison Serafim
+*/
+/**
+* kRO main Ragexe 2026-09-30 registration lengths establish framing only,
+* not packet fields or handlers. Original executable SHA-256:
+* 0c8586bf763053290163b9ce5e34bf08f43118032f8edb68a6139f4e307abe6c
+*
+* Keep the 2025 compatibility entries for dates before this verified build,
+* including legacy entries absent from its native registrations.
+*/
+function init$16(packetver) {
+	const length_list = new Array();
+	length_list[100] = 55;
+	length_list[101] = 17;
+	length_list[102] = 3;
+	length_list[103] = 37;
+	length_list[104] = 46;
+	length_list[105] = -1;
+	length_list[106] = 23;
+	length_list[107] = -1;
+	length_list[108] = 3;
+	length_list[109] = 157;
+	length_list[110] = 3;
+	length_list[111] = 2;
+	length_list[112] = 3;
+	length_list[113] = 28;
+	length_list[114] = 22;
+	length_list[115] = 11;
+	length_list[116] = 3;
+	length_list[117] = -1;
+	length_list[118] = 9;
+	length_list[119] = 5;
+	length_list[120] = 55;
+	length_list[121] = 53;
+	length_list[122] = 58;
+	length_list[123] = 60;
+	length_list[124] = 44;
+	length_list[125] = 2;
+	length_list[126] = 46;
+	length_list[127] = 6;
+	length_list[128] = 7;
+	length_list[129] = 3;
+	length_list[130] = 2;
+	length_list[131] = 2;
+	length_list[132] = 2;
+	length_list[133] = 10;
+	length_list[134] = 16;
+	length_list[135] = 12;
+	length_list[136] = 10;
+	length_list[137] = 11;
+	length_list[138] = 29;
+	length_list[139] = 23;
+	length_list[140] = 14;
+	length_list[141] = -1;
+	length_list[142] = -1;
+	length_list[144] = 7;
+	length_list[145] = 22;
+	length_list[146] = 28;
+	length_list[147] = 2;
+	length_list[148] = 19;
+	length_list[149] = 30;
+	length_list[150] = -1;
+	length_list[151] = -1;
+	length_list[152] = 3;
+	length_list[153] = -1;
+	length_list[154] = -1;
+	length_list[155] = 34;
+	length_list[156] = 9;
+	length_list[157] = 19;
+	length_list[158] = 19;
+	length_list[159] = 20;
+	length_list[160] = 33;
+	length_list[161] = 6;
+	length_list[162] = 14;
+	length_list[163] = -1;
+	length_list[164] = -1;
+	length_list[165] = -1;
+	length_list[166] = -1;
+	length_list[167] = 9;
+	length_list[168] = 7;
+	length_list[169] = 6;
+	length_list[170] = 9;
+	length_list[171] = 4;
+	length_list[172] = 7;
+	length_list[174] = -1;
+	length_list[175] = 6;
+	length_list[176] = 8;
+	length_list[177] = 8;
+	length_list[178] = 3;
+	length_list[179] = 3;
+	length_list[180] = -1;
+	length_list[181] = 6;
+	length_list[182] = 6;
+	length_list[183] = -1;
+	length_list[184] = 7;
+	length_list[185] = 6;
+	length_list[186] = 2;
+	length_list[187] = 5;
+	length_list[188] = 6;
+	length_list[189] = 44;
+	length_list[190] = 5;
+	length_list[191] = 3;
+	length_list[192] = 7;
+	length_list[193] = 2;
+	length_list[194] = 6;
+	length_list[195] = 8;
+	length_list[196] = 6;
+	length_list[197] = 7;
+	length_list[198] = -1;
+	length_list[199] = -1;
+	length_list[200] = -1;
+	length_list[201] = -1;
+	length_list[202] = 3;
+	length_list[203] = 3;
+	length_list[204] = 6;
+	length_list[205] = 3;
+	length_list[206] = 2;
+	length_list[207] = 27;
+	length_list[208] = 3;
+	length_list[209] = 4;
+	length_list[210] = 4;
+	length_list[211] = 2;
+	length_list[212] = -1;
+	length_list[213] = -1;
+	length_list[214] = 3;
+	length_list[215] = -1;
+	length_list[216] = 6;
+	length_list[217] = 14;
+	length_list[218] = 3;
+	length_list[219] = -1;
+	length_list[220] = 28;
+	length_list[221] = 29;
+	length_list[222] = -1;
+	length_list[223] = -1;
+	length_list[224] = 30;
+	length_list[225] = 30;
+	length_list[226] = 26;
+	length_list[227] = 2;
+	length_list[228] = 6;
+	length_list[229] = 26;
+	length_list[230] = 3;
+	length_list[231] = 3;
+	length_list[232] = 8;
+	length_list[233] = 29;
+	length_list[234] = 5;
+	length_list[235] = 2;
+	length_list[236] = 3;
+	length_list[237] = 2;
+	length_list[238] = 2;
+	length_list[239] = 2;
+	length_list[240] = 3;
+	length_list[241] = 2;
+	length_list[242] = 6;
+	length_list[243] = -1;
+	length_list[244] = 31;
+	length_list[245] = 11;
+	length_list[246] = 8;
+	length_list[247] = 17;
+	length_list[248] = 2;
+	length_list[249] = 26;
+	length_list[250] = 3;
+	length_list[251] = -1;
+	length_list[252] = 6;
+	length_list[253] = 27;
+	length_list[254] = 30;
+	length_list[255] = 10;
+	length_list[256] = 2;
+	length_list[257] = 6;
+	length_list[258] = 6;
+	length_list[259] = 30;
+	length_list[260] = 79;
+	length_list[261] = 31;
+	length_list[262] = 10;
+	length_list[263] = 10;
+	length_list[264] = -1;
+	length_list[265] = -1;
+	length_list[266] = 6;
+	length_list[267] = 6;
+	length_list[268] = 6;
+	length_list[269] = 2;
+	length_list[270] = 11;
+	length_list[271] = -1;
+	length_list[272] = 14;
+	length_list[273] = 39;
+	length_list[274] = 4;
+	length_list[275] = 25;
+	length_list[276] = 31;
+	length_list[277] = 35;
+	length_list[278] = 17;
+	length_list[279] = 18;
+	length_list[280] = 2;
+	length_list[281] = 13;
+	length_list[282] = 15;
+	length_list[283] = 20;
+	length_list[284] = 68;
+	length_list[285] = 2;
+	length_list[286] = 3;
+	length_list[287] = 16;
+	length_list[288] = 6;
+	length_list[289] = 14;
+	length_list[290] = -1;
+	length_list[291] = -1;
+	length_list[292] = 31;
+	length_list[293] = 8;
+	length_list[294] = 8;
+	length_list[295] = 8;
+	length_list[296] = 8;
+	length_list[297] = 8;
+	length_list[298] = 2;
+	length_list[299] = 2;
+	length_list[300] = 3;
+	length_list[301] = 4;
+	length_list[302] = 2;
+	length_list[303] = -1;
+	length_list[304] = 6;
+	length_list[305] = 86;
+	length_list[306] = 6;
+	length_list[307] = -1;
+	length_list[308] = -1;
+	length_list[309] = 7;
+	length_list[310] = -1;
+	length_list[311] = 6;
+	length_list[312] = 3;
+	length_list[313] = 16;
+	length_list[314] = 4;
+	length_list[315] = 4;
+	length_list[316] = 4;
+	length_list[317] = 6;
+	length_list[318] = 24;
+	length_list[319] = 26;
+	length_list[320] = 22;
+	length_list[321] = 14;
+	length_list[322] = 6;
+	length_list[323] = 10;
+	length_list[324] = 23;
+	length_list[325] = 19;
+	length_list[326] = 6;
+	length_list[327] = 39;
+	length_list[328] = 8;
+	length_list[329] = 9;
+	length_list[330] = 6;
+	length_list[331] = 27;
+	length_list[332] = -1;
+	length_list[333] = 2;
+	length_list[334] = 6;
+	length_list[335] = 6;
+	length_list[336] = 110;
+	length_list[337] = 6;
+	length_list[338] = -1;
+	length_list[339] = -1;
+	length_list[340] = -1;
+	length_list[341] = -1;
+	length_list[342] = -1;
+	length_list[343] = 6;
+	length_list[345] = 54;
+	length_list[346] = 66;
+	length_list[347] = 54;
+	length_list[348] = 90;
+	length_list[349] = 42;
+	length_list[350] = 6;
+	length_list[351] = 42;
+	length_list[352] = -1;
+	length_list[353] = -1;
+	length_list[354] = -1;
+	length_list[355] = -1;
+	length_list[356] = -1;
+	length_list[357] = 30;
+	length_list[358] = -1;
+	length_list[359] = 3;
+	length_list[360] = 14;
+	length_list[361] = 3;
+	length_list[362] = 30;
+	length_list[363] = 10;
+	length_list[364] = 43;
+	length_list[365] = 14;
+	length_list[366] = 186;
+	length_list[367] = 182;
+	length_list[368] = 14;
+	length_list[369] = 30;
+	length_list[370] = 10;
+	length_list[371] = 3;
+	length_list[372] = -1;
+	length_list[373] = 6;
+	length_list[374] = 106;
+	length_list[375] = -1;
+	length_list[376] = 4;
+	length_list[377] = 5;
+	length_list[378] = 4;
+	length_list[379] = -1;
+	length_list[380] = 6;
+	length_list[381] = 7;
+	length_list[382] = -1;
+	length_list[383] = -1;
+	length_list[384] = 6;
+	length_list[385] = 3;
+	length_list[386] = 106;
+	length_list[387] = 10;
+	length_list[388] = 10;
+	length_list[389] = 34;
+	length_list[391] = 6;
+	length_list[392] = 8;
+	length_list[393] = 4;
+	length_list[394] = 4;
+	length_list[395] = 4;
+	length_list[396] = 29;
+	length_list[397] = -1;
+	length_list[398] = 18;
+	length_list[399] = 8;
+	length_list[400] = 23;
+	length_list[401] = 27;
+	length_list[402] = 24;
+	length_list[403] = 2;
+	length_list[404] = 30;
+	length_list[405] = 102;
+	length_list[406] = 9;
+	length_list[407] = 4;
+	length_list[408] = 8;
+	length_list[409] = 4;
+	length_list[410] = 14;
+	length_list[411] = 10;
+	length_list[412] = -1;
+	length_list[413] = 6;
+	length_list[414] = 2;
+	length_list[415] = 6;
+	length_list[416] = 3;
+	length_list[417] = 3;
+	length_list[418] = 37;
+	length_list[419] = 7;
+	length_list[420] = 11;
+	length_list[421] = 26;
+	length_list[422] = -1;
+	length_list[423] = 4;
+	length_list[424] = 4;
+	length_list[425] = 6;
+	length_list[426] = 10;
+	length_list[427] = 12;
+	length_list[428] = 6;
+	length_list[429] = -1;
+	length_list[430] = 6;
+	length_list[431] = 4;
+	length_list[432] = 11;
+	length_list[433] = 7;
+	length_list[434] = -1;
+	length_list[435] = 67;
+	length_list[436] = 12;
+	length_list[437] = 18;
+	length_list[438] = 114;
+	length_list[439] = 6;
+	length_list[440] = 3;
+	length_list[441] = 6;
+	length_list[442] = 26;
+	length_list[443] = 26;
+	length_list[444] = 26;
+	length_list[445] = 26;
+	length_list[446] = 2;
+	length_list[447] = 3;
+	length_list[448] = 2;
+	length_list[449] = 14;
+	length_list[450] = 10;
+	length_list[451] = -1;
+	length_list[452] = 32;
+	length_list[453] = 32;
+	length_list[454] = 4;
+	length_list[455] = 2;
+	length_list[456] = 15;
+	length_list[457] = 97;
+	length_list[458] = 3;
+	length_list[459] = 9;
+	length_list[460] = 9;
+	length_list[461] = 30;
+	length_list[462] = 6;
+	length_list[463] = 28;
+	length_list[464] = 8;
+	length_list[465] = 14;
+	length_list[466] = 10;
+	length_list[467] = 35;
+	length_list[468] = 6;
+	length_list[469] = -1;
+	length_list[470] = 4;
+	length_list[471] = 15;
+	length_list[472] = 58;
+	length_list[473] = 57;
+	length_list[474] = 64;
+	length_list[475] = 2;
+	length_list[476] = -1;
+	length_list[477] = 47;
+	length_list[478] = 33;
+	length_list[479] = 6;
+	length_list[480] = 30;
+	length_list[481] = 8;
+	length_list[482] = 34;
+	length_list[483] = 14;
+	length_list[484] = 2;
+	length_list[485] = 6;
+	length_list[486] = 26;
+	length_list[487] = 2;
+	length_list[488] = 28;
+	length_list[489] = 81;
+	length_list[490] = 6;
+	length_list[491] = 10;
+	length_list[492] = 26;
+	length_list[493] = 2;
+	length_list[494] = -1;
+	length_list[495] = -1;
+	length_list[496] = -1;
+	length_list[497] = -1;
+	length_list[498] = 20;
+	length_list[499] = 10;
+	length_list[500] = 32;
+	length_list[501] = 9;
+	length_list[502] = 34;
+	length_list[503] = 14;
+	length_list[504] = 2;
+	length_list[505] = 6;
+	length_list[506] = 48;
+	length_list[507] = 56;
+	length_list[508] = -1;
+	length_list[509] = 25;
+	length_list[510] = 5;
+	length_list[511] = 10;
+	length_list[512] = 26;
+	length_list[513] = -1;
+	length_list[514] = 26;
+	length_list[515] = 10;
+	length_list[516] = 18;
+	length_list[517] = 26;
+	length_list[518] = 35;
+	length_list[519] = 34;
+	length_list[520] = 14;
+	length_list[521] = 36;
+	length_list[522] = 10;
+	length_list[525] = -1;
+	length_list[526] = 32;
+	length_list[530] = 26;
+	length_list[531] = 26;
+	length_list[532] = 42;
+	length_list[533] = 6;
+	length_list[534] = 6;
+	length_list[535] = 2;
+	length_list[536] = 2;
+	length_list[537] = 282;
+	length_list[538] = 282;
+	length_list[539] = 10;
+	length_list[540] = 10;
+	length_list[541] = 6;
+	length_list[542] = 6;
+	length_list[543] = 66;
+	length_list[544] = 10;
+	length_list[545] = -1;
+	length_list[546] = 6;
+	length_list[547] = 10;
+	length_list[548] = 10;
+	length_list[549] = 2;
+	length_list[550] = 282;
+	length_list[551] = 18;
+	length_list[552] = 18;
+	length_list[553] = 15;
+	length_list[554] = 62;
+	length_list[555] = 61;
+	length_list[556] = 69;
+	length_list[557] = 5;
+	length_list[558] = 73;
+	length_list[559] = 7;
+	length_list[560] = 12;
+	length_list[561] = 26;
+	length_list[562] = 9;
+	length_list[563] = 11;
+	length_list[564] = 6;
+	length_list[565] = -1;
+	length_list[566] = 10;
+	length_list[567] = 2;
+	length_list[568] = 282;
+	length_list[569] = 11;
+	length_list[570] = 4;
+	length_list[571] = 36;
+	length_list[572] = 6;
+	length_list[573] = 6;
+	length_list[574] = 8;
+	length_list[575] = 2;
+	length_list[576] = -1;
+	length_list[577] = 6;
+	length_list[578] = -1;
+	length_list[579] = 6;
+	length_list[580] = 6;
+	length_list[581] = 3;
+	length_list[582] = 4;
+	length_list[583] = 8;
+	length_list[584] = -1;
+	length_list[585] = 3;
+	length_list[586] = 70;
+	length_list[587] = 4;
+	length_list[588] = 8;
+	length_list[589] = 12;
+	length_list[590] = 6;
+	length_list[591] = 10;
+	length_list[592] = 3;
+	length_list[593] = 34;
+	length_list[594] = -1;
+	length_list[595] = 3;
+	length_list[596] = 3;
+	length_list[597] = 5;
+	length_list[598] = 5;
+	length_list[599] = 8;
+	length_list[600] = 2;
+	length_list[601] = 3;
+	length_list[602] = -1;
+	length_list[603] = 8;
+	length_list[604] = 4;
+	length_list[605] = 6;
+	length_list[606] = 4;
+	length_list[607] = 6;
+	length_list[608] = 6;
+	length_list[609] = 11;
+	length_list[610] = 11;
+	length_list[611] = 11;
+	length_list[612] = 20;
+	length_list[613] = 20;
+	length_list[614] = 30;
+	length_list[615] = 4;
+	length_list[616] = 4;
+	length_list[617] = 4;
+	length_list[618] = 4;
+	length_list[619] = 4;
+	length_list[620] = 4;
+	length_list[621] = 4;
+	length_list[623] = 2;
+	length_list[624] = 2;
+	length_list[625] = 40;
+	length_list[626] = 44;
+	length_list[627] = 30;
+	length_list[628] = 8;
+	length_list[629] = 37;
+	length_list[630] = -1;
+	length_list[631] = 84;
+	length_list[632] = 2;
+	length_list[633] = 2;
+	length_list[634] = -1;
+	length_list[635] = 14;
+	length_list[636] = 60;
+	length_list[637] = 62;
+	length_list[638] = -1;
+	length_list[639] = 8;
+	length_list[640] = 12;
+	length_list[641] = 4;
+	length_list[642] = 284;
+	length_list[643] = 6;
+	length_list[644] = 14;
+	length_list[645] = 6;
+	length_list[646] = 4;
+	length_list[647] = -1;
+	length_list[648] = -1;
+	length_list[649] = 12;
+	length_list[650] = 18;
+	length_list[651] = -1;
+	length_list[652] = 46;
+	length_list[653] = 34;
+	length_list[654] = 4;
+	length_list[655] = 6;
+	length_list[656] = 4;
+	length_list[657] = 4;
+	length_list[658] = 2;
+	length_list[659] = 70;
+	length_list[660] = 10;
+	length_list[661] = -1;
+	length_list[662] = -1;
+	length_list[663] = -1;
+	length_list[664] = 10;
+	length_list[665] = 8;
+	length_list[666] = 37;
+	length_list[667] = 80;
+	length_list[668] = 66;
+	length_list[669] = -1;
+	length_list[670] = 11;
+	length_list[671] = 3;
+	length_list[674] = 8;
+	length_list[677] = 8;
+	length_list[678] = -1;
+	length_list[679] = -1;
+	length_list[682] = 4;
+	length_list[683] = 36;
+	length_list[684] = 6;
+	length_list[685] = 8;
+	length_list[688] = 85;
+	length_list[689] = -1;
+	length_list[690] = -1;
+	length_list[691] = 107;
+	length_list[692] = 6;
+	length_list[693] = -1;
+	length_list[694] = 7;
+	length_list[695] = 7;
+	length_list[696] = 32;
+	length_list[697] = 191;
+	length_list[698] = 11;
+	length_list[699] = 8;
+	length_list[700] = 6;
+	length_list[705] = -1;
+	length_list[706] = -1;
+	length_list[708] = 26;
+	length_list[709] = 30;
+	length_list[710] = 30;
+	length_list[711] = 7;
+	length_list[712] = 3;
+	length_list[713] = 3;
+	length_list[714] = 3;
+	length_list[715] = 65;
+	length_list[716] = 4;
+	length_list[717] = 71;
+	length_list[718] = 10;
+	length_list[719] = 6;
+	length_list[720] = -1;
+	length_list[721] = -1;
+	length_list[722] = -1;
+	length_list[723] = 4;
+	length_list[724] = 39;
+	length_list[725] = 2;
+	length_list[726] = 6;
+	length_list[727] = -1;
+	length_list[728] = 10;
+	length_list[729] = 10;
+	length_list[730] = 3;
+	length_list[731] = -1;
+	length_list[732] = -1;
+	length_list[733] = 32;
+	length_list[734] = 6;
+	length_list[735] = 36;
+	length_list[736] = 34;
+	length_list[737] = 33;
+	length_list[738] = 20;
+	length_list[739] = 22;
+	length_list[740] = 11;
+	length_list[741] = 9;
+	length_list[742] = 6;
+	length_list[743] = -1;
+	length_list[744] = -1;
+	length_list[745] = -1;
+	length_list[746] = -1;
+	length_list[747] = 13;
+	length_list[748] = 71;
+	length_list[749] = 63;
+	length_list[750] = 64;
+	length_list[751] = 8;
+	length_list[752] = 10;
+	length_list[753] = 2;
+	length_list[754] = 2;
+	length_list[755] = -1;
+	length_list[756] = 3;
+	length_list[757] = 7;
+	length_list[758] = 7;
+	length_list[759] = 47;
+	length_list[760] = -1;
+	length_list[761] = -1;
+	length_list[860] = 2;
+	length_list[861] = -1;
+	length_list[862] = 2;
+	length_list[863] = 5;
+	length_list[864] = 6;
+	length_list[865] = 5;
+	length_list[866] = 6;
+	length_list[867] = 6;
+	length_list[868] = 8;
+	length_list[869] = 8;
+	length_list[870] = 10;
+	length_list[871] = 31;
+	length_list[872] = 6;
+	length_list[873] = 6;
+	length_list[989] = 18;
+	length_list[990] = 18;
+	length_list[1078] = 23;
+	length_list[1079] = 7;
+	length_list[1080] = 10;
+	length_list[1081] = 8;
+	length_list[1085] = 8;
+	length_list[1086] = -1;
+	length_list[1087] = 25;
+	length_list[1088] = 10;
+	length_list[1089] = 4;
+	length_list[1090] = -1;
+	length_list[1091] = 8;
+	length_list[1092] = -1;
+	length_list[1093] = 12;
+	length_list[1094] = 14;
+	length_list[1095] = 2;
+	length_list[1096] = -1;
+	length_list[1097] = 4;
+	length_list[1098] = 6;
+	length_list[1099] = 2;
+	length_list[2007] = 8;
+	length_list[2008] = 8;
+	length_list[2009] = 268;
+	length_list[2010] = 6;
+	length_list[2011] = 8;
+	length_list[2012] = 6;
+	length_list[2013] = 54;
+	length_list[2014] = 30;
+	length_list[2015] = 54;
+	length_list[2016] = 58;
+	length_list[2017] = 15;
+	length_list[2018] = 8;
+	length_list[2019] = 6;
+	length_list[2020] = -1;
+	length_list[2021] = 4;
+	length_list[2022] = 8;
+	length_list[2023] = 32;
+	length_list[2024] = -1;
+	length_list[2025] = 5;
+	length_list[2026] = 2;
+	length_list[2027] = -1;
+	length_list[2028] = 8;
+	length_list[2029] = 10;
+	length_list[2030] = 6;
+	length_list[2031] = 8;
+	length_list[2032] = 6;
+	length_list[2033] = 18;
+	length_list[2034] = 8;
+	length_list[2035] = 6;
+	length_list[2036] = 3;
+	length_list[2037] = 6;
+	length_list[2038] = 14;
+	length_list[2039] = -1;
+	length_list[2040] = -1;
+	length_list[2041] = -1;
+	length_list[2042] = 8;
+	length_list[2043] = 25;
+	length_list[2044] = 10;
+	length_list[2045] = -1;
+	length_list[2046] = 26;
+	length_list[2048] = -1;
+	length_list[2049] = -1;
+	length_list[2050] = 18;
+	length_list[2051] = 4;
+	length_list[2052] = 14;
+	length_list[2053] = -1;
+	length_list[2054] = 2;
+	length_list[2055] = 4;
+	length_list[2056] = 14;
+	length_list[2057] = 50;
+	length_list[2058] = 18;
+	length_list[2059] = 6;
+	length_list[2060] = 2;
+	length_list[2061] = 3;
+	length_list[2062] = 14;
+	length_list[2063] = 30;
+	length_list[2064] = 3;
+	length_list[2065] = -1;
+	length_list[2066] = 8;
+	length_list[2067] = -1;
+	length_list[2068] = 86;
+	length_list[2069] = 2;
+	length_list[2070] = 6;
+	length_list[2071] = 6;
+	length_list[2072] = -1;
+	length_list[2073] = -1;
+	length_list[2074] = 4;
+	length_list[2075] = 12;
+	length_list[2076] = 10;
+	length_list[2077] = 22;
+	length_list[2078] = 8;
+	length_list[2079] = -1;
+	length_list[2080] = 11;
+	length_list[2081] = 2;
+	length_list[2082] = 9;
+	length_list[2083] = -1;
+	length_list[2084] = 8;
+	length_list[2085] = -1;
+	length_list[2087] = 6;
+	length_list[2088] = 14;
+	length_list[2089] = 12;
+	length_list[2090] = 10;
+	length_list[2091] = 6;
+	length_list[2092] = 10;
+	length_list[2093] = -1;
+	length_list[2101] = -1;
+	length_list[2102] = -1;
+	length_list[2103] = 3;
+	length_list[2104] = 2;
+	length_list[2105] = 66;
+	length_list[2106] = 5;
+	length_list[2107] = 2;
+	length_list[2108] = 14;
+	length_list[2109] = 6;
+	length_list[2110] = 26;
+	length_list[2112] = -1;
+	length_list[2113] = 4;
+	length_list[2114] = 6;
+	length_list[2115] = 6;
+	length_list[2116] = 2;
+	length_list[2117] = 10;
+	length_list[2118] = 4;
+	length_list[2119] = -1;
+	length_list[2120] = -1;
+	length_list[2121] = 16;
+	length_list[2122] = 2;
+	length_list[2123] = 21;
+	length_list[2124] = 10;
+	length_list[2125] = 10;
+	length_list[2126] = 5;
+	length_list[2127] = 6;
+	length_list[2128] = 7;
+	length_list[2129] = -1;
+	length_list[2130] = 2;
+	length_list[2131] = -1;
+	length_list[2132] = -1;
+	length_list[2133] = 6;
+	length_list[2134] = -1;
+	length_list[2135] = -1;
+	length_list[2136] = -1;
+	length_list[2137] = -1;
+	length_list[2138] = 2;
+	length_list[2139] = 2;
+	length_list[2140] = 2;
+	length_list[2141] = 2;
+	length_list[2142] = 2;
+	length_list[2143] = 2;
+	length_list[2144] = 2;
+	length_list[2145] = 2;
+	length_list[2146] = 2;
+	length_list[2147] = 2;
+	length_list[2148] = 2;
+	length_list[2149] = 2;
+	length_list[2150] = 2;
+	length_list[2151] = 2;
+	length_list[2152] = 2;
+	length_list[2153] = 2;
+	length_list[2154] = 2;
+	length_list[2155] = 2;
+	length_list[2156] = 2;
+	length_list[2157] = 2;
+	length_list[2158] = 2;
+	length_list[2159] = 2;
+	length_list[2160] = 2;
+	length_list[2161] = 2;
+	length_list[2162] = 2;
+	length_list[2163] = 2;
+	length_list[2164] = 2;
+	length_list[2165] = 2;
+	length_list[2166] = 2;
+	length_list[2167] = 2;
+	length_list[2168] = 2;
+	length_list[2169] = 2;
+	length_list[2170] = 2;
+	length_list[2171] = 2;
+	length_list[2172] = 2;
+	length_list[2173] = 2;
+	length_list[2174] = 2;
+	length_list[2175] = 2;
+	length_list[2176] = 2;
+	length_list[2177] = 2;
+	length_list[2178] = 2;
+	length_list[2179] = 2;
+	length_list[2180] = 2;
+	length_list[2181] = 2;
+	length_list[2182] = 2;
+	length_list[2183] = 2;
+	length_list[2184] = 2;
+	length_list[2185] = 2;
+	length_list[2186] = 2;
+	length_list[2187] = 2;
+	length_list[2188] = 2;
+	length_list[2189] = 2;
+	length_list[2190] = 2;
+	length_list[2191] = 2;
+	length_list[2192] = 2;
+	length_list[2193] = 2;
+	length_list[2194] = 2;
+	length_list[2195] = 2;
+	length_list[2196] = 2;
+	length_list[2197] = 2;
+	length_list[2198] = 2;
+	length_list[2199] = 2;
+	length_list[2200] = 2;
+	length_list[2201] = 2;
+	length_list[2202] = 2;
+	length_list[2203] = 2;
+	length_list[2204] = 2;
+	length_list[2205] = 2;
+	length_list[2206] = 2;
+	length_list[2207] = 2;
+	length_list[2208] = 2;
+	length_list[2209] = 2;
+	length_list[2210] = 2;
+	length_list[2211] = 2;
+	length_list[2212] = 2;
+	length_list[2213] = 2;
+	length_list[2214] = 2;
+	length_list[2215] = 2;
+	length_list[2216] = 2;
+	length_list[2217] = 2;
+	length_list[2218] = 2;
+	length_list[2219] = 2;
+	length_list[2220] = 2;
+	length_list[2221] = 2;
+	length_list[2223] = 10;
+	length_list[2224] = 17;
+	length_list[2225] = -1;
+	length_list[2226] = -1;
+	length_list[2227] = -1;
+	length_list[2228] = 2;
+	length_list[2229] = 6;
+	length_list[2230] = 3;
+	length_list[2232] = 10;
+	length_list[2233] = 12;
+	length_list[2234] = 10;
+	length_list[2235] = 8;
+	length_list[2236] = 10;
+	length_list[2237] = 8;
+	length_list[2238] = 14;
+	length_list[2239] = 8;
+	length_list[2240] = -1;
+	length_list[2241] = 2;
+	length_list[2242] = 2;
+	length_list[2243] = 10;
+	length_list[2244] = 8;
+	length_list[2245] = 6;
+	length_list[2246] = 4;
+	length_list[2247] = -1;
+	length_list[2248] = 34;
+	length_list[2249] = 2;
+	length_list[2250] = -1;
+	length_list[2251] = -1;
+	length_list[2252] = 109;
+	length_list[2253] = 10;
+	length_list[2254] = 2;
+	length_list[2255] = 10;
+	length_list[2256] = 9;
+	length_list[2257] = 7;
+	length_list[2258] = 10;
+	length_list[2259] = 10;
+	length_list[2260] = 8;
+	length_list[2261] = -1;
+	length_list[2262] = 6;
+	length_list[2263] = 28;
+	length_list[2264] = 27;
+	length_list[2265] = 30;
+	length_list[2266] = 26;
+	length_list[2267] = 27;
+	length_list[2268] = 26;
+	length_list[2269] = 27;
+	length_list[2270] = 27;
+	length_list[2271] = 50;
+	length_list[2272] = 51;
+	length_list[2273] = 51;
+	length_list[2274] = 27;
+	length_list[2275] = 157;
+	length_list[2276] = 6;
+	length_list[2300] = 30;
+	length_list[2301] = 6;
+	length_list[2302] = -1;
+	length_list[2303] = 24;
+	length_list[2304] = -1;
+	length_list[2305] = -1;
+	length_list[2306] = -1;
+	length_list[2307] = -1;
+	length_list[2308] = -1;
+	length_list[2309] = -1;
+	length_list[2310] = -1;
+	length_list[2311] = 5;
+	length_list[2312] = 5;
+	length_list[2314] = 26;
+	length_list[2317] = -1;
+	length_list[2318] = 2;
+	length_list[2319] = -1;
+	length_list[2320] = 10;
+	length_list[2321] = 30;
+	length_list[2322] = 10;
+	length_list[2323] = 30;
+	length_list[2324] = -1;
+	length_list[2325] = -1;
+	length_list[2326] = 26;
+	length_list[2327] = 2;
+	length_list[2328] = 2;
+	length_list[2329] = 2;
+	length_list[2330] = 2;
+	length_list[2331] = 2;
+	length_list[2332] = 2;
+	length_list[2333] = 2;
+	length_list[2334] = 2;
+	length_list[2335] = 2;
+	length_list[2336] = 2;
+	length_list[2337] = 2;
+	length_list[2338] = 2;
+	length_list[2339] = 2;
+	length_list[2340] = 2;
+	length_list[2341] = 2;
+	length_list[2342] = 2;
+	length_list[2343] = 2;
+	length_list[2344] = 2;
+	length_list[2345] = 2;
+	length_list[2346] = 2;
+	length_list[2347] = 2;
+	length_list[2348] = 2;
+	length_list[2349] = 2;
+	length_list[2350] = 2;
+	length_list[2351] = 2;
+	length_list[2352] = 2;
+	length_list[2353] = 2;
+	length_list[2354] = 2;
+	length_list[2355] = 2;
+	length_list[2356] = 2;
+	length_list[2357] = 2;
+	length_list[2358] = 2;
+	length_list[2359] = 2;
+	length_list[2360] = 2;
+	length_list[2361] = 2;
+	length_list[2362] = 2;
+	length_list[2363] = 2;
+	length_list[2364] = 2;
+	length_list[2365] = 2;
+	length_list[2366] = 2;
+	length_list[2367] = 2;
+	length_list[2368] = 2;
+	length_list[2369] = 2;
+	length_list[2370] = 2;
+	length_list[2371] = 2;
+	length_list[2372] = 2;
+	length_list[2373] = 2;
+	length_list[2374] = 2;
+	length_list[2375] = 2;
+	length_list[2376] = 2;
+	length_list[2377] = 2;
+	length_list[2378] = 2;
+	length_list[2379] = 2;
+	length_list[2380] = 2;
+	length_list[2381] = 2;
+	length_list[2382] = 2;
+	length_list[2383] = 2;
+	length_list[2384] = 2;
+	length_list[2385] = 2;
+	length_list[2386] = 2;
+	length_list[2387] = 2;
+	length_list[2388] = 2;
+	length_list[2389] = 2;
+	length_list[2390] = 2;
+	length_list[2391] = 2;
+	length_list[2392] = 2;
+	length_list[2393] = 2;
+	length_list[2394] = 2;
+	length_list[2395] = 2;
+	length_list[2396] = 2;
+	length_list[2397] = 2;
+	length_list[2398] = 2;
+	length_list[2399] = 2;
+	length_list[2400] = 2;
+	length_list[2401] = 2;
+	length_list[2402] = 2;
+	length_list[2403] = 2;
+	length_list[2404] = 2;
+	length_list[2405] = 2;
+	length_list[2406] = 2;
+	length_list[2407] = 2;
+	length_list[2408] = 2;
+	length_list[2409] = 2;
+	length_list[2410] = 2;
+	length_list[2411] = 4;
+	length_list[2412] = 6;
+	length_list[2413] = -1;
+	length_list[2414] = -1;
+	length_list[2415] = 7;
+	length_list[2416] = 31;
+	length_list[2417] = 6;
+	length_list[2418] = -1;
+	length_list[2419] = 7;
+	length_list[2420] = 2;
+	length_list[2421] = -1;
+	length_list[2422] = -1;
+	length_list[2423] = 14;
+	length_list[2424] = 6;
+	length_list[2425] = 50;
+	length_list[2426] = -1;
+	length_list[2427] = -1;
+	length_list[2428] = 4;
+	length_list[2429] = 288;
+	length_list[2430] = 12;
+	length_list[2431] = -1;
+	length_list[2432] = 7;
+	length_list[2433] = -1;
+	length_list[2434] = 7;
+	length_list[2435] = 29;
+	length_list[2436] = 28;
+	length_list[2437] = -1;
+	length_list[2438] = 10;
+	length_list[2439] = -1;
+	length_list[2440] = 6;
+	length_list[2441] = 2;
+	length_list[2442] = -1;
+	length_list[2443] = 2;
+	length_list[2444] = 4;
+	length_list[2445] = -1;
+	length_list[2446] = -1;
+	length_list[2447] = -1;
+	length_list[2448] = 41;
+	length_list[2449] = -1;
+	length_list[2450] = -1;
+	length_list[2451] = -1;
+	length_list[2452] = -1;
+	length_list[2453] = -1;
+	length_list[2454] = -1;
+	length_list[2455] = -1;
+	length_list[2456] = 8;
+	length_list[2457] = 11;
+	length_list[2458] = 9;
+	length_list[2459] = 8;
+	length_list[2460] = 6;
+	length_list[2461] = -1;
+	length_list[2462] = 12;
+	length_list[2463] = -1;
+	length_list[2464] = 6;
+	length_list[2465] = 2;
+	length_list[2466] = 6;
+	length_list[2467] = -1;
+	length_list[2468] = 18;
+	length_list[2469] = 7;
+	length_list[2470] = 12;
+	length_list[2471] = 10;
+	length_list[2472] = 16;
+	length_list[2473] = 10;
+	length_list[2474] = 16;
+	length_list[2475] = 6;
+	length_list[2476] = -1;
+	length_list[2477] = 12;
+	length_list[2478] = 19;
+	length_list[2479] = 4;
+	length_list[2480] = 10;
+	length_list[2481] = 4;
+	length_list[2482] = 10;
+	length_list[2483] = 6;
+	length_list[2484] = 6;
+	length_list[2485] = 2;
+	length_list[2486] = 6;
+	length_list[2487] = 4;
+	length_list[2488] = 6;
+	length_list[2489] = 4;
+	length_list[2490] = 2;
+	length_list[2491] = 6;
+	length_list[2492] = 6;
+	length_list[2493] = 2;
+	length_list[2494] = 2;
+	length_list[2495] = 4;
+	length_list[2497] = 10;
+	length_list[2498] = -1;
+	length_list[2499] = 10;
+	length_list[2500] = 10;
+	length_list[2501] = 1042;
+	length_list[2502] = -1;
+	length_list[2503] = 18;
+	length_list[2504] = -1;
+	length_list[2505] = -1;
+	length_list[2506] = -1;
+	length_list[2507] = 17;
+	length_list[2508] = -1;
+	length_list[2509] = 8;
+	length_list[2510] = 102;
+	length_list[2511] = -1;
+	length_list[2512] = -1;
+	length_list[2513] = 14;
+	length_list[2514] = -1;
+	length_list[2515] = -1;
+	length_list[2516] = 2;
+	length_list[2517] = -1;
+	length_list[2518] = -1;
+	length_list[2519] = -1;
+	length_list[2520] = 2;
+	length_list[2521] = 4;
+	length_list[2522] = -1;
+	length_list[2523] = -1;
+	length_list[2524] = -1;
+	length_list[2525] = -1;
+	length_list[2526] = -1;
+	length_list[2527] = 7;
+	length_list[2528] = -1;
+	length_list[2529] = 8;
+	length_list[2530] = 8;
+	length_list[2531] = 8;
+	length_list[2532] = 8;
+	length_list[2533] = 18;
+	length_list[2534] = 24;
+	length_list[2535] = 3;
+	length_list[2536] = 11;
+	length_list[2537] = 2;
+	length_list[2538] = 11;
+	length_list[2539] = -1;
+	length_list[2540] = -1;
+	length_list[2541] = 3;
+	length_list[2542] = 11;
+	length_list[2543] = 11;
+	length_list[2544] = -1;
+	length_list[2545] = 11;
+	length_list[2546] = 12;
+	length_list[2547] = 11;
+	length_list[2548] = 12;
+	length_list[2549] = 11;
+	length_list[2550] = 11;
+	length_list[2551] = 77;
+	length_list[2552] = -1;
+	length_list[2553] = 143;
+	length_list[2554] = -1;
+	length_list[2555] = -1;
+	length_list[2556] = 6;
+	length_list[2557] = -1;
+	length_list[2558] = -1;
+	length_list[2559] = -1;
+	length_list[2560] = 269;
+	length_list[2561] = 3;
+	length_list[2562] = 4;
+	length_list[2563] = 2;
+	length_list[2564] = 6;
+	length_list[2565] = 63;
+	length_list[2566] = 6;
+	length_list[2567] = 9;
+	length_list[2568] = 26;
+	length_list[2569] = 55;
+	length_list[2570] = 57;
+	length_list[2571] = 57;
+	length_list[2572] = 66;
+	length_list[2573] = -1;
+	length_list[2574] = 14;
+	length_list[2575] = -1;
+	length_list[2576] = -1;
+	length_list[2577] = -1;
+	length_list[2578] = 27;
+	length_list[2579] = 26;
+	length_list[2580] = 10;
+	length_list[2581] = 12;
+	length_list[2582] = 26;
+	length_list[2583] = 6;
+	length_list[2584] = 14;
+	length_list[2585] = 2;
+	length_list[2586] = 25;
+	length_list[2587] = 2;
+	length_list[2588] = -1;
+	length_list[2589] = 2;
+	length_list[2590] = 3;
+	length_list[2591] = 2;
+	length_list[2592] = 23;
+	length_list[2593] = 3;
+	length_list[2594] = 7;
+	length_list[2595] = -1;
+	length_list[2596] = 66;
+	length_list[2597] = 6;
+	length_list[2598] = 7;
+	length_list[2599] = 8;
+	length_list[2600] = 3;
+	length_list[2601] = 6;
+	length_list[2602] = 6;
+	length_list[2603] = 14;
+	length_list[2604] = 12;
+	length_list[2605] = -1;
+	length_list[2606] = 6;
+	length_list[2607] = 7;
+	length_list[2608] = 106;
+	length_list[2609] = -1;
+	length_list[2610] = 2;
+	length_list[2611] = 7;
+	length_list[2612] = 6;
+	length_list[2613] = 4;
+	length_list[2614] = 7;
+	length_list[2615] = 69;
+	length_list[2616] = 3;
+	length_list[2617] = 36;
+	length_list[2618] = 12;
+	length_list[2619] = -1;
+	length_list[2620] = -1;
+	length_list[2621] = 20;
+	length_list[2622] = -1;
+	length_list[2623] = 11;
+	length_list[2624] = 11;
+	length_list[2625] = 18;
+	length_list[2626] = 43;
+	length_list[2627] = 85;
+	length_list[2628] = -1;
+	length_list[2630] = 14;
+	length_list[2631] = 3;
+	length_list[2632] = 2;
+	length_list[2633] = 22;
+	length_list[2634] = 6;
+	length_list[2635] = 22;
+	length_list[2636] = 28;
+	length_list[2637] = -1;
+	length_list[2638] = 6;
+	length_list[2639] = -1;
+	length_list[2640] = 4;
+	length_list[2641] = 34;
+	length_list[2642] = 20;
+	length_list[2643] = 10;
+	length_list[2644] = -1;
+	length_list[2645] = 2;
+	length_list[2646] = 6;
+	length_list[2647] = 6;
+	length_list[2648] = 8;
+	length_list[2649] = -1;
+	length_list[2650] = 2;
+	length_list[2651] = 7;
+	length_list[2652] = 18;
+	length_list[2653] = 6;
+	length_list[2654] = 26;
+	length_list[2655] = 8;
+	length_list[2656] = 3;
+	length_list[2664] = 3;
+	length_list[2665] = 6;
+	length_list[2666] = 12;
+	length_list[2667] = -1;
+	length_list[2668] = 7;
+	length_list[2669] = -1;
+	length_list[2670] = -1;
+	length_list[2671] = -1;
+	length_list[2672] = 2;
+	length_list[2673] = -1;
+	length_list[2674] = 61;
+	length_list[2675] = 2;
+	length_list[2676] = 8;
+	length_list[2678] = 80;
+	length_list[2679] = 15;
+	length_list[2680] = 15;
+	length_list[2681] = -1;
+	length_list[2683] = -1;
+	length_list[2684] = -1;
+	length_list[2685] = -1;
+	length_list[2686] = -1;
+	length_list[2687] = -1;
+	length_list[2688] = 6;
+	length_list[2689] = 4;
+	length_list[2690] = 46;
+	length_list[2691] = 46;
+	length_list[2692] = 94;
+	length_list[2693] = 82;
+	length_list[2694] = -1;
+	length_list[2695] = -1;
+	length_list[2696] = 2;
+	length_list[2697] = 61;
+	length_list[2698] = 6;
+	length_list[2699] = 2;
+	length_list[2700] = 2;
+	length_list[2701] = -1;
+	length_list[2702] = 2;
+	length_list[2703] = 2;
+	length_list[2704] = 3;
+	length_list[2705] = -1;
+	length_list[2706] = -1;
+	length_list[2707] = 3;
+	length_list[2708] = 2;
+	length_list[2709] = 4;
+	length_list[2710] = 61;
+	length_list[2711] = 8;
+	length_list[2712] = 10;
+	length_list[2713] = 4;
+	length_list[2714] = 10;
+	length_list[2715] = -1;
+	length_list[2716] = 2;
+	length_list[2717] = 4;
+	length_list[2718] = 2;
+	length_list[2719] = 2;
+	length_list[2720] = 2;
+	length_list[2721] = 4;
+	length_list[2722] = -1;
+	length_list[2723] = 9;
+	length_list[2724] = 2;
+	length_list[2725] = -1;
+	length_list[2726] = 36;
+	length_list[2727] = 6;
+	length_list[2728] = 5;
+	length_list[2729] = -1;
+	length_list[2730] = -1;
+	length_list[2731] = -1;
+	length_list[2732] = 69;
+	length_list[2733] = 51;
+	length_list[2734] = 2;
+	length_list[2735] = 6;
+	length_list[2736] = 6;
+	length_list[2737] = 14;
+	length_list[2738] = 7;
+	length_list[2739] = 19;
+	length_list[2740] = 6;
+	length_list[2741] = 2;
+	length_list[2742] = 8;
+	length_list[2743] = 4;
+	length_list[2744] = 2;
+	length_list[2745] = 47;
+	length_list[2746] = 2;
+	length_list[2747] = 2;
+	length_list[2748] = -1;
+	length_list[2749] = 10;
+	length_list[2750] = -1;
+	length_list[2751] = -1;
+	length_list[2752] = 26;
+	length_list[2753] = 26;
+	length_list[2754] = -1;
+	length_list[2755] = 2;
+	length_list[2756] = -1;
+	length_list[2757] = 156;
+	length_list[2758] = 156;
+	length_list[2759] = 156;
+	length_list[2760] = 2;
+	length_list[2761] = -1;
+	length_list[2762] = 3;
+	length_list[2763] = 12;
+	length_list[2764] = 18;
+	length_list[2765] = 23;
+	length_list[2766] = 4;
+	length_list[2767] = 68;
+	length_list[2768] = 11;
+	length_list[2769] = -1;
+	length_list[2770] = 30;
+	length_list[2771] = -1;
+	length_list[2772] = -1;
+	length_list[2773] = 2;
+	length_list[2774] = 2;
+	length_list[2775] = 8;
+	length_list[2776] = 8;
+	length_list[2777] = -1;
+	length_list[2778] = 32;
+	length_list[2779] = -1;
+	length_list[2780] = 6;
+	length_list[2781] = 24;
+	length_list[2782] = 6;
+	length_list[2783] = 58;
+	length_list[2784] = 30;
+	length_list[2785] = 28;
+	length_list[2786] = 7;
+	length_list[2787] = -1;
+	length_list[2788] = 89;
+	length_list[2789] = -1;
+	length_list[2790] = 10;
+	length_list[2791] = 38;
+	length_list[2792] = 2;
+	length_list[2793] = 13;
+	length_list[2796] = 2;
+	length_list[2797] = 2;
+	length_list[2798] = 2;
+	length_list[2799] = 2;
+	length_list[2800] = 10;
+	length_list[2801] = 102;
+	length_list[2802] = 40;
+	length_list[2803] = -1;
+	length_list[2804] = 11;
+	length_list[2805] = 3;
+	length_list[2806] = 88;
+	length_list[2807] = 32;
+	length_list[2808] = 11;
+	length_list[2809] = 6;
+	length_list[2810] = 58;
+	length_list[2811] = -1;
+	length_list[2812] = 16;
+	length_list[2813] = -1;
+	length_list[2814] = -1;
+	length_list[2815] = -1;
+	length_list[2816] = 8;
+	length_list[2817] = 56;
+	length_list[2818] = 26;
+	length_list[2819] = -1;
+	length_list[2820] = 190;
+	length_list[2821] = 63;
+	length_list[2823] = -1;
+	length_list[2824] = -1;
+	length_list[2825] = -1;
+	length_list[2826] = -1;
+	length_list[2827] = 4;
+	length_list[2828] = 155;
+	length_list[2829] = 10;
+	length_list[2830] = -1;
+	length_list[2831] = -1;
+	length_list[2832] = 10;
+	length_list[2833] = 4;
+	length_list[2834] = 2;
+	length_list[2835] = 48;
+	length_list[2836] = 2;
+	length_list[2837] = 7;
+	length_list[2838] = 2;
+	length_list[2839] = 3;
+	length_list[2840] = 4;
+	length_list[2841] = 2;
+	length_list[2842] = 29;
+	length_list[2843] = 2;
+	length_list[2844] = 2;
+	length_list[2845] = 2;
+	length_list[2846] = 14;
+	length_list[2847] = 14;
+	length_list[2848] = 271;
+	length_list[2849] = 13;
+	length_list[2850] = 5;
+	length_list[2851] = 6;
+	length_list[2852] = 6;
+	length_list[2853] = 6;
+	length_list[2855] = -1;
+	length_list[2856] = 3;
+	length_list[2859] = 11;
+	length_list[2860] = 3;
+	length_list[2861] = 11;
+	length_list[2862] = 4;
+	length_list[2863] = 73;
+	length_list[2864] = -1;
+	length_list[2865] = 17;
+	length_list[2866] = -1;
+	length_list[2867] = 17;
+	length_list[2868] = 50;
+	length_list[2869] = 3;
+	length_list[2870] = -1;
+	length_list[2871] = -1;
+	length_list[2873] = -1;
+	length_list[2876] = 4;
+	length_list[2877] = -1;
+	length_list[2878] = -1;
+	length_list[2879] = 64;
+	length_list[2880] = -1;
+	length_list[2881] = 70;
+	length_list[2882] = 62;
+	length_list[2883] = 48;
+	length_list[2884] = 58;
+	length_list[2885] = 58;
+	length_list[2886] = 10;
+	length_list[2887] = 14;
+	length_list[2888] = 18;
+	length_list[2889] = 4;
+	length_list[2890] = 6;
+	length_list[2891] = 4;
+	length_list[2892] = 2;
+	length_list[2893] = -1;
+	length_list[2894] = -1;
+	length_list[2895] = 2;
+	length_list[2896] = 2;
+	length_list[2897] = 2;
+	length_list[2898] = 2;
+	length_list[2899] = 52;
+	length_list[2900] = 8;
+	length_list[2901] = -1;
+	length_list[2902] = -1;
+	length_list[2903] = -1;
+	length_list[2904] = 2;
+	length_list[2905] = 4;
+	length_list[2906] = -1;
+	length_list[2907] = 14;
+	length_list[2908] = 2;
+	length_list[2909] = 10;
+	length_list[2910] = 33;
+	length_list[2911] = -1;
+	length_list[2912] = -1;
+	length_list[2913] = -1;
+	length_list[2914] = -1;
+	length_list[2915] = -1;
+	length_list[2916] = -1;
+	length_list[2917] = -1;
+	length_list[2918] = 26;
+	length_list[2919] = 33;
+	length_list[2920] = 12;
+	length_list[2921] = 18;
+	length_list[2922] = -1;
+	length_list[2923] = 14;
+	length_list[2924] = 12;
+	length_list[2925] = 6;
+	length_list[2926] = 14;
+	length_list[2927] = 177;
+	length_list[2928] = -1;
+	length_list[2929] = 177;
+	length_list[2930] = -1;
+	length_list[2931] = 8;
+	length_list[2932] = 1026;
+	length_list[2933] = 1026;
+	length_list[2934] = 77;
+	length_list[2935] = -1;
+	length_list[2936] = -1;
+	length_list[2937] = -1;
+	length_list[2938] = -1;
+	length_list[2939] = 118;
+	length_list[2940] = -1;
+	length_list[2941] = -1;
+	length_list[2942] = 60;
+	length_list[2943] = 10;
+	length_list[2944] = 10;
+	length_list[2956] = -1;
+	length_list[2957] = -1;
+	length_list[2958] = 18;
+	length_list[2959] = 6;
+	length_list[2960] = 2;
+	length_list[2961] = 8;
+	length_list[2962] = 5;
+	length_list[2963] = 12;
+	length_list[2964] = 14;
+	length_list[2965] = -1;
+	length_list[2966] = 26;
+	length_list[2967] = 27;
+	length_list[2968] = 6;
+	length_list[2969] = 10;
+	length_list[2970] = 11;
+	length_list[2971] = 12;
+	length_list[2972] = 16;
+	length_list[2973] = 14;
+	length_list[2974] = 12;
+	length_list[2975] = 10;
+	length_list[2976] = 2;
+	length_list[2977] = 3;
+	length_list[2978] = 10;
+	length_list[2979] = 10;
+	length_list[2980] = 85;
+	length_list[2981] = 12;
+	length_list[2982] = -1;
+	length_list[2983] = -1;
+	length_list[2984] = 7;
+	length_list[2985] = -1;
+	length_list[2986] = 22;
+	length_list[2987] = 22;
+	length_list[2988] = 22;
+	length_list[2989] = 2;
+	length_list[2990] = 3;
+	length_list[2991] = 16;
+	length_list[2992] = 9;
+	length_list[2993] = 3;
+	length_list[2994] = 2;
+	length_list[2995] = -1;
+	length_list[2996] = 31;
+	length_list[2997] = 10;
+	length_list[2998] = 18;
+	length_list[2999] = -1;
+	length_list[3e3] = 16;
+	length_list[3001] = 27;
+	length_list[3002] = -1;
+	length_list[3003] = -1;
+	length_list[3004] = 22;
+	length_list[3005] = 6;
+	length_list[3006] = 6;
+	length_list[3007] = 12;
+	length_list[3008] = 3;
+	length_list[3009] = -1;
+	length_list[3010] = 5;
+	length_list[3011] = 10;
+	length_list[3012] = 2;
+	length_list[3013] = 7;
+	length_list[3014] = 9;
+	length_list[3015] = 6;
+	length_list[3016] = -1;
+	length_list[3017] = 10;
+	length_list[3018] = -1;
+	length_list[3019] = 4;
+	length_list[3020] = -1;
+	length_list[3021] = -1;
+	length_list[3022] = 8;
+	length_list[3023] = 9;
+	length_list[3024] = 8;
+	length_list[3025] = 13;
+	length_list[3026] = 8;
+	length_list[3027] = 13;
+	length_list[3028] = 2;
+	length_list[3029] = 9;
+	length_list[3030] = 8;
+	length_list[3031] = 9;
+	length_list[3032] = 14;
+	length_list[3033] = 51;
+	length_list[3034] = -1;
+	length_list[3035] = 19;
+	length_list[3036] = 18;
+	length_list[3037] = -1;
+	length_list[3038] = -1;
+	length_list[3039] = 3;
+	length_list[3040] = 3;
+	length_list[3041] = 3;
+	length_list[3042] = 137;
+	length_list[3043] = 34;
+	length_list[3044] = 14;
+	length_list[3045] = 8;
+	length_list[3046] = 8;
+	length_list[3047] = 4;
+	length_list[3048] = 4;
+	length_list[3049] = 6;
+	length_list[3050] = 10;
+	length_list[3051] = 7;
+	length_list[3052] = 7;
+	length_list[3053] = 9;
+	length_list[3054] = 5;
+	length_list[3055] = -1;
+	length_list[3056] = 14;
+	length_list[3057] = 18;
+	length_list[3058] = 13;
+	length_list[3059] = -1;
+	length_list[3060] = -1;
+	length_list[3061] = 6;
+	length_list[3062] = -1;
+	length_list[3063] = -1;
+	length_list[3064] = 6;
+	length_list[3065] = 11;
+	length_list[3066] = 9;
+	length_list[3067] = 35;
+	length_list[3068] = 6;
+	length_list[3069] = 4;
+	length_list[3070] = -1;
+	length_list[3071] = 24;
+	length_list[3072] = 6;
+	length_list[3073] = 6;
+	length_list[3074] = 6;
+	length_list[3075] = 6;
+	length_list[3076] = 8;
+	length_list[3077] = 30;
+	length_list[3078] = 8;
+	length_list[3079] = 12;
+	length_list[3080] = 6;
+	length_list[3081] = 116;
+	length_list[3082] = 30;
+	length_list[3083] = 18;
+	length_list[3084] = 4;
+	length_list[3085] = 167;
+	length_list[3086] = 689;
+	length_list[3087] = 610;
+	length_list[3088] = 15;
+	length_list[3089] = 11;
+	length_list[3090] = 7;
+	length_list[3091] = 11;
+	length_list[3092] = 14;
+	length_list[3093] = -1;
+	length_list[3094] = 9;
+	length_list[3095] = 10;
+	length_list[3096] = 20;
+	length_list[3097] = 8;
+	length_list[3098] = 20;
+	length_list[3099] = 8;
+	length_list[3100] = -1;
+	length_list[3101] = -1;
+	length_list[3102] = 10;
+	length_list[3103] = 1e3;
+	length_list[3104] = -1;
+	length_list[3105] = -1;
+	length_list[3106] = 12;
+	length_list[3107] = 9;
+	length_list[3108] = 979;
+	length_list[3109] = 12;
+	length_list[3110] = 94;
+	length_list[3111] = 2;
+	length_list[3112] = -1;
+	length_list[3113] = -1;
+	length_list[3114] = 4;
+	length_list[3115] = 8;
+	length_list[3116] = 4;
+	length_list[3117] = 3;
+	length_list[3118] = 15;
+	length_list[3119] = 2;
+	length_list[3120] = 15;
+	length_list[3121] = -1;
+	length_list[3122] = -1;
+	length_list[3123] = 8;
+	length_list[3124] = 3;
+	length_list[3125] = 6;
+	length_list[3126] = 12;
+	length_list[3127] = -1;
+	length_list[3128] = -1;
+	length_list[3129] = -1;
+	length_list[3130] = -1;
+	length_list[3131] = 33;
+	length_list[3132] = 6;
+	length_list[3133] = 6;
+	length_list[3134] = 8;
+	length_list[3135] = 7;
+	length_list[3136] = 19;
+	length_list[3137] = 2;
+	length_list[3138] = 19;
+	length_list[3139] = 18;
+	length_list[3140] = -1;
+	length_list[9900] = 23;
+	if (packetver >= 20260930) {
+		length_list[762] = -1;
+		length_list[763] = -1;
+		length_list[764] = -1;
+		length_list[3090] = 16;
+		length_list[3141] = 2;
+		length_list[3142] = -1;
+		length_list[3143] = 4;
+		length_list[3144] = 46;
+		length_list[3145] = 42;
+		length_list[3146] = 2;
+		length_list[3147] = 6;
+		length_list[3148] = 22;
+		length_list[3149] = -1;
+		length_list[3150] = -1;
+		length_list[3151] = 18;
+		length_list[3152] = 10;
+		length_list[3153] = 10;
+		length_list[3154] = -1;
+		length_list[3155] = 10;
+		length_list[3156] = 2;
+		length_list[3157] = 6;
+		length_list[3158] = 3;
+		length_list[3159] = 11;
+		length_list[3160] = 49;
+		length_list[3161] = 11;
+		length_list[3162] = 11;
+		length_list[3163] = 30;
+		length_list[3164] = -1;
+		length_list[3166] = 4;
+		length_list[3167] = 4;
+		length_list[3168] = 7;
+		length_list[3169] = 10;
+		length_list[3170] = 34;
+		length_list[3171] = 30;
+		length_list[3184] = 30;
+		length_list[3185] = 8;
+		length_list[3186] = 4;
+		length_list[3187] = 5;
+		length_list[3188] = 10;
+		length_list[3189] = 3;
+		length_list[3190] = 2;
+		length_list[3191] = -1;
+		length_list[3192] = 23;
+		length_list[3193] = 56;
+		length_list[3196] = 14;
+		length_list[3197] = -1;
+		length_list[3198] = -1;
+		length_list[3199] = 70;
+		length_list[3200] = 15;
+		length_list[3201] = 2;
+	}
+	return length_list;
+}
+var packets2026_len_main_default;
+var init_packets2026_len_main = __esmMin((() => {
+	packets2026_len_main_default = { init: init$16 };
 }));
 //#endregion
 //#region src/Network/PacketLength.js
@@ -77865,6 +79688,7 @@ var init_packets2025_len_main = __esmMin((() => {
 function init$15(packetver) {
 	packetver = parseInt(packetver);
 	const years = [
+		2026,
 		2025,
 		2024,
 		2023,
@@ -77936,6 +79760,7 @@ var init_PacketLength = __esmMin((() => {
 	init_packets2023_len_main();
 	init_packets2024_len_main();
 	init_packets2025_len_main();
+	init_packets2026_len_main();
 	packetModules = {
 		"./Packets/packets2003_len_main.js": packets2003_len_main_exports,
 		"./Packets/packets2004_len_main.js": packets2004_len_main_exports,
@@ -77959,7 +79784,8 @@ var init_PacketLength = __esmMin((() => {
 		"./Packets/packets2022_len_main.js": packets2022_len_main_exports,
 		"./Packets/packets2023_len_main.js": packets2023_len_main_exports,
 		"./Packets/packets2024_len_main.js": packets2024_len_main_exports,
-		"./Packets/packets2025_len_main.js": packets2025_len_main_exports
+		"./Packets/packets2025_len_main.js": packets2025_len_main_exports,
+		"./Packets/packets2026_len_main.js": packets2026_len_main_exports
 	};
 	packets_len = new Array();
 	PacketLength_default = {
@@ -78687,7 +80513,7 @@ function apply$1(component) {
 * Apply a change to the mounted windows it touches, keep them on screen,
 * and let them adjust (`onScale`).
 */
-function refresh(name) {
+function refresh$2(name) {
 	_mounted.forEach((component) => {
 		if (name !== null && scaleName(component) !== name) return;
 		apply$1(component);
@@ -78726,7 +80552,7 @@ function set$1(name, value) {
 	if (scale === get$2(name)) return scale;
 	if (scale === 1) _scales.delete(name);
 	else _scales.set(name, scale);
-	refresh(name);
+	refresh$2(name);
 	emit$1(name, scale);
 	return scale;
 }
@@ -78738,7 +80564,7 @@ function setGlobal(value) {
 	const scale = checkValue(value);
 	if (scale === _global) return scale;
 	_global = scale;
-	refresh(null);
+	refresh$2(null);
 	emit$1(null, scale);
 	return scale;
 }
@@ -79367,6 +81193,7 @@ var init_Controls = __esmMin((() => {
 		joyStickCenter: null,
 		joyCameraSpeed: 90,
 		joyDisableVirtualMouse: false,
+		joyUIFocus: true,
 		joyAutoHide: false,
 		joyReverseStick: false,
 		joySense: 25
@@ -84162,13 +85989,13 @@ var init_PostProcess = __esmMin((() => {
 }));
 //#endregion
 //#region src/Renderer/Effects/Shaders/VerticalFlip.js
-var _program$31, _buffer$23, _active$3, VerticalFlip;
+var _program$31, _buffer$23, _active$4, VerticalFlip;
 var init_VerticalFlip = __esmMin((() => {
 	init_VerticalFlip$2();
 	init_VerticalFlip$1();
 	init_WebGL();
 	init_PostProcess();
-	_active$3 = false;
+	_active$4 = false;
 	VerticalFlip = class {
 		static init(gl) {
 			if (_program$31) return;
@@ -84206,7 +86033,7 @@ var init_VerticalFlip = __esmMin((() => {
 		* @param {WebGLFramebuffer} outputFbo - Target
 		*/
 		static render(gl, inputTexture, outputFbo) {
-			if (!_buffer$23 || !_program$31 || !_active$3) return;
+			if (!_buffer$23 || !_program$31 || !_active$4) return;
 			PostProcess.beforeRenderPass(gl, outputFbo);
 			gl.useProgram(_program$31);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$23);
@@ -84230,17 +86057,17 @@ var init_VerticalFlip = __esmMin((() => {
 		}
 		/** Resets effect state */
 		static clean(gl) {
-			_active$3 = false;
+			_active$4 = false;
 			if (_buffer$23) gl.deleteBuffer(_buffer$23);
 			_program$31 = _buffer$23 = null;
 		}
 		/** @returns {boolean} Whether the effect is active */
 		static isActive() {
-			return _active$3;
+			return _active$4;
 		}
 		/** @param {boolean} bool - Enables/disables the effect */
 		static setActive(bool) {
-			_active$3 = bool;
+			_active$4 = bool;
 		}
 	};
 }));
@@ -161175,28 +163002,26 @@ var init_PacketStructure = __esmMin((() => {
 		this.StoreType = 0;
 		this.maxPrice = 0;
 		this.minPrice = 0;
-		this.ItemIDList = 0;
-		this.CardIDList = 0;
+		this.ItemIDList = [];
+		this.CardIDList = [];
 	};
 	PACKET.CZ.SEARCH_STORE_INFO.prototype.build = function() {
-		let i, count, offset;
 		const ver = this.getPacketVersion();
-		const pkt = new BinaryWriter(ver[2]);
+		const width = PacketVerManager_default.value >= 20181121 ? 4 : 2;
+		const length = ver[9] + width * (this.ItemIDList.length + this.CardIDList.length);
+		const pkt = new BinaryWriter(length);
 		pkt.writeShort(ver[1]);
-		pkt.view.setInt16(ver[3], 15 + this.ItemIDList.length * 2 + this.CardIDList.length * 2, true);
-		pkt.view.setUint8(ver[4], this.StoreType, true);
+		pkt.view.setUint16(ver[3], length, true);
+		pkt.view.setUint8(ver[4], this.StoreType);
 		pkt.view.setUint32(ver[5], this.maxPrice, true);
 		pkt.view.setUint32(ver[6], this.minPrice, true);
-		pkt.view.setUint8(ver[7], this.ItemIDList.length, true);
-		pkt.view.setUint8(ver[8], this.CardIDList.length, true);
-		offset = ver[9];
-		for (i = 0, count = this.ItemIDList.length; i < count; ++i) {
-			pkt.view.setUint16(offset, this.ItemIDList[i], true);
-			offset += 2;
-		}
-		for (i = 0, count = this.CardIDList.length; i < count; ++i) {
-			pkt.view.setUint16(offset, this.CardIDList[i], true);
-			offset += 2;
+		pkt.view.setUint8(ver[7], this.ItemIDList.length);
+		pkt.view.setUint8(ver[8], this.CardIDList.length);
+		let offset = ver[9];
+		for (const id of [...this.ItemIDList, ...this.CardIDList]) {
+			if (width === 4) pkt.view.setUint32(offset, id, true);
+			else pkt.view.setUint16(offset, id, true);
+			offset += width;
 		}
 		return pkt;
 	};
@@ -161221,11 +163046,13 @@ var init_PacketStructure = __esmMin((() => {
 	};
 	PACKET.CZ.SSILIST_ITEM_CLICK.prototype.build = function() {
 		const ver = this.getPacketVersion();
-		const pkt = new BinaryWriter(ver[2]);
+		const modern = PacketVerManager_default.value >= 20181121;
+		const pkt = new BinaryWriter(modern ? 14 : 12);
 		pkt.writeShort(ver[1]);
-		pkt.view.setUint32(ver[3], this.AID, true);
-		pkt.view.setULong(ver[4], this.SSI_ID, true);
-		pkt.view.setUShort(ver[5], this.ITID, true);
+		pkt.writeULong(this.AID);
+		pkt.writeULong(this.SSI_ID);
+		if (modern) pkt.writeULong(this.ITID);
+		else pkt.writeUShort(this.ITID);
 		return pkt;
 	};
 	PACKET.CH.SELECT_ACCESSIBLE_MAPNAME = function PACKET_CH_SELECT_ACCESSIBLE_MAPNAME() {
@@ -165808,6 +167635,35 @@ var init_PacketStructure = __esmMin((() => {
 		})();
 	};
 	PACKET.ZC.SEARCH_STORE_INFO_ACK.size = -1;
+	PACKET.ZC.SEARCH_STORE_INFO_ACK2 = function PACKET_ZC_SEARCH_STORE_INFO_ACK2(fp, end) {
+		this.IsFirstPage = fp.readUChar();
+		this.IsNexPage = fp.readUChar();
+		this.RemainedSearchCnt = fp.readUChar();
+		this.SSI_List = [];
+		while (fp.tell() + 142 <= end) {
+			const item = {};
+			item.SSI_ID = fp.readULong();
+			item.AID = fp.readULong();
+			item.StoreName = fp.readString(80);
+			item.ITID = fp.readULong();
+			item.type = fp.readUChar();
+			item.price = fp.readULong();
+			item.count = fp.readUShort();
+			item.slot = {};
+			for (let i = 1; i <= 4; i++) item.slot[`card${i}`] = fp.readULong();
+			item.Options = [];
+			for (let i = 1; i <= 5; i++) item.Options[i] = {
+				index: fp.readShort(),
+				value: fp.readShort(),
+				param: fp.readUChar()
+			};
+			item.RefiningLevel = fp.readUChar();
+			item.enchantgrade = fp.readUChar();
+			item.IsIdentified = 1;
+			this.SSI_List.push(item);
+		}
+	};
+	PACKET.ZC.SEARCH_STORE_INFO_ACK2.size = -1;
 	PACKET.ZC.SEARCH_STORE_INFO_FAILED = function PACKET_ZC_SEARCH_STORE_INFO_FAILED(fp, end) {
 		this.Reason = fp.readUChar();
 	};
@@ -170386,12 +172242,12 @@ var init_PacketStructure = __esmMin((() => {
 		this.serial = fp.readLong();
 		this.step = fp.readChar();
 		this.idx = fp.readChar();
-		this.additionItemID = fp.readUShort();
+		this.additionItemID = PacketVerManager_default.value >= 20181121 ? fp.readULong() : fp.readUShort();
 		this.goldPoint = fp.readLong();
 		this.silverPoint = fp.readLong();
 		this.bronzePoint = fp.readLong();
 	};
-	PACKET.ZC.ACK_OPEN_ROULETTE.size = 23;
+	PACKET.ZC.ACK_OPEN_ROULETTE.size = PacketVerManager_default.value >= 20181121 ? 25 : 23;
 	PACKET.CZ.REQ_ROULETTE_INFO = function PACKET_CZ_REQ_ROULETTE_INFO() {};
 	PACKET.CZ.REQ_ROULETTE_INFO.prototype.build = function() {
 		const pkt_buf = new BinaryWriter(2);
@@ -170399,15 +172255,16 @@ var init_PacketStructure = __esmMin((() => {
 		return pkt_buf;
 	};
 	PACKET.ZC.ACK_ROULETTE_INFO = function PACKET_ZC_ACK_ROULETTE_INFO(fp, end) {
-		fp.readUShort();
 		this.serial = fp.readULong();
 		this.items = [];
-		while (fp.tell() < end) {
+		const rowSize = PacketVerManager_default.value >= 20180511 ? 12 : 8;
+		while (fp.tell() + rowSize <= end) {
 			const item = {};
 			item.row = fp.readUShort();
 			item.position = fp.readUShort();
-			item.itemId = fp.readUShort();
+			item.itemId = PacketVerManager_default.value >= 20180511 ? fp.readULong() : fp.readUShort();
 			item.count = fp.readUShort();
+			if (PacketVerManager_default.value >= 20180511) fp.readUShort();
 			this.items.push(item);
 		}
 	};
@@ -170432,12 +172289,12 @@ var init_PacketStructure = __esmMin((() => {
 		this.result = fp.readUChar();
 		this.step = fp.readUShort();
 		this.idx = fp.readUShort();
-		this.additionItemID = fp.readUShort();
+		this.additionItemID = PacketVerManager_default.value >= 20181121 ? fp.readULong() : fp.readUShort();
 		this.remainGold = fp.readLong();
 		this.remainSilver = fp.readLong();
 		this.remainBronze = fp.readLong();
 	};
-	PACKET.ZC.ACK_GENERATE_ROULETTE.size = 21;
+	PACKET.ZC.ACK_GENERATE_ROULETTE.size = PacketVerManager_default.value >= 20181121 ? 23 : 21;
 	PACKET.CZ.RECV_ROULETTE_ITEM = function PACKET_CZ_RECV_ROULETTE_ITEM() {
 		this.condition = 0;
 	};
@@ -170449,9 +172306,9 @@ var init_PacketStructure = __esmMin((() => {
 	};
 	PACKET.ZC.RECV_ROULETTE_ITEM = function PACKET_ZC_RECV_ROULETTE_ITEM(fp, end) {
 		this.result = fp.readUChar();
-		this.additionItemID = fp.readUShort();
+		this.additionItemID = PacketVerManager_default.value >= 20181121 ? fp.readULong() : fp.readUShort();
 	};
-	PACKET.ZC.RECV_ROULETTE_ITEM.size = 5;
+	PACKET.ZC.RECV_ROULETTE_ITEM.size = PacketVerManager_default.value >= 20181121 ? 7 : 5;
 	PACKET.ZC.SELECTCART = function PACKET_ZC_SELECTCART(fp, end) {
 		this.identity = fp.readLong();
 		this.typeList = [];
@@ -203324,6 +205181,14 @@ var init_PacketVersions = __esmMin((() => {
 				0
 			]
 		],
+		20181121: [[
+			PACKET.CZ.SSILIST_ITEM_CLICK,
+			2108,
+			14,
+			2,
+			6,
+			10
+		]],
 		20190904: [
 			[
 				PACKET.CZ.ADD_FRIENDS,
@@ -203511,8 +205376,10 @@ var init_PacketVersions = __esmMin((() => {
 			[
 				PACKET.CZ.SSILIST_ITEM_CLICK,
 				2108,
-				12,
-				0
+				14,
+				2,
+				6,
+				10
 			]
 		],
 		20211103: [
@@ -203702,8 +205569,10 @@ var init_PacketVersions = __esmMin((() => {
 			[
 				PACKET.CZ.SSILIST_ITEM_CLICK,
 				2108,
-				12,
-				0
+				14,
+				2,
+				6,
+				10
 			]
 		]
 	};
@@ -204243,6 +206112,7 @@ var init_PacketRegister = __esmMin((() => {
 		2093: PACKET.HC.ACCEPT_ENTER_NEO_UNION_HEADER,
 		2101: PACKET.CZ.SEARCH_STORE_INFO,
 		2102: PACKET.ZC.SEARCH_STORE_INFO_ACK,
+		2916: PACKET.ZC.SEARCH_STORE_INFO_ACK2,
 		2103: PACKET.ZC.SEARCH_STORE_INFO_FAILED,
 		2104: PACKET.CZ.SEARCH_STORE_INFO_NEXT_PAGE,
 		2105: PACKET.ZC.ACK_BAN_GUILD_SSO,
@@ -207186,14 +209056,14 @@ function sendPacket(Packet) {
 	}
 	console.log("%c[Network] Send:", "color:#007070", Packet);
 	if (_socket && _socket.isZone) PacketCrypt_default.process(pkt.view);
-	send(pkt.buffer);
+	send$1(pkt.buffer);
 }
 /**
 * Send buffer to the server
 *
 * @param {ArrayBuffer} buffer
 */
-function send(buffer) {
+function send$1(buffer) {
 	if (_socket) _socket.send(buffer);
 }
 /**
@@ -207234,21 +209104,21 @@ function read$1(callback) {
 * @param {number} minCapacity
 */
 function _ringGrow(minCapacity) {
-	let newCap = _ring.length;
+	let newCap = _ring$1.length;
 	while (newCap < minCapacity) newCap *= 2;
 	const pending = _ring_tail - _ring_head;
 	const newRing = new Uint8Array(newCap);
 	if (pending > 0) {
 		const physHead = _ring_head & _ring_mask;
 		const physTail = _ring_tail & _ring_mask;
-		if (physTail > physHead) newRing.set(_ring.subarray(physHead, physTail), 0);
+		if (physTail > physHead) newRing.set(_ring$1.subarray(physHead, physTail), 0);
 		else {
-			const firstChunk = _ring.length - physHead;
-			newRing.set(_ring.subarray(physHead), 0);
-			newRing.set(_ring.subarray(0, physTail), firstChunk);
+			const firstChunk = _ring$1.length - physHead;
+			newRing.set(_ring$1.subarray(physHead), 0);
+			newRing.set(_ring$1.subarray(0, physTail), firstChunk);
 		}
 	}
-	_ring = newRing;
+	_ring$1 = newRing;
 	_ring_mask = newCap - 1;
 	_ring_head = 0;
 	_ring_tail = pending;
@@ -207265,11 +209135,11 @@ function _ringGrow(minCapacity) {
 function _ringSlice(logicalStart, len) {
 	const physStart = logicalStart & _ring_mask;
 	const physEnd = physStart + len;
-	if (physEnd <= _ring.length) return _ring.subarray(physStart, physEnd);
+	if (physEnd <= _ring$1.length) return _ring$1.subarray(physStart, physEnd);
 	const tmp = new Uint8Array(len);
-	const firstChunk = _ring.length - physStart;
-	tmp.set(_ring.subarray(physStart), 0);
-	tmp.set(_ring.subarray(0, len - firstChunk), firstChunk);
+	const firstChunk = _ring$1.length - physStart;
+	tmp.set(_ring$1.subarray(physStart), 0);
+	tmp.set(_ring$1.subarray(0, len - firstChunk), firstChunk);
 	return tmp;
 }
 /**
@@ -207282,8 +209152,8 @@ function _ringSlice(logicalStart, len) {
 */
 function _ringReadUShort(logPos) {
 	const p = logPos & _ring_mask;
-	if (p + 2 <= _ring.length) return _ring[p] | _ring[p + 1] << 8;
-	return _ring[p] | _ring[0] << 8;
+	if (p + 2 <= _ring$1.length) return _ring$1[p] | _ring$1[p + 1] << 8;
+	return _ring$1[p] | _ring$1[0] << 8;
 }
 /**
 * Received data from server.
@@ -207297,13 +209167,13 @@ function receive(buf) {
 	const incoming = buf instanceof Uint8Array ? buf : new Uint8Array(buf);
 	const inLen = incoming.length;
 	const needed = _ring_tail - _ring_head + inLen;
-	if (needed > _ring.length) _ringGrow(needed);
+	if (needed > _ring$1.length) _ringGrow(needed);
 	const physTail = _ring_tail & _ring_mask;
-	const spaceToEnd = _ring.length - physTail;
-	if (inLen <= spaceToEnd) _ring.set(incoming, physTail);
+	const spaceToEnd = _ring$1.length - physTail;
+	if (inLen <= spaceToEnd) _ring$1.set(incoming, physTail);
 	else {
-		_ring.set(incoming.subarray(0, spaceToEnd), physTail);
-		_ring.set(incoming.subarray(spaceToEnd), 0);
+		_ring$1.set(incoming.subarray(0, spaceToEnd), physTail);
+		_ring$1.set(incoming.subarray(spaceToEnd), 0);
 	}
 	_ring_tail += inLen;
 	if (!_fp) _fp = new BinaryReader(/* @__PURE__ */ new ArrayBuffer(0));
@@ -207387,7 +209257,7 @@ function onClose$9() {
 * Close connection with server
 * Is this needed ?
 */
-function close$2() {
+function close$4() {
 	let idx;
 	if (_socket) {
 		const s = _socket;
@@ -207447,7 +209317,7 @@ function utilsLongToIP(long) {
 function utilsBufferToHexString(buffer) {
 	return [...new Uint8Array(buffer)].map((x) => x.toString(16).padStart(2, "0") + " ").join("");
 }
-var _sockets, _socketFactory, _socket, LOG_ENTRY_KNOWN, LOG_ENTRY_UNKNOWN, LOG_QUEUE_SIZE, LOG_QUEUE_MASK, LogEntry, _logPool, _logHead, _logTail, _logScheduled, _ring, _ring_mask, _ring_head, _ring_tail, _fp, _onDisconnect, packetDump, Network;
+var _sockets, _socketFactory, _socket, LOG_ENTRY_KNOWN, LOG_ENTRY_UNKNOWN, LOG_QUEUE_SIZE, LOG_QUEUE_MASK, LogEntry, _logPool, _logHead, _logTail, _logScheduled, _ring$1, _ring_mask, _ring_head, _ring_tail, _fp, _onDisconnect, packetDump, Network;
 var init_NetworkManager = __esmMin((() => {
 	init_Configs();
 	init_BinaryReader();
@@ -207488,8 +209358,8 @@ var init_NetworkManager = __esmMin((() => {
 	_logHead = 0;
 	_logTail = 0;
 	_logScheduled = false;
-	_ring = /* @__PURE__ */ new Uint8Array(262144);
-	_ring_mask = _ring.length - 1;
+	_ring$1 = /* @__PURE__ */ new Uint8Array(262144);
+	_ring_mask = _ring$1.length - 1;
 	_ring_head = 0;
 	_ring_tail = 0;
 	_fp = null;
@@ -207516,11 +209386,11 @@ var init_NetworkManager = __esmMin((() => {
 		for (i = 0; i < count; ++i) registerPacket(keys[i], PacketRegister_default[keys[i]]);
 		return {
 			sendPacket,
-			send,
+			send: send$1,
 			setPing,
 			connect,
 			hookPacket,
-			close: close$2,
+			close: close$4,
 			read: read$1,
 			set onDisconnect(callback) {
 				_onDisconnect = callback;
@@ -207700,7 +209570,7 @@ function begin(lua, token = null, lists = []) {
 * @param {string} filename for the warning
 * @return {string[]} the names skipped
 */
-function finish(lua, token, filename) {
+function finish$2(lua, token, filename) {
 	let skipped = run(lua, `return __ro_lenient.finish(${token})`);
 	if (skipped instanceof Uint8Array) skipped = new TextDecoder().decode(skipped);
 	const names = skipped ? [...new Set(String(skipped).split(", "))] : [];
@@ -207780,7 +209650,7 @@ end
 		mark,
 		defined,
 		begin,
-		finish,
+		finish: finish$2,
 		LUA
 	};
 }));
@@ -207856,7 +209726,7 @@ var init_Events = __esmMin((() => {
 /**
 * Render background (or a black background if no image is loaded yet)
 */
-function render$17() {
+function render$18() {
 	_ctx$5.clearRect(0, 0, _canvas.width, _canvas.height);
 	if (Background._progress > -1) Background.setPercent(Background._progress);
 }
@@ -207942,7 +209812,7 @@ var init_Background = __esmMin((() => {
 			let i;
 			Background._progress = 0;
 			_canvas.style.zIndex = "1";
-			render$17();
+			render$18();
 			if (loading) {
 				Background._loading = loading;
 				return;
@@ -207965,7 +209835,7 @@ var init_Background = __esmMin((() => {
 				height: height + "px"
 			});
 			_ctx$5.clearRect(0, 0, width, height);
-			render$17();
+			render$18();
 		}
 		/**
 		* Set an image as background
@@ -207980,7 +209850,7 @@ var init_Background = __esmMin((() => {
 			Background._removal = null;
 			_container.innerHTML = "";
 			_container.style.backgroundImage = "none";
-			render$17();
+			render$18();
 			if (Array.isArray(filename)) {
 				let loadedCount = 0;
 				const total = filename.length;
@@ -208693,7 +210563,7 @@ function init$14(gl) {
 * @param {number} x
 * @param {number} y
 */
-function render$16(gl, modelView, projection, fog, x, y) {
+function render$17(gl, modelView, projection, fog, x, y) {
 	if (!_texture$5) return;
 	const uniform = _program$30.uniform;
 	const attribute = _program$30.attribute;
@@ -208787,7 +210657,7 @@ var init_GridSelector = __esmMin((() => {
 	GridSelector_default = {
 		init: init$14,
 		free: free$9,
-		render: render$16
+		render: render$17
 	};
 }));
 //#endregion
@@ -208879,7 +210749,7 @@ var init_Ground$1 = __esmMin((() => {
 * @param {object} fog structure
 * @param {object} light structure
 */
-function render$15(gl, modelView, projection, normalMat, fog, light) {
+function render$16(gl, modelView, projection, normalMat, fog, light) {
 	const uniform = _program$29.uniform;
 	const attribute = _program$29.attribute;
 	gl.useProgram(_program$29);
@@ -209170,7 +211040,7 @@ var init_Ground = __esmMin((() => {
 	Ground_default = {
 		init: init$13,
 		free: free$8,
-		render: render$15,
+		render: render$16,
 		getShadowFactor,
 		textures
 	};
@@ -209804,7 +211674,7 @@ function init$12(gl, water) {
 * @param {object} light structure
 * @param {number} tick (game tick)
 */
-function render$14(gl, modelView, projection, fog, light, tick) {
+function render$15(gl, modelView, projection, fog, light, tick) {
 	if (!_vertCount) return;
 	const uniform = _program$27.uniform;
 	const attribute = _program$27.attribute;
@@ -209918,7 +211788,7 @@ var init_Water = __esmMin((() => {
 	Water_default = {
 		init: init$12,
 		free: free$7,
-		render: render$14,
+		render: render$15,
 		isSubmerged,
 		hasWater,
 		state
@@ -210311,7 +212181,7 @@ function renderDepth(gl, program) {
 	gl.disableVertexAttribArray(attribute.aPosition);
 	gl.disableVertexAttribArray(attribute.aTextureCoord);
 }
-function render$13(gl, modelView, projection, normalMat, fog, light) {
+function render$14(gl, modelView, projection, normalMat, fog, light) {
 	bind$1(gl, modelView, projection, fog, light);
 	OccluderFade.renderOpaque(gl, _program$26.uniform, () => drawMeshes(gl));
 	OccluderFade.renderQuery(gl, _program$26.uniform, () => drawMeshes(gl), OccluderFade.QUERY.MODELS);
@@ -210369,7 +212239,7 @@ var init_Models = __esmMin((() => {
 	_pendingTextures = 0;
 	Models_default = {
 		init: init$11,
-		render: render$13,
+		render: render$14,
 		renderFaded: renderFaded$1,
 		renderDepth,
 		free: free$6
@@ -210940,7 +212810,7 @@ function drawModels(gl) {
 /**
 * Render animated models (opaque pass)
 */
-function render$12(gl, modelView, projection, normalMat, fog, light, tick) {
+function render$13(gl, modelView, projection, normalMat, fog, light, tick) {
 	if (_animatedModels.length === 0) return;
 	if (!_program$25) init$10(gl);
 	bind(gl, modelView, projection, normalMat, fog, light);
@@ -210991,7 +212861,7 @@ var init_AnimatedModels = __esmMin((() => {
 		init: init$10,
 		free: free$5,
 		add: add$3,
-		render: render$12,
+		render: render$13,
 		renderFaded,
 		hasAnimatedModels
 	};
@@ -214996,7 +216866,7 @@ function normalize3(v) {
 * sits next to): (gl, modelView, projection, normalMat, fog, light, tick). modelView is
 * Camera.modelView (the view matrix); the per-instance world is composed on top.
 */
-function render$11(gl, modelView, projection, normalMat, fog, light, tick) {
+function render$12(gl, modelView, projection, normalMat, fog, light, tick) {
 	_gl$1 = gl;
 	if (_instances.length === 0 || !light) return;
 	if (!_program$24) init$9(gl);
@@ -215491,7 +217361,7 @@ var init_GR2ModelRenderer = __esmMin((() => {
 	GR2ModelRenderer_default = {
 		init: init$9,
 		free: free$4,
-		render: render$11,
+		render: render$12,
 		attach: attach$2,
 		detach: detach$1,
 		isMissing: function(path) {
@@ -215531,7 +217401,7 @@ function free$3() {
 *
 * @param {vec2} position
 */
-function render$10(position, tick) {
+function render$11(position, tick) {
 	_list$6.forEach((sound) => {
 		const dist = Math.floor(vec2$3.dist(sound.pos, position));
 		if (sound.tick < tick && dist <= sound.range) {
@@ -215549,7 +217419,7 @@ var init_Sounds = __esmMin((() => {
 	Sounds_default = {
 		add: add$2,
 		free: free$3,
-		render: render$10
+		render: render$11
 	};
 }));
 //#endregion
@@ -223134,7 +225004,7 @@ var init_InputBox$1 = __esmMin((() => {
 /**
 * Validate input
 */
-function validate$1() {
+function validate$2() {
 	const root = InputBox.getRoot();
 	const input = root.querySelector("input");
 	let text = input ? input.value : "";
@@ -223174,7 +225044,7 @@ var init_InputBox = __esmMin((() => {
 		this._host.style.left = `${(Renderer.width - 280 * scale) / 2 + 1}px`;
 		const root = InputBox.getRoot();
 		const btn = root.querySelector("ui-button");
-		if (btn) btn.addEventListener("click", () => validate$1());
+		if (btn) btn.addEventListener("click", () => validate$2());
 		const input = root.querySelector("input");
 		if (input) input.addEventListener("mousedown", (e) => e.stopImmediatePropagation());
 		this._overlay = document.createElement("div");
@@ -223221,7 +225091,7 @@ var init_InputBox = __esmMin((() => {
 	*/
 	InputBox.onKeyDown = function onKeyDown(event) {
 		if (event.which === KEYS.ENTER) {
-			validate$1();
+			validate$2();
 			event.stopImmediatePropagation();
 			return false;
 		}
@@ -223314,13 +225184,13 @@ function _escapeHTML$5(text) {
 /**
 * Submit an index
 */
-function validate() {
+function validate$1() {
 	NpcMenu.onSelectMenu(_ownerID, _index + 1);
 }
 /**
 * Pressed cancel, client send "255" as value
 */
-function cancel$1() {
+function cancel$2() {
 	NpcMenu.onSelectMenu(_ownerID, 255);
 }
 /**
@@ -223356,9 +225226,9 @@ var init_NpcMenu = __esmMin((() => {
 	NpcMenu.init = function init() {
 		const root = NpcMenu.getRoot();
 		const okBtn = root.querySelector(".ok");
-		if (okBtn) okBtn.addEventListener("click", () => validate());
+		if (okBtn) okBtn.addEventListener("click", () => validate$1());
 		const cancelBtn = root.querySelector(".cancel");
-		if (cancelBtn) cancelBtn.addEventListener("click", () => cancel$1());
+		if (cancelBtn) cancelBtn.addEventListener("click", () => cancel$2());
 		this._host.style.top = `${Math.max(376, Renderer.height / 2 + 76)}px`;
 		this._host.style.left = `${Math.max(Renderer.width / 3, 20)}px`;
 		this.draggable();
@@ -223371,7 +225241,7 @@ var init_NpcMenu = __esmMin((() => {
 			});
 			content.addEventListener("dblclick", (e) => {
 				const div = e.target.closest("div[data-index]");
-				if (div && content.contains(div)) validate();
+				if (div && content.contains(div)) validate$1();
 			});
 		}
 	};
@@ -223392,10 +225262,10 @@ var init_NpcMenu = __esmMin((() => {
 		switch (event.which) {
 			case KEYS.SPACE:
 			case KEYS.ENTER:
-				validate();
+				validate$1();
 				break;
 			case KEYS.ESCAPE:
-				cancel$1();
+				cancel$2();
 				break;
 			case KEYS.UP: {
 				const divs = content.querySelectorAll("div[data-index]");
@@ -227066,7 +228936,7 @@ var init_PackageSelection$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/PackageSelection/PackageSelection.js
-var Selection, request, submitted, PackageSelection_default;
+var Selection, request$1, submitted, PackageSelection_default;
 var init_PackageSelection = __esmMin((() => {
 	init_DBManager();
 	init_GUIComponent();
@@ -227081,15 +228951,15 @@ var init_PackageSelection = __esmMin((() => {
 	init_PackageSelection$1();
 	Selection = new GUIComponent("PackageSelection", PackageSelection_default$1);
 	Selection.render = () => PackageSelection_default$2;
-	request = null;
+	request$1 = null;
 	submitted = /* @__PURE__ */ new WeakMap();
 	Selection.init = function() {
 		const root = this.getRoot();
 		this.draggable(root.querySelector(".head"));
 		root.querySelector(".cancel").addEventListener("click", () => this.remove());
 		root.querySelector(".confirm").addEventListener("click", () => {
-			if (!request || request.group === null) return;
-			const { inventory, index, itemID, account, group } = request;
+			if (!request$1 || request$1.group === null) return;
+			const { inventory, index, itemID, account, group } = request$1;
 			const item = inventory.getItemByIndex(index);
 			if (account === SessionStorage_default.AID && item?.ITID === itemID && item.count > 0) {
 				const packet = new PACKET.CZ.USE_PACKAGEITEM();
@@ -227103,7 +228973,7 @@ var init_PackageSelection = __esmMin((() => {
 					count: item.count,
 					until: Date.now() + 1500
 				});
-				request = null;
+				request$1 = null;
 				Network.sendPacket(packet);
 			}
 			this.remove();
@@ -227118,7 +228988,7 @@ var init_PackageSelection = __esmMin((() => {
 			return;
 		}
 		this.append();
-		request = {
+		request$1 = {
 			inventory,
 			index: item.index,
 			itemID: item.ITID,
@@ -227149,8 +229019,8 @@ var init_PackageSelection = __esmMin((() => {
 				button.appendChild(row);
 			}
 			button.addEventListener("click", () => {
-				if (!request) return;
-				request.group = group.id;
+				if (!request$1) return;
+				request$1.group = group.id;
 				for (const option of list.children) option.setAttribute("aria-pressed", String(option === button));
 				confirm.disabled = false;
 			});
@@ -227162,7 +229032,7 @@ var init_PackageSelection = __esmMin((() => {
 		this._host.style.top = `${Math.max(0, (Renderer.height - 320) / 2)}px`;
 	};
 	Selection.onRemove = () => {
-		request = null;
+		request$1 = null;
 	};
 	PackageSelection_default = UIManager.addComponent(Selection);
 }));
@@ -227618,6 +229488,15 @@ function createStorage(config) {
 		if (isInventoryOpen) Component.reqRemoveItem(item.index, count);
 		else if (isCartOpen) Component.reqMoveItemToCart(item.index, count);
 		return true;
+	};
+	/**
+	* The open tab (Component.TAB), its place among the tab buttons. The tabs
+	* are drawn as one picture, so only this says which it is (gamepad LB / RB).
+	*
+	* @returns {number}
+	*/
+	Component.getTab = function getTab() {
+		return _preferences.tab;
 	};
 	Component.onClosePressed = function onClosedPressed() {};
 	Component.reqAddItem = function reqAddItem() {};
@@ -230477,7 +232356,7 @@ var init_GuildCompanion$1 = __esmMin((() => {
 function _root$18() {
 	return GuildCompanion.getRoot();
 }
-function open$1(mode) {
+function open$3(mode) {
 	_mode = mode;
 	if (!GuildCompanion.__active) GuildCompanion.append();
 	const root = _root$18();
@@ -230592,10 +232471,10 @@ var init_GuildCompanion = __esmMin((() => {
 		});
 	};
 	GuildCompanion.openCreate = function openCreate() {
-		open$1("create");
+		open$3("create");
 	};
 	GuildCompanion.openDisband = function openDisband() {
-		open$1("disband");
+		open$3("disband");
 	};
 	GuildCompanion.closeDisband = function closeDisband() {
 		if (_mode === "disband" && GuildCompanion.__active) GuildCompanion.remove();
@@ -231754,7 +233633,10 @@ var init_Guild$1 = __esmMin((() => {
 		general.querySelector(".exp .value").textContent = atMaxLevel ? 0 : info.exp;
 		general.querySelector(".exp").classList.toggle("maxlevel", atMaxLevel);
 		Guild.updateSession(info);
-		Guild.onRequestGuildEmblem(info.GDID, info.emblemVersion, Guild.setEmblem.bind(this));
+		const owner = SessionStorage_default.Entity;
+		Guild.onRequestGuildEmblem(info.GDID, info.emblemVersion, (image) => {
+			if (SessionStorage_default.Entity === owner && owner.GUID === info.GDID && owner.GEmblemVer !== 0) Guild.setEmblem(image);
+		});
 		updateEmblemControls(root);
 		updateDisbandButton(root, getActiveTab(root));
 		updateSkillFooter(root, getActiveTab(root));
@@ -232739,7 +234621,7 @@ function list() {
 /**
 * The button was pressed. Called by the menu.
 */
-function press(button) {
+function press$2(button) {
 	try {
 		button.onClick();
 	} catch (error) {
@@ -232766,7 +234648,7 @@ var init_MenuHooks = __esmMin((() => {
 	MenuHooks_default = {
 		add: add$1,
 		list,
-		press,
+		press: press$2,
 		onChange: onChange$1
 	};
 }));
@@ -233409,7 +235291,7 @@ var init_GraphicsOption = __esmMin((() => {
 //#region src/UI/Components/ShortCutOption/ShortCutOption.html?raw
 var ShortCutOption_default$2;
 var init_ShortCutOption$2 = __esmMin((() => {
-	ShortCutOption_default$2 = "<div id=\"ShortCutOption\" class=\"pt-page-fadeIn1\">\r\n	<div class=\"border\">\r\n		<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n			<div class=\"left\"><span class=\"text\">Shortcut key setting window</span></div>\r\n\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"base close\"\r\n					data-background=\"basic_interface/sys_close_off.bmp\"\r\n					data-hover=\"basic_interface/sys_close_on.bmp\"\r\n				></button>\r\n			</div>\r\n\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"tabs\">\r\n			<button class=\"t_skillbar selectedtab\" data-index=\"t_skillbar\">Skill Bar</button\r\n			><button class=\"t_ui\" data-index=\"t_ui\">Interface</button\r\n			><button class=\"t_macro\" data-index=\"t_macro\">Macros</button\r\n			><button class=\"t_gamepad\" data-index=\"t_gamepad\">Gamepad</button>\r\n		</div>\r\n		<div class=\"panel\">\r\n			<div class=\"content t_skillbar selectedtab\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Skill bar 1-1</td>\r\n							<td data-button=\"F1_1\" class=\"customize\"></td>\r\n							<td>Skill bar 2-1</td>\r\n							<td data-button=\"F2_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-2</td>\r\n							<td data-button=\"F1_2\" class=\"customize\"></td>\r\n							<td>Skill bar 2-2</td>\r\n							<td data-button=\"F2_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-3</td>\r\n							<td data-button=\"F1_3\" class=\"customize\"></td>\r\n							<td>Skill bar 2-3</td>\r\n							<td data-button=\"F2_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-4</td>\r\n							<td data-button=\"F1_4\" class=\"customize\"></td>\r\n							<td>Skill bar 2-4</td>\r\n							<td data-button=\"F2_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-5</td>\r\n							<td data-button=\"F1_5\" class=\"customize\"></td>\r\n							<td>Skill bar 2-5</td>\r\n							<td data-button=\"F2_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-6</td>\r\n							<td data-button=\"F1_6\" class=\"customize\"></td>\r\n							<td>Skill bar 2-6</td>\r\n							<td data-button=\"F2_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-7</td>\r\n							<td data-button=\"F1_7\" class=\"customize\"></td>\r\n							<td>Skill bar 2-7</td>\r\n							<td data-button=\"F2_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-8</td>\r\n							<td data-button=\"F1_8\" class=\"customize\"></td>\r\n							<td>Skill bar 2-8</td>\r\n							<td data-button=\"F2_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-9</td>\r\n							<td data-button=\"F1_9\" class=\"customize\"></td>\r\n							<td>Skill bar 2-9</td>\r\n							<td data-button=\"F2_9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-1</td>\r\n							<td data-button=\"F3_1\" class=\"customize\"></td>\r\n							<td>Skill bar 4-1</td>\r\n							<td data-button=\"F4_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-2</td>\r\n							<td data-button=\"F3_2\" class=\"customize\"></td>\r\n							<td>Skill bar 4-2</td>\r\n							<td data-button=\"F4_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-3</td>\r\n							<td data-button=\"F3_3\" class=\"customize\"></td>\r\n							<td>Skill bar 4-3</td>\r\n							<td data-button=\"F4_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-4</td>\r\n							<td data-button=\"F3_4\" class=\"customize\"></td>\r\n							<td>Skill bar 4-4</td>\r\n							<td data-button=\"F4_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-5</td>\r\n							<td data-button=\"F3_5\" class=\"customize\"></td>\r\n							<td>Skill bar 4-5</td>\r\n							<td data-button=\"F4_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-6</td>\r\n							<td data-button=\"F3_6\" class=\"customize\"></td>\r\n							<td>Skill bar 4-6</td>\r\n							<td data-button=\"F4_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-7</td>\r\n							<td data-button=\"F3_7\" class=\"customize\"></td>\r\n							<td>Skill bar 4-7</td>\r\n							<td data-button=\"F4_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-8</td>\r\n							<td data-button=\"F3_8\" class=\"customize\"></td>\r\n							<td>Skill bar 4-8</td>\r\n							<td data-button=\"F4_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-9</td>\r\n							<td data-button=\"F3_9\" class=\"customize\"></td>\r\n							<td>Skill bar 4-9</td>\r\n							<td data-button=\"F4_9\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_ui\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Basic Info</td>\r\n							<td data-button=\"BasicInfo\" class=\"customize\"></td>\r\n							<td>Character Info</td>\r\n							<td data-button=\"Equipment\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill List</td>\r\n							<td data-button=\"SkillList\" class=\"customize\"></td>\r\n							<td>Emotion List</td>\r\n							<td data-button=\"Emotions\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Friends List</td>\r\n							<td data-button=\"Friends\" class=\"customize\"></td>\r\n							<td>Party Window</td>\r\n							<td data-button=\"Party\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Pet Info</td>\r\n							<td data-button=\"PetInfo\" class=\"customize\"></td>\r\n							<td>Chat Room</td>\r\n							<td data-button=\"ChatRoom\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Cart Window</td>\r\n							<td data-button=\"PushCart\" class=\"customize\"></td>\r\n							<td>Item Window</td>\r\n							<td data-button=\"Inventory\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>World Map</td>\r\n							<td data-button=\"WorldMap\" class=\"customize\"></td>\r\n							<td>Guild Info</td>\r\n							<td data-button=\"Guild\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus Info</td>\r\n							<td data-button=\"HomunInfo\" class=\"customize\"></td>\r\n							<td>Mercenary Info</td>\r\n							<td data-button=\"MercInfo\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus State</td>\r\n							<td data-button=\"HomunState\" class=\"customize\"></td>\r\n							<td>Mercenary State</td>\r\n							<td data-button=\"MercState\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Sit/Stand</td>\r\n							<td data-button=\"Sit\" class=\"customize\"></td>\r\n							<td>Short Cuts</td>\r\n							<td data-button=\"ShortCuts\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Chat Bar Size</td>\r\n							<td data-button=\"ChatSize\" class=\"customize\"></td>\r\n							<td>Skill Bar Size</td>\r\n							<td data-button=\"SkillBarSize\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Quest</td>\r\n							<td data-button=\"Quest\" class=\"customize\"></td>\r\n							<td>Bank</td>\r\n							<td data-button=\"Bank\" class=\"customize\"></td>\r\n						</tr>\r\n						<!--<tr>\r\n                     <td>MobileUI</td>\r\n                     <td data-button=\"M_UI\" class=\"customize\"></td>\r\n                     <td>MUi-Toggle</td>\r\n                     <td data-button=\"M_Toggle\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-TG</td>\r\n                     <td data-button=\"M_Targeting\" class=\"customize\"></td>\r\n                     <td>MUi-AT</td>\r\n                     <td data-button=\"M_AutoTarget\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-ATK</td>\r\n                     <td data-button=\"M_Attack\" class=\"customize\"></td>\r\n                  </tr>-->\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_macro\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Macro 1</td>\r\n							<td data-button=\"Macro1\" class=\"customize\"></td>\r\n							<td>Flag 1</td>\r\n							<td data-button=\"Flag1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 2</td>\r\n							<td data-button=\"Macro2\" class=\"customize\"></td>\r\n							<td>Flag 2</td>\r\n							<td data-button=\"Flag2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 3</td>\r\n							<td data-button=\"Macro3\" class=\"customize\"></td>\r\n							<td>Flag 3</td>\r\n							<td data-button=\"Flag3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 4</td>\r\n							<td data-button=\"Macro4\" class=\"customize\"></td>\r\n							<td>Flag 4</td>\r\n							<td data-button=\"Flag4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 5</td>\r\n							<td data-button=\"Macro5\" class=\"customize\"></td>\r\n							<td>Flag 5</td>\r\n							<td data-button=\"Flag5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 6</td>\r\n							<td data-button=\"Macro6\" class=\"customize\"></td>\r\n							<td>Flag 6</td>\r\n							<td data-button=\"Flag6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 7</td>\r\n							<td data-button=\"Macro7\" class=\"customize\"></td>\r\n							<td>Flag 7</td>\r\n							<td data-button=\"Flag7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 8</td>\r\n							<td data-button=\"Macro8\" class=\"customize\"></td>\r\n							<td>Flag 8</td>\r\n							<td data-button=\"Flag8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 9</td>\r\n							<td data-button=\"Macro9\" class=\"customize\"></td>\r\n							<td>Flag 9</td>\r\n							<td data-button=\"Flag9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 10</td>\r\n							<td data-button=\"Macro10\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_gamepad\">\r\n				<table class=\"joySettings\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr title=\"Show which button does what, and remap them\">\r\n							<td>Button Mapping</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyMappingOpen\">Mapping</button>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Define how targets are selected in combat\">\r\n							<td>Attack Target Mode</td>\r\n							<td>\r\n								<select class=\"attackTargetMode\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Lowest HP</option>\r\n									<option value=\"2\">Closest</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"What the pad targets: D-pad left/right and the aim pick from it. D-pad up/down switches in game. Support: the right stick opens a radial with your party\">\r\n							<td>Target Category</td>\r\n							<td>\r\n								<select class=\"joyCycleMode\">\r\n									<option value=\"0\">Mobs</option>\r\n									<option value=\"3\">NPCs &amp; portals</option>\r\n									<option value=\"5\">Players</option>\r\n									<option value=\"6\">NPCs, portals &amp; players</option>\r\n									<option value=\"1\">Items</option>\r\n									<option value=\"4\">Support (party)</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Choose how skills are cast with gamepad. With Right-Stick Aiming on, Off is not available: skills go to the aimed target\"\r\n						>\r\n							<td>Quick-Cast Mode</td>\r\n							<td>\r\n								<select class=\"joyQuick\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Release Mode</option>\r\n									<option value=\"2\">Instant Mode</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Adjust mouse movement sensitivity for R3 stick\">\r\n							<td>Mouse Move</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Sensitivity:\r\n									<input\r\n										class=\"joySense\"\r\n										type=\"range\"\r\n										value=\"25.0\"\r\n										min=\"1.0\"\r\n										max=\"100.0\"\r\n										step=\"1.0\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Disable mouse input from gamepad for UI interaction\">\r\n							<td>Disable Virtual Mouse</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyDisableVirtualMouse\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Swap L3 and R3 stick functions\">\r\n							<td>Swap L3-R3 Sticks</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyReverseStick\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Automatically hide UI during gameplay mouse movement\">\r\n							<td>Auto Hide UI</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAutoHide\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Set deadzone threshold for analog sticks\">\r\n							<td>Axis Threshold</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Deadline:\r\n									<input\r\n										class=\"joyDeadline\"\r\n										type=\"range\"\r\n										value=\"0.10\"\r\n										min=\"0.0\"\r\n										max=\"1.0\"\r\n										step=\"0.1\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"How fast View + D-pad left/right turns the camera, in degrees per second\">\r\n							<td>Camera Turn Speed</td>\r\n							<td>\r\n								<input\r\n									class=\"joyCameraSpeed joyRange\"\r\n									type=\"range\"\r\n									value=\"90\"\r\n									min=\"30\"\r\n									max=\"360\"\r\n									step=\"10\"\r\n								/>\r\n								<span class=\"joyValue\" data-for=\"joyCameraSpeed\"></span>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Stick Drift</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Measure where the sticks rest and treat that as centre. Leave both sticks alone while it runs (one second)\"\r\n						>\r\n							<td>Calibrate Sticks</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrate\">Calibrate</button>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrateReset\">Reset</button>\r\n								<div class=\"joyCalibrateStatus\"></div>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Left stick: movement on each axis below this value is ignored\">\r\n							<td>Left Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftLX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftLY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Right stick: movement on each axis below this value is ignored\">\r\n							<td>Right Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftRX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftRY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Aim Settings</td>\r\n						</tr>\r\n						<tr title=\"Push the right stick toward a monster or item to target the first one in that direction. In game, tap RS click to switch the right stick between aiming and the cursor; hold it to recenter the cursor. Tap L3 to clear the target, hold L3 to sit or stand\">\r\n							<td>Right-Stick Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimEnabled\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, a red ring marks a newly selected target on the ground, then fades out within two seconds\">\r\n							<td>Show Target Ring</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimRing\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, draw a short line in the aimed direction, which connects to the target once the aim is on one\">\r\n							<td>Show Aim Line</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimLine\" />\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"While the right stick aims, hide the game's cursor. Moving the mouse shows it again; tap RS click for the cursor mode\"\r\n						>\r\n							<td>Hide Cursor While Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimHideCursor\" />\r\n							</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<div class=\"joyMapping\">\r\n					<div class=\"joyMappingHeader\">\r\n						<button type=\"button\" class=\"joyBtn joyMappingBack\">&#9664; Back</button>\r\n						<span class=\"joyMappingTitle\">Button mapping</span>\r\n						<button type=\"button\" class=\"joyBtn joyMappingReset\">Reset to defaults</button>\r\n					</div>\r\n					<div class=\"joyMappingStatus\">Remap: press Remap, then a button on the gamepad. The two buttons trade places.</div>\r\n					<div class=\"joyMappingScroll\">\r\n						<table class=\"joyMappingRoles\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n						<div class=\"joyMappingSub\">Combinations (follow the buttons above)</div>\r\n						<table class=\"joyMappingCombos\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<button\r\n				class=\"button reset left\"\r\n				data-background=\"btn_reset.bmp\"\r\n				data-hover=\"btn_reset_a.bmp\"\r\n				data-down=\"btn_reset_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button ok right\"\r\n				data-background=\"btn_ok.bmp\"\r\n				data-hover=\"btn_ok_a.bmp\"\r\n				data-down=\"btn_ok_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button cancel right\"\r\n				data-background=\"btn_cancel.bmp\"\r\n				data-hover=\"btn_cancel_a.bmp\"\r\n				data-down=\"btn_cancel_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button close right\"\r\n				data-background=\"btn_close.bmp\"\r\n				data-hover=\"btn_close_a.bmp\"\r\n				data-down=\"btn_close_b.bmp\"\r\n			></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	ShortCutOption_default$2 = "<div id=\"ShortCutOption\" class=\"pt-page-fadeIn1\">\r\n	<div class=\"border\">\r\n		<div class=\"titlebar\" data-background=\"basic_interface/titlebar_mid.bmp\">\r\n			<div class=\"left\"><span class=\"text\">Shortcut key setting window</span></div>\r\n\r\n			<div class=\"right\">\r\n				<button\r\n					class=\"base close\"\r\n					data-background=\"basic_interface/sys_close_off.bmp\"\r\n					data-hover=\"basic_interface/sys_close_on.bmp\"\r\n				></button>\r\n			</div>\r\n\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"tabs\">\r\n			<button class=\"t_skillbar selectedtab\" data-index=\"t_skillbar\">Skill Bar</button\r\n			><button class=\"t_ui\" data-index=\"t_ui\">Interface</button\r\n			><button class=\"t_macro\" data-index=\"t_macro\">Macros</button\r\n			><button class=\"t_gamepad\" data-index=\"t_gamepad\">Gamepad</button>\r\n		</div>\r\n		<div class=\"panel\">\r\n			<div class=\"content t_skillbar selectedtab\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Skill bar 1-1</td>\r\n							<td data-button=\"F1_1\" class=\"customize\"></td>\r\n							<td>Skill bar 2-1</td>\r\n							<td data-button=\"F2_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-2</td>\r\n							<td data-button=\"F1_2\" class=\"customize\"></td>\r\n							<td>Skill bar 2-2</td>\r\n							<td data-button=\"F2_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-3</td>\r\n							<td data-button=\"F1_3\" class=\"customize\"></td>\r\n							<td>Skill bar 2-3</td>\r\n							<td data-button=\"F2_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-4</td>\r\n							<td data-button=\"F1_4\" class=\"customize\"></td>\r\n							<td>Skill bar 2-4</td>\r\n							<td data-button=\"F2_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-5</td>\r\n							<td data-button=\"F1_5\" class=\"customize\"></td>\r\n							<td>Skill bar 2-5</td>\r\n							<td data-button=\"F2_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-6</td>\r\n							<td data-button=\"F1_6\" class=\"customize\"></td>\r\n							<td>Skill bar 2-6</td>\r\n							<td data-button=\"F2_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-7</td>\r\n							<td data-button=\"F1_7\" class=\"customize\"></td>\r\n							<td>Skill bar 2-7</td>\r\n							<td data-button=\"F2_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-8</td>\r\n							<td data-button=\"F1_8\" class=\"customize\"></td>\r\n							<td>Skill bar 2-8</td>\r\n							<td data-button=\"F2_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 1-9</td>\r\n							<td data-button=\"F1_9\" class=\"customize\"></td>\r\n							<td>Skill bar 2-9</td>\r\n							<td data-button=\"F2_9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-1</td>\r\n							<td data-button=\"F3_1\" class=\"customize\"></td>\r\n							<td>Skill bar 4-1</td>\r\n							<td data-button=\"F4_1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-2</td>\r\n							<td data-button=\"F3_2\" class=\"customize\"></td>\r\n							<td>Skill bar 4-2</td>\r\n							<td data-button=\"F4_2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-3</td>\r\n							<td data-button=\"F3_3\" class=\"customize\"></td>\r\n							<td>Skill bar 4-3</td>\r\n							<td data-button=\"F4_3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-4</td>\r\n							<td data-button=\"F3_4\" class=\"customize\"></td>\r\n							<td>Skill bar 4-4</td>\r\n							<td data-button=\"F4_4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-5</td>\r\n							<td data-button=\"F3_5\" class=\"customize\"></td>\r\n							<td>Skill bar 4-5</td>\r\n							<td data-button=\"F4_5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-6</td>\r\n							<td data-button=\"F3_6\" class=\"customize\"></td>\r\n							<td>Skill bar 4-6</td>\r\n							<td data-button=\"F4_6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-7</td>\r\n							<td data-button=\"F3_7\" class=\"customize\"></td>\r\n							<td>Skill bar 4-7</td>\r\n							<td data-button=\"F4_7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-8</td>\r\n							<td data-button=\"F3_8\" class=\"customize\"></td>\r\n							<td>Skill bar 4-8</td>\r\n							<td data-button=\"F4_8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill bar 3-9</td>\r\n							<td data-button=\"F3_9\" class=\"customize\"></td>\r\n							<td>Skill bar 4-9</td>\r\n							<td data-button=\"F4_9\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_ui\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Basic Info</td>\r\n							<td data-button=\"BasicInfo\" class=\"customize\"></td>\r\n							<td>Character Info</td>\r\n							<td data-button=\"Equipment\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Skill List</td>\r\n							<td data-button=\"SkillList\" class=\"customize\"></td>\r\n							<td>Emotion List</td>\r\n							<td data-button=\"Emotions\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Friends List</td>\r\n							<td data-button=\"Friends\" class=\"customize\"></td>\r\n							<td>Party Window</td>\r\n							<td data-button=\"Party\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Pet Info</td>\r\n							<td data-button=\"PetInfo\" class=\"customize\"></td>\r\n							<td>Chat Room</td>\r\n							<td data-button=\"ChatRoom\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Cart Window</td>\r\n							<td data-button=\"PushCart\" class=\"customize\"></td>\r\n							<td>Item Window</td>\r\n							<td data-button=\"Inventory\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>World Map</td>\r\n							<td data-button=\"WorldMap\" class=\"customize\"></td>\r\n							<td>Guild Info</td>\r\n							<td data-button=\"Guild\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus Info</td>\r\n							<td data-button=\"HomunInfo\" class=\"customize\"></td>\r\n							<td>Mercenary Info</td>\r\n							<td data-button=\"MercInfo\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Homunculus State</td>\r\n							<td data-button=\"HomunState\" class=\"customize\"></td>\r\n							<td>Mercenary State</td>\r\n							<td data-button=\"MercState\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Sit/Stand</td>\r\n							<td data-button=\"Sit\" class=\"customize\"></td>\r\n							<td>Short Cuts</td>\r\n							<td data-button=\"ShortCuts\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Chat Bar Size</td>\r\n							<td data-button=\"ChatSize\" class=\"customize\"></td>\r\n							<td>Skill Bar Size</td>\r\n							<td data-button=\"SkillBarSize\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Quest</td>\r\n							<td data-button=\"Quest\" class=\"customize\"></td>\r\n							<td>Bank</td>\r\n							<td data-button=\"Bank\" class=\"customize\"></td>\r\n						</tr>\r\n						<!--<tr>\r\n                     <td>MobileUI</td>\r\n                     <td data-button=\"M_UI\" class=\"customize\"></td>\r\n                     <td>MUi-Toggle</td>\r\n                     <td data-button=\"M_Toggle\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-TG</td>\r\n                     <td data-button=\"M_Targeting\" class=\"customize\"></td>\r\n                     <td>MUi-AT</td>\r\n                     <td data-button=\"M_AutoTarget\" class=\"customize\"></td>\r\n                  </tr>\r\n                  <tr>\r\n                     <td>MUi-ATK</td>\r\n                     <td data-button=\"M_Attack\" class=\"customize\"></td>\r\n                  </tr>-->\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_macro\">\r\n				<table border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr>\r\n							<td>Macro 1</td>\r\n							<td data-button=\"Macro1\" class=\"customize\"></td>\r\n							<td>Flag 1</td>\r\n							<td data-button=\"Flag1\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 2</td>\r\n							<td data-button=\"Macro2\" class=\"customize\"></td>\r\n							<td>Flag 2</td>\r\n							<td data-button=\"Flag2\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 3</td>\r\n							<td data-button=\"Macro3\" class=\"customize\"></td>\r\n							<td>Flag 3</td>\r\n							<td data-button=\"Flag3\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 4</td>\r\n							<td data-button=\"Macro4\" class=\"customize\"></td>\r\n							<td>Flag 4</td>\r\n							<td data-button=\"Flag4\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 5</td>\r\n							<td data-button=\"Macro5\" class=\"customize\"></td>\r\n							<td>Flag 5</td>\r\n							<td data-button=\"Flag5\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 6</td>\r\n							<td data-button=\"Macro6\" class=\"customize\"></td>\r\n							<td>Flag 6</td>\r\n							<td data-button=\"Flag6\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 7</td>\r\n							<td data-button=\"Macro7\" class=\"customize\"></td>\r\n							<td>Flag 7</td>\r\n							<td data-button=\"Flag7\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 8</td>\r\n							<td data-button=\"Macro8\" class=\"customize\"></td>\r\n							<td>Flag 8</td>\r\n							<td data-button=\"Flag8\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 9</td>\r\n							<td data-button=\"Macro9\" class=\"customize\"></td>\r\n							<td>Flag 9</td>\r\n							<td data-button=\"Flag9\" class=\"customize\"></td>\r\n						</tr>\r\n						<tr>\r\n							<td>Macro 10</td>\r\n							<td data-button=\"Macro10\" class=\"customize\"></td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n			</div>\r\n			<div class=\"content t_gamepad\">\r\n				<table class=\"joySettings\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n					<tbody>\r\n						<tr title=\"Show which button does what, and remap them\">\r\n							<td>Button Mapping</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyMappingOpen\">Mapping</button>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Define how targets are selected in combat\">\r\n							<td>Attack Target Mode</td>\r\n							<td>\r\n								<select class=\"attackTargetMode\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Lowest HP</option>\r\n									<option value=\"2\">Closest</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"What the pad targets: D-pad left/right and the aim pick from it. D-pad up/down switches in game. Support: the right stick opens a radial with your party\">\r\n							<td>Target Category</td>\r\n							<td>\r\n								<select class=\"joyCycleMode\">\r\n									<option value=\"0\">Mobs</option>\r\n									<option value=\"3\">NPCs &amp; portals</option>\r\n									<option value=\"5\">Players</option>\r\n									<option value=\"6\">NPCs, portals &amp; players</option>\r\n									<option value=\"1\">Items</option>\r\n									<option value=\"4\">Support (party)</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Choose how skills are cast with gamepad. With Right-Stick Aiming on, Off is not available: skills go to the aimed target\"\r\n						>\r\n							<td>Quick-Cast Mode</td>\r\n							<td>\r\n								<select class=\"joyQuick\">\r\n									<option value=\"0\">Off</option>\r\n									<option value=\"1\">Release Mode</option>\r\n									<option value=\"2\">Instant Mode</option>\r\n								</select>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Adjust mouse movement sensitivity for R3 stick\">\r\n							<td>Mouse Move</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Sensitivity:\r\n									<input\r\n										class=\"joySense\"\r\n										type=\"range\"\r\n										value=\"25.0\"\r\n										min=\"1.0\"\r\n										max=\"100.0\"\r\n										step=\"1.0\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Disable mouse input from gamepad for UI interaction\">\r\n							<td>Disable Virtual Mouse</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyDisableVirtualMouse\" />\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Tap View to move between the buttons and items of open windows with the D-pad: A presses, X offers more and (held) picks an item up, LB / RB switch tabs. Dialogues (NPCs, amounts, message boxes) start it on their own.\"\r\n						>\r\n							<td>Menu Navigation</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyUIFocus\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Swap L3 and R3 stick functions\">\r\n							<td>Swap L3-R3 Sticks</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyReverseStick\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Automatically hide UI during gameplay mouse movement\">\r\n							<td>Auto Hide UI</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAutoHide\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Set deadzone threshold for analog sticks\">\r\n							<td>Axis Threshold</td>\r\n							<td>\r\n								<label style=\"display: inline-block; width: 90px\">\r\n									Deadline:\r\n									<input\r\n										class=\"joyDeadline\"\r\n										type=\"range\"\r\n										value=\"0.10\"\r\n										min=\"0.0\"\r\n										max=\"1.0\"\r\n										step=\"0.1\"\r\n										style=\"width: 90%; vertical-align: middle\"\r\n									/>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"How fast View + D-pad left/right turns the camera, in degrees per second\">\r\n							<td>Camera Turn Speed</td>\r\n							<td>\r\n								<input\r\n									class=\"joyCameraSpeed joyRange\"\r\n									type=\"range\"\r\n									value=\"90\"\r\n									min=\"30\"\r\n									max=\"360\"\r\n									step=\"10\"\r\n								/>\r\n								<span class=\"joyValue\" data-for=\"joyCameraSpeed\"></span>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Stick Drift</td>\r\n						</tr>\r\n						<tr\r\n							title=\"Measure where the sticks rest and treat that as centre. Leave both sticks alone while it runs (one second)\"\r\n						>\r\n							<td>Calibrate Sticks</td>\r\n							<td>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrate\">Calibrate</button>\r\n								<button type=\"button\" class=\"joyBtn joyCalibrateReset\">Reset</button>\r\n								<div class=\"joyCalibrateStatus\"></div>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Left stick: movement on each axis below this value is ignored\">\r\n							<td>Left Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftLX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftLY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftLY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr title=\"Right stick: movement on each axis below this value is ignored\">\r\n							<td>Right Stick Drift</td>\r\n							<td>\r\n								<label class=\"joyAxis\">\r\n									X\r\n									<input\r\n										class=\"joyDriftRX joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRX\"></span>\r\n								</label>\r\n								<label class=\"joyAxis\">\r\n									Y\r\n									<input\r\n										class=\"joyDriftRY joyRange\"\r\n										type=\"range\"\r\n										value=\"0\"\r\n										min=\"0\"\r\n										max=\"0.5\"\r\n										step=\"0.01\"\r\n									/>\r\n									<span class=\"joyValue\" data-for=\"joyDriftRY\"></span>\r\n								</label>\r\n							</td>\r\n						</tr>\r\n						<tr class=\"joySection\">\r\n							<td colspan=\"2\">Aim Settings</td>\r\n						</tr>\r\n						<tr title=\"Push the right stick toward a monster or item to target the first one in that direction. In game, tap RS click to switch the right stick between aiming and the cursor; hold it to recenter the cursor. Tap L3 to clear the target, hold L3 to sit or stand\">\r\n							<td>Right-Stick Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimEnabled\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, a red ring marks a newly selected target on the ground, then fades out within two seconds\">\r\n							<td>Show Target Ring</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimRing\" />\r\n							</td>\r\n						</tr>\r\n						<tr title=\"While aiming, draw a short line in the aimed direction, which connects to the target once the aim is on one\">\r\n							<td>Show Aim Line</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimLine\" />\r\n							</td>\r\n						</tr>\r\n						<tr\r\n							title=\"While the right stick aims, hide the game's cursor. Moving the mouse shows it again; tap RS click for the cursor mode\"\r\n						>\r\n							<td>Hide Cursor While Aiming</td>\r\n							<td>\r\n								<input type=\"checkbox\" class=\"joyAimHideCursor\" />\r\n							</td>\r\n						</tr>\r\n					</tbody>\r\n				</table>\r\n				<div class=\"joyMapping\">\r\n					<div class=\"joyMappingHeader\">\r\n						<button type=\"button\" class=\"joyBtn joyMappingBack\">&#9664; Back</button>\r\n						<span class=\"joyMappingTitle\">Button mapping</span>\r\n						<button type=\"button\" class=\"joyBtn joyMappingReset\">Reset to defaults</button>\r\n					</div>\r\n					<div class=\"joyMappingStatus\">Remap: press Remap, then a button on the gamepad. The two buttons trade places.</div>\r\n					<div class=\"joyMappingScroll\">\r\n						<table class=\"joyMappingRoles\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n						<div class=\"joyMappingSub\">Combinations (follow the buttons above)</div>\r\n						<table class=\"joyMappingCombos\" border=\"1\" cellspacing=\"0\" bordercolor=\"#aaa\">\r\n							<tbody></tbody>\r\n						</table>\r\n					</div>\r\n				</div>\r\n			</div>\r\n			<button\r\n				class=\"button reset left\"\r\n				data-background=\"btn_reset.bmp\"\r\n				data-hover=\"btn_reset_a.bmp\"\r\n				data-down=\"btn_reset_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button ok right\"\r\n				data-background=\"btn_ok.bmp\"\r\n				data-hover=\"btn_ok_a.bmp\"\r\n				data-down=\"btn_ok_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button cancel right\"\r\n				data-background=\"btn_cancel.bmp\"\r\n				data-hover=\"btn_cancel_a.bmp\"\r\n				data-down=\"btn_cancel_b.bmp\"\r\n			></button>\r\n			<button\r\n				class=\"button close right\"\r\n				data-background=\"btn_close.bmp\"\r\n				data-hover=\"btn_close_a.bmp\"\r\n				data-down=\"btn_close_b.bmp\"\r\n			></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/ShortCutOption/ShortCutOption.css?raw
@@ -233473,7 +235355,7 @@ function assign$1(logical, physical) {
 	map[logical] = physical;
 	save$2(map);
 }
-function reset() {
+function reset$1() {
 	save$2(identity());
 }
 /**
@@ -233563,7 +235445,7 @@ var init_JoystickButtonMap = __esmMin((() => {
 		toLogical,
 		nameOf: nameOf$1,
 		assign: assign$1,
-		reset,
+		reset: reset$1,
 		startCapture,
 		cancelCapture,
 		isCapturing,
@@ -235964,7 +237846,7 @@ function getIndexFromButtons(btn, set) {
 	if (slot === -1) return -1;
 	return (tab - 1) * 9 + slot;
 }
-function prepare() {
+function prepare$1() {
 	if (!this.__loaded) {
 		const oldonChange = ShortCut_default.onChange;
 		ShortCut_default.onChange = function(index, isSkill, ID, count) {
@@ -236033,7 +237915,7 @@ var init_JoystickShortcutMapper = __esmMin((() => {
 	];
 	JoystickShortcutMapper_default = {
 		slotMap: slotMapping,
-		prepare,
+		prepare: prepare$1,
 		getGroup,
 		getShortcutIndex: function(btn) {
 			const idx = getIndexFromButtons(btn, JoystickSetManager_default.getCurrentSet());
@@ -236044,7 +237926,7 @@ var init_JoystickShortcutMapper = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/JoystickUI/JoystickMouseCursorAdapter.js
-function move$2(dx, dy) {
+function move$3(dx, dy) {
 	moveBy(dx * Controls_default.joySense, dy * Controls_default.joySense);
 }
 /**
@@ -236118,7 +238000,7 @@ function elementAtCursor() {
 /**
 * Put the virtual cursor at a screen position.
 */
-function moveTo(x, y) {
+function moveTo$1(x, y) {
 	Mouse.screen.x = Math.max(0, Math.min(Renderer.width, x));
 	Mouse.screen.y = Math.max(0, Math.min(Renderer.height, y));
 	const cursor = document.querySelector(".cursor");
@@ -236238,10 +238120,10 @@ function _dispatchKeyEvent(target, type, which) {
 function esc() {
 	_dispatchKeyEvent(document, "keydown", 27);
 }
-function enter() {
+function enter$1() {
 	_dispatchKeyEvent(document, "keydown", 13);
 }
-function contextMenu() {
+function contextMenu$2() {
 	const el = elementAtCursor();
 	if (el && el.closest(".item, .skill")) {
 		const contextMenuEvent = new MouseEvent("contextmenu", {
@@ -236363,17 +238245,17 @@ var init_JoystickMouseCursorAdapter = __esmMin((() => {
 		quickCastClick,
 		moveMouseToEntity,
 		navigateDraggableItems,
-		contextMenu,
+		contextMenu: contextMenu$2,
 		esc,
-		enter,
+		enter: enter$1,
 		changeCameraZoom,
 		changeCameraAngle,
-		move: move$2,
+		move: move$3,
 		moveBy,
 		leftClick,
 		rightClick,
 		elementAtCursor,
-		moveTo,
+		moveTo: moveTo$1,
 		recenter: recenter$1
 	};
 }));
@@ -236454,7 +238336,7 @@ function set(category) {
 * @param {function(): ?Array<number>} [anchor] the character's feet on
 *   screen, for the list
 */
-function step(direction, anchor) {
+function step$3(direction, anchor) {
 	let index = ORDER.indexOf(get$1());
 	if (index === -1) index = 0;
 	index = (index + (direction === "up" ? -1 : 1) + ORDER.length) % ORDER.length;
@@ -236521,7 +238403,7 @@ function showList(anchor) {
 		list.style.opacity = "0";
 	}, LIST_VISIBLE_MS);
 }
-function dispose$3() {
+function dispose$5() {
 	if (_hideTimer) {
 		clearTimeout(_hideTimer);
 		_hideTimer = null;
@@ -236569,12 +238451,12 @@ var init_JoystickTargetCategory = __esmMin((() => {
 		ORDER,
 		get: get$1,
 		set,
-		step,
+		step: step$3,
 		nameOf,
 		isSupport,
 		onChange,
 		showList,
-		dispose: dispose$3
+		dispose: dispose$5
 	};
 }));
 //#endregion
@@ -236885,7 +238767,7 @@ var init_JoystickTargetService = __esmMin((() => {
 function releaseStick() {
 	_stickHeld = false;
 }
-function move$1(x, y) {
+function move$2(x, y) {
 	const player = SessionStorage_default.Entity;
 	if (!player || _stickHeld) return;
 	SessionStorage_default.moveAction = null;
@@ -236945,7 +238827,7 @@ function attack(repeat) {
 * reach (more than 2 cells, same rule as a mouse click in EntityControl),
 * walk to it first and let onWalkEnd send the pickup via Session.moveAction.
 */
-function pickUp() {
+function pickUp$1() {
 	const Player = SessionStorage_default.Entity;
 	if (!Player) return;
 	const item = JoystickTargetService_default.getItem() || EntityManager.getClosestEntity(Player, Player.constructor.TYPE_ITEM);
@@ -236988,8 +238870,8 @@ var init_JoystickCharacterControl = __esmMin((() => {
 	JoystickCharacterControl_default = {
 		attack,
 		toggleSit,
-		pickUp,
-		move: move$1,
+		pickUp: pickUp$1,
+		move: move$2,
 		releaseStick
 	};
 }));
@@ -237448,7 +239330,7 @@ function setCursorHidden(hidden) {
 * is never left without one. Synthetic events (isTrusted false) do not
 * count.
 */
-function onMouseMove(event) {
+function onMouseMove$1(event) {
 	if (event.isTrusted) {
 		_mouseMoved = true;
 		setCursorHidden(false);
@@ -237457,7 +239339,7 @@ function onMouseMove(event) {
 /**
 * Aim mode left: remove the ring, forget the last hit, show the cursor.
 */
-function release$1() {
+function release$2() {
 	_aimLastHit = null;
 	if (_aimGate) _aimGate.reset();
 	_aimRingTarget = null;
@@ -237474,12 +239356,12 @@ function release$1() {
 function update$3(x, y, held) {
 	const player = SessionStorage_default.Entity;
 	if (!player) {
-		release$1();
+		release$2();
 		return;
 	}
 	if (held) _mouseMoved = false;
 	if (Controls_default.joyAimHideCursor && !_mouseListening) {
-		window.addEventListener("mousemove", onMouseMove);
+		window.addEventListener("mousemove", onMouseMove$1);
 		_mouseListening = true;
 	}
 	setCursorHidden(!!Controls_default.joyAimHideCursor && !_mouseMoved);
@@ -237529,11 +239411,11 @@ function update$3(x, y, held) {
 /**
 * Switch the right stick between aim and cursor (tap RS click).
 */
-function toggle() {
+function toggle$1() {
 	if (!isEnabled()) return;
 	Controls_default.joyRightStickMode = isActive$1() ? MODE.CURSOR : MODE.AIM;
 	Controls_default.save();
-	release$1();
+	release$2();
 	JoystickUIRenderer_default.updateStickMode();
 	ChatBox_default.addText("Right stick: " + (isActive$1() ? "aim" : "cursor"), ChatBox_default.TYPE.INFO, ChatBox_default.FILTER.PUBLIC_LOG);
 }
@@ -237546,7 +239428,7 @@ function setEnabled(enabled) {
 	Controls_default.joyRightStickMode = enabled ? MODE.AIM : MODE.CURSOR;
 	if (enabled && (Controls_default.joyQuick | 0) === QUICK_CAST.OFF) Controls_default.joyQuick = QUICK_CAST.INSTANT;
 	Controls_default.save();
-	release$1();
+	release$2();
 	JoystickUIRenderer_default.updateStickMode();
 }
 var MODE, QUICK_CAST, HIT_RADIUS, HIT_SPREAD, RETARGET_MAGNITUDE, RELEASE_LOCK_MS, FLIP_DOT, RING_RADIUS, RING_POINTS, RING_FADE_MS, LINE_STEP, LINE_IDLE_LENGTH, LINE_COLOR_HIT, LINE_COLOR_IDLE, _aimLastHit, _aimGate, _aimOverlay, _aimCtx, _aimDrawn, _aimRingTarget, _aimRingAt, _cursorHidden, _mouseMoved, _mouseListening, _aimWorld, _aimView, JoystickAimMode_default;
@@ -237602,8 +239484,8 @@ var init_JoystickAimMode = __esmMin((() => {
 		quickCastMode,
 		setEnabled,
 		update: update$3,
-		release: release$1,
-		toggle,
+		release: release$2,
+		toggle: toggle$1,
 		stickToMapDirection,
 		findFirstHit,
 		createRetargetGate,
@@ -237621,14 +239503,14 @@ function getComponent(name) {
 		return null;
 	}
 }
-function isShown(component) {
+function isShown$1(component) {
 	const host = component && component._host;
 	return !!host && !!host.parentNode && host.style.display !== "none";
 }
 function isVisible$1(el) {
 	return el.style.display !== "none" && el.getClientRects().length > 0;
 }
-function hover(el, on) {
+function hover$1(el, on) {
 	el.classList.toggle("pad-hover", on);
 	el.dispatchEvent(new MouseEvent(on ? "mouseover" : "mouseout", {
 		bubbles: true,
@@ -237647,7 +239529,7 @@ function navigate(direction) {
 	let component = null;
 	for (let i = 0; i < MENUS.length; i++) {
 		component = getComponent(MENUS[i].component);
-		if (isShown(component)) {
+		if (isShown$1(component)) {
 			open = MENUS[i];
 			break;
 		}
@@ -237663,10 +239545,10 @@ function navigate(direction) {
 	let index = open === _menuCurrent && _menuButton ? buttons.indexOf(_menuButton) : -1;
 	if (index === -1) index = forward ? 0 : buttons.length - 1;
 	else index = (index + (forward ? 1 : -1) + buttons.length) % buttons.length;
-	if (_menuButton && _menuButton !== buttons[index]) hover(_menuButton, false);
+	if (_menuButton && _menuButton !== buttons[index]) hover$1(_menuButton, false);
 	_menuCurrent = open;
 	_menuButton = buttons[index];
-	hover(_menuButton, true);
+	hover$1(_menuButton, true);
 	const rect = _menuButton.getBoundingClientRect();
 	JoystickMouseCursorAdapter_default.moveTo(rect.left + rect.width / 2, rect.top + rect.height / 2);
 	return true;
@@ -237676,10 +239558,10 @@ function navigate(direction) {
 *
 * @return {boolean} true when one was open and is closed now
 */
-function close$1() {
+function close$3() {
 	for (let i = 0; i < MENUS.length; i++) {
 		const component = getComponent(MENUS[i].component);
-		if (MENUS[i].closable && isShown(component)) {
+		if (MENUS[i].closable && isShown$1(component)) {
 			component.remove();
 			_menuCurrent = null;
 			_menuButton = null;
@@ -237704,7 +239586,7 @@ var init_JoystickMenuNavigation = __esmMin((() => {
 	_menuButton = null;
 	JoystickMenuNavigation_default = {
 		navigate,
-		close: close$1
+		close: close$3
 	};
 }));
 //#endregion
@@ -237720,7 +239602,7 @@ var init_JoystickMenuNavigation = __esmMin((() => {
 function getMembers() {
 	const player = SessionStorage_default.Entity;
 	if (!player) return [];
-	const list = [describe("self", "self", player.GID, player.display && player.display.name, player._job, null)];
+	const list = [describe$1("self", "self", player.GID, player.display && player.display.name, player._job, null)];
 	let party = [];
 	try {
 		party = SessionStorage_default.hasParty && controller.getPartyMembers?.() || [];
@@ -237730,13 +239612,13 @@ function getMembers() {
 	for (let i = 0; i < party.length; i++) {
 		const member = party[i];
 		if (member.AID === SessionStorage_default.AID || member.AID === player.GID) continue;
-		list.push(describe("aid:" + member.AID, "party", member.AID, member.characterName, member.class_, member));
+		list.push(describe$1("aid:" + member.AID, "party", member.AID, member.characterName, member.class_, member));
 	}
-	if (SessionStorage_default.homunId) list.push(describe("homun", "homun", SessionStorage_default.homunId, null, null, null));
-	if (SessionStorage_default.mercId) list.push(describe("merc", "merc", SessionStorage_default.mercId, null, null, null));
+	if (SessionStorage_default.homunId) list.push(describe$1("homun", "homun", SessionStorage_default.homunId, null, null, null));
+	if (SessionStorage_default.mercId) list.push(describe$1("merc", "merc", SessionStorage_default.mercId, null, null, null));
 	return list;
 }
-function describe(key, kind, GID, name, job, member) {
+function describe$1(key, kind, GID, name, job, member) {
 	const offline = !!member && member.state !== 0;
 	const entity = kind === "self" ? SessionStorage_default.Entity : offline ? null : liveEntity(GID);
 	let hp = -1;
@@ -237886,16 +239768,16 @@ function getFocusEntity$1() {
 * be cast on them (Heal not on the dead, Resurrection only on them).
 */
 function getFocusForSkill() {
-	if (_open$2 && !_pending$1 && _highlight !== -1 && _entries[_highlight]) {
+	if (_open$3 && !_pending$2 && _highlight !== -1 && _entries[_highlight]) {
 		const entry = _entries[_highlight];
 		if (!judge(entry, skillContext()).ok) return null;
-		setFocus(entry);
+		setFocus$1(entry);
 		return entry.entity;
 	}
 	const focus = getFocus();
 	return focus && judge(focus, skillContext()).ok ? focus.entity : null;
 }
-function setFocus(entry) {
+function setFocus$1(entry) {
 	_focusKey = entry ? entry.key : null;
 }
 function clearFocus() {
@@ -237916,7 +239798,7 @@ function cycle(direction) {
 	let next;
 	if (index === -1) next = direction === "next" ? 0 : members.length - 1;
 	else next = (index + (direction === "next" ? 1 : -1) + members.length) % members.length;
-	setFocus(members[next]);
+	setFocus$1(members[next]);
 }
 /**
 * Whether a skill waiting for a target belongs to Support: one that takes
@@ -237961,19 +239843,19 @@ function castOn(entity) {
 * @param {string} name skill name, shown above the radial
 */
 function openPending(index, name) {
-	_pending$1 = {
+	_pending$2 = {
 		index,
 		name: name || ""
 	};
-	_open$2 = true;
+	_open$3 = true;
 	_highlight = 0;
 	_picked = -1;
 }
 function isPending() {
-	return _pending$1 !== null;
+	return _pending$2 !== null;
 }
 function pendingIndex() {
-	return _pending$1 ? _pending$1.index : -1;
+	return _pending$2 ? _pending$2.index : -1;
 }
 /**
 * Drop the pending skill and close the radial.
@@ -237981,8 +239863,8 @@ function pendingIndex() {
 * @param {boolean} [cancelSkill] also take the skill off the cursor
 */
 function cancelPending(cancelSkill) {
-	if (!_pending$1) return;
-	_pending$1 = null;
+	if (!_pending$2) return;
+	_pending$2 = null;
 	closeRadial();
 	if (cancelSkill && SkillTargetSelection_default.getFlag()) SkillTargetSelection_default.remove();
 }
@@ -237991,12 +239873,12 @@ function cancelPending(cancelSkill) {
 * yourself.
 */
 function castPendingOnSelf() {
-	_pending$1 = null;
+	_pending$2 = null;
 	closeRadial();
 	return castOn(SessionStorage_default.Entity);
 }
 function closeRadial() {
-	_open$2 = false;
+	_open$3 = false;
 	_highlight = -1;
 	_picked = -1;
 }
@@ -238016,8 +239898,8 @@ function segmentAt(x, y, count) {
 function pick(index) {
 	_picked = index;
 	const entry = _entries[index];
-	if (_pending$1 || !entry || !entry.selectable || entry.key === _focusKey) return;
-	setFocus(entry);
+	if (_pending$2 || !entry || !entry.selectable || entry.key === _focusKey) return;
+	setFocus$1(entry);
 	rumble(RUMBLE_FOCUS);
 }
 /**
@@ -238027,7 +239909,7 @@ function pick(index) {
 * @return {boolean} whether it was open
 */
 function dismiss() {
-	if (!_open$2 || _pending$1) return false;
+	if (!_open$3 || _pending$2) return false;
 	closeRadial();
 	_waitRest = true;
 	return true;
@@ -238040,11 +239922,11 @@ function dismiss() {
 * @return {boolean} whether a skill was pending (A is taken either way)
 */
 function confirmPending() {
-	if (!_pending$1) return false;
+	if (!_pending$2) return false;
 	const entry = _highlight !== -1 ? _entries[_highlight] : null;
 	if (!entry || !judge(entry, skillContext()).ok) return true;
-	setFocus(entry);
-	_pending$1 = null;
+	setFocus$1(entry);
+	_pending$2 = null;
 	closeRadial();
 	castOn(entry.entity);
 	return true;
@@ -238056,7 +239938,7 @@ function confirmPending() {
 * again.
 */
 function ownsStick() {
-	return _pending$1 !== null || JoystickTargetCategory_default.isSupport();
+	return _pending$2 !== null || JoystickTargetCategory_default.isSupport();
 }
 /**
 * One frame (JoystickCursorMotion), before aim and cursor get the stick.
@@ -238068,13 +239950,13 @@ function ownsStick() {
 * @return {boolean} true when Support took the right stick this frame
 */
 function update$2(x, y, magnitude, deadzone) {
-	if (_pending$1 && !SkillTargetSelection_default.getFlag()) {
-		_pending$1 = null;
+	if (_pending$2 && !SkillTargetSelection_default.getFlag()) {
+		_pending$2 = null;
 		closeRadial();
 	}
-	if (!SessionStorage_default.Entity || !JoystickTargetCategory_default.isSupport() && !_pending$1) {
+	if (!SessionStorage_default.Entity || !JoystickTargetCategory_default.isSupport() && !_pending$2) {
 		closeRadial();
-		release();
+		release$1();
 		return false;
 	}
 	const owns = ownsStick();
@@ -238086,7 +239968,7 @@ function update$2(x, y, magnitude, deadzone) {
 	if (pickedKey !== null) _picked = _entries.findIndex((entry) => entry.key === pickedKey);
 	if (owns) {
 		if (_highlight === -1 && highlightKey !== null) {
-			_highlight = _pending$1 ? 0 : -1;
+			_highlight = _pending$2 ? 0 : -1;
 			_picked = -1;
 		}
 		const atRest = magnitude <= Math.max(deadzone, RELEASE_MAX);
@@ -238094,7 +239976,7 @@ function update$2(x, y, magnitude, deadzone) {
 		if (magnitude >= SELECT_MIN && _entries.length > 0 && !_waitRest) {
 			const index = segmentAt(x, y, _entries.length);
 			const now = performance.now();
-			_open$2 = true;
+			_open$3 = true;
 			if (index !== _highlight || !_pushed) {
 				_highlight = index;
 				_highlightAt = now;
@@ -238103,10 +239985,10 @@ function update$2(x, y, magnitude, deadzone) {
 			if (_picked !== _highlight && now - _highlightAt >= SETTLE_MS) pick(_highlight);
 		} else if (atRest) {
 			_pushed = false;
-			if (_pending$1) _highlight = _picked !== -1 ? _picked : 0;
+			if (_pending$2) _highlight = _picked !== -1 ? _picked : 0;
 			else closeRadial();
 		}
-	} else if (!_pending$1) closeRadial();
+	} else if (!_pending$2) closeRadial();
 	draw();
 	return owns;
 }
@@ -238145,14 +240027,14 @@ function clearOverlay() {
 /**
 * Remove everything drawn (Support left, pad gone). The focus stays.
 */
-function release() {
+function release$1() {
 	clearOverlay();
 }
 /**
 * The gamepad is going away (JoystickModule.dispose): take the overlay off the page and drop
 * what was kept for drawing, so nothing outlives it. The next use builds them again.
 */
-function dispose$2() {
+function dispose$4() {
 	cancelPending(false);
 	closeRadial();
 	clearFocus();
@@ -238164,7 +240046,7 @@ function dispose$2() {
 function draw() {
 	clearOverlay();
 	const focus = JoystickTargetCategory_default.isSupport() ? getFocusEntity$1() : null;
-	if (!_open$2 && !focus) return;
+	if (!_open$3 && !focus) return;
 	const ctx = getContext();
 	if (!ctx) return;
 	const dpr = window.devicePixelRatio || 1;
@@ -238173,7 +240055,7 @@ function draw() {
 		JoystickAimMode_default.drawRing(ctx, focus, .8, FOCUS_RING);
 		_drawn = true;
 	}
-	if (_open$2) drawRadial(ctx);
+	if (_open$3) drawRadial(ctx);
 }
 function drawRadial(ctx) {
 	const player = SessionStorage_default.Entity;
@@ -238186,7 +240068,7 @@ function drawRadial(ctx) {
 	const cy = Math.max(feet[1], Math.min(feet[1] + BELOW_FEET$1 + reach, Renderer.height - reach - LABEL_ROOM));
 	const step = Math.PI * 2 / count;
 	const gap = GAP_DEG * Math.PI / 180;
-	const skill = _pending$1 ? skillContext() : null;
+	const skill = _pending$2 ? skillContext() : null;
 	for (let i = 0; i < count; i++) {
 		const entry = _entries[i];
 		const verdict = judge(entry, skill);
@@ -238234,7 +240116,7 @@ function drawRadial(ctx) {
 		if (reason) label += " - " + reason;
 		drawLabel(ctx, label, cx, cy + outer + POP_OUT + 14);
 	}
-	if (_pending$1 && _pending$1.name) drawLabel(ctx, _pending$1.name, cx, cy - outer - POP_OUT - 8);
+	if (_pending$2 && _pending$2.name) drawLabel(ctx, _pending$2.name, cx, cy - outer - POP_OUT - 8);
 	_drawn = true;
 }
 /**
@@ -238444,7 +240326,7 @@ function opaqueBounds(ctx, side) {
 		right
 	};
 }
-var SELECT_MIN, RELEASE_MAX, SETTLE_MS, R_INNER, R_OUTER_MIN, R_OUTER_PER_ENTRY, POP_OUT, GAP_DEG, ICON_SIZE, BELOW_FEET$1, LABEL_ROOM, HP_GOOD, HP_LOW, COLOR_GOOD, COLOR_MID, COLOR_LOW, FOCUS_RING, SP_BACK, SP_FILL, SP_COST, SP_SHORT, FAR_OUTLINE, RUMBLE_FOCUS, RUMBLE_CAST, REVIVE_SKILLS, PORTRAIT_BOX, PORTRAIT_RETRY_MS, _overlay, _supportCtx, _drawn, _focusKey, _open$2, _highlight, _highlightAt, _picked, _pushed, _waitRest, _entries, _pending$1, _portraits, _jobIcons, HEADGEAR, _scratch, _scratchCtx, JoystickSupportMode_default;
+var SELECT_MIN, RELEASE_MAX, SETTLE_MS, R_INNER, R_OUTER_MIN, R_OUTER_PER_ENTRY, POP_OUT, GAP_DEG, ICON_SIZE, BELOW_FEET$1, LABEL_ROOM, HP_GOOD, HP_LOW, COLOR_GOOD, COLOR_MID, COLOR_LOW, FOCUS_RING, SP_BACK, SP_FILL, SP_COST, SP_SHORT, FAR_OUTLINE, RUMBLE_FOCUS, RUMBLE_CAST, REVIVE_SKILLS, PORTRAIT_BOX, PORTRAIT_RETRY_MS, _overlay, _supportCtx, _drawn, _focusKey, _open$3, _highlight, _highlightAt, _picked, _pushed, _waitRest, _entries, _pending$2, _portraits, _jobIcons, HEADGEAR, _scratch, _scratchCtx, JoystickSupportMode_default;
 var init_JoystickSupportMode = __esmMin((() => {
 	init_SessionStorage();
 	init_EntityManager();
@@ -238500,14 +240382,14 @@ var init_JoystickSupportMode = __esmMin((() => {
 	_supportCtx = null;
 	_drawn = false;
 	_focusKey = null;
-	_open$2 = false;
+	_open$3 = false;
 	_highlight = -1;
 	_highlightAt = 0;
 	_picked = -1;
 	_pushed = false;
 	_waitRest = false;
 	_entries = [];
-	_pending$1 = null;
+	_pending$2 = null;
 	_portraits = /* @__PURE__ */ new Map();
 	_jobIcons = /* @__PURE__ */ new Map();
 	HEADGEAR = [
@@ -238522,7 +240404,7 @@ var init_JoystickSupportMode = __esmMin((() => {
 		getFocus,
 		getFocusEntity: getFocusEntity$1,
 		getFocusForSkill,
-		setFocus,
+		setFocus: setFocus$1,
 		clearFocus,
 		cycle,
 		isSupportSkill,
@@ -238536,10 +240418,10 @@ var init_JoystickSupportMode = __esmMin((() => {
 		dismiss,
 		ownsStick,
 		update: update$2,
-		release,
-		dispose: dispose$2,
+		release: release$1,
+		dispose: dispose$4,
 		segmentAt,
-		isRadialOpen: () => _open$2,
+		isRadialOpen: () => _open$3,
 		getHighlight: () => _highlight
 	};
 }));
@@ -238569,7 +240451,7 @@ function getRows() {
 	const rows = [];
 	const favorites = getFavorites();
 	if (favorites.length) rows.push(favorites);
-	const page = allEmotes().slice(_page$1 * PER_PAGE, (_page$1 + 1) * PER_PAGE);
+	const page = allEmotes().slice(_page$2 * PER_PAGE, (_page$2 + 1) * PER_PAGE);
 	for (let i = 0; i < page.length; i += COLS) rows.push(page.slice(i, i + COLS));
 	return rows;
 }
@@ -238579,19 +240461,19 @@ function hasFavoriteRow() {
 function clampSelection() {
 	const rows = getRows();
 	if (rows.length === 0) {
-		_row = 0;
-		_col = 0;
+		_row$1 = 0;
+		_col$1 = 0;
 		return;
 	}
-	_row = Math.max(0, Math.min(_row, rows.length - 1));
-	_col = Math.max(0, Math.min(_col, rows[_row].length - 1));
+	_row$1 = Math.max(0, Math.min(_row$1, rows.length - 1));
+	_col$1 = Math.max(0, Math.min(_col$1, rows[_row$1].length - 1));
 }
 /**
 * Sprite index of the selected emote, or -1.
 */
 function getSelected() {
-	const row = getRows()[_row];
-	return row && row[_col] !== void 0 ? row[_col] : -1;
+	const row = getRows()[_row$1];
+	return row && row[_col$1] !== void 0 ? row[_col$1] : -1;
 }
 /**
 * Send an emote, as typing its /command does.
@@ -238617,36 +240499,36 @@ function toggleFavorite(emo) {
 	const hadRow = hasFavoriteRow();
 	Controls_default.joyEmoteFavorites = favorites;
 	Controls_default.save();
-	if (!hadRow && favorites.length) _row++;
-	else if (hadRow && !favorites.length) _row = Math.max(0, _row - 1);
+	if (!hadRow && favorites.length) _row$1++;
+	else if (hadRow && !favorites.length) _row$1 = Math.max(0, _row$1 - 1);
 	clampSelection();
 }
-function move(direction) {
+function move$1(direction) {
 	const rows = getRows();
 	if (rows.length === 0) return;
 	switch (direction) {
 		case "up":
-			_row = (_row - 1 + rows.length) % rows.length;
+			_row$1 = (_row$1 - 1 + rows.length) % rows.length;
 			break;
 		case "down":
-			_row = (_row + 1) % rows.length;
+			_row$1 = (_row$1 + 1) % rows.length;
 			break;
 		case "left":
-			_col = (_col - 1 + rows[_row].length) % rows[_row].length;
+			_col$1 = (_col$1 - 1 + rows[_row$1].length) % rows[_row$1].length;
 			return;
 		case "right":
-			_col = (_col + 1) % rows[_row].length;
+			_col$1 = (_col$1 + 1) % rows[_row$1].length;
 			return;
 	}
-	_col = Math.min(_col, rows[_row].length - 1);
+	_col$1 = Math.min(_col$1, rows[_row$1].length - 1);
 }
 function changePage(delta) {
 	const pages = pageCount();
-	_page$1 = (_page$1 + delta + pages) % pages;
+	_page$2 = (_page$2 + delta + pages) % pages;
 	clampSelection();
 }
 function isActive() {
-	return _open$1;
+	return _open$2;
 }
 /**
 * A fresh press, or a held D-pad direction due to repeat.
@@ -238655,13 +240537,13 @@ function fires(buttons, index, repeat) {
 	const state = buttons[index];
 	if (state === "pressed") {
 		if (repeat) {
-			_repeatButton = index;
-			_repeatAt = Date.now() + REPEAT_DELAY_MS;
+			_repeatButton$1 = index;
+			_repeatAt$1 = Date.now() + REPEAT_DELAY_MS$2;
 		}
 		return true;
 	}
-	if (repeat && state === "holding" && _repeatButton === index && Date.now() >= _repeatAt) {
-		_repeatAt = Date.now() + REPEAT_EVERY_MS;
+	if (repeat && state === "holding" && _repeatButton$1 === index && Date.now() >= _repeatAt$1) {
+		_repeatAt$1 = Date.now() + REPEAT_EVERY_MS$2;
 		return true;
 	}
 	return false;
@@ -238672,45 +240554,45 @@ function fires(buttons, index, repeat) {
 * @param {Array<string>} buttons logical button states
 */
 function handleInput(buttons) {
-	if (!_open$1) return;
-	if (_repeatButton !== -1 && buttons[_repeatButton] === "unpressed") _repeatButton = -1;
-	if (fires(buttons, BTN.B, false) || fires(buttons, BTN.MENU, false)) {
-		close();
+	if (!_open$2) return;
+	if (_repeatButton$1 !== -1 && buttons[_repeatButton$1] === "unpressed") _repeatButton$1 = -1;
+	if (fires(buttons, BTN$2.B, false) || fires(buttons, BTN$2.MENU, false)) {
+		close$2();
 		return;
 	}
-	if (fires(buttons, BTN.A, false)) {
+	if (fires(buttons, BTN$2.A, false)) {
 		play(getSelected());
-		close();
+		close$2();
 		return;
 	}
-	if (fires(buttons, BTN.X, false)) play(getSelected());
-	else if (fires(buttons, BTN.Y, false)) toggleFavorite(getSelected());
-	else if (fires(buttons, BTN.LB, false)) changePage(-1);
-	else if (fires(buttons, BTN.RB, false)) changePage(1);
-	else if (fires(buttons, BTN.UP, true)) move("up");
-	else if (fires(buttons, BTN.DOWN, true)) move("down");
-	else if (fires(buttons, BTN.LEFT, true)) move("left");
-	else if (fires(buttons, BTN.RIGHT, true)) move("right");
+	if (fires(buttons, BTN$2.X, false)) play(getSelected());
+	else if (fires(buttons, BTN$2.Y, false)) toggleFavorite(getSelected());
+	else if (fires(buttons, BTN$2.LB, false)) changePage(-1);
+	else if (fires(buttons, BTN$2.RB, false)) changePage(1);
+	else if (fires(buttons, BTN$2.UP, true)) move$1("up");
+	else if (fires(buttons, BTN$2.DOWN, true)) move$1("down");
+	else if (fires(buttons, BTN$2.LEFT, true)) move$1("left");
+	else if (fires(buttons, BTN$2.RIGHT, true)) move$1("right");
 	else return;
-	render$9();
+	render$10();
 }
 /**
 * @param {function(): ?Array<number>} [anchor] the character's feet on
 *   screen; without it (or off screen) the grid sits in the lower middle
 */
-function open(anchor) {
+function open$2(anchor) {
 	_anchor = anchor || null;
-	_open$1 = true;
-	_repeatButton = -1;
-	_row = 0;
-	_col = 0;
+	_open$2 = true;
+	_repeatButton$1 = -1;
+	_row$1 = 0;
+	_col$1 = 0;
 	clampSelection();
 	loadSprites();
-	render$9();
+	render$10();
 }
-function close() {
-	_open$1 = false;
-	_repeatButton = -1;
+function close$2() {
+	_open$2 = false;
+	_repeatButton$1 = -1;
 	if (_root$16) _root$16.style.display = "none";
 }
 function loadSprites() {
@@ -238721,7 +240603,7 @@ function loadSprites() {
 			_action$4 = act;
 			_sprite$4 = spr;
 			_loading = false;
-			render$9();
+			render$10();
 		});
 	} catch {
 		_loading = false;
@@ -238769,10 +240651,10 @@ function drawEmote(canvas, emo) {
 	if (!_entity$2) _entity$2 = new Entity();
 	for (let i = 0; i < layers.length; ++i) _entity$2.renderLayer(layers[i], _sprite$4, _sprite$4, 1, [0, 0], false);
 }
-function render$9() {
+function render$10() {
 	const root = getRoot();
 	if (!root) return;
-	if (!_open$1) {
+	if (!_open$2) {
 		root.style.display = "none";
 		return;
 	}
@@ -238796,7 +240678,7 @@ function render$9() {
 			const canvas = document.createElement("canvas");
 			canvas.width = canvas.height = CELL;
 			canvas.dataset.emote = String(emo);
-			const selected = r === _row && c === _col;
+			const selected = r === _row$1 && c === _col$1;
 			Object.assign(canvas.style, {
 				width: "40px",
 				height: "40px",
@@ -238817,7 +240699,7 @@ function render$9() {
 	info.className = "info";
 	info.style.marginTop = "4px";
 	info.style.textAlign = "center";
-	info.textContent = (selected >= 0 ? "/" + Emotions_default.names[selected] : "") + "  ·  page " + (_page$1 + 1) + "/" + pageCount();
+	info.textContent = (selected >= 0 ? "/" + Emotions_default.names[selected] : "") + "  ·  page " + (_page$2 + 1) + "/" + pageCount();
 	root.appendChild(info);
 	const hint = document.createElement("div");
 	hint.style.marginTop = "2px";
@@ -238825,16 +240707,16 @@ function render$9() {
 	hint.style.color = "#999";
 	hint.style.fontSize = "11px";
 	const n = JoystickButtonMap_default.nameOf;
-	hint.textContent = n(BTN.A) + " play · " + n(BTN.X) + " play, stay · " + n(BTN.Y) + " favourite · " + n(BTN.LB) + "/" + n(BTN.RB) + " page · " + n(BTN.B) + " close";
+	hint.textContent = n(BTN$2.A) + " play · " + n(BTN$2.X) + " play, stay · " + n(BTN$2.Y) + " favourite · " + n(BTN$2.LB) + "/" + n(BTN$2.RB) + " page · " + n(BTN$2.B) + " close";
 	root.appendChild(hint);
 	JoystickScreenAnchor_default.placeBelowFeet(root, JoystickScreenAnchor_default.feetFrom(_anchor), BELOW_FEET);
 }
-function dispose$1() {
-	close();
+function dispose$3() {
+	close$2();
 	if (_root$16 && _root$16.parentNode) _root$16.parentNode.removeChild(_root$16);
 	_root$16 = null;
 }
-var COLS, PER_PAGE, MAX_FAVORITES, CELL, BELOW_FEET, REPEAT_DELAY_MS, REPEAT_EVERY_MS, BTN, _root$16, _anchor, _open$1, _page$1, _row, _col, _repeatButton, _repeatAt, _action$4, _sprite$4, _loading, _entity$2, JoystickEmoteGrid_default;
+var COLS, PER_PAGE, MAX_FAVORITES, CELL, BELOW_FEET, REPEAT_DELAY_MS$2, REPEAT_EVERY_MS$2, BTN$2, _root$16, _anchor, _open$2, _page$2, _row$1, _col$1, _repeatButton$1, _repeatAt$1, _action$4, _sprite$4, _loading, _entity$2, JoystickEmoteGrid_default;
 var init_JoystickEmoteGrid = __esmMin((() => {
 	init_Emotions();
 	init_Client();
@@ -238850,9 +240732,9 @@ var init_JoystickEmoteGrid = __esmMin((() => {
 	MAX_FAVORITES = COLS;
 	CELL = 40;
 	BELOW_FEET = 24;
-	REPEAT_DELAY_MS = 350;
-	REPEAT_EVERY_MS = 120;
-	BTN = {
+	REPEAT_DELAY_MS$2 = 350;
+	REPEAT_EVERY_MS$2 = 120;
+	BTN$2 = {
 		A: 0,
 		B: 1,
 		X: 2,
@@ -238867,24 +240749,4607 @@ var init_JoystickEmoteGrid = __esmMin((() => {
 	};
 	_root$16 = null;
 	_anchor = null;
-	_open$1 = false;
-	_page$1 = 0;
-	_row = 0;
-	_col = 0;
-	_repeatButton = -1;
-	_repeatAt = 0;
+	_open$2 = false;
+	_page$2 = 0;
+	_row$1 = 0;
+	_col$1 = 0;
+	_repeatButton$1 = -1;
+	_repeatAt$1 = 0;
 	_action$4 = null;
 	_sprite$4 = null;
 	_loading = false;
 	_entity$2 = null;
 	JoystickEmoteGrid_default = {
-		open,
-		close,
+		open: open$2,
+		close: close$2,
 		isActive,
 		handleInput,
 		getSelected,
 		getRows,
-		dispose: dispose$1
+		dispose: dispose$3
+	};
+}));
+//#endregion
+//#region src/UI/Components/Inventory/InventoryItemTransfer.js
+/**
+* Transfer an inventory item stack to the active receivers, highest priority first.
+* A receiver that declines the item lets the next one (or the caller's fallback) handle it.
+*
+* @param {object} item Inventory item
+* @param {object} components Registered UI components
+* @returns {boolean} Whether a receiver handled the request
+*/
+function transferInventoryItemStack(item, components) {
+	if (!item || !components) return false;
+	return Object.values(components).filter((component) => {
+		return component?.__active && component._host?.isConnected && component._host.style.display !== "none" && typeof component.receiveInventoryItemStack === "function";
+	}).sort((a, b) => (b.inventoryTransferPriority || 0) - (a.inventoryTransferPriority || 0)).some((receiver) => receiver.receiveInventoryItemStack(item) === true);
+}
+var InventoryItemTransferPriority;
+var init_InventoryItemTransfer = __esmMin((() => {
+	InventoryItemTransferPriority = Object.freeze({
+		TRADE: 300,
+		NPC_STORE: 400
+	});
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickDomEvents.js
+/**
+* UI/Components/JoystickUI/JoystickDomEvents.js
+*
+* The mouse events menu navigation sends to the element it has focused,
+* as a real mouse would send them there. Every window lives in a shadow
+* root and many listen on a parent (`content.addEventListener('dblclick',
+* e => e.target.closest('.item'))`), so the events bubble and are composed
+* (they leave the shadow root, and a window drag ends on its mouseup). They
+* carry the element's centre, and the button both ways: `button` and the
+* legacy `which` that handlers here still test (`event.which === 3`).
+*
+* They go to the element itself, never to whatever lies under the virtual
+* cursor: the focus decides what is pressed.
+*/
+/**
+* Centre of an element on screen.
+*
+* @param {Element} el
+* @return {{x: number, y: number}}
+*/
+function centerOf$1(el) {
+	const rect = el.getBoundingClientRect();
+	return {
+		x: rect.left + rect.width / 2,
+		y: rect.top + rect.height / 2
+	};
+}
+/**
+* Send one mouse event.
+*
+* @param {Element} el target
+* @param {string} type event type
+* @param {object} [options]
+* @param {number} [options.button] 0 left, 2 right
+* @param {boolean} [options.altKey]
+* @param {number} [options.detail] click count
+* @return {boolean} false when a listener cancelled it
+*/
+function send(el, type, options = {}) {
+	const button = options.button || 0;
+	const at = centerOf$1(el);
+	const event = new MouseEvent(type, {
+		bubbles: type !== "mouseenter" && type !== "mouseleave",
+		cancelable: true,
+		composed: true,
+		clientX: at.x,
+		clientY: at.y,
+		screenX: at.x,
+		screenY: at.y,
+		button,
+		buttons: type === "mousedown" ? button === 2 ? 2 : 1 : 0,
+		detail: options.detail || 0,
+		altKey: !!options.altKey,
+		which: button + 1
+	});
+	return el.dispatchEvent(event);
+}
+/**
+* Pointer onto or off an element: its hover image, the item name a window
+* shows under the pointer, a tooltip. `pad-hover` is for styles that cannot
+* see a synthetic hover (`:hover` stays off): ContextMenu highlights it.
+*
+* @param {Element} el
+* @param {boolean} on
+*/
+function hover(el, on) {
+	if (!el || !el.isConnected) return;
+	el.classList.toggle("pad-hover", on);
+	send(el, on ? "mouseover" : "mouseout");
+	send(el, on ? "mouseenter" : "mouseleave");
+}
+/**
+* A left click: mousedown, mouseup, click. Buttons here answer either the
+* press (WinStats' stat buttons, Storage's tabs) or the click.
+*
+* @param {Element} el
+*/
+function press$1(el) {
+	send(el, "mousedown", { detail: 1 });
+	send(el, "mouseup", { detail: 1 });
+	send(el, "click", { detail: 1 });
+}
+/**
+* A double click on an element: the second click of the pair, then
+* dblclick. Lists that confirm on a double click (NPC menus, item
+* selections) take it; so does ItemDoubleClick, which counts clicks.
+*
+* @param {Element} el
+*/
+function doubleClick(el) {
+	send(el, "mousedown", { detail: 2 });
+	send(el, "mouseup", { detail: 2 });
+	send(el, "click", { detail: 2 });
+	send(el, "dblclick", { detail: 2 });
+}
+/**
+* A right click: item and skill windows open their info window on it, and
+* with Alt held they move the stack to the other window.
+*
+* @param {Element} el
+* @param {boolean} [altKey]
+*/
+function contextMenu$1(el, altKey) {
+	send(el, "mousedown", {
+		button: 2,
+		altKey
+	});
+	send(el, "mouseup", {
+		button: 2,
+		altKey
+	});
+	send(el, "contextmenu", {
+		button: 2,
+		altKey
+	});
+}
+var JoystickDomEvents_default;
+var init_JoystickDomEvents = __esmMin((() => {
+	JoystickDomEvents_default = {
+		centerOf: centerOf$1,
+		send,
+		hover,
+		press: press$1,
+		doubleClick,
+		contextMenu: contextMenu$1
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickNumberSpinner.js
+/**
+* The number field of an amount box, or null for a text box.
+*
+* @param {ShadowRoot} root the InputBox window's root
+* @return {?HTMLInputElement}
+*/
+function numberField(root) {
+	const box = root && root.querySelector("#inputbox");
+	if (!box || !box.classList.contains("number")) return null;
+	return box.querySelector("input");
+}
+function setValue(field, value) {
+	field.value = String(value);
+	field.dispatchEvent(new Event("input", { bubbles: true }));
+}
+/**
+* One D-pad press on an amount box.
+*
+* @param {ShadowRoot} root the InputBox window's root
+* @param {string} direction 'up', 'down', 'left' or 'right'
+* @return {boolean} true when the box took the press
+*/
+function step$2(root, direction) {
+	const field = numberField(root);
+	if (!field) return false;
+	const value = Math.max(0, parseInt(field.value, 10) || 0);
+	switch (direction) {
+		case "up":
+			setValue(field, value + _step);
+			break;
+		case "down":
+			setValue(field, Math.max(0, value - _step));
+			break;
+		case "left":
+			_step = Math.min(MAX_STEP, _step * 10);
+			break;
+		case "right":
+			_step = Math.max(1, Math.round(_step / 10));
+			break;
+		default: return false;
+	}
+	return true;
+}
+/**
+* Back to steps of one, for the next box.
+*/
+function reset() {
+	_step = 1;
+}
+function getStep() {
+	return _step;
+}
+/**
+* Hints for the button bar, or none for a text box.
+*
+* @param {ShadowRoot} root
+* @return {Array<Array<string>>} [keys, what they do]
+*/
+function hints$2(root) {
+	if (!numberField(root)) return [];
+	return [["▲▼", "±" + _step.toLocaleString("en-US")], ["◀▶", "Step ×10 / ÷10"]];
+}
+var MAX_STEP, _step, JoystickNumberSpinner_default;
+var init_JoystickNumberSpinner = __esmMin((() => {
+	MAX_STEP = 1e9;
+	_step = 1;
+	JoystickNumberSpinner_default = {
+		step: step$2,
+		reset,
+		hints: hints$2,
+		getStep,
+		numberField
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickCarry.js
+/**
+* A stand-in for the browser's DataTransfer: what the handlers here use of it.
+*/
+function makeTransfer() {
+	const store = {};
+	return {
+		dropEffect: "move",
+		effectAllowed: "all",
+		types: [],
+		files: [],
+		items: [],
+		setData(type, value) {
+			store[type] = String(value);
+			if (this.types.indexOf(type) === -1) this.types.push(type);
+		},
+		getData(type) {
+			return store[type] || "";
+		},
+		clearData(type) {
+			if (type) delete store[type];
+			else Object.keys(store).forEach((key) => delete store[key]);
+		},
+		setDragImage() {}
+	};
+}
+function dragEvent(type, data) {
+	const event = new Event(type, {
+		bubbles: true,
+		cancelable: true,
+		composed: true
+	});
+	Object.defineProperty(event, "dataTransfer", { value: data });
+	return event;
+}
+/**
+* The element a window's dragstart handler looks for: the element itself if
+* draggable, else the draggable inside it (a shortcut slot's icon).
+*/
+function dragSource(el) {
+	if (!el) return null;
+	if (el.getAttribute("draggable") === "true") return el;
+	return el.querySelector("[draggable=\"true\"]");
+}
+/**
+* Whether an element can be picked up at all (it does not say whether its
+* window lets it go: an unlearned skill, say, refuses on dragstart).
+*/
+function canPickUp(el) {
+	return !!dragSource(el);
+}
+/**
+* The picture of what is carried: the first image in its icon (an item's
+* `.icon` background, a skill's <img>, a worn item's button, a slot's `.img`).
+*/
+function iconImage(source) {
+	const scopes = [source.querySelector(".icon"), source];
+	for (let i = 0; i < scopes.length; i++) {
+		if (!scopes[i]) continue;
+		const nodes = [scopes[i], ...scopes[i].querySelectorAll("*")];
+		for (let j = 0; j < nodes.length; j++) {
+			const node = nodes[j];
+			if (node.tagName === "IMG" && node.getAttribute("src")) return `url("${node.src}")`;
+			const background = node.style && node.style.backgroundImage;
+			if (background && background !== "none") return background;
+		}
+	}
+	return "";
+}
+function makeGhost(source) {
+	if (typeof document === "undefined" || !document.body) return null;
+	const ghost = document.createElement("div");
+	ghost.className = "joystick-carry-ghost";
+	const image = iconImage(source);
+	Object.assign(ghost.style, {
+		position: "fixed",
+		zIndex: 10001,
+		pointerEvents: "none",
+		width: "24px",
+		height: "24px",
+		backgroundImage: image || "none",
+		backgroundRepeat: "no-repeat",
+		backgroundPosition: "center",
+		backgroundSize: "contain",
+		opacity: "0.85",
+		display: "none"
+	});
+	document.body.appendChild(ghost);
+	return ghost;
+}
+/**
+* Pick an element up.
+*
+* @param {Element} el an item, skill or slot
+* @return {boolean} true when its window gave something to carry
+*/
+function pickUp(el) {
+	cancel$1();
+	const source = dragSource(el);
+	if (!source) return false;
+	const data = makeTransfer();
+	const start = dragEvent("dragstart", data);
+	source.dispatchEvent(start);
+	if (start.defaultPrevented || !data.getData("Text")) {
+		source.dispatchEvent(dragEvent("dragend", data));
+		delete window._OBJ_DRAG_;
+		return false;
+	}
+	_carry = {
+		source,
+		data,
+		ghost: makeGhost(source)
+	};
+	return true;
+}
+/**
+* Put what is carried down on an element: its window decides what that
+* means (move, equip, assign, ask how many).
+*
+* @param {Element} target
+* @return {boolean} false when nothing was carried
+*/
+function place(target) {
+	if (!_carry || !target) return false;
+	const data = _carry.data;
+	target.dispatchEvent(dragEvent("dragenter", data));
+	target.dispatchEvent(dragEvent("dragover", data));
+	target.dispatchEvent(dragEvent("drop", data));
+	finish$1();
+	return true;
+}
+/**
+* The drag ends at its source (the shortcut bar shows the icon again,
+* windows forget window._OBJ_DRAG_), or at the page when the source is gone.
+*/
+function finish$1() {
+	const carry = _carry;
+	_carry = null;
+	if (!carry) return;
+	if (carry.ghost && carry.ghost.parentNode) carry.ghost.parentNode.removeChild(carry.ghost);
+	const end = dragEvent("dragend", carry.data);
+	(carry.source.isConnected ? carry.source : document).dispatchEvent(end);
+	delete window._OBJ_DRAG_;
+}
+function cancel$1() {
+	finish$1();
+}
+function isCarrying() {
+	return _carry !== null;
+}
+/**
+* What is carried, as its window described it ({type, from, data}), or null.
+*/
+function payload() {
+	if (!_carry) return null;
+	try {
+		return JSON.parse(_carry.data.getData("Text"));
+	} catch {
+		return null;
+	}
+}
+/**
+* The icon follows the ring: at the top right of the focused element, or
+* hidden with nothing focused.
+*
+* @param {?{right: number, top: number}} rect
+*/
+function moveGhost(rect) {
+	const ghost = _carry && _carry.ghost;
+	if (!ghost) return;
+	if (!rect) {
+		ghost.style.display = "none";
+		return;
+	}
+	ghost.style.left = Math.round(rect.right - 8) + "px";
+	ghost.style.top = Math.round(rect.top - 16) + "px";
+	ghost.style.display = "block";
+}
+var _carry, JoystickCarry_default;
+var init_JoystickCarry = __esmMin((() => {
+	_carry = null;
+	JoystickCarry_default = {
+		pickUp,
+		place,
+		cancel: cancel$1,
+		isCarrying,
+		canPickUp,
+		payload,
+		moveGhost
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickWindowProfiles.js
+/**
+* A registered window, by name (version aliases resolve: 'Inventory' is InventoryV3).
+*/
+function component(name) {
+	try {
+		return UIManager.getComponent(name);
+	} catch {
+		return null;
+	}
+}
+/**
+* Whether an element is on screen and can be pressed.
+*/
+function shown(el) {
+	if (!el || !el.isConnected || el.hasAttribute("disabled")) return false;
+	const rect = el.getBoundingClientRect();
+	return rect.width > 0 && rect.height > 0 && getComputedStyle(el).visibility !== "hidden";
+}
+/**
+* Press the first shown element matching one of the selectors.
+*
+* @return {boolean} whether one was pressed
+*/
+function pressFirst(root, selectors) {
+	for (let i = 0; i < selectors.length; i++) {
+		const el = root.querySelector(selectors[i]);
+		if (shown(el)) {
+			JoystickDomEvents_default.press(el);
+			return true;
+		}
+	}
+	return false;
+}
+function shownIn(root, selector) {
+	return shown(root.querySelector(selector));
+}
+/**
+* A list row: moving onto it selects it, as a click does, so the window's
+* own highlight follows the ring and OK / Enter take the row that is
+* focused; A confirms it with a double click.
+*/
+function listRows(selector) {
+	return {
+		onFocus(el) {
+			if (el.matches(selector)) {
+				JoystickDomEvents_default.send(el, "mousedown", { detail: 1 });
+				JoystickDomEvents_default.send(el, "mouseup", { detail: 1 });
+			}
+		},
+		primary(el) {
+			if (!el.matches(selector)) return false;
+			JoystickDomEvents_default.doubleClick(el);
+			return true;
+		},
+		primaryLabel(el) {
+			return el.matches(selector) ? "Choose" : null;
+		}
+	};
+}
+/**
+* What A does with an inventory item: what a double click does (InventoryCommon useItem).
+*/
+function inventoryAction(item) {
+	if (!item) return "";
+	switch (item.type) {
+		case ItemType_default.WEAPON:
+		case ItemType_default.ARMOR:
+		case ItemType_default.SHADOWGEAR:
+		case ItemType_default.PETARMOR:
+		case ItemType_default.AMMO: return item.IsIdentified && !item.IsDamaged ? "Equip" : "";
+		case ItemType_default.HEALING:
+		case ItemType_default.USABLE:
+		case ItemType_default.CASH:
+		case ItemType_default.CARD:
+		case ItemType_default.DELAYCONSUME: return "Use";
+	}
+	return "";
+}
+function inventoryItem(el) {
+	const inventory = component("Inventory");
+	const index = parseInt(el.getAttribute("data-index"), 10);
+	return inventory && inventory.getItemByIndex ? inventory.getItemByIndex(index) : null;
+}
+function cartItem(el) {
+	const cart = component("CartItems");
+	const index = parseInt(el.getAttribute("data-index"), 10);
+	return cart && cart.getItemByIndex ? cart.getItemByIndex(index) : null;
+}
+/**
+* Whether a registered window is open on screen.
+*/
+function isOpen$1(name) {
+	const found = component(name);
+	const host = found && found._host;
+	return !!host && host.isConnected && host.style.display !== "none";
+}
+/**
+* A window's host, where its drop handler listens; null if it is not in the page.
+*/
+function hostOf(name) {
+	const found = component(name);
+	const host = found && found._host;
+	return host && host.isConnected ? host : null;
+}
+/**
+* The map: an item put there is dropped on the ground (MapControl).
+*/
+function ground() {
+	return typeof document !== "undefined" ? document.querySelector("canvas.ro-scene") : null;
+}
+/**
+* Pick an element up and put it down on a target at once: the target's
+* drop handler does what a mouse drag there does, asking how many first
+* when it is a stack.
+*/
+function moveTo(el, target) {
+	if (target && JoystickCarry_default.pickUp(el)) JoystickCarry_default.place(target);
+}
+/**
+* Whether the trade takes items now (not after the player has locked it).
+*/
+function tradeTakesItems() {
+	if (!isOpen$1("Trade")) return false;
+	const trade = component("Trade");
+	const send = trade.getRoot && trade.getRoot().querySelector(".box.send");
+	return !!send && !send.classList.contains("disabled");
+}
+function npcSells() {
+	const store = component("NpcStore");
+	return isOpen$1("NpcStore") && !!store.getCurrentType && store.getCurrentType() === store.Type.SELL;
+}
+/**
+* Where A sends an inventory item instead of using it, as Alt + right click
+* does: an NPC's sell list, the trade, storage. (Not the cart: merchants
+* keep it open, and A would stop using items.)
+*
+* @return {string} what A does there, '' if nowhere
+*/
+function inventoryTransfer() {
+	if (npcSells()) return "Sell";
+	if (tradeTakesItems()) return "Offer";
+	return isOpen$1("Storage") ? "Store" : "";
+}
+/**
+* The count shown on a stack's row; 1 when none is shown (a single item).
+*/
+function rowCount(el) {
+	const count = el.querySelector(".count");
+	return count && parseInt(count.textContent, 10) || 1;
+}
+/**
+* Menu entries that move an item somewhere: for a stack, all of it at once
+* and some of it (a drop on the window, which asks how many); for one item,
+* just the move.
+*
+* @param {{one: string, all: string, some: string}} labels
+* @param {number} count
+* @param {function(Element)} all
+* @param {?Element} dropOn the window that asks how many; null: no "some" entry
+*/
+function allOrSome(labels, count, all, dropOn) {
+	if (count <= 1) return [{
+		label: labels.one,
+		run: all
+	}];
+	const out = [{
+		label: labels.all,
+		run: all
+	}];
+	if (dropOn) out.push({
+		label: labels.some,
+		run: (live) => moveTo(live, dropOn)
+	});
+	return out;
+}
+/**
+* Whether an inventory item can go on a gamepad slot (what
+* JoystickInteractionService.openSelectionWindow takes).
+*/
+function slottable(item) {
+	return !!item && item.type !== ItemType_default.UNKNOWN && item.type !== ItemType_default.ETC && item.type !== ItemType_default.CARD && item.type !== ItemType_default.PETEGG && item.type !== ItemType_default.PETARMOR;
+}
+/**
+* X on an inventory item: use or equip it, send it to an open storage,
+* cart, trade or sell list (all, or some), put it on a gamepad slot, drop it.
+*/
+function inventoryActions(el, win, ctx) {
+	const inventory = component("Inventory");
+	const item = el.matches(".item[data-index]") ? inventoryItem(el) : null;
+	if (!inventory || !item) return [];
+	const count = item.count || 1;
+	const withItem = (fn) => (live) => {
+		const now = inventoryItem(live);
+		if (now) fn(now);
+	};
+	const out = [];
+	const use = inventoryAction(item);
+	if (use && inventory.useItem) out.push({
+		label: use,
+		run: withItem((it) => inventory.useItem(it))
+	});
+	if (npcSells()) out.push({
+		label: "Sell",
+		run: withItem((it) => component("NpcStore").receiveInventoryItemStack(it))
+	});
+	if (tradeTakesItems()) {
+		const trade = component("Trade");
+		out.push(...allOrSome(OFFER, count, withItem((it) => trade.receiveInventoryItemStack(it)), hostOf("Trade")));
+	}
+	if (isOpen$1("Storage")) {
+		const storage = component("Storage");
+		out.push(...allOrSome(STORE, count, withItem((it) => storage.reqAddItem(it.index, it.count || 1)), hostOf("Storage")));
+	}
+	if (isOpen$1("CartItems") && inventory.reqMoveItemToCart) out.push(...allOrSome(TO_CART, count, withItem((it) => inventory.reqMoveItemToCart(it.index, it.count || 1)), hostOf("CartItems")));
+	if (ctx && ctx.pickSlot && slottable(item)) out.push({
+		label: "Gamepad slot…",
+		run: (live) => ctx.pickSlot(live)
+	});
+	const map = ground();
+	if (map) out.push({
+		label: count > 1 ? "Drop…" : "Drop",
+		run: (live) => moveTo(live, map)
+	});
+	return out;
+}
+/**
+* X on a stored item: take it (all, or some), or send it to the cart.
+*/
+function storageActions(el) {
+	const storage = component("Storage");
+	if (!storage || !el.matches(".content .item[data-index]")) return [];
+	const index = parseInt(el.getAttribute("data-index"), 10);
+	const count = rowCount(el);
+	const out = allOrSome(TAKE, count, (live) => storage.reqRemoveItem(index, rowCount(live)), hostOf("Inventory"));
+	if (isOpen$1("CartItems") && storage.reqMoveItemToCart) out.push(...allOrSome(TO_CART, count, (live) => storage.reqMoveItemToCart(index, rowCount(live)), hostOf("CartItems")));
+	return out;
+}
+/**
+* X on an item in the cart: take it (all, or some), or store it.
+*/
+function cartActions(el) {
+	const cart = component("CartItems");
+	const item = el.matches(".content .item[data-index]") ? cartItem(el) : null;
+	if (!cart || !item) return [];
+	const count = item.count || 1;
+	const withItem = (fn) => (live) => {
+		const now = cartItem(live);
+		if (now) fn(now);
+	};
+	const out = allOrSome(TAKE, count, withItem((it) => cart.reqRemoveItem(it.index, it.count || 1)), hostOf("Inventory"));
+	if (isOpen$1("Storage")) {
+		const storage = component("Storage");
+		out.push(...allOrSome(STORE, count, withItem((it) => storage.reqAddItemFromCart(it.index, it.count || 1)), hostOf("Storage")));
+	}
+	return out;
+}
+function skillOf(el) {
+	const list = component("SkillList");
+	return list && list.getSkillById ? list.getSkillById(parseInt(el.getAttribute("data-index"), 10)) : null;
+}
+/**
+* A skill the player has and can use: what can be cast, dragged and put on a slot.
+*/
+function usableSkill(skill) {
+	return !!skill && !!skill.level && !!skill.type;
+}
+/**
+* Whether the NPC shop window shows a player's buying store.
+*/
+function isBuyingStore() {
+	const store = component("NpcStore");
+	return !!store && !!store.getCurrentType && store.getCurrentType() === store.Type.BUYING_STORE;
+}
+/**
+* Where A moves an item in a shop window of two lists: from the list on
+* offer (in a player's buying store, from the player's own matching items)
+* into the deal, and from the deal back. The window's drop handler does
+* the move, asking how many when it is a stack.
+*
+* @param {Element} el
+* @param {object} win
+* @param {boolean} buying a player's buying store
+* @return {?Element|undefined} the list to put it in; null: nowhere; undefined: not a shop item
+*/
+function dealTarget(el, win, buying) {
+	if (!el.matches(".item[data-index]")) return;
+	const box = el.closest(".InputWindow, .OutputWindow, .AvailableItemsWindow");
+	if (!box) return;
+	let name;
+	if (box.classList.contains("OutputWindow")) name = buying ? "AvailableItemsWindow" : "InputWindow";
+	else if (box.classList.contains("AvailableItemsWindow")) name = "OutputWindow";
+	else name = buying ? null : "OutputWindow";
+	const list = name ? win.root.querySelector("." + name) : null;
+	return list ? list.querySelector(".content") || list : null;
+}
+/**
+* A shop window of two lists (NPC shops, stalls and buying stores; a
+* merchant's own stall being set up): A moves an item into the deal and
+* back, as dragging it does (only some of them take a double click).
+*
+* @param {function(): boolean} [buying] whether it is a player's buying store now
+*/
+function dealLists(buying = () => false) {
+	return {
+		takesFocus: true,
+		dropZones: ".InputWindow .content, .OutputWindow .content, .AvailableItemsWindow .content",
+		primary(el, win) {
+			const target = dealTarget(el, win, buying());
+			if (target === void 0) return false;
+			if (target) moveTo(el, target);
+			return true;
+		},
+		primaryLabel(el, win) {
+			const target = dealTarget(el, win, buying());
+			if (target === void 0) return null;
+			if (!target) return "";
+			return target.closest(".OutputWindow") ? "Add" : "Remove";
+		}
+	};
+}
+/**
+* The Quest window's open tab: the one whose list is shown.
+*/
+function questTab(tabs, win) {
+	return tabs.findIndex((tab) => {
+		const list = tab.id ? win.root.querySelector("#" + tab.id + "-quest-list") : null;
+		return !!list && list.style.display === "block";
+	});
+}
+/**
+* A window's own record of its open tab (InventoryCommon, StorageCommon getTab).
+*/
+function tabOf(name) {
+	return () => {
+		const found = component(name);
+		return found && found.getTab ? found.getTab() : -1;
+	};
+}
+/**
+* The profile of a window, by component name; an empty one for the rest.
+*
+* @param {string} name
+* @return {object}
+*/
+function forName(name) {
+	for (let i = 0; i < PROFILES.length; i++) if (PROFILES[i].match.test(name || "")) return PROFILES[i];
+	return DEFAULT;
+}
+var STORE, TAKE, TO_CART, OFFER, PROFILES, DEFAULT, JoystickWindowProfiles_default;
+var init_JoystickWindowProfiles = __esmMin((() => {
+	init_UIManager();
+	init_ItemType();
+	init_InventoryItemTransfer();
+	init_JoystickDomEvents();
+	init_JoystickNumberSpinner();
+	init_JoystickCarry();
+	STORE = {
+		one: "Store",
+		all: "Store all",
+		some: "Store some…"
+	};
+	TAKE = {
+		one: "Take",
+		all: "Take all",
+		some: "Take some…"
+	};
+	TO_CART = {
+		one: "To cart",
+		all: "All to cart",
+		some: "Some to cart…"
+	};
+	OFFER = {
+		one: "Offer",
+		all: "Offer all",
+		some: "Offer some…"
+	};
+	PROFILES = [
+		{
+			match: /^(ChatBox(:.*)?|MiniMap(V\d+)?|QuestWindow|SkillTargetSelection|StatusIcons|Announce|ItemObtain|MapName|FPS|PCGoldTimer|Sense|EntityRoom|EntitySignboard)$/,
+			skip: true
+		},
+		{
+			match: /^(ItemInfo|ItemCompare|SkillDescription|CardIllustration|ItemPreview)$/,
+			info: true
+		},
+		{
+			match: /^JoystickUI$/,
+			get skip() {
+				return !JoystickCarry_default.isCarrying();
+			},
+			only: ".slot"
+		},
+		{
+			match: /^NpcBox$/,
+			dialog: true,
+			initial: [".btns .next", ".btns .close"],
+			scroll: ".content",
+			primaryLabel(el) {
+				if (el.matches(".next")) return "Next";
+				return el.matches(".close") ? "Close" : null;
+			},
+			back(win) {
+				pressFirst(win.root, [".btns .close"]);
+				return true;
+			},
+			backLabel(win) {
+				return shownIn(win.root, ".btns .close") ? "Close" : "";
+			}
+		},
+		Object.assign(listRows(".content div[data-index]"), {
+			match: /^NpcMenu$/,
+			dialog: true,
+			wrap: true,
+			initial: [".content div.selected", ".content div[data-index]"],
+			back(win) {
+				pressFirst(win.root, [".cancel"]);
+				return true;
+			},
+			backLabel() {
+				return "Cancel";
+			}
+		}),
+		{
+			match: /^InputBox$/,
+			dialog: true,
+			initial: [
+				"#inputbox:not(.number) input",
+				"ui-button",
+				"input"
+			],
+			onEnter() {
+				JoystickNumberSpinner_default.reset();
+			},
+			direction(direction, el, win) {
+				return JoystickNumberSpinner_default.step(win.root, direction);
+			},
+			primary(el, win) {
+				if (el.matches("input") && !JoystickNumberSpinner_default.numberField(win.root)) return false;
+				pressFirst(win.root, ["ui-button"]);
+				return true;
+			},
+			primaryLabel(el, win) {
+				return el.matches("input") && !JoystickNumberSpinner_default.numberField(win.root) ? "Type" : "OK";
+			},
+			back() {
+				const box = component("InputBox");
+				if (box && !box.isPersistent) box.remove();
+				return true;
+			},
+			backLabel() {
+				const box = component("InputBox");
+				return box && !box.isPersistent ? "Cancel" : "";
+			},
+			hints(el, win) {
+				return JoystickNumberSpinner_default.hints(win.root);
+			}
+		},
+		{
+			match: /^(WinMSG|WinPrompt|WinDeal|WinError)$/,
+			dialog: true,
+			initial: [".btns button"],
+			back(win) {
+				const buttons = Array.from(win.root.querySelectorAll(".btns button")).filter(shown);
+				if (buttons.length) JoystickDomEvents_default.press(buttons[buttons.length - 1]);
+				return true;
+			},
+			backLabel(win) {
+				return win.root.querySelectorAll(".btns button").length > 1 ? "Cancel" : "OK";
+			}
+		},
+		Object.assign(listRows(".item[data-index]"), {
+			match: /^(ItemSelection|MakeArrowSelection|RefineWeaponSelection|MakeItemSelection)$/,
+			dialog: true,
+			initial: [".item.select", ".item[data-index]"],
+			back(win) {
+				pressFirst(win.root, [".cancel"]);
+				return true;
+			},
+			backLabel() {
+				return "Cancel";
+			}
+		}),
+		{
+			match: /^PackageSelection$/,
+			dialog: true,
+			initial: [".groups button"],
+			back(win) {
+				pressFirst(win.root, [".cancel"]);
+				return true;
+			},
+			backLabel() {
+				return "Cancel";
+			}
+		},
+		{
+			match: /^ContextMenu$/,
+			dialog: true,
+			wrap: true,
+			only: ".menu > div",
+			initial: [".menu > div"],
+			back() {
+				const menu = component("ContextMenu");
+				if (menu) menu.remove();
+				return true;
+			},
+			backLabel() {
+				return "Close";
+			}
+		},
+		{
+			match: /^Escape$/,
+			dialog: true,
+			wrap: true,
+			only: ".container button",
+			back(win) {
+				pressFirst(win.root, [".container .cancel"]);
+				return true;
+			},
+			backLabel(win) {
+				return shownIn(win.root, ".container .cancel") ? "Cancel" : "";
+			}
+		},
+		{
+			match: /^BasicInfo(V\d+)?$/,
+			home: true,
+			items: ".buttons > div[id]"
+		},
+		Object.assign(dealLists(isBuyingStore), { match: /^NpcStore$/ }),
+		Object.assign(dealLists(), { match: /^Vending$/ }),
+		{
+			match: /^Mail$/,
+			takesFocus: true,
+			dropZones: ".container_item"
+		},
+		{
+			match: /^WriteRodex$/,
+			takesFocus: true,
+			dropZones: ".items"
+		},
+		{
+			match: /^Refine$/,
+			takesFocus: true,
+			dropZones: ".item_to_refine"
+		},
+		{
+			match: /^(Trade|VendingShop|ReadMail|Rodex|CashShop)$/,
+			takesFocus: true
+		},
+		{
+			match: /^Inventory(V\d+)?$/,
+			activeTab: tabOf("Inventory"),
+			primary(el) {
+				if (!el.matches(".item[data-index]")) return false;
+				const inventory = component("Inventory");
+				const item = inventoryItem(el);
+				if (!item) return true;
+				const transfer = inventoryTransfer();
+				if (transfer === "Store") component("Storage").reqAddItem(item.index, item.count || 1);
+				else if (transfer) transferInventoryItemStack(item, UIManager.components);
+				else if (inventory.useItem) inventory.useItem(item);
+				return true;
+			},
+			primaryLabel(el) {
+				if (!el.matches(".item[data-index]")) return null;
+				return inventoryTransfer() || inventoryAction(inventoryItem(el));
+			},
+			actions: inventoryActions
+		},
+		{
+			match: /^Storage$/,
+			takesFocus: true,
+			activeTab: tabOf("Storage"),
+			primary(el) {
+				if (!el.matches(".content .item[data-index]")) return false;
+				const storage = component("Storage");
+				if (storage && storage.reqRemoveItem) storage.reqRemoveItem(parseInt(el.getAttribute("data-index"), 10), rowCount(el));
+				return true;
+			},
+			primaryLabel(el) {
+				return el.matches(".content .item[data-index]") ? "Take" : null;
+			},
+			actions: storageActions
+		},
+		{
+			match: /^CartItems$/,
+			primary(el) {
+				if (!el.matches(".content .item[data-index]")) return false;
+				const cart = component("CartItems");
+				const item = cartItem(el);
+				if (!item) return true;
+				if (isOpen$1("Storage")) component("Storage").reqAddItemFromCart(item.index, item.count || 1);
+				else cart.reqRemoveItem(item.index, item.count || 1);
+				return true;
+			},
+			primaryLabel(el) {
+				if (!el.matches(".content .item[data-index]")) return null;
+				return isOpen$1("Storage") ? "Store" : "Take";
+			},
+			actions: cartActions
+		},
+		{
+			match: /^Equipment(V\d+)?$/,
+			exclude: ".item button",
+			primary(el) {
+				if (!el.matches(".item[data-index]")) return false;
+				const equipment = component("Equipment");
+				if (equipment && equipment.onUnEquip) equipment.onUnEquip(parseInt(el.getAttribute("data-index"), 10));
+				return true;
+			},
+			primaryLabel(el) {
+				return el.matches(".item[data-index]") ? "Unequip" : null;
+			},
+			actions(el) {
+				const equipment = component("Equipment");
+				if (!equipment || !equipment.onUnEquip || !el.matches(".item[data-index]")) return [];
+				const index = parseInt(el.getAttribute("data-index"), 10);
+				return [{
+					label: "Unequip",
+					run: () => equipment.onUnEquip(index)
+				}];
+			}
+		},
+		{
+			match: /^SkillList(V\d+)?$/,
+			primary(el) {
+				if (!el.matches(".skill[data-index]")) return false;
+				const list = component("SkillList");
+				if (list && list.useSkillID) list.useSkillID(parseInt(el.getAttribute("data-index"), 10));
+				return true;
+			},
+			primaryLabel(el) {
+				if (!el.matches(".skill[data-index]")) return null;
+				return usableSkill(skillOf(el)) ? "Use" : "";
+			},
+			actions(el, win, ctx) {
+				const list = component("SkillList");
+				if (!list || !el.matches(".skill[data-index]")) return [];
+				const id = parseInt(el.getAttribute("data-index"), 10);
+				const usable = usableSkill(skillOf(el));
+				const out = [];
+				if (usable && list.useSkillID) out.push({
+					label: "Use",
+					run: () => list.useSkillID(id)
+				});
+				if (shown(el.querySelector(".levelup"))) out.push({
+					label: "Level up",
+					run: (live) => {
+						const button = live.querySelector(".levelup");
+						if (shown(button)) JoystickDomEvents_default.press(button);
+					}
+				});
+				if (usable && ctx && ctx.pickSlot) out.push({
+					label: "Gamepad slot…",
+					run: (live) => ctx.pickSlot(live)
+				});
+				return out;
+			},
+			canMove(el) {
+				return el.matches(".skill[data-index]") ? usableSkill(skillOf(el)) : JoystickCarry_default.canPickUp(el);
+			}
+		},
+		{
+			match: /^ShortCut$/,
+			persistent: true,
+			only: ".container[data-index]",
+			primary(el) {
+				const bar = component("ShortCut");
+				if (bar && el.querySelector(".icon")) bar.onShortCut({ cmd: "EXECUTE" + el.getAttribute("data-index") });
+				return true;
+			},
+			primaryLabel(el) {
+				return el.querySelector(".icon") ? "Use" : "";
+			},
+			actions(el) {
+				const bar = component("ShortCut");
+				if (!bar || !el.querySelector(".icon")) return [];
+				const index = parseInt(el.getAttribute("data-index"), 10);
+				return [{
+					label: "Use",
+					run: () => bar.onShortCut({ cmd: "EXECUTE" + index })
+				}, {
+					label: "Clear",
+					run: () => bar.removeAt(index)
+				}];
+			}
+		},
+		{
+			match: /^Quest(V\d+)?$/,
+			items: ".quest-menu-item, .quest-item",
+			tabs: ".quest-menu-item",
+			activeTab: questTab
+		}
+	];
+	DEFAULT = Object.freeze({});
+	JoystickWindowProfiles_default = {
+		forName,
+		inventoryAction
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickFocusScan.js
+function isWindowHost(el) {
+	const root = el && el.shadowRoot;
+	if (!root) return false;
+	for (let i = 0; i < root.children.length; i++) if (root.children[i].classList && root.children[i].classList.contains("ui-component-root")) return true;
+	return false;
+}
+/**
+* Whether a host is in the page and not hidden.
+*/
+function isShown(host) {
+	if (!host || !host.isConnected || host.style.display === "none") return false;
+	const style = getComputedStyle(host);
+	return style.display !== "none" && style.visibility !== "hidden";
+}
+function zIndexOf(host) {
+	const z = parseInt(host.style.zIndex || getComputedStyle(host).zIndex, 10);
+	return isNaN(z) ? 0 : z;
+}
+/**
+* A window: its host, shadow root, name (the component name, the host's id) and profile.
+*
+* @param {HTMLElement} host
+* @return {object}
+*/
+function describe(host) {
+	return {
+		host,
+		root: host.shadowRoot,
+		name: host.id,
+		profile: JoystickWindowProfiles_default.forName(host.id)
+	};
+}
+/**
+* The open windows, topmost first.
+*
+* @return {Array<object>}
+*/
+function listWindows() {
+	if (typeof document === "undefined" || !document.body) return [];
+	const hosts = [];
+	const children = document.body.children;
+	for (let i = 0; i < children.length; i++) {
+		const el = children[i];
+		if (!NOT_WINDOWS.has(el.id) && isWindowHost(el) && isShown(el)) hosts.push(el);
+	}
+	return hosts.map((host, order) => ({
+		host,
+		order,
+		z: zIndexOf(host)
+	})).sort((a, b) => b.z - a.z || b.order - a.order).map((entry) => describe(entry.host));
+}
+/**
+* Whether a window is still open.
+*/
+function isOpen(win) {
+	return !!win && isShown(win.host);
+}
+/**
+* The window an element belongs to: the <body> child whose shadow tree holds it.
+*
+* @param {Element} el
+* @return {?object}
+*/
+function windowOf(el) {
+	let node = el;
+	while (node) {
+		const root = node.getRootNode ? node.getRootNode() : null;
+		if (!root || !root.host) return null;
+		const host = root.host;
+		if (host.parentNode === document.body && isWindowHost(host)) return NOT_WINDOWS.has(host.id) ? null : describe(host);
+		node = host;
+	}
+	return null;
+}
+/**
+* The parent of a node, stepping out of a shadow root to its host.
+*/
+function parentOf(node) {
+	if (node.parentElement) return node.parentElement;
+	const root = node.getRootNode ? node.getRootNode() : null;
+	return root && root.host ? root.host : null;
+}
+function clipsAxis(value) {
+	return value === "hidden" || value === "clip";
+}
+/**
+* Whether an `overflow: hidden` parent (up to and with the window host) cuts
+* the element off entirely. A scrolling parent does not: the element is
+* scrolled into view when focused.
+*
+* @param {Element} el
+* @param {DOMRect} rect the element's rectangle
+* @param {HTMLElement} host the window host, the last parent looked at
+* @param {Map} cache per-scan clip info by element
+* @return {boolean}
+*/
+function isClippedAway(el, rect, host, cache) {
+	let node = parentOf(el);
+	while (node) {
+		let info = cache.get(node);
+		if (!info) {
+			const style = getComputedStyle(node);
+			const x = clipsAxis(style.overflowX) || clipsAxis(style.overflow);
+			const y = clipsAxis(style.overflowY) || clipsAxis(style.overflow);
+			info = {
+				x,
+				y,
+				rect: x || y ? node.getBoundingClientRect() : null
+			};
+			cache.set(node, info);
+		}
+		if (info.y && (rect.bottom <= info.rect.top || rect.top >= info.rect.bottom)) return true;
+		if (info.x && (rect.right <= info.rect.left || rect.left >= info.rect.right)) return true;
+		if (node === host) return false;
+		node = parentOf(node);
+	}
+	return false;
+}
+/**
+* Whether an element can take the focus: shown, enabled, visible, and not clipped away.
+*
+* @param {Element} el
+* @param {HTMLElement} host its window's host
+* @param {Map} [cache] clip info, shared within one scan
+* @return {boolean}
+*/
+function isUsable(el, host, cache) {
+	if (!el || !el.isConnected) return false;
+	if (el.disabled || el.hasAttribute("disabled")) return false;
+	if (el.classList.contains("disabled") && el.matches("button, ui-button, .btn")) return false;
+	const rect = el.getBoundingClientRect();
+	if (!rect.width || !rect.height) return false;
+	const style = getComputedStyle(el);
+	if (style.visibility === "hidden" || style.pointerEvents === "none" || parseFloat(style.opacity) === 0) return false;
+	return !isClippedAway(el, rect, host, cache || /* @__PURE__ */ new Map());
+}
+/**
+* Every element in a shadow root matching a selector, and in the shadow roots nested in it.
+*/
+function collect(root, selector, out) {
+	root.querySelectorAll(selector).forEach((el) => out.push(el));
+	const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+	for (let node = walker.nextNode(); node; node = walker.nextNode()) if (node.shadowRoot) collect(node.shadowRoot, selector, out);
+	return out;
+}
+function area(rect) {
+	return Math.max(0, rect.right - rect.left) * Math.max(0, rect.bottom - rect.top);
+}
+function overlap(a, b) {
+	const w = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+	const h = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+	return w > 0 && h > 0 ? w * h : 0;
+}
+/**
+* A label stands in for its control only while the control itself is not
+* shown: the CSS tabs of the skill list are labels for hidden radio buttons.
+*/
+function isRedundantLabel(el, root, host, cache) {
+	if (el.tagName !== "LABEL") return false;
+	const id = el.getAttribute("for");
+	const control = id && root.getElementById ? root.getElementById(id) : null;
+	return !!control && isUsable(control, host, cache);
+}
+/**
+* What to take in a window, and what to leave out, by its profile.
+*
+* @param {object} profile
+* @return {{selector: string, exclude: string}}
+*/
+function selectorsOf(profile) {
+	let selector = profile.only || (profile.items ? FOCUSABLE + "," + profile.items : FOCUSABLE);
+	if (profile.dropZones && JoystickCarry_default.isCarrying()) selector += "," + profile.dropZones;
+	return {
+		selector,
+		exclude: profile.exclude ? NEVER + "," + profile.exclude : NEVER
+	};
+}
+/**
+* The focusable elements of a window, in page order.
+*
+* @param {object} win from listWindows() / windowOf()
+* @return {Array<Element>}
+*/
+function focusables(win) {
+	if (!win || !win.root) return [];
+	const { selector, exclude } = selectorsOf(win.profile || {});
+	const cache = /* @__PURE__ */ new Map();
+	const seen = /* @__PURE__ */ new Set();
+	const candidates = [];
+	collect(win.root, selector, []).forEach((el) => {
+		if (seen.has(el)) return;
+		seen.add(el);
+		if (el.matches(exclude) || !isUsable(el, win.host, cache)) return;
+		if (isRedundantLabel(el, el.getRootNode(), win.host, cache)) return;
+		candidates.push(el);
+	});
+	const set = new Set(candidates);
+	const rects = /* @__PURE__ */ new Map();
+	const rectOf = (el) => {
+		if (!rects.has(el)) rects.set(el, el.getBoundingClientRect());
+		return rects.get(el);
+	};
+	const dropped = /* @__PURE__ */ new Set();
+	candidates.forEach((inner) => {
+		for (let node = inner.parentElement; node; node = node.parentElement) {
+			if (!set.has(node) || dropped.has(node)) continue;
+			const shared = overlap(rectOf(node), rectOf(inner));
+			if (shared >= SAME_BOX * area(rectOf(node)) && shared >= SAME_BOX * area(rectOf(inner))) dropped.add(node);
+		}
+	});
+	return dropped.size ? candidates.filter((el) => !dropped.has(el)) : candidates;
+}
+/**
+* Whether an element focused earlier can still keep the focus.
+*/
+function isStillFocusable(el, win) {
+	return !!win && !!el && isUsable(el, win.host);
+}
+/**
+* The focusable element at a point on screen (the virtual cursor), and its
+* window: the element there or the nearest of its parents that is one.
+*
+* @param {number} x
+* @param {number} y
+* @return {?{win: object, el: Element}}
+*/
+function focusableAt(x, y) {
+	if (typeof document === "undefined" || !document.elementFromPoint) return null;
+	const hit = deepElementFromPoint(x, y);
+	const win = hit ? windowOf(hit) : null;
+	if (!win) return null;
+	const { selector, exclude } = selectorsOf(win.profile || {});
+	const cache = /* @__PURE__ */ new Map();
+	let node = hit;
+	while (node && node !== win.host) {
+		if (node.nodeType === 1 && node.matches(selector) && !node.matches(exclude) && isUsable(node, win.host, cache)) return {
+			win,
+			el: node
+		};
+		node = parentOf(node);
+	}
+	return null;
+}
+function signature(el) {
+	const classes = Array.from(el.classList).filter((name) => !STATE_CLASSES.has(name)).sort().join(".");
+	return el.tagName.toLowerCase() + (classes ? "." + classes : "");
+}
+function attributeKey(el) {
+	for (let i = 0; i < KEY_ATTRIBUTES.length; i++) if (el.hasAttribute(KEY_ATTRIBUTES[i])) return KEY_ATTRIBUTES[i] + "=" + el.getAttribute(KEY_ATTRIBUTES[i]);
+	return el.id ? "#" + el.id : null;
+}
+/**
+* A name for an element that survives the window drawing its list again
+* (the inventory redraws all of it when one item changes): its data-index
+* or id, else what it is (tag and classes) and how many like it come first.
+*
+* @param {Element} el
+* @param {Array<Element>} list the window's focusables
+* @return {string}
+*/
+function keyOf(el, list) {
+	const own = attributeKey(el);
+	if (own) return own;
+	const sig = signature(el);
+	const holder = el.parentElement ? el.parentElement.closest(KEY_ATTRIBUTES.map((a) => "[" + a + "]").join(",")) : null;
+	if (holder) return attributeKey(holder) + ">" + sig;
+	let nth = 0;
+	for (let i = 0; i < list.length && list[i] !== el; i++) if (signature(list[i]) === sig) nth++;
+	return sig + "#" + nth;
+}
+/**
+* The element in a window's list with a key.
+*/
+function findByKey(list, key) {
+	if (!key) return null;
+	for (let i = 0; i < list.length; i++) if (keyOf(list[i], list) === key) return list[i];
+	return null;
+}
+/**
+* The first element of the list that matches one of the selectors, the
+* selectors tried in order.
+*
+* @param {Array<Element>} list
+* @param {Array<string>} selectors
+* @return {?Element}
+*/
+function findFirst(list, selectors) {
+	for (let i = 0; i < selectors.length; i++) {
+		const el = list.find((candidate) => candidate.matches(selectors[i]));
+		if (el) return el;
+	}
+	return null;
+}
+function scrollsAxis(value) {
+	return value === "auto" || value === "scroll" || value === "overlay";
+}
+/**
+* Scroll the lists an element sits in so that it can be seen. Only its own
+* window's scrolling parents move, never the page.
+*
+* @param {Element} el
+* @param {HTMLElement} host its window's host
+*/
+function reveal(el, host) {
+	let rect = el.getBoundingClientRect();
+	let node = parentOf(el);
+	while (node && node !== host) {
+		const style = getComputedStyle(node);
+		const y = scrollsAxis(style.overflowY) && node.scrollHeight > node.clientHeight;
+		const x = scrollsAxis(style.overflowX) && node.scrollWidth > node.clientWidth;
+		if (x || y) {
+			const box = node.getBoundingClientRect();
+			const ratioY = box.height ? node.offsetHeight / box.height || 1 : 1;
+			const ratioX = box.width ? node.offsetWidth / box.width || 1 : 1;
+			if (y) {
+				if (rect.top < box.top) node.scrollTop -= (box.top - rect.top) * ratioY;
+				else if (rect.bottom > box.bottom) node.scrollTop += (rect.bottom - box.bottom) * ratioY;
+			}
+			if (x) {
+				if (rect.left < box.left) node.scrollLeft -= (box.left - rect.left) * ratioX;
+				else if (rect.right > box.right) node.scrollLeft += (rect.right - box.right) * ratioX;
+			}
+			rect = el.getBoundingClientRect();
+		}
+		node = parentOf(node);
+	}
+}
+/**
+* The scrolling parent of an element that can still scroll in a direction,
+* if any: NPC text longer than its box.
+*
+* @param {Element} container the box to scroll
+* @param {string} direction 'up' or 'down'
+* @return {boolean} whether it scrolled
+*/
+function scrollBy(container, direction) {
+	if (!container || direction !== "up" && direction !== "down") return false;
+	const max = container.scrollHeight - container.clientHeight;
+	if (max <= 0) return false;
+	const step = Math.max(16, Math.round(container.clientHeight * .6));
+	const before = container.scrollTop;
+	if (direction === "up" && before > 0) container.scrollTop = Math.max(0, before - step);
+	else if (direction === "down" && before < max) container.scrollTop = Math.min(max, before + step);
+	return container.scrollTop !== before;
+}
+/**
+* The rectangle around a list of elements.
+*/
+function boundsOf(list) {
+	let bounds = null;
+	list.forEach((el) => {
+		const r = el.getBoundingClientRect();
+		if (!bounds) bounds = {
+			left: r.left,
+			top: r.top,
+			right: r.right,
+			bottom: r.bottom
+		};
+		else {
+			bounds.left = Math.min(bounds.left, r.left);
+			bounds.top = Math.min(bounds.top, r.top);
+			bounds.right = Math.max(bounds.right, r.right);
+			bounds.bottom = Math.max(bounds.bottom, r.bottom);
+		}
+	});
+	return bounds;
+}
+/**
+* Whether an element is an item, skill or slot, which has info to show.
+*/
+function isItemLike(el) {
+	return !!el && el.matches(".item, .skill, [data-index]") && !!el.querySelector(".icon, img, button");
+}
+/**
+* Where events for an item go: its icon, so that a window listening on the
+* icon (`.skill .icon`, NpcStore's `.icon`) or on the icon button
+* (Equipment's tooltip, `closest('button')`) hears them, and one listening
+* on the item (`closest('.item')`) still does.
+*/
+function eventTarget(el) {
+	if (el && el.matches(".item, .skill, [data-index]")) return el.querySelector(".icon") || el.querySelector("button") || el;
+	return el;
+}
+var FOCUSABLE, NEVER, NOT_WINDOWS, KEY_ATTRIBUTES, STATE_CLASSES, SAME_BOX, JoystickFocusScan_default;
+var init_JoystickFocusScan = __esmMin((() => {
+	init_TouchDrag();
+	init_JoystickWindowProfiles();
+	init_JoystickCarry();
+	FOCUSABLE = [
+		"button",
+		"ui-button",
+		"a[href]",
+		"input:not([type=\"hidden\"])",
+		"select",
+		"textarea",
+		"label[for]",
+		"[contenteditable=\"true\"]",
+		".checkbox",
+		".item-link",
+		".navi-link",
+		"[data-index]"
+	].join(",");
+	NEVER = [
+		".ro-custom-scrollbar",
+		".ro-custom-scrollbar *",
+		".titlebar .base"
+	].join(",");
+	NOT_WINDOWS = /* @__PURE__ */ new Set(["JoystickSelectionUI"]);
+	KEY_ATTRIBUTES = [
+		"data-index",
+		"data-id",
+		"data-group",
+		"data-tab",
+		"data-title",
+		"data-skin",
+		"data-motion"
+	];
+	STATE_CLASSES = /* @__PURE__ */ new Set([
+		"pad-hover",
+		"selected",
+		"select",
+		"active",
+		"hover",
+		"focus",
+		"on",
+		"off"
+	]);
+	SAME_BOX = .9;
+	JoystickFocusScan_default = {
+		FOCUSABLE,
+		listWindows,
+		isOpen,
+		isShown,
+		windowOf,
+		describe,
+		focusables,
+		isUsable,
+		isStillFocusable,
+		focusableAt,
+		keyOf,
+		findByKey,
+		findFirst,
+		reveal,
+		scrollBy,
+		boundsOf,
+		isItemLike,
+		eventTarget
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickSpatialNav.js
+function centerX$1(rect) {
+	return (rect.left + rect.right) / 2;
+}
+function centerY$1(rect) {
+	return (rect.top + rect.bottom) / 2;
+}
+/**
+* Whether dest lies further in the direction than src.
+*
+* @param {object} src focused rectangle
+* @param {object} dest candidate rectangle
+* @param {string} direction 'up', 'down', 'left' or 'right'
+* @return {boolean}
+*/
+function isCandidate(src, dest, direction) {
+	switch (direction) {
+		case "left": return (src.right > dest.right || src.left >= dest.right) && src.left > dest.left;
+		case "right": return (src.left < dest.left || src.right <= dest.left) && src.right < dest.right;
+		case "up": return (src.bottom > dest.bottom || src.top >= dest.bottom) && src.top > dest.top;
+		case "down": return (src.top < dest.top || src.bottom <= dest.top) && src.bottom < dest.bottom;
+	}
+	return false;
+}
+/**
+* Whether two rectangles overlap across the direction: the same row for
+* left / right, the same column for up / down.
+*/
+function inBeam(src, dest, direction) {
+	if (direction === "left" || direction === "right") return dest.bottom > src.top && dest.top < src.bottom;
+	return dest.right > src.left && dest.left < src.right;
+}
+/**
+* Whether dest lies wholly beyond src's edge in the direction.
+*/
+function isBeyond(src, dest, direction) {
+	switch (direction) {
+		case "left": return src.left >= dest.right;
+		case "right": return src.right <= dest.left;
+		case "up": return src.top >= dest.bottom;
+		case "down": return src.bottom <= dest.top;
+	}
+	return false;
+}
+/**
+* Gap between src's edge and dest's near edge, along the direction.
+*/
+function majorDistance(src, dest, direction) {
+	switch (direction) {
+		case "left": return Math.max(0, src.left - dest.right);
+		case "right": return Math.max(0, dest.left - src.right);
+		case "up": return Math.max(0, src.top - dest.bottom);
+		case "down": return Math.max(0, dest.top - src.bottom);
+	}
+	return 0;
+}
+/**
+* Distance from src's edge to dest's far edge, along the direction.
+*/
+function majorDistanceToFarEdge(src, dest, direction) {
+	switch (direction) {
+		case "left": return Math.max(1, src.left - dest.left);
+		case "right": return Math.max(1, dest.right - src.right);
+		case "up": return Math.max(1, src.top - dest.top);
+		case "down": return Math.max(1, dest.bottom - src.bottom);
+	}
+	return 1;
+}
+/**
+* Offset between the centres, across the direction.
+*/
+function minorDistance(src, dest, direction) {
+	if (direction === "left" || direction === "right") return Math.abs(centerY$1(src) - centerY$1(dest));
+	return Math.abs(centerX$1(src) - centerX$1(dest));
+}
+/**
+* Whether a, being in the beam, wins over b on that alone. Sideways, being
+* in the row always wins. Vertically only while b is not wholly closer: a
+* row of buttons right under a list still beats the far end of the list.
+*/
+function beamBeats(src, a, b, direction) {
+	const aIn = inBeam(src, a, direction);
+	if (inBeam(src, b, direction) || !aIn) return false;
+	if (!isBeyond(src, b, direction)) return true;
+	if (direction === "left" || direction === "right") return true;
+	return majorDistance(src, a, direction) < majorDistanceToFarEdge(src, b, direction);
+}
+function weightedDistance(src, dest, direction) {
+	const major = majorDistance(src, dest, direction);
+	const minor = minorDistance(src, dest, direction);
+	return MAJOR_WEIGHT * major * major + minor * minor;
+}
+/**
+* Whether a is a better move than b.
+*/
+function isBetter(src, a, b, direction) {
+	if (!b) return true;
+	if (beamBeats(src, a, b, direction)) return true;
+	if (beamBeats(src, b, a, direction)) return false;
+	return weightedDistance(src, a, direction) < weightedDistance(src, b, direction);
+}
+/**
+* The best candidate in the direction.
+*
+* @param {object} src the focused rectangle
+* @param {Array<object>} entries anything with a `rect`
+* @param {string} direction 'up', 'down', 'left' or 'right'
+* @return {?object} the entry to move to, or null if nothing lies that way
+*/
+function findNext(src, entries, direction) {
+	if (!src || DIRECTIONS$1.indexOf(direction) === -1) return null;
+	let best = null;
+	for (let i = 0; i < entries.length; i++) {
+		const rect = entries[i].rect;
+		if (!rect || !isCandidate(src, rect, direction)) continue;
+		if (isBetter(src, rect, best && best.rect, direction)) best = entries[i];
+	}
+	return best;
+}
+/**
+* Wrap around: the entry furthest the other way, in the beam if there is
+* one. Down from the last button of a menu comes back to the first.
+*
+* @param {object} src the focused rectangle
+* @param {Array<object>} entries anything with a `rect`
+* @param {string} direction the direction pressed
+* @return {?object}
+*/
+function findWrap(src, entries, direction) {
+	if (!src) return null;
+	const vertical = direction === "up" || direction === "down";
+	const sign = direction === "down" || direction === "right" ? 1 : -1;
+	let best = null;
+	let bestEdge = 0;
+	let bestInBeam = false;
+	for (let i = 0; i < entries.length; i++) {
+		const rect = entries[i].rect;
+		if (!rect) continue;
+		const beam = inBeam(src, rect, direction);
+		const edge = sign * (vertical ? centerY$1(rect) : centerX$1(rect));
+		if (!best || beam && !bestInBeam || beam === bestInBeam && edge < bestEdge) {
+			best = entries[i];
+			bestEdge = edge;
+			bestInBeam = beam;
+		}
+	}
+	return best;
+}
+/**
+* Reading order: top to bottom, then left to right. Elements whose tops
+* lie within half the smaller height of each other count as one row.
+*/
+function compareReadingOrder(a, b) {
+	const rowTolerance = Math.min(a.bottom - a.top, b.bottom - b.top) / 2;
+	if (Math.abs(a.top - b.top) > rowTolerance) return a.top - b.top;
+	return a.left - b.left;
+}
+var DIRECTIONS$1, MAJOR_WEIGHT, JoystickSpatialNav_default;
+var init_JoystickSpatialNav = __esmMin((() => {
+	DIRECTIONS$1 = [
+		"up",
+		"down",
+		"left",
+		"right"
+	];
+	MAJOR_WEIGHT = 13;
+	JoystickSpatialNav_default = {
+		DIRECTIONS: DIRECTIONS$1,
+		findNext,
+		findWrap,
+		isCandidate,
+		inBeam,
+		compareReadingOrder
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickFocusOverlay.js
+function getRing() {
+	if (_ring && _ring.parentNode) return _ring;
+	if (typeof document === "undefined" || !document.body) return null;
+	_ring = document.createElement("div");
+	_ring.className = "joystick-focus-ring";
+	Object.assign(_ring.style, {
+		position: "fixed",
+		zIndex: Z_INDEX,
+		pointerEvents: "none",
+		boxSizing: "border-box",
+		border: "2px solid #ffd740",
+		borderRadius: "4px",
+		boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.6), 0 0 6px rgba(255, 215, 64, 0.8)",
+		transition: "left 60ms ease-out, top 60ms ease-out, width 60ms ease-out, height 60ms ease-out",
+		display: "none"
+	});
+	document.body.appendChild(_ring);
+	_ringKey = "";
+	return _ring;
+}
+function getHints() {
+	if (_hints && _hints.parentNode) return _hints;
+	if (typeof document === "undefined" || !document.body) return null;
+	_hints = document.createElement("div");
+	_hints.className = "joystick-focus-hints";
+	Object.assign(_hints.style, {
+		position: "fixed",
+		left: "50%",
+		transform: "translateX(-50%)",
+		zIndex: Z_INDEX,
+		pointerEvents: "none",
+		background: "rgba(0, 0, 0, 0.75)",
+		borderRadius: "6px",
+		padding: "3px 10px",
+		fontFamily: "sans-serif",
+		fontSize: "12px",
+		color: "#ddd",
+		whiteSpace: "nowrap",
+		display: "none"
+	});
+	document.body.appendChild(_hints);
+	_hintsKey = "";
+	return _hints;
+}
+/**
+* Put the ring around a rectangle on screen.
+*
+* @param {{left: number, top: number, width: number, height: number}} rect
+* @param {string} [mode] 'focus' (default) or 'carry'
+*/
+function showRing(rect, mode = "focus") {
+	const ring = getRing();
+	if (!ring || !rect) return;
+	const look = RING_STYLES[mode] || RING_STYLES.focus;
+	const left = Math.round(rect.left - RING_PAD);
+	const top = Math.round(rect.top - RING_PAD);
+	const width = Math.round(rect.width + 4);
+	const height = Math.round(rect.height + 4);
+	const key = left + "," + top + "," + width + "," + height + "," + mode;
+	if (key === _ringKey && ring.style.display !== "none") return;
+	_ringKey = key;
+	ring.style.left = left + "px";
+	ring.style.top = top + "px";
+	ring.style.width = width + "px";
+	ring.style.height = height + "px";
+	ring.style.borderColor = look.borderColor;
+	ring.style.boxShadow = look.boxShadow;
+	ring.dataset.mode = mode;
+	ring.style.display = "block";
+}
+function hideRing() {
+	if (_ring) _ring.style.display = "none";
+}
+/**
+* The bar's distance from the bottom: above the gamepad HUD when it shows.
+*/
+function hintsBottom() {
+	const hud = document.getElementById("JoystickUI");
+	if (hud && hud.style.display !== "none") {
+		const rect = hud.getBoundingClientRect();
+		if (rect.height > 0) return Math.max(8, window.innerHeight - rect.top + HINT_GAP);
+	}
+	return 8;
+}
+/**
+* Show the hint bar.
+*
+* @param {Array<Array>} entries [button, text]: a logical button (worded with the current
+*   mapping), a list of them, or a string (D-pad arrows); empty texts are left out
+*/
+function showHints(entries) {
+	const bar = getHints();
+	if (!bar) return;
+	const parts = entries.filter((entry) => entry && entry[1]).map(([keys, text]) => {
+		return [(Array.isArray(keys) ? keys : [keys]).map((key) => typeof key === "number" ? JoystickButtonMap_default.nameOf(key) : key).join("/"), text];
+	});
+	const key = JSON.stringify(parts);
+	bar.style.bottom = hintsBottom() + "px";
+	if (key === _hintsKey && bar.style.display !== "none") return;
+	_hintsKey = key;
+	bar.textContent = "";
+	parts.forEach(([names, text], i) => {
+		if (i) bar.appendChild(document.createTextNode("  ·  "));
+		const button = document.createElement("b");
+		button.style.color = "#ffd740";
+		button.textContent = names;
+		bar.appendChild(button);
+		bar.appendChild(document.createTextNode(" " + text));
+	});
+	bar.style.display = parts.length ? "block" : "none";
+}
+function hideHints() {
+	if (_hints) _hints.style.display = "none";
+	_hintsKey = "";
+}
+function hide$2() {
+	hideRing();
+	hideHints();
+}
+function dispose$2() {
+	[_ring, _hints].forEach((el) => {
+		if (el && el.parentNode) el.parentNode.removeChild(el);
+	});
+	_ring = null;
+	_hints = null;
+	_ringKey = "";
+	_hintsKey = "";
+}
+var Z_INDEX, RING_PAD, HINT_GAP, RING_STYLES, _ring, _hints, _ringKey, _hintsKey, JoystickFocusOverlay_default;
+var init_JoystickFocusOverlay = __esmMin((() => {
+	init_JoystickButtonMap();
+	Z_INDEX = 1e4;
+	RING_PAD = 2;
+	HINT_GAP = 6;
+	RING_STYLES = {
+		focus: {
+			borderColor: "#ffd740",
+			boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.6), 0 0 6px rgba(255, 215, 64, 0.8)"
+		},
+		carry: {
+			borderColor: "#4fc3f7",
+			boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.6), 0 0 8px rgba(79, 195, 247, 0.9)"
+		}
+	};
+	_ring = null;
+	_hints = null;
+	_ringKey = "";
+	_hintsKey = "";
+	JoystickFocusOverlay_default = {
+		showRing,
+		hideRing,
+		showHints,
+		hideHints,
+		hide: hide$2,
+		dispose: dispose$2,
+		/**
+		* How far from the bottom of the screen a bar sits to clear the gamepad
+		* HUD (the hint bar, the on-screen keyboard).
+		*/
+		bottomAboveHud: hintsBottom
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickStickFilter.js
+/**
+* Subtract the rest position, stretching each side back to the full range.
+*
+* @param {number} value raw axis value, -1..1
+* @param {number} center measured rest position
+* @return {number}
+*/
+function recenter(value, center) {
+	if (!center) return value;
+	const v = value - center;
+	const range = v > 0 ? 1 - center : 1 + center;
+	return Math.max(-1, Math.min(1, v / range));
+}
+/**
+* Treat values within the threshold as centre; rescale the rest to 0..1.
+*
+* @param {number} value axis value, -1..1
+* @param {number} threshold 0..1
+* @return {number}
+*/
+function applyThreshold(value, threshold) {
+	if (!threshold || threshold <= 0) return value;
+	const magnitude = Math.abs(value);
+	if (magnitude <= threshold || threshold >= 1) return 0;
+	return Math.sign(value) * (magnitude - threshold) / (1 - threshold);
+}
+/**
+* The stored rest positions, or null when not calibrated.
+*
+* @return {Array<number>|null}
+*/
+function getCenter() {
+	const center = Controls_default.joyStickCenter;
+	if (!Array.isArray(center) || center.length !== AXIS_COUNT || !center.every(Number.isFinite)) return null;
+	return center;
+}
+/**
+* Cleaned copy of a gamepad's axes. Axes past the two sticks pass through.
+*
+* @param {ArrayLike<number>} axes Gamepad.axes
+* @return {Array<number>}
+*/
+function filterAxes(axes) {
+	const center = getCenter();
+	const out = Array.from(axes);
+	for (let i = 0; i < Math.min(AXIS_COUNT, out.length); i++) {
+		const value = recenter(out[i], center ? center[i] : 0);
+		out[i] = applyThreshold(value, Controls_default[DRIFT_KEYS[i]]);
+	}
+	return out;
+}
+/**
+* Average rest position per axis from calibration samples, or null if a
+* stick was touched while they were taken.
+*
+* @param {Array<Array<number>>} samples raw axes, one array per read
+* @return {Array<number>|null}
+*/
+function computeCenter(samples) {
+	if (!samples.length) return null;
+	const center = [];
+	for (let i = 0; i < AXIS_COUNT; i++) {
+		let sum = 0;
+		for (const sample of samples) {
+			const value = sample[i] || 0;
+			if (Math.abs(value) > CALIBRATE_MAX_OFFSET) return null;
+			sum += value;
+		}
+		center.push(sum / samples.length);
+	}
+	return center;
+}
+function getGamepad$1() {
+	const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+	for (let i = 0; i < gamepads.length; i++) if (gamepads[i]) return gamepads[i];
+	return null;
+}
+/**
+* Stop a running calibration without saving.
+*/
+function cancelCalibration() {
+	if (_calibration) {
+		clearInterval(_calibration);
+		_calibration = null;
+	}
+}
+/**
+* Read both sticks for a second while the player leaves them alone, and
+* store their rest positions.
+*
+* @param {function(string)} done called with 'ok', 'moved' (a stick was
+*   touched, nothing saved) or 'nopad'
+*/
+function calibrate(done) {
+	cancelCalibration();
+	if (!getGamepad$1()) {
+		done("nopad");
+		return;
+	}
+	const samples = [];
+	const startedAt = Date.now();
+	_calibration = setInterval(function() {
+		const gp = getGamepad$1();
+		if (!gp) {
+			cancelCalibration();
+			done("nopad");
+			return;
+		}
+		samples.push(Array.from(gp.axes).slice(0, AXIS_COUNT));
+		if (Date.now() - startedAt < CALIBRATE_DURATION_MS) return;
+		cancelCalibration();
+		const center = computeCenter(samples);
+		if (!center) {
+			done("moved");
+			return;
+		}
+		Controls_default.joyStickCenter = center;
+		Controls_default.save();
+		done("ok");
+	}, CALIBRATE_INTERVAL_MS);
+}
+/**
+* Forget the calibration.
+*/
+function resetCalibration() {
+	cancelCalibration();
+	Controls_default.joyStickCenter = null;
+	Controls_default.save();
+}
+var DRIFT_KEYS, AXIS_COUNT, CALIBRATE_INTERVAL_MS, CALIBRATE_DURATION_MS, CALIBRATE_MAX_OFFSET, _calibration, JoystickStickFilter_default;
+var init_JoystickStickFilter = __esmMin((() => {
+	init_Controls();
+	DRIFT_KEYS = [
+		"joyDriftLX",
+		"joyDriftLY",
+		"joyDriftRX",
+		"joyDriftRY"
+	];
+	AXIS_COUNT = DRIFT_KEYS.length;
+	CALIBRATE_INTERVAL_MS = 50;
+	CALIBRATE_DURATION_MS = 1e3;
+	CALIBRATE_MAX_OFFSET = .5;
+	_calibration = null;
+	JoystickStickFilter_default = {
+		DRIFT_KEYS,
+		recenter,
+		applyThreshold,
+		filterAxes,
+		computeCenter,
+		getCenter,
+		calibrate,
+		cancelCalibration,
+		resetCalibration
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickFocusTabs.js
+/**
+* Whether an element is one of a window's tabs.
+*
+* @param {Element} el
+* @param {object} [win] its window: its profile may name the tabs
+* @return {boolean}
+*/
+function isTab(el, win) {
+	if (!el) return false;
+	const profile = win && win.profile || {};
+	if (profile.tabs) return el.matches(profile.tabs);
+	if (!el.matches(CONTROL) || el.querySelector(INNER)) return false;
+	if (el.matches(TAB)) return true;
+	const parent = el.parentElement;
+	return !!parent && (parent.matches(STRIP) || parent.matches(".tab"));
+}
+/**
+* The strip a tab belongs to: the nearest strip around it, else what holds it.
+*/
+function stripOf(el) {
+	const parent = el.parentElement;
+	if (!parent) return null;
+	return parent.closest(STRIP) || (parent.matches(".tab") ? parent.parentElement : parent);
+}
+/**
+* The tabs that can be switched to now: shown, in page order, from the
+* focused tab's strip, else from the first strip with two tabs or more.
+*
+* @param {object} win from JoystickFocusScan
+* @param {?Element} focused the focused element
+* @return {Array<Element>} empty: the window has no tabs
+*/
+function tabsOf(win, focused) {
+	if (!win || !win.root) return [];
+	const profile = win.profile || {};
+	const cache = /* @__PURE__ */ new Map();
+	const shown = Array.from(win.root.querySelectorAll(profile.tabs || CONTROL)).filter((el) => isTab(el, win) && JoystickFocusScan_default.isUsable(el, win.host, cache));
+	if (profile.tabs) return shown.length > 1 ? shown : [];
+	const strips = /* @__PURE__ */ new Map();
+	shown.forEach((el) => {
+		const strip = stripOf(el);
+		if (!strips.has(strip)) strips.set(strip, []);
+		strips.get(strip).push(el);
+	});
+	if (focused && shown.indexOf(focused) !== -1) {
+		const own = strips.get(stripOf(focused));
+		if (own.length > 1) return own;
+	}
+	for (const list of strips.values()) if (list.length > 1) return list;
+	return [];
+}
+function isDrawnOpen(el) {
+	if (el.matches(OPEN)) return true;
+	if (el.tagName === "LABEL") {
+		const id = el.getAttribute("for");
+		const root = el.getRootNode();
+		const control = id && root.getElementById ? root.getElementById(id) : null;
+		return !!control && !!control.checked;
+	}
+	return false;
+}
+/**
+* The index of the open tab, -1 when nothing says which.
+*
+* @param {object} win
+* @param {Array<Element>} tabs from tabsOf()
+* @return {number}
+*/
+function activeIndex(win, tabs) {
+	const profile = win.profile || {};
+	if (profile.activeTab) {
+		const index = profile.activeTab(tabs, win);
+		if (index >= 0 && index < tabs.length) return index;
+	}
+	const drawn = tabs.findIndex(isDrawnOpen);
+	if (drawn !== -1) return drawn;
+	const last = _last.get(win.host);
+	return last !== void 0 && last < tabs.length ? last : -1;
+}
+/**
+* The tab one step away from the open one, past those that will not open;
+* the first or the last when none is known to be open. It wraps around.
+*
+* @param {object} win
+* @param {?Element} focused
+* @param {number} delta 1: next, -1: previous
+* @return {?{tab: Element, index: number}} null: no tabs, or none other to go to
+*/
+function step$1(win, focused, delta) {
+	const tabs = tabsOf(win, focused);
+	if (!tabs.length) return null;
+	const open = activeIndex(win, tabs);
+	let index = open;
+	for (let i = 0; i < tabs.length; i++) {
+		if (index === -1) index = delta > 0 ? 0 : tabs.length - 1;
+		else index = (index + delta + tabs.length) % tabs.length;
+		if (index === open) return null;
+		if (!tabs[index].matches(REFUSED)) return {
+			tab: tabs[index],
+			index
+		};
+	}
+	return null;
+}
+/**
+* The open tab, if it is known.
+*
+* @param {object} win
+* @return {?Element}
+*/
+function activeTab(win) {
+	const tabs = tabsOf(win, null);
+	const index = tabs.length ? activeIndex(win, tabs) : -1;
+	return index === -1 ? null : tabs[index];
+}
+/**
+* Remember the tab switched to, for windows that do not draw which is open.
+*
+* @param {object} win
+* @param {number} index
+*/
+function remember(win, index) {
+	if (win && win.host) _last.set(win.host, index);
+}
+var STRIP, TAB, CONTROL, INNER, OPEN, REFUSED, _last, JoystickFocusTabs_default;
+var init_JoystickFocusTabs = __esmMin((() => {
+	init_JoystickFocusScan();
+	STRIP = [
+		".tabs",
+		".tabs-mini",
+		".tab-manager",
+		".action_tabs",
+		"#panel-menu",
+		"[role=\"tablist\"]"
+	].join(",");
+	TAB = [
+		".tab",
+		".tab-button",
+		".tab-label",
+		".tab-label-mini",
+		"[role=\"tab\"]"
+	].join(",");
+	CONTROL = [
+		"button",
+		"ui-button",
+		"a[href]",
+		"label[for]",
+		TAB
+	].join(",");
+	INNER = "button, ui-button, a[href], label[for]";
+	OPEN = [
+		".selected",
+		".active",
+		".selectedtab",
+		"[aria-selected=\"true\"]"
+	].join(",");
+	REFUSED = ".denied, .disabled, [disabled]";
+	_last = /* @__PURE__ */ new WeakMap();
+	JoystickFocusTabs_default = {
+		isTab,
+		tabsOf,
+		activeIndex,
+		activeTab,
+		step: step$1,
+		remember
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickActionMenu.js
+/**
+* Whether the element can be picked up: what its profile says, else
+* whether it is draggable.
+*
+* @param {Element} el
+* @param {object} win
+* @return {boolean}
+*/
+function canMove(el, win) {
+	if (!el) return false;
+	const profile = win && win.profile || {};
+	if (profile.canMove) return !!profile.canMove(el, win);
+	return JoystickCarry_default.canPickUp(el);
+}
+/**
+* The entries for an element.
+*
+* @param {Element} el
+* @param {object} win
+* @param {object} ctx what entries may call: pickUp(el), info(el), pickSlot(el) (null without a slot picker)
+* @return {Array<{label: string, run: function(Element)}>}
+*/
+function entriesFor(el, win, ctx) {
+	if (!el || !win) return [];
+	const profile = win.profile || {};
+	const out = profile.actions ? (profile.actions(el, win, ctx) || []).filter(Boolean) : [];
+	if (canMove(el, win)) out.push({
+		label: "Move…",
+		run: (live) => ctx.pickUp(live)
+	});
+	if (JoystickFocusScan_default.isItemLike(el)) out.push({
+		label: "Info",
+		run: (live) => ctx.info(live)
+	});
+	return out;
+}
+function contextMenu() {
+	try {
+		return UIManager.getComponent("ContextMenu");
+	} catch {
+		return null;
+	}
+}
+/**
+* Put the menu beside a rectangle, on screen.
+*/
+function placeBeside(ui, rect) {
+	const root = ui.getRoot ? ui.getRoot() : null;
+	const box = root ? root.querySelector(".menu") : null;
+	if (!box || !rect) return;
+	const width = box.offsetWidth;
+	const height = box.offsetHeight;
+	let x = rect.right + GAP;
+	if (x + width > window.innerWidth) x = Math.max(0, rect.left - width - GAP);
+	const y = Math.max(0, Math.min(rect.top, window.innerHeight - height));
+	box.style.left = Math.round(x) + "px";
+	box.style.top = Math.round(y) + "px";
+}
+/**
+* Show entries as a menu beside the element they are for. An entry runs
+* on the element as it is then: resolve() finds it again if its window
+* drew it anew meanwhile.
+*
+* @param {Array<{label: string, run: function(Element)}>} entries
+* @param {DOMRect} rect the element's rectangle
+* @param {function(): Element} resolve
+* @return {?object} the ContextMenu component; null when there is nothing to show
+*/
+function open$1(entries, rect, resolve) {
+	const ui = contextMenu();
+	if (!ui || !entries.length) return null;
+	ui.remove();
+	ui.append();
+	entries.forEach((entry) => ui.addElement(entry.label, () => {
+		try {
+			entry.run(resolve());
+		} catch (error) {
+			console.error("[JoystickActionMenu] " + entry.label + " failed", error);
+		}
+	}));
+	placeBeside(ui, rect);
+	return ui;
+}
+var GAP, JoystickActionMenu_default;
+var init_JoystickActionMenu = __esmMin((() => {
+	init_UIManager();
+	init_JoystickFocusScan();
+	init_JoystickCarry();
+	GAP = 4;
+	JoystickActionMenu_default = {
+		canMove,
+		entriesFor,
+		open: open$1
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickValueInput.js
+function isSlider(el) {
+	return !!el && el.matches(SLIDER);
+}
+/**
+* Whether the D-pad's left and right change this element's value.
+*
+* @param {?Element} el
+* @return {boolean}
+*/
+function handles(el) {
+	return !!el && !el.disabled && el.matches(SLIDER + ", select");
+}
+function fire(el, type) {
+	el.dispatchEvent(new Event(type, { bubbles: true }));
+}
+function decimals(value) {
+	const text = String(value);
+	const dot = text.indexOf(".");
+	return dot === -1 ? 0 : text.length - dot - 1;
+}
+/**
+* Move a slider one step left or right, within its range and on its grid.
+*
+* @return {boolean} whether the value changed
+*/
+function stepSlider(el, sign) {
+	const min = el.min === "" ? 0 : parseFloat(el.min);
+	const max = el.max === "" ? 100 : parseFloat(el.max);
+	if (!(max > min)) return false;
+	let grid = parseFloat(el.step);
+	if (!(grid > 0)) grid = (max - min) / 100;
+	const stride = Math.max(grid, Math.round((max - min) / STEPS / grid) * grid);
+	const current = parseFloat(el.value);
+	const from = isNaN(current) ? min : current;
+	let next = min + Math.round((from + sign * stride - min) / grid) * grid;
+	next = Math.min(max, Math.max(min, next));
+	next = Number(next.toFixed(Math.max(decimals(grid), decimals(min))));
+	if (next === from) return false;
+	el.value = String(next);
+	fire(el, "input");
+	clearTimeout(_pending$1.get(el));
+	_pending$1.set(el, setTimeout(() => {
+		_pending$1.delete(el);
+		fire(el, "change");
+	}, CHANGE_AFTER_MS));
+	return true;
+}
+/**
+* Choose the previous or next choice of a list, past those that are off.
+* It stops at the ends.
+*
+* @return {boolean} whether the choice changed
+*/
+function stepSelect(el, sign) {
+	const options = el.options;
+	for (let i = el.selectedIndex + sign; i >= 0 && i < options.length; i += sign) if (!options[i].disabled) {
+		el.selectedIndex = i;
+		fire(el, "input");
+		fire(el, "change");
+		return true;
+	}
+	return false;
+}
+/**
+* A D-pad press on a value control: left and right change the value.
+*
+* @param {Element} el the focused element
+* @param {string} direction 'up', 'down', 'left' or 'right'
+* @return {boolean} true when the press was the control's: the focus stays
+*/
+function step(el, direction) {
+	if (!handles(el) || direction !== "left" && direction !== "right") return false;
+	const sign = direction === "right" ? 1 : -1;
+	if (isSlider(el)) stepSlider(el, sign);
+	else stepSelect(el, sign);
+	return true;
+}
+/**
+* Send now a slider's change that waits for its steps to stop (menus end).
+*/
+function flush() {
+	_pending$1.forEach((timer, el) => {
+		clearTimeout(timer);
+		fire(el, "change");
+	});
+	_pending$1.clear();
+}
+/**
+* Hints for the hint bar.
+*
+* @param {?Element} el the focused element
+* @return {Array<Array>}
+*/
+function hints$1(el) {
+	return handles(el) ? [["◀▶", "Change"]] : [];
+}
+var STEPS, CHANGE_AFTER_MS, SLIDER, _pending$1, JoystickValueInput_default;
+var init_JoystickValueInput = __esmMin((() => {
+	STEPS = 20;
+	CHANGE_AFTER_MS = 250;
+	SLIDER = "input[type=\"range\"]";
+	_pending$1 = /* @__PURE__ */ new Map();
+	JoystickValueInput_default = {
+		handles,
+		isSlider,
+		step,
+		flush,
+		hints: hints$1
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickKeyboard.js
+function prefs() {
+	if (!_prefs) {
+		_prefs = Preferences.get("JoystickKeyboard", {
+			phrases: DEFAULT_PHRASES.slice(),
+			mode: "grid"
+		}, 1);
+		if (!Array.isArray(_prefs.phrases)) _prefs.phrases = DEFAULT_PHRASES.slice();
+		_prefs.phrases = cleanPhrases(_prefs.phrases);
+		if (_prefs.mode !== "wheel") _prefs.mode = "grid";
+	}
+	return _prefs;
+}
+function cleanPhrases(list) {
+	return list.filter((phrase) => typeof phrase === "string" && phrase.length > 0).map((phrase) => phrase.slice(0, PHRASE_LENGTH_MAX)).slice(0, PHRASES_MAX);
+}
+function phrases() {
+	return prefs().phrases;
+}
+function storePhrases(list) {
+	const stored = prefs();
+	stored.phrases = cleanPhrases(list);
+	stored.save();
+}
+function mode() {
+	return prefs().mode;
+}
+function toggleMode() {
+	const stored = prefs();
+	stored.mode = stored.mode === "wheel" ? "grid" : "wheel";
+	stored.save();
+	_petal = null;
+	render$9();
+}
+/**
+* The element with the keyboard focus, through shadow roots.
+*/
+function deepActive() {
+	let el = typeof document !== "undefined" ? document.activeElement : null;
+	while (el && el.shadowRoot && el.shadowRoot.activeElement) el = el.shadowRoot.activeElement;
+	return el;
+}
+/**
+* Whether an element takes typed text.
+*
+* @param {?Element} el
+* @return {boolean}
+*/
+function isTextField(el) {
+	if (!el || el.nodeType !== 1 || el.disabled || el.readOnly) return false;
+	if (el.matches(TEXT_FIELD)) return true;
+	const editable = el.getAttribute("contenteditable");
+	return el.isContentEditable === true || editable === "" || editable === "true";
+}
+/**
+* The longest text the field takes (the chat sets maxLength on its element), 0: no limit.
+*/
+function maxLength() {
+	const max = _field ? Number(_field.maxLength) : 0;
+	return max > 0 ? max : 0;
+}
+/**
+* An editable element: type into a text node of its own, after what is
+* there. When there is only text, that text is the node's, and can be edited.
+*/
+function attachNode() {
+	if (Array.from(_field.childNodes).some((node) => node.nodeType === 1 && node.tagName !== "BR")) {
+		_prefix = _field.textContent;
+		_node = document.createTextNode("");
+	} else {
+		_prefix = "";
+		_node = document.createTextNode(_field.textContent);
+		_field.textContent = "";
+	}
+	_field.appendChild(_node);
+	_text = _node.data;
+	_caret = _text.length;
+}
+function placeCaret() {
+	if (_kind !== "value") return;
+	try {
+		_field.setSelectionRange(_caret, _caret);
+	} catch {}
+}
+/**
+* Put the text in the field, as typing would.
+*/
+function write() {
+	if (!_field) return;
+	if (_kind === "value") {
+		_field.value = _text;
+		placeCaret();
+	} else {
+		if (_node.parentNode !== _field) _field.appendChild(_node);
+		_node.data = _text;
+	}
+	_field.dispatchEvent(new Event("input", {
+		bubbles: true,
+		composed: true
+	}));
+	render$9();
+}
+/**
+* The player typed on a real keyboard as well: take the field's text as it is.
+*/
+function onFieldInput(event) {
+	if (!event.isTrusted || !_open$1) return;
+	if (_kind === "value") {
+		_text = _field.value;
+		_caret = typeof _field.selectionStart === "number" ? _field.selectionStart : _text.length;
+	} else if (_node && _node.parentNode === _field) {
+		_text = _node.data;
+		_caret = Math.min(_caret, _text.length);
+	} else attachNode();
+	render$9();
+}
+function insert(str) {
+	let add = _numeric ? str.replace(/[^0-9]/g, "") : str;
+	if (!add) return;
+	const max = maxLength();
+	if (max) {
+		const room = max - (_prefix.length + _text.length);
+		if (room <= 0) return;
+		add = add.slice(0, room);
+	}
+	_text = _text.slice(0, _caret) + add + _text.slice(_caret);
+	_caret += add.length;
+	write();
+}
+function backspace() {
+	if (_caret <= 0) return;
+	_text = _text.slice(0, _caret - 1) + _text.slice(_caret);
+	_caret--;
+	write();
+}
+function moveCaret(delta) {
+	const caret = Math.max(0, Math.min(_text.length, _caret + delta));
+	if (caret === _caret) return;
+	_caret = caret;
+	placeCaret();
+	render$9();
+}
+function isLetter(c) {
+	return c.toLocaleUpperCase() !== c.toLocaleLowerCase();
+}
+function shifted(c) {
+	if (!_shift || !isLetter(c) || c === "ß") return c;
+	return c.toLocaleUpperCase();
+}
+function typeChar(c) {
+	insert(shifted(c));
+	if (_shift === 1 && isLetter(c)) {
+		_shift = 0;
+		render$9();
+	}
+}
+function cycleShift() {
+	_shift = (_shift + 1) % 3;
+	render$9();
+}
+/**
+* Let go of the field: without the keyboard focus, the next Menu press
+* opens the chat (and the keyboard) again instead of sending.
+*/
+function release(field) {
+	if (deepActive() !== field) return;
+	field.dataset.skipRestoreFocus = "1";
+	field.blur();
+	delete field.dataset.skipRestoreFocus;
+}
+/**
+* Enter on the field, as a keyboard's: the chat sends, a box takes its answer.
+*/
+function pressEnter(field) {
+	field.dispatchEvent(new KeyboardEvent("keydown", {
+		key: "Enter",
+		code: "Enter",
+		keyCode: 13,
+		which: 13,
+		bubbles: true,
+		cancelable: true,
+		composed: true
+	}));
+}
+function isGerman() {
+	const language = typeof navigator !== "undefined" && navigator.language || "";
+	return /^de\b/i.test(language);
+}
+function charRows(page) {
+	if (page === "signs") return [
+		"1234567890",
+		"!'\"#$%&*()",
+		"-_=+/\\:;<>",
+		"[]{}^~|,.?"
+	];
+	if (page === "accents") return [
+		"äöüßéèêëàá",
+		"âçñóòôúùûí",
+		"ìîïœæøå¿¡€"
+	];
+	return isGerman() ? [
+		"1234567890",
+		"qwertzuiop",
+		"asdfghjkl@",
+		"yxcvbnm,.?"
+	] : [
+		"1234567890",
+		"qwertyuiop",
+		"asdfghjkl@",
+		"zxcvbnm,.?"
+	];
+}
+function nextPage() {
+	const page = _page$1 === "phrases" ? _lastPage : _page$1;
+	return PAGE_ORDER[(PAGE_ORDER.indexOf(page) + 1) % PAGE_ORDER.length];
+}
+function onWheel() {
+	return mode() === "wheel" && _page$1 !== "phrases";
+}
+/**
+* The keys of the grid (or the phrase list) row by row; every row is
+* ROW_UNITS keys wide.
+*/
+function currentRows() {
+	if (_page$1 === "phrases") {
+		const rows = phrases().map((text, index) => [{
+			action: "phrase",
+			index,
+			label: text,
+			width: 8.5
+		}, {
+			action: "delete",
+			index,
+			label: "✕",
+			width: 1.5
+		}]);
+		rows.push(_password ? [{
+			action: "letters",
+			label: PAGE_LABEL[_lastPage],
+			width: 5
+		}, {
+			action: "done",
+			label: "Done",
+			width: 5
+		}] : [
+			{
+				action: "letters",
+				label: PAGE_LABEL[_lastPage],
+				width: 3
+			},
+			{
+				action: "save",
+				label: "Save text",
+				width: 4
+			},
+			{
+				action: "done",
+				label: "Done",
+				width: 3
+			}
+		]);
+		return rows;
+	}
+	const rows = charRows(_page$1).map((chars) => Array.from(chars).map((value) => ({
+		action: "char",
+		value,
+		label: value,
+		width: 1
+	})));
+	rows.push([
+		{
+			action: "shift",
+			label: "⇧",
+			width: 1.5
+		},
+		{
+			action: "page",
+			label: PAGE_LABEL[nextPage()],
+			width: 1.5
+		},
+		{
+			action: "phrases",
+			label: "★",
+			width: 1.5
+		},
+		{
+			action: "space",
+			label: "Space",
+			width: 2.5
+		},
+		{
+			action: "backspace",
+			label: "⌫",
+			width: 1.5
+		},
+		{
+			action: "done",
+			label: "Done",
+			width: 1.5
+		}
+	]);
+	return rows;
+}
+function currentKey() {
+	const rows = currentRows();
+	const row = rows[Math.min(_row, rows.length - 1)];
+	return row[Math.min(_col, row.length - 1)];
+}
+function centerOf(row, col) {
+	let x = 0;
+	for (let i = 0; i < col; i++) x += row[i].width;
+	return x + row[col].width / 2;
+}
+/**
+* The key of a row nearest to a point along it.
+*/
+function nearest(row, x) {
+	let best = 0;
+	for (let i = 1; i < row.length; i++) if (Math.abs(centerOf(row, i) - x) < Math.abs(centerOf(row, best) - x)) best = i;
+	return best;
+}
+/**
+* The next key that way, wrapping around.
+*/
+function moveFocus(direction) {
+	const rows = currentRows();
+	_row = Math.min(_row, rows.length - 1);
+	const row = rows[_row];
+	_col = Math.min(_col, row.length - 1);
+	if (direction === "left" || direction === "right") _col = (_col + (direction === "right" ? 1 : -1) + row.length) % row.length;
+	else {
+		const x = centerOf(row, _col);
+		_row = (_row + (direction === "down" ? 1 : -1) + rows.length) % rows.length;
+		_col = nearest(rows[_row], x);
+	}
+	render$9();
+}
+function setPage(page) {
+	if (page === _page$1) return;
+	const rows = currentRows();
+	const row = rows[Math.min(_row, rows.length - 1)];
+	const x = centerOf(row, Math.min(_col, row.length - 1));
+	if (page === "phrases") {
+		_lastPage = _page$1;
+		_page$1 = page;
+		_row = 0;
+		_col = 0;
+	} else {
+		_page$1 = page;
+		const next = currentRows();
+		_row = Math.min(_row, next.length - 1);
+		_col = nearest(next[_row], x);
+	}
+	render$9();
+}
+function usePhrase(index) {
+	const phrase = phrases()[index];
+	if (phrase === void 0) return;
+	setPage(_lastPage);
+	insert(phrase);
+	if (mode() === "grid") {
+		const rows = currentRows();
+		_row = rows.length - 1;
+		_col = rows[_row].findIndex((key) => key.action === "done");
+		render$9();
+	}
+}
+function deletePhrase(index) {
+	const list = phrases().slice();
+	list.splice(index, 1);
+	storePhrases(list);
+	const rows = currentRows();
+	_row = Math.min(_row, rows.length - 1);
+	_col = Math.min(_col, rows[_row].length - 1);
+	render$9();
+}
+/**
+* Keep the typed text as a phrase, first in the list.
+*/
+function saveText() {
+	if (_password || !_text.trim()) return;
+	storePhrases([_text].concat(phrases().filter((phrase) => phrase !== _text)));
+	render$9();
+}
+function activate$1(key) {
+	switch (key.action) {
+		case "char":
+			typeChar(key.value);
+			break;
+		case "shift":
+			cycleShift();
+			break;
+		case "page":
+			setPage(nextPage());
+			break;
+		case "phrases":
+			setPage("phrases");
+			break;
+		case "letters":
+			setPage(_lastPage);
+			break;
+		case "space":
+			insert(" ");
+			break;
+		case "backspace":
+			backspace();
+			break;
+		case "done":
+			done();
+			break;
+		case "phrase":
+			usePhrase(key.index);
+			break;
+		case "delete":
+			deletePhrase(key.index);
+			break;
+		case "save": saveText();
+	}
+}
+/**
+* Keys pressed with the mouse or a touch screen. The press never takes the
+* focus from the field.
+*/
+function onPointerDown(event) {
+	event.preventDefault();
+	if (!_open$1 || !event.target.closest) return;
+	const key = event.target.closest(".jk-key");
+	if (key) {
+		_row = Number(key.dataset.row);
+		_col = Number(key.dataset.col);
+		activate$1(currentKey());
+		return;
+	}
+	const letter = event.target.closest(".jk-letter");
+	if (letter) typeChar(letter.dataset.char);
+}
+function ensurePanel() {
+	if (_panel && _panel.parentNode) return _panel;
+	_panel = document.createElement("div");
+	_panel.className = "joystick-keyboard";
+	Object.assign(_panel.style, {
+		position: "fixed",
+		left: "50%",
+		transform: "translateX(-50%)",
+		zIndex: 10002,
+		background: "rgba(20, 20, 24, 0.95)",
+		border: "1px solid #555",
+		borderRadius: "8px",
+		padding: "8px",
+		fontFamily: "sans-serif",
+		color: "#eee",
+		userSelect: "none",
+		boxShadow: "0 4px 12px rgba(0, 0, 0, 0.6)"
+	});
+	_panel.addEventListener("pointerdown", onPointerDown);
+	_panel.addEventListener("mousedown", (event) => event.preventDefault());
+	document.body.appendChild(_panel);
+	return _panel;
+}
+function span(text, style) {
+	const el = document.createElement("span");
+	el.textContent = text;
+	Object.assign(el.style, style || {});
+	return el;
+}
+function renderPreview$1() {
+	const box = document.createElement("div");
+	box.className = "jk-preview";
+	Object.assign(box.style, {
+		background: "#000",
+		border: "1px solid #444",
+		borderRadius: "4px",
+		padding: "4px 6px",
+		marginBottom: "6px",
+		minHeight: "18px",
+		width: "313px",
+		whiteSpace: "pre",
+		overflow: "hidden",
+		fontSize: "14px"
+	});
+	const shown = _password ? "•".repeat(_text.length) : _text;
+	if (_prefix) box.appendChild(span(_prefix, { color: "#888" }));
+	box.appendChild(span(shown.slice(0, _caret)));
+	const caret = span("", {
+		borderLeft: "2px solid #ffd740",
+		marginLeft: "-1px"
+	});
+	caret.className = "jk-caret";
+	box.appendChild(caret);
+	box.appendChild(span(shown.slice(_caret)));
+	return box;
+}
+function renderGrid() {
+	const grid = document.createElement("div");
+	grid.className = "jk-keys";
+	Object.assign(grid.style, {
+		display: "grid",
+		gridTemplateColumns: `repeat(20, ${27 / 2}px)`,
+		columnGap: "3px",
+		rowGap: "3px"
+	});
+	const rows = currentRows();
+	let first = 0;
+	let last = rows.length - 1;
+	if (_page$1 === "phrases" && rows.length - 1 > PHRASES_SHOWN) {
+		const focus = Math.min(_row, rows.length - 2);
+		first = Math.max(0, Math.min(focus - 2, rows.length - 1 - PHRASES_SHOWN));
+		last = first + PHRASES_SHOWN - 1;
+	}
+	rows.forEach((row, r) => {
+		if ((r < first || r > last) && r !== rows.length - 1) return;
+		row.forEach((key, c) => {
+			const el = document.createElement("div");
+			el.className = "jk-key";
+			el.dataset.row = String(r);
+			el.dataset.col = String(c);
+			el.textContent = key.action === "char" ? shifted(key.label) : key.label;
+			const focused = r === _row && c === _col;
+			const lit = key.action === "shift" && _shift > 0;
+			Object.assign(el.style, {
+				gridColumn: `span ${key.width * 2}`,
+				height: "26px",
+				lineHeight: "26px",
+				textAlign: key.action === "phrase" ? "left" : "center",
+				padding: key.action === "phrase" ? "0 6px" : "0",
+				overflow: "hidden",
+				textOverflow: "ellipsis",
+				whiteSpace: "nowrap",
+				fontSize: "13px",
+				borderRadius: "3px",
+				cursor: "pointer",
+				background: focused ? "#5a4a10" : "#333",
+				border: focused ? "1px solid #ffd740" : "1px solid #666",
+				color: lit ? "#ffd740" : "#eee",
+				textDecoration: lit && _shift === 2 ? "underline" : "none"
+			});
+			if (focused) el.classList.add("jk-focused");
+			grid.appendChild(el);
+		});
+	});
+	if (_page$1 === "phrases" && rows.length === 1) {
+		const empty = document.createElement("div");
+		empty.textContent = "No phrases yet: type one, then Save text.";
+		Object.assign(empty.style, {
+			gridColumn: `span 20`,
+			color: "#888",
+			fontSize: "12px"
+		});
+		grid.insertBefore(empty, grid.firstChild);
+	}
+	return grid;
+}
+function renderWheel() {
+	const size = 236;
+	const radius = 84;
+	const petalSize = 60;
+	const wheel = document.createElement("div");
+	wheel.className = "jk-wheel";
+	Object.assign(wheel.style, {
+		position: "relative",
+		width: "236px",
+		height: "236px",
+		margin: "0 auto"
+	});
+	const places = [
+		{
+			left: "50%",
+			top: "2px",
+			transform: "translateX(-50%)"
+		},
+		{
+			right: "5px",
+			top: "50%",
+			transform: "translateY(-50%)"
+		},
+		{
+			left: "50%",
+			bottom: "2px",
+			transform: "translateX(-50%)"
+		},
+		{
+			left: "5px",
+			top: "50%",
+			transform: "translateY(-50%)"
+		}
+	];
+	WHEEL[_page$1].forEach((group, i) => {
+		const angle = i * Math.PI / 4;
+		const petal = document.createElement("div");
+		petal.className = "jk-petal";
+		const selected = i === _petal;
+		if (selected) petal.classList.add("jk-selected");
+		Object.assign(petal.style, {
+			position: "absolute",
+			left: size / 2 + radius * Math.sin(angle) - petalSize / 2 + "px",
+			top: size / 2 - radius * Math.cos(angle) - petalSize / 2 + "px",
+			width: "60px",
+			height: "60px",
+			borderRadius: "50%",
+			background: selected ? "#5a4a10" : "#333",
+			border: selected ? "2px solid #ffd740" : "1px solid #666",
+			boxSizing: "border-box"
+		});
+		Array.from(group).forEach((c, slot) => {
+			const letter = span(shifted(c), {
+				position: "absolute",
+				fontSize: "14px",
+				fontWeight: "bold",
+				cursor: "pointer",
+				color: selected ? SLOT_COLOR[slot] : "#ddd",
+				...places[slot]
+			});
+			letter.className = "jk-letter";
+			letter.dataset.char = c;
+			petal.appendChild(letter);
+		});
+		wheel.appendChild(petal);
+	});
+	const n = JoystickButtonMap_default.nameOf;
+	const middle = span(n(BTN$1.Y) + " space\n" + n(BTN$1.X) + " ⌫\n" + n(BTN$1.B) + " close", {
+		position: "absolute",
+		left: "50%",
+		top: "50%",
+		transform: "translate(-50%, -50%)",
+		whiteSpace: "pre",
+		textAlign: "center",
+		fontSize: "10px",
+		color: "#999"
+	});
+	wheel.appendChild(middle);
+	return wheel;
+}
+function renderHints() {
+	const n = JoystickButtonMap_default.nameOf;
+	const parts = [
+		onWheel() ? ["Stick + " + [
+			n(BTN$1.Y),
+			n(BTN$1.B),
+			n(BTN$1.A),
+			n(BTN$1.X)
+		].join("/"), "Letter"] : [n(BTN$1.A), "Type"],
+		[n(BTN$1.X), "⌫"],
+		[n(BTN$1.Y), "Space"],
+		[n(BTN$1.LB) + "/" + n(BTN$1.RB), "Caret"],
+		[n(BTN$1.LT), "Shift"],
+		[n(BTN$1.RT), "Page"],
+		[n(BTN$1.VIEW), "Phrases"],
+		[n(BTN$1.RS), mode() === "wheel" ? "Grid" : "Wheel"],
+		[n(BTN$1.MENU), "Done"],
+		[n(BTN$1.B), "Close"]
+	];
+	const bar = document.createElement("div");
+	bar.className = "jk-hints";
+	Object.assign(bar.style, {
+		marginTop: "6px",
+		fontSize: "11px",
+		color: "#bbb",
+		width: "327px",
+		lineHeight: "15px"
+	});
+	parts.forEach(([key, text], i) => {
+		if (i) bar.appendChild(document.createTextNode("  ·  "));
+		bar.appendChild(span(key, {
+			color: "#ffd740",
+			fontWeight: "bold"
+		}));
+		bar.appendChild(document.createTextNode(" " + text));
+	});
+	return bar;
+}
+function render$9() {
+	if (!_open$1) return;
+	const panel = ensurePanel();
+	panel.style.bottom = JoystickFocusOverlay_default.bottomAboveHud() + "px";
+	panel.textContent = "";
+	const preview = renderPreview$1();
+	panel.appendChild(preview);
+	panel.appendChild(onWheel() ? renderWheel() : renderGrid());
+	panel.appendChild(renderHints());
+	const caret = preview.querySelector(".jk-caret");
+	if (caret) preview.scrollLeft = Math.max(0, caret.offsetLeft - preview.clientWidth + 24);
+}
+/**
+* A button press while the keyboard is open.
+*
+* @param {number} button logical button
+* @return {boolean} whether holding it repeats what it did
+*/
+function press(button) {
+	switch (button) {
+		case BTN$1.LB:
+			moveCaret(-1);
+			return true;
+		case BTN$1.RB:
+			moveCaret(1);
+			return true;
+		case BTN$1.LT:
+			cycleShift();
+			return false;
+		case BTN$1.RT:
+			setPage(_page$1 === "phrases" ? _lastPage : nextPage());
+			return false;
+		case BTN$1.VIEW:
+			setPage(_page$1 === "phrases" ? _lastPage : "phrases");
+			return false;
+		case BTN$1.MENU:
+			done();
+			return false;
+		case BTN$1.RS:
+			toggleMode();
+			return false;
+	}
+	if (onWheel()) {
+		if (FACE_SLOT[button] !== void 0 && _petal !== null) {
+			typeChar(WHEEL[_page$1][_petal][FACE_SLOT[button]]);
+			return false;
+		}
+		if (button === BTN$1.LEFT || button === BTN$1.RIGHT) {
+			moveCaret(button === BTN$1.RIGHT ? 1 : -1);
+			return true;
+		}
+	} else if (DIRECTIONS[button]) {
+		moveFocus(DIRECTIONS[button]);
+		return true;
+	} else if (button === BTN$1.A) {
+		activate$1(currentKey());
+		return false;
+	}
+	switch (button) {
+		case BTN$1.B:
+			close$1();
+			return false;
+		case BTN$1.X:
+			backspace();
+			return true;
+		case BTN$1.Y:
+			insert(" ");
+			return false;
+	}
+	return false;
+}
+/**
+* The stick that walks (the left one, the right one with the sticks swapped).
+*/
+function walkStick(gp) {
+	const axes = gp && gp.axes ? JoystickStickFilter_default.filterAxes(gp.axes) : [];
+	const swapped = Controls_default.joyReverseStick && axes.length >= 4;
+	return {
+		x: axes[swapped ? 2 : 0] || 0,
+		y: axes[swapped ? 3 : 1] || 0
+	};
+}
+/**
+* The wheel: the stick picks the group it points at.
+*/
+function pointWheel(gp) {
+	const { x, y } = walkStick(gp);
+	let petal = null;
+	if (Math.hypot(x, y) >= STICK_PUSH) {
+		const angle = Math.atan2(x, -y);
+		petal = (Math.round(angle / (Math.PI / 4)) + 8) % 8;
+	}
+	if (petal !== _petal) {
+		_petal = petal;
+		render$9();
+	}
+}
+/**
+* The grid: the stick moves between keys as the D-pad does.
+*/
+function moveWithStick(gp, now) {
+	const { x, y } = walkStick(gp);
+	let direction = null;
+	if (Math.max(Math.abs(x), Math.abs(y)) >= STICK_PUSH) {
+		if (Math.abs(x) > Math.abs(y)) direction = x > 0 ? "right" : "left";
+		else direction = y > 0 ? "down" : "up";
+	}
+	if (_stickDir === void 0) {
+		_stickDir = direction;
+		_stickNextAt = Infinity;
+		return;
+	}
+	if (direction !== _stickDir) {
+		_stickDir = direction;
+		if (direction) {
+			moveFocus(direction);
+			_stickNextAt = now + REPEAT_DELAY_MS$1;
+		}
+		return;
+	}
+	if (direction && now >= _stickNextAt) {
+		moveFocus(direction);
+		_stickNextAt = now + REPEAT_EVERY_MS$1;
+	}
+}
+/**
+* One animation frame while the keyboard is open (JoystickUIFocus).
+*
+* @param {Gamepad} gp
+* @param {{pressed: Array<number>}} events logical buttons pressed since the last frame
+* @param {Array<boolean>} down logical buttons down now
+* @param {number} now
+*/
+function frame$2(gp, events, down, now) {
+	if (!_open$1) return;
+	const host = _field && _field.isConnected ? _field.getRootNode().host : null;
+	if (!_field || !_field.isConnected || host && host.style.display === "none") {
+		finish();
+		return;
+	}
+	if (onWheel()) {
+		pointWheel(gp);
+		_stickDir = void 0;
+	} else moveWithStick(gp, now);
+	events.pressed.forEach((button) => {
+		if (_open$1 && press(button)) _nextAt.set(button, now + REPEAT_DELAY_MS$1);
+	});
+	_nextAt.forEach((at, button) => {
+		if (!_open$1 || !down[button]) _nextAt.delete(button);
+		else if (now >= at) {
+			if (press(button)) _nextAt.set(button, now + REPEAT_EVERY_MS$1);
+			else _nextAt.delete(button);
+		}
+	});
+}
+/**
+* Open the keyboard on a field.
+*
+* @param {Element} field
+* @return {boolean} false when the element takes no text
+*/
+function open(field) {
+	if (!isTextField(field)) return false;
+	if (_open$1) close$1();
+	_field = field;
+	_kind = field.matches(TEXT_FIELD) ? "value" : "editable";
+	_numeric = field.matches(NUMBER_FIELD) || !!field.closest("#inputbox.number");
+	_password = field.matches("input[type=\"password\"]");
+	if (_kind === "value") {
+		_node = null;
+		_prefix = "";
+		_text = field.value || "";
+		_caret = _text.length;
+	} else attachNode();
+	_page$1 = _numeric ? "signs" : "letters";
+	_lastPage = _page$1;
+	_shift = 0;
+	_row = _numeric ? 0 : 1;
+	_col = 0;
+	_petal = null;
+	_nextAt = /* @__PURE__ */ new Map();
+	_stickDir = void 0;
+	_open$1 = true;
+	field.addEventListener("input", onFieldInput);
+	if (typeof field.focus === "function" && deepActive() !== field) field.focus();
+	render$9();
+	return true;
+}
+/**
+* Close the keyboard: the field keeps its text and hears `change`.
+*/
+function finish() {
+	if (!_open$1) return;
+	_open$1 = false;
+	const field = _field;
+	_field = null;
+	_node = null;
+	_nextAt = /* @__PURE__ */ new Map();
+	_stickDir = void 0;
+	_petal = null;
+	if (_panel && _panel.parentNode) _panel.parentNode.removeChild(_panel);
+	_panel = null;
+	if (field) {
+		field.removeEventListener("input", onFieldInput);
+		if (_kind === "value" && field.isConnected) field.dispatchEvent(new Event("change", { bubbles: true }));
+	}
+}
+/**
+* Done (Menu): the text is entered, as Enter enters it. A text area takes
+* Enter as a new line, so there it is only closed.
+*/
+function done() {
+	const field = _field;
+	finish();
+	if (!field || !field.isConnected) return;
+	if (field.tagName !== "TEXTAREA") {
+		if (deepActive() !== field && typeof field.focus === "function") field.focus();
+		pressEnter(field);
+	}
+	if (field.isConnected) release(field);
+}
+/**
+* Close (B): the text stays in the field, nothing is entered.
+*/
+function close$1() {
+	const field = _field;
+	finish();
+	if (field && field.isConnected) release(field);
+}
+/**
+* The keyboard for a field that has just taken the focus: Menu (Enter)
+* opened the chat.
+*
+* @param {?Element} before the field with the focus before
+* @return {boolean} whether the keyboard opened
+*/
+function openIfFocused(before) {
+	const field = deepActive();
+	if (!field || field === before || !isTextField(field)) return false;
+	return open(field);
+}
+/**
+* The text field with the focus now, if any.
+*/
+function focusedField() {
+	const el = deepActive();
+	return isTextField(el) ? el : null;
+}
+var BTN$1, REPEAT_DELAY_MS$1, REPEAT_EVERY_MS$1, STICK_PUSH, PHRASES_SHOWN, PHRASES_MAX, PHRASE_LENGTH_MAX, DEFAULT_PHRASES, TEXT_FIELD, NUMBER_FIELD, PAGE_ORDER, PAGE_LABEL, WHEEL, FACE_SLOT, SLOT_COLOR, DIRECTIONS, _open$1, _field, _kind, _node, _prefix, _text, _caret, _numeric, _password, _page$1, _lastPage, _shift, _row, _col, _petal, _panel, _nextAt, _stickDir, _stickNextAt, _prefs, JoystickKeyboard_default;
+var init_JoystickKeyboard = __esmMin((() => {
+	init_Controls();
+	init_Preferences$1();
+	init_JoystickButtonMap();
+	init_JoystickStickFilter();
+	init_JoystickFocusOverlay();
+	BTN$1 = JoystickButtonMap_default.BUTTON;
+	REPEAT_DELAY_MS$1 = 350;
+	REPEAT_EVERY_MS$1 = 90;
+	STICK_PUSH = .5;
+	PHRASES_SHOWN = 6;
+	PHRASES_MAX = 30;
+	PHRASE_LENGTH_MAX = 255;
+	DEFAULT_PHRASES = [
+		"Hi!",
+		"Thanks!",
+		"@autoloot",
+		"@storage",
+		"@go ",
+		"@warp "
+	];
+	TEXT_FIELD = [
+		"input:not([type])",
+		"input[type=\"text\"]",
+		"input[type=\"search\"]",
+		"input[type=\"password\"]",
+		"input[type=\"email\"]",
+		"input[type=\"number\"]",
+		"input[type=\"tel\"]",
+		"input[type=\"url\"]",
+		"textarea"
+	].join(",");
+	NUMBER_FIELD = "input[type=\"number\"], [inputmode=\"numeric\"], [inputmode=\"decimal\"]";
+	PAGE_ORDER = [
+		"letters",
+		"signs",
+		"accents"
+	];
+	PAGE_LABEL = {
+		letters: "abc",
+		signs: "#+=",
+		accents: "äöü"
+	};
+	WHEEL = {
+		letters: [
+			"abcd",
+			"efgh",
+			"ijkl",
+			"mnop",
+			"qrst",
+			"uvwx",
+			"yz,.",
+			"?!@'"
+		],
+		signs: [
+			"1234",
+			"5678",
+			"90-+",
+			"=/\\:",
+			";\"#$",
+			"%&*(",
+			")_<>",
+			"[]~|"
+		],
+		accents: [
+			"äöüß",
+			"éèêë",
+			"àáâç",
+			"ñóòô",
+			"úùûí",
+			"ìîïœ",
+			"æøå€",
+			"¿¡^`"
+		]
+	};
+	FACE_SLOT = {
+		[BTN$1.Y]: 0,
+		[BTN$1.B]: 1,
+		[BTN$1.A]: 2,
+		[BTN$1.X]: 3
+	};
+	SLOT_COLOR = [
+		"#e6c229",
+		"#e04b4b",
+		"#5cb85c",
+		"#4a90e2"
+	];
+	DIRECTIONS = {
+		[BTN$1.UP]: "up",
+		[BTN$1.DOWN]: "down",
+		[BTN$1.LEFT]: "left",
+		[BTN$1.RIGHT]: "right"
+	};
+	_open$1 = false;
+	_field = null;
+	_kind = "value";
+	_node = null;
+	_prefix = "";
+	_text = "";
+	_caret = 0;
+	_numeric = false;
+	_password = false;
+	_page$1 = "letters";
+	_lastPage = "letters";
+	_shift = 0;
+	_row = 0;
+	_col = 0;
+	_petal = null;
+	_panel = null;
+	_nextAt = /* @__PURE__ */ new Map();
+	_stickNextAt = 0;
+	_prefs = null;
+	JoystickKeyboard_default = {
+		open,
+		close: close$1,
+		done,
+		frame: frame$2,
+		isOpen() {
+			return _open$1;
+		},
+		isTextField,
+		focusedField,
+		openIfFocused,
+		/**
+		* What is being typed, for tests and the settings window.
+		*/
+		getState() {
+			return {
+				field: _field,
+				text: _text,
+				caret: _caret,
+				page: _page$1,
+				shift: _shift,
+				mode: mode(),
+				petal: _petal,
+				key: _open$1 && !onWheel() ? currentKey() : null
+			};
+		},
+		/**
+		* Saved phrases, newest first.
+		*/
+		phrases() {
+			return phrases().slice();
+		},
+		/**
+		* Read the phrases and the way to type from the browser again (tests).
+		*/
+		reload() {
+			_prefs = null;
+		}
+	};
+}));
+//#endregion
+//#region src/UI/Components/JoystickUI/JoystickUIFocus.js
+function enabled$1() {
+	return Controls_default.joyUIFocus !== false;
+}
+/**
+* Whether the gamepad was used more recently than the mouse.
+*/
+function isEngaged() {
+	return _lastPadAt > 0 && _lastPadAt >= _lastMouseAt;
+}
+/**
+* Logical buttons down, from the pad's physical ones.
+*/
+function readButtons(gp) {
+	const raw = [];
+	for (let i = 0; i < JoystickButtonMap_default.BUTTON_COUNT; i++) {
+		const button = gp && gp.buttons ? gp.buttons[i] : null;
+		raw.push(button && button.pressed ? "holding" : "unpressed");
+	}
+	return JoystickButtonMap_default.toLogical(raw).slice(0, JoystickButtonMap_default.BUTTON_COUNT).map((state) => state !== "unpressed");
+}
+/**
+* Presses and releases since the last frame.
+*/
+function track(down, now) {
+	const pressed = [];
+	const released = [];
+	let count = 0;
+	for (let i = 0; i < down.length; i++) {
+		if (down[i]) count++;
+		if (down[i] && !_down[i]) {
+			pressed.push(i);
+			_downAt[i] = now;
+			_used[i] = false;
+		} else if (!down[i] && _down[i]) released.push({
+			button: i,
+			held: now - (_downAt[i] || now),
+			used: !!_used[i],
+			armed: _armed.has(i)
+		});
+		if (!down[i]) {
+			_claimed.delete(i);
+			_armed.delete(i);
+		}
+	}
+	if (pressed.length && count > 1) {
+		for (let i = 0; i < down.length; i++) if (down[i]) _used[i] = true;
+	}
+	_down = down;
+	return {
+		pressed,
+		released
+	};
+}
+function noteActivity(gp, down, now) {
+	if (down.some(Boolean)) {
+		_lastPadAt = now;
+		return;
+	}
+	const axes = gp && gp.axes ? JoystickStickFilter_default.filterAxes(gp.axes) : [];
+	const threshold = Math.max(ACTIVITY_AXIS, Controls_default.joyDeadline || 0);
+	for (let i = 0; i < axes.length; i++) if (Math.abs(axes[i]) > threshold) {
+		_lastPadAt = now;
+		return;
+	}
+}
+/**
+* Run what waited for every button to be let go: a window that reads the
+* pad itself (the slot picker) must not get the press that opened it.
+*/
+function runAfterRelease() {
+	if (!_afterRelease.length || _down.some(Boolean)) return;
+	const list = _afterRelease;
+	_afterRelease = [];
+	list.forEach((fn) => {
+		try {
+			fn();
+		} catch (error) {
+			console.error("[JoystickUIFocus] deferred action failed", error);
+		}
+	});
+}
+function afterRelease(fn) {
+	_afterRelease.push(fn);
+}
+/**
+* View: a tap turns menus on or off, a hold alone shows the info of what
+* the cursor (or the ring) is on. With another button it is a modifier,
+* handled in JoystickButtonInput and JoystickCameraMotion.
+*/
+function handleView(events, now) {
+	const view = BTN.VIEW;
+	if (events.pressed.indexOf(view) !== -1) {
+		_viewHoldFired = false;
+		_viewArmed = true;
+	}
+	const release = events.released.find((entry) => entry.button === view);
+	const armed = _viewArmed;
+	if (release) _viewArmed = false;
+	if (!armed) return;
+	if (_down[view] && !_used[view] && !_viewHoldFired && now - _downAt[view] >= HOLD_MS) {
+		_viewHoldFired = true;
+		if (_active$3 && _el && !_detached) info();
+		else JoystickMouseCursorAdapter_default.contextMenu();
+	}
+	if (release && !release.used && !_viewHoldFired && release.held < HOLD_MS) {
+		if (enabled$1()) toggle();
+		else JoystickMouseCursorAdapter_default.contextMenu();
+	}
+}
+/**
+* Whether a release ends a tap that belongs to menus.
+*/
+function isTap(entry) {
+	return entry.armed && !entry.used && entry.held < TAP_MS;
+}
+function handleButtons(events, now) {
+	const view = _down[BTN.VIEW];
+	const combo = MODIFIERS.some((button) => _down[button]);
+	if (view) _repeatButton = -1;
+	else {
+		events.pressed.forEach((button) => {
+			if (DPAD[button]) {
+				move(DPAD[button]);
+				_repeatButton = button;
+				_repeatAt = now + REPEAT_DELAY_MS;
+			}
+		});
+		if (_repeatButton !== -1) {
+			if (!_down[_repeatButton]) _repeatButton = -1;
+			else if (now >= _repeatAt) {
+				_repeatAt = now + REPEAT_EVERY_MS;
+				move(DPAD[_repeatButton]);
+			}
+		}
+	}
+	if (!view) events.pressed.forEach((button) => {
+		if (button === BTN.X || MODIFIERS.indexOf(button) !== -1) _armed.add(button);
+	});
+	if (!view && !combo && _active$3) {
+		if (events.pressed.indexOf(BTN.A) !== -1) {
+			if (JoystickCarry_default.isCarrying()) placeCarried();
+			else activate();
+		} else if (events.pressed.indexOf(BTN.B) !== -1) {
+			if (JoystickCarry_default.isCarrying()) cancelCarry();
+			else back();
+		} else if (events.pressed.indexOf(BTN.Y) !== -1) info();
+		if (events.pressed.indexOf(BTN.X) !== -1) {
+			_xHoldFired = false;
+			_xTaken = JoystickCarry_default.isCarrying();
+			if (_xTaken) placeCarried();
+		}
+	}
+	handleX(events, now, view);
+	if (!view && _active$3) events.released.forEach((entry) => {
+		if (!isTap(entry)) return;
+		if (entry.button === BTN.LT || entry.button === BTN.RT) cycleWindow(entry.button === BTN.RT ? 1 : -1);
+		else if (entry.button === BTN.LB || entry.button === BTN.RB) switchTab(entry.button === BTN.RB ? 1 : -1);
+	});
+}
+/**
+* X: held, it picks the focused element up; tapped, it opens what can be
+* done with it. Not with a shoulder button (a shortcut combo) or View.
+*/
+function handleX(events, now, view) {
+	const x = BTN.X;
+	if (_active$3 && !view && _down[x] && _armed.has(x) && !_used[x] && !_xHoldFired && !_xTaken && now - _downAt[x] >= HOLD_MS) {
+		_xHoldFired = true;
+		if (!_detached && _el && !JoystickCarry_default.isCarrying() && JoystickActionMenu_default.canMove(_el, _win)) startCarry(_el);
+	}
+	const release = events.released.find((entry) => entry.button === x);
+	if (release && isTap(release) && !_xHoldFired && !_xTaken && !view && _active$3) openActions();
+	if (release) {
+		_xHoldFired = false;
+		_xTaken = false;
+	}
+}
+/**
+* The registered component a window is, if any (popups are unregistered clones).
+*/
+function componentOf(win) {
+	const components = UIManager.components;
+	for (const name in components) {
+		const component = components[name];
+		if (component && component._host === win.host) return component;
+	}
+	return null;
+}
+/**
+* Bring a window to the front, as a click on it does.
+*/
+function raise(win) {
+	const component = componentOf(win);
+	if (component && component.focus) component.focus();
+}
+/**
+* The virtual cursor onto an element (the focused one), so that what the
+* cursor does elsewhere (a skill click over a window is meant for the
+* window) agrees with the ring.
+*/
+function parkCursor(el = _el) {
+	if (!el) return;
+	const at = JoystickDomEvents_default.centerOf(el);
+	JoystickMouseCursorAdapter_default.moveTo(at.x, at.y);
+}
+/**
+* Whether a window is passed by: never navigated, or not now (the gamepad
+* HUD, but while something is carried).
+*/
+function skipped(win) {
+	return !!win.profile.skip;
+}
+function setFocus(win, el, list, moveCursor = true) {
+	const newWindow = !_win || _win.host !== win.host;
+	if (_el && _el !== el) JoystickDomEvents_default.hover(JoystickFocusScan_default.eventTarget(_el), false);
+	_win = win;
+	_el = el;
+	_key = JoystickFocusScan_default.keyOf(el, list);
+	_ordinal = Math.max(0, list.indexOf(el));
+	_lastKey.set(win.host, _key);
+	_detached = false;
+	_visited = _visited.filter((host) => host !== win.host);
+	_visited.push(win.host);
+	if (newWindow) raise(win);
+	JoystickFocusScan_default.reveal(el, win.host);
+	JoystickDomEvents_default.hover(JoystickFocusScan_default.eventTarget(el), true);
+	if (win.profile.onFocus) win.profile.onFocus(el, win);
+	if (moveCursor) parkCursor();
+	_hintsAt = -Infinity;
+	refresh$1();
+}
+/**
+* The first element in reading order, title bar buttons (close, minimise) last.
+*/
+function firstOf(list) {
+	const body = list.filter((el) => !el.closest(".titlebar"));
+	return (body.length ? body : list).map((el) => ({
+		el,
+		rect: el.getBoundingClientRect()
+	})).sort((a, b) => JoystickSpatialNav_default.compareReadingOrder(a.rect, b.rect))[0].el;
+}
+/**
+* Move the focus into a window: where it was the last time, else where its
+* profile starts (a dialogue always starts there), else its first element.
+*
+* @return {boolean} false when the window has nothing to focus
+*/
+function focusWindow(win) {
+	const list = JoystickFocusScan_default.focusables(win);
+	if (!list.length) return false;
+	const profile = win.profile;
+	let el = null;
+	if (profile.dialog && profile.initial) el = JoystickFocusScan_default.findFirst(list, profile.initial);
+	if (!el) el = JoystickFocusScan_default.findByKey(list, _lastKey.get(win.host));
+	if (!el && profile.initial) el = JoystickFocusScan_default.findFirst(list, profile.initial);
+	if (!el) el = firstOf(list);
+	if ((!_win || _win.host !== win.host) && profile.onEnter) profile.onEnter(win);
+	setFocus(win, el, list);
+	return true;
+}
+/**
+* Where menu navigation starts when turned on by hand: a dialogue, else the
+* frontmost window the player opened, else the basic info window's menu
+* (which opens all the others), else whatever there is.
+*/
+function pickWindow(wins) {
+	const usable = (wins || JoystickFocusScan_default.listWindows()).filter((win) => !skipped(win) && JoystickFocusScan_default.focusables(win).length);
+	return usable.find((win) => win.profile.dialog) || usable.find((win) => !win.profile.home && !win.profile.persistent) || usable.find((win) => win.profile.home) || usable[0] || null;
+}
+/**
+* Windows the D-pad crosses into from the focused one: dialogues among
+* dialogues, the rest among the rest.
+*/
+function neighbours(win) {
+	const dialog = !!(win && win.profile.dialog);
+	return JoystickFocusScan_default.listWindows().filter((other) => (!win || other.host !== win.host) && !skipped(other) && !!other.profile.dialog === dialog);
+}
+function entriesOf(win, list) {
+	return list.map((el) => ({
+		el,
+		win,
+		rect: el.getBoundingClientRect()
+	}));
+}
+/**
+* The windows the shoulder triggers go through, left to right on screen.
+*/
+function navigableWindows() {
+	return JoystickFocusScan_default.listWindows().filter((win) => !skipped(win)).map((win) => ({
+		win,
+		list: JoystickFocusScan_default.focusables(win)
+	})).filter((entry) => entry.list.length).map((entry) => ({
+		win: entry.win,
+		bounds: JoystickFocusScan_default.boundsOf(entry.list)
+	})).sort((a, b) => a.bounds.left - b.bounds.left || a.bounds.top - b.bounds.top).map((entry) => entry.win);
+}
+/**
+* The focused window closed: on to another dialogue, else back to the
+* windows visited this time, else to a window the server opened (storage),
+* else out of menus if they were not turned on by hand.
+*/
+function windowGone() {
+	const gone = _win;
+	_win = null;
+	_el = null;
+	const wins = JoystickFocusScan_default.listWindows();
+	const dialog = wins.find((win) => win.profile.dialog && JoystickFocusScan_default.focusables(win).length);
+	if (dialog && focusWindow(dialog)) return;
+	for (let i = _visited.length - 1; i >= 0; i--) {
+		const host = _visited[i];
+		if (gone && host === gone.host) continue;
+		const win = wins.find((candidate) => candidate.host === host);
+		if (win && !skipped(win) && focusWindow(win)) return;
+	}
+	const opened = wins.find((win) => win.profile.takesFocus && JoystickFocusScan_default.focusables(win).length);
+	if (opened && focusWindow(opened)) return;
+	if (_frameTime < _followUntil) {
+		JoystickFocusOverlay_default.hideRing();
+		return;
+	}
+	settle(wins);
+}
+/**
+* Nowhere left to go: out of menus if they turned on by themselves, else
+* into whatever window is left.
+*/
+function settle(wins) {
+	if (_auto) {
+		exit();
+		return;
+	}
+	const any = pickWindow(wins);
+	if (!any || !focusWindow(any)) exit();
+}
+/**
+* Keep the focus on something real: the window may have closed, or drawn
+* its list again (the inventory does whenever an item changes).
+*/
+function validate(now) {
+	if (!_win) {
+		if (now >= _followUntil) settle();
+		return;
+	}
+	if (!JoystickFocusScan_default.isOpen(_win) || skipped(_win)) {
+		windowGone();
+		return;
+	}
+	if (_detached || _el && JoystickFocusScan_default.isStillFocusable(_el, _win)) return;
+	if (!_el && now - _lostAt < SCAN_EVERY_MS) return;
+	const list = JoystickFocusScan_default.focusables(_win);
+	if (!list.length) {
+		if (_el) JoystickDomEvents_default.hover(JoystickFocusScan_default.eventTarget(_el), false);
+		_el = null;
+		_lostAt = now;
+		JoystickFocusOverlay_default.hideRing();
+		return;
+	}
+	const profile = _win.profile;
+	let el = JoystickFocusScan_default.findByKey(list, _key);
+	if (!el && profile.dialog && profile.initial) el = JoystickFocusScan_default.findFirst(list, profile.initial);
+	if (!el) el = list[Math.min(_ordinal, list.length - 1)];
+	setFocus(_win, el, list);
+}
+/**
+* The right stick moved the cursor: the ring goes to what it rests on.
+* Only the stick: a skill moving the cursor onto its target leaves the ring
+* where it is.
+*/
+function followCursor() {
+	const hit = JoystickFocusScan_default.focusableAt(Mouse.screen.x, Mouse.screen.y);
+	if (hit && !skipped(hit.win)) {
+		if (hit.el !== _el) setFocus(hit.win, hit.el, JoystickFocusScan_default.focusables(hit.win), false);
+		else if (_detached) {
+			JoystickDomEvents_default.hover(JoystickFocusScan_default.eventTarget(_el), true);
+			_hintsAt = -Infinity;
+		}
+		_detached = false;
+	} else if (!_detached) {
+		if (_el) JoystickDomEvents_default.hover(JoystickFocusScan_default.eventTarget(_el), false);
+		_detached = true;
+		_hintsAt = -Infinity;
+	}
+}
+/**
+* The D-pad: the profile first (an amount box counts), then the NPC text
+* scrolls, then the focus moves.
+*/
+function move(direction) {
+	if (!_win) return;
+	const profile = _win.profile;
+	if (!_detached && _el && profile.direction && profile.direction(direction, _el, _win)) {
+		_hintsAt = -Infinity;
+		return;
+	}
+	if (!_detached && _el && JoystickValueInput_default.step(_el, direction)) {
+		_hintsAt = -Infinity;
+		return;
+	}
+	if (!_detached && profile.scroll && (direction === "up" || direction === "down")) {
+		if (JoystickFocusScan_default.scrollBy(_win.root.querySelector(profile.scroll), direction)) return;
+	}
+	const from = _detached || !_el ? {
+		left: Mouse.screen.x,
+		top: Mouse.screen.y,
+		right: Mouse.screen.x + 1,
+		bottom: Mouse.screen.y + 1
+	} : _el.getBoundingClientRect();
+	const list = JoystickFocusScan_default.focusables(_win);
+	const own = entriesOf(_win, list.filter((el) => el !== _el || _detached));
+	let next = JoystickSpatialNav_default.findNext(from, own, direction);
+	if (!next) {
+		const others = [];
+		neighbours(_win).forEach((win) => others.push(...entriesOf(win, JoystickFocusScan_default.focusables(win))));
+		next = JoystickSpatialNav_default.findNext(from, others, direction);
+	}
+	if (!next && profile.wrap) next = JoystickSpatialNav_default.findWrap(from, own, direction);
+	if (next) {
+		_tabFocus = null;
+		setFocus(next.win, next.el, next.win === _win ? list : JoystickFocusScan_default.focusables(next.win));
+	}
+}
+function pressGeneric(el) {
+	if (JoystickValueInput_default.isSlider(el)) return;
+	if (el.matches("select")) {
+		if (el.options.length) {
+			el.selectedIndex = (el.selectedIndex + 1) % el.options.length;
+			el.dispatchEvent(new Event("change", { bubbles: true }));
+		}
+		return;
+	}
+	if (el.matches("input:not([type=\"checkbox\"]):not([type=\"radio\"]):not([type=\"button\"]):not([type=\"submit\"]), textarea, [contenteditable=\"true\"]")) {
+		if (!JoystickKeyboard_default.open(el)) {
+			el.focus();
+			if (el.select) el.select();
+		}
+		return;
+	}
+	JoystickDomEvents_default.press(JoystickFocusScan_default.eventTarget(el));
+}
+/**
+* A: the profile's action, else a click on the element. Off the ring, a
+* click at the cursor.
+*/
+function activate() {
+	if (_detached) {
+		JoystickMouseCursorAdapter_default.leftClick();
+		return;
+	}
+	if (!_el || !_win) return;
+	parkCursor();
+	const profile = _win.profile;
+	_followUntil = _frameTime + FOLLOW_MS;
+	if (!(profile.primary && profile.primary(_el, _win))) pressGeneric(_el);
+	_hintsAt = -Infinity;
+}
+/**
+* A window's cancel or close button.
+*/
+function findClose(win) {
+	for (let i = 0; i < CLOSE.length; i++) {
+		const found = Array.from(win.root.querySelectorAll(CLOSE[i])).find((el) => JoystickFocusScan_default.isUsable(el, win.host));
+		if (found) return found;
+	}
+	return null;
+}
+/**
+* The info windows open now (an item's, a skill's: what Y opens), when B
+* would close them: not while a dialogue has the focus, which gets B.
+*/
+function infoToClose() {
+	if (_win && _win.profile.dialog) return [];
+	return JoystickFocusScan_default.listWindows().filter((win) => win.profile.info);
+}
+/**
+* Close a window with its own close button, else as its component.
+*/
+function closeWindow(win) {
+	if (!JoystickFocusScan_default.isOpen(win)) return;
+	const close = findClose(win);
+	if (close) {
+		JoystickDomEvents_default.press(close);
+		return;
+	}
+	const component = componentOf(win);
+	if (component && component.remove) component.remove();
+}
+/**
+* B: the info windows Y opened, all at once; else the profile's back, else
+* the window's cancel or close button, else out of menus (never from a
+* dialogue, which wants an answer).
+*/
+function back() {
+	const popups = infoToClose();
+	if (popups.length) {
+		popups.forEach(closeWindow);
+		_hintsAt = -Infinity;
+		return;
+	}
+	if (!_win) {
+		exit();
+		return;
+	}
+	const profile = _win.profile;
+	if (profile.back && profile.back(_win, _el)) {
+		_hintsAt = -Infinity;
+		return;
+	}
+	const close = findClose(_win);
+	if (close) {
+		JoystickDomEvents_default.press(close);
+		_hintsAt = -Infinity;
+		return;
+	}
+	if (!profile.dialog) exit();
+}
+/**
+* The item's or skill's info window, as a right click opens it.
+*/
+function infoOn(el) {
+	if (!el) return;
+	parkCursor(el);
+	JoystickDomEvents_default.contextMenu(JoystickFocusScan_default.eventTarget(el));
+}
+/**
+* Y: info of the focused element, or of what the cursor is on.
+*/
+function info() {
+	if (_detached) {
+		JoystickMouseCursorAdapter_default.contextMenu();
+		return;
+	}
+	infoOn(_el);
+}
+/**
+* LT / RT: the next window to the left or right.
+*/
+function cycleWindow(delta) {
+	const wins = navigableWindows();
+	if (!wins.length) return;
+	let index = _win ? wins.findIndex((win) => win.host === _win.host) : -1;
+	index = index === -1 ? 0 : (index + delta + wins.length) % wins.length;
+	if (_win && wins[index].host === _win.host && !_detached) return;
+	_tabFocus = null;
+	focusWindow(wins[index]);
+}
+/**
+* LB / RB: the window's previous or next tab. From a tab, the focus stays
+* on the tabs; from anywhere else it goes into what the tab shows, once it
+* is drawn (settleTabFocus).
+*/
+function switchTab(delta) {
+	if (!_win) return;
+	const focused = _detached ? null : _el;
+	const next = JoystickFocusTabs_default.step(_win, focused, delta);
+	if (!next) return;
+	const fromTab = !!focused && JoystickFocusTabs_default.isTab(focused, _win);
+	const before = new Set(JoystickFocusScan_default.focusables(_win));
+	JoystickDomEvents_default.press(JoystickFocusScan_default.eventTarget(next.tab));
+	JoystickFocusTabs_default.remember(_win, next.index);
+	_hintsAt = -Infinity;
+	if (fromTab) {
+		const list = JoystickFocusScan_default.focusables(_win);
+		if (list.indexOf(next.tab) !== -1) setFocus(_win, next.tab, list);
+		return;
+	}
+	_tabFocus = {
+		host: _win.host,
+		before,
+		until: _frameTime + TAB_FOCUS_MS
+	};
+}
+/**
+* After a tab switch: the focus goes to the first item the tab drew (or
+* showed), and to the open tab if it drew nothing.
+*/
+function settleTabFocus(now) {
+	const pending = _tabFocus;
+	if (!pending) return;
+	if (!_win || _win.host !== pending.host || !JoystickFocusScan_default.isOpen(_win)) {
+		_tabFocus = null;
+		return;
+	}
+	const list = JoystickFocusScan_default.focusables(_win);
+	const fresh = list.filter((el) => !pending.before.has(el) && !JoystickFocusTabs_default.isTab(el, _win) && !el.closest(".titlebar"));
+	if (fresh.length) {
+		const items = fresh.filter((el) => el.matches("[data-index], .item, .skill"));
+		_tabFocus = null;
+		setFocus(_win, firstOf(items.length ? items : fresh), list);
+		return;
+	}
+	if (now >= pending.until) {
+		_tabFocus = null;
+		const open = JoystickFocusTabs_default.activeTab(_win);
+		if (open && list.indexOf(open) !== -1) setFocus(_win, open, list);
+	}
+}
+/**
+* What action menu entries may call.
+*/
+function actionContext() {
+	return {
+		pickUp: (el) => startCarry(el),
+		info: (el) => infoOn(el),
+		pickSlot: _pickSlot ? (el) => afterRelease(() => _pickSlot(el)) : null
+	};
+}
+/**
+* The element an entry chosen later runs on: the same one, or, if its
+* window drew it anew meanwhile, the one now in its place.
+*/
+function resolver(el, win, key) {
+	return () => {
+		if (el.isConnected || !JoystickFocusScan_default.isOpen(win)) return el;
+		return JoystickFocusScan_default.findByKey(JoystickFocusScan_default.focusables(win), key) || el;
+	};
+}
+/**
+* X tapped: what can be done with the focused element, as a menu.
+*/
+function openActions() {
+	if (_detached || !_el || !_win || JoystickCarry_default.isCarrying()) return;
+	const entries = JoystickActionMenu_default.entriesFor(_el, _win, actionContext());
+	if (!entries.length) return;
+	parkCursor();
+	const menu = JoystickActionMenu_default.open(entries, _el.getBoundingClientRect(), resolver(_el, _win, _key));
+	if (menu) focusComponent(menu);
+}
+/**
+* Pick an element up (X held, Move…).
+*
+* @return {boolean} whether something is carried now
+*/
+function startCarry(el) {
+	if (!el || !JoystickCarry_default.pickUp(el)) return false;
+	_hintsAt = -Infinity;
+	refresh$1();
+	return true;
+}
+/**
+* A (or X) while carrying: put it down on the focused element, or where
+* the cursor is (the map: on the ground).
+*/
+function placeCarried() {
+	let target = null;
+	if (_detached) target = JoystickMouseCursorAdapter_default.elementAtCursor ? JoystickMouseCursorAdapter_default.elementAtCursor() : null;
+	else if (_el) {
+		parkCursor();
+		target = _el;
+	}
+	if (target) JoystickCarry_default.place(target);
+	else JoystickCarry_default.cancel();
+	_hintsAt = -Infinity;
+	refresh$1();
+}
+function cancelCarry() {
+	JoystickCarry_default.cancel();
+	_hintsAt = -Infinity;
+	refresh$1();
+}
+function genericLabel(el) {
+	if (JoystickValueInput_default.isSlider(el)) return "";
+	if (el.matches("input[type=\"checkbox\"], input[type=\"radio\"], .checkbox")) return "Toggle";
+	if (el.matches("select")) return "Next option";
+	if (el.matches("input, textarea, [contenteditable=\"true\"]")) return "Type";
+	return "Select";
+}
+function backLabel() {
+	if (infoToClose().length) return "Close info";
+	const profile = _win.profile;
+	if (profile.backLabel) return profile.backLabel(_win);
+	if (findClose(_win)) return "Close";
+	return profile.dialog ? "" : "Exit";
+}
+function hints() {
+	const list = [];
+	if (!_win) return list;
+	const tabs = JoystickFocusTabs_default.tabsOf(_win, _detached ? null : _el).length > 0;
+	if (JoystickCarry_default.isCarrying()) {
+		list.push([BTN.A, "Place"], [BTN.B, "Cancel"]);
+		if (tabs) list.push([[BTN.LB, BTN.RB], "Tab"]);
+		list.push([[BTN.LT, BTN.RT], "Window"]);
+		return list;
+	}
+	if (_detached) list.push([BTN.A, "Click"], [BTN.Y, "Info"]);
+	else if (_el) {
+		const profile = _win.profile;
+		let label = profile.primaryLabel ? profile.primaryLabel(_el, _win) : null;
+		if (label === null || label === void 0) label = genericLabel(_el);
+		list.push([BTN.A, label]);
+		list.push(...JoystickValueInput_default.hints(_el));
+		if (JoystickActionMenu_default.entriesFor(_el, _win, actionContext()).length) list.push([BTN.X, JoystickActionMenu_default.canMove(_el, _win) ? "Actions (hold: Move)" : "Actions"]);
+		if (JoystickFocusScan_default.isItemLike(_el)) list.push([BTN.Y, "Info"]);
+		if (profile.hints) list.push(...profile.hints(_el, _win));
+	}
+	const backText = backLabel();
+	list.push([BTN.B, backText]);
+	if (tabs) list.push([[BTN.LB, BTN.RB], "Tab"]);
+	list.push([[BTN.LT, BTN.RT], "Window"]);
+	if (backText !== "Exit") list.push([BTN.VIEW, "Exit"]);
+	return list;
+}
+function refresh$1(now) {
+	if (!_active$3) return;
+	const carrying = JoystickCarry_default.isCarrying();
+	if (_detached || !_el || !_el.isConnected) {
+		JoystickFocusOverlay_default.hideRing();
+		const x = Mouse.screen.x;
+		const y = Mouse.screen.y;
+		JoystickCarry_default.moveGhost(_detached ? {
+			left: x,
+			top: y,
+			right: x + 1,
+			bottom: y + 1
+		} : null);
+	} else {
+		const rect = _el.getBoundingClientRect();
+		JoystickFocusOverlay_default.showRing(rect, carrying ? "carry" : "focus");
+		JoystickCarry_default.moveGhost(rect);
+	}
+	const time = typeof now === "number" ? now : performance.now();
+	if (time - _hintsAt >= HINTS_EVERY_MS) {
+		_hintsAt = time;
+		JoystickFocusOverlay_default.showHints(hints());
+	}
+}
+/**
+* Turn menu navigation on.
+*
+* @param {?object} win the window to start in; null: the frontmost
+* @param {boolean} auto turned on by a dialogue or a window the gamepad opened, not by hand
+* @return {boolean} whether it is on now
+*/
+function enter(win, auto) {
+	if (!enabled$1()) return false;
+	const target = win || pickWindow();
+	if (!target) return false;
+	_active$3 = true;
+	_auto = !!auto;
+	_visited = [];
+	_detached = false;
+	_repeatButton = -1;
+	_skillWait = Mouse.state === Mouse.MOUSE_STATE.USESKILL;
+	if (!focusWindow(target)) {
+		exit();
+		return false;
+	}
+	return true;
+}
+function exit() {
+	if (_el) JoystickDomEvents_default.hover(JoystickFocusScan_default.eventTarget(_el), false);
+	if (_active$3) claimDown();
+	JoystickCarry_default.cancel();
+	JoystickValueInput_default.flush();
+	_active$3 = false;
+	_auto = false;
+	_win = null;
+	_el = null;
+	_key = null;
+	_detached = false;
+	_repeatButton = -1;
+	_visited = [];
+	_tabFocus = null;
+	_xHoldFired = false;
+	_xTaken = false;
+	JoystickFocusOverlay_default.hide();
+}
+function toggle() {
+	if (_active$3) exit();
+	else enter(null, false);
+}
+/**
+* Newly opened dialogues take the focus, and menu navigation turns on for
+* one if the gamepad was used last. A window that opens just after A (a
+* BasicInfo button, an Escape setting) takes the focus too.
+*
+* @param {number} now
+*/
+function scanWindows(now) {
+	const wins = JoystickFocusScan_default.listWindows();
+	const dialogs = /* @__PURE__ */ new Set();
+	const known = /* @__PURE__ */ new Set();
+	let fresh = null;
+	let opened = null;
+	wins.forEach((win) => {
+		known.add(win.host);
+		if (skipped(win)) return;
+		if (win.profile.dialog || win.profile.takesFocus) {
+			if (!JoystickFocusScan_default.focusables(win).length) return;
+			dialogs.add(win.host);
+			if (!fresh && !_dialogs.has(win.host)) fresh = win;
+		} else if (!opened && _active$3 && now < _followUntil && !_known.has(win.host)) {
+			if (JoystickFocusScan_default.focusables(win).length) opened = win;
+		}
+	});
+	_dialogs = dialogs;
+	_known = known;
+	if (fresh) {
+		if (_active$3) focusWindow(fresh);
+		else if (isEngaged()) enter(fresh, true);
+	} else if (opened) focusWindow(opened);
+}
+/**
+* The buttons down now stay away from the map until let go.
+*/
+function claimDown() {
+	for (let i = 0; i < _down.length; i++) if (_down[i]) _claimed.add(i);
+}
+/**
+* The gamepad opened a window (View + A / B / X / Y, X's menu): menu
+* navigation goes into it.
+*
+* @param {object} component a GUIComponent
+*/
+function focusComponent(component) {
+	if (!enabled$1() || !component || !component._host) return;
+	const host = component._host;
+	if (host.parentNode !== document.body || !JoystickFocusScan_default.isShown(host)) return;
+	const win = JoystickFocusScan_default.describe(host);
+	if (skipped(win)) return;
+	_known.add(host);
+	if (win.profile.dialog || win.profile.takesFocus) _dialogs.add(host);
+	if (_active$3) focusWindow(win);
+	else enter(win, true);
+}
+/**
+* One animation frame, with the pad (JoystickCursorMotion).
+*
+* @param {Gamepad} gp
+* @param {number} [now] the frame's time
+*/
+function frame$1(gp, now) {
+	const time = typeof now === "number" ? now : performance.now();
+	_frameTime = time;
+	const down = readButtons(gp);
+	const events = track(down, time);
+	noteActivity(gp, down, time);
+	runAfterRelease();
+	if (JoystickKeyboard_default.isOpen()) {
+		claimDown();
+		JoystickKeyboard_default.frame(gp, events, down, time);
+		JoystickFocusOverlay_default.hideHints();
+		_hintsAt = -Infinity;
+		return;
+	}
+	const wasActive = _active$3;
+	if (wasActive) claimDown();
+	const owned = JoystickEmoteGrid_default.isActive() || JoystickSelectionUI_default.active() || JoystickButtonMap_default.isCapturing();
+	if (!owned) handleView(events, time);
+	const waiting = Mouse.state === Mouse.MOUSE_STATE.USESKILL;
+	if (!enabled$1()) {
+		if (_active$3) exit();
+		_skillWait = waiting;
+		return;
+	}
+	if (time - _scanAt >= SCAN_EVERY_MS) {
+		_scanAt = time;
+		scanWindows(time);
+	}
+	if (!_active$3) {
+		_skillWait = waiting;
+		return;
+	}
+	if (waiting && !_skillWait) {
+		_skillWait = true;
+		exit();
+		return;
+	}
+	_skillWait = waiting;
+	settleTabFocus(time);
+	validate(time);
+	if (!_active$3) return;
+	if (!owned && wasActive) handleButtons(events, time);
+	refresh$1(time);
+}
+function onMouseMove(event) {
+	if (!event.isTrusted) return;
+	const x = event.clientX;
+	const y = event.clientY;
+	if (isNaN(_mouseX)) {
+		_mouseX = x;
+		_mouseY = y;
+		return;
+	}
+	if (Math.hypot(x - _mouseX, y - _mouseY) < MOUSE_MOVE_PX) return;
+	_mouseX = x;
+	_mouseY = y;
+	_lastMouseAt = performance.now();
+	if (_active$3) exit();
+}
+/**
+* @param {object} [options]
+* @param {function(Element): boolean} [options.pickSlot] opens the gamepad slot picker for an
+*   inventory item or a skill (JoystickInteractionService.openSelectionWindow): X's "Gamepad slot…"
+*/
+function prepare(options) {
+	_pickSlot = options && options.pickSlot || null;
+	if (_listening || typeof window === "undefined") return;
+	window.addEventListener("mousemove", onMouseMove, { passive: true });
+	_listening = true;
+}
+function dispose$1() {
+	JoystickKeyboard_default.close();
+	exit();
+	if (_listening) {
+		window.removeEventListener("mousemove", onMouseMove);
+		_listening = false;
+	}
+	JoystickFocusOverlay_default.dispose();
+	_down = [];
+	_downAt = [];
+	_used = [];
+	_claimed = /* @__PURE__ */ new Set();
+	_armed = /* @__PURE__ */ new Set();
+	_dialogs = /* @__PURE__ */ new Set();
+	_known = /* @__PURE__ */ new Set();
+	_followUntil = -Infinity;
+	_scanAt = -Infinity;
+	_hintsAt = -Infinity;
+	_lostAt = -Infinity;
+	_lastPadAt = 0;
+	_lastMouseAt = 0;
+	_mouseX = NaN;
+	_mouseY = NaN;
+	_skillWait = false;
+	_viewHoldFired = false;
+	_viewArmed = false;
+	_afterRelease = [];
+	_pickSlot = null;
+}
+var BTN, DPAD, MODIFIERS, HOLD_MS, TAP_MS, REPEAT_DELAY_MS, REPEAT_EVERY_MS, SCAN_EVERY_MS, FOLLOW_MS, TAB_FOCUS_MS, HINTS_EVERY_MS, MOUSE_MOVE_PX, ACTIVITY_AXIS, CLOSE, _active$3, _auto, _win, _el, _key, _ordinal, _detached, _visited, _lastKey, _down, _downAt, _used, _claimed, _armed, _repeatButton, _repeatAt, _viewHoldFired, _viewArmed, _xHoldFired, _xTaken, _dialogs, _known, _followUntil, _scanAt, _frameTime, _hintsAt, _lostAt, _skillWait, _tabFocus, _afterRelease, _pickSlot, _lastPadAt, _lastMouseAt, _mouseX, _mouseY, _listening, JoystickUIFocus_default;
+var init_JoystickUIFocus = __esmMin((() => {
+	init_Controls();
+	init_MouseEventHandler();
+	init_UIManager();
+	init_JoystickButtonMap();
+	init_JoystickFocusScan();
+	init_JoystickSpatialNav();
+	init_JoystickFocusOverlay();
+	init_JoystickDomEvents();
+	init_JoystickMouseCursorAdapter();
+	init_JoystickEmoteGrid();
+	init_JoystickSelectionUI();
+	init_JoystickStickFilter();
+	init_JoystickCarry();
+	init_JoystickFocusTabs();
+	init_JoystickActionMenu();
+	init_JoystickValueInput();
+	init_JoystickKeyboard();
+	BTN = JoystickButtonMap_default.BUTTON;
+	DPAD = {
+		[BTN.UP]: "up",
+		[BTN.DOWN]: "down",
+		[BTN.LEFT]: "left",
+		[BTN.RIGHT]: "right"
+	};
+	MODIFIERS = [
+		BTN.LB,
+		BTN.RB,
+		BTN.LT,
+		BTN.RT
+	];
+	HOLD_MS = 400;
+	TAP_MS = 400;
+	REPEAT_DELAY_MS = 350;
+	REPEAT_EVERY_MS = 90;
+	SCAN_EVERY_MS = 100;
+	FOLLOW_MS = 600;
+	TAB_FOCUS_MS = 600;
+	HINTS_EVERY_MS = 150;
+	MOUSE_MOVE_PX = 6;
+	ACTIVITY_AXIS = .3;
+	CLOSE = [
+		".titlebar .close",
+		"ui-button.close",
+		"button.close",
+		".btn.close",
+		".close",
+		".btn.cancel",
+		".cancel",
+		".closeswap"
+	];
+	_active$3 = false;
+	_auto = false;
+	_win = null;
+	_el = null;
+	_key = null;
+	_ordinal = 0;
+	_detached = false;
+	_visited = [];
+	_lastKey = /* @__PURE__ */ new WeakMap();
+	_down = [];
+	_downAt = [];
+	_used = [];
+	_claimed = /* @__PURE__ */ new Set();
+	_armed = /* @__PURE__ */ new Set();
+	_repeatButton = -1;
+	_repeatAt = 0;
+	_viewHoldFired = false;
+	_viewArmed = false;
+	_xHoldFired = false;
+	_xTaken = false;
+	_dialogs = /* @__PURE__ */ new Set();
+	_known = /* @__PURE__ */ new Set();
+	_followUntil = -Infinity;
+	_scanAt = -Infinity;
+	_frameTime = 0;
+	_hintsAt = -Infinity;
+	_lostAt = -Infinity;
+	_skillWait = false;
+	_tabFocus = null;
+	_afterRelease = [];
+	_pickSlot = null;
+	_lastPadAt = 0;
+	_lastMouseAt = 0;
+	_mouseX = NaN;
+	_mouseY = NaN;
+	_listening = false;
+	JoystickUIFocus_default = {
+		prepare,
+		dispose: dispose$1,
+		frame: frame$1,
+		enter(win) {
+			return enter(win || null, false);
+		},
+		exit,
+		toggle,
+		focusComponent,
+		/**
+		* The right stick moved the cursor (JoystickCursorMotion), in menus.
+		*/
+		cursorMoved() {
+			if (_active$3) {
+				followCursor();
+				refresh$1();
+			}
+		},
+		isActive() {
+			return _active$3;
+		},
+		/**
+		* Whether a button belongs to menu navigation: down while it was on, and
+		* not let go since. JoystickButtonInput keeps such a press off the map.
+		*
+		* @param {number} button logical button
+		* @return {boolean}
+		*/
+		isClaimed(button) {
+			return _active$3 || _claimed.has(button);
+		},
+		/**
+		* The focused element and window, for tests and the settings window.
+		*/
+		getFocus() {
+			return {
+				win: _win,
+				el: _el,
+				detached: _detached,
+				auto: _auto,
+				carrying: JoystickCarry_default.isCarrying()
+			};
+		}
 	};
 }));
 //#endregion
@@ -238918,6 +245383,7 @@ var init_JoystickInteractionService = __esmMin((() => {
 	init_JoystickTargetCategory();
 	init_JoystickSupportMode();
 	init_JoystickEmoteGrid();
+	init_JoystickUIFocus();
 	SELF_CAST_HOLD_MS = 300;
 	HOLD_POLL_MS = 30;
 	selfCastWatch = 0;
@@ -239185,13 +245651,17 @@ var init_JoystickInteractionService = __esmMin((() => {
 		},
 		/**
 		* Open or close a window, as its keyboard shortcut does (Alt+E, ...).
+		* A window opened this way gets the menu focus (JoystickUIFocus).
 		*
 		* @param {string} name UIManager component name
 		*/
 		toggleWindow: function(name) {
 			try {
 				const component = UIManager.getComponent(name);
-				if (component && component.onShortCut) component.onShortCut({ cmd: "TOGGLE" });
+				if (component && component.onShortCut) {
+					component.onShortCut({ cmd: "TOGGLE" });
+					JoystickUIFocus_default.focusComponent(component);
+				}
 			} catch {}
 		},
 		rightClick: function(holding) {
@@ -239345,7 +245815,7 @@ function setClickLock() {
 		clickLock = false;
 	}, lockTimeout);
 }
-var clickLock, lockTimeout, CAMERA_STEP_SMALL, CAMERA_STEP_LARGE, STICK_HOLD_MS, rsDownAt, rsHoldFired, lsDownAt, lsHoldFired, menuDownAt, menuHoldFired, GRID_BUTTONS, gridHeld, ButtonInput;
+var clickLock, lockTimeout, CAMERA_STEP_SMALL, CAMERA_STEP_LARGE, STICK_HOLD_MS, rsDownAt, rsHoldFired, lsDownAt, lsHoldFired, menuDownAt, menuHoldFired, GRID_BUTTONS, gridHeld, MENU_BUTTONS, keyboardHeld, ButtonInput;
 var init_JoystickButtonInput = __esmMin((() => {
 	init_JoystickShortcutMapper();
 	init_JoystickInteractionService();
@@ -239353,6 +245823,8 @@ var init_JoystickButtonInput = __esmMin((() => {
 	init_JoystickUIRenderer();
 	init_JoystickSelectionUI();
 	init_Controls();
+	init_JoystickUIFocus();
+	init_JoystickKeyboard();
 	clickLock = false;
 	lockTimeout = 200;
 	CAMERA_STEP_SMALL = 45;
@@ -239373,8 +245845,29 @@ var init_JoystickButtonInput = __esmMin((() => {
 		5
 	];
 	gridHeld = [];
+	MENU_BUTTONS = [
+		0,
+		1,
+		2,
+		3,
+		12,
+		13,
+		14,
+		15
+	];
+	keyboardHeld = [];
 	ButtonInput = {
 		update: function(buttons) {
+			if (JoystickKeyboard_default.isOpen()) {
+				keyboardHeld = [];
+				for (let i = 0; i < buttons.length; i++) if (buttons[i] && buttons[i] !== "unpressed") keyboardHeld.push(i);
+				menuDownAt = 0;
+				return true;
+			}
+			if (keyboardHeld.length) {
+				keyboardHeld = keyboardHeld.filter((i) => buttons[i] && buttons[i] !== "unpressed");
+				if (keyboardHeld.length) return false;
+			}
 			if (JoystickInteractionService_default.isEmoteGridOpen()) {
 				menuDownAt = buttons[9] !== "unpressed" ? menuDownAt || Date.now() : 0;
 				menuHoldFired = true;
@@ -239396,13 +245889,29 @@ var init_JoystickButtonInput = __esmMin((() => {
 			}
 			let pressed = false;
 			JoystickUIRenderer_default.updateVisuals(buttons);
-			pressed |= this._handleSpecial(buttons);
+			const world = this._withoutMenuButtons(buttons);
+			pressed |= this._handleSpecial(buttons, world);
 			pressed |= this._handleSetChange(buttons);
 			if (!pressed) {
-				pressed |= this._handleWorldActions(buttons);
+				pressed |= this._handleWorldActions(world);
 				pressed |= this._handleShortcuts(buttons);
 			}
 			return pressed;
+		},
+		/**
+		* The button states with A, B, X, Y and the D-pad let go while menu
+		* navigation has them (JoystickUIFocus): it reads them itself, every frame.
+		*/
+		_withoutMenuButtons: function(buttons) {
+			let out = buttons;
+			for (let i = 0; i < MENU_BUTTONS.length; i++) {
+				const index = MENU_BUTTONS[i];
+				if (buttons[index] && buttons[index] !== "unpressed" && JoystickUIFocus_default.isClaimed(index)) {
+					if (out === buttons) out = buttons.slice();
+					out[index] = "unpressed";
+				}
+			}
+			return out;
 		},
 		_handleWorldActions: function(btn) {
 			let pressed = false;
@@ -239491,7 +246000,11 @@ var init_JoystickButtonInput = __esmMin((() => {
 				return true;
 			}
 			if (menuDownAt) {
-				if (!menuHoldFired && !JoystickSelectionUI_default.active()) JoystickInteractionService_default.enter();
+				if (!menuHoldFired && !JoystickSelectionUI_default.active()) {
+					const typing = JoystickKeyboard_default.focusedField();
+					JoystickInteractionService_default.enter();
+					JoystickKeyboard_default.openIfFocused(typing);
+				}
 				menuDownAt = 0;
 				return true;
 			}
@@ -239509,7 +246022,13 @@ var init_JoystickButtonInput = __esmMin((() => {
 			}
 			return false;
 		},
-		_handleSpecial: function(buttons) {
+		/**
+		* View combos, and the D-pad.
+		*
+		* @param {Array<string>} buttons button states
+		* @param {Array<string>} [world] the same without what menu navigation has
+		*/
+		_handleSpecial: function(buttons, world = buttons) {
 			let pressed = false;
 			if (buttons[8] === "holding") {
 				if (buttons[12] !== "unpressed" || buttons[13] !== "unpressed" || buttons[14] !== "unpressed" || buttons[15] !== "unpressed") return true;
@@ -239533,22 +246052,22 @@ var init_JoystickButtonInput = __esmMin((() => {
 				} else if (buttons[3] === "pressed") {
 					JoystickInteractionService_default.toggleWindow("WinStats");
 					pressed = true;
-				} else pressed = JoystickInteractionService_default.showinfo();
+				}
 				if (pressed) {
 					setClickLock();
 					return pressed;
 				}
 			}
-			if (buttons[12] !== "unpressed") {
+			if (world[12] !== "unpressed") {
 				JoystickInteractionService_default.navigateDpad("up");
 				pressed = true;
-			} else if (buttons[13] !== "unpressed") {
+			} else if (world[13] !== "unpressed") {
 				JoystickInteractionService_default.navigateDpad("down");
 				pressed = true;
-			} else if (buttons[14] !== "unpressed") {
+			} else if (world[14] !== "unpressed") {
 				JoystickInteractionService_default.cycleTarget("prev");
 				pressed = true;
-			} else if (buttons[15] !== "unpressed") {
+			} else if (world[15] !== "unpressed") {
 				JoystickInteractionService_default.cycleTarget("next");
 				pressed = true;
 			}
@@ -239588,12 +246107,17 @@ var init_JoystickAxisInput = __esmMin((() => {
 	init_JoystickInteractionService();
 	init_Controls();
 	init_JoystickUIRenderer();
+	init_JoystickKeyboard();
 	REBOUND_MS = 250;
 	REBOUND_MAX = .6;
 	MOVE_MIN = .5;
 	lastMove = null;
 	lastMoveAt = 0;
 	JoystickAxisInput_default = { update: function(axes) {
+		if (JoystickKeyboard_default.isOpen()) {
+			JoystickInteractionService_default.releaseStick();
+			return true;
+		}
 		let active = false;
 		let lx = axes[0];
 		let ly = axes[1];
@@ -239621,163 +246145,6 @@ var init_JoystickAxisInput = __esmMin((() => {
 		if (active) JoystickUIRenderer_default.show();
 		return active;
 	} };
-}));
-//#endregion
-//#region src/UI/Components/JoystickUI/JoystickStickFilter.js
-/**
-* Subtract the rest position, stretching each side back to the full range.
-*
-* @param {number} value raw axis value, -1..1
-* @param {number} center measured rest position
-* @return {number}
-*/
-function recenter(value, center) {
-	if (!center) return value;
-	const v = value - center;
-	const range = v > 0 ? 1 - center : 1 + center;
-	return Math.max(-1, Math.min(1, v / range));
-}
-/**
-* Treat values within the threshold as centre; rescale the rest to 0..1.
-*
-* @param {number} value axis value, -1..1
-* @param {number} threshold 0..1
-* @return {number}
-*/
-function applyThreshold(value, threshold) {
-	if (!threshold || threshold <= 0) return value;
-	const magnitude = Math.abs(value);
-	if (magnitude <= threshold || threshold >= 1) return 0;
-	return Math.sign(value) * (magnitude - threshold) / (1 - threshold);
-}
-/**
-* The stored rest positions, or null when not calibrated.
-*
-* @return {Array<number>|null}
-*/
-function getCenter() {
-	const center = Controls_default.joyStickCenter;
-	if (!Array.isArray(center) || center.length !== AXIS_COUNT || !center.every(Number.isFinite)) return null;
-	return center;
-}
-/**
-* Cleaned copy of a gamepad's axes. Axes past the two sticks pass through.
-*
-* @param {ArrayLike<number>} axes Gamepad.axes
-* @return {Array<number>}
-*/
-function filterAxes(axes) {
-	const center = getCenter();
-	const out = Array.from(axes);
-	for (let i = 0; i < Math.min(AXIS_COUNT, out.length); i++) {
-		const value = recenter(out[i], center ? center[i] : 0);
-		out[i] = applyThreshold(value, Controls_default[DRIFT_KEYS[i]]);
-	}
-	return out;
-}
-/**
-* Average rest position per axis from calibration samples, or null if a
-* stick was touched while they were taken.
-*
-* @param {Array<Array<number>>} samples raw axes, one array per read
-* @return {Array<number>|null}
-*/
-function computeCenter(samples) {
-	if (!samples.length) return null;
-	const center = [];
-	for (let i = 0; i < AXIS_COUNT; i++) {
-		let sum = 0;
-		for (const sample of samples) {
-			const value = sample[i] || 0;
-			if (Math.abs(value) > CALIBRATE_MAX_OFFSET) return null;
-			sum += value;
-		}
-		center.push(sum / samples.length);
-	}
-	return center;
-}
-function getGamepad$1() {
-	const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
-	for (let i = 0; i < gamepads.length; i++) if (gamepads[i]) return gamepads[i];
-	return null;
-}
-/**
-* Stop a running calibration without saving.
-*/
-function cancelCalibration() {
-	if (_calibration) {
-		clearInterval(_calibration);
-		_calibration = null;
-	}
-}
-/**
-* Read both sticks for a second while the player leaves them alone, and
-* store their rest positions.
-*
-* @param {function(string)} done called with 'ok', 'moved' (a stick was
-*   touched, nothing saved) or 'nopad'
-*/
-function calibrate(done) {
-	cancelCalibration();
-	if (!getGamepad$1()) {
-		done("nopad");
-		return;
-	}
-	const samples = [];
-	const startedAt = Date.now();
-	_calibration = setInterval(function() {
-		const gp = getGamepad$1();
-		if (!gp) {
-			cancelCalibration();
-			done("nopad");
-			return;
-		}
-		samples.push(Array.from(gp.axes).slice(0, AXIS_COUNT));
-		if (Date.now() - startedAt < CALIBRATE_DURATION_MS) return;
-		cancelCalibration();
-		const center = computeCenter(samples);
-		if (!center) {
-			done("moved");
-			return;
-		}
-		Controls_default.joyStickCenter = center;
-		Controls_default.save();
-		done("ok");
-	}, CALIBRATE_INTERVAL_MS);
-}
-/**
-* Forget the calibration.
-*/
-function resetCalibration() {
-	cancelCalibration();
-	Controls_default.joyStickCenter = null;
-	Controls_default.save();
-}
-var DRIFT_KEYS, AXIS_COUNT, CALIBRATE_INTERVAL_MS, CALIBRATE_DURATION_MS, CALIBRATE_MAX_OFFSET, _calibration, JoystickStickFilter_default;
-var init_JoystickStickFilter = __esmMin((() => {
-	init_Controls();
-	DRIFT_KEYS = [
-		"joyDriftLX",
-		"joyDriftLY",
-		"joyDriftRX",
-		"joyDriftRY"
-	];
-	AXIS_COUNT = DRIFT_KEYS.length;
-	CALIBRATE_INTERVAL_MS = 50;
-	CALIBRATE_DURATION_MS = 1e3;
-	CALIBRATE_MAX_OFFSET = .5;
-	_calibration = null;
-	JoystickStickFilter_default = {
-		DRIFT_KEYS,
-		recenter,
-		applyThreshold,
-		filterAxes,
-		computeCenter,
-		getCenter,
-		calibrate,
-		cancelCalibration,
-		resetCalibration
-	};
 }));
 //#endregion
 //#region src/UI/Components/JoystickUI/JoystickInputService.js
@@ -240287,7 +246654,29 @@ function getMappingCombos() {
 			n(B.X),
 			n(B.Y)
 		].join(" / "), "Inventory / equipment / skills / status"],
-		[n(B.VIEW) + " (cursor on item/skill)", "Context menu"],
+		[n(B.VIEW) + " (hold, cursor on item/skill)", "Item / skill info"],
+		[n(B.VIEW) + " (tap)", "Menu navigation on / off"],
+		[[
+			n(B.UP),
+			n(B.DOWN),
+			n(B.LEFT),
+			n(B.RIGHT)
+		].join(" / ") + " (menus)", "Move between buttons, items and windows; left / right change sliders and lists"],
+		[n(B.LT) + " / " + n(B.RT) + " (tap, menus)", "Previous / next window"],
+		[n(B.LB) + " / " + n(B.RB) + " (tap, menus)", "Previous / next tab"],
+		[n(B.A) + " on a text field (menus)", "On-screen keyboard: " + [
+			n(B.A) + " type",
+			n(B.X) + " delete",
+			n(B.Y) + " space",
+			n(B.LB) + " / " + n(B.RB) + " caret",
+			n(B.LT) + " shift",
+			n(B.RT) + " signs",
+			n(B.VIEW) + " phrases",
+			n(B.RS) + " grid / wheel",
+			n(B.MENU) + " done",
+			n(B.B) + " close"
+		].join(", ")],
+		[n(B.X) + " (menus)", "Tap: more actions (store some, gamepad slot, drop...) - Hold: pick up; " + n(B.A) + " puts it down, " + n(B.B) + " puts it back"],
 		[n(B.LB) + " / " + n(B.RB) + " / " + n(B.LT) + " / " + n(B.RT) + " + " + faces + " (hold)", "Support: the support skill on yourself"],
 		[n(B.UP) + " / " + n(B.DOWN) + " / " + n(B.LEFT) + " / " + n(B.RIGHT) + " (emotes open)", "Choose an emote"],
 		[[
@@ -240479,6 +246868,10 @@ function onUpdateDisableVirtualMouse() {
 	Controls_default.joyDisableVirtualMouse = !!this.checked;
 	Controls_default.save();
 }
+function onUpdateUIFocus() {
+	Controls_default.joyUIFocus = !!this.checked;
+	Controls_default.save();
+}
 var JOY_RANGES, JOY_CHECKBOXES, ShortCutOption, ShortCuts$1, ShortCutsTemp, _preferences$33, MAPPING_ROLES, ShortCutOption_default;
 var init_ShortCutOption = __esmMin((() => {
 	init_KeyEventHandler();
@@ -240510,7 +246903,8 @@ var init_ShortCutOption = __esmMin((() => {
 		"joyAimHideCursor",
 		"joyReverseStick",
 		"joyAutoHide",
-		"joyDisableVirtualMouse"
+		"joyDisableVirtualMouse",
+		"joyUIFocus"
 	];
 	ShortCutOption = new GUIComponent("ShortCutOption", ShortCutOption_default$1);
 	ShortCuts$1 = ShortCutControls_default.ShortCuts;
@@ -240621,6 +247015,7 @@ var init_ShortCutOption = __esmMin((() => {
 		bindChange(".joyReverseStick", onUpdateReverseStick);
 		bindChange(".joyAutoHide", onUpdateAutoHide);
 		bindChange(".joyDisableVirtualMouse", onUpdateDisableVirtualMouse);
+		bindChange(".joyUIFocus", onUpdateUIFocus);
 		const resetBtn = root.querySelector(".button.reset");
 		if (resetBtn) resetBtn.addEventListener("click", function() {
 			resetKeysToDefault();
@@ -240724,21 +247119,21 @@ var init_ShortCutOption = __esmMin((() => {
 		}
 	};
 	MAPPING_ROLES = [
-		[JoystickButtonMap_default.BUTTON.A, "Click / confirm - selected NPC: talk, selected player: shop or menu (Support radial: cast the waiting skill on the chosen member)"],
-		[JoystickButtonMap_default.BUTTON.B, "Right click (hold on item/skill: options) - Support radial: close it, or cancel the waiting skill - player menu: close it"],
-		[JoystickButtonMap_default.BUTTON.X, "Attack target"],
-		[JoystickButtonMap_default.BUTTON.Y, "Pick up item"],
-		[JoystickButtonMap_default.BUTTON.LEFT, "Previous target (Support: party member; grid left on items)"],
-		[JoystickButtonMap_default.BUTTON.RIGHT, "Next target (Support: party member, lowest HP first; grid right on items)"],
-		[JoystickButtonMap_default.BUTTON.UP, "Previous target category (up in item grids and NPC menus)"],
-		[JoystickButtonMap_default.BUTTON.DOWN, "Next target category (down in item grids and NPC menus)"],
+		[JoystickButtonMap_default.BUTTON.A, "Click / confirm - selected NPC: talk, selected player: shop or menu (Support radial: cast the waiting skill on the chosen member) - menus: press, use, equip, put down what is carried"],
+		[JoystickButtonMap_default.BUTTON.B, "Right click (hold on item/skill: options) - Support radial: close it, or cancel the waiting skill - menus: back (info windows first), cancel, close, put back what is carried"],
+		[JoystickButtonMap_default.BUTTON.X, "Attack target - menus: tap: more actions, hold: pick up"],
+		[JoystickButtonMap_default.BUTTON.Y, "Pick up item - menus: item / skill info"],
+		[JoystickButtonMap_default.BUTTON.LEFT, "Previous target (Support: party member; grid left on items) - menus: move left (sliders and lists: lower / previous)"],
+		[JoystickButtonMap_default.BUTTON.RIGHT, "Next target (Support: party member, lowest HP first; grid right on items) - menus: move right (sliders and lists: higher / next)"],
+		[JoystickButtonMap_default.BUTTON.UP, "Previous target category (menus: move up)"],
+		[JoystickButtonMap_default.BUTTON.DOWN, "Next target category (menus: move down)"],
 		[JoystickButtonMap_default.BUTTON.LS, "Tap: clear target - Hold: sit / stand"],
 		[JoystickButtonMap_default.BUTTON.RS, () => Controls_default.joyAimEnabled ? "Tap: right stick aim/cursor - Hold: recenter cursor" : "Recenter cursor"],
-		[JoystickButtonMap_default.BUTTON.MENU, "Tap: Enter - Hold: emotes"],
-		[JoystickButtonMap_default.BUTTON.VIEW, "Camera & menu modifier"],
-		[JoystickButtonMap_default.BUTTON.LB, "Shortcuts: skill bar 1, slots 1-4"],
+		[JoystickButtonMap_default.BUTTON.MENU, "Tap: Enter (the chat opens with the on-screen keyboard) - Hold: emotes"],
+		[JoystickButtonMap_default.BUTTON.VIEW, "Tap: menu navigation - Hold: info at the cursor - Camera & window modifier"],
+		[JoystickButtonMap_default.BUTTON.LB, "Shortcuts: skill bar 1, slots 1-4 - menus (tap): previous tab"],
 		[JoystickButtonMap_default.BUTTON.LT, "Shortcuts: skill bar 1, slots 5-8"],
-		[JoystickButtonMap_default.BUTTON.RB, "Shortcuts: skill bar 2, slots 1-4"],
+		[JoystickButtonMap_default.BUTTON.RB, "Shortcuts: skill bar 2, slots 1-4 - menus (tap): next tab"],
 		[JoystickButtonMap_default.BUTTON.RT, "Shortcuts: skill bar 2, slots 5-8"]
 	];
 	ShortCutOption.mouseMode = GUIComponent.MouseMode.STOP;
@@ -247964,29 +254359,6 @@ var init_WriteRodex = __esmMin((() => {
 	WriteRodex_default = UIManager.addComponent(WriteRodex);
 }));
 //#endregion
-//#region src/UI/Components/Inventory/InventoryItemTransfer.js
-/**
-* Transfer an inventory item stack to the active receivers, highest priority first.
-* A receiver that declines the item lets the next one (or the caller's fallback) handle it.
-*
-* @param {object} item Inventory item
-* @param {object} components Registered UI components
-* @returns {boolean} Whether a receiver handled the request
-*/
-function transferInventoryItemStack(item, components) {
-	if (!item || !components) return false;
-	return Object.values(components).filter((component) => {
-		return component?.__active && component._host?.isConnected && component._host.style.display !== "none" && typeof component.receiveInventoryItemStack === "function";
-	}).sort((a, b) => (b.inventoryTransferPriority || 0) - (a.inventoryTransferPriority || 0)).some((receiver) => receiver.receiveInventoryItemStack(item) === true);
-}
-var InventoryItemTransferPriority;
-var init_InventoryItemTransfer = __esmMin((() => {
-	InventoryItemTransferPriority = Object.freeze({
-		TRADE: 300,
-		NPC_STORE: 400
-	});
-}));
-//#endregion
 //#region src/UI/Components/Inventory/InventoryCommon.js
 function _sanitizeHtml$7(str) {
 	const whitelist = [
@@ -248367,6 +254739,15 @@ function createInventory(config) {
 		const list = Component.list;
 		for (let i = 0, count = list.length; i < count; ++i) if (list[i].index === index) return list[i];
 		return null;
+	};
+	/**
+	* The open tab (Component.TAB), its place among the tab buttons. V0 draws
+	* it as one picture, so only this says which it is (gamepad LB / RB).
+	*
+	* @returns {number}
+	*/
+	Component.getTab = function getTab() {
+		return _preferences.tab;
 	};
 	/**
 	* Get the TAB constant for a given item based on its type.
@@ -256944,6 +263325,9 @@ function onGuildInfo(pkt) {
 function onGuildAccess(pkt) {
 	Guild_default.setAccess(pkt.guildMemuFlag);
 }
+function isCurrentGuildOwner(entity, guildId) {
+	return !!entity && SessionStorage_default.Entity === entity && entity.GUID === guildId;
+}
 /**
 * Get informations about our user in the guild
 *
@@ -256969,8 +263353,9 @@ function onGuildOwnInfo(pkt) {
 		_pendingGuildSkillRequest = false;
 		GuildEngine.requestInfo(3);
 	}
+	const owner = SessionStorage_default.Entity;
 	if (pkt.GDID && pkt.emblemVersion) GuildEngine.requestGuildEmblem(pkt.GDID, pkt.emblemVersion, (image, gif) => {
-		SessionStorage_default.Entity.setEntityGuildEmblem(image, gif);
+		if (isCurrentGuildOwner(owner, pkt.GDID) && owner.GEmblemVer !== 0) owner.setEntityGuildEmblem(image, gif);
 	});
 }
 /**
@@ -256991,13 +263376,25 @@ function onGuildRelation(pkt) {
 * @param {object} pkt - PACKET.ZC.CHANGE_GUILD | PACKET.ZC.CHANGE_GUILD2
 */
 function onGuildEmblemChanged(pkt) {
+	const entity = pkt.AID === void 0 ? null : EntityManager.get(pkt.AID);
+	if (entity) {
+		const changedGuild = entity.GUID !== pkt.GDID;
+		entity.GUID = pkt.GDID;
+		entity.GEmblemVer = pkt.emblemVersion;
+		if (changedGuild || !pkt.GDID || !pkt.emblemVersion) {
+			entity.setEntityGuildEmblem(null, null);
+			if (entity.emblem) entity.emblem.display = false;
+		}
+		const emblem = _emblems[pkt.GDID];
+		if (pkt.GDID && pkt.emblemVersion && emblem?.ready && emblem.version >= pkt.emblemVersion) entity.setEntityGuildEmblem(emblem.image, emblem.gif);
+	}
+	const owner = SessionStorage_default.Entity;
+	if (owner?.GUID === pkt.GDID) owner.GEmblemVer = pkt.emblemVersion;
 	if (!pkt.GDID || !pkt.emblemVersion) return;
 	if (_emblemNotified[pkt.GDID] === pkt.emblemVersion) return;
 	_emblemNotified[pkt.GDID] = pkt.emblemVersion;
-	const isOwnGuild = pkt.GDID === SessionStorage_default.Entity.GUID;
-	if (isOwnGuild) SessionStorage_default.Entity.GEmblemVer = pkt.emblemVersion;
 	GuildEngine.requestGuildEmblem(pkt.GDID, pkt.emblemVersion, (image) => {
-		if (isOwnGuild) Guild_default.setEmblem(image);
+		if (isCurrentGuildOwner(owner, pkt.GDID) && owner.GEmblemVer !== 0) Guild_default.setEmblem(image);
 	}, () => {
 		if (_emblemNotified[pkt.GDID] === pkt.emblemVersion) delete _emblemNotified[pkt.GDID];
 	});
@@ -257464,15 +263861,16 @@ var init_Guild = __esmMin((() => {
 			const failed = onFailure || function() {};
 			if (!_emblems[guild_id]) _emblems[guild_id] = {
 				version: -1,
+				ready: false,
 				image: new Image(),
 				gif: null,
 				callback: []
 			};
-			if (SessionStorage_default.Entity.GUID === guild_id) GuildEngine.guild_id = guild_id;
+			if (SessionStorage_default.Entity?.GUID === guild_id) GuildEngine.guild_id = guild_id;
 			const emblem = _emblems[guild_id];
-			if (version <= emblem.version) {
+			if (version <= emblem.version && emblem.ready) {
 				EntityManager.forEach((entity) => {
-					if (entity.GUID === guild_id) entity.setEntityGuildEmblem(emblem.image, emblem.gif);
+					if (entity.GUID === guild_id && entity.GEmblemVer !== 0) entity.setEntityGuildEmblem(emblem.image, emblem.gif);
 				});
 				callback(emblem.image, emblem.gif);
 				return;
@@ -257495,14 +263893,15 @@ var init_Guild = __esmMin((() => {
 				xhr.timeout = 5e3;
 				const commit = (img, gifCanvas) => {
 					if (version < emblem.version) return;
-					if (version > emblem.version) {
+					if (version > emblem.version || !emblem.ready) {
 						emblem.version = version;
 						emblem.image = img;
 						emblem.gif = gifCanvas;
+						emblem.ready = true;
 					}
 					callback(emblem.image, emblem.gif);
 					EntityManager.forEach((entity) => {
-						if (entity.GUID === guild_id) entity.setEntityGuildEmblem(emblem.image, emblem.gif);
+						if (entity.GUID === guild_id && entity.GEmblemVer !== 0) entity.setEntityGuildEmblem(emblem.image, emblem.gif);
 					});
 				};
 				xhr.onload = () => {
@@ -257752,6 +264151,8 @@ var init_Guild = __esmMin((() => {
 		* @see docs/reference/guild/emblem-picker.md
 		*/
 		static sendEmblem(data) {
+			const owner = SessionStorage_default.Entity;
+			const guildId = owner.GUID;
 			if (PacketVerManager_default.value >= 20170315) {
 				function getFileType(_data) {
 					if (_data.length >= 3 && _data[0] === 71 && _data[1] === 73 && _data[2] === 70) return {
@@ -257765,7 +264166,7 @@ var init_Guild = __esmMin((() => {
 				}
 				const fileInfo = getFileType(data);
 				const formData = new FormData();
-				formData.append("GDID", SessionStorage_default.Entity.GUID);
+				formData.append("GDID", guildId);
 				formData.append("WorldName", SessionStorage_default.ServerName);
 				formData.append("AuthToken", SessionStorage_default.WebToken);
 				formData.append("AID", SessionStorage_default.AID);
@@ -257783,15 +264184,16 @@ var init_Guild = __esmMin((() => {
 					}
 					try {
 						const response = JSON.parse(xhr.responseText);
+						if (!isCurrentGuildOwner(owner, guildId)) return;
 						console.log("Emblem uploaded successfully, version:", response.version);
 						if (PacketVerManager_default.value >= 20190724) {
 							const pkt = new PACKET.CZ.REQ_ADD_NEW_EMBLEM();
-							pkt.GDID = SessionStorage_default.Entity.GUID;
+							pkt.GDID = guildId;
 							pkt.version = response.version;
 							Network.sendPacket(pkt);
 						}
-						GuildEngine.requestGuildEmblem(SessionStorage_default.Entity.GUID, response.version, (image, _gif) => {
-							Guild_default.setEmblem(image);
+						GuildEngine.requestGuildEmblem(guildId, response.version, (image, _gif) => {
+							if (isCurrentGuildOwner(owner, guildId) && owner.GEmblemVer !== 0) Guild_default.setEmblem(image);
 						});
 					} catch (e) {
 						console.error("Error parsing emblem upload response:", e);
@@ -257822,6 +264224,7 @@ var init_Guild = __esmMin((() => {
 		return function(pkt) {
 			if (!_emblems[pkt.GDID]) _emblems[pkt.GDID] = {
 				version: -1,
+				ready: false,
 				image: new Image(),
 				gif: null,
 				callback: []
@@ -257829,9 +264232,11 @@ var init_Guild = __esmMin((() => {
 			const len = new Inflate(pkt.img).getBytes(data);
 			const src = URL.createObjectURL(new Blob([data.subarray(0, len).buffer], { type: "image/bmp" }));
 			const emblem = _emblems[pkt.GDID];
+			const owner = SessionStorage_default.Entity;
 			const img = new Image();
 			img.onload = renderEmblem;
 			emblem.version = pkt.emblemVersion;
+			emblem.ready = false;
 			img.decoding = "async";
 			Texture.load(src, function() {
 				img.src = this.toDataURL();
@@ -257839,10 +264244,11 @@ var init_Guild = __esmMin((() => {
 			function renderEmblem() {
 				emblem.image = this;
 				emblem.gif = null;
-				if (pkt.GDID === GuildEngine.guild_id) Guild_default.setEmblem(this);
+				emblem.ready = true;
+				if (isCurrentGuildOwner(owner, pkt.GDID) && owner.GEmblemVer !== 0) Guild_default.setEmblem(this);
 				while (emblem.callback.length) emblem.callback.shift().call(null, this, null);
 				EntityManager.forEach((entity) => {
-					if (entity.GUID === pkt.GDID) entity.setEntityGuildEmblem(img);
+					if (entity.GUID === pkt.GDID && entity.GEmblemVer !== 0) entity.setEntityGuildEmblem(img);
 				});
 			}
 		};
@@ -267409,13 +273815,22 @@ function frame(time) {
 	if (!gp) {
 		JoystickAimMode_default.release();
 		JoystickSupportMode_default.release();
+		JoystickKeyboard_default.close();
+		JoystickUIFocus_default.exit();
 		frameHandle = null;
 		return;
 	}
 	frameHandle = requestAnimationFrame(frame);
 	const dt = Math.min(MAX_DT, (time - lastTime) / 1e3);
 	lastTime = time;
-	if (dt > 0) JoystickCameraMotion_default.update(gp, dt);
+	const typing = JoystickKeyboard_default.isOpen();
+	if (dt > 0 && !typing) JoystickCameraMotion_default.update(gp, dt);
+	JoystickUIFocus_default.frame(gp, time);
+	if (typing) {
+		JoystickAimMode_default.release();
+		JoystickSupportMode_default.release();
+		return;
+	}
 	if (gp.axes.length < 4 || dt <= 0) {
 		JoystickAimMode_default.release();
 		JoystickSupportMode_default.release();
@@ -267430,11 +273845,14 @@ function frame(time) {
 	}
 	const magnitude = Math.hypot(x, y);
 	const deadzone = Controls_default.joyDeadline;
-	if (JoystickSupportMode_default.update(x, y, magnitude, deadzone)) {
+	if (JoystickUIFocus_default.isActive()) {
+		JoystickAimMode_default.release();
+		JoystickSupportMode_default.release();
+	} else if (JoystickSupportMode_default.update(x, y, magnitude, deadzone)) {
 		JoystickAimMode_default.release();
 		return;
 	}
-	if (JoystickAimMode_default.isActive()) {
+	if (!JoystickUIFocus_default.isActive() && JoystickAimMode_default.isActive()) {
 		JoystickAimMode_default.update(x, y, magnitude > deadzone);
 		return;
 	}
@@ -267443,6 +273861,7 @@ function frame(time) {
 	const scaled = Math.min(1, (magnitude - deadzone) / (1 - deadzone));
 	const step = scaled * scaled * Controls_default.joySense * SENSE_TO_PX_PER_SEC * dt / magnitude;
 	JoystickMouseCursorAdapter_default.moveBy(x * step, y * step);
+	if (JoystickUIFocus_default.isActive()) JoystickUIFocus_default.cursorMoved();
 }
 /**
 * Begin the frame loop if it is armed, not already running, and a pad is
@@ -267467,6 +273886,8 @@ var init_JoystickCursorMotion = __esmMin((() => {
 	init_JoystickStickFilter();
 	init_JoystickCameraMotion();
 	init_JoystickSupportMode();
+	init_JoystickUIFocus();
+	init_JoystickKeyboard();
 	SENSE_TO_PX_PER_SEC = 10;
 	MAX_DT = .05;
 	frameHandle = null;
@@ -267496,6 +273917,7 @@ var init_JoystickCursorMotion = __esmMin((() => {
 			}
 			JoystickAimMode_default.release();
 			JoystickSupportMode_default.release();
+			JoystickUIFocus_default.exit();
 		}
 	};
 }));
@@ -267542,11 +273964,13 @@ var init_JoystickModule = __esmMin((() => {
 	init_JoystickUIRenderer();
 	init_JoystickEmoteGrid();
 	init_JoystickTargetCategory();
+	init_JoystickUIFocus();
 	JoystickModule_default = {
 		prepare: function() {
 			JoystickShortcutMapper_default.prepare();
 			JoystickInputService_default.prepare();
 			JoystickInteractionService_default.prepare();
+			JoystickUIFocus_default.prepare({ pickSlot: (el) => JoystickInteractionService_default.openSelectionWindow(el) });
 			JoystickPollingLoop_default.start();
 			JoystickCursorMotion_default.start();
 			JoystickUIRenderer_default.hide();
@@ -267555,6 +273979,7 @@ var init_JoystickModule = __esmMin((() => {
 			JoystickPollingLoop_default.stop();
 			JoystickCursorMotion_default.stop();
 			JoystickInteractionService_default.dispose();
+			JoystickUIFocus_default.dispose();
 			JoystickInputService_default.dispose();
 			JoystickUIRenderer_default.dispose();
 			JoystickEmoteGrid_default.dispose();
@@ -334729,7 +341154,7 @@ var init_CaptchaAnswer$1 = __esmMin((() => {
 }));
 //#endregion
 //#region src/UI/Components/Captcha/CaptchaAnswer.js
-var CaptchaAnswer, _preferences$9, timer, CaptchaAnswer_default;
+var CaptchaAnswer, _preferences$9, timer$1, CaptchaAnswer_default;
 var init_CaptchaAnswer = __esmMin((() => {
 	init_UIManager();
 	init_GUIComponent();
@@ -334744,7 +341169,7 @@ var init_CaptchaAnswer = __esmMin((() => {
 		x: 230,
 		y: 295
 	}, 2);
-	timer = null;
+	timer$1 = null;
 	CaptchaAnswer.render = () => CaptchaAnswer_default$2;
 	CaptchaAnswer.captureKeyEvents = true;
 	/**
@@ -334795,11 +341220,11 @@ var init_CaptchaAnswer = __esmMin((() => {
 		const root = this.getRoot();
 		const retryEl = root.querySelector(".retry_count");
 		if (retryEl) retryEl.textContent = DB.getMessage(2886).replace("%d", retryCount);
-		if (timer) {
-			clearInterval(timer);
-			timer = null;
+		if (timer$1) {
+			clearInterval(timer$1);
+			timer$1 = null;
 		}
-		timer = setInterval(() => {
+		timer$1 = setInterval(() => {
 			timeout--;
 			const minutes = Math.floor(timeout / 60);
 			const seconds = timeout % 60;
@@ -334808,8 +341233,8 @@ var init_CaptchaAnswer = __esmMin((() => {
 			const timerBarFill = root.querySelector(".timer_bar_fill");
 			if (timerBarFill) timerBarFill.style.width = `${timeout / 60 * 100}%`;
 			if (timeout <= 0) {
-				clearInterval(timer);
-				timer = null;
+				clearInterval(timer$1);
+				timer$1 = null;
 			}
 		}, 1e3);
 	};
@@ -334838,9 +341263,9 @@ var init_CaptchaAnswer = __esmMin((() => {
 		if (timerText) timerText.textContent = "0";
 		const errorText = root.querySelector(".error_text");
 		if (errorText) errorText.textContent = "";
-		if (timer) {
-			clearInterval(timer);
-			timer = null;
+		if (timer$1) {
+			clearInterval(timer$1);
+			timer$1 = null;
 		}
 	};
 	/**
@@ -338233,6 +344658,15 @@ var init_Footprints = __esmMin((() => {
 }));
 //#endregion
 //#region src/Engine/MapEngine/Entity.js
+function requestEntityGuildEmblem(entity) {
+	const actorId = entity.GID;
+	const guildId = entity.GUID;
+	GuildEngine.requestGuildEmblem(guildId, entity.GEmblemVer, (image, gif) => {
+		if (EntityManager.get(actorId) !== entity || entity.GUID !== guildId || entity.GEmblemVer === 0) return;
+		entity.setEntityGuildEmblem(image, gif);
+		if (SessionStorage_default.mapState.isSiege && guildId !== SessionStorage_default.Entity?.GUID) entity.emblem.display = true;
+	});
+}
 /**
 * Spam an entity on the map
 * Generic packet handler
@@ -338356,10 +344790,7 @@ function onEntitySpam(pkt) {
 		});
 		delete clanEmblems[entity.GID];
 	}
-	if (entity.GUID) GuildEngine.requestGuildEmblem(entity.GUID, entity.GEmblemVer, (image, gif) => {
-		entity.setEntityGuildEmblem(image, gif);
-		if (SessionStorage_default.mapState.isSiege && entity.GUID !== SessionStorage_default.Entity.GUID) entity.emblem.display = true;
-	});
+	if (entity.GUID) requestEntityGuildEmblem(entity);
 	entity.aura.load(EffectManager);
 }
 /**
@@ -338841,10 +345272,7 @@ function onEntityIdentity(pkt) {
 		entity.display.guild_name = pkt.GName || "";
 		entity.display.guild_rank = pkt.RName || "";
 		entity.display.load = entity.display.TYPE.COMPLETE;
-		if (entity.GUID) GuildEngine.requestGuildEmblem(entity.GUID, entity.GEmblemVer, (image, gif) => {
-			entity.setEntityGuildEmblem(image, gif);
-			if (SessionStorage_default.mapState.isSiege && entity.GUID !== SessionStorage_default.Entity.GUID) entity.emblem.display = true;
-		});
+		if (entity.GUID) requestEntityGuildEmblem(entity);
 		else if (pkt.GID) DB.loadGroupEmblem(pkt.GID, (image) => {
 			entity.setEntityGuildEmblem(image);
 		});
@@ -345575,6 +352003,416 @@ var init_Mercenary = __esmMin((() => {
 	};
 }));
 //#endregion
+//#region src/UI/Components/StoreSearch/StoreSearch.html?raw
+var StoreSearch_default$2;
+var init_StoreSearch$3 = __esmMin((() => {
+	StoreSearch_default$2 = "<div id=\"StoreSearch\">\r\n	<div class=\"head\">\r\n		<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image><strong>Store Search</strong\r\n		><ui-button\r\n			class=\"close\"\r\n			aria-label=\"Close catalog\"\r\n			bg=\"btn_close.bmp\"\r\n			hover=\"btn_close_a.bmp\"\r\n			down=\"btn_close_b.bmp\"\r\n		></ui-button>\r\n	</div>\r\n	<div class=\"body\">\r\n		<div class=\"summary\"><span class=\"effect\"></span><span class=\"uses\"></span></div>\r\n		<label\r\n			>Search for\r\n			<select class=\"store-type\">\r\n				<option value=\"0\">Selling shops</option>\r\n				<option value=\"1\">Buying shops</option>\r\n			</select></label\r\n		>\r\n		<div class=\"pickers\">\r\n			<section data-picker=\"items\">\r\n				<label\r\n					>Items <input aria-label=\"Item name or ID\" placeholder=\"Name or known item ID\" autocomplete=\"off\"\r\n				/></label>\r\n				<div class=\"candidates\"></div>\r\n				<div class=\"selected\"></div>\r\n			</section>\r\n			<section data-picker=\"cards\">\r\n				<label\r\n					>Card filter\r\n					<input aria-label=\"Card name or ID\" placeholder=\"Select a card by name or ID\" autocomplete=\"off\"\r\n				/></label>\r\n				<div class=\"candidates\"></div>\r\n				<div class=\"selected\"></div>\r\n				<small class=\"card-note\">Optional: items containing any selected card.</small>\r\n			</section>\r\n		</div>\r\n		<div class=\"prices\">\r\n			<label>Min Zeny <input class=\"min-price\" type=\"number\" min=\"0\" max=\"4294967295\" value=\"0\" /></label\r\n			><label>Max Zeny <input class=\"max-price\" type=\"number\" min=\"0\" max=\"4294967295\" value=\"0\" /></label\r\n			><small>0 = no limit</small\r\n			><ui-button\r\n				class=\"search\"\r\n				aria-label=\"Search\"\r\n				title=\"Search\"\r\n				bg=\"reputation/btn_search.bmp\"\r\n				hover=\"reputation/btn_search_over.bmp\"\r\n				down=\"reputation/btn_search_press.bmp\"\r\n			></ui-button>\r\n		</div>\r\n		<div class=\"status\" role=\"status\" aria-live=\"polite\"></div>\r\n		<div class=\"results\"></div>\r\n	</div>\r\n	<div class=\"footer\">\r\n		<ui-image src=\"basic_interface/btnbar_mid2.bmp\"></ui-image><span class=\"result-count\"></span\r\n		><ui-button\r\n			class=\"next\"\r\n			aria-label=\"More results\"\r\n			title=\"More results\"\r\n			bg=\"btn_next.bmp\"\r\n			hover=\"btn_next_a.bmp\"\r\n			down=\"btn_next_b.bmp\"\r\n		></ui-button>\r\n	</div>\r\n</div>\r\n";
+}));
+//#endregion
+//#region src/UI/Components/StoreSearch/StoreSearch.css?raw
+var StoreSearch_default$1;
+var init_StoreSearch$2 = __esmMin((() => {
+	StoreSearch_default$1 = ":host {\r\n	position: absolute;\r\n	width: 540px;\r\n	top: 100px;\r\n	left: 100px;\r\n	font:\r\n		12px Arial,\r\n		sans-serif;\r\n	touch-action: none;\r\n}\r\n#StoreSearch {\r\n	background: #fff;\r\n	color: #111;\r\n}\r\n.head {\r\n	height: 20px;\r\n	position: relative;\r\n	display: flex;\r\n	align-items: center;\r\n	padding: 0 6px;\r\n}\r\n.head ui-image,\r\n.footer ui-image {\r\n	position: absolute;\r\n	inset: 0;\r\n	z-index: 0;\r\n}\r\n.head strong,\r\n.head .close,\r\n.footer > *:not(ui-image) {\r\n	position: relative;\r\n	z-index: 1;\r\n}\r\n.close {\r\n	width: 11px;\r\n	height: 11px;\r\n	margin-left: auto;\r\n}\r\n.body {\r\n	padding: 8px;\r\n}\r\n.summary,\r\n.prices {\r\n	display: flex;\r\n	align-items: center;\r\n	gap: 8px;\r\n	margin-bottom: 8px;\r\n}\r\n.uses {\r\n	margin-left: auto;\r\n}\r\n.pickers {\r\n	display: grid;\r\n	grid-template-columns: 1fr 1fr;\r\n	gap: 8px;\r\n	margin: 8px 0;\r\n}\r\nlabel {\r\n	display: flex;\r\n	gap: 5px;\r\n	align-items: center;\r\n}\r\ninput {\r\n	min-width: 0;\r\n	width: 100%;\r\n}\r\n.prices input {\r\n	width: 90px;\r\n}\r\n.candidates {\r\n	max-height: 96px;\r\n	overflow: auto;\r\n}\r\n.candidates button {\r\n	display: flex;\r\n	align-items: center;\r\n	width: 100%;\r\n	text-align: left;\r\n	border: 0;\r\n	background: transparent;\r\n	cursor: pointer;\r\n}\r\n.candidates button:hover,\r\n.result:hover {\r\n	background: #e6f0ff;\r\n}\r\n.icon {\r\n	width: 24px;\r\n	height: 24px;\r\n	flex-shrink: 0;\r\n	background-repeat: no-repeat;\r\n	background-position: center;\r\n}\r\n.selected {\r\n	display: flex;\r\n	flex-wrap: wrap;\r\n	gap: 3px;\r\n	max-height: 64px;\r\n	overflow: auto;\r\n}\r\n.selected button {\r\n	font-size: 11px;\r\n}\r\n.card-note {\r\n	display: block;\r\n	margin-top: 4px;\r\n}\r\n.status {\r\n	min-height: 28px;\r\n	margin: 6px 0;\r\n}\r\n.results {\r\n	height: 230px;\r\n	overflow: auto;\r\n}\r\n.result {\r\n	display: grid;\r\n	grid-template-columns: 1fr auto auto;\r\n	align-items: center;\r\n	gap: 8px;\r\n	padding: 5px 2px;\r\n	border-bottom: 1px solid #ddd;\r\n}\r\n.details {\r\n	display: flex;\r\n	align-items: center;\r\n	text-align: left;\r\n	border: 0;\r\n	background: transparent;\r\n	color: inherit;\r\n	cursor: pointer;\r\n	min-width: 0;\r\n}\r\n.item-label {\r\n	overflow-wrap: anywhere;\r\n}\r\n.shop {\r\n	display: block;\r\n	font-size: 11px;\r\n	color: #555;\r\n}\r\n.price {\r\n	text-align: right;\r\n	white-space: nowrap;\r\n}\r\n.footer {\r\n	position: relative;\r\n	min-height: 25px;\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: space-between;\r\n	padding: 0 8px;\r\n}\r\nui-button {\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	border: 0;\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: center;\r\n}\r\n.search,\r\n.next {\r\n	min-width: 42px;\r\n	height: 20px;\r\n}\r\n.visit {\r\n	font: inherit;\r\n}\r\nbutton:disabled {\r\n	opacity: 0.5;\r\n	cursor: default;\r\n}\r\n";
+}));
+//#endregion
+//#region src/UI/Components/StoreSearch/StoreSearch.js
+function icon(id) {
+	const element = document.createElement("span");
+	element.className = "icon";
+	const info = DB.getItemInfo(id);
+	Client.loadFile(`${DB.INTERFACE_PATH}item/${info.identifiedResourceName}.bmp`, (data) => {
+		element.style.backgroundImage = `url(${data})`;
+	});
+	return element;
+}
+function label(id) {
+	const info = ItemTable_default[id];
+	return `${info.identifiedDisplayName} [${info.slotCount || 0}] (#${id})`;
+}
+function renderSelected(kind) {
+	const container = Search.getRoot().querySelector(`[data-picker="${kind}"] .selected`);
+	container.replaceChildren();
+	for (const id of selected[kind]) {
+		const button = document.createElement("button");
+		button.type = "button";
+		button.textContent = `${label(id)} ×`;
+		button.title = "Remove selection";
+		button.addEventListener("click", () => {
+			selected[kind] = selected[kind].filter((value) => value !== id);
+			renderSelected(kind);
+		});
+		container.append(button);
+	}
+}
+function showCandidates(kind) {
+	const picker = Search.getRoot().querySelector(`[data-picker="${kind}"]`);
+	const query = picker.querySelector("input").value.trim().toLocaleLowerCase();
+	const candidates = picker.querySelector(".candidates");
+	candidates.replaceChildren();
+	if (!query) return;
+	let count = 0;
+	for (const [key, info] of Object.entries(ItemTable_default)) {
+		if (!info.identifiedDisplayName || !info.identifiedDisplayName.toLocaleLowerCase().includes(query) && key !== query) continue;
+		const id = Number(key);
+		if (!Number.isInteger(id) || id <= 0 || id > 4294967295) continue;
+		const button = document.createElement("button");
+		button.type = "button";
+		button.dataset.itemId = key;
+		button.append(icon(id), document.createTextNode(label(id)));
+		button.addEventListener("click", () => {
+			if (selected[kind].includes(id)) return;
+			if (selected.items.length + selected.cards.length >= 20) {
+				Search.getRoot().querySelector(".status").textContent = "Select up to 20 items and cards in total.";
+				return;
+			}
+			selected[kind].push(id);
+			renderSelected(kind);
+			candidates.replaceChildren();
+			picker.querySelector("input").value = "";
+		});
+		candidates.append(button);
+		if (++count >= 40) break;
+	}
+}
+var Search, selected, StoreSearch_default;
+var init_StoreSearch$1 = __esmMin((() => {
+	init_DBManager();
+	init_HtmlHelper();
+	init_ItemTable();
+	init_Client();
+	init_Renderer();
+	init_GUIComponent();
+	init_UIManager();
+	init_ItemInfo();
+	init_Elements();
+	init_StoreSearch$3();
+	init_StoreSearch$2();
+	Search = new GUIComponent("StoreSearch", StoreSearch_default$1);
+	Search.render = () => StoreSearch_default$2;
+	Search.captureKeyEvents = true;
+	selected = {
+		items: [],
+		cards: []
+	};
+	Search.init = function() {
+		const root = this.getRoot();
+		this.draggable(root.querySelector(".head"));
+		root.querySelector(".close").addEventListener("click", () => this.onClose());
+		for (const kind of ["items", "cards"]) root.querySelector(`[data-picker="${kind}"] input`).addEventListener("input", () => showCandidates(kind));
+		root.querySelector(".store-type").addEventListener("change", () => {
+			const buying = root.querySelector(".store-type").value === "1";
+			root.querySelector("[data-picker=\"cards\"] input").disabled = buying;
+			root.querySelector(".card-note").textContent = buying ? "Buying shops do not use card filters." : "Optional: items containing any selected card.";
+			selected.cards = [];
+			renderSelected("cards");
+			root.querySelector("[data-picker=\"cards\"] .candidates").replaceChildren();
+		});
+		root.querySelector(".search").addEventListener("click", () => {
+			if (!selected.items.length) {
+				root.querySelector(".status").textContent = "Select at least one item from the name search.";
+				return;
+			}
+			const minPrice = Number(root.querySelector(".min-price").value), maxPrice = Number(root.querySelector(".max-price").value);
+			if (![minPrice, maxPrice].every((n) => Number.isInteger(n) && n >= 0 && n <= 4294967295)) {
+				root.querySelector(".status").textContent = "Enter whole, nonnegative Zeny amounts.";
+				return;
+			}
+			if (minPrice > maxPrice) {
+				root.querySelector(".status").textContent = "Enter a maximum price at least as large as the minimum.";
+				return;
+			}
+			this.onSearch({
+				items: [...selected.items],
+				cards: [...selected.cards],
+				type: Number(root.querySelector(".store-type").value),
+				minPrice,
+				maxPrice
+			});
+		});
+		root.querySelector(".next").addEventListener("click", () => this.onNext());
+	};
+	Search.clearSelection = function() {
+		selected = {
+			items: [],
+			cards: []
+		};
+		const root = this.getRoot();
+		for (const kind of ["items", "cards"]) {
+			const picker = root.querySelector(`[data-picker="${kind}"]`);
+			picker.querySelector("input").value = "";
+			picker.querySelector("input").disabled = false;
+			picker.querySelector(".candidates").replaceChildren();
+			renderSelected(kind);
+		}
+		root.querySelector(".store-type").value = "0";
+		root.querySelector(".min-price").value = "0";
+		root.querySelector(".max-price").value = "0";
+		root.querySelector(".card-note").textContent = "Optional: items containing any selected card.";
+	};
+	Search.setCatalog = function(value) {
+		const root = this.getRoot();
+		const busy = !!value.pending || value.failed;
+		root.querySelector(".effect").textContent = value.effect ? "Remote catalog" : "Map catalog";
+		root.querySelector(".uses").textContent = `Searches remaining: ${value.uses}`;
+		root.querySelector(".status").textContent = value.status;
+		root.querySelector(".search").disabled = busy || !value.uses;
+		root.querySelector(".next").disabled = busy || !value.next;
+		root.querySelector(".result-count").textContent = `${value.rows.length} results`;
+		const list = root.querySelector(".results");
+		const scroll = list.scrollTop;
+		list.replaceChildren();
+		for (const row of value.rows) {
+			const element = document.createElement("div");
+			element.className = "result";
+			const details = document.createElement("button");
+			details.type = "button";
+			details.className = "details";
+			const name = document.createElement("span");
+			name.className = "item-label";
+			name.textContent = htmlToText(DB.getItemName(row));
+			const shop = document.createElement("span");
+			shop.className = "shop";
+			shop.textContent = row.StoreName;
+			name.append(shop);
+			details.append(icon(row.ITID), name);
+			details.addEventListener("click", () => {
+				ItemInfo_default.append();
+				ItemInfo_default.setItem(row);
+			});
+			const price = document.createElement("span");
+			price.className = "price";
+			price.textContent = `${row.price.toLocaleString()} Zeny × ${row.count}`;
+			const visit = document.createElement("button");
+			visit.type = "button";
+			visit.className = "visit";
+			visit.textContent = value.effect ? "Open" : "Locate";
+			visit.disabled = busy || !!row.stale;
+			visit.addEventListener("click", () => this.onVisit(row));
+			element.append(details, price, visit);
+			list.append(element);
+		}
+		list.scrollTop = scroll;
+	};
+	Search.onAppend = function() {
+		this._host.style.left = `${Math.max(0, (Renderer.width - 540) / 2)}px`;
+		this._host.style.top = `${Math.max(0, (Renderer.height - 480) / 2)}px`;
+	};
+	Search.onRemove = function() {
+		selected = {
+			items: [],
+			cards: []
+		};
+		this.onClose();
+	};
+	Search.onKeyDown = function(event) {
+		if (event.key === "Escape" || event.which === 27) {
+			event.stopImmediatePropagation();
+			this.onClose();
+		} else if (this.isEditableFocused()) event.stopImmediatePropagation();
+	};
+	Search.onClose = () => {};
+	Search.onSearch = () => {};
+	Search.onNext = () => {};
+	Search.onVisit = () => {};
+	StoreSearch_default = UIManager.addComponent(Search);
+}));
+//#endregion
+//#region src/Engine/MapEngine/StoreSearch.js
+function clearMarker() {
+	Controller$5.getUI()?.removeNpcMark(marker);
+}
+function retireRemoteShop() {
+	const retire = retireShop;
+	retireShop = null;
+	retire?.();
+}
+function finishRequest() {
+	clearTimeout(timer);
+	timer = null;
+	if (catalog) catalog.pending = null;
+}
+function refresh() {
+	if (catalog) StoreSearch_default.setCatalog(catalog);
+}
+function request(packet, pending) {
+	catalog.pending = pending;
+	timer = setTimeout(() => {
+		if (!catalog) return;
+		catalog.failed = true;
+		if (remoteAttempt) remoteAttempt.retired = true;
+		catalog.status = "No response. Close and reopen the catalog to refresh.";
+		finishRequest();
+		refresh();
+	}, 1e4);
+	refresh();
+	Network.sendPacket(packet);
+}
+function resetStoreSearch(newConnection = false) {
+	if (newConnection) remoteAttempt = null;
+	else if (remoteAttempt) remoteAttempt.retired = true;
+	finishRequest();
+	catalog = null;
+	retireRemoteShop();
+	clearMarker();
+	StoreSearch_default.remove();
+}
+function close() {
+	if (!catalog) return;
+	Network.sendPacket(new PACKET.CZ.CLOSE_SEARCH_STORE_INFO());
+	resetStoreSearch();
+}
+function onOpen(pkt) {
+	resetStoreSearch();
+	remoteAttempt = null;
+	if (pkt.openType !== 0 && pkt.openType !== 1) return;
+	catalog = {
+		effect: pkt.openType,
+		uses: pkt.SearchCntMax,
+		rows: [],
+		next: false,
+		pending: null,
+		failed: false,
+		status: "",
+		type: 0
+	};
+	StoreSearch_default.append();
+	StoreSearch_default.clearSelection();
+	refresh();
+}
+function onResults(pkt) {
+	if (!catalog || catalog.failed || !["query", "page"].includes(catalog.pending?.kind)) return;
+	if (pkt.IsFirstPage) catalog.rows = [];
+	catalog.rows.push(...pkt.SSI_List);
+	catalog.next = !!pkt.IsNexPage;
+	catalog.uses = pkt.RemainedSearchCnt;
+	if (catalog.pending.kind === "query") catalog.type = catalog.pending.type;
+	finishRequest();
+	refresh();
+}
+function onFailure(pkt) {
+	if (pkt.Reason === 4) remoteAttempt = null;
+	if (!catalog || catalog.failed) return;
+	const message = failures[pkt.Reason];
+	catalog.status = message ? DB.getMessage(message[0], message[1]) || message[1] : "Store search failed.";
+	if (pkt.Reason === 4) {
+		if (catalog.pending?.kind === "click") catalog.pending.row.stale = true;
+		clearMarker();
+		finishRequest();
+	} else if (pkt.Reason === 2 || pkt.Reason === 3) {
+		if (pkt.Reason === 2) catalog.uses = 0;
+		finishRequest();
+	}
+	refresh();
+}
+function onMarker(pkt) {
+	if (!catalog || catalog.effect !== 0 || catalog.pending?.kind !== "click" || catalog.failed) return;
+	clearMarker();
+	if (pkt.x >= 0 && pkt.y >= 0) {
+		Controller$5.getUI()?.addNpcMark(marker, pkt.x, pkt.y, 16776960, Infinity);
+		catalog.status = `Store marked at ${pkt.x}, ${pkt.y}.`;
+	} else catalog.status = "The store is not on this map.";
+	finishRequest();
+	refresh();
+}
+/** Gate a known retired catalog reply before it can replace a manually opened shop. */
+function canOpenSearchStore(account, storeId, type) {
+	if (!remoteAttempt || remoteAttempt.account !== account || remoteAttempt.storeId !== storeId || remoteAttempt.type !== type) return true;
+	if (remoteAttempt.retired) {
+		remoteAttempt = null;
+		return false;
+	}
+	return true;
+}
+/** Called by the existing store list handler after it installs its normal transaction UI. */
+function onSearchStoreOpened(account, storeId, type, retire) {
+	if (!catalog || catalog.failed || catalog.effect !== 1 || catalog.pending?.kind !== "click" || catalog.pending.row.AID !== account || catalog.pending.row.SSI_ID !== storeId || catalog.type !== type) return false;
+	remoteAttempt = null;
+	retireRemoteShop();
+	retireShop = retire;
+	catalog.status = "Store opened.";
+	finishRequest();
+	refresh();
+	return true;
+}
+function initializeStoreSearch() {
+	StoreSearch_default.onClose = close;
+	StoreSearch_default.onSearch = (query) => {
+		if (!catalog || catalog.failed || catalog.pending || !catalog.uses) return;
+		const { items, cards, type, minPrice, maxPrice } = query;
+		if (!items.length || items.length + cards.length > 20 || ![0, 1].includes(type) || ![
+			minPrice,
+			maxPrice,
+			...items,
+			...cards
+		].every((n) => Number.isInteger(n) && n >= 0 && n <= 4294967295)) return;
+		retireRemoteShop();
+		clearMarker();
+		catalog.status = "";
+		const pkt = new PACKET.CZ.SEARCH_STORE_INFO();
+		Object.assign(pkt, {
+			StoreType: type,
+			minPrice,
+			maxPrice,
+			ItemIDList: items,
+			CardIDList: cards
+		});
+		request(pkt, {
+			kind: "query",
+			type
+		});
+	};
+	StoreSearch_default.onNext = () => {
+		if (!catalog || catalog.failed || catalog.pending || !catalog.next) return;
+		request(new PACKET.CZ.SEARCH_STORE_INFO_NEXT_PAGE(), { kind: "page" });
+	};
+	StoreSearch_default.onVisit = (row) => {
+		if (!catalog || catalog.failed || catalog.pending || row.stale || !catalog.rows.includes(row)) return;
+		retireRemoteShop();
+		clearMarker();
+		catalog.status = "";
+		const pkt = new PACKET.CZ.SSILIST_ITEM_CLICK();
+		Object.assign(pkt, {
+			AID: row.AID,
+			SSI_ID: row.SSI_ID,
+			ITID: row.ITID
+		});
+		if (catalog.effect === 1) remoteAttempt = {
+			account: row.AID,
+			storeId: row.SSI_ID,
+			type: catalog.type,
+			retired: false
+		};
+		request(pkt, {
+			kind: "click",
+			row
+		});
+	};
+	Network.hookPacket(PACKET.ZC.OPEN_SEARCH_STORE_INFO, onOpen);
+	Network.hookPacket(PACKET.ZC.SEARCH_STORE_INFO_ACK2, onResults);
+	Network.hookPacket(PACKET.ZC.SEARCH_STORE_INFO_FAILED, onFailure);
+	Network.hookPacket(PACKET.ZC.SSILIST_ITEM_CLICK_ACK, onMarker);
+}
+var marker, catalog, timer, retireShop, remoteAttempt, failures;
+var init_StoreSearch = __esmMin((() => {
+	init_NetworkManager();
+	init_PacketStructure();
+	init_DBManager();
+	init_StoreSearch$1();
+	init_MiniMap();
+	marker = "store-search";
+	catalog = null;
+	timer = null;
+	retireShop = null;
+	remoteAttempt = null;
+	failures = [
+		[1803, "No matching stores were found."],
+		[1784, "There are too many results. Please narrow the search."],
+		[1798, "You cannot search anymore."],
+		[1800, "You cannot search yet. Please try again later."],
+		[1797, "No sale or purchase information is available."]
+	];
+}));
+//#endregion
 //#region src/UI/Components/NpcStore/NpcStore.html?raw
 var NpcStore_default$2;
 var init_NpcStore$2 = __esmMin((() => {
@@ -346783,6 +353621,7 @@ function onSellResult(pkt) {
 * @param {object} pkt - PACKET.ZC.PC_PURCHASE_ITEMLIST_FROMMC
 */
 function onVendingStoreList(_pkt) {
+	if (!canOpenSearchStore(_pkt.AID, _pkt.UniqueID, 0)) return;
 	NpcStore_default.append();
 	NpcStore_default.setType(NpcStore_default.Type.VENDING_STORE);
 	NpcStore_default.setList(_pkt.itemList);
@@ -346807,6 +353646,10 @@ function onVendingStoreList(_pkt) {
 		});
 		Network.sendPacket(pkt);
 	};
+	const submit = NpcStore_default.onSubmit;
+	onSearchStoreOpened(_pkt.AID, _pkt.UniqueID, 0, () => {
+		if (NpcStore_default.__active && NpcStore_default.onSubmit === submit) NpcStore_default.remove();
+	});
 }
 /**
 * Received items list to buy from player
@@ -346814,6 +353657,7 @@ function onVendingStoreList(_pkt) {
 * @param {object} pkt - PACKET.ZC.ACK_ITEMLIST_BUYING_STORE
 */
 function onBuyingStoreList(_pkt) {
+	if (!canOpenSearchStore(_pkt.AID, _pkt.UniqueID, 1)) return;
 	NpcStore_default.append();
 	NpcStore_default.setType(NpcStore_default.Type.BUYING_STORE);
 	NpcStore_default.setList(_pkt.itemList);
@@ -346834,6 +353678,10 @@ function onBuyingStoreList(_pkt) {
 		});
 		Network.sendPacket(pkt);
 	};
+	const submit = NpcStore_default.onSubmit;
+	onSearchStoreOpened(_pkt.AID, _pkt.UniqueID, 1, () => {
+		if (NpcStore_default.__active && NpcStore_default.onSubmit === submit) NpcStore_default.remove();
+	});
 }
 /**
 * Open vending creation window with X slots
@@ -346948,6 +353796,7 @@ function MainEngine$9() {
 }
 var init_Store = __esmMin((() => {
 	init_DBManager();
+	init_StoreSearch();
 	init_SessionStorage();
 	init_NetworkManager();
 	init_PacketStructure();
@@ -348741,6 +355590,7 @@ function onConnectionRefused$2(pkt) {
 * @param {object} pkt - PACKET.ZC.NPCACK_MAPMOVE
 */
 function onMapChange(pkt) {
+	resetStoreSearch();
 	_mapReady = false;
 	SessionStorage_default.ping.pingTime = 0;
 	SessionStorage_default.ping.returned = false;
@@ -348868,10 +355718,20 @@ function onServerChange(pkt) {
 	MapEngine.init(pkt.addr.ip, pkt.addr.port, pkt.mapName);
 }
 /**
+* The map socket closed: drop the catalog with it, then show the same
+* message NetworkManager shows when no disconnect handler is set.
+*/
+function onMapDisconnect() {
+	resetStoreSearch(true);
+	UIManager.showErrorBox("Disconnected from Server.");
+}
+/**
 * Resets the per-character UI state shared by the exit and restart flows.
 * Components that were never prepared have no root element to clean.
 */
 function cleanGameUI() {
+	resetStoreSearch(true);
+	if (Network.onDisconnect === onMapDisconnect) Network.onDisconnect = null;
 	WhisperBox.clearAll();
 	const tasks = [
 		[BasicInfoController, "remove"],
@@ -349223,6 +356083,8 @@ function onConfigUpdate(type, val) {
 * Go back from map-server to char-server
 */
 function onRestart() {
+	resetStoreSearch(true);
+	if (Network.onDisconnect === onMapDisconnect) Network.onDisconnect = null;
 	__vitePreload(() => Promise.resolve().then(() => (init_CharEngine(), CharEngine_exports)).then((m) => m.default.reload(() => {
 		cleanGameUI();
 		MapRenderer.free();
@@ -349338,6 +356200,7 @@ var init_MapEngine = __esmMin((() => {
 	init_Homun();
 	init_Mercenary();
 	init_Store();
+	init_StoreSearch();
 	init_Trade();
 	init_Friends();
 	init_UIOpen();
@@ -349372,6 +356235,8 @@ var init_MapEngine = __esmMin((() => {
 		* @param {string} mapName
 		*/
 		static init(ip, port, mapName) {
+			resetStoreSearch(true);
+			Network.onDisconnect = onMapDisconnect;
 			_mapName = mapName;
 			_mapReady = false;
 			_exiting = false;
@@ -349478,6 +356343,7 @@ var init_MapEngine = __esmMin((() => {
 				NPCEngine();
 				MercenaryEngine();
 				MainEngine$9();
+				initializeStoreSearch();
 				MainEngine$8();
 				FriendEngine.init();
 				MainEngine$7();
