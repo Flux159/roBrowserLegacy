@@ -55,6 +55,9 @@ let _taHideTimer = null;
 
 let isFirstTime = true;
 
+// The first show() came before the banner's sprite had loaded
+let _bannerPending = false;
+
 /**
  * Initialize UI
  */
@@ -74,6 +77,14 @@ PvPTimer.init = function init() {
 			_timefontSpr = tSpr;
 			_timeAtkAct = aAct;
 			_timeAtkSpr = aSpr;
+			// show() may have come first, while the fonts were loading
+			if (_timerInterval) {
+				renderTimer(((Date.now() / 1000) | 0) - _startTs);
+			}
+			if (_bannerPending) {
+				_bannerPending = false;
+				playTimeAttackBanner();
+			}
 		}
 	);
 
@@ -106,6 +117,7 @@ PvPTimer.onAppend = function onAppend() {
  */
 PvPTimer.onRemove = function onRemove() {
 	isFirstTime = true;
+	_bannerPending = false;
 	stopTimer();
 };
 
@@ -124,7 +136,11 @@ PvPTimer.show = function show() {
 	this._host.style.display = '';
 	startTimer();
 	if (isFirstTime === true) {
-		playTimeAttackBanner();
+		if (_timeAtkAct) {
+			playTimeAttackBanner();
+		} else {
+			_bannerPending = true;
+		}
 		isFirstTime = false;
 	}
 };
