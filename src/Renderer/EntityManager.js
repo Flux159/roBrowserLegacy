@@ -420,7 +420,7 @@ function render(gl, modelView, projection, fog, renderEffects) {
 
 	// Rendering
 	try {
-		renderList(modelView, projection, renderEffects, tick, culling);
+		renderList(modelView, projection, renderEffects, tick);
 	} finally {
 		SpriteRenderer.endBatch();
 	}
@@ -432,7 +432,7 @@ function render(gl, modelView, projection, fog, renderEffects) {
 /**
  * The entity loop of render()
  */
-function renderList(modelView, projection, renderEffects, tick, culling) {
+function renderList(modelView, projection, renderEffects, tick) {
 	let i, count;
 
 	for (i = 0, count = _list.length; i < count; ++i) {
