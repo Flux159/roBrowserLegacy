@@ -326265,6 +326265,7 @@ var init_EntityDisplay = __esmMin((() => {
 			this.guild_name = "";
 			this.guild_rank = "";
 			this.title_name = "";
+			this.unit_title = "";
 			this.emblem = null;
 			this.gifEmblem = null;
 			this.emblemY = 0;
@@ -326322,6 +326323,7 @@ var init_EntityDisplay = __esmMin((() => {
 				lines[1] = this.guild_name;
 				if (this.guild_rank.length && Map_default.showname) lines[1] += " [" + this.guild_rank + "]";
 			} else if (this.guild_rank.length && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC)) lines[1] = this.guild_rank;
+			if (!lines[1].length && this.unit_title.length && (style === this.STYLE.MOB || style === this.STYLE.NPC)) lines[1] = this.unit_title;
 			if (Map_default.showname && this.title_name.length && (style === this.STYLE.DEFAULT || style === this.STYLE.ADMIN || style === this.STYLE.MOB || style === this.STYLE.NPC)) lines[0] = "[" + this.title_name + "] " + lines[0];
 			ctx.font = (Map_default.showname ? "bold " : "") + fontSize + "px Arial";
 			const width = Math.max(ctx.measureText(lines[0]).width, ctx.measureText(lines[1]).width) + start_x + 5 * dpr;
@@ -345917,6 +345919,7 @@ function onEntityIdentity(pkt) {
 			const equipment = EquipmentController.getUI();
 			if (equipment && typeof equipment.setTitle === "function") equipment.setTitle(pkt.TitleID);
 		}
+		entity.display.unit_title = pkt.Title || "";
 		entity.display.party_name = pkt.PName || "";
 		entity.display.guild_name = pkt.GName || "";
 		entity.display.guild_rank = pkt.RName || "";
