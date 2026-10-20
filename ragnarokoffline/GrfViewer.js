@@ -236808,11 +236808,54 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 			save: false
 		};
 		let _ctx = null;
+		const _lookProps = [
+			"head",
+			"headpalette",
+			"bodypalette",
+			"weapon",
+			"shield",
+			"accessory",
+			"accessory2",
+			"accessory3",
+			"robe"
+		];
+		let _onFoot = null;
+		let _onFootKey = "";
+		function onFoot(character) {
+			if (!character.costume) {
+				_onFoot = null;
+				_onFootKey = "";
+				return character;
+			}
+			const key = [
+				character.GID,
+				character._job,
+				character.sex,
+				character.body
+			].concat(_lookProps.map((prop) => character[prop])).join(",");
+			if (key !== _onFootKey) {
+				_onFoot = new Entity();
+				_onFoot.set({
+					GID: character.GID + "_SKILLTREE",
+					objecttype: Entity.TYPE_PC,
+					job: character._job,
+					sex: character.sex,
+					name: "",
+					hideShadow: true
+				});
+				_lookProps.forEach((prop) => {
+					_onFoot[prop] = character[prop];
+				});
+				if (character.body > 0 && character.body !== character._job) _onFoot.body = character.body;
+				_onFootKey = key;
+			}
+			return _onFoot;
+		}
 		return function renderSittingChar(tick) {
-			const character = SessionStorage_default.Entity;
 			const root = Component.getRoot();
 			const contentbig = root.querySelector(".contentbig");
-			if (!character || !contentbig || contentbig.style.display === "none" || !Component.ui.is(":visible")) return;
+			if (!SessionStorage_default.Entity || !contentbig || contentbig.style.display === "none" || !Component.ui.is(":visible")) return;
+			const character = onFoot(SessionStorage_default.Entity);
 			if (!_ctx) {
 				_ctx = root.querySelector("canvas.sitting")?.getContext("2d");
 				if (!_ctx) return;
@@ -237040,6 +237083,7 @@ var init_SkillListCommon = __esmMin((() => {
 	init_GUIComponent();
 	init_MouseEventHandler();
 	init_Preferences$1();
+	init_Entity$1();
 	init_Renderer();
 	init_SessionStorage();
 	init_SpriteRenderer();
