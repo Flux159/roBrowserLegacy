@@ -11415,9 +11415,80 @@ function canBuild(filename) {
 * @param {function} callback - called with a 1024-byte Uint8Array, or null
 */
 function build(filename, callback) {
+	const job = parse$1(filename);
+	load$1(job, function(own, siblings, hair, hair0) {
+		if (pick$1(job) !== "data" && own && hair && hair0) {
+			const cloth = clothIndices([own, ...siblings.filter(Boolean)]);
+			if (cloth.length) {
+				callback(fromHair(own, cloth, hair, hair0));
+				return;
+			}
+		}
+		callback(recolour(siblings.filter((p, i) => p && SIBLINGS[i] !== job.colour), job.colour));
+	});
+}
+/**
+* Check a body palette the game data has: replaced by the hair colour when
+* PICKS says so or its clothes are too dark.
+*
+* @param {string} filename
+* @param {ArrayBuffer|Uint8Array} data - the file
+* @param {function} callback - called with a replacement Uint8Array, or null to keep the file
+*/
+function adjust(filename, data, callback) {
+	const job = parse$1(filename);
+	const choice = pick$1(job);
+	if (!job.colour || choice === "data" || data.byteLength < 1024) {
+		callback(null);
+		return;
+	}
+	const pal = data instanceof ArrayBuffer ? new Uint8Array(data, 0, 1024) : new Uint8Array(data.buffer, data.byteOffset, 1024);
+	load$1(job, function(own, siblings, hair, hair0) {
+		if (!own || !hair || !hair0) {
+			callback(null);
+			return;
+		}
+		const cloth = clothIndices([own, ...siblings.filter(Boolean)]);
+		if (cloth.length && (choice === "hair" || isDark(pal, own, cloth))) {
+			callback(fromHair(own, cloth, hair, hair0));
+			return;
+		}
+		callback(null);
+	});
+}
+/**
+* <job>_<sex>_<n>(_1).pal into its parts.
+*
+* @param {string} filename - a body palette (canBuild)
+*/
+function parse$1(filename) {
 	const match = filename.match(NAME);
-	const colour = parseInt(match[2], 10);
-	const names = SIBLINGS.filter((n) => n !== colour).map((n) => match[1] + n + (match[3] || "") + ".pal");
+	const parts = match[1].slice(16, -1).split("_");
+	return {
+		prefix: match[1],
+		suffix: (match[3] || "") + ".pal",
+		colour: parseInt(match[2], 10),
+		sex: parts.pop(),
+		name: parts.join("_")
+	};
+}
+/** @return {string|undefined} PICKS' choice for this job and colour */
+function pick$1(job) {
+	return (PICKS[job.name] || {})[job.colour];
+}
+/**
+* Read the job's _0 and sibling palettes and hair colours n and 0.
+*
+* @param {object} job - from parse()
+* @param {function} callback - (own, siblings[], hair, hair0), each a Uint8Array or null
+*/
+function load$1(job, callback) {
+	const names = [
+		job.prefix + "0" + job.suffix,
+		...SIBLINGS.map((n) => job.prefix + n + job.suffix),
+		HAIR + job.sex + "_" + job.colour + ".pal",
+		HAIR + job.sex + "_0.pal"
+	];
 	const found = new Array(names.length).fill(null);
 	let pending = names.length;
 	names.forEach((name, i) => {
@@ -11426,9 +11497,101 @@ function build(filename, callback) {
 			args: null
 		}, (data, error) => {
 			if (!error && data && data.byteLength >= 1024) found[i] = new Uint8Array(data, 0, 1024);
-			if (--pending === 0) callback(recolour(found.filter(Boolean), colour));
+			if (--pending === 0) callback(found[0], found.slice(1, 1 + SIBLINGS.length), found[names.length - 2], found[names.length - 1]);
 		});
 	});
+}
+/**
+* The indices that differ between palettes: the clothes.
+*
+* @param {Uint8Array[]} palettes - the first one is compared with the rest
+* @return {number[]}
+*/
+function clothIndices(palettes) {
+	const base = palettes[0];
+	const cloth = [];
+	for (let i = FIRST_CLOTH_INDEX; i < 256; ++i) {
+		const o = i * 4;
+		if (palettes.some((p) => p[o] !== base[o] || p[o + 1] !== base[o + 1] || p[o + 2] !== base[o + 2])) cloth.push(i);
+	}
+	return cloth;
+}
+/**
+* Whether a palette's clothes (where it differs from the job's own) are on
+* average darker than DARK.
+*
+* @param {Uint8Array} pal
+* @param {Uint8Array} own - the job's _0 palette
+* @param {number[]} cloth - clothIndices
+* @return {boolean}
+*/
+function isDark(pal, own, cloth) {
+	let sum = 0;
+	let count = 0;
+	for (const i of cloth) {
+		const o = i * 4;
+		if (pal[o] === own[o] && pal[o + 1] === own[o + 1] && pal[o + 2] === own[o + 2]) continue;
+		sum += rgbToHls(pal[o] / 255, pal[o + 1] / 255, pal[o + 2] / 255)[1];
+		count++;
+	}
+	return count > 0 && sum / count < DARK;
+}
+/**
+* The job's own palette with its clothes in a hair colour's shades.
+*
+* @param {Uint8Array} own - the job's _0 palette
+* @param {number[]} cloth - clothIndices
+* @param {Uint8Array} hair - hair colour n
+* @param {Uint8Array} hair0 - hair colour 0: what n changes is the hair
+* @return {Uint8Array}
+*/
+function fromHair(own, cloth, hair, hair0) {
+	const ramp = [];
+	for (let i = FIRST_CLOTH_INDEX; i < 256; ++i) {
+		const o = i * 4;
+		if (hair[o] === hair0[o] && hair[o + 1] === hair0[o + 1] && hair[o + 2] === hair0[o + 2]) continue;
+		ramp.push({
+			l: rgbToHls(hair[o] / 255, hair[o + 1] / 255, hair[o + 2] / 255)[1],
+			c: [
+				hair[o],
+				hair[o + 1],
+				hair[o + 2]
+			]
+		});
+	}
+	const out = new Uint8Array(own);
+	if (!ramp.length) return out;
+	ramp.sort((a, b) => a.l - b.l);
+	const lights = cloth.map((i) => rgbToHls(own[i * 4] / 255, own[i * 4 + 1] / 255, own[i * 4 + 2] / 255)[1]);
+	const min = Math.min(...lights);
+	const max = Math.max(...lights);
+	const low = ramp[0].l;
+	const high = ramp[ramp.length - 1].l;
+	const dark = ramp.reduce((sum, x) => sum + x.l, 0) / ramp.length < .45;
+	cloth.forEach((i, k) => {
+		const t = (lights[k] - min) / (max - min || 1);
+		let c = shadeAt(ramp, low + t * (high - low));
+		if (dark) {
+			const [h, l, s] = rgbToHls(c[0] / 255, c[1] / 255, c[2] / 255);
+			c = hlsToRgb(h, .3 + .7 * l, s).map((v) => v * 255);
+		}
+		const o = i * 4;
+		out[o] = Math.round(c[0]);
+		out[o + 1] = Math.round(c[1]);
+		out[o + 2] = Math.round(c[2]);
+	});
+	return out;
+}
+/** The ramp's colour at a lightness, between its two nearest shades. */
+function shadeAt(ramp, l) {
+	if (l <= ramp[0].l) return ramp[0].c;
+	for (let k = 1; k < ramp.length; ++k) if (l <= ramp[k].l) {
+		const a = ramp[k - 1];
+		const b = ramp[k];
+		const t = (l - a.l) / (b.l - a.l || 1);
+		return a.c.map((v, j) => v + (b.c[j] - v) * t);
+	}
+	return ramp[ramp.length - 1].c;
 }
 /**
 * @param {Uint8Array[]} palettes - the job's own, first one first
@@ -11438,11 +11601,7 @@ function build(filename, callback) {
 function recolour(palettes, colour) {
 	if (palettes.length < 2) return null;
 	const base = palettes[0];
-	const cloth = [];
-	for (let i = FIRST_CLOTH_INDEX; i < 256; ++i) {
-		const o = i * 4;
-		if (palettes.some((p) => p[o] !== base[o] || p[o + 1] !== base[o + 1] || p[o + 2] !== base[o + 2])) cloth.push(i);
-	}
+	const cloth = clothIndices(palettes);
 	if (!cloth.length) return null;
 	const [hue, saturation, lightness] = LOOKS[((colour - 4) % LOOKS.length + LOOKS.length) % LOOKS.length];
 	const out = new Uint8Array(base);
@@ -11501,16 +11660,41 @@ function channel(m1, m2, h) {
 	if (h < 2 / 3) return m1 + (m2 - m1) * (2 / 3 - h) * 6;
 	return m1;
 }
-var BODY_DIR, NAME, SIBLINGS, LOOKS, FIRST_CLOTH_INDEX, ClothPalette_default;
+var BODY_DIR, NAME, SIBLINGS, HAIR, DARK, PICKS, LOOKS, FIRST_CLOTH_INDEX, ClothPalette_default;
 var init_ClothPalette = __esmMin((() => {
 	init_Thread();
 	BODY_DIR = "data/palette/¸ö/";
-	NAME = /^(.*_)(\d+)(_1)?\.pal$/i;
+	NAME = /^(.*?_)(\d+)(_1)?\.pal$/i;
 	SIBLINGS = [
 		1,
 		2,
 		3
 	];
+	HAIR = "data/palette/¸Ó¸®/¸Ó¸®1_";
+	DARK = .3;
+	PICKS = {
+		"ÇÁ¸®½ºÆ®": {
+			4: "hair",
+			6: "data",
+			7: "data"
+		},
+		"À§Àúµå": {
+			6: "data",
+			7: "data"
+		},
+		"¼ºÁ÷ÀÚ": {
+			6: "data",
+			7: "data"
+		},
+		"¾î¼¼½Å": {
+			6: "data",
+			7: "data"
+		},
+		"´í¼­": {
+			6: "data",
+			7: "data"
+		}
+	};
 	LOOKS = [
 		[
 			105,
@@ -11537,7 +11721,11 @@ var init_ClothPalette = __esmMin((() => {
 	ClothPalette_default = {
 		canBuild,
 		build,
-		recolour
+		adjust,
+		recolour,
+		fromHair,
+		clothIndices,
+		isDark
 	};
 }));
 //#endregion
@@ -239748,7 +239936,7 @@ function getFocusEntity$1() {
 * be cast on them (Heal not on the dead, Resurrection only on them).
 */
 function getFocusForSkill() {
-	if (_open$3 && !_pending$2 && _highlight !== -1 && _entries[_highlight]) {
+	if (_open$3 && !_pending$3 && _highlight !== -1 && _entries[_highlight]) {
 		const entry = _entries[_highlight];
 		if (!judge(entry, skillContext()).ok) return null;
 		setFocus$1(entry);
@@ -239823,7 +240011,7 @@ function castOn(entity) {
 * @param {string} name skill name, shown above the radial
 */
 function openPending(index, name) {
-	_pending$2 = {
+	_pending$3 = {
 		index,
 		name: name || ""
 	};
@@ -239832,10 +240020,10 @@ function openPending(index, name) {
 	_picked = -1;
 }
 function isPending() {
-	return _pending$2 !== null;
+	return _pending$3 !== null;
 }
 function pendingIndex() {
-	return _pending$2 ? _pending$2.index : -1;
+	return _pending$3 ? _pending$3.index : -1;
 }
 /**
 * Drop the pending skill and close the radial.
@@ -239843,8 +240031,8 @@ function pendingIndex() {
 * @param {boolean} [cancelSkill] also take the skill off the cursor
 */
 function cancelPending(cancelSkill) {
-	if (!_pending$2) return;
-	_pending$2 = null;
+	if (!_pending$3) return;
+	_pending$3 = null;
 	closeRadial();
 	if (cancelSkill && SkillTargetSelection_default.getFlag()) SkillTargetSelection_default.remove();
 }
@@ -239853,7 +240041,7 @@ function cancelPending(cancelSkill) {
 * yourself.
 */
 function castPendingOnSelf() {
-	_pending$2 = null;
+	_pending$3 = null;
 	closeRadial();
 	return castOn(SessionStorage_default.Entity);
 }
@@ -239878,7 +240066,7 @@ function segmentAt(x, y, count) {
 function pick(index) {
 	_picked = index;
 	const entry = _entries[index];
-	if (_pending$2 || !entry || !entry.selectable || entry.key === _focusKey) return;
+	if (_pending$3 || !entry || !entry.selectable || entry.key === _focusKey) return;
 	setFocus$1(entry);
 	rumble(RUMBLE_FOCUS);
 }
@@ -239889,7 +240077,7 @@ function pick(index) {
 * @return {boolean} whether it was open
 */
 function dismiss() {
-	if (!_open$3 || _pending$2) return false;
+	if (!_open$3 || _pending$3) return false;
 	closeRadial();
 	_waitRest = true;
 	return true;
@@ -239902,11 +240090,11 @@ function dismiss() {
 * @return {boolean} whether a skill was pending (A is taken either way)
 */
 function confirmPending() {
-	if (!_pending$2) return false;
+	if (!_pending$3) return false;
 	const entry = _highlight !== -1 ? _entries[_highlight] : null;
 	if (!entry || !judge(entry, skillContext()).ok) return true;
 	setFocus$1(entry);
-	_pending$2 = null;
+	_pending$3 = null;
 	closeRadial();
 	castOn(entry.entity);
 	return true;
@@ -239918,7 +240106,7 @@ function confirmPending() {
 * again.
 */
 function ownsStick() {
-	return _pending$2 !== null || JoystickTargetCategory_default.isSupport();
+	return _pending$3 !== null || JoystickTargetCategory_default.isSupport();
 }
 /**
 * One frame (JoystickCursorMotion), before aim and cursor get the stick.
@@ -239930,11 +240118,11 @@ function ownsStick() {
 * @return {boolean} true when Support took the right stick this frame
 */
 function update$2(x, y, magnitude, deadzone) {
-	if (_pending$2 && !SkillTargetSelection_default.getFlag()) {
-		_pending$2 = null;
+	if (_pending$3 && !SkillTargetSelection_default.getFlag()) {
+		_pending$3 = null;
 		closeRadial();
 	}
-	if (!SessionStorage_default.Entity || !JoystickTargetCategory_default.isSupport() && !_pending$2) {
+	if (!SessionStorage_default.Entity || !JoystickTargetCategory_default.isSupport() && !_pending$3) {
 		closeRadial();
 		release$1();
 		return false;
@@ -239948,7 +240136,7 @@ function update$2(x, y, magnitude, deadzone) {
 	if (pickedKey !== null) _picked = _entries.findIndex((entry) => entry.key === pickedKey);
 	if (owns) {
 		if (_highlight === -1 && highlightKey !== null) {
-			_highlight = _pending$2 ? 0 : -1;
+			_highlight = _pending$3 ? 0 : -1;
 			_picked = -1;
 		}
 		const atRest = magnitude <= Math.max(deadzone, RELEASE_MAX);
@@ -239965,10 +240153,10 @@ function update$2(x, y, magnitude, deadzone) {
 			if (_picked !== _highlight && now - _highlightAt >= SETTLE_MS) pick(_highlight);
 		} else if (atRest) {
 			_pushed = false;
-			if (_pending$2) _highlight = _picked !== -1 ? _picked : 0;
+			if (_pending$3) _highlight = _picked !== -1 ? _picked : 0;
 			else closeRadial();
 		}
-	} else if (!_pending$2) closeRadial();
+	} else if (!_pending$3) closeRadial();
 	draw();
 	return owns;
 }
@@ -240048,7 +240236,7 @@ function drawRadial(ctx) {
 	const cy = Math.max(feet[1], Math.min(feet[1] + BELOW_FEET$1 + reach, Renderer.height - reach - LABEL_ROOM));
 	const step = Math.PI * 2 / count;
 	const gap = GAP_DEG * Math.PI / 180;
-	const skill = _pending$2 ? skillContext() : null;
+	const skill = _pending$3 ? skillContext() : null;
 	for (let i = 0; i < count; i++) {
 		const entry = _entries[i];
 		const verdict = judge(entry, skill);
@@ -240096,7 +240284,7 @@ function drawRadial(ctx) {
 		if (reason) label += " - " + reason;
 		drawLabel(ctx, label, cx, cy + outer + POP_OUT + 14);
 	}
-	if (_pending$2 && _pending$2.name) drawLabel(ctx, _pending$2.name, cx, cy - outer - POP_OUT - 8);
+	if (_pending$3 && _pending$3.name) drawLabel(ctx, _pending$3.name, cx, cy - outer - POP_OUT - 8);
 	_drawn = true;
 }
 /**
@@ -240306,7 +240494,7 @@ function opaqueBounds(ctx, side) {
 		right
 	};
 }
-var SELECT_MIN, RELEASE_MAX, SETTLE_MS, R_INNER, R_OUTER_MIN, R_OUTER_PER_ENTRY, POP_OUT, GAP_DEG, ICON_SIZE, BELOW_FEET$1, LABEL_ROOM, HP_GOOD, HP_LOW, COLOR_GOOD, COLOR_MID, COLOR_LOW, FOCUS_RING, SP_BACK, SP_FILL, SP_COST, SP_SHORT, FAR_OUTLINE, RUMBLE_FOCUS, RUMBLE_CAST, REVIVE_SKILLS, PORTRAIT_BOX, PORTRAIT_RETRY_MS, _overlay, _supportCtx, _drawn, _focusKey, _open$3, _highlight, _highlightAt, _picked, _pushed, _waitRest, _entries, _pending$2, _portraits, _jobIcons, HEADGEAR, _scratch, _scratchCtx, JoystickSupportMode_default;
+var SELECT_MIN, RELEASE_MAX, SETTLE_MS, R_INNER, R_OUTER_MIN, R_OUTER_PER_ENTRY, POP_OUT, GAP_DEG, ICON_SIZE, BELOW_FEET$1, LABEL_ROOM, HP_GOOD, HP_LOW, COLOR_GOOD, COLOR_MID, COLOR_LOW, FOCUS_RING, SP_BACK, SP_FILL, SP_COST, SP_SHORT, FAR_OUTLINE, RUMBLE_FOCUS, RUMBLE_CAST, REVIVE_SKILLS, PORTRAIT_BOX, PORTRAIT_RETRY_MS, _overlay, _supportCtx, _drawn, _focusKey, _open$3, _highlight, _highlightAt, _picked, _pushed, _waitRest, _entries, _pending$3, _portraits, _jobIcons, HEADGEAR, _scratch, _scratchCtx, JoystickSupportMode_default;
 var init_JoystickSupportMode = __esmMin((() => {
 	init_SessionStorage();
 	init_EntityManager();
@@ -240369,7 +240557,7 @@ var init_JoystickSupportMode = __esmMin((() => {
 	_pushed = false;
 	_waitRest = false;
 	_entries = [];
-	_pending$2 = null;
+	_pending$3 = null;
 	_portraits = /* @__PURE__ */ new Map();
 	_jobIcons = /* @__PURE__ */ new Map();
 	HEADGEAR = [
@@ -243126,9 +243314,9 @@ function stepSlider(el, sign) {
 	if (next === from) return false;
 	el.value = String(next);
 	fire(el, "input");
-	clearTimeout(_pending$1.get(el));
-	_pending$1.set(el, setTimeout(() => {
-		_pending$1.delete(el);
+	clearTimeout(_pending$2.get(el));
+	_pending$2.set(el, setTimeout(() => {
+		_pending$2.delete(el);
 		fire(el, "change");
 	}, CHANGE_AFTER_MS));
 	return true;
@@ -243167,11 +243355,11 @@ function step(el, direction) {
 * Send now a slider's change that waits for its steps to stop (menus end).
 */
 function flush() {
-	_pending$1.forEach((timer, el) => {
+	_pending$2.forEach((timer, el) => {
 		clearTimeout(timer);
 		fire(el, "change");
 	});
-	_pending$1.clear();
+	_pending$2.clear();
 }
 /**
 * Hints for the hint bar.
@@ -243182,12 +243370,12 @@ function flush() {
 function hints$1(el) {
 	return handles(el) ? [["◀▶", "Change"]] : [];
 }
-var STEPS, CHANGE_AFTER_MS, SLIDER, _pending$1, JoystickValueInput_default;
+var STEPS, CHANGE_AFTER_MS, SLIDER, _pending$2, JoystickValueInput_default;
 var init_JoystickValueInput = __esmMin((() => {
 	STEPS = 20;
 	CHANGE_AFTER_MS = 250;
 	SLIDER = "input[type=\"range\"]";
-	_pending$1 = /* @__PURE__ */ new Map();
+	_pending$2 = /* @__PURE__ */ new Map();
 	JoystickValueInput_default = {
 		handles,
 		isSlider,
@@ -275336,12 +275524,12 @@ var init_MapRenderer = __esmMin((() => {
 //#endregion
 //#region src/Renderer/Camera.js
 function save$1() {
-	_pending = false;
+	_pending$1 = false;
 	if (!DB.isIndoor(Camera.currentMap)) Camera_default.zoom = Camera.zoomFinal;
 	else Camera_default.indoorZoom = Camera.zoomFinal;
 	Camera_default.save();
 }
-var mat4$10, mat3, vec2$2, vec3$1, _position$1, C_MIN_ZOOM, C_MAX_ZOOM, C_MIN_V_ANGLE_ISOMETRIC, C_MAX_V_ANGLE_ISOMETRIC, C_THIRDPERSON_TRESHOLD_ZOOM, C_MIN_V_ANGLE_3RDPERSON, C_MAX_V_ANGLE_3RDPERSON, C_MIN_V_ANGLE_1STPERSON, C_MAX_V_ANGLE_1STPERSON, C_QUAKE_MULT, _pending, Camera;
+var mat4$10, mat3, vec2$2, vec3$1, _position$1, C_MIN_ZOOM, C_MAX_ZOOM, C_MIN_V_ANGLE_ISOMETRIC, C_MAX_V_ANGLE_ISOMETRIC, C_THIRDPERSON_TRESHOLD_ZOOM, C_MIN_V_ANGLE_3RDPERSON, C_MAX_V_ANGLE_3RDPERSON, C_MIN_V_ANGLE_1STPERSON, C_MAX_V_ANGLE_1STPERSON, C_QUAKE_MULT, _pending$1, Camera;
 var init_Camera = __esmMin((() => {
 	init_KeyEventHandler();
 	init_MouseEventHandler();
@@ -275364,7 +275552,7 @@ var init_Camera = __esmMin((() => {
 	C_MIN_V_ANGLE_1STPERSON = 90;
 	C_MAX_V_ANGLE_1STPERSON = 270;
 	C_QUAKE_MULT = .1;
-	_pending = false;
+	_pending$1 = false;
 	Camera = class Camera {
 		/**
 		* Projection matrix
@@ -275473,9 +275661,9 @@ var init_Camera = __esmMin((() => {
 		* Save the camera settings
 		*/
 		static save() {
-			if (!_pending) {
+			if (!_pending$1) {
 				Events.setTimeout(save$1, 3e3);
-				_pending = true;
+				_pending$1 = true;
 			}
 		}
 		/**
@@ -325884,7 +326072,11 @@ function setAction(option) {
 	const wasWalking = this.action === this.ACTION.WALK;
 	const newAction = option.action === -1 || typeof option.action === "undefined" ? this.ACTION.IDLE : option.action;
 	const willWalk = newAction === this.ACTION.WALK;
-	if (wasWalking && !willWalk && !this.isFastMoving && this.walk && this.walk.total > 0 && this.objecttype !== this.constructor.TYPE_FALCON && this.objecttype !== this.constructor.TYPE_WUG) this.resetRoute();
+	if (wasWalking && !willWalk && !this.isFastMoving && this.walk && this.walk.total > 0 && !this.walk.settling && this.objecttype !== this.constructor.TYPE_FALCON && this.objecttype !== this.constructor.TYPE_WUG) {
+		const predicted = this.walk.predicted;
+		this.resetRoute();
+		this.walk.predicted = predicted;
+	}
 	this.action = newAction;
 	anim.tick = Date.now() + 0;
 	anim.delay = 0;
@@ -327798,6 +327990,10 @@ function computeWalkStartTick(nowTick, moveStartTime, pathDuration, maxClamp) {
 * @property {function|null} onEnd Callback fired when entity reaches path end
 * @property {number} index Current segment index in path
 * @property {number} total Total number of coordinate values in path
+* @property {boolean} settling Gliding to rest on a cell the server named
+* @property {object|null} predicted A walk the server has not confirmed yet:
+*   { queue: [[x, y], ...] cells requested, fallback: [x, y] where the server
+*   has the entity, deadline: tick after which it walks back }
 */
 function WalkStructure() {
 	this.speed = 150;
@@ -327811,6 +328007,8 @@ function WalkStructure() {
 	this.onEnd = null;
 	this.index = 0;
 	this.total = 0;
+	this.settling = false;
+	this.predicted = null;
 	this.stuckWarned = false;
 }
 /**
@@ -327943,9 +328141,14 @@ function walkToNonWalkableGround(from_x, from_y, to_x, to_y, range, isOverShoot 
 * @param {number} [moveEndTime]
 * @param {boolean} [isFastMove=false]
 * @param {number} [fastSpeed]
+* @param {boolean} [isPrediction=false] a walk the client starts before the server answers
 */
-function walkTo(from_x, from_y, to_x, to_y, range, moveStartTime, moveEndTime, isFastMove, fastSpeed) {
-	if (from_x === to_x && from_y === to_y) return;
+function walkTo(from_x, from_y, to_x, to_y, range, moveStartTime, moveEndTime, isFastMove, fastSpeed, isPrediction) {
+	if (!isPrediction && this.walk.predicted && answersOlderRequest(this.walk.predicted, to_x, to_y)) return;
+	if (from_x === to_x && from_y === to_y) {
+		if (!isPrediction && this.walk.predicted) this.settleTo(to_x, to_y);
+		return;
+	}
 	const curX = this.position[0];
 	const curY = this.position[1];
 	const hasCurrentPos = isFinite(curX) && isFinite(curY) && (curX !== 0 || curY !== 0);
@@ -328000,27 +328203,49 @@ function walkTo(from_x, from_y, to_x, to_y, range, moveStartTime, moveEndTime, i
 			this.walk.segmentDurations[i] = segDur;
 			clientDuration += segDur;
 		}
-		let serverDuration = 0;
-		if (!isFastMove) {
-			if (moveEndTime && moveStartTime && moveEndTime > moveStartTime) serverDuration = moveEndTime - moveStartTime;
-			else {
-				const sDx = to_x - from_x;
-				const sDy = to_y - from_y;
-				const straight = Math.abs(Math.abs(sDx) - Math.abs(sDy));
-				const diag = Math.min(Math.abs(sDx), Math.abs(sDy));
-				serverDuration = straight * this.walk.speed + diag * this.walk.speed * DIAGONAL_FACTOR;
+		if (isPrediction || Configs.get("movePrediction", false)) {
+			let serverDuration = 0;
+			if (!isFastMove && !isPrediction) {
+				if (moveEndTime && moveStartTime && moveEndTime > moveStartTime) serverDuration = moveEndTime - moveStartTime;
+				else if (usedFallback || curCellX === from_x && curCellY === from_y) serverDuration = gridPathDuration(path, total, this.walk.speed);
+				else {
+					const sDx = Math.abs(to_x - from_x);
+					const sDy = Math.abs(to_y - from_y);
+					const diag = Math.min(sDx, sDy);
+					serverDuration = (Math.max(sDx, sDy) - diag) * this.walk.speed + diag * this.walk.speed * DIAGONAL_FACTOR;
+				}
 			}
-		}
-		const nowTick = Date.now();
-		const isPlayerLike = this.objecttype === this.constructor.TYPE_PC || this.objecttype === this.constructor.TYPE_DISGUISED || this.objecttype === this.constructor.TYPE_PET || this.objecttype === this.constructor.TYPE_HOM || this.objecttype === this.constructor.TYPE_MERC;
-		const maxFastForward = isFastMove ? 0 : isPlayerLike ? clientDuration : Math.min(clientDuration, this.walk.speed);
-		const startTick = isFastMove ? nowTick : computeWalkStartTick(nowTick, moveStartTime, clientDuration, maxFastForward);
-		this.walk.tick = this.walk.prevTick = startTick;
-		if (!isFastMove && numSegments > 0 && serverDuration > 0) {
-			let sub = serverDuration - clientDuration;
-			sub = Math.max(-2500, Math.min(2500, sub));
-			const subDiv = sub / numSegments;
-			for (let i = 0; i < numSegments; i++) this.walk.segmentDurations[i] = Math.max(10, this.walk.segmentDurations[i] + subDiv);
+			const nowTick = Date.now();
+			this.walk.tick = this.walk.prevTick = nowTick;
+			if (serverDuration > 0 && numSegments > 0 && clientDuration > 0) {
+				const maxCatchUp = this.objecttype === this.constructor.TYPE_PC || this.objecttype === this.constructor.TYPE_DISGUISED || this.objecttype === this.constructor.TYPE_PET || this.objecttype === this.constructor.TYPE_HOM || this.objecttype === this.constructor.TYPE_MERC ? serverDuration : Math.min(serverDuration, this.walk.speed);
+				const elapsed = nowTick - computeWalkStartTick(nowTick, moveStartTime, serverDuration, maxCatchUp);
+				const pace = Math.max(MIN_PACE, Math.min(MAX_PACE, (serverDuration - elapsed) / clientDuration));
+				for (let i = 0; i < numSegments; i++) this.walk.segmentDurations[i] = Math.max(1, this.walk.segmentDurations[i] * pace);
+			}
+		} else {
+			let serverDuration = 0;
+			if (!isFastMove) {
+				if (moveEndTime && moveStartTime && moveEndTime > moveStartTime) serverDuration = moveEndTime - moveStartTime;
+				else {
+					const sDx = to_x - from_x;
+					const sDy = to_y - from_y;
+					const straight = Math.abs(Math.abs(sDx) - Math.abs(sDy));
+					const diag = Math.min(Math.abs(sDx), Math.abs(sDy));
+					serverDuration = straight * this.walk.speed + diag * this.walk.speed * DIAGONAL_FACTOR;
+				}
+			}
+			const nowTick = Date.now();
+			const isPlayerLike = this.objecttype === this.constructor.TYPE_PC || this.objecttype === this.constructor.TYPE_DISGUISED || this.objecttype === this.constructor.TYPE_PET || this.objecttype === this.constructor.TYPE_HOM || this.objecttype === this.constructor.TYPE_MERC;
+			const maxFastForward = isFastMove ? 0 : isPlayerLike ? clientDuration : Math.min(clientDuration, this.walk.speed);
+			const startTick = isFastMove ? nowTick : computeWalkStartTick(nowTick, moveStartTime, clientDuration, maxFastForward);
+			this.walk.tick = this.walk.prevTick = startTick;
+			if (!isFastMove && numSegments > 0 && serverDuration > 0) {
+				let sub = serverDuration - clientDuration;
+				sub = Math.max(-2500, Math.min(2500, sub));
+				const subDiv = sub / numSegments;
+				for (let i = 0; i < numSegments; i++) this.walk.segmentDurations[i] = Math.max(10, this.walk.segmentDurations[i] + subDiv);
+			}
 		}
 		if (this.walk.total >= 2) {
 			const firstX1 = this.walk.path[2];
@@ -328036,6 +328261,136 @@ function walkTo(from_x, from_y, to_x, to_y, range, moveStartTime, moveEndTime, i
 			play: true
 		});
 	}
+}
+/**
+* Walk time of a cell path, as the server counts it.
+*
+* @param {Int16Array} path cell pairs
+* @param {number} total number of cells in path
+* @param {number} speed ms per cell
+* @returns {number} ms
+*/
+function gridPathDuration(path, total, speed) {
+	let duration = 0;
+	for (let i = 1; i < total; i++) {
+		const diagonal = path[i * 2] !== path[i * 2 - 2] && path[i * 2 + 1] !== path[i * 2 - 1];
+		duration += diagonal ? speed * DIAGONAL_FACTOR : speed;
+	}
+	return duration;
+}
+/**
+* Whether a move reply answers a request older than the newest one predicted.
+* Drops the requests it answers, and remembers its destination as where the
+* server is taking the entity.
+*/
+function answersOlderRequest(predicted, to_x, to_y) {
+	const queue = predicted.queue;
+	for (let i = queue.length - 2; i >= 0; i--) if (queue[i][0] === to_x && queue[i][1] === to_y) {
+		queue.splice(0, i + 1);
+		predicted.fallback = [to_x, to_y];
+		return true;
+	}
+	return false;
+}
+/**
+* Start walking to a cell the player clicked, before the server answers.
+* The server's reply (walkTo) then takes over the walk where it is drawn and
+* evens out the pace; if no reply comes within `timeout`, the entity walks
+* back to where the server has it.
+*
+* @param {number} to_x
+* @param {number} to_y
+* @param {number} timeout ms to wait for the server's reply
+* @returns {boolean} whether a walk started
+*/
+function predictWalkTo(to_x, to_y, timeout) {
+	const walk = this.walk;
+	const action = this.action;
+	if (this.isFastMoving || this._bodyState || this.cast && this.cast.display || action !== this.ACTION.IDLE && action !== this.ACTION.WALK && action !== this.ACTION.READYFIGHT) return false;
+	const curX = Math.round(this.position[0]);
+	const curY = Math.round(this.position[1]);
+	if (curX === to_x && curY === to_y) return false;
+	if (walk.total > 0 && walk.path[walk.total - 2] === to_x && walk.path[walk.total - 1] === to_y) return false;
+	const steps = PathFinding_default.search(curX, curY, to_x, to_y, 0, _serverPath) - 1;
+	if (steps < 1 || steps > SERVER_MAX_WALK_PATH || steps > SERVER_MAX_BENT_PATH && !PathFinding_default.searchLong(curX, curY, to_x, to_y, 0, _serverPath).success) return false;
+	const predicted = walk.predicted;
+	const fallback = predicted ? predicted.fallback : walk.total > 0 ? [walk.path[walk.total - 2], walk.path[walk.total - 1]] : [curX, curY];
+	const queue = predicted ? predicted.queue : [];
+	this.walkTo(curX, curY, to_x, to_y, 0, void 0, void 0, false, void 0, true);
+	if (!walk.total) return false;
+	queue.push([to_x, to_y]);
+	walk.predicted = {
+		queue,
+		fallback,
+		deadline: Date.now() + timeout
+	};
+	return true;
+}
+/**
+* Give up a prediction the server never confirmed: walk back to where the
+* server has the entity.
+*/
+function cancelPrediction() {
+	const fallback = this.walk.predicted.fallback;
+	this.walk.predicted = null;
+	if (this.action === this.ACTION.DIE || this.action === this.ACTION.SIT) {
+		this.resetRoute();
+		this.position[0] = fallback[0];
+		this.position[1] = fallback[1];
+		this.position[2] = Altitude.getCellHeight(fallback[0], fallback[1]);
+		return;
+	}
+	const curX = Math.round(this.position[0]);
+	const curY = Math.round(this.position[1]);
+	if (curX === fallback[0] && curY === fallback[1]) {
+		this.settleTo(fallback[0], fallback[1]);
+		return;
+	}
+	this.walkTo(curX, curY, fallback[0], fallback[1]);
+	if (!this.walk.total) this.settleTo(fallback[0], fallback[1]);
+}
+/**
+* Come to rest on a cell the server named (STOPMOVE). Close by, the entity
+* glides there, at most at its walk speed and within SETTLE_MAX_MS, rather
+* than jumping. Whatever action it is in carries on; a walk ends in IDLE on
+* arrival.
+*
+* @param {number} x
+* @param {number} y
+* @returns {boolean} true if gliding, false if the entity was placed at once
+*/
+function settleTo(x, y) {
+	const dx = x - this.position[0];
+	const dy = y - this.position[1];
+	const dist = Math.hypot(dx, dy);
+	const canGlide = isFinite(dist) && dist > .05 && dist <= SETTLE_MAX_CELLS && this.walk.speed > 0;
+	this.resetRoute();
+	if (!canGlide) {
+		this.position[0] = x;
+		this.position[1] = y;
+		this.position[2] = Altitude.getCellHeight(x, y);
+		if (this.action === this.ACTION.WALK) this.setAction({
+			action: this.ACTION.IDLE,
+			frame: 0,
+			play: true,
+			repeat: true
+		});
+		return false;
+	}
+	const walk = this.walk;
+	walk.path[0] = Math.round(this.position[0]);
+	walk.path[1] = Math.round(this.position[1]);
+	walk.path[2] = x;
+	walk.path[3] = y;
+	walk.index = 2;
+	walk.total = 4;
+	walk.pos.set(this.position);
+	walk.lastPos.set(this.position);
+	walk.segmentDurations[0] = Math.min(dist * walk.speed, SETTLE_MAX_MS);
+	walk.tick = walk.prevTick = Date.now();
+	walk.settling = true;
+	this._preserveDirection = true;
+	return true;
 }
 /**
 * Fast move / forced relocation to a destination cell (e.g. MO_BODYRELOCATION, knockback, slide).
@@ -328106,8 +328461,12 @@ function walkProcess() {
 	const total = walk.total;
 	const TICK = Date.now();
 	const falconGliding = 5;
+	if (walk.predicted && TICK > walk.predicted.deadline) {
+		this.cancelPrediction();
+		return;
+	}
 	if (total == 0) return;
-	if (total > 0 && !this.isFastMoving && this.action !== this.ACTION.WALK && this.objecttype !== this.constructor.TYPE_FALCON && this.objecttype !== this.constructor.TYPE_WUG && !walk.stuckWarned) {
+	if (total > 0 && !this.isFastMoving && !walk.settling && this.action !== this.ACTION.WALK && this.objecttype !== this.constructor.TYPE_FALCON && this.objecttype !== this.constructor.TYPE_WUG && !walk.stuckWarned) {
 		walk.stuckWarned = true;
 		let actionName = "UNKNOWN";
 		for (const key in this.ACTION) if (this.ACTION[key] === this.action) {
@@ -328127,7 +328486,7 @@ function walkProcess() {
 		});
 		console.trace("Stack trace of debug:");
 	}
-	if (this.action === this.ACTION.WALK || this.isFastMoving || this.objecttype === this.constructor.TYPE_FALCON || this.objecttype === this.constructor.TYPE_WUG) {
+	if (this.action === this.ACTION.WALK || this.isFastMoving || walk.settling || this.objecttype === this.constructor.TYPE_FALCON || this.objecttype === this.constructor.TYPE_WUG) {
 		const getSegmentDuration = function getSegmentDuration(dx, dy, baseSpeed) {
 			let duration = dx && dy ? baseSpeed * Math.SQRT2 : baseSpeed;
 			if (!duration || duration < 1) duration = 1;
@@ -328162,7 +328521,7 @@ function walkProcess() {
 					next: false
 				}
 			});
-			else if (this.action !== this.ACTION.DIE) this.setAction({
+			else if (walk.settling ? this.action === this.ACTION.WALK : this.action !== this.ACTION.DIE) this.setAction({
 				action: this.ACTION.IDLE,
 				frame: 0,
 				play: true,
@@ -328173,7 +328532,9 @@ function walkProcess() {
 				walk.onEnd();
 				walk.onEnd = null;
 			}
+			const predicted = walk.predicted;
 			this.resetRoute();
+			walk.predicted = predicted;
 			this.isAttacking = false;
 		};
 		if (index >= total) {
@@ -328191,7 +328552,7 @@ function walkProcess() {
 		let segmentStart = walk.tick || TICK;
 		let segmentEnd = segmentStart + speed;
 		let traveledDist = 0;
-		if (walk.prevTick && walk.prevTick !== TICK && walk.prevTick > segmentStart && !this.isFastMoving && this.action !== this.ACTION.WALK && this.objecttype !== this.constructor.TYPE_FALCON) {
+		if (walk.prevTick && walk.prevTick !== TICK && walk.prevTick > segmentStart && !this.isFastMoving && !walk.settling && this.action !== this.ACTION.WALK && this.objecttype !== this.constructor.TYPE_FALCON) {
 			segmentStart += TICK - walk.prevTick;
 			segmentEnd = segmentStart + speed;
 		}
@@ -328292,6 +328653,8 @@ function resetRoute(keepDistance) {
 	this.isFastMoving = false;
 	this._fastMoveTrail = false;
 	this._preserveDirection = false;
+	this.walk.settling = false;
+	this.walk.predicted = null;
 	this.walk.tick = 0;
 	this.walk.prevTick = 0;
 	if (!keepDistance) this.walk.dist = 0;
@@ -328351,6 +328714,9 @@ function Init$4() {
 	this._enableTrail = false;
 	this.walk = new WalkStructure();
 	this.walkTo = walkTo;
+	this.predictWalkTo = predictWalkTo;
+	this.cancelPrediction = cancelPrediction;
+	this.settleTo = settleTo;
 	this.fastMoveTo = fastMoveTo;
 	this.walkToNonWalkableGround = walkToNonWalkableGround;
 	this.walkProcess = walkProcess;
@@ -328358,11 +328724,12 @@ function Init$4() {
 	this.resetRoute = resetRoute;
 	this.distance = distance;
 }
-var DIRECTION$1, DIAGONAL_FACTOR, LATENCY_SLACK_MS;
+var DIRECTION$1, DIAGONAL_FACTOR, LATENCY_SLACK_MS, MIN_PACE, MAX_PACE, SERVER_MAX_WALK_PATH, SERVER_MAX_BENT_PATH, SETTLE_MAX_CELLS, SETTLE_MAX_MS, _serverPath;
 var init_EntityWalk = __esmMin((() => {
 	init_PathFinding();
 	init_Altitude();
 	init_SessionStorage();
+	init_Configs();
 	DIRECTION$1 = [
 		[
 			1,
@@ -328382,6 +328749,13 @@ var init_EntityWalk = __esmMin((() => {
 	];
 	DIAGONAL_FACTOR = 1.414;
 	LATENCY_SLACK_MS = 100;
+	MIN_PACE = .5;
+	MAX_PACE = 2;
+	SERVER_MAX_WALK_PATH = 17;
+	SERVER_MAX_BENT_PATH = 14;
+	SETTLE_MAX_CELLS = 2;
+	SETTLE_MAX_MS = 200;
+	_serverPath = new Int16Array(PathFinding_default.MAX_WALKPATH * 2);
 }));
 //#endregion
 //#region src/Renderer/Entity/EntityRender.js
@@ -333327,10 +333701,14 @@ async function onFileLoaded(data, error, input) {
 	let i, count, j, size;
 	let gl, frames, texture, layers, palette;
 	let precision;
-	if (error && ClothPalette_default.canBuild(input.filename)) {
-		ClothPalette_default.build(input.filename, function(built) {
+	if (!input.clothChecked && ClothPalette_default.canBuild(input.filename)) {
+		input.clothChecked = true;
+		if (error) ClothPalette_default.build(input.filename, function(built) {
 			if (built) onFileLoaded(built.buffer, null, input);
 			else MemoryManager.set(input.filename, data, error);
+		});
+		else ClothPalette_default.adjust(input.filename, data, function(replaced) {
+			onFileLoaded(replaced ? replaced.buffer : data, null, input);
 		});
 		return;
 	}
@@ -333746,17 +334124,17 @@ var init_StatusIcons$1 = __esmMin((() => {
 function loadStatusIcon(index) {
 	const tkmVariant = SessionStorage_default.Entity && DB.isTaeKwon(SessionStorage_default.Entity._job) && TKM_ICON_OVERRIDE[index] || null;
 	const iconName = tkmVariant || StatusInfo[index].icon;
-	_status[index].tkmVariant = tkmVariant;
+	_status$1[index].tkmVariant = tkmVariant;
 	Client.loadFile(`data/texture/effect/${iconName}`, (data) => {
 		Texture.load(data, function() {
-			if (_status[index] && !_status[index].img) addResizedStatusIcon(this, index);
+			if (_status$1[index] && !_status$1[index].img) addResizedStatusIcon(this, index);
 		});
 	});
 }
 function addResizedStatusIcon(img, index) {
 	if (img.width < 33 && img.height < 33) {
-		_status[index].img = img;
-		addElement$4(_status[index].element);
+		_status$1[index].img = img;
+		addElement$4(_status$1[index].element);
 		return;
 	}
 	const canvas = document.createElement("canvas");
@@ -333776,8 +334154,8 @@ function addResizedStatusIcon(img, index) {
 	const resizedImg = new Image();
 	resizedImg.src = canvas.toDataURL();
 	resizedImg.onload = () => {
-		_status[index].img = resizedImg;
-		addElement$4(_status[index].element);
+		_status$1[index].img = resizedImg;
+		addElement$4(_status$1[index].element);
 	};
 }
 /**
@@ -333807,11 +334185,11 @@ function resetElementsPosition() {
 * @param {number} index
 */
 function removeElementIndex(index) {
-	if (!(index in _status)) return;
-	const element = _status[index].element;
+	if (!(index in _status$1)) return;
+	const element = _status$1[index].element;
 	if (element && element.parentNode) element.parentNode.removeChild(element);
 	ScreenEffectManager.cleanStatusEffect(index);
-	delete _status[index];
+	delete _status$1[index];
 }
 /**
 * Create an element
@@ -333825,9 +334203,9 @@ function createElement(index) {
 	canvas.width = 32;
 	canvas.height = 32;
 	state.appendChild(canvas);
-	_status[index] = {};
-	_status[index].element = state;
-	_status[index].ctx = canvas.getContext("2d");
+	_status$1[index] = {};
+	_status$1[index].element = state;
+	_status$1[index].ctx = canvas.getContext("2d");
 	if (StatusInfo[index].descript) {
 		const info = document.createElement("div");
 		info.className = "description";
@@ -333842,8 +334220,8 @@ function createElement(index) {
 		}
 		const time = info.getElementsByClassName("time");
 		if (time.length) {
-			_status[index].time = time[0];
-			_status[index].timeTick = 0;
+			_status$1[index].time = time[0];
+			_status$1[index].timeTick = 0;
 		}
 		state.appendChild(info);
 	}
@@ -333906,15 +334284,15 @@ function renderStatus(status, now) {
 * @param {number} tick
 */
 function rendering$1(tick) {
-	const indexes = Object.keys(_status);
+	const indexes = Object.keys(_status$1);
 	const count = indexes.length;
 	const time_now = Date.now();
 	if (time_now - _last_updated_time > _render_time) {
 		_last_updated_time = time_now;
-		for (let i = 0; i < count; ++i) renderStatus(_status[indexes[i]], tick);
+		for (let i = 0; i < count; ++i) renderStatus(_status$1[indexes[i]], tick);
 	}
 }
-var StatusIcons, _status, _last_updated_time, _render_time, TKM_ICON_OVERRIDE, StatusIcons_default;
+var StatusIcons, _status$1, _last_updated_time, _render_time, TKM_ICON_OVERRIDE, StatusIcons_default;
 var init_StatusIcons = __esmMin((() => {
 	init_StatusInfo();
 	init_StatusConst();
@@ -333938,7 +334316,7 @@ var init_StatusIcons = __esmMin((() => {
 	* @var {boolean} do not focus this UI
 	*/
 	StatusIcons.needFocus = false;
-	_status = {};
+	_status$1 = {};
 	_last_updated_time = Date.now();
 	_render_time = 500;
 	TKM_ICON_OVERRIDE = {
@@ -333974,7 +334352,7 @@ var init_StatusIcons = __esmMin((() => {
 	StatusIcons.clean = function clean() {
 		const container = StatusIcons.getRoot().querySelector("#StatusIcons");
 		if (container) container.innerHTML = "";
-		_status = {};
+		_status$1 = {};
 		ScreenEffectManager.clean();
 	};
 	/**
@@ -333991,14 +334369,14 @@ var init_StatusIcons = __esmMin((() => {
 			resetElementsPosition();
 			return;
 		}
-		if (!(index in _status)) createElement(index);
-		_status[index].start = Renderer.tick;
-		_status[index].end = Renderer.tick + life;
-		if (life === 9999) _status[index].end = Infinity;
-		if (_status[index].img) {
+		if (!(index in _status$1)) createElement(index);
+		_status$1[index].start = Renderer.tick;
+		_status$1[index].end = Renderer.tick + life;
+		if (life === 9999) _status$1[index].end = Infinity;
+		if (_status$1[index].img) {
 			if (TKM_ICON_OVERRIDE[index]) {
 				const wantVariant = SessionStorage_default.Entity && DB.isTaeKwon(SessionStorage_default.Entity._job) && TKM_ICON_OVERRIDE[index] || null;
-				if (_status[index].tkmVariant !== wantVariant) _status[index].img = null;
+				if (_status$1[index].tkmVariant !== wantVariant) _status$1[index].img = null;
 				else return;
 			} else return;
 		}
@@ -342290,16 +342668,53 @@ var init_RodexIcon = __esmMin((() => {
 //#region src/UI/Components/Roulette/Roulette.html?raw
 var Roulette_default$2;
 var init_Roulette$3 = __esmMin((() => {
-	Roulette_default$2 = "<div id=\"Roulette\">\r\n	<div class=\"body\" data-background=\"basic_interface/roullette/roulletteBG.bmp\">\r\n		<div class=\"titlebar\">\r\n			<div class=\"left\">\r\n				<span class=\"title\">Roulette</span>\r\n			</div>\r\n			<div class=\"right\">\r\n				<button class=\"base close\">×</button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"roulette-container\">\r\n			<div class=\"roulette-wheel\">\r\n				<div class=\"wheel-center\"></div>\r\n				<div class=\"wheel-slots\">\r\n					<!-- Slots will be generated dynamically -->\r\n				</div>\r\n				<div class=\"wheel-pointer\"></div>\r\n			</div>\r\n\r\n			<div class=\"roulette-info\">\r\n				<div class=\"points-display\">\r\n					<span class=\"label\">Points:</span>\r\n					<span class=\"points-value\">0</span>\r\n				</div>\r\n\r\n				<div class=\"buttons-container\">\r\n					<button\r\n						class=\"btn-spin\"\r\n						data-background=\"basic_interface/roullette/StartRoullette_a.bmp\"\r\n						data-hover=\"basic_interface/roullette/StartRoullette_b.bmp\"\r\n					>\r\n						<span>Spin</span>\r\n					</button>\r\n					<button class=\"btn-info\">\r\n						<span>Info</span>\r\n					</button>\r\n					<button\r\n						class=\"btn-close\"\r\n						data-background=\"basic_interface/roullette/GetWinPrize_a.bmp\"\r\n						data-hover=\"basic_interface/roullette/GetWinPrize_b.bmp\"\r\n					>\r\n						<span>Get Prize</span>\r\n					</button>\r\n				</div>\r\n\r\n				<div class=\"result-display\">\r\n					<span class=\"result-label\">Result:</span>\r\n					<div class=\"result-item\"></div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+	Roulette_default$2 = "<div id=\"Roulette\">\r\n	<div class=\"body\" data-background=\"basic_interface/roullette/roulletteBG.bmp\">\r\n		<div class=\"titlebar\">\r\n			<div class=\"left\">\r\n				<span class=\"title\">Roulette</span>\r\n			</div>\r\n			<div class=\"right\">\r\n				<button class=\"base close\">×</button>\r\n			</div>\r\n			<div class=\"clear\"></div>\r\n		</div>\r\n\r\n		<div class=\"roulette-container\">\r\n			<div class=\"row-label\"></div>\r\n			<div class=\"roulette-wheel\">\r\n				<div class=\"wheel-center\"></div>\r\n				<div class=\"wheel-slots\">\r\n					<!-- Slots will be generated dynamically -->\r\n				</div>\r\n				<div class=\"wheel-pointer\"></div>\r\n			</div>\r\n\r\n			<div class=\"roulette-info\">\r\n				<div class=\"points-display\">\r\n					<span class=\"label\">Points:</span>\r\n					<span class=\"points-value\">0</span>\r\n				</div>\r\n\r\n				<div class=\"buttons-container\">\r\n					<button\r\n						class=\"btn-spin\"\r\n						data-background=\"basic_interface/roullette/StartRoullette_a.bmp\"\r\n						data-hover=\"basic_interface/roullette/StartRoullette_b.bmp\"\r\n					>\r\n						<span>Spin</span>\r\n					</button>\r\n					<button class=\"btn-info\">\r\n						<span>Refresh Rewards</span>\r\n					</button>\r\n					<button\r\n						class=\"btn-claim\"\r\n						data-background=\"basic_interface/roullette/GetWinPrize_a.bmp\"\r\n						data-hover=\"basic_interface/roullette/GetWinPrize_b.bmp\"\r\n					>\r\n						<span>Get Prize</span>\r\n					</button>\r\n				</div>\r\n\r\n				<div class=\"status\" role=\"status\"></div>\r\n				<div class=\"result-display\">\r\n					<span class=\"result-label\">Result:</span>\r\n					<div class=\"result-item\"></div>\r\n				</div>\r\n			</div>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
 }));
 //#endregion
 //#region src/UI/Components/Roulette/Roulette.css?raw
 var Roulette_default$1;
 var init_Roulette$2 = __esmMin((() => {
-	Roulette_default$1 = ":host {\r\n	width: 600px;\r\n	height: 500px;\r\n}\r\n\r\n#Roulette {\r\n	position: absolute;\r\n	width: 100%;\r\n	height: 100%;\r\n	z-index: 50;\r\n}\r\n\r\n#Roulette .body {\r\n	position: relative;\r\n	width: 100%;\r\n	height: 100%;\r\n	background-color: #2a2a2a;\r\n	border: 2px solid #5a5a5a;\r\n	border-radius: 10px;\r\n}\r\n\r\n#Roulette .titlebar {\r\n	position: relative;\r\n	height: 30px;\r\n	background: linear-gradient(to bottom, #4a4a4a 0%, #2a2a2a 100%);\r\n	border-bottom: 1px solid #5a5a5a;\r\n	cursor: move;\r\n	padding: 5px 10px;\r\n}\r\n\r\n#Roulette .titlebar .left {\r\n	float: left;\r\n}\r\n\r\n#Roulette .titlebar .title {\r\n	color: #fff;\r\n	font-size: 14px;\r\n	font-weight: bold;\r\n	line-height: 20px;\r\n}\r\n\r\n#Roulette .titlebar .right {\r\n	float: right;\r\n}\r\n\r\n#Roulette .titlebar .close {\r\n	width: 20px;\r\n	height: 20px;\r\n	border: 0;\r\n	background-repeat: no-repeat;\r\n	background-position: center;\r\n	background-color: transparent;\r\n	cursor: pointer;\r\n}\r\n\r\n#Roulette .roulette-container {\r\n	position: relative;\r\n	width: 100%;\r\n	height: calc(100% - 30px);\r\n	padding: 20px;\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n	justify-content: center;\r\n}\r\n\r\n#Roulette .roulette-wheel {\r\n	position: relative;\r\n	width: 350px;\r\n	height: 350px;\r\n	margin: 0 auto 20px;\r\n}\r\n\r\n#Roulette .wheel-center {\r\n	position: absolute;\r\n	top: 50%;\r\n	left: 50%;\r\n	transform: translate(-50%, -50%);\r\n	width: 300px;\r\n	height: 300px;\r\n	border-radius: 50%;\r\n	background: radial-gradient(circle, #4a4a4a 0%, #2a2a2a 100%);\r\n	border: 3px solid #8a8a8a;\r\n	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n#Roulette .wheel-slots {\r\n	position: absolute;\r\n	top: 50%;\r\n	left: 50%;\r\n	transform: translate(-50%, -50%);\r\n	width: 280px;\r\n	height: 280px;\r\n	border-radius: 50%;\r\n	transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);\r\n}\r\n\r\n#Roulette .wheel-slot {\r\n	position: absolute;\r\n	top: 50%;\r\n	left: 50%;\r\n	width: 50px;\r\n	height: 50px;\r\n	margin-left: -25px;\r\n	margin-top: -25px;\r\n	transform-origin: center;\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: center;\r\n	background-color: rgba(255, 255, 255, 0.1);\r\n	border: 1px solid #5a5a5a;\r\n	border-radius: 5px;\r\n	transition: background-color 0.3s;\r\n}\r\n\r\n#Roulette .wheel-slot:hover {\r\n	background-color: rgba(255, 255, 255, 0.2);\r\n}\r\n\r\n#Roulette .wheel-slot .item-icon {\r\n	width: 40px;\r\n	height: 40px;\r\n	background-size: contain;\r\n	background-position: center;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#Roulette .wheel-pointer {\r\n	position: absolute;\r\n	top: 10px;\r\n	left: 50%;\r\n	transform: translateX(-50%);\r\n	width: 0;\r\n	height: 0;\r\n	border-left: 15px solid transparent;\r\n	border-right: 15px solid transparent;\r\n	border-top: 30px solid #ff0000;\r\n	z-index: 10;\r\n	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));\r\n}\r\n\r\n#Roulette .roulette-info {\r\n	width: 100%;\r\n	text-align: center;\r\n}\r\n\r\n#Roulette .points-display {\r\n	margin-bottom: 15px;\r\n	font-size: 16px;\r\n	color: #fff;\r\n}\r\n\r\n#Roulette .points-display .label {\r\n	font-weight: bold;\r\n	margin-right: 10px;\r\n}\r\n\r\n#Roulette .points-display .points-value {\r\n	color: #ffd700;\r\n	font-size: 18px;\r\n	font-weight: bold;\r\n}\r\n\r\n#Roulette .buttons-container {\r\n	display: flex;\r\n	justify-content: center;\r\n	gap: 10px;\r\n	margin-bottom: 15px;\r\n}\r\n\r\n#Roulette .buttons-container button {\r\n	min-width: 80px;\r\n	height: 30px;\r\n	border: 1px solid #5a5a5a;\r\n	background-color: #3a3a3a;\r\n	background-repeat: no-repeat;\r\n	background-position: center;\r\n	color: #fff;\r\n	border-radius: 5px;\r\n	transition: background-color 0.3s;\r\n}\r\n\r\n#Roulette .buttons-container button:hover {\r\n	background-color: #4a4a4a;\r\n}\r\n\r\n#Roulette .buttons-container button:active {\r\n	background-color: #2a2a2a;\r\n}\r\n\r\n#Roulette .buttons-container button:disabled {\r\n	opacity: 0.5;\r\n}\r\n\r\n#Roulette .result-display {\r\n	min-height: 60px;\r\n	padding: 10px;\r\n	background-color: rgba(0, 0, 0, 0.3);\r\n	border: 1px solid #5a5a5a;\r\n	border-radius: 5px;\r\n}\r\n\r\n#Roulette .result-display .result-label {\r\n	display: block;\r\n	color: #fff;\r\n	font-weight: bold;\r\n	margin-bottom: 5px;\r\n}\r\n\r\n#Roulette .result-display .result-item {\r\n	display: inline-block;\r\n	width: 40px;\r\n	height: 40px;\r\n	background-size: contain;\r\n	background-position: center;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#Roulette .clear {\r\n	clear: both;\r\n}\r\n\r\n/* Animation classes */\r\n#Roulette .wheel-slots.spinning {\r\n	animation: spin 3s cubic-bezier(0.25, 0.1, 0.25, 1);\r\n}\r\n\r\n@keyframes spin {\r\n	0% {\r\n		transform: translate(-50%, -50%) rotate(0deg);\r\n	}\r\n	100% {\r\n		transform: translate(-50%, -50%) rotate(1800deg);\r\n	}\r\n}\r\n";
+	Roulette_default$1 = ":host {\r\n	width: 600px;\r\n	height: 600px;\r\n}\r\n\r\n#Roulette {\r\n	position: absolute;\r\n	width: 100%;\r\n	height: 100%;\r\n	z-index: 50;\r\n}\r\n\r\n#Roulette .body {\r\n	position: relative;\r\n	width: 100%;\r\n	height: 100%;\r\n	background-color: #2a2a2a;\r\n	border: 2px solid #5a5a5a;\r\n	border-radius: 10px;\r\n}\r\n\r\n#Roulette .titlebar {\r\n	position: relative;\r\n	height: 30px;\r\n	background: linear-gradient(to bottom, #4a4a4a 0%, #2a2a2a 100%);\r\n	border-bottom: 1px solid #5a5a5a;\r\n	cursor: move;\r\n	padding: 5px 10px;\r\n}\r\n\r\n#Roulette .titlebar .left {\r\n	float: left;\r\n}\r\n\r\n#Roulette .titlebar .title {\r\n	color: #fff;\r\n	font-size: 14px;\r\n	font-weight: bold;\r\n	line-height: 20px;\r\n}\r\n\r\n#Roulette .titlebar .right {\r\n	float: right;\r\n}\r\n\r\n#Roulette .titlebar .close {\r\n	width: 20px;\r\n	height: 20px;\r\n	border: 0;\r\n	background-repeat: no-repeat;\r\n	background-position: center;\r\n	background-color: transparent;\r\n	cursor: pointer;\r\n}\r\n\r\n#Roulette .roulette-container {\r\n	position: relative;\r\n	width: 100%;\r\n	height: calc(100% - 30px);\r\n	padding: 20px;\r\n	display: flex;\r\n	flex-direction: column;\r\n	align-items: center;\r\n	justify-content: center;\r\n}\r\n\r\n#Roulette .roulette-wheel {\r\n	position: relative;\r\n	width: 350px;\r\n	height: 350px;\r\n	margin: 0 auto 20px;\r\n}\r\n\r\n#Roulette .wheel-center {\r\n	position: absolute;\r\n	top: 50%;\r\n	left: 50%;\r\n	transform: translate(-50%, -50%);\r\n	width: 300px;\r\n	height: 300px;\r\n	border-radius: 50%;\r\n	background: radial-gradient(circle, #4a4a4a 0%, #2a2a2a 100%);\r\n	border: 3px solid #8a8a8a;\r\n	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n#Roulette .wheel-slots {\r\n	position: absolute;\r\n	top: 50%;\r\n	left: 50%;\r\n	transform: translate(-50%, -50%);\r\n	width: 280px;\r\n	height: 280px;\r\n	border-radius: 50%;\r\n	transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);\r\n}\r\n\r\n#Roulette .wheel-slot {\r\n	position: absolute;\r\n	top: 50%;\r\n	left: 50%;\r\n	width: 50px;\r\n	height: 50px;\r\n	margin-left: -25px;\r\n	margin-top: -25px;\r\n	transform-origin: center;\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: center;\r\n	background-color: rgba(255, 255, 255, 0.1);\r\n	border: 1px solid #5a5a5a;\r\n	border-radius: 5px;\r\n	transition: background-color 0.3s;\r\n}\r\n\r\n#Roulette .wheel-slot:hover {\r\n	background-color: rgba(255, 255, 255, 0.2);\r\n}\r\n\r\n#Roulette .wheel-slot .item-icon {\r\n	width: 40px;\r\n	height: 40px;\r\n	background-size: contain;\r\n	background-position: center;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#Roulette .wheel-pointer {\r\n	position: absolute;\r\n	top: 10px;\r\n	left: 50%;\r\n	transform: translateX(-50%);\r\n	width: 0;\r\n	height: 0;\r\n	border-left: 15px solid transparent;\r\n	border-right: 15px solid transparent;\r\n	border-top: 30px solid #ff0000;\r\n	z-index: 10;\r\n	filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));\r\n}\r\n\r\n#Roulette .roulette-info {\r\n	width: 100%;\r\n	text-align: center;\r\n}\r\n\r\n#Roulette .points-display {\r\n	margin-bottom: 15px;\r\n	font-size: 16px;\r\n	color: #fff;\r\n}\r\n\r\n#Roulette .points-display .label {\r\n	font-weight: bold;\r\n	margin-right: 10px;\r\n}\r\n\r\n#Roulette .points-display .points-value {\r\n	color: #ffd700;\r\n	font-size: 18px;\r\n	font-weight: bold;\r\n}\r\n\r\n#Roulette .buttons-container {\r\n	display: flex;\r\n	justify-content: center;\r\n	gap: 10px;\r\n	margin-bottom: 15px;\r\n}\r\n\r\n#Roulette .buttons-container button {\r\n	min-width: 80px;\r\n	height: 30px;\r\n	border: 1px solid #5a5a5a;\r\n	background-color: #3a3a3a;\r\n	background-repeat: no-repeat;\r\n	background-position: center;\r\n	color: #fff;\r\n	border-radius: 5px;\r\n	transition: background-color 0.3s;\r\n}\r\n\r\n#Roulette .buttons-container button:hover {\r\n	background-color: #4a4a4a;\r\n}\r\n\r\n#Roulette .buttons-container button:active {\r\n	background-color: #2a2a2a;\r\n}\r\n\r\n#Roulette .buttons-container button:disabled {\r\n	opacity: 0.5;\r\n}\r\n\r\n#Roulette .result-display {\r\n	min-height: 60px;\r\n	padding: 10px;\r\n	background-color: rgba(0, 0, 0, 0.3);\r\n	border: 1px solid #5a5a5a;\r\n	border-radius: 5px;\r\n}\r\n\r\n#Roulette .result-display .result-label {\r\n	display: block;\r\n	color: #fff;\r\n	font-weight: bold;\r\n	margin-bottom: 5px;\r\n}\r\n\r\n#Roulette .result-display .result-item {\r\n	display: inline-block;\r\n	width: 40px;\r\n	height: 40px;\r\n	background-size: contain;\r\n	background-position: center;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#Roulette .clear {\r\n	clear: both;\r\n}\r\n\r\n/* Animation classes */\r\n#Roulette .wheel-slots.spinning {\r\n	animation: spin 3s cubic-bezier(0.25, 0.1, 0.25, 1);\r\n}\r\n\r\n@keyframes spin {\r\n	0% {\r\n		transform: translate(-50%, -50%) rotate(0deg);\r\n	}\r\n	100% {\r\n		transform: translate(-50%, -50%) rotate(1800deg);\r\n	}\r\n}\r\n\r\n#Roulette .roulette-container {\r\n	box-sizing: border-box;\r\n}\r\n\r\n#Roulette .row-label,\r\n#Roulette .status {\r\n	color: #fff;\r\n	min-height: 20px;\r\n	margin-bottom: 8px;\r\n}\r\n\r\n#Roulette .wheel-slot .item-icon {\r\n	font-size: 0;\r\n}\r\n\r\n#Roulette .wheel-slot .item-count {\r\n	position: absolute;\r\n	right: 2px;\r\n	bottom: 1px;\r\n	color: #fff;\r\n	background-color: #2a2a2a;\r\n}\r\n\r\n#Roulette .result-display .result-item {\r\n	width: auto;\r\n	min-width: 40px;\r\n	padding-left: 48px;\r\n	background-size: 40px 40px;\r\n	background-position: left center;\r\n	color: #fff;\r\n	line-height: 40px;\r\n}\r\n";
 }));
 //#endregion
 //#region src/UI/Components/Roulette/Roulette.js
+function isBusy() {
+	return _pending !== null || Date.now() < _cooldownUntil;
+}
+function finishRequest$1() {
+	clearTimeout(_requestTimer);
+	_requestTimer = null;
+	_pending = null;
+}
+function sendRequest(packet, kind) {
+	finishRequest$1();
+	_pending = kind;
+	_requestTimer = setTimeout(() => {
+		finishRequest$1();
+		_status = "No response. Close and reopen Roulette to refresh.";
+		Roulette.updateUI();
+	}, 1e4);
+	Network.sendPacket(packet);
+	Roulette.updateUI();
+}
+function hasPrizePosition(pkt) {
+	return pkt.step >= 0 && pkt.step < 7 && pkt.idx >= 0 && pkt.idx < 9 - pkt.step;
+}
+function startingStep() {
+	return _rouletteInfo.bronzePoint > 0 ? 0 : _rouletteInfo.silverPoint >= 10 ? 2 : _rouletteInfo.goldPoint >= 10 ? 4 : 0;
+}
+function setItem(element, item) {
+	element.style.backgroundImage = "";
+	element.textContent = "";
+	element.title = "";
+	if (!item) return;
+	const info = DB.getItemInfo(item.itemId);
+	element.title = `${info.identifiedDisplayName} ×${item.count}`;
+	element.textContent = element.title;
+	Client.loadFile(`${DB.INTERFACE_PATH}item/${info.identifiedResourceName}.bmp`, (data) => {
+		if (element.isConnected && element.title === `${info.identifiedDisplayName} ×${item.count}`) element.style.backgroundImage = `url(${data})`;
+	});
+}
 /**
 * Click on roulette icon
 */
@@ -342308,12 +342723,7 @@ function onClickIcon() {
 		Roulette.onClose();
 		return;
 	}
-	const pkt = new PACKET.CZ.REQ_OPEN_ROULETTE();
-	Network.sendPacket(pkt);
-	if (_responseTimeout) clearTimeout(_responseTimeout);
-	_responseTimeout = setTimeout(() => {
-		_responseTimeout = null;
-	}, 2e3);
+	if (_pending !== "open") sendRequest(new PACKET.CZ.REQ_OPEN_ROULETTE(), "open");
 }
 /**
 * Create the roulette icon as a standalone light-DOM button.
@@ -342322,6 +342732,9 @@ function addRouletteIcon() {
 	if (_iconBtn) return;
 	_iconBtn = document.createElement("button");
 	_iconBtn.className = "rouletteIcon";
+	_iconBtn.title = "Roulette";
+	_iconBtn.setAttribute("aria-label", "Roulette");
+	_iconBtn.textContent = "Roulette";
 	Object.assign(_iconBtn.style, {
 		position: "absolute",
 		top: "74px",
@@ -342343,7 +342756,7 @@ function addRouletteIcon() {
 		if (_iconBtn) _iconBtn.style.backgroundImage = `url(${data})`;
 	});
 }
-var Roulette, _preferences$10, _rouletteInfo, _isSpinning, _responseTimeout, _iconBtn, Roulette_default;
+var Roulette, _preferences$10, _rouletteInfo, _pending, _requestTimer, _spinTimer, _cooldownUntil, _prize, _nextStep, _status, _rotation, _iconBtn, Roulette_default;
 var init_Roulette$1 = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -342375,7 +342788,14 @@ var init_Roulette$1 = __esmMin((() => {
 		additionItemID: 0,
 		items: []
 	};
-	_isSpinning = false;
+	_pending = null;
+	_requestTimer = null;
+	_spinTimer = null;
+	_cooldownUntil = 0;
+	_prize = null;
+	_nextStep = 0;
+	_status = "";
+	_rotation = 0;
 	/**
 	* Initialize UI
 	*/
@@ -342384,25 +342804,24 @@ var init_Roulette$1 = __esmMin((() => {
 		root.querySelector(".close").addEventListener("click", () => {
 			Roulette.onClose();
 		});
-		root.querySelector(".btn-close").addEventListener("click", () => {
-			Roulette.onClose();
+		root.querySelector(".btn-claim").addEventListener("click", () => {
+			Roulette.requestReceiveItem();
 		});
 		root.querySelector(".btn-spin").addEventListener("click", () => {
-			if (!_isSpinning) Roulette.onSpin();
+			if (!isBusy()) Roulette.onSpin();
 		});
 		root.querySelector(".btn-info").addEventListener("click", () => {
 			Roulette.onInfo();
 		});
 		this.draggable(".titlebar");
 	};
-	_responseTimeout = null;
 	/**
 	* Once append to the DOM
 	*/
 	Roulette.onAppend = function onAppend() {
 		this._host.style.top = Math.min(Math.max(0, _preferences$10.y), Renderer.height - this._host.offsetHeight) + "px";
 		this._host.style.left = Math.min(Math.max(0, _preferences$10.x), Renderer.width - this._host.offsetWidth) + "px";
-		if (!_preferences$10.show) this._host.style.display = "none";
+		this._host.style.display = "none";
 		if (ROConfig.enableRoulette === false) return;
 		if (PacketVerManager_default.value < 20141008) return;
 		addRouletteIcon();
@@ -342420,21 +342839,32 @@ var init_Roulette$1 = __esmMin((() => {
 		_preferences$10.x = parseInt(this._host.style.left, 10);
 		_preferences$10.y = parseInt(this._host.style.top, 10);
 		_preferences$10.save();
+		finishRequest$1();
+		clearTimeout(_spinTimer);
+		_spinTimer = null;
+		_cooldownUntil = 0;
+		_prize = null;
+		_rouletteInfo.items = [];
+		_status = "";
 	};
 	/**
 	* Open Roulette Window
 	*/
 	Roulette.onOpen = function onOpen(pkt) {
-		if (pkt) {
-			_rouletteInfo.step = pkt.step || 0;
-			_rouletteInfo.idx = pkt.idx || 0;
-			_rouletteInfo.goldPoint = pkt.goldPoint || 0;
-			_rouletteInfo.silverPoint = pkt.silverPoint || 0;
-			_rouletteInfo.bronzePoint = pkt.bronzePoint || 0;
-			_rouletteInfo.additionItemID = pkt.additionItemID || 0;
-		}
+		finishRequest$1();
+		setItem(this.getRoot().querySelector(".result-item"), null);
+		Object.assign(_rouletteInfo, pkt);
+		_nextStep = startingStep();
+		_prize = hasPrizePosition(pkt) ? {
+			row: pkt.step,
+			position: pkt.idx,
+			losing: false
+		} : null;
+		if (_prize && Date.now() >= _cooldownUntil) this.startSpin(_prize.position, Math.max(0, _prize.row));
+		_status = _prize ? "Prize ready after the wheel stops." : "Spin, then collect your prize or spin again.";
+		if (pkt.idx >= 0 && !_prize) _status = "Invalid reward position. Close and reopen Roulette to refresh.";
 		this._host.style.display = "";
-		this.updateUI();
+		this.onInfo();
 		this.focus();
 	};
 	/**
@@ -342449,9 +342879,9 @@ var init_Roulette$1 = __esmMin((() => {
 	* Request to spin the roulette
 	*/
 	Roulette.onSpin = function onSpin() {
-		if (_isSpinning) return;
-		const pkt = new PACKET.CZ.REQ_GENERATE_ROULETTE();
-		Network.sendPacket(pkt);
+		if (isBusy()) return;
+		_status = "Waiting for spin result…";
+		sendRequest(new PACKET.CZ.REQ_GENERATE_ROULETTE(), "spin");
 	};
 	/**
 	* Handle roulette item list response
@@ -342461,30 +342891,39 @@ var init_Roulette$1 = __esmMin((() => {
 			_rouletteInfo.items = pkt.items;
 			_rouletteInfo.serial = pkt.serial;
 		}
-		Roulette.generateWheelSlots();
+		Roulette.updateUI();
 	};
 	/**
-	* Show info window
+	* Refresh the configured reward list
 	*/
-	Roulette.onInfo = function onInfo() {};
+	Roulette.onInfo = function onInfo() {
+		Network.sendPacket(new PACKET.CZ.REQ_ROULETTE_INFO());
+		this.updateUI();
+	};
 	/**
 	* Update UI with current roulette data
 	*/
 	Roulette.updateUI = function updateUI() {
 		const root = this.getRoot();
 		this.generateWheelSlots();
-		const btnSpin = root.querySelector(".btn-spin");
-		if (btnSpin) btnSpin.disabled = _isSpinning;
+		root.querySelector(".points-value").textContent = `Gold: ${_rouletteInfo.goldPoint} · Silver: ${_rouletteInfo.silverPoint} · Bronze: ${_rouletteInfo.bronzePoint}`;
+		root.querySelector(".status").textContent = _status;
+		root.querySelector(".btn-spin").disabled = isBusy();
+		root.querySelector(".btn-claim").disabled = isBusy() || !_prize;
+		if (_prize && Date.now() >= _cooldownUntil) this.showResult();
 	};
 	/**
 	* Generate wheel slots from items
 	*/
 	Roulette.generateWheelSlots = function generateWheelSlots() {
-		const wheelSlots = this.getRoot().querySelector(".wheel-slots");
+		const root = this.getRoot();
+		const wheelSlots = root.querySelector(".wheel-slots");
 		if (!wheelSlots) return;
 		wheelSlots.innerHTML = "";
-		const items = _rouletteInfo.items || [];
-		const numSlots = items.length || 10;
+		const row = _prize?.row >= 0 ? _prize.row : _nextStep;
+		const items = _rouletteInfo.items.filter((item) => item.row === row).sort((a, b) => a.position - b.position);
+		const numSlots = items.length;
+		root.querySelector(".row-label").textContent = `Reward level ${row + 1}`;
 		for (let i = 0; i < numSlots; i++) {
 			const angle = 360 / numSlots * i;
 			const distance = 120;
@@ -342495,81 +342934,90 @@ var init_Roulette$1 = __esmMin((() => {
 			slot.className = "wheel-slot";
 			slot.setAttribute("data-index", i);
 			Object.assign(slot.style, { transform: `translate(${x}px, ${y}px) rotate(${angle}deg)` });
-			if (items[i]) {
-				const itemId = items[i].itemId || items[i].item_id || items[i].ItemID;
-				if (itemId) Client.loadFile(DB.INTERFACE_PATH + `item/${itemId}.bmp`, function(data) {
-					const icon = document.createElement("div");
-					icon.className = "item-icon";
-					icon.style.backgroundImage = `url(${data})`;
-					slot.appendChild(icon);
-				});
-			}
+			const icon = document.createElement("div");
+			icon.className = "item-icon";
+			slot.appendChild(icon);
 			wheelSlots.appendChild(slot);
+			setItem(icon, items[i]);
+			const count = document.createElement("span");
+			count.className = "item-count";
+			count.textContent = `×${items[i].count}`;
+			slot.appendChild(count);
 		}
 	};
 	/**
 	* Start spinning animation
 	*/
-	Roulette.startSpin = function startSpin(resultIndex) {
-		if (_isSpinning) return;
-		_isSpinning = true;
-		const root = this.getRoot();
-		const btnSpin = root.querySelector(".btn-spin");
-		if (btnSpin) btnSpin.disabled = true;
-		const wheelSlots = root.querySelector(".wheel-slots");
-		if (!wheelSlots) {
-			_isSpinning = false;
-			if (btnSpin) btnSpin.disabled = false;
-			return;
-		}
-		const targetRotation = 1800 + resultIndex * (360 / (_rouletteInfo.items.length || 10));
-		wheelSlots.style.transform = `translate(-50%, -50%) rotate(${targetRotation}deg)`;
-		setTimeout(() => {
-			_isSpinning = false;
-			const btn = Roulette.getRoot().querySelector(".btn-spin");
-			if (btn) btn.disabled = false;
-			Roulette.showResult(resultIndex);
-		}, 3e3);
+	Roulette.startSpin = function startSpin(resultIndex, row) {
+		clearTimeout(_spinTimer);
+		const duration = Math.max(1, 6 - row) * 1e3;
+		_cooldownUntil = Date.now() + duration;
+		const wheel = this.getRoot().querySelector(".wheel-slots");
+		const slots = _rouletteInfo.items.filter((item) => item.row === row).length || 9 - row;
+		_rotation += 1800 + (360 - resultIndex * 360 / slots - _rotation % 360) % 360;
+		wheel.style.transitionDuration = `${duration}ms`;
+		wheel.style.transform = `translate(-50%, -50%) rotate(${_rotation}deg)`;
+		setItem(this.getRoot().querySelector(".result-item"), null);
+		_spinTimer = setTimeout(function finishSpin() {
+			const remaining = _cooldownUntil - Date.now();
+			if (remaining > 0) {
+				_spinTimer = setTimeout(finishSpin, remaining);
+				return;
+			}
+			_spinTimer = null;
+			_status = _prize?.losing ? "Round ended. Collect this prize or start a new round." : "Collect your prize or spin again.";
+			Roulette.updateUI();
+		}, duration);
 	};
-	/**
-	* Show result after spin
-	*/
-	Roulette.showResult = function showResult(resultIndex) {
-		const resultDisplay = this.getRoot().querySelector(".result-item");
-		if (!resultDisplay) return;
-		resultDisplay.innerHTML = "";
-		if (_rouletteInfo.items[resultIndex]) {
-			const item = _rouletteInfo.items[resultIndex];
-			const itemId = item.itemId || item.item_id || item.ItemID;
-			if (itemId) Client.loadFile(DB.INTERFACE_PATH + `item/${itemId}.bmp`, function(data) {
-				resultDisplay.style.backgroundImage = `url(${data})`;
-			});
-		}
+	Roulette.showResult = function showResult() {
+		const reward = _rouletteInfo.items.find((item) => item.row === _prize?.row && item.position === _prize?.position);
+		setItem(this.getRoot().querySelector(".result-item"), reward);
 	};
-	/**
-	* Handle roulette result from server
-	*/
 	Roulette.onResult = function onResult(pkt) {
-		if (pkt.step !== void 0) _rouletteInfo.step = pkt.step;
-		if (pkt.idx !== void 0) _rouletteInfo.idx = pkt.idx;
-		if (pkt.remainGold !== void 0) _rouletteInfo.goldPoint = pkt.remainGold;
-		if (pkt.remainSilver !== void 0) _rouletteInfo.silverPoint = pkt.remainSilver;
-		if (pkt.remainBronze !== void 0) _rouletteInfo.bronzePoint = pkt.remainBronze;
-		if (pkt.idx !== void 0) Roulette.startSpin(pkt.idx);
+		finishRequest$1();
+		for (const [field, reply] of [
+			["goldPoint", "remainGold"],
+			["silverPoint", "remainSilver"],
+			["bronzePoint", "remainBronze"]
+		]) if (pkt[reply] !== void 0) _rouletteInfo[field] = pkt[reply];
+		if ((pkt.result === 0 || pkt.result === 3) && hasPrizePosition(pkt)) {
+			_prize = {
+				row: pkt.step,
+				position: pkt.idx,
+				losing: pkt.result === 3
+			};
+			_nextStep = startingStep();
+			_status = "Spinning…";
+			this.startSpin(pkt.idx, pkt.step);
+		} else {
+			_prize = null;
+			_nextStep = startingStep();
+			setItem(this.getRoot().querySelector(".result-item"), null);
+			_status = pkt.result === 2 ? "Not enough roulette points." : "The spin failed. Close and reopen to refresh.";
+		}
+		this.updateUI();
 	};
-	/**
-	* Handle item received from server
-	*/
-	Roulette.onItemReceived = function onItemReceived(_pkt) {
-		Roulette.updateUI();
+	Roulette.onItemReceived = function onItemReceived(pkt) {
+		finishRequest$1();
+		_prize = null;
+		_nextStep = startingStep();
+		_rouletteInfo.additionItemID = pkt.additionItemID;
+		const messages = [
+			"Prize collected.",
+			"Could not collect the prize.",
+			"Inventory item limit exceeded.",
+			"Inventory weight limit exceeded."
+		];
+		_status = messages[pkt.result] || messages[1];
+		setItem(this.getRoot().querySelector(".result-item"), null);
+		this.updateUI();
 	};
-	/**
-	* Request to receive the roulette item
-	*/
-	Roulette.requestReceiveItem = function requestReceiveItem(condition) {
+	Roulette.requestReceiveItem = function requestReceiveItem() {
+		if (isBusy() || !_prize) return;
 		const pkt = new PACKET.CZ.RECV_ROULETTE_ITEM();
-		pkt.condition = condition || 0;
-		Network.sendPacket(pkt);
+		pkt.condition = _prize.losing ? 1 : 0;
+		_status = "Collecting prize…";
+		sendRequest(pkt, "claim");
 	};
 	Roulette_default = UIManager.addComponent(Roulette);
 }));
@@ -346528,18 +346976,21 @@ function onEntityMove(pkt) {
 */
 function onEntityStopMove(pkt) {
 	const entity = EntityManager.get(pkt.AID);
-	if (entity) {
-		if (entity.action === entity.ACTION.WALK) entity.setAction({
-			action: entity.ACTION.IDLE,
-			frame: 0,
-			repeat: true,
-			play: true
-		});
-		entity.resetRoute();
-		entity.position[0] = pkt.xPos;
-		entity.position[1] = pkt.yPos;
-		entity.position[2] = Altitude.getCellHeight(pkt.xPos, pkt.yPos);
+	if (!entity) return;
+	if (Configs.get("movePrediction", false)) {
+		entity.settleTo(pkt.xPos, pkt.yPos);
+		return;
 	}
+	if (entity.action === entity.ACTION.WALK) entity.setAction({
+		action: entity.ACTION.IDLE,
+		frame: 0,
+		repeat: true,
+		play: true
+	});
+	entity.resetRoute();
+	entity.position[0] = pkt.xPos;
+	entity.position[1] = pkt.yPos;
+	entity.position[2] = Altitude.getCellHeight(pkt.xPos, pkt.yPos);
 }
 /**
 * Move entity to a point
@@ -348268,6 +348719,7 @@ var init_Entity = __esmMin((() => {
 	init_JobConst();
 	init_AttackEffectTable();
 	init_SoundManager();
+	init_Configs();
 	init_Events();
 	init_Guild();
 	init_SessionStorage();
@@ -356430,7 +356882,7 @@ var init_Rodex = __esmMin((() => {
 */
 function onOpenRoulette(pkt) {
 	if (pkt.result === 0) {
-		if (!Roulette_default.ui) Roulette_default.append();
+		if (!Roulette_default.__active) Roulette_default.append();
 		Roulette_default.onOpen(pkt);
 	} else console.error("Failed to open roulette:", pkt.result);
 }
@@ -356440,7 +356892,7 @@ function onOpenRoulette(pkt) {
 * @param {object} pkt - PACKET.ZC.ACK_ROULETTE_INFO
 */
 function onRouletteInfo(pkt) {
-	if (!Roulette_default.ui) Roulette_default.append();
+	if (!Roulette_default.__active) Roulette_default.append();
 	Roulette_default.onRouletteInfo(pkt);
 }
 /**
@@ -356449,10 +356901,7 @@ function onRouletteInfo(pkt) {
 * @param {object} pkt - PACKET.ZC.ACK_GENERATE_ROULETTE
 */
 function onGenerateRoulette(pkt) {
-	if (pkt.result === 0) {
-		if (!Roulette_default.ui) Roulette_default.append();
-		Roulette_default.onResult(pkt);
-	} else console.error("Roulette spin failed:", pkt.result);
+	Roulette_default.onResult(pkt);
 }
 /**
 * Receive Roulette Close ACK
@@ -356468,21 +356917,7 @@ function onCloseRoulette(pkt) {
 * @param {object} pkt - PACKET.ZC.RECV_ROULETTE_ITEM
 */
 function onRecvRouletteItem(pkt) {
-	if (pkt.result === 0) {
-		if (Roulette_default.ui && typeof Roulette_default.onItemReceived === "function") Roulette_default.onItemReceived(pkt);
-	} else {
-		let errorMsg = "Failed to receive roulette item";
-		switch (pkt.result) {
-			case 1:
-				errorMsg = "Failed to receive item";
-				break;
-			case 2:
-				errorMsg = "Item count exceeded";
-				break;
-			case 3: errorMsg = "Overweight";
-		}
-		console.error("[Roulette]", errorMsg);
-	}
+	Roulette_default.onItemReceived(pkt);
 }
 /**
 * Initialize
@@ -357579,6 +358014,10 @@ function walkIntervalProcess() {
 			pkt.dest[1] = Mouse.world.y;
 		}
 		Network.sendPacket(pkt);
+		if (Configs.get("movePrediction", false)) {
+			const ping = SessionStorage_default.ping.value > 0 ? SessionStorage_default.ping.value : 0;
+			SessionStorage_default.Entity.predictWalkTo(pkt.dest[0], pkt.dest[1], Math.max(400, 2 * ping + 250));
+		}
 	}
 	Events.clearTimeout(_walkTimer);
 	_walkTimer = Events.setTimeout(walkIntervalProcess, 500);
