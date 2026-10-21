@@ -224844,6 +224844,12 @@ var init_History = __esmMin((() => {
 		return this.list[this.index] || "";
 	};
 	/**
+	* Point past the newest message again, so the next previous() returns it
+	*/
+	History.prototype.rewind = function rewind() {
+		this.index = this.list.length;
+	};
+	/**
 	* Clean history message
 	*/
 	History.prototype.clear = function clear() {
@@ -259459,6 +259465,18 @@ var init_WhisperBox = __esmMin((() => {
 function _root$9() {
 	return ChatBox._shadow || ChatBox._host;
 }
+/**
+* Empty the input. What was typed stays in the history: onRemove() uses this,
+* so Up still recalls it once a map change has built the box again.
+*/
+function resetInput(root) {
+	const inputChatbox = root.querySelector(".input-chatbox");
+	if (inputChatbox) inputChatbox.innerHTML = "";
+	const nickBox = root.querySelector(".input .username");
+	if (nickBox) nickBox.value = "";
+	_historyMessage.rewind();
+	_historyNickName.rewind();
+}
 function buildCaption(tab) {
 	const cell = document.createElement("td");
 	cell.className = "tab";
@@ -259631,7 +259649,8 @@ function createTabView(tab) {
 	const root = _root$9();
 	const caption = buildCaption(tab);
 	root.querySelector("table.header tr .opttab").before(caption);
-	const log = document.createElement("div");
+	const log = keptLogs.get(tab.id) || document.createElement("div");
+	keptLogs.delete(tab.id);
 	log.className = "content chat-log";
 	log.dataset.content = tab.id;
 	log.dataset.scrollbarSkin = "chatbox";
@@ -259731,8 +259750,8 @@ function flushMessageBuffer() {
 	try {
 		Object.values(ChatBox.tabs).forEach((tab) => {
 			const id = tab.id;
-			const log = views.get(id)?.log || _root$9().querySelector(`.content[data-content="${id}"]`);
-			const filters = ChatBoxSettings_default.tabOption[id];
+			const log = views.get(id)?.log || keptLogs.get(id) || _root$9().querySelector(`.content[data-content="${id}"]`);
+			const filters = ChatBoxSettings_default.tabOption[id] || tab.filters;
 			if (!log || !filters) return;
 			appendChatMessages(log, messages.filter((message) => filters.includes(message.filterType)), MAX_MSG, getColorForType);
 		});
@@ -259901,7 +259920,7 @@ function makeResizableDiv() {
 		window.addEventListener("mouseup", stopResize);
 	});
 }
-var MAX_MSG, MAX_LENGTH, MAGIC_NUMBER, _historyMessage, _historyNickName, _heightIndex, _messageBuffer, _messageFrame, _messageGeneration, _preferences$26, ChatBox, views, captionWidths, lastRowWidth, ITEM_LINK, ChatBox_default;
+var MAX_MSG, MAX_LENGTH, MAGIC_NUMBER, _historyMessage, _historyNickName, _heightIndex, _messageBuffer, _messageFrame, _messageGeneration, _preferences$26, ChatBox, views, captionWidths, keptLogs, lastRowWidth, ITEM_LINK, ChatBox_default;
 var init_ChatBox = __esmMin((() => {
 	init_DBManager();
 	init_Renderer();
@@ -260018,6 +260037,7 @@ var init_ChatBox = __esmMin((() => {
 	};
 	views = /* @__PURE__ */ new Map();
 	captionWidths = /* @__PURE__ */ new Map();
+	keptLogs = /* @__PURE__ */ new Map();
 	lastRowWidth = 595;
 	ChatBox.tabStore = new ChatTabStore();
 	ChatBox.views = views;
@@ -260027,6 +260047,7 @@ var init_ChatBox = __esmMin((() => {
 			set(tabs) {
 				ChatBox.tabStore = new ChatTabStore(tabs);
 				views.clear();
+				keptLogs.clear();
 				captionWidths.clear();
 			}
 		},
@@ -260342,10 +260363,9 @@ var init_ChatBox = __esmMin((() => {
 		const root = _root$9();
 		cancelMessageDelivery();
 		(/* @__PURE__ */ new Set([...root.querySelectorAll(".content"), ...Array.from(views.values(), (view) => view.log)])).forEach(clearChatLog);
-		const inputChatbox = root.querySelector(".input-chatbox");
-		if (inputChatbox) inputChatbox.innerHTML = "";
-		const nickBox = root.querySelector(".input .username");
-		if (nickBox) nickBox.value = "";
+		keptLogs.forEach(clearChatLog);
+		keptLogs.clear();
+		resetInput(root);
 		_historyMessage.clear();
 		_historyNickName.clear();
 	};
@@ -260491,6 +260511,7 @@ var init_ChatBox = __esmMin((() => {
 		this.cancelResize?.();
 		this.cancelTabGesture?.();
 		for (const view of views.values()) view.floating?.cancelInteraction();
+		flushMessageBuffer();
 		cancelMessageDelivery();
 		_preferences$26.y = (parseInt(this._host.style.top, 10) || 0) + this._host.getBoundingClientRect().height;
 		_preferences$26.x = parseInt(this._host.style.left, 10) || 0;
@@ -260503,10 +260524,11 @@ var init_ChatBox = __esmMin((() => {
 		_preferences$26.save();
 		ChatBoxSettings_default.ui.hide();
 		ChatBoxSettings_default.activeTab = null;
-		this.clean();
-		for (const view of views.values()) {
+		resetInput(_root$9());
+		for (const [id, view] of views) {
 			view.log._disposeChatLog?.();
 			view.log.remove();
+			keptLogs.set(id, view.log);
 			view.caption.remove();
 			if (view.floating) UIManager.removeComponent(view.floating);
 		}
