@@ -149351,6 +149351,57 @@ var init_StatusInfo = __esmMin((() => {
 		]
 	};
 }));
+// src/DB/Status/StateIconMods.js
+/**
+* Every file to read: the client's three and the mods', each as
+* { name: what it is mounted as, path, stage, mod }. In order: the client's
+* names, the mods' names, the client's pictures and tooltips (read together),
+* then the mods' pictures and tooltips. A mod's names come before every other
+* table, so a mod's rows can use them.
+*
+* @param {string} dirPath - the client's stateicon directory, ending in '/'
+* @param {function} get - Configs.get
+* @return {Array}
+*/
+function stateIconFiles(dirPath, get) {
+	const files = [];
+	for (const [stage, key] of STAGES) {
+		files.push({
+			name: stage + ".lub",
+			path: dirPath + stage + ".lub",
+			stage,
+			mod: false
+		});
+		const list = get(key, []);
+		(Array.isArray(list) ? list : []).filter((path) => typeof path === "string").forEach((path, i) => files.push({
+			name: `mod-${stage}-${i}.lub`,
+			path,
+			stage,
+			mod: true
+		}));
+	}
+	const rank = (f) => f.stage === "efstids" ? f.mod ? 1 : 0 : f.mod ? 3 : 2;
+	return files.sort((a, b) => rank(a) - rank(b));
+}
+var STAGES, BEFORE_MOD_NAMES, AFTER_MOD_NAMES, BEFORE_MOD_ROWS;
+var init_StateIconMods = __esmMin((() => {
+	STAGES = [
+		["efstids", "customEfstIds"],
+		["stateiconimginfo", "customStateIconImgInfo"],
+		["stateiconinfo", "customStateIconInfo"]
+	];
+	BEFORE_MOD_NAMES = "__MOD_EFST_SAVE = EFST_IDs; EFST_IDs = {}";
+	AFTER_MOD_NAMES = `
+if type(EFST_IDs) == "table" and type(__EFST_IDS_ORIGINAL) == "table" then
+	for k, v in pairs(EFST_IDs) do
+		if type(k) == "string" and type(v) == "number" and v >= 20000 and v <= 22999 and __EFST_IDS_ORIGINAL[k] == nil then
+			__EFST_IDS_ORIGINAL[k] = v
+		end
+	end
+end
+EFST_IDs = __MOD_EFST_SAVE`;
+	BEFORE_MOD_ROWS = "StateIconImgList = nil; StateIconList = nil";
+}));
 // src/Vendors/xmlparse.js
 /**
 * Vendors/xmlparse.js
@@ -324853,33 +324904,39 @@ function loadCustomSkillTreeView(filename, onEnd) {
 * Loads efstids.lub, stateiconimginfo.lub, and stateiconinfo.lub sequentially,
 * synchronizing EFST_IDs with StatusConst and populating the StatusInfo table.
 *
+* customEfstIds, customStateIconImgInfo and customStateIconInfo: the mods'
+* rows of the three tables, read after the client's, in mod order. Each is a
+* list of files shaped like the client's own, holding only a mod's rows: the
+* names of its own status icons (EFST_IDs.EFST_X = 20000, numbers in the
+* range servers keep for mods), their pictures (in data/texture/effect/) and
+* their tooltips, or new pictures and tooltips for stock icons. Every mod's
+* names come first, so its other rows can use them; a later mod's row wins.
+* A mod's file that fails to load is left out.
+*
 * @param {string} basePath - Directory path (e.g., DB.LUA_PATH + 'stateicon/')
 * @param {function} callback - (Unused/Legacy)
 * @param {function} onEnd - Function to run when done
 */
 function loadStateIconInfo(basePath, callback, onEnd) {
-	const files = [
-		"efstids.lub",
-		"stateiconimginfo.lub",
-		"stateiconinfo.lub"
-	];
+	const files = stateIconFiles(basePath.endsWith("/") ? basePath : basePath + "/", Configs.get.bind(Configs));
 	const loadedBuffers = [];
-	const dirPath = basePath.endsWith("/") ? basePath : basePath + "/";
 	function loadNext(index) {
 		if (index >= files.length) {
 			processLuaData();
 			return;
 		}
-		const fullPath = dirPath + files[index];
-		console.log("Loading file \"" + fullPath + "\"...");
-		Client.loadFile(fullPath, function(data) {
-			loadedBuffers.push({
-				name: files[index],
-				data
-			});
+		const file = files[index];
+		console.log("Loading file \"" + file.path + "\"...");
+		Client.loadFile(file.path, function(data) {
+			loadedBuffers.push(Object.assign({ data }, file));
 			loadNext(index + 1);
 		}, function() {
-			console.error("[loadStateIconInfo] - Failed to load " + fullPath);
+			if (file.mod) {
+				console.error("[loadStateIconInfo] - Failed to load a mod's table, left out: " + file.path);
+				loadNext(index + 1);
+				return;
+			}
+			console.error("[loadStateIconInfo] - Failed to load " + file.path);
 			if (onEnd) onEnd();
 		});
 	}
@@ -324916,24 +324973,6 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 				StatusInfo[id].icon = icon;
 				return 1;
 			};
-			for (let i = 0; i < loadedBuffers.length; i++) {
-				const f = loadedBuffers[i];
-				const buffer = f.data instanceof ArrayBuffer ? new Uint8Array(f.data) : f.data;
-				lua.mountFile(f.name, buffer);
-				await lua.doFile(f.name);
-				if (f.name === "efstids.lub") await lua.doString(`
-							if EFST_IDs then
-								__EFST_IDS_ORIGINAL = EFST_IDs 
-
-								EFST_IDs = setmetatable({}, {
-									__index = function(t, k)
-										local id = __EFST_IDS_ORIGINAL[k]
-										return id ~= nil and id or -1
-									end
-								})
-							end
-						`);
-			}
 			lua.doStringSync(`
 					function extract_status_info()
 						-- Sync StatusConst (SC) with the full list of EFST_IDs from the original table
@@ -324989,8 +325028,36 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 						end
 					end
 
-					extract_status_info()
 				`);
+			for (let i = 0; i < loadedBuffers.length; i++) {
+				const f = loadedBuffers[i];
+				const buffer = f.data instanceof ArrayBuffer ? new Uint8Array(f.data) : f.data;
+				if (f.mod && f.stage === "efstids") await lua.doString(BEFORE_MOD_NAMES);
+				else if (f.mod) await lua.doString(BEFORE_MOD_ROWS);
+				lua.mountFile(f.name, buffer);
+				if (f.mod) try {
+					await lua.doFile(f.name);
+				} catch (e) {
+					console.error(`[loadStateIconInfo] ${f.name} left out:`, e);
+					if (f.stage === "efstids") await lua.doString("EFST_IDs = __MOD_EFST_SAVE");
+					continue;
+				}
+				else await lua.doFile(f.name);
+				if (f.mod && f.stage === "efstids") await lua.doString(AFTER_MOD_NAMES);
+				if (f.mod ? f.stage !== "efstids" : f.stage === "stateiconinfo") lua.doStringSync("extract_status_info()");
+				if (!f.mod && f.stage === "efstids") await lua.doString(`
+							if EFST_IDs then
+								__EFST_IDS_ORIGINAL = EFST_IDs 
+
+								EFST_IDs = setmetatable({}, {
+									__index = function(t, k)
+										local id = __EFST_IDS_ORIGINAL[k]
+										return id ~= nil and id or -1
+									end
+								})
+							end
+						`);
+			}
 		} catch (e) {
 			console.error("[loadStateIconInfo] Lua Error:", e);
 		} finally {
@@ -325570,6 +325637,7 @@ var init_DBManager = __esmMin((() => {
 	init_TownInfo();
 	init_StatusInfo();
 	init_StatusConst();
+	init_StateIconMods();
 	init_xmlparse();
 	init_Base62();
 	init_bson();
@@ -336868,6 +336936,16 @@ function renderStatus(status, now) {
 	ctx.arc(16, 16, 24, 1.5 * Math.PI, (1.5 + perc * 2) % 2 * Math.PI);
 	ctx.lineTo(16, 16);
 	ctx.fill();
+	if (status.count) {
+		ctx.font = "bold 11px Arial";
+		ctx.textAlign = "right";
+		ctx.textBaseline = "bottom";
+		ctx.lineWidth = 3;
+		ctx.strokeStyle = "black";
+		ctx.strokeText(String(status.count), 31, 32);
+		ctx.fillStyle = "white";
+		ctx.fillText(String(status.count), 31, 32);
+	}
 	if (status.time && status.timeTick + 1e3 < now) {
 		status.timeTick = now;
 		const tick = (end - now) / 1e3 | 0;
@@ -336890,7 +336968,7 @@ function rendering$1(tick) {
 		for (let i = 0; i < count; ++i) renderStatus(_status$1[indexes[i]], tick);
 	}
 }
-var StatusIcons, _status$1, _last_updated_time, _render_time, TKM_ICON_OVERRIDE, StatusIcons_default;
+var StatusIcons, _status$1, _last_updated_time, _render_time, TKM_ICON_OVERRIDE, MOD_ICON_FIRST, MOD_ICON_LAST, StatusIcons_default;
 var init_StatusIcons = __esmMin((() => {
 	init_StatusInfo();
 	init_StatusConst();
@@ -336953,14 +337031,17 @@ var init_StatusIcons = __esmMin((() => {
 		_status$1 = {};
 		ScreenEffectManager.clean();
 	};
+	MOD_ICON_FIRST = 2e4;
+	MOD_ICON_LAST = 22999;
 	/**
 	* Update icon on screen
 	*
 	* @param {number} status id
 	* @param {number} enable/disable
 	* @param {number} life time
+	* @param {number} [val1] - the status's first value; for a mod's icon, its stacks
 	*/
-	StatusIcons.update = function update(index, state, life) {
+	StatusIcons.update = function update(index, state, life, val1) {
 		if (!(index in StatusInfo) || !StatusInfo[index].icon) return;
 		if (!state && (!life || life <= 0)) {
 			removeElementIndex(index);
@@ -336971,6 +337052,7 @@ var init_StatusIcons = __esmMin((() => {
 		_status$1[index].start = Renderer.tick;
 		_status$1[index].end = Renderer.tick + life;
 		if (life === 9999) _status$1[index].end = Infinity;
+		_status$1[index].count = index >= MOD_ICON_FIRST && index <= MOD_ICON_LAST && val1 > 1 ? val1 : 0;
 		if (_status$1[index].img) {
 			if (TKM_ICON_OVERRIDE[index]) {
 				const wantVariant = SessionStorage_default.Entity && DB.isTaeKwon(SessionStorage_default.Entity._job) && TKM_ICON_OVERRIDE[index] || null;
@@ -350801,7 +350883,7 @@ function onEntityStatusChange(pkt) {
 		});
 	}
 	processBlockStatus(entity, pkt);
-	if (entity === SessionStorage_default.Entity) StatusIcons_default.update(pkt.index, pkt.state, pkt.RemainMS);
+	if (entity === SessionStorage_default.Entity) StatusIcons_default.update(pkt.index, pkt.state, pkt.RemainMS, pkt.val ? pkt.val[0] : 0);
 }
 function updateWarlockSpheres(entity) {
 	if (entity.Summon1 || entity.Summon2 || entity.Summon3 || entity.Summon4 || entity.Summon5) {
