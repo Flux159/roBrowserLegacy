@@ -228374,7 +228374,7 @@ function onResize$8(event) {
 	event.stopPropagation();
 	stopResize();
 	const startY = event.clientY;
-	const startRows = _preferences$42.height;
+	const startRows = _preferences$43.height;
 	const scale = ChatBoxSettings.scale || 1;
 	const move = (moveEvent) => {
 		if (ChatBoxSettings._host.style.display === "none") {
@@ -228409,8 +228409,8 @@ function resize$5(rows) {
 	list.style.height = `${rows * 20 + 3}px`;
 	ChatBoxSettings._host.style.height = `${rows * 20 + 40}px`;
 	list._roScrollbarRestart?.();
-	_preferences$42.height = rows;
-	_preferences$42.save();
+	_preferences$43.height = rows;
+	_preferences$43.save();
 }
 function updateAllCheckbox() {
 	const root = ChatBoxSettings.getRoot();
@@ -228425,7 +228425,7 @@ function fitWindowWidth() {
 	host.style.width = `${Math.max(280, ...Array.from(labels, (label) => label.offsetWidth + 67))}px`;
 	host.style.display = display;
 }
-var ChatBoxSettings, stopResize, _preferences$42, ChatBoxSettings_default;
+var ChatBoxSettings, stopResize, _preferences$43, ChatBoxSettings_default;
 var init_ChatBoxSettings = __esmMin((() => {
 	init_DBManager();
 	init_Preferences$1();
@@ -228448,7 +228448,7 @@ var init_ChatBoxSettings = __esmMin((() => {
 	ChatBoxSettings.isOpen = false;
 	ChatBoxSettings.tabOption = [];
 	ChatBoxSettings.activeTab = 0;
-	_preferences$42 = Preferences.get("ChatBoxSettings", {
+	_preferences$43 = Preferences.get("ChatBoxSettings", {
 		x: 480,
 		y: 200,
 		width: 7,
@@ -228488,10 +228488,10 @@ var init_ChatBoxSettings = __esmMin((() => {
 	*/
 	ChatBoxSettings.onAppend = function onAppend() {
 		fitWindowWidth();
-		resize$5(_preferences$42.height);
+		resize$5(_preferences$43.height);
 		const rect = this._host.getBoundingClientRect();
-		this._host.style.top = Math.max(0, Math.min(_preferences$42.y, Renderer.height - rect.height)) + "px";
-		this._host.style.left = Math.max(0, Math.min(_preferences$42.x, Renderer.width - rect.width)) + "px";
+		this._host.style.top = Math.max(0, Math.min(_preferences$43.y, Renderer.height - rect.height)) + "px";
+		this._host.style.left = Math.max(0, Math.min(_preferences$43.x, Renderer.width - rect.width)) + "px";
 		this._host.style.display = "none";
 	};
 	/**
@@ -228524,9 +228524,9 @@ var init_ChatBoxSettings = __esmMin((() => {
 	};
 	ChatBoxSettings.onRemove = function onRemove() {
 		stopResize();
-		_preferences$42.y = parseInt(this._host.style.top, 10) || 0;
-		_preferences$42.x = parseInt(this._host.style.left, 10) || 0;
-		_preferences$42.save();
+		_preferences$43.y = parseInt(this._host.style.top, 10) || 0;
+		_preferences$43.x = parseInt(this._host.style.left, 10) || 0;
+		_preferences$43.save();
 	};
 	ChatBoxSettings.mouseMode = GUIComponent.MouseMode.STOP;
 	ChatBoxSettings_default = UIManager.addComponent(ChatBoxSettings);
@@ -230785,7 +230785,7 @@ function stopPropagation$12(event) {
 function onClose$8() {
 	WorldMap._host.style.display = "none";
 }
-var WorldMap, _preferences$41, _partyMembersByMap, _hoveredSection, C_TITLEBARHEIGHT, C_BASEWIDTH, C_BASEHEIGHT, C_ASPECTX, C_ASPECTY, WorldMap_default;
+var WorldMap, _preferences$42, _partyMembersByMap, _hoveredSection, C_TITLEBARHEIGHT, C_BASEWIDTH, C_BASEHEIGHT, C_ASPECTX, C_ASPECTY, WorldMap_default;
 var init_WorldMap = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -230803,7 +230803,7 @@ var init_WorldMap = __esmMin((() => {
 	init_Navigation();
 	WorldMap = new GUIComponent("WorldMap", WorldMap_default$1);
 	WorldMap.render = () => WorldMap_default$2;
-	_preferences$41 = Preferences.get("WorldMap", {
+	_preferences$42 = Preferences.get("WorldMap", {
 		x: 0,
 		y: 0,
 		width: window.innerWidth,
@@ -230843,7 +230843,7 @@ var init_WorldMap = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	WorldMap.onAppend = function onAppend() {
-		if (!_preferences$41.show) this._host.style.display = "none";
+		if (!_preferences$42.show) this._host.style.display = "none";
 		this.settings = {
 			episode: 98,
 			add: [],
@@ -230866,12 +230866,12 @@ var init_WorldMap = __esmMin((() => {
 		this._host.style.left = "0px";
 	};
 	WorldMap.onRemove = function onRemove() {
-		_preferences$41.show = this._host.style.display !== "none";
-		_preferences$41.y = 0;
-		_preferences$41.x = 0;
-		_preferences$41.width = 0;
-		_preferences$41.height = 0;
-		_preferences$41.save();
+		_preferences$42.show = this._host.style.display !== "none";
+		_preferences$42.y = 0;
+		_preferences$42.x = 0;
+		_preferences$42.width = 0;
+		_preferences$42.height = 0;
+		_preferences$42.save();
 	};
 	/**
 	* Show/Hide UI
@@ -231870,9 +231870,9 @@ function onClickClose$2(e) {
 	e.stopImmediatePropagation();
 	Rodex.openType = 0;
 	Rodex.closeRodexBox();
-	_preferences$40.y = parseInt(Rodex._host.style.top, 10);
-	_preferences$40.x = parseInt(Rodex._host.style.left, 10);
-	_preferences$40.save();
+	_preferences$41.y = parseInt(Rodex._host.style.top, 10);
+	_preferences$41.x = parseInt(Rodex._host.style.left, 10);
+	_preferences$41.save();
 	Rodex._host.style.display = "none";
 }
 function onClickRefresh(e) {
@@ -231968,7 +231968,7 @@ function onClickReplyMail(e) {
 	const sender = e.currentTarget.getAttribute("sender");
 	Rodex.requestOpenWriteRodex(sender);
 }
-var Rodex, _preferences$40, Rodex_default;
+var Rodex, _preferences$41, Rodex_default;
 var init_Rodex$1 = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -232029,7 +232029,7 @@ var init_Rodex$1 = __esmMin((() => {
 		if (zeny) return "basic_interface/rodexsystem/renewal/icon_zeny.bmp";
 		return "";
 	};
-	_preferences$40 = Preferences.get("Rodex", {
+	_preferences$41 = Preferences.get("Rodex", {
 		x: 350,
 		y: 350,
 		show: false
@@ -232061,8 +232061,8 @@ var init_Rodex$1 = __esmMin((() => {
 	*/
 	Rodex.onAppend = function OnAppend() {
 		const root = _root$20();
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$40.y), Renderer.height - this._host.offsetHeight)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$40.x), Renderer.width - this._host.offsetWidth)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$41.y), Renderer.height - this._host.offsetHeight)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$41.x), Renderer.width - this._host.offsetWidth)}px`;
 		root.querySelector(".search").value = "";
 		Rodex.openType = 0;
 		root.querySelectorAll(".nav-item.active").forEach((el) => el.classList.remove("active"));
@@ -232075,10 +232075,10 @@ var init_Rodex$1 = __esmMin((() => {
 	*/
 	Rodex.onRemove = function OnRemove() {
 		this.list.length = 0;
-		_preferences$40.show = this._host.style.display !== "none";
-		_preferences$40.y = parseInt(this._host.style.top, 10);
-		_preferences$40.x = parseInt(this._host.style.left, 10);
-		_preferences$40.save();
+		_preferences$41.show = this._host.style.display !== "none";
+		_preferences$41.y = parseInt(this._host.style.top, 10);
+		_preferences$41.x = parseInt(this._host.style.left, 10);
+		_preferences$41.save();
 		Rodex.openType = 0;
 	};
 	/**
@@ -235524,7 +235524,7 @@ function onItemUsed$1(event) {
 	event.stopImmediatePropagation();
 	event.preventDefault();
 }
-var CartItems, _realSize$1, _preferences$39, CartItems_default;
+var CartItems, _realSize$1, _preferences$40, CartItems_default;
 var init_CartItems = __esmMin((() => {
 	init_DBManager();
 	init_ItemType();
@@ -235554,7 +235554,7 @@ var init_CartItems = __esmMin((() => {
 	*/
 	CartItems.list = [];
 	_realSize$1 = 0;
-	_preferences$39 = Preferences.get("CartItems", {
+	_preferences$40 = Preferences.get("CartItems", {
 		x: 200,
 		y: 200,
 		width: 7,
@@ -235616,12 +235616,12 @@ var init_CartItems = __esmMin((() => {
 	*/
 	CartItems.onAppend = function OnAppend() {
 		if (SessionStorage_default.Entity.hasCart === false) this._host.style.display = "none";
-		if (!_preferences$39.show) this._host.style.display = "none";
-		this.resize(_preferences$39.width, _preferences$39.height);
+		if (!_preferences$40.show) this._host.style.display = "none";
+		this.resize(_preferences$40.width, _preferences$40.height);
 		const hostRect = this._host.getBoundingClientRect();
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$39.y), Renderer.height - hostRect.height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$39.x), Renderer.width - hostRect.width)}px`;
-		_realSize$1 = _preferences$39.reduce ? 0 : hostRect.height;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$40.y), Renderer.height - hostRect.height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$40.x), Renderer.width - hostRect.width)}px`;
+		_realSize$1 = _preferences$40.reduce ? 0 : hostRect.height;
 		const miniBtn = this.getRoot().querySelector(".titlebar .mini");
 		if (miniBtn) miniBtn.dispatchEvent(new Event("mousedown"));
 	};
@@ -235633,14 +235633,14 @@ var init_CartItems = __esmMin((() => {
 		if (content) content.innerHTML = "";
 		this.list.length = 0;
 		document.querySelectorAll(".ItemInfo").forEach((el) => el.remove());
-		_preferences$39.show = this._host.style.display !== "none";
-		_preferences$39.reduce = !!_realSize$1;
-		_preferences$39.y = parseInt(this._host.style.top, 10);
-		_preferences$39.x = parseInt(this._host.style.left, 10);
+		_preferences$40.show = this._host.style.display !== "none";
+		_preferences$40.reduce = !!_realSize$1;
+		_preferences$40.y = parseInt(this._host.style.top, 10);
+		_preferences$40.x = parseInt(this._host.style.left, 10);
 		const hostRect = this._host.getBoundingClientRect();
-		_preferences$39.width = Math.floor((hostRect.width - 25) / 32);
-		_preferences$39.height = Math.floor((hostRect.height - 20) / 32);
-		_preferences$39.save();
+		_preferences$40.width = Math.floor((hostRect.width - 25) / 32);
+		_preferences$40.height = Math.floor((hostRect.height - 20) / 32);
+		_preferences$40.save();
 	};
 	/**
 	* Process shortcut
@@ -237825,7 +237825,7 @@ function reqCloseBank() {
 	pkt.AID = SessionStorage_default.AID;
 	Network.sendPacket(pkt);
 }
-var Bank, maxInt, _preferences$38, Bank_default;
+var Bank, maxInt, _preferences$39, Bank_default;
 var init_Bank$1 = __esmMin((() => {
 	init_DBManager();
 	init_NetworkManager();
@@ -237848,7 +237848,7 @@ var init_Bank$1 = __esmMin((() => {
 	*/
 	Bank.render = () => Bank_default$2;
 	maxInt = 2147483647;
-	_preferences$38 = Preferences.get("Bank", {
+	_preferences$39 = Preferences.get("Bank", {
 		x: 230,
 		y: 295
 	}, 2);
@@ -237913,8 +237913,8 @@ var init_Bank$1 = __esmMin((() => {
 	*/
 	Bank.onAppend = function onAppend() {
 		const root = this.getRoot();
-		this._host.style.top = Math.min(Math.max(0, _preferences$38.y), Renderer.height - this._host.offsetHeight) + "px";
-		this._host.style.left = Math.min(Math.max(0, _preferences$38.x), Renderer.width - this._host.offsetWidth) + "px";
+		this._host.style.top = Math.min(Math.max(0, _preferences$39.y), Renderer.height - this._host.offsetHeight) + "px";
+		this._host.style.left = Math.min(Math.max(0, _preferences$39.x), Renderer.width - this._host.offsetWidth) + "px";
 		const input = root.querySelector(".depo");
 		input.value = "";
 		input.focus();
@@ -237965,9 +237965,9 @@ var init_Bank$1 = __esmMin((() => {
 	* Remove Bank from window
 	*/
 	Bank.onRemove = function onRemove() {
-		_preferences$38.y = parseInt(this._host.style.top, 10);
-		_preferences$38.x = parseInt(this._host.style.left, 10);
-		_preferences$38.save();
+		_preferences$39.y = parseInt(this._host.style.top, 10);
+		_preferences$39.x = parseInt(this._host.style.left, 10);
+		_preferences$39.save();
 		const error = this.getRoot().querySelector(".errorupdate");
 		if (error) error.textContent = "";
 	};
@@ -238173,7 +238173,7 @@ function onToggleBGM() {
 	if (Audio_default.BGM.play) BGM.play(BGM.filename);
 	else BGM.stop();
 }
-var SoundOption, _preferences$37, SoundOption_default;
+var SoundOption, _preferences$38, SoundOption_default;
 var init_SoundOption = __esmMin((() => {
 	init_Preferences$1();
 	init_Audio();
@@ -238186,7 +238186,7 @@ var init_SoundOption = __esmMin((() => {
 	init_SoundOption$1();
 	SoundOption = new GUIComponent("SoundOption", SoundOption_default$1);
 	SoundOption.render = () => SoundOption_default$2;
-	_preferences$37 = Preferences.get("SoundOption", {
+	_preferences$38 = Preferences.get("SoundOption", {
 		x: 300,
 		y: 300
 	}, 1);
@@ -238211,8 +238211,8 @@ var init_SoundOption = __esmMin((() => {
 		this.draggable(".titlebar");
 	};
 	SoundOption.onAppend = function onAppend() {
-		this._host.style.top = _preferences$37.y + "px";
-		this._host.style.left = _preferences$37.x + "px";
+		this._host.style.top = _preferences$38.y + "px";
+		this._host.style.left = _preferences$38.x + "px";
 		const root = this.getRoot();
 		const soundSlider = root.querySelector(".sound");
 		if (soundSlider) soundSlider.value = Audio_default.Sound.volume * 100;
@@ -238224,9 +238224,9 @@ var init_SoundOption = __esmMin((() => {
 		if (bgmState) bgmState.checked = Audio_default.BGM.play;
 	};
 	SoundOption.onRemove = function onRemove() {
-		_preferences$37.x = parseInt(this._host.style.left, 10);
-		_preferences$37.y = parseInt(this._host.style.top, 10);
-		_preferences$37.save();
+		_preferences$38.x = parseInt(this._host.style.left, 10);
+		_preferences$38.y = parseInt(this._host.style.top, 10);
+		_preferences$38.save();
 	};
 	SoundOption_default = UIManager.addComponent(SoundOption);
 }));
@@ -238371,7 +238371,7 @@ var init_FPS$1 = __esmMin((() => {
 	FPS_default$1 = ":host {\r\n	top: 100px;\r\n	left: 100px;\r\n	width: 80px;\r\n	height: 20px;\r\n}\r\n\r\n#FPS {\r\n	position: absolute;\r\n	background: white;\r\n	border-radius: 2px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n#FPS .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n#FPS .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n";
 }));
 // src/UI/Components/FPS/FPS.js
-var FPS, _maxFPSRegistered, _minFPSRegistered, _tickFn, _preferences$36, FPS_default;
+var FPS, _maxFPSRegistered, _minFPSRegistered, _tickFn, _preferences$37, FPS_default;
 var init_FPS = __esmMin((() => {
 	init_Preferences$1();
 	init_Renderer();
@@ -238386,7 +238386,7 @@ var init_FPS = __esmMin((() => {
 	_maxFPSRegistered = 0;
 	_minFPSRegistered = Infinity;
 	_tickFn = null;
-	_preferences$36 = Preferences.get("FPS", {
+	_preferences$37 = Preferences.get("FPS", {
 		show: false,
 		x: 100,
 		y: 100
@@ -238410,9 +238410,9 @@ var init_FPS = __esmMin((() => {
 	* When appended to DOM
 	*/
 	FPS.onAppend = function onAppend() {
-		this._host.style.top = _preferences$36.y + "px";
-		this._host.style.left = _preferences$36.x + "px";
-		this._host.style.display = _preferences$36.show ? "" : "none";
+		this._host.style.top = _preferences$37.y + "px";
+		this._host.style.left = _preferences$37.x + "px";
+		this._host.style.display = _preferences$37.show ? "" : "none";
 		const root = this.getRoot();
 		const fpsEl = root.querySelector("#fpsCounter");
 		const fpsRoot = root.querySelector("#FPS");
@@ -238477,21 +238477,21 @@ var init_FPS = __esmMin((() => {
 			Renderer.stop(_tickFn);
 			_tickFn = null;
 		}
-		_preferences$36.x = parseInt(this._host.style.left, 10);
-		_preferences$36.y = parseInt(this._host.style.top, 10);
-		_preferences$36.show = this._host.style.display !== "none";
-		_preferences$36.save();
+		_preferences$37.x = parseInt(this._host.style.left, 10);
+		_preferences$37.y = parseInt(this._host.style.top, 10);
+		_preferences$37.show = this._host.style.display !== "none";
+		_preferences$37.save();
 	};
 	/**
 	* Show/Hide UI
 	*/
 	FPS.toggle = function toggle(isVisible) {
-		_preferences$36.x = parseInt(this._host.style.left, 10);
-		_preferences$36.y = parseInt(this._host.style.top, 10);
+		_preferences$37.x = parseInt(this._host.style.left, 10);
+		_preferences$37.y = parseInt(this._host.style.top, 10);
 		if (typeof isVisible === "boolean") this._host.style.display = isVisible ? "" : "none";
 		else this._host.style.display = this._host.style.display === "none" ? "" : "none";
-		_preferences$36.show = this._host.style.display !== "none";
-		_preferences$36.save();
+		_preferences$37.show = this._host.style.display !== "none";
+		_preferences$37.save();
 		if (this._host.style.display !== "none") this.focus();
 	};
 	FPS_default = UIManager.addComponent(FPS);
@@ -238777,7 +238777,7 @@ function onResetToDefaults() {
 	GraphicsSettings.save();
 	GraphicsOption.onAppend();
 }
-var GraphicsOption, _preferences$35, GraphicsOption_default;
+var GraphicsOption, _preferences$36, GraphicsOption_default;
 var init_GraphicsOption = __esmMin((() => {
 	init_FPS();
 	init_Configs();
@@ -238793,7 +238793,7 @@ var init_GraphicsOption = __esmMin((() => {
 	init_MemoryManager();
 	init_ChatBox();
 	GraphicsOption = new GUIComponent("GraphicsOption", GraphicsOption_default$1);
-	_preferences$35 = Preferences.get("GraphicsOption", {
+	_preferences$36 = Preferences.get("GraphicsOption", {
 		x: 300,
 		y: 300
 	}, 1.1);
@@ -238864,8 +238864,8 @@ var init_GraphicsOption = __esmMin((() => {
 	* When append the element to html
 	*/
 	GraphicsOption.onAppend = function onAppend() {
-		this._host.style.top = `${_preferences$35.y}px`;
-		this._host.style.left = `${_preferences$35.x}px`;
+		this._host.style.top = `${_preferences$36.y}px`;
+		this._host.style.left = `${_preferences$36.x}px`;
 		const root = this.getRoot();
 		root.querySelector(".details").value = GraphicsSettings.quality;
 		root.querySelector(".screensize").value = GraphicsSettings.screensize;
@@ -238901,9 +238901,9 @@ var init_GraphicsOption = __esmMin((() => {
 	* Once remove, save preferences
 	*/
 	GraphicsOption.onRemove = function onRemove() {
-		_preferences$35.x = parseInt(this._host.style.left, 10);
-		_preferences$35.y = parseInt(this._host.style.top, 10);
-		_preferences$35.save();
+		_preferences$36.x = parseInt(this._host.style.left, 10);
+		_preferences$36.y = parseInt(this._host.style.top, 10);
+		_preferences$36.save();
 	};
 	GraphicsOption.needFocus = true;
 	GraphicsOption.mouseMode = GUIComponent.MouseMode.STOP;
@@ -240653,8 +240653,8 @@ function onResize$6(event) {
 		h = Math.min(Math.max(h, 1), _rowCount);
 		if (h === lastHeight) return;
 		host.style.height = `${h * 34}px`;
-		_preferences$34.size = h;
-		_preferences$34.save();
+		_preferences$35.size = h;
+		_preferences$35.save();
 		lastHeight = h;
 	}
 	const _Interval = setInterval(resizing, 30);
@@ -240819,8 +240819,8 @@ function clickElement(index) {
 */
 function onClose$7() {
 	ShortCut._host.style.height = "0px";
-	_preferences$34.size = 0;
-	_preferences$34.save();
+	_preferences$35.size = 0;
+	_preferences$35.save();
 }
 /**
 * Hook Inventory, get informations when there is a change
@@ -240995,7 +240995,7 @@ function haveHotkeysChanged(currentData) {
 	if (!_lastServerHotkeys) return true;
 	return JSON.stringify(currentData) !== JSON.stringify(_lastServerHotkeys);
 }
-var ShortCut, _list$5, _rowCount, _lastServerHotkeys, _activeAnimations, _preferences$34, ShortCut_default;
+var ShortCut, _list$5, _rowCount, _lastServerHotkeys, _activeAnimations, _preferences$35, ShortCut_default;
 var init_ShortCut = __esmMin((() => {
 	init_DBManager();
 	init_ItemType();
@@ -241028,7 +241028,7 @@ var init_ShortCut = __esmMin((() => {
 	_rowCount = 0;
 	_lastServerHotkeys = null;
 	_activeAnimations = /* @__PURE__ */ new Map();
-	_preferences$34 = Preferences.get("ShortCut", {
+	_preferences$35 = Preferences.get("ShortCut", {
 		x: 480,
 		y: 0,
 		size: 1,
@@ -241094,14 +241094,14 @@ var init_ShortCut = __esmMin((() => {
 	* Append to body
 	*/
 	ShortCut.onAppend = function onAppend() {
-		this._host.style.height = `${34 * _preferences$34.size}px`;
+		this._host.style.height = `${34 * _preferences$35.size}px`;
 		const rect = this._host.getBoundingClientRect();
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$34.y), Renderer.height - rect.height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$34.x), Renderer.width - rect.width)}px`;
-		this.magnet.TOP = _preferences$34.magnet_top;
-		this.magnet.BOTTOM = _preferences$34.magnet_bottom;
-		this.magnet.LEFT = _preferences$34.magnet_left;
-		this.magnet.RIGHT = _preferences$34.magnet_right;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$35.y), Renderer.height - rect.height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$35.x), Renderer.width - rect.width)}px`;
+		this.magnet.TOP = _preferences$35.magnet_top;
+		this.magnet.BOTTOM = _preferences$35.magnet_bottom;
+		this.magnet.LEFT = _preferences$35.magnet_left;
+		this.magnet.RIGHT = _preferences$35.magnet_right;
 		Controller$4.onUpdateSkill = onUpdateSkill;
 		updateEmptySlotTooltips();
 	};
@@ -241113,14 +241113,14 @@ var init_ShortCut = __esmMin((() => {
 		if (tooltip) tooltip.classList.remove("show");
 		for (const [index, animationId] of _activeAnimations.entries()) cancelAnimationFrame(animationId);
 		_activeAnimations.clear();
-		_preferences$34.y = parseInt(this._host.style.top, 10);
-		_preferences$34.x = parseInt(this._host.style.left, 10);
-		_preferences$34.size = Math.floor(parseInt(this._host.style.height, 10) / 34);
-		_preferences$34.magnet_top = this.magnet.TOP;
-		_preferences$34.magnet_bottom = this.magnet.BOTTOM;
-		_preferences$34.magnet_left = this.magnet.LEFT;
-		_preferences$34.magnet_right = this.magnet.RIGHT;
-		_preferences$34.save();
+		_preferences$35.y = parseInt(this._host.style.top, 10);
+		_preferences$35.x = parseInt(this._host.style.left, 10);
+		_preferences$35.size = Math.floor(parseInt(this._host.style.height, 10) / 34);
+		_preferences$35.magnet_top = this.magnet.TOP;
+		_preferences$35.magnet_bottom = this.magnet.BOTTOM;
+		_preferences$35.magnet_left = this.magnet.LEFT;
+		_preferences$35.magnet_right = this.magnet.RIGHT;
+		_preferences$35.save();
 	};
 	/**
 	* Request to clean the list
@@ -241145,9 +241145,9 @@ var init_ShortCut = __esmMin((() => {
 				clickElement(parseInt(key.cmd.match(/\d+$/).toString(), 10));
 				break;
 			case "EXTEND":
-				_preferences$34.size = (_preferences$34.size + 1) % (_rowCount + 1);
-				_preferences$34.save();
-				this._host.style.height = `${_preferences$34.size * 34}px`;
+				_preferences$35.size = (_preferences$35.size + 1) % (_rowCount + 1);
+				_preferences$35.save();
+				this._host.style.height = `${_preferences$35.size * 34}px`;
 		}
 	};
 	ShortCut.useSkill = function useSkill(id, level) {
@@ -250488,7 +250488,7 @@ function onUpdateUIFocus() {
 	Controls_default.joyUIFocus = !!this.checked;
 	Controls_default.save();
 }
-var JOY_RANGES, JOY_CHECKBOXES, ShortCutOption, ShortCuts$1, ShortCutsTemp, _preferences$33, MAPPING_ROLES, ShortCutOption_default;
+var JOY_RANGES, JOY_CHECKBOXES, ShortCutOption, ShortCuts$1, ShortCutsTemp, _preferences$34, MAPPING_ROLES, ShortCutOption_default;
 var init_ShortCutOption = __esmMin((() => {
 	init_KeyEventHandler();
 	init_Preferences$1();
@@ -250526,7 +250526,7 @@ var init_ShortCutOption = __esmMin((() => {
 	ShortCuts$1 = ShortCutControls_default.ShortCuts;
 	ShortCutsTemp = {};
 	ShortCutOption.isCapturing = false;
-	_preferences$33 = Preferences.get("ShortCutOption", {
+	_preferences$34 = Preferences.get("ShortCutOption", {
 		x: 300,
 		y: 300
 	}, 1);
@@ -250654,8 +250654,8 @@ var init_ShortCutOption = __esmMin((() => {
 		const cycleMode = this.getRoot().querySelector(".joyCycleMode");
 		if (cycleMode) cycleMode.value = String(shownCategory());
 		reflectGamepadSettings(this.getRoot());
-		this._host.style.left = _preferences$33.x + "px";
-		this._host.style.top = _preferences$33.y + "px";
+		this._host.style.left = _preferences$34.x + "px";
+		this._host.style.top = _preferences$34.y + "px";
 		this._host.style.zIndex = 100;
 	};
 	/**
@@ -250664,9 +250664,9 @@ var init_ShortCutOption = __esmMin((() => {
 	ShortCutOption.onRemove = function() {
 		JoystickButtonMap_default.cancelCapture();
 		JoystickStickFilter_default.cancelCalibration();
-		_preferences$33.x = parseInt(this._host.style.left, 10);
-		_preferences$33.y = parseInt(this._host.style.top, 10);
-		_preferences$33.save();
+		_preferences$34.x = parseInt(this._host.style.left, 10);
+		_preferences$34.y = parseInt(this._host.style.top, 10);
+		_preferences$34.save();
 	};
 	/**
 	* Process key
@@ -250987,7 +250987,7 @@ function onClickAttendance(e) {
 	const _pkt = new PACKET.CZ.REQ_CHECK_ATTENDANCE();
 	Network.sendPacket(_pkt);
 }
-var CheckAttendance, _checkAttendanceData, _CheckAttendanceInfo, _preferences$32, CheckAttendance_default;
+var CheckAttendance, _checkAttendanceData, _CheckAttendanceInfo, _preferences$33, CheckAttendance_default;
 var init_CheckAttendance = __esmMin((() => {
 	init_DBManager();
 	init_Preferences$1();
@@ -251001,7 +251001,7 @@ var init_CheckAttendance = __esmMin((() => {
 	init_Elements();
 	CheckAttendance = new GUIComponent("CheckAttendance", CheckAttendance_default$1);
 	CheckAttendance.render = () => CheckAttendance_default$2;
-	_preferences$32 = Preferences.get("CheckAttendance", {
+	_preferences$33 = Preferences.get("CheckAttendance", {
 		x: 200,
 		y: 200
 	}, 1);
@@ -251026,10 +251026,10 @@ var init_CheckAttendance = __esmMin((() => {
 	*/
 	CheckAttendance.onAppend = function onAppend() {
 		Object.assign(this._host.style, {
-			top: `${Math.min(Math.max(0, _preferences$32.y), Renderer.height - this._host.getBoundingClientRect().height)}px`,
-			left: `${Math.min(Math.max(0, _preferences$32.x), Renderer.width - this._host.getBoundingClientRect().width)}px`
+			top: `${Math.min(Math.max(0, _preferences$33.y), Renderer.height - this._host.getBoundingClientRect().height)}px`,
+			left: `${Math.min(Math.max(0, _preferences$33.x), Renderer.width - this._host.getBoundingClientRect().width)}px`
 		});
-		if (!_preferences$32.show) this._host.style.display = "none";
+		if (!_preferences$33.show) this._host.style.display = "none";
 		if (_checkAttendanceData >= 0 && _CheckAttendanceInfo.Config) {
 			CheckAttendance.updateUI();
 			this.focus();
@@ -252001,14 +252001,14 @@ function isInCooldown(quest) {
 	if (quest.end_time > epoch_seconds) return true;
 	return false;
 }
-var _preferences$31, QuestWindow, QuestWindow_default;
+var _preferences$32, QuestWindow, QuestWindow_default;
 var init_QuestWindow = __esmMin((() => {
 	init_Preferences$1();
 	init_UIManager();
 	init_GUIComponent();
 	init_QuestWindow$2();
 	init_QuestWindow$1();
-	_preferences$31 = Preferences.get("Quest", {
+	_preferences$32 = Preferences.get("Quest", {
 		x: 200,
 		y: 200,
 		show: false,
@@ -252028,7 +252028,7 @@ var init_QuestWindow = __esmMin((() => {
 	* Once append to the DOM, start to position the UI
 	*/
 	QuestWindow.onAppend = function onAppend() {
-		if (!_preferences$31.showwindow) this.ui.hide();
+		if (!_preferences$32.showwindow) this.ui.hide();
 	};
 	/**
 	* Clean up UI
@@ -252183,7 +252183,7 @@ var init_Achievement$2 = __esmMin((() => {
 	Achievement_default$1 = ":host {\r\n	width: 750px;\r\n	height: 468px;\r\n	top: 100px;\r\n	left: 100px;\r\n	position: absolute;\r\n	color: #666;\r\n	font-family: inherit;\r\n	font-size: 11px;\r\n}\r\n\r\n/* Background layers */\r\n.bg-summary {\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	width: 649px;\r\n	height: 405px;\r\n	pointer-events: none;\r\n	background-size: 100% 100%;\r\n}\r\n\r\n.bg-list {\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	width: 649px;\r\n	height: 405px;\r\n	background-size: 100% 100%;\r\n	pointer-events: none;\r\n	display: none;\r\n}\r\n\r\n/* Titlebar */\r\n.titlebar {\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	width: 100%;\r\n	height: 18px;\r\n}\r\n\r\n.titlebar .title {\r\n	position: absolute;\r\n	top: 3px;\r\n	left: 20px;\r\n	color: #000;\r\n	font-weight: bold;\r\n}\r\n\r\n.titlebar {\r\n	width: 750px;\r\n	height: 17px;\r\n}\r\n.titlebar .corner {\r\n	position: absolute;\r\n	width: 12px;\r\n	height: 17px;\r\n}\r\n.titlebar .corner.left {\r\n	top: 0px;\r\n	left: 0px;\r\n}\r\n.titlebar .corner.right {\r\n	top: 0px;\r\n	right: 0px;\r\n}\r\n.titlebar .center {\r\n	position: absolute;\r\n	top: 0px;\r\n	left: 12px;\r\n	width: 726px;\r\n	height: 17px;\r\n}\r\n.titlebar .title {\r\n	position: absolute;\r\n	top: 2px;\r\n	left: 16px;\r\n	font-size: 13px;\r\n}\r\n.titlebar .btn-left {\r\n	position: absolute;\r\n	top: 3px;\r\n	left: 4px;\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background: none;\r\n}\r\n.titlebar .btn-right {\r\n	position: absolute;\r\n	top: 3px;\r\n	right: 2px;\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background: none;\r\n}\r\n\r\n/* Header Area */\r\n.header {\r\n	position: absolute;\r\n	top: 17px;\r\n	left: 0;\r\n	width: 750px;\r\n	height: 46px;\r\n}\r\n\r\n.header .rank-badge {\r\n	position: absolute;\r\n	top: 5px;\r\n	left: 5px;\r\n	width: 35px;\r\n	height: 35px;\r\n	text-align: center;\r\n	line-height: 40px;\r\n	font-weight: bold;\r\n	color: #7b4f2c;\r\n}\r\n\r\n.header .overall-points {\r\n	position: absolute;\r\n	top: 10px;\r\n	left: 325px;\r\n	width: 100px;\r\n	text-align: center;\r\n	font-weight: bold;\r\n	color: #000;\r\n}\r\n\r\n.header .rank-progress {\r\n	position: absolute;\r\n	top: 15px;\r\n	left: 45px;\r\n	width: 80px;\r\n}\r\n\r\n.header .rank-progress .progress-text {\r\n	text-align: right;\r\n	font-size: 10px;\r\n	margin-bottom: 1px;\r\n	color: #000;\r\n}\r\n\r\n.header .rank-progress .bar-bg {\r\n	width: 100%;\r\n	height: 7px;\r\n	background: #fff;\r\n	border: 1px solid #97b2dd;\r\n}\r\n\r\n.header .rank-progress .bar-fill {\r\n	height: 100%;\r\n	background: #5b85d9;\r\n}\r\n\r\n.header .cat-progress .cat-image {\r\n	position: absolute;\r\n	top: -13px;\r\n	left: -40px;\r\n	width: 39px;\r\n	height: 40px;\r\n}\r\n\r\n.js-cat-name {\r\n	color: #3030a4;\r\n}\r\n\r\n.header .cat-progress {\r\n	position: absolute;\r\n	top: 15px;\r\n	right: 15px;\r\n	width: 140px;\r\n}\r\n\r\n.header .cat-progress .cat-text {\r\n	display: flex;\r\n	justify-content: space-between;\r\n	font-weight: bold;\r\n	font-size: 9px;\r\n	color: #000;\r\n	margin-bottom: 2px;\r\n}\r\n\r\n.header .cat-progress .bar-bg {\r\n	width: 100%;\r\n	height: 7px;\r\n	background: #fff;\r\n	border: 1px solid #97b2dd;\r\n}\r\n\r\n.header .cat-progress .bar-fill {\r\n	height: 100%;\r\n	background: #5b85d9;\r\n}\r\n\r\n.header .filter-group {\r\n	position: absolute;\r\n	top: 10px;\r\n	left: 160px;\r\n}\r\n\r\n.header .filter-group > div {\r\n	margin-bottom: 3px;\r\n	cursor: pointer;\r\n}\r\n\r\n.header .filter-group ui-image {\r\n	vertical-align: middle;\r\n	margin-right: 5px;\r\n}\r\n\r\n.header .filter-group .radio-container {\r\n	display: flex;\r\n	align-items: center;\r\n	gap: 2px;\r\n}\r\n\r\n.header .filter-group .radio-container .radio {\r\n	width: 12px;\r\n	height: 12px;\r\n}\r\n\r\n.header .filter-group .radio-container ui-image {\r\n	width: 12px;\r\n	height: 12px;\r\n}\r\n\r\n/* Tabs Sidebar */\r\n.sidebar {\r\n	position: absolute;\r\n	top: 60px;\r\n	left: 0;\r\n	width: 100px;\r\n	height: 405px;\r\n}\r\n\r\n.sidebar .major-tab {\r\n	position: relative;\r\n	height: 34px;\r\n	line-height: 40px;\r\n	text-align: left;\r\n	padding-left: 15px;\r\n	color: #6268b0;\r\n	border-bottom: 1px solid #aaa;\r\n}\r\n\r\n.sidebar .major-tab.active {\r\n	color: #3030a4;\r\n	font-weight: bold;\r\n}\r\n\r\n/* Background for specific tabs using the tab bg */\r\n.sidebar .tab-bg {\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	width: 100px;\r\n	height: 40px;\r\n	z-index: -1;\r\n}\r\n\r\n.sidebar .minor-tabs {\r\n	background: #f9f9f9;\r\n	padding-bottom: 5px;\r\n	max-height: 75px; /* approx 3 tabs (25px each) */\r\n	overflow-y: auto;\r\n}\r\n\r\n.sidebar .minor-tab {\r\n	padding: 5px 0 5px 25px;\r\n	cursor: pointer;\r\n	color: #6d74be;\r\n	border-bottom: 1px dashed #bebebe;\r\n	font-size: 9px;\r\n}\r\n\r\n.sidebar .minor-tab:hover,\r\n.sidebar .minor-tab.active {\r\n	color: #3030a4;\r\n	background: #eef3fb;\r\n}\r\n\r\n/* Main Area - Overview Pane */\r\n.pane-overview {\r\n	position: absolute;\r\n	top: 60px;\r\n	left: 100px;\r\n	width: 648px;\r\n	height: 405px;\r\n	background-color: #fff;\r\n}\r\n\r\n.pane-overview .category-total {\r\n	position: absolute;\r\n	top: 37px;\r\n	left: 45px;\r\n	width: 555px;\r\n}\r\n\r\n.pane-overview .category-total .category-total-text .name {\r\n	margin-left: 35px;\r\n	margin-top: -10px;\r\n	margin-bottom: 12px;\r\n}\r\n\r\n.pane-overview .category-general {\r\n	position: absolute;\r\n	top: 110px;\r\n	left: 44px;\r\n	width: 252px;\r\n}\r\n\r\n.pane-overview .category-adventure {\r\n	position: absolute;\r\n	top: 110px;\r\n	left: 349px;\r\n	width: 252px;\r\n}\r\n\r\n.pane-overview .category-battle {\r\n	position: absolute;\r\n	top: 160px;\r\n	left: 44px;\r\n	width: 252px;\r\n}\r\n\r\n.pane-overview .category-quest {\r\n	position: absolute;\r\n	top: 160px;\r\n	left: 349px;\r\n	width: 252px;\r\n}\r\n\r\n.pane-overview .category-memorial {\r\n	position: absolute;\r\n	top: 210px;\r\n	left: 44px;\r\n	width: 252px;\r\n}\r\n\r\n.pane-overview .category-feat {\r\n	position: absolute;\r\n	top: 210px;\r\n	left: 349px;\r\n	width: 252px;\r\n}\r\n\r\n.pane-overview .category-gauge .name {\r\n	font-weight: bold;\r\n	margin-bottom: 2px;\r\n	float: left;\r\n}\r\n\r\n.name {\r\n	margin-left: 35px;\r\n}\r\n\r\n.pane-overview .category-gauge .progress-text {\r\n	float: right;\r\n	color: #912c2c;\r\n	font-size: 10px;\r\n}\r\n\r\n.pane-overview .category-gauge .bar-bg {\r\n	clear: both;\r\n	width: 100%;\r\n	height: 9px;\r\n	background: #fff;\r\n	border: 1px solid #97b2dd;\r\n}\r\n\r\n.pane-overview .category-gauge .bar-fill {\r\n	height: 100%;\r\n	background: #8aaaff;\r\n}\r\n\r\n/* Recent completed achievements in Overview */\r\n.pane-overview .recent-achievements {\r\n	position: absolute;\r\n	top: 295px;\r\n	left: 10px;\r\n	width: 625px;\r\n}\r\n\r\n.pane-overview .recent-title {\r\n	color: #2e519c;\r\n	margin-bottom: 5px;\r\n}\r\n\r\n.pane-overview .recent-items {\r\n	display: flex;\r\n	flex-direction: row;\r\n	gap: 5px;\r\n}\r\n\r\n/* Main Area - List/Detail Pane */\r\n.pane-listd {\r\n	position: absolute;\r\n	top: 60px;\r\n	left: 100px;\r\n	width: 648px;\r\n	height: 403px;\r\n	display: none;\r\n	background-color: #fff;\r\n}\r\n\r\n.ach-list-container {\r\n	position: absolute;\r\n	top: 0;\r\n	left: 0;\r\n	width: 319px;\r\n	height: 403px;\r\n	overflow-y: scroll;\r\n	overflow-x: hidden;\r\n}\r\n\r\n.ach-list {\r\n	width: 309px;\r\n}\r\n\r\n.ach-item {\r\n	height: 81px;\r\n	position: relative;\r\n	cursor: pointer;\r\n	width: 309px;\r\n}\r\n\r\n.ach-item-overview {\r\n	border: 1px solid #dae0ef;\r\n}\r\n\r\n.ach-item.selected {\r\n	background: rgba(200, 220, 255, 0.4);\r\n}\r\n\r\n.ach-item .icon {\r\n	position: absolute;\r\n	top: 4px;\r\n	left: 10px;\r\n	width: 38px;\r\n	height: 32px;\r\n}\r\n\r\n.ach-item .title {\r\n	position: absolute;\r\n	top: 15px;\r\n	left: 60px;\r\n	color: #2e519c;\r\n	width: 150px;\r\n	white-space: nowrap;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n}\r\n\r\n.ach-item .desc {\r\n	position: absolute;\r\n	top: 55px;\r\n	left: 10px;\r\n	color: #002d8d;\r\n	font-size: 9px;\r\n	width: 140px;\r\n	white-space: nowrap;\r\n	overflow: hidden;\r\n	text-overflow: ellipsis;\r\n}\r\n\r\n.ach-item .reward-icon {\r\n	position: absolute;\r\n	top: 10px;\r\n	right: 40px;\r\n	width: 20px;\r\n	height: 30px;\r\n	text-align: center;\r\n}\r\n\r\n.ach-item .reward-pts {\r\n	position: absolute;\r\n	top: 7px;\r\n	right: 15px;\r\n	width: 30px;\r\n	height: 23px;\r\n	font-weight: bold;\r\n	color: #555;\r\n	font-size: 10px;\r\n	text-align: center;\r\n	line-height: 23px;\r\n}\r\n\r\n.ach-item .date-completed {\r\n	position: absolute;\r\n	top: 50px;\r\n	right: 10px;\r\n	color: #8b3737;\r\n	font-size: 7px;\r\n	width: 30px;\r\n	height: 23px;\r\n	text-align: center;\r\n	line-height: 23px;\r\n}\r\n\r\n/* Overlay */\r\n.overlay {\r\n	position: absolute;\r\n	display: none;\r\n	white-space: nowrap;\r\n	z-index: 900;\r\n	height: 13px;\r\n	padding: 5px;\r\n	background: rgba(0, 0, 0, 0.7);\r\n	color: white;\r\n	text-shadow: 1px 1px black;\r\n}\r\n\r\n/* Detail view (right side) */\r\n.detail-view {\r\n	position: absolute;\r\n	top: 0;\r\n	right: 0px;\r\n	width: 328px;\r\n	height: 405px;\r\n	overflow-y: auto;\r\n	background-size: 100% 100%;\r\n	padding-left: 12px;\r\n	font-size: 10px;\r\n}\r\n\r\n.detail-view .d-title {\r\n	font-weight: bold;\r\n	color: #2e519c;\r\n	height: 35px;\r\n	line-height: 35px;\r\n	align-items: center;\r\n	display: flex;\r\n}\r\n\r\n.detail-view .d-stamp {\r\n	position: absolute;\r\n	top: 5px;\r\n	right: 10px;\r\n	width: 64px;\r\n	height: 54px;\r\n}\r\n\r\n.detail-view .d-desc {\r\n	color: #6699ff;\r\n	height: 57px;\r\n	width: 200px;\r\n}\r\n\r\n.detail-view .d-goals {\r\n	padding-left: 10px;\r\n	padding-top: 10px;\r\n	height: 190px;\r\n	color: #2e519c;\r\n}\r\n\r\n.detail-view .d-goal-item {\r\n	margin-bottom: 4px;\r\n}\r\n\r\n.detail-view .d-goal-item::before {\r\n	content: '◆';\r\n	color: #2e519c;\r\n	margin-right: 5px;\r\n}\r\n\r\n/* Reward Area */\r\n.d-reward {\r\n	display: flex;\r\n	flex-direction: row;\r\n	gap: 5px;\r\n	width: 100%;\r\n	height: 80px;\r\n	margin-left: -10px;\r\n	justify-content: center;\r\n	align-items: center;\r\n}\r\n\r\n.d-rewards-slot {\r\n	width: 62px;\r\n	height: 62px;\r\n	position: relative;\r\n}\r\n\r\n.d-reward-item {\r\n	position: absolute;\r\n	top: 19px;\r\n	left: 19px;\r\n	width: 24px;\r\n	height: 24px;\r\n	background-repeat: no-repeat;\r\n	pointer-events: none;\r\n}\r\n\r\n.detail-view .d-claim-btn {\r\n	position: absolute;\r\n	bottom: 10px;\r\n	left: 90px;\r\n	width: 148px;\r\n	height: 20px;\r\n	text-align: center;\r\n}\r\n\r\n/* Scrollbar area */\r\n.scrollbar {\r\n	position: absolute;\r\n	top: 0;\r\n	right: 2px;\r\n	width: 15px;\r\n	height: 320px;\r\n}\r\n";
 }));
 // src/UI/Components/Achievement/Achievement.js
-var _preferences$30, MAJOR_CATEGORIES, AchievementComponent, Achievement, Achievement_default;
+var _preferences$31, MAJOR_CATEGORIES, AchievementComponent, Achievement, Achievement_default;
 var init_Achievement$1 = __esmMin((() => {
 	init_GUIComponent();
 	init_UIManager();
@@ -252197,7 +252197,7 @@ var init_Achievement$1 = __esmMin((() => {
 	init_ItemInfo();
 	init_Achievement$3();
 	init_Achievement$2();
-	_preferences$30 = Preferences.get("Achievement", {
+	_preferences$31 = Preferences.get("Achievement", {
 		x: 100,
 		y: 100
 	}, 1);
@@ -252340,15 +252340,15 @@ var init_Achievement$1 = __esmMin((() => {
 			this._host.style.display = "none";
 		}
 		onAppend() {
-			this._host.style.left = `${_preferences$30.x}px`;
-			this._host.style.top = `${_preferences$30.y}px`;
+			this._host.style.left = `${_preferences$31.x}px`;
+			this._host.style.top = `${_preferences$31.y}px`;
 			this._fixPositionOverflow();
 			this.updateHeaderAndView();
 		}
 		onRemove() {
-			_preferences$30.x = parseInt(this._host.style.left, 10);
-			_preferences$30.y = parseInt(this._host.style.top, 10);
-			_preferences$30.save();
+			_preferences$31.x = parseInt(this._host.style.left, 10);
+			_preferences$31.y = parseInt(this._host.style.top, 10);
+			_preferences$31.save();
 		}
 		toggle() {
 			if (this.__active && this._host.style.display !== "none") this._host.style.display = "none";
@@ -253105,7 +253105,7 @@ function clearHighlights() {
 		el.dataset.highlight = "false";
 	});
 }
-var Reputation, _preferences$29, bg, bg_highlight, indicator_empty, indicator_blue, indicator_red, Reputation_default;
+var Reputation, _preferences$30, bg, bg_highlight, indicator_empty, indicator_blue, indicator_red, Reputation_default;
 var init_Reputation = __esmMin((() => {
 	init_DBManager();
 	init_NetworkManager();
@@ -253118,7 +253118,7 @@ var init_Reputation = __esmMin((() => {
 	init_Reputation$2();
 	init_Reputation$1();
 	Reputation = new GUIComponent("Reputation", Reputation_default$1);
-	_preferences$29 = Preferences.get("Reputation", {
+	_preferences$30 = Preferences.get("Reputation", {
 		x: 400,
 		y: 200,
 		show: true
@@ -253201,8 +253201,8 @@ var init_Reputation = __esmMin((() => {
 	* binding group selector events and rendering the default view.
 	*/
 	Reputation.onAppend = function onAppend() {
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$29.y), window.innerHeight - (this._host.offsetHeight || 0))}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$29.x), window.innerWidth - (this._host.offsetWidth || 0))}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$30.y), window.innerHeight - (this._host.offsetHeight || 0))}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$30.x), window.innerWidth - (this._host.offsetWidth || 0))}px`;
 		buildGroupSelector();
 		bindGroupSelector();
 		bindSearch();
@@ -253213,10 +253213,10 @@ var init_Reputation = __esmMin((() => {
 	* Once remove from body, save user preferences
 	*/
 	Reputation.onRemove = function onRemove() {
-		_preferences$29.show = this._host.style.display !== "none";
-		_preferences$29.y = parseInt(this._host.style.top, 10);
-		_preferences$29.x = parseInt(this._host.style.left, 10);
-		_preferences$29.save();
+		_preferences$30.show = this._host.style.display !== "none";
+		_preferences$30.y = parseInt(this._host.style.top, 10);
+		_preferences$30.x = parseInt(this._host.style.left, 10);
+		_preferences$30.save();
 	};
 	/**
 	* Request to toggle open/close reputation
@@ -259522,18 +259522,18 @@ function onDrop$9(event) {
 			Mail.parseMailWinopen(1);
 			if (data.from == "Inventory") InventoryController.removeItem(item.index, parseInt(count, 10));
 			Mail.parseMailSetattach(item.index, parseInt(count, 10));
-			_preferences$28.item_add_email = item;
-			_preferences$28.item_add_email.count = parseInt(count, 10);
-			_preferences$28.save();
+			_preferences$29.item_add_email = item;
+			_preferences$29.item_add_email.count = parseInt(count, 10);
+			_preferences$29.save();
 		};
 		return;
 	}
 	if (data.from == "Inventory") InventoryController.removeItem(item.index, 1);
 	Mail.parseMailWinopen(1);
 	Mail.parseMailSetattach(item.index, 1);
-	_preferences$28.item_add_email = item;
-	_preferences$28.item_add_email.count = 1;
-	_preferences$28.save();
+	_preferences$29.item_add_email = item;
+	_preferences$29.item_add_email.count = 1;
+	_preferences$29.save();
 }
 /**
 * Show item name when mouse is over
@@ -259645,7 +259645,7 @@ function onDropText$2(event) {
 function sleep(time) {
 	return new Promise((resolve) => setTimeout(resolve, time));
 }
-var Mail, _preferences$28, Mail_default;
+var Mail, _preferences$29, Mail_default;
 var init_Mail$1 = __esmMin((() => {
 	init_DBManager();
 	init_ItemType();
@@ -259677,7 +259677,7 @@ var init_Mail$1 = __esmMin((() => {
 	* know which page is current
 	*/
 	Mail.page = 0;
-	_preferences$28 = Preferences.get("Mail", {
+	_preferences$29 = Preferences.get("Mail", {
 		x: 0,
 		y: 172,
 		width: 7,
@@ -259755,8 +259755,8 @@ var init_Mail$1 = __esmMin((() => {
 		onWindowMailbox();
 		const hostHeight = this._host.offsetHeight || 0;
 		const hostWidth = this._host.offsetWidth || 0;
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$28.y), Renderer.height - hostHeight)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$28.x), Renderer.width - hostWidth)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$29.y), Renderer.height - hostHeight)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$29.x), Renderer.width - hostWidth)}px`;
 		this.draggable(".titlebar");
 	};
 	/**
@@ -259764,7 +259764,7 @@ var init_Mail$1 = __esmMin((() => {
 	*/
 	Mail.addItemSub = function AddItemSub(Index) {
 		const root = _root$10();
-		const item = _preferences$28.item_add_email;
+		const item = _preferences$29.item_add_email;
 		if (item.index !== Index) return false;
 		if (item.WearState && item.type !== ItemType_default.AMMO && item.type !== ItemType_default.CARD) return false;
 		const it = DB.getItemInfo(item.ITID);
@@ -259799,15 +259799,15 @@ var init_Mail$1 = __esmMin((() => {
 	*/
 	Mail.onRemove = function OnRemove() {
 		this.list.length = 0;
-		_preferences$28.show = this._host.style.display !== "none";
-		_preferences$28.reduce = false;
-		_preferences$28.y = parseInt(this._host.style.top, 10) || 0;
-		_preferences$28.x = parseInt(this._host.style.left, 10) || 0;
-		_preferences$28.magnet_top = this.magnet.TOP;
-		_preferences$28.magnet_bottom = this.magnet.BOTTOM;
-		_preferences$28.magnet_left = this.magnet.LEFT;
-		_preferences$28.magnet_right = this.magnet.RIGHT;
-		_preferences$28.save();
+		_preferences$29.show = this._host.style.display !== "none";
+		_preferences$29.reduce = false;
+		_preferences$29.y = parseInt(this._host.style.top, 10) || 0;
+		_preferences$29.x = parseInt(this._host.style.left, 10) || 0;
+		_preferences$29.magnet_top = this.magnet.TOP;
+		_preferences$29.magnet_bottom = this.magnet.BOTTOM;
+		_preferences$29.magnet_left = this.magnet.LEFT;
+		_preferences$29.magnet_right = this.magnet.RIGHT;
+		_preferences$29.save();
 	};
 	/**
 	* Extend Mail window size
@@ -259857,7 +259857,7 @@ var init_Mail$1 = __esmMin((() => {
 	* Search in a list for an item by its index
 	*/
 	Mail.getItemByIndex = function getItemByIndex(index) {
-		const list = _preferences$28.item_add_email;
+		const list = _preferences$29.item_add_email;
 		if (list.index == index) return list;
 		return null;
 	};
@@ -261705,7 +261705,7 @@ function initResizable(instance) {
 		window.addEventListener("mouseup", stopResize);
 	});
 }
-var WhisperBox, _preferences$27;
+var WhisperBox, _preferences$28;
 var init_WhisperBox = __esmMin((() => {
 	init_DBManager();
 	init_UIManager();
@@ -261742,7 +261742,7 @@ var init_WhisperBox = __esmMin((() => {
 		open1to1Friend: true,
 		alarm1to1: true
 	}, 1);
-	_preferences$27 = WhisperBox.preferences;
+	_preferences$28 = WhisperBox.preferences;
 	WhisperBox.mouseMode = GUIComponent.MouseMode.STOP;
 	WhisperBox.captureKeyEvents = true;
 	/**
@@ -261775,7 +261775,7 @@ var init_WhisperBox = __esmMin((() => {
 			this.instances[nickname].focus();
 			return this.instances[nickname];
 		}
-		if (_preferences$27.alarm1to1 && bHasMessage) SoundManager.play("¹öÆ°¼Ò¸®.wav");
+		if (_preferences$28.alarm1to1 && bHasMessage) SoundManager.play("¹öÆ°¼Ò¸®.wav");
 		const instance = this.clone(nickname);
 		instance.nickname = nickname;
 		instance.name = `WhisperBox:${nickname}`;
@@ -261874,8 +261874,8 @@ var init_WhisperBox = __esmMin((() => {
 		const offset = this._spawnCounter % 10 * 20;
 		this._spawnCounter++;
 		const scale = instance.scale;
-		instance._host.style.top = `${Math.min(Math.max(0, _preferences$27.y + offset), Renderer.height - 156 * scale)}px`;
-		instance._host.style.left = `${Math.min(Math.max(0, _preferences$27.x + offset), Renderer.width - 280 * scale)}px`;
+		instance._host.style.top = `${Math.min(Math.max(0, _preferences$28.y + offset), Renderer.height - 156 * scale)}px`;
+		instance._host.style.left = `${Math.min(Math.max(0, _preferences$28.x + offset), Renderer.width - 280 * scale)}px`;
 		this.instances[nickname] = instance;
 		return instance;
 	};
@@ -262299,8 +262299,8 @@ function onChangeTargetMessage(type) {
 }
 function setChatFontScale(scale) {
 	return function setChatFontScaleClosure() {
-		_preferences$26.fontScale = clampChatFontScale(scale);
-		_preferences$26.save();
+		_preferences$27.fontScale = clampChatFontScale(scale);
+		_preferences$27.save();
 		ChatBox.applyFontScale();
 	};
 }
@@ -262363,7 +262363,7 @@ function makeResizableDiv() {
 		window.addEventListener("mouseup", stopResize);
 	});
 }
-var MAX_MSG, MAX_LENGTH, MAGIC_NUMBER, _historyMessage, _historyNickName, _heightIndex, _messageBuffer, _messageFrame, _messageGeneration, _preferences$26, ChatBox, views, captionWidths, keptLogs, lastRowWidth, ITEM_LINK, ChatBox_default;
+var MAX_MSG, MAX_LENGTH, MAGIC_NUMBER, _historyMessage, _historyNickName, _heightIndex, _messageBuffer, _messageFrame, _messageGeneration, _preferences$27, ChatBox, views, captionWidths, keptLogs, lastRowWidth, ITEM_LINK, ChatBox_default;
 var init_ChatBox = __esmMin((() => {
 	init_DBManager();
 	init_Renderer();
@@ -262402,7 +262402,7 @@ var init_ChatBox = __esmMin((() => {
 	_messageBuffer = [];
 	_messageFrame = null;
 	_messageGeneration = 0;
-	_preferences$26 = Preferences.get("ChatBox", {
+	_preferences$27 = Preferences.get("ChatBox", {
 		x: 0,
 		y: Infinity,
 		height: 2,
@@ -262509,16 +262509,16 @@ var init_ChatBox = __esmMin((() => {
 	ChatBox.init = function init() {
 		const root = _root$9();
 		if (!ContextMenu_default.__loaded) ContextMenu_default.prepare();
-		_heightIndex = _preferences$26.height - 1;
+		_heightIndex = _preferences$27.height - 1;
 		ChatBox.updateHeight();
 		ChatBox.applyFontScale();
 		const hostRect = this._host.getBoundingClientRect();
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$26.y - hostRect.height), Renderer.height - hostRect.height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$26.x), Renderer.width - hostRect.width)}px`;
-		this.magnet.TOP = _preferences$26.magnet_top;
-		this.magnet.BOTTOM = _preferences$26.magnet_bottom;
-		this.magnet.LEFT = _preferences$26.magnet_left;
-		this.magnet.RIGHT = _preferences$26.magnet_right;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$27.y - hostRect.height), Renderer.height - hostRect.height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$27.x), Renderer.width - hostRect.width)}px`;
+		this.magnet.TOP = _preferences$27.magnet_top;
+		this.magnet.BOTTOM = _preferences$27.magnet_bottom;
+		this.magnet.LEFT = _preferences$27.magnet_left;
+		this.magnet.RIGHT = _preferences$27.magnet_right;
 		this.canStartDrag = () => !this.tabStore.locked;
 		this.draggable(".input");
 		this.draggable(".battlemode");
@@ -262761,7 +262761,7 @@ var init_ChatBox = __esmMin((() => {
 			ChatBox.toggleChatBattleOption();
 		});
 		ChatBoxSettings_default.append();
-		this.tabStore = ChatTabStore.fromSaved(_preferences$26);
+		this.tabStore = ChatTabStore.fromSaved(_preferences$27);
 		if (!this.tabStore.count) {
 			const firstTab = this.tabStore.create({
 				name: DB.getMessage(1291),
@@ -262956,15 +262956,15 @@ var init_ChatBox = __esmMin((() => {
 		for (const view of views.values()) view.floating?.cancelInteraction();
 		flushMessageBuffer();
 		cancelMessageDelivery();
-		_preferences$26.y = (parseInt(this._host.style.top, 10) || 0) + this._host.getBoundingClientRect().height;
-		_preferences$26.x = parseInt(this._host.style.left, 10) || 0;
-		_preferences$26.height = _heightIndex;
-		_preferences$26.magnet_top = this.magnet.TOP;
-		_preferences$26.magnet_bottom = this.magnet.BOTTOM;
-		_preferences$26.magnet_left = this.magnet.LEFT;
-		_preferences$26.magnet_right = this.magnet.RIGHT;
-		_preferences$26.layout = this.tabStore.toSnapshot();
-		_preferences$26.save();
+		_preferences$27.y = (parseInt(this._host.style.top, 10) || 0) + this._host.getBoundingClientRect().height;
+		_preferences$27.x = parseInt(this._host.style.left, 10) || 0;
+		_preferences$27.height = _heightIndex;
+		_preferences$27.magnet_top = this.magnet.TOP;
+		_preferences$27.magnet_bottom = this.magnet.BOTTOM;
+		_preferences$27.magnet_left = this.magnet.LEFT;
+		_preferences$27.magnet_right = this.magnet.RIGHT;
+		_preferences$27.layout = this.tabStore.toSnapshot();
+		_preferences$27.save();
 		ChatBoxSettings_default.ui.hide();
 		ChatBoxSettings_default.activeTab = null;
 		resetInput(_root$9());
@@ -263350,14 +263350,14 @@ var init_ChatBox = __esmMin((() => {
 	};
 	ChatBox.applyFontScale = function applyFontScale() {
 		const root = _root$9();
-		const scale = clampChatFontScale(_preferences$26.fontScale || 1);
+		const scale = clampChatFontScale(_preferences$27.fontScale || 1);
 		const baseFont = 12;
 		const baseLineHeight = 14;
 		const baseInputLineHeight = 18;
 		const fontSize = Math.max(10, Math.round(baseFont * scale));
 		const lineHeight = Math.max(12, Math.round(baseLineHeight * scale));
 		const inputLineHeight = Math.max(14, Math.round(baseInputLineHeight * scale));
-		_preferences$26.fontScale = scale;
+		_preferences$27.fontScale = scale;
 		(/* @__PURE__ */ new Set([...root.querySelectorAll(".content"), ...Array.from(views.values(), (view) => view.log)])).forEach((el) => {
 			el.style.fontSize = `${fontSize}px`;
 			el.style.lineHeight = `${lineHeight}px`;
@@ -263457,7 +263457,7 @@ function onClose$5(e) {
 	} catch (_error) {}
 	_BOOK_INFORMATION["book_open"] = false;
 	_BOOK_INFORMATION.save();
-	if (_preferences$25.show) MakeReadBook.onRemove();
+	if (_preferences$26.show) MakeReadBook.onRemove();
 }
 function page() {
 	const root = MakeReadBook.getRoot();
@@ -263477,7 +263477,7 @@ function adjustButtons() {
 	const prevBtn = root.querySelector(".previous_btn");
 	if (prevBtn) prevBtn.disabled = _BOOK_INFORMATION["pagesize"] <= 1 || _BOOK_INFORMATION["page"] == 0;
 }
-var sleepNow, MakeReadBook, _BOOK_INFORMATION, _preferences$25, MakeReadBook_default;
+var sleepNow, MakeReadBook, _BOOK_INFORMATION, _preferences$26, MakeReadBook_default;
 var init_MakeReadBook = __esmMin((() => {
 	init_DBManager();
 	init_Preferences$1();
@@ -263509,7 +263509,7 @@ var init_MakeReadBook = __esmMin((() => {
 	* Store MakeReadBook items
 	*/
 	MakeReadBook.list = [];
-	_preferences$25 = Preferences.get("MakeReadBook", {
+	_preferences$26 = Preferences.get("MakeReadBook", {
 		x: 0,
 		y: 172,
 		width: 7,
@@ -263650,7 +263650,7 @@ var init_MakeReadBook = __esmMin((() => {
 		});
 	};
 	MakeReadBook.highlighter = async function highlighter() {
-		if (_preferences$25.show) onClose$5();
+		if (_preferences$26.show) onClose$5();
 		let index = _BOOK_INFORMATION["bookmark_activated"] ? _BOOK_INFORMATION["bookmark_activated_page"] : 0;
 		let newText = "";
 		for (; index < _BOOK_INFORMATION["contents"].length; index++) newText = newText + "\n" + _BOOK_INFORMATION["contents"][index];
@@ -263661,12 +263661,12 @@ var init_MakeReadBook = __esmMin((() => {
 	*/
 	MakeReadBook.onAppend = function OnAppend() {
 		this._host.style.display = "";
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$25.y), Renderer.height - 455)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$25.x), Renderer.width - 555)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$26.y), Renderer.height - 455)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$26.x), Renderer.width - 555)}px`;
 		_BOOK_INFORMATION["book_open"] = true;
 		_BOOK_INFORMATION.save();
-		_preferences$25.show = true;
-		_preferences$25.save();
+		_preferences$26.show = true;
+		_preferences$26.save();
 		const root = MakeReadBook.getRoot();
 		this.draggable(root.querySelector(".titlebar"));
 	};
@@ -263675,19 +263675,19 @@ var init_MakeReadBook = __esmMin((() => {
 	*/
 	MakeReadBook.onRemove = function OnRemove() {
 		try {
-			if (_preferences$25.show) this._host.style.display = "none";
-			_preferences$25.show = this._host.style.display !== "none";
-			_preferences$25.reduce = false;
-			_preferences$25.y = parseInt(this._host.style.top, 10) || 0;
-			_preferences$25.x = parseInt(this._host.style.left, 10) || 0;
-			_preferences$25.magnet_top = this.magnet.TOP;
-			_preferences$25.magnet_bottom = this.magnet.BOTTOM;
-			_preferences$25.magnet_left = this.magnet.LEFT;
-			_preferences$25.magnet_right = this.magnet.RIGHT;
-			_preferences$25.save();
+			if (_preferences$26.show) this._host.style.display = "none";
+			_preferences$26.show = this._host.style.display !== "none";
+			_preferences$26.reduce = false;
+			_preferences$26.y = parseInt(this._host.style.top, 10) || 0;
+			_preferences$26.x = parseInt(this._host.style.left, 10) || 0;
+			_preferences$26.magnet_top = this.magnet.TOP;
+			_preferences$26.magnet_bottom = this.magnet.BOTTOM;
+			_preferences$26.magnet_left = this.magnet.LEFT;
+			_preferences$26.magnet_right = this.magnet.RIGHT;
+			_preferences$26.save();
 		} catch (_error) {
-			_preferences$25.show = false;
-			_preferences$25.save();
+			_preferences$26.show = false;
+			_preferences$26.save();
 		}
 	};
 	/**
@@ -265087,7 +265087,7 @@ function parseChatSetup() {
 	this.requestRoom();
 	this.hide();
 }
-var ChatRoomCreate, _preferences$24, ChatRoomCreate_default;
+var ChatRoomCreate, _preferences$25, ChatRoomCreate_default;
 var init_ChatRoomCreate = __esmMin((() => {
 	init_DBManager();
 	init_KeyEventHandler();
@@ -265123,7 +265123,7 @@ var init_ChatRoomCreate = __esmMin((() => {
 	* @var {string} password
 	*/
 	ChatRoomCreate.password = "";
-	_preferences$24 = Preferences.get("ChatRoomCreate", {
+	_preferences$25 = Preferences.get("ChatRoomCreate", {
 		x: 480,
 		y: 200,
 		show: false
@@ -265157,18 +265157,18 @@ var init_ChatRoomCreate = __esmMin((() => {
 	* Once append to body
 	*/
 	ChatRoomCreate.onAppend = function onAppend() {
-		if (!_preferences$24.show) this._host.style.display = "none";
-		this._host.style.top = Math.min(Math.max(0, _preferences$24.y), Renderer.height - this._host.offsetHeight) + "px";
-		this._host.style.left = Math.min(Math.max(0, _preferences$24.x), Renderer.width - this._host.offsetWidth) + "px";
+		if (!_preferences$25.show) this._host.style.display = "none";
+		this._host.style.top = Math.min(Math.max(0, _preferences$25.y), Renderer.height - this._host.offsetHeight) + "px";
+		this._host.style.left = Math.min(Math.max(0, _preferences$25.x), Renderer.width - this._host.offsetWidth) + "px";
 	};
 	/**
 	* Once removed from DOM, save preferences
 	*/
 	ChatRoomCreate.onRemove = function onRemove() {
-		_preferences$24.show = this._host.style.display !== "none";
-		_preferences$24.y = parseInt(this._host.style.top, 10);
-		_preferences$24.x = parseInt(this._host.style.left, 10);
-		_preferences$24.save();
+		_preferences$25.show = this._host.style.display !== "none";
+		_preferences$25.y = parseInt(this._host.style.top, 10);
+		_preferences$25.x = parseInt(this._host.style.left, 10);
+		_preferences$25.save();
 		ChatRoomCreate.editMode = false;
 	};
 	/**
@@ -265178,7 +265178,7 @@ var init_ChatRoomCreate = __esmMin((() => {
 		this._host.style.display = "";
 		this.getRoot().querySelector(".title").focus();
 		this._fixPositionOverflow();
-		_preferences$24.show = true;
+		_preferences$25.show = true;
 	};
 	/**
 	* Hide the setup ui
@@ -265187,7 +265187,7 @@ var init_ChatRoomCreate = __esmMin((() => {
 		this._host.style.display = "none";
 		this.getRoot().querySelector(".setup").reset();
 		ChatRoomCreate.editMode = false;
-		_preferences$24.show = false;
+		_preferences$25.show = false;
 	};
 	/**
 	* Pre-fill form with values (used by ChatRoom.openRoomSettings)
@@ -265393,7 +265393,7 @@ function resize$2(width, height) {
 		if (inner) ChatRoom._host.style.height = inner.offsetHeight + "px";
 	}
 }
-var ChatRoom, _gridWidth, _gridHeight, _preferences$23, ChatRoom_default;
+var ChatRoom, _gridWidth, _gridHeight, _preferences$24, ChatRoom_default;
 var init_ChatRoom$1 = __esmMin((() => {
 	init_Preferences$1();
 	init_Renderer();
@@ -265450,7 +265450,7 @@ var init_ChatRoom$1 = __esmMin((() => {
 	ChatRoom.isOpen = false;
 	_gridWidth = 7;
 	_gridHeight = 3;
-	_preferences$23 = Preferences.get("ChatRoom", {
+	_preferences$24 = Preferences.get("ChatRoom", {
 		x: 480,
 		y: 200,
 		width: 7,
@@ -265479,11 +265479,11 @@ var init_ChatRoom$1 = __esmMin((() => {
 	ChatRoom.onAppend = function onAppend() {
 		const root = this.getRoot();
 		this.isOpen = true;
-		_gridWidth = _preferences$23.width;
-		_gridHeight = _preferences$23.height;
+		_gridWidth = _preferences$24.width;
+		_gridHeight = _preferences$24.height;
 		resize$2(_gridWidth, _gridHeight);
-		this._host.style.top = Math.min(Math.max(0, _preferences$23.y), Renderer.height - this._host.getBoundingClientRect().height) + "px";
-		this._host.style.left = Math.min(Math.max(0, _preferences$23.x), Renderer.width - this._host.getBoundingClientRect().width) + "px";
+		this._host.style.top = Math.min(Math.max(0, _preferences$24.y), Renderer.height - this._host.getBoundingClientRect().height) + "px";
+		this._host.style.left = Math.min(Math.max(0, _preferences$24.x), Renderer.width - this._host.getBoundingClientRect().width) + "px";
 		root.querySelector(".sendmsg").focus();
 		this.updateChat();
 	};
@@ -265500,11 +265500,11 @@ var init_ChatRoom$1 = __esmMin((() => {
 		this.isOpen = false;
 		const messages = this.getRoot().querySelector(".messages");
 		if (messages) messages.innerHTML = "";
-		_preferences$23.y = parseInt(this._host.style.top, 10);
-		_preferences$23.x = parseInt(this._host.style.left, 10);
-		_preferences$23.width = _gridWidth;
-		_preferences$23.height = _gridHeight;
-		_preferences$23.save();
+		_preferences$24.y = parseInt(this._host.style.top, 10);
+		_preferences$24.x = parseInt(this._host.style.left, 10);
+		_preferences$24.width = _gridWidth;
+		_preferences$24.height = _gridHeight;
+		_preferences$24.save();
 		this.exitRoom();
 	};
 	/**
@@ -268147,7 +268147,7 @@ var init_HomunInformations$1 = __esmMin((() => {
 * Checks if homun should be fed or not
 */
 function autoFeedCheck() {
-	if (_preferences$22.autoFeed != 1) return;
+	if (_preferences$23.autoFeed != 1) return;
 	const player = SessionStorage_default.Entity;
 	if (!player) return;
 	if (player.life.hp <= 0) return;
@@ -268162,11 +268162,11 @@ function autoFeedCheck() {
 * Toggle AutoFeed
 */
 function homunToggleAutoFeed() {
-	HomunInformations.setFeedConfig(_preferences$22.autoFeed == 1 ? 0 : 1);
+	HomunInformations.setFeedConfig(_preferences$23.autoFeed == 1 ? 0 : 1);
 	if (PacketVerManager_default.value < 20170920) return;
-	HomunInformations.onConfigUpdate(3, _preferences$22.autoFeed ? 1 : 0);
+	HomunInformations.onConfigUpdate(3, _preferences$23.autoFeed ? 1 : 0);
 }
-var autoFeedInterval, autoFeedIntervalMs, autoFeedPercent, HomunInformations, _preferences$22, HomunInformations_default;
+var autoFeedInterval, autoFeedIntervalMs, autoFeedPercent, HomunInformations, _preferences$23, HomunInformations_default;
 var init_HomunInformations = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -268189,7 +268189,7 @@ var init_HomunInformations = __esmMin((() => {
 	HomunInformations = new GUIComponent("HomunInformations", HomunInformations_default$1);
 	HomunInformations.render = () => HomunInformations_default$2;
 	HomunInformations.captureKeyEvents = true;
-	_preferences$22 = Preferences.get("HomunInformations", {
+	_preferences$23 = Preferences.get("HomunInformations", {
 		x: 100,
 		y: 200,
 		show: false,
@@ -268229,7 +268229,7 @@ var init_HomunInformations = __esmMin((() => {
 		if (autoFeedBtn) autoFeedBtn.addEventListener("click", () => {
 			homunToggleAutoFeed();
 		});
-		if (!_preferences$22.show) this._host.style.display = "none";
+		if (!_preferences$23.show) this._host.style.display = "none";
 		const skillBtn = root.querySelector(".skill");
 		if (skillBtn) skillBtn.addEventListener("mousedown", () => {
 			SkillListMH_default.homunculus.toggle();
@@ -268239,7 +268239,7 @@ var init_HomunInformations = __esmMin((() => {
 	};
 	HomunInformations.onAppend = function onAppend() {
 		const root = HomunInformations.getRoot();
-		Client.loadFile(DB.INTERFACE_PATH + `checkbox_${_preferences$22.autoFeed ? "1" : "0"}.bmp`, (data) => {
+		Client.loadFile(DB.INTERFACE_PATH + `checkbox_${_preferences$23.autoFeed ? "1" : "0"}.bmp`, (data) => {
 			const el = root.querySelector(".homun_auto_feed");
 			if (el) el.style.backgroundImage = `url(${data})`;
 		});
@@ -268250,8 +268250,8 @@ var init_HomunInformations = __esmMin((() => {
 				if (feeding) feeding.style.display = "none";
 			}
 		}
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$22.y), Renderer.height - this._host.getBoundingClientRect().height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$22.x), Renderer.width - this._host.getBoundingClientRect().width)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$23.y), Renderer.height - this._host.getBoundingClientRect().height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$23.x), Renderer.width - this._host.getBoundingClientRect().width)}px`;
 	};
 	HomunInformations.startAutoFeed = function startAutoFeed() {
 		window.clearInterval(autoFeedInterval);
@@ -268265,10 +268265,10 @@ var init_HomunInformations = __esmMin((() => {
 	* Once remove from body, save user preferences
 	*/
 	HomunInformations.onRemove = function onRemove() {
-		_preferences$22.show = this._host.style.display !== "none";
-		_preferences$22.y = parseInt(this._host.style.top, 10);
-		_preferences$22.x = parseInt(this._host.style.left, 10);
-		_preferences$22.save();
+		_preferences$23.show = this._host.style.display !== "none";
+		_preferences$23.y = parseInt(this._host.style.top, 10);
+		_preferences$23.x = parseInt(this._host.style.left, 10);
+		_preferences$23.save();
 		HomunInformations.stopAutoFeed();
 		this.stopAI();
 	};
@@ -268511,10 +268511,10 @@ var init_HomunInformations = __esmMin((() => {
 		this.startAI();
 	};
 	HomunInformations.setFeedConfig = function setFeedConfig(flag) {
-		_preferences$22.autoFeed = flag;
-		_preferences$22.save();
+		_preferences$23.autoFeed = flag;
+		_preferences$23.save();
 		const root = HomunInformations.getRoot();
-		if (root) Client.loadFile(DB.INTERFACE_PATH + `checkbox_${_preferences$22.autoFeed ? "1" : "0"}.bmp`, (data) => {
+		if (root) Client.loadFile(DB.INTERFACE_PATH + `checkbox_${_preferences$23.autoFeed ? "1" : "0"}.bmp`, (data) => {
 			const el = root.querySelector(".homun_auto_feed");
 			if (el) el.style.backgroundImage = `url(${data})`;
 		});
@@ -268543,7 +268543,7 @@ var init_MercenaryInformations$1 = __esmMin((() => {
 	MercenaryInformations_default$1 = ":host {\r\n	width: 280px;\r\n	height: 190px;\r\n	top: 100px;\r\n	left: 100px;\r\n}\r\n\r\n#MercenaryInformations {\r\n	position: absolute;\r\n	width: 280px;\r\n	height: 190px;\r\n	font-size: 12px;\r\n	background-color: white;\r\n	border-radius: 5px;\r\n}\r\n\r\n#MercenaryInformations .content {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n#MercenaryInformations .content .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n#MercenaryInformations .content .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	/* chrome bug */\r\n	display: inline-block;\r\n	width: 50px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#MercenaryInformations .content .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n#MercenaryInformations .content .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#MercenaryInformations .content .clear {\r\n	clear: both;\r\n}\r\n\r\n#MercenaryInformations .content {\r\n	background-repeat: no-repeat;\r\n	position: relative;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#MercenaryInformations .title_name {\r\n	position: absolute;\r\n	top: 25px;\r\n	left: 100px;\r\n}\r\n#MercenaryInformations .name {\r\n	position: absolute;\r\n	top: 25px;\r\n	left: 140px;\r\n	border: none;\r\n	background-color: #eee;\r\n	margin: 0px;\r\n	width: 85px;\r\n	color: black;\r\n}\r\n\r\n#MercenaryInformations .title_level {\r\n	position: absolute;\r\n	top: 47px;\r\n	left: 100px;\r\n}\r\n#MercenaryInformations .level {\r\n	position: absolute;\r\n	top: 47px;\r\n	left: 140px;\r\n}\r\n\r\n#MercenaryInformations .skill {\r\n	position: absolute;\r\n	top: 45px;\r\n	right: 5px;\r\n	border: 0;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n#MercenaryInformations .dismiss {\r\n	position: absolute;\r\n	top: 45px;\r\n	right: 50px;\r\n	border: 0;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n#MercenaryInformations .stats {\r\n	position: absolute;\r\n	top: 20px;\r\n	width: 80px;\r\n	height: 160px;\r\n}\r\n#MercenaryInformations .stats .atk {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .Matk {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .hit {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .critical {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .def {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .Mdef {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .flee {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations .stats .aspd {\r\n	margin-top: 4px;\r\n	height: 14px;\r\n	text-align: right;\r\n}\r\n\r\n#MercenaryInformations .hp {\r\n	position: absolute;\r\n	top: 70px;\r\n	left: 140px;\r\n}\r\n#MercenaryInformations .sp {\r\n	position: absolute;\r\n	top: 85px;\r\n	left: 140px;\r\n}\r\n\r\n#MercenaryInformations .hp_bar {\r\n	position: absolute;\r\n	top: 73px;\r\n	left: 118px;\r\n	height: 8px;\r\n}\r\n#MercenaryInformations .hp_bar div {\r\n	width: 4px;\r\n	height: 8px;\r\n	float: left;\r\n}\r\n#MercenaryInformations div.hp_bar_perc {\r\n	text-align: center;\r\n	width: 80px;\r\n	position: absolute;\r\n	top: -2px;\r\n}\r\n#MercenaryInformations .hp_perc {\r\n	position: absolute;\r\n	top: 50px;\r\n	right: 20px;\r\n}\r\n\r\n#MercenaryInformations .hp2 {\r\n	position: absolute;\r\n	top: 70px;\r\n	left: 210px;\r\n}\r\n#MercenaryInformations .sp2 {\r\n	position: absolute;\r\n	top: 85px;\r\n	left: 210px;\r\n}\r\n\r\n#MercenaryInformations .sp_bar {\r\n	position: absolute;\r\n	top: 88px;\r\n	left: 118px;\r\n	height: 8px;\r\n}\r\n#MercenaryInformations .sp_bar div {\r\n	width: 4px;\r\n	height: 8px;\r\n	float: left;\r\n}\r\n#MercenaryInformations div.sp_bar_perc {\r\n	text-align: center;\r\n	width: 80px;\r\n	position: absolute;\r\n	top: -2px;\r\n}\r\n#MercenaryInformations .sp_perc {\r\n	position: absolute;\r\n	top: 50px;\r\n	right: 20px;\r\n}\r\n\r\n#MercenaryInformations .block2 {\r\n	position: absolute;\r\n	top: 105px;\r\n	left: 100px;\r\n	width: 170px;\r\n	height: 70px;\r\n}\r\n\r\n#MercenaryInformations .block2 .title_timeleft {\r\n	width: 100%;\r\n}\r\n#MercenaryInformations .block2 .timeleft {\r\n	width: 50px;\r\n	float: right;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations canvas.life.title_timeleft {\r\n	position: relative;\r\n	top: -3px;\r\n}\r\n\r\n#MercenaryInformations .block2 .title_kills {\r\n	width: 100%;\r\n	position: absolute;\r\n	top: 27px;\r\n}\r\n#MercenaryInformations .block2 .kills {\r\n	width: 50px;\r\n	float: right;\r\n	text-align: right;\r\n}\r\n#MercenaryInformations canvas.life.title_kills {\r\n	position: relative;\r\n	top: 10px;\r\n}\r\n\r\n#MercenaryInformations .block2 .title_faith {\r\n	width: 100%;\r\n	position: absolute;\r\n	top: 55px;\r\n}\r\n#MercenaryInformations .block2 .faith {\r\n	width: 50px;\r\n	float: right;\r\n	text-align: right;\r\n}\r\n";
 }));
 // src/UI/Components/MercenaryInformations/MercenaryInformations.js
-var MercenaryInformations, _preferences$21, MercenaryInformations_default;
+var MercenaryInformations, _preferences$22, MercenaryInformations_default;
 var init_MercenaryInformations = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -268561,7 +268561,7 @@ var init_MercenaryInformations = __esmMin((() => {
 	init_MercenaryInformations$1();
 	MercenaryInformations = new GUIComponent("MercenaryInformations", MercenaryInformations_default$1);
 	MercenaryInformations.render = () => MercenaryInformations_default$2;
-	_preferences$21 = Preferences.get("MercenaryInformations", {
+	_preferences$22 = Preferences.get("MercenaryInformations", {
 		x: 100,
 		y: 100,
 		show: false,
@@ -268590,7 +268590,7 @@ var init_MercenaryInformations = __esmMin((() => {
 		if (dismissBtn) dismissBtn.addEventListener("click", () => {
 			MercenaryInformations.reqDeleteMercenary();
 		});
-		if (!_preferences$21.show) this._host.style.display = "none";
+		if (!_preferences$22.show) this._host.style.display = "none";
 		const skillBtn = root.querySelector(".skill");
 		if (skillBtn) skillBtn.addEventListener("mousedown", () => {
 			SkillListMH_default.mercenary.toggle();
@@ -268602,18 +268602,18 @@ var init_MercenaryInformations = __esmMin((() => {
 	* Once append to body
 	*/
 	MercenaryInformations.onAppend = function onAppend() {
-		if (!_preferences$21.show) this._host.style.display = "none";
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$21.y), Renderer.height - this._host.getBoundingClientRect().height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$21.x), Renderer.width - this._host.getBoundingClientRect().width)}px`;
+		if (!_preferences$22.show) this._host.style.display = "none";
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$22.y), Renderer.height - this._host.getBoundingClientRect().height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$22.x), Renderer.width - this._host.getBoundingClientRect().width)}px`;
 	};
 	/**
 	* Once remove from body
 	*/
 	MercenaryInformations.onRemove = function onRemove() {
-		_preferences$21.show = this._host.style.display !== "none";
-		_preferences$21.y = parseInt(this._host.style.top, 10);
-		_preferences$21.x = parseInt(this._host.style.left, 10);
-		_preferences$21.save();
+		_preferences$22.show = this._host.style.display !== "none";
+		_preferences$22.y = parseInt(this._host.style.top, 10);
+		_preferences$22.x = parseInt(this._host.style.left, 10);
+		_preferences$22.save();
 		this.stopAI();
 	};
 	/**
@@ -268842,7 +268842,7 @@ var init_CaptchaUpload$1 = __esmMin((() => {
 	CaptchaUpload_default$1 = ":host {\r\n	position: absolute;\r\n	width: 280px;\r\n	height: 200px;\r\n}\r\n\r\n#CaptchaUpload {\r\n	width: 100%;\r\n	height: 100%;\r\n	background-color: #ffffff;\r\n	font-size: 12px;\r\n	border-radius: 3px;\r\n}\r\n\r\n#CaptchaUpload .clear {\r\n	clear: both;\r\n}\r\n\r\n#CaptchaUpload .titlebar {\r\n	width: 280px;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n\r\n#CaptchaUpload .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n\r\n#CaptchaUpload .titlebar .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	display: inline-block;\r\n	width: 32px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#CaptchaUpload .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n\r\n#CaptchaUpload .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n\r\n#CaptchaUpload .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#CaptchaUpload .container {\r\n	padding: 10px;\r\n	text-align: center;\r\n}\r\n\r\n#CaptchaUpload .btn {\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: 0;\r\n	margin-left: 5px;\r\n}\r\n\r\n/* Custom File Input Styles */\r\n#CaptchaUpload .custom_file_input {\r\n	margin-bottom: 10px;\r\n	display: flex;\r\n	justify-content: center;\r\n	align-items: center;\r\n}\r\n\r\n#CaptchaUpload .captcha_file_text {\r\n	width: 170px;\r\n	border: 1px solid #7f9db9;\r\n	background-color: #fff;\r\n	color: #000;\r\n	height: 14px;\r\n}\r\n\r\n#CaptchaUpload .btn_browse {\r\n	width: 18px;\r\n	height: 18px;\r\n	cursor: pointer;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n}\r\n\r\n#CaptchaUpload .btn_browse:active {\r\n	border-color: #696969 #fff #fff #696969;\r\n}\r\n\r\n#CaptchaUpload .preview_box {\r\n	width: 220px;\r\n	height: 90px;\r\n	border: 1px solid #999;\r\n	margin: 0 auto 10px auto;\r\n	background-color: transparent;\r\n	display: flex;\r\n	align-items: center;\r\n	justify-content: center;\r\n	overflow: hidden;\r\n}\r\n\r\n#CaptchaUpload .preview_box img {\r\n	max-width: 100%;\r\n	max-height: 100%;\r\n}\r\n\r\n#CaptchaUpload input[type='text'].answer_input {\r\n	width: 150px;\r\n	margin-right: 5px;\r\n	border: 1px solid #7f9db9;\r\n}\r\n\r\n#CaptchaUpload .controls {\r\n	display: flex;\r\n	justify-content: center;\r\n	align-items: center;\r\n}\r\n";
 }));
 // src/UI/Components/Captcha/CaptchaUpload.js
-var CaptchaUpload, _preferences$20, CaptchaUpload_default;
+var CaptchaUpload, _preferences$21, CaptchaUpload_default;
 var init_CaptchaUpload = __esmMin((() => {
 	init_UIManager();
 	init_GUIComponent();
@@ -268853,7 +268853,7 @@ var init_CaptchaUpload = __esmMin((() => {
 	init_CaptchaUpload$2();
 	init_CaptchaUpload$1();
 	CaptchaUpload = new GUIComponent("CaptchaUpload", CaptchaUpload_default$1);
-	_preferences$20 = Preferences.get("CaptchaUpload", {
+	_preferences$21 = Preferences.get("CaptchaUpload", {
 		x: 230,
 		y: 295
 	}, 2);
@@ -268924,16 +268924,16 @@ var init_CaptchaUpload = __esmMin((() => {
 	* Append to DOM
 	*/
 	CaptchaUpload.onAppend = function onAppend() {
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$20.y), Renderer.height - this._host.offsetHeight)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$20.x), Renderer.width - this._host.offsetWidth)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$21.y), Renderer.height - this._host.offsetHeight)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$21.x), Renderer.width - this._host.offsetWidth)}px`;
 	};
 	/**
 	* Remove data from UI
 	*/
 	CaptchaUpload.onRemove = function onRemove() {
-		_preferences$20.y = parseInt(this._host.style.top, 10);
-		_preferences$20.x = parseInt(this._host.style.left, 10);
-		_preferences$20.save();
+		_preferences$21.y = parseInt(this._host.style.top, 10);
+		_preferences$21.x = parseInt(this._host.style.left, 10);
+		_preferences$21.save();
 		const root = this.getRoot();
 		const previewBox = root.querySelector(".preview_box");
 		if (previewBox) previewBox.innerHTML = "";
@@ -268968,7 +268968,7 @@ var init_CaptchaSelector$1 = __esmMin((() => {
 	CaptchaSelector_default$1 = ":host {\r\n	position: absolute;\r\n	width: 210px;\r\n	height: 310px;\r\n	z-index: 50;\r\n}\r\n\r\n#CaptchaSelector {\r\n	width: 100%;\r\n	height: 100%;\r\n	background-color: #ffffff;\r\n	font-size: 12px;\r\n}\r\n\r\n#CaptchaSelector .clear {\r\n	clear: both;\r\n}\r\n\r\n#CaptchaSelector .titlebar {\r\n	width: 210px;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n\r\n#CaptchaSelector .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n\r\n#CaptchaSelector .titlebar .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	display: inline-block;\r\n	width: 32px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#CaptchaSelector .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n\r\n#CaptchaSelector .titlebar .right,\r\n#CaptchaSelector .character_info .close-character {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n\r\n#CaptchaSelector .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#CaptchaSelector .container {\r\n	height: 293px;\r\n}\r\n\r\n#CaptchaSelector .options {\r\n	height: 22px;\r\n	display: flex;\r\n	align-items: center;\r\n}\r\n\r\n#CaptchaSelector .player_list {\r\n	height: 247px;\r\n	overflow-y: auto;\r\n	list-style: none;\r\n	margin: 0px 10px;\r\n	padding: 0;\r\n}\r\n\r\n#CaptchaSelector .player_list li {\r\n	width: 190px;\r\n	height: 24px;\r\n	margin: 2px 0;\r\n	background-color: #e5e5e5;\r\n	display: flex;\r\n	align-items: center;\r\n	gap: 5px;\r\n}\r\n\r\n#CaptchaSelector .footer {\r\n	display: flex;\r\n	justify-content: end;\r\n	align-items: center;\r\n	height: 24px;\r\n}\r\n\r\n#CaptchaSelector .range_val {\r\n	appearance: none;\r\n	width: 20px;\r\n	border: 1px solid;\r\n	margin-left: 3px;\r\n}\r\n\r\n#CaptchaSelector .range_val::-webkit-inner-spin-button,\r\n#CaptchaSelector .range_val::-webkit-outer-spin-button {\r\n	-webkit-appearance: none;\r\n	margin: 0;\r\n	border: 1px solid;\r\n	margin-left: 3px;\r\n}\r\n\r\n#CaptchaSelector .btn_active,\r\n#CaptchaSelector .footer .btn {\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n	border: 0;\r\n}\r\n\r\n#CaptchaSelector .btn_active {\r\n	margin-left: 15px;\r\n}\r\n\r\n#CaptchaSelector .footer .btn {\r\n	margin-right: 10px;\r\n}\r\n\r\n#CaptchaSelector .character_info {\r\n	position: absolute;\r\n	bottom: 0;\r\n	left: 0;\r\n	width: 200px;\r\n	height: 35px;\r\n	background-color: #ffffff;\r\n	border-radius: 3px;\r\n	display: none;\r\n}\r\n\r\n#CaptchaSelector li a {\r\n	text-decoration: underline;\r\n	color: black;\r\n}\r\n\r\n#CaptchaSelector .player_list li .remove {\r\n	width: 11px;\r\n	height: 11px;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n";
 }));
 // src/UI/Components/Captcha/CaptchaSelector.js
-var CaptchaSelector, _preferences$19, _aidList, _aidInformation, _range, _active$2, CaptchaSelector_default;
+var CaptchaSelector, _preferences$20, _aidList, _aidInformation, _range, _active$2, CaptchaSelector_default;
 var init_CaptchaSelector = __esmMin((() => {
 	init_UIManager();
 	init_GUIComponent();
@@ -268982,7 +268982,7 @@ var init_CaptchaSelector = __esmMin((() => {
 	init_CaptchaSelector$2();
 	init_CaptchaSelector$1();
 	CaptchaSelector = new GUIComponent("CaptchaSelector", CaptchaSelector_default$1);
-	_preferences$19 = Preferences.get("CaptchaSelector", {
+	_preferences$20 = Preferences.get("CaptchaSelector", {
 		x: 230,
 		y: 295
 	}, 2);
@@ -269045,16 +269045,16 @@ var init_CaptchaSelector = __esmMin((() => {
 	* Append to DOM
 	*/
 	CaptchaSelector.onAppend = function onAppend() {
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$19.y), Renderer.height - this._host.offsetHeight)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$19.x), Renderer.width - this._host.offsetWidth)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$20.y), Renderer.height - this._host.offsetHeight)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$20.x), Renderer.width - this._host.offsetWidth)}px`;
 	};
 	/**
 	* Remove data from UI
 	*/
 	CaptchaSelector.onRemove = function onRemove() {
-		_preferences$19.y = parseInt(this._host.style.top, 10);
-		_preferences$19.x = parseInt(this._host.style.left, 10);
-		_preferences$19.save();
+		_preferences$20.y = parseInt(this._host.style.top, 10);
+		_preferences$20.x = parseInt(this._host.style.left, 10);
+		_preferences$20.save();
 		const charInfo = this.getRoot().querySelector(".character_info");
 		if (charInfo) charInfo.style.display = "none";
 		this.cleanUIList();
@@ -328333,7 +328333,7 @@ var init_PetInformations$1 = __esmMin((() => {
 	PetInformations_default$1 = ":host {\r\n	width: 280px;\r\n	height: 180px;\r\n	top: 100px;\r\n	left: 100px;\r\n}\r\n\r\n#PetInformations {\r\n	position: absolute;\r\n	width: 280px;\r\n	height: 180px;\r\n	background-color: white;\r\n	border-radius: 5px;\r\n}\r\n\r\n#PetInformations .titlebar {\r\n	width: 100%;\r\n	height: 17px;\r\n	background-color: white;\r\n	background-repeat: repeat-x;\r\n	border-radius: 3px 3px 0px 0px;\r\n}\r\n#PetInformations .titlebar .base {\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	vertical-align: middle;\r\n}\r\n#PetInformations .titlebar .text {\r\n	text-shadow: 1px 1px white;\r\n	vertical-align: -2px;\r\n	white-space: nowrap;\r\n	display: inline-block;\r\n	width: 50px;\r\n	height: 13px;\r\n	font-size: 11px;\r\n	font-weight: bold;\r\n}\r\n\r\n#PetInformations .titlebar .left {\r\n	margin-left: 3px;\r\n	float: left;\r\n}\r\n#PetInformations .titlebar .right {\r\n	float: right;\r\n	margin-right: 3px;\r\n}\r\n#PetInformations .titlebar .clear {\r\n	clear: both;\r\n}\r\n\r\n#PetInformations .content {\r\n	background-repeat: no-repeat;\r\n	position: relative;\r\n	width: 100%;\r\n	height: 100%;\r\n}\r\n\r\n#PetInformations .title_name {\r\n	position: absolute;\r\n	top: 5px;\r\n	left: 100px;\r\n}\r\n#PetInformations .name {\r\n	position: absolute;\r\n	top: 5px;\r\n	left: 150px;\r\n	border: none;\r\n	background-color: #eee;\r\n	margin: 0px;\r\n	width: 70px;\r\n	color: black;\r\n}\r\n\r\n#PetInformations .modify {\r\n	position: absolute;\r\n	background-color: grey;\r\n	top: 5px;\r\n	right: 5px;\r\n	border: 0;\r\n	width: 42px;\r\n	height: 20px;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n#PetInformations .name.disabled {\r\n	color: black;\r\n	text-shadow: 1px 1px 0px #00ff00;\r\n	background-color: transparent;\r\n}\r\n#PetInformations .modify.disabled {\r\n	display: none;\r\n}\r\n\r\n#PetInformations .title_level {\r\n	position: absolute;\r\n	top: 30px;\r\n	left: 100px;\r\n}\r\n#PetInformations .level {\r\n	position: absolute;\r\n	top: 30px;\r\n	left: 150px;\r\n}\r\n\r\n#PetInformations .title_hunger {\r\n	position: absolute;\r\n	top: 55px;\r\n	left: 100px;\r\n}\r\n#PetInformations .hunger {\r\n	position: absolute;\r\n	top: 55px;\r\n	left: 150px;\r\n}\r\n\r\n#PetInformations .title_intimacy {\r\n	position: absolute;\r\n	top: 75px;\r\n	left: 100px;\r\n}\r\n#PetInformations .intimacy {\r\n	position: absolute;\r\n	top: 75px;\r\n	left: 150px;\r\n}\r\n\r\n#PetInformations .title_accessory {\r\n	position: absolute;\r\n	top: 100px;\r\n	left: 100px;\r\n}\r\n#PetInformations .accessory {\r\n	position: absolute;\r\n	top: 120px;\r\n	left: 100px;\r\n}\r\n#PetInformations .feeding {\r\n	position: absolute;\r\n	top: 140px;\r\n	left: 100px;\r\n	display: flex;\r\n	align-items: center;\r\n}\r\n#PetInformations .feeding .pet_auto_feed {\r\n	width: 10px;\r\n	height: 12px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat;\r\n	margin-left: 5px;\r\n}\r\n\r\n#PetInformations .command {\r\n	position: absolute;\r\n	top: 27px;\r\n	right: 5px;\r\n	width: 105px;\r\n}\r\n";
 }));
 // src/UI/Components/PetInformations/PetInformations.js
-var PetInformations, _preferences$18, petAutoFeeding, PetInformations_default;
+var PetInformations, _preferences$19, petAutoFeeding, PetInformations_default;
 var init_PetInformations = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -328348,7 +328348,7 @@ var init_PetInformations = __esmMin((() => {
 	PetInformations = new GUIComponent("PetInformations", PetInformations_default$1);
 	PetInformations.render = () => PetInformations_default$2;
 	PetInformations.captureKeyEvents = true;
-	_preferences$18 = Preferences.get("PetInformations", {
+	_preferences$19 = Preferences.get("PetInformations", {
 		x: 100,
 		y: 200,
 		show: true
@@ -328410,18 +328410,18 @@ var init_PetInformations = __esmMin((() => {
 			const feeding = root.querySelector(".feeding");
 			if (feeding) feeding.style.display = "none";
 		}
-		if (!_preferences$18.show) this._host.style.display = "none";
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$18.y), Renderer.height - this._host.getBoundingClientRect().height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$18.x), Renderer.width - this._host.getBoundingClientRect().width)}px`;
+		if (!_preferences$19.show) this._host.style.display = "none";
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$19.y), Renderer.height - this._host.getBoundingClientRect().height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$19.x), Renderer.width - this._host.getBoundingClientRect().width)}px`;
 	};
 	/**
 	* Once remove from body, save user preferences
 	*/
 	PetInformations.onRemove = function onRemove() {
-		_preferences$18.show = this._host.style.display !== "none";
-		_preferences$18.y = parseInt(this._host.style.top, 10);
-		_preferences$18.x = parseInt(this._host.style.left, 10);
-		_preferences$18.save();
+		_preferences$19.show = this._host.style.display !== "none";
+		_preferences$19.y = parseInt(this._host.style.top, 10);
+		_preferences$19.x = parseInt(this._host.style.left, 10);
+		_preferences$19.save();
 	};
 	/**
 	* Process shortcut
@@ -337920,7 +337920,7 @@ function showGuide() {
 		MobileUI._host.style.display = "block";
 		root.querySelector("#MobileUI").classList.add("guideOnly");
 	}
-	root.querySelector("#guideNeverShow").checked = _preferences$17.guideNeverShow;
+	root.querySelector("#guideNeverShow").checked = _preferences$18.guideNeverShow;
 	root.querySelector("#guideBody").scrollTop = 0;
 	guide.classList.remove("disabled");
 	guideShownThisSession = true;
@@ -337944,7 +337944,7 @@ function hideGuide() {
 * @returns {boolean} guide got opened
 */
 function showGuideOnActivate() {
-	if (guideShownThisSession || _preferences$17.guideNeverShow) return false;
+	if (guideShownThisSession || _preferences$18.guideNeverShow) return false;
 	showGuide();
 	return true;
 }
@@ -337978,8 +337978,8 @@ function setupGuide(root) {
 		event.preventDefault();
 	}, { passive: false });
 	root.querySelector("#guideNeverShow").addEventListener("change", (event) => {
-		_preferences$17.guideNeverShow = event.target.checked;
-		_preferences$17.save();
+		_preferences$18.guideNeverShow = event.target.checked;
+		_preferences$18.save();
 	});
 	bindButton(root, "#guideCloseButton", (e) => {
 		hideGuide();
@@ -338633,7 +338633,7 @@ function isFreeCell$2(x, y) {
 	});
 	return free;
 }
-var vec2, mat2, direction, rotate, targetPos, movementTimer, MobileUI, _preferences$17, C_LANG_FILE, _texts, guideShownThisSession, GUIDE_SECTIONS, showButtons, C_AUTOTARGET_DELAY, C_TOUCH_CLICK_GUARD, C_LONG_PRESS_DELAY, C_TOUCH_MOVE_TOLERANCE, centerX, centerY, maxDistance, normalizedX, normalizedY, _joystickBase, _joystickThumb, MobileUI_default;
+var vec2, mat2, direction, rotate, targetPos, movementTimer, MobileUI, _preferences$18, C_LANG_FILE, _texts, guideShownThisSession, GUIDE_SECTIONS, showButtons, C_AUTOTARGET_DELAY, C_TOUCH_CLICK_GUARD, C_LONG_PRESS_DELAY, C_TOUCH_MOVE_TOLERANCE, centerX, centerY, maxDistance, normalizedX, normalizedY, _joystickBase, _joystickThumb, MobileUI_default;
 var init_MobileUI = __esmMin((() => {
 	init_Context();
 	init_UIManager();
@@ -338666,7 +338666,7 @@ var init_MobileUI = __esmMin((() => {
 	MobileUI = new GUIComponent("MobileUI", MobileUI_default$1);
 	MobileUI.render = () => MobileUI_default$2;
 	MobileUI.needFocus = false;
-	_preferences$17 = Preferences.get("MobileUI", {
+	_preferences$18 = Preferences.get("MobileUI", {
 		x: 0,
 		y: 0,
 		zIndex: 1e3,
@@ -338936,12 +338936,12 @@ var init_MobileUI = __esmMin((() => {
 	* Removes MobileUI
 	*/
 	MobileUI.onRemove = function onRemove() {
-		_preferences$17.y = 0;
-		_preferences$17.x = 0;
-		_preferences$17.zIndex = 1e3;
-		_preferences$17.width = Renderer.width;
-		_preferences$17.height = Renderer.height;
-		_preferences$17.save();
+		_preferences$18.y = 0;
+		_preferences$18.x = 0;
+		_preferences$18.zIndex = 1e3;
+		_preferences$18.width = Renderer.width;
+		_preferences$18.height = Renderer.height;
+		_preferences$18.save();
 		if (SessionStorage_default.AutoTargeting) toggleAutoTargeting();
 	};
 	/**
@@ -341538,7 +341538,7 @@ function onItemOut$9() {
 	const overlay = Vending.getRoot().querySelector(".overlay");
 	if (overlay) overlay.style.display = "none";
 }
-var Vending, _preferences$16, _input$1, _output$1, _slots, _type$2, transferItem$1, Vending_default;
+var Vending, _preferences$17, _input$1, _output$1, _slots, _type$2, transferItem$1, Vending_default;
 var init_Vending = __esmMin((() => {
 	init_DBManager();
 	init_NetworkManager();
@@ -341571,7 +341571,7 @@ var init_Vending = __esmMin((() => {
 		VENDING_STORE: 0,
 		BUYING_STORE: 1
 	};
-	_preferences$16 = Preferences.get("Vending", {
+	_preferences$17 = Preferences.get("Vending", {
 		inputWindow: {
 			x: 100,
 			y: 100,
@@ -341673,12 +341673,12 @@ var init_Vending = __esmMin((() => {
 		const outputWin = root.querySelector(".OutputWindow");
 		const inputContent = inputWin.querySelector(".content");
 		const outputContent = outputWin.querySelector(".content");
-		inputWin.style.top = `${Math.min(Math.max(0, _preferences$16.inputWindow.y), Renderer.height - inputContent.offsetHeight)}px`;
-		inputWin.style.left = `${Math.min(Math.max(0, _preferences$16.inputWindow.x), Renderer.width - inputContent.offsetWidth)}px`;
-		outputWin.style.top = `${Math.min(Math.max(0, _preferences$16.outputWindow.y), Renderer.height - outputContent.offsetHeight)}px`;
-		outputWin.style.left = `${Math.min(Math.max(0, _preferences$16.outputWindow.x), Renderer.width - outputContent.offsetWidth)}px`;
-		resize$1(inputContent, _preferences$16.inputWindow.height);
-		resize$1(outputContent, _preferences$16.outputWindow.height);
+		inputWin.style.top = `${Math.min(Math.max(0, _preferences$17.inputWindow.y), Renderer.height - inputContent.offsetHeight)}px`;
+		inputWin.style.left = `${Math.min(Math.max(0, _preferences$17.inputWindow.x), Renderer.width - inputContent.offsetWidth)}px`;
+		outputWin.style.top = `${Math.min(Math.max(0, _preferences$17.outputWindow.y), Renderer.height - outputContent.offsetHeight)}px`;
+		outputWin.style.left = `${Math.min(Math.max(0, _preferences$17.outputWindow.x), Renderer.width - outputContent.offsetWidth)}px`;
+		resize$1(inputContent, _preferences$17.inputWindow.height);
+		resize$1(outputContent, _preferences$17.outputWindow.height);
 		this._host.style.display = "none";
 	};
 	Vending.setType = function setType(type) {
@@ -341719,13 +341719,13 @@ var init_Vending = __esmMin((() => {
 		const outputWin = root.querySelector(".OutputWindow");
 		_input$1.length = 0;
 		_output$1.length = 0;
-		_preferences$16.inputWindow.x = parseInt(inputWin.style.left, 10);
-		_preferences$16.inputWindow.y = parseInt(inputWin.style.top, 10);
-		_preferences$16.inputWindow.height = inputWin.querySelector(".content").offsetHeight / 32 | 0;
-		_preferences$16.outputWindow.x = parseInt(outputWin.style.left, 10);
-		_preferences$16.outputWindow.y = parseInt(outputWin.style.top, 10);
-		_preferences$16.outputWindow.height = outputWin.querySelector(".content").offsetHeight / 32 | 0;
-		_preferences$16.save();
+		_preferences$17.inputWindow.x = parseInt(inputWin.style.left, 10);
+		_preferences$17.inputWindow.y = parseInt(inputWin.style.top, 10);
+		_preferences$17.inputWindow.height = inputWin.querySelector(".content").offsetHeight / 32 | 0;
+		_preferences$17.outputWindow.x = parseInt(outputWin.style.left, 10);
+		_preferences$17.outputWindow.y = parseInt(outputWin.style.top, 10);
+		_preferences$17.outputWindow.height = outputWin.querySelector(".content").offsetHeight / 32 | 0;
+		_preferences$17.save();
 		root.querySelectorAll(".content").forEach((el) => {
 			el.innerHTML = "";
 		});
@@ -341988,7 +341988,7 @@ function onItemUsed(event, itemEl) {
 	event.stopImmediatePropagation();
 	event.preventDefault();
 }
-var VendingShop, _realSize, _type$1, _preferences$15, VendingShop_default;
+var VendingShop, _realSize, _type$1, _preferences$16, VendingShop_default;
 var init_VendingShop = __esmMin((() => {
 	init_DBManager();
 	init_NetworkManager();
@@ -342023,7 +342023,7 @@ var init_VendingShop = __esmMin((() => {
 	*/
 	VendingShop.list = [];
 	_realSize = 0;
-	_preferences$15 = Preferences.get("VendingShop", {
+	_preferences$16 = Preferences.get("VendingShop", {
 		x: 200,
 		y: 200,
 		width: 8,
@@ -342074,11 +342074,11 @@ var init_VendingShop = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	VendingShop.onAppend = function onAppend() {
-		this.resize(_preferences$15.width, _preferences$15.height);
+		this.resize(_preferences$16.width, _preferences$16.height);
 		const hostRect = this._host.getBoundingClientRect();
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$15.y), Renderer.height - hostRect.height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$15.x), Renderer.width - hostRect.width)}px`;
-		_realSize = _preferences$15.reduce ? 0 : hostRect.height;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$16.y), Renderer.height - hostRect.height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$16.x), Renderer.width - hostRect.width)}px`;
+		_realSize = _preferences$16.reduce ? 0 : hostRect.height;
 		const messageText = DB.getMessage(226);
 		const titleShop = Vending_default._shopname.length > 25 ? `${Vending_default._shopname.substring(0, 25)}...` : Vending_default._shopname;
 		const shopnameEl = this.getRoot().querySelector(".text.shopname");
@@ -342111,12 +342111,12 @@ var init_VendingShop = __esmMin((() => {
 		this.list.length = 0;
 		const itemInfoEl = document.querySelector(".ItemInfo");
 		if (itemInfoEl) itemInfoEl.remove();
-		_preferences$15.reduce = !!_realSize;
-		_preferences$15.y = parseInt(this._host.style.top, 10);
-		_preferences$15.x = parseInt(this._host.style.left, 10);
-		_preferences$15.width = Math.floor((this._host.getBoundingClientRect().width - 25) / 32);
-		_preferences$15.height = Math.floor((this._host.getBoundingClientRect().height - 20) / 32);
-		_preferences$15.save();
+		_preferences$16.reduce = !!_realSize;
+		_preferences$16.y = parseInt(this._host.style.top, 10);
+		_preferences$16.x = parseInt(this._host.style.left, 10);
+		_preferences$16.width = Math.floor((this._host.getBoundingClientRect().width - 25) / 32);
+		_preferences$16.height = Math.floor((this._host.getBoundingClientRect().height - 20) / 32);
+		_preferences$16.save();
 		this._host.style.display = "none";
 	};
 	/**
@@ -342407,7 +342407,7 @@ function formatUnixDate(unixTimestamp) {
 	const d = /* @__PURE__ */ new Date(unixTimestamp * 1e3);
 	return String(d.getMonth() + 1).padStart(2, "0") + "/" + String(d.getDate()).padStart(2, "0") + " - " + String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0") + ":" + String(d.getSeconds()).padStart(2, "0");
 }
-var VendingReport, VendingReportTable, _preferences$14, VendingReport_default;
+var VendingReport, VendingReportTable, _preferences$15, VendingReport_default;
 var init_VendingReport = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -342435,7 +342435,7 @@ var init_VendingReport = __esmMin((() => {
 	VendingReport._startHeight = 0;
 	VendingReport._boundResizeDrag = null;
 	VendingReport._boundResizeStop = null;
-	_preferences$14 = Preferences.get("VendingReport", {
+	_preferences$15 = Preferences.get("VendingReport", {
 		x: 200,
 		y: 200,
 		width: 400,
@@ -342497,9 +342497,9 @@ var init_VendingReport = __esmMin((() => {
 	VendingReport.onRemove = function OnRemove() {
 		VendingReport.reset();
 		ItemInfo_default.remove();
-		_preferences$14.y = parseInt(this._host.style.top, 10) || 0;
-		_preferences$14.x = parseInt(this._host.style.left, 10) || 0;
-		_preferences$14.save();
+		_preferences$15.y = parseInt(this._host.style.top, 10) || 0;
+		_preferences$15.x = parseInt(this._host.style.left, 10) || 0;
+		_preferences$15.save();
 		this._host.style.display = "none";
 	};
 	VendingReport.reset = function reset() {
@@ -343020,7 +343020,7 @@ function refreshList(contentEl) {
 		index++;
 	}
 }
-var Emoticons, _page, EMOTICONS_PER_PAGE, TOTAL_PAGES, EMOTICONS_COUNT, _action, _sprite, _entity$1, _preferences$13, Emoticons_default;
+var Emoticons, _page, EMOTICONS_PER_PAGE, TOTAL_PAGES, EMOTICONS_COUNT, _action, _sprite, _entity$1, _preferences$14, Emoticons_default;
 var init_Emoticons = __esmMin((() => {
 	init_Emotions();
 	init_Client();
@@ -343045,7 +343045,7 @@ var init_Emoticons = __esmMin((() => {
 	TOTAL_PAGES = 0;
 	EMOTICONS_COUNT = Object.keys(Emotions_default.order).length;
 	_entity$1 = new Entity();
-	_preferences$13 = Preferences.get("Emoticons", {
+	_preferences$14 = Preferences.get("Emoticons", {
 		x: 600,
 		y: 200,
 		show: false
@@ -343092,18 +343092,18 @@ var init_Emoticons = __esmMin((() => {
 	* Appending to html
 	*/
 	Emoticons.onAppend = function onAppend() {
-		if (!_preferences$13.show) this._host.style.display = "none";
-		this._host.style.top = Math.min(Math.max(0, _preferences$13.y), Renderer.height - this._host.offsetHeight) + "px";
-		this._host.style.left = Math.min(Math.max(0, _preferences$13.x), Renderer.width - this._host.offsetWidth) + "px";
+		if (!_preferences$14.show) this._host.style.display = "none";
+		this._host.style.top = Math.min(Math.max(0, _preferences$14.y), Renderer.height - this._host.offsetHeight) + "px";
+		this._host.style.left = Math.min(Math.max(0, _preferences$14.x), Renderer.width - this._host.offsetWidth) + "px";
 	};
 	/**
 	* Once removed from DOM, save preferences
 	*/
 	Emoticons.onRemove = function onRemove() {
-		_preferences$13.show = this._host.style.display !== "none";
-		_preferences$13.y = parseInt(this._host.style.top, 10) || 0;
-		_preferences$13.x = parseInt(this._host.style.left, 10) || 0;
-		_preferences$13.save();
+		_preferences$14.show = this._host.style.display !== "none";
+		_preferences$14.y = parseInt(this._host.style.top, 10) || 0;
+		_preferences$14.x = parseInt(this._host.style.left, 10) || 0;
+		_preferences$14.save();
 	};
 	/**
 	* Update page
@@ -343211,7 +343211,7 @@ function onDropText(event) {
 	if (data.type === "item") return;
 	event.currentTarget.value = data;
 }
-var ShortCuts, _MACRO_INIT, _FLAG_INIT, _preferences$12, ShortCuts_default;
+var ShortCuts, _MACRO_INIT, _FLAG_INIT, _preferences$13, ShortCuts_default;
 var init_ShortCuts = __esmMin((() => {
 	init_Preferences$1();
 	init_Renderer();
@@ -343255,7 +343255,7 @@ var init_ShortCuts = __esmMin((() => {
 	* Store ShortCuts items
 	*/
 	ShortCuts.list = [];
-	_preferences$12 = Preferences.get("ShortCuts", {
+	_preferences$13 = Preferences.get("ShortCuts", {
 		x: 0,
 		y: 172,
 		width: 7,
@@ -343321,10 +343321,10 @@ var init_ShortCuts = __esmMin((() => {
 	* Apply preferences once append to body
 	*/
 	ShortCuts.onAppend = function onAppend() {
-		if (!_preferences$12.show) this._host.style.display = "none";
+		if (!_preferences$13.show) this._host.style.display = "none";
 		const rect = this._host.getBoundingClientRect();
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$12.y), Renderer.height - rect.height)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$12.x), Renderer.width - rect.width)}px`;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$13.y), Renderer.height - rect.height)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$13.x), Renderer.width - rect.width)}px`;
 	};
 	/**
 	* Remove ShortCuts from window (and so clean up items)
@@ -343334,17 +343334,17 @@ var init_ShortCuts = __esmMin((() => {
 		if (content) content.innerHTML = "";
 		this.list.length = 0;
 		document.querySelectorAll(".ItemInfo").forEach((el) => el.remove());
-		_preferences$12.show = this._host.style.display !== "none";
-		_preferences$12.reduce = false;
-		_preferences$12.y = parseInt(this._host.style.top, 10);
-		_preferences$12.x = parseInt(this._host.style.left, 10);
-		_preferences$12.width = Math.floor((this._host.offsetWidth - 25) / 32);
-		_preferences$12.height = Math.floor((this._host.offsetHeight - 20) / 32);
-		_preferences$12.magnet_top = this.magnet.TOP;
-		_preferences$12.magnet_bottom = this.magnet.BOTTOM;
-		_preferences$12.magnet_left = this.magnet.LEFT;
-		_preferences$12.magnet_right = this.magnet.RIGHT;
-		_preferences$12.save();
+		_preferences$13.show = this._host.style.display !== "none";
+		_preferences$13.reduce = false;
+		_preferences$13.y = parseInt(this._host.style.top, 10);
+		_preferences$13.x = parseInt(this._host.style.left, 10);
+		_preferences$13.width = Math.floor((this._host.offsetWidth - 25) / 32);
+		_preferences$13.height = Math.floor((this._host.offsetHeight - 20) / 32);
+		_preferences$13.magnet_top = this.magnet.TOP;
+		_preferences$13.magnet_bottom = this.magnet.BOTTOM;
+		_preferences$13.magnet_left = this.magnet.LEFT;
+		_preferences$13.magnet_right = this.magnet.RIGHT;
+		_preferences$13.save();
 	};
 	/**
 	* Process shortcut
@@ -343806,7 +343806,7 @@ function stopPropagation$6(event) {
 	event.preventDefault();
 	return false;
 }
-var CashShop, _preferences$11, CashShop_default;
+var CashShop, _preferences$12, CashShop_default;
 var init_CashShop$1 = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -343830,7 +343830,7 @@ var init_CashShop$1 = __esmMin((() => {
 	* Store cash shop items
 	*/
 	CashShop.list = [];
-	_preferences$11 = Preferences.get("CashShop", {
+	_preferences$12 = Preferences.get("CashShop", {
 		x: 80,
 		y: 100,
 		magnet_top: false,
@@ -344006,25 +344006,25 @@ var init_CashShop$1 = __esmMin((() => {
 	CashShop.onAppend = function OnAppend() {
 		const hostHeight = this._host.offsetHeight || 540;
 		const hostWidth = this._host.offsetWidth || 723;
-		this._host.style.top = `${Math.min(Math.max(0, _preferences$11.y), Renderer.height - hostHeight)}px`;
-		this._host.style.left = `${Math.min(Math.max(0, _preferences$11.x), Renderer.width - hostWidth)}px`;
-		this.magnet.TOP = _preferences$11.magnet_top;
-		this.magnet.BOTTOM = _preferences$11.magnet_bottom;
-		this.magnet.LEFT = _preferences$11.magnet_left;
-		this.magnet.RIGHT = _preferences$11.magnet_right;
+		this._host.style.top = `${Math.min(Math.max(0, _preferences$12.y), Renderer.height - hostHeight)}px`;
+		this._host.style.left = `${Math.min(Math.max(0, _preferences$12.x), Renderer.width - hostWidth)}px`;
+		this.magnet.TOP = _preferences$12.magnet_top;
+		this.magnet.BOTTOM = _preferences$12.magnet_bottom;
+		this.magnet.LEFT = _preferences$12.magnet_left;
+		this.magnet.RIGHT = _preferences$12.magnet_right;
 		CashShop.loadComponentCashShop();
 	};
 	/**
 	* Remove Cash shop
 	*/
 	CashShop.onRemove = function onRemove() {
-		_preferences$11.x = parseInt(this._host.style.left, 10) || 0;
-		_preferences$11.y = parseInt(this._host.style.top, 10) || 0;
-		_preferences$11.magnet_top = this.magnet.TOP;
-		_preferences$11.magnet_bottom = this.magnet.BOTTOM;
-		_preferences$11.magnet_left = this.magnet.LEFT;
-		_preferences$11.magnet_right = this.magnet.RIGHT;
-		_preferences$11.save();
+		_preferences$12.x = parseInt(this._host.style.left, 10) || 0;
+		_preferences$12.y = parseInt(this._host.style.top, 10) || 0;
+		_preferences$12.magnet_top = this.magnet.TOP;
+		_preferences$12.magnet_bottom = this.magnet.BOTTOM;
+		_preferences$12.magnet_left = this.magnet.LEFT;
+		_preferences$12.magnet_right = this.magnet.RIGHT;
+		_preferences$12.save();
 		CashShop.stopBannerRotation();
 		CashShop.csListItemSearchResult = [];
 		CashShop.cashShopBannerTable = [];
@@ -346145,7 +346145,7 @@ function addRouletteIcon() {
 		if (_iconBtn) _iconBtn.style.backgroundImage = `url(${data})`;
 	});
 }
-var Roulette, _preferences$10, _rouletteInfo, _pending, _requestTimer, _spinTimer, _cooldownUntil, _prize, _nextStep, _status, _rotation, _iconBtn, Roulette_default;
+var Roulette, _preferences$11, _rouletteInfo, _pending, _requestTimer, _spinTimer, _cooldownUntil, _prize, _nextStep, _status, _rotation, _iconBtn, Roulette_default;
 var init_Roulette$1 = __esmMin((() => {
 	init_DBManager();
 	init_Client();
@@ -346163,7 +346163,7 @@ var init_Roulette$1 = __esmMin((() => {
 	* Render HTML
 	*/
 	Roulette.render = () => Roulette_default$2;
-	_preferences$10 = Preferences.get("Roulette", {
+	_preferences$11 = Preferences.get("Roulette", {
 		x: 200,
 		y: 200,
 		show: false
@@ -346208,8 +346208,8 @@ var init_Roulette$1 = __esmMin((() => {
 	* Once append to the DOM
 	*/
 	Roulette.onAppend = function onAppend() {
-		this._host.style.top = Math.min(Math.max(0, _preferences$10.y), Renderer.height - this._host.offsetHeight) + "px";
-		this._host.style.left = Math.min(Math.max(0, _preferences$10.x), Renderer.width - this._host.offsetWidth) + "px";
+		this._host.style.top = Math.min(Math.max(0, _preferences$11.y), Renderer.height - this._host.offsetHeight) + "px";
+		this._host.style.left = Math.min(Math.max(0, _preferences$11.x), Renderer.width - this._host.offsetWidth) + "px";
 		this._host.style.display = "none";
 		if (ROConfig.enableRoulette === false) return;
 		if (PacketVerManager_default.value < 20141008) return;
@@ -346224,10 +346224,10 @@ var init_Roulette$1 = __esmMin((() => {
 			_iconBtn.remove();
 			_iconBtn = null;
 		}
-		_preferences$10.show = this._host.style.display !== "none";
-		_preferences$10.x = parseInt(this._host.style.left, 10);
-		_preferences$10.y = parseInt(this._host.style.top, 10);
-		_preferences$10.save();
+		_preferences$11.show = this._host.style.display !== "none";
+		_preferences$11.x = parseInt(this._host.style.left, 10);
+		_preferences$11.y = parseInt(this._host.style.top, 10);
+		_preferences$11.save();
 		finishRequest$1();
 		clearTimeout(_spinTimer);
 		_spinTimer = null;
@@ -346426,7 +346426,7 @@ function onClickPCGoldTimer() {
 	packet.name = "GOLDPCCAFE";
 	Network.sendPacket(packet);
 }
-var MAX_GOLDPC_VAR, _data, PCGoldTimer, PCGoldTimer_default;
+var MAX_GOLDPC_VAR, _data$1, PCGoldTimer, PCGoldTimer_default;
 var init_PCGoldTimer$1 = __esmMin((() => {
 	init_UIManager();
 	init_GUIComponent();
@@ -346438,7 +346438,7 @@ var init_PCGoldTimer$1 = __esmMin((() => {
 	init_DBManager();
 	init_SessionStorage();
 	MAX_GOLDPC_VAR = 300;
-	_data = {
+	_data$1 = {
 		isActive: 0,
 		mode: 0,
 		point: 0,
@@ -346459,12 +346459,12 @@ var init_PCGoldTimer$1 = __esmMin((() => {
 	*/
 	PCGoldTimer.onAppend = function onAppend() {
 		const root = this.getRoot();
-		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/${_data.backgroundImage}`, function(url) {
+		Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/${_data$1.backgroundImage}`, function(url) {
 			const container = root.querySelector(".container");
 			if (container) container.style.backgroundImage = `url(${url})`;
 		});
-		if (_data.isActive === 1 || SessionStorage_default.PCGoldTimer) {
-			if (_data.isActive !== 1) this.setData(SessionStorage_default.PCGoldTimer, true);
+		if (_data$1.isActive === 1 || SessionStorage_default.PCGoldTimer) {
+			if (_data$1.isActive !== 1) this.setData(SessionStorage_default.PCGoldTimer, true);
 			if (!this.timer) this.startTimer();
 		} else {
 			this.stopTimer();
@@ -346475,30 +346475,30 @@ var init_PCGoldTimer$1 = __esmMin((() => {
 		this._host.style.display = this._host.style.display === "none" ? "" : "none";
 	};
 	PCGoldTimer.setData = function setData(packet, refresh = false) {
-		if (!refresh) _data.startTime = Date.now();
-		else _data.startTime = SessionStorage_default.PCGoldTimer.startTime;
-		if (_data.point === MAX_GOLDPC_VAR) _data.startTime = -_data.startTime;
-		_data.isActive = packet.isActive ? packet.isActive : 0;
-		_data.mode = packet.mode ? packet.mode : 0;
-		_data.point = packet.point ? packet.point : 0;
-		_data.playedTime = packet.playedTime ? packet.playedTime : 0;
-		_data.backgroundImage = packet.mode == 1 ? "mileage_bg1.bmp" : "mileage_bg2.bmp";
-		SessionStorage_default.PCGoldTimer = _data;
+		if (!refresh) _data$1.startTime = Date.now();
+		else _data$1.startTime = SessionStorage_default.PCGoldTimer.startTime;
+		if (_data$1.point === MAX_GOLDPC_VAR) _data$1.startTime = -_data$1.startTime;
+		_data$1.isActive = packet.isActive ? packet.isActive : 0;
+		_data$1.mode = packet.mode ? packet.mode : 0;
+		_data$1.point = packet.point ? packet.point : 0;
+		_data$1.playedTime = packet.playedTime ? packet.playedTime : 0;
+		_data$1.backgroundImage = packet.mode == 1 ? "mileage_bg1.bmp" : "mileage_bg2.bmp";
+		SessionStorage_default.PCGoldTimer = _data$1;
 	};
 	PCGoldTimer.startTimer = function startTimer() {
 		const root = this.getRoot();
 		this.timer = setInterval(function() {
-			const millisecondsMissing = 36e5 - (Date.now() - _data.startTime + _data.playedTime * 1e3);
+			const millisecondsMissing = 36e5 - (Date.now() - _data$1.startTime + _data$1.playedTime * 1e3);
 			let text = PCGoldTimer.formatTime(millisecondsMissing);
 			if (text.includes("-")) {
 				text = "00:00";
-				_data.point = Math.min(_data.point, MAX_GOLDPC_VAR);
-				if (_data.point === MAX_GOLDPC_VAR) text = "----:----";
+				_data$1.point = Math.min(_data$1.point, MAX_GOLDPC_VAR);
+				if (_data$1.point === MAX_GOLDPC_VAR) text = "----:----";
 			}
 			const timerEl = root.querySelector(".timer-text-value");
 			const pointsEl = root.querySelector(".total-points-value");
 			if (timerEl) timerEl.textContent = text;
-			if (pointsEl) pointsEl.textContent = _data.point;
+			if (pointsEl) pointsEl.textContent = _data$1.point;
 		}, 1e3);
 	};
 	PCGoldTimer.stopTimer = function stopTimer() {
@@ -346517,6 +346517,241 @@ var init_PCGoldTimer$1 = __esmMin((() => {
 	};
 	PCGoldTimer.needFocus = false;
 	PCGoldTimer_default = UIManager.addComponent(PCGoldTimer);
+}));
+// src/UI/Components/MemorialDungeon/MemorialDungeon.html?raw
+var MemorialDungeon_default$2;
+var init_MemorialDungeon$3 = __esmMin((() => {
+	MemorialDungeon_default$2 = "<div id=\"MemorialDungeon\">\r\n	<div class=\"titlebar\">\r\n		<ui-image src=\"basic_interface/titlebar_mid.bmp\"></ui-image>\r\n		<ui-text class=\"title\" msg=\"1336\">Memorial Dungeon</ui-text>\r\n		<ui-button\r\n			class=\"close\"\r\n			bg=\"basic_interface/sys_close_off.bmp\"\r\n			hover=\"basic_interface/sys_close_on.bmp\"\r\n		></ui-button>\r\n	</div>\r\n	<div class=\"content\">\r\n		<div class=\"name\"></div>\r\n		<div class=\"info\"></div>\r\n		<div class=\"buttons\">\r\n			<button class=\"destroy\"><ui-text msg=\"3270\">Dungeon Destroyed</ui-text></button>\r\n		</div>\r\n	</div>\r\n</div>\r\n";
+}));
+// src/UI/Components/MemorialDungeon/MemorialDungeon.css?raw
+var MemorialDungeon_default$1;
+var init_MemorialDungeon$2 = __esmMin((() => {
+	MemorialDungeon_default$1 = ":host {\r\n	top: 300px;\r\n	left: 10px;\r\n	width: 160px;\r\n}\r\n\r\n#MemorialDungeon {\r\n	position: relative;\r\n	width: 160px;\r\n}\r\n\r\n#MemorialDungeon .titlebar {\r\n	position: relative;\r\n	height: 17px;\r\n	background-repeat: repeat-x;\r\n	border-radius: 4px 4px 0 0;\r\n}\r\n\r\n#MemorialDungeon .titlebar .title {\r\n	position: absolute;\r\n	left: 6px;\r\n	top: 2px;\r\n	text-shadow: 1px 1px 0px white;\r\n	white-space: nowrap;\r\n	font-size: 11px;\r\n}\r\n\r\n#MemorialDungeon .titlebar .close {\r\n	position: absolute;\r\n	right: 3px;\r\n	top: 3px;\r\n	width: 11px;\r\n	height: 11px;\r\n	border: none;\r\n	background-repeat: no-repeat;\r\n	background-color: transparent;\r\n}\r\n\r\n#MemorialDungeon .content {\r\n	background-color: white;\r\n	border: 1px solid #c6c6c6;\r\n	border-top: none;\r\n	border-radius: 0 0 4px 4px;\r\n	padding: 6px 6px 8px;\r\n	font-size: 12px;\r\n	line-height: 15px;\r\n	text-align: center;\r\n}\r\n\r\n#MemorialDungeon .content .name .md-name {\r\n	color: #3c5ac8;\r\n}\r\n\r\n#MemorialDungeon .content .info {\r\n	margin-top: 2px;\r\n}\r\n\r\n#MemorialDungeon .content .info .date {\r\n	color: #ff0000;\r\n}\r\n\r\n#MemorialDungeon .content .buttons {\r\n	display: none;\r\n	margin-top: 6px;\r\n}\r\n\r\n#MemorialDungeon .content .buttons.visible {\r\n	display: block;\r\n}\r\n\r\n/* Generic text button: left and right caps over a stretched middle */\r\n#MemorialDungeon .destroy {\r\n	height: 20px;\r\n	padding: 0 10px;\r\n	border: none;\r\n	background-color: transparent;\r\n	background-repeat: no-repeat, no-repeat, repeat-x;\r\n	background-position:\r\n		left top,\r\n		right top,\r\n		left top;\r\n	background-size:\r\n		6px 20px,\r\n		6px 20px,\r\n		auto 20px;\r\n	background-origin: border-box;\r\n	font-size: 12px;\r\n	color: black;\r\n	cursor: pointer;\r\n}\r\n";
+}));
+// src/UI/Components/MemorialDungeon/MemorialDungeon.js
+/**
+* Destroy button: the window closes at once, the server confirms in the chat
+*/
+function onDestroy() {
+	const pkt = new PACKET.CZ.MEMORIALDUNGEON_COMMAND();
+	pkt.Command = COMMAND_DESTROY_FORCE;
+	Network.sendPacket(pkt);
+	MemorialDungeon.remove();
+}
+/**
+* Generic text button, drawn from basic_interface/btn_<state>_{left,mid,right}.bmp
+*
+* @param {HTMLElement} button
+*/
+function initTextButton(button) {
+	const images = {};
+	let current = "out";
+	const set = (state) => {
+		const img = images[state];
+		if (img.left && img.right && img.mid) button.style.backgroundImage = `url(${img.left}), url(${img.right}), url(${img.mid})`;
+	};
+	[
+		"out",
+		"over",
+		"press"
+	].forEach((state) => {
+		images[state] = {};
+		[
+			"left",
+			"mid",
+			"right"
+		].forEach((part) => {
+			Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/btn_${state}_${part}.bmp`, (url) => {
+				images[state][part] = url;
+				if (state === current) set(state);
+			});
+		});
+	});
+	const to = (state) => () => {
+		current = state;
+		set(state);
+	};
+	button.addEventListener("mouseenter", to("over"));
+	button.addEventListener("mouseleave", to("out"));
+	button.addEventListener("mousedown", to("press"));
+	button.addEventListener("mouseup", to("over"));
+}
+/**
+* @param {number} time - unix time
+* @return {string} MM/DD HH:MM in local time
+*/
+function formatDate(time) {
+	const date = /* @__PURE__ */ new Date(time * 1e3);
+	const pad = (n) => String(n).padStart(2, "0");
+	return `${pad(date.getMonth() + 1)}/${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+/**
+* Append text with RO colour codes (^rrggbb) as spans
+*
+* @param {HTMLElement} parent
+* @param {string} text
+*/
+function appendColored(parent, text) {
+	const parts = text.split(/\^([0-9a-fA-F]{6})/);
+	let node = parent;
+	for (let i = 0; i < parts.length; i++) if (i % 2) {
+		node = document.createElement("span");
+		if (parts[i] !== "000000") node.style.color = `#${parts[i]}`;
+		parent.appendChild(node);
+	} else if (parts[i]) node.appendChild(document.createTextNode(parts[i]));
+}
+var STATE, COMMAND_DESTROY_FORCE, MemorialDungeon, _preferences$10, _data, MemorialDungeon_default;
+var init_MemorialDungeon$1 = __esmMin((() => {
+	init_DBManager();
+	init_Client();
+	init_Preferences$1();
+	init_PacketStructure();
+	init_NetworkManager();
+	init_Renderer();
+	init_Elements();
+	init_GUIComponent();
+	init_UIManager();
+	init_MemorialDungeon$3();
+	init_MemorialDungeon$2();
+	STATE = {
+		STANDBY: 0,
+		AVAILABLE: 1,
+		PROGRESS: 2
+	};
+	COMMAND_DESTROY_FORCE = 3;
+	MemorialDungeon = new GUIComponent("MemorialDungeon", MemorialDungeon_default$1);
+	MemorialDungeon.STATE = STATE;
+	_preferences$10 = Preferences.get("MemorialDungeon", {
+		x: 10,
+		y: -1
+	}, 1);
+	_data = null;
+	MemorialDungeon.render = () => MemorialDungeon_default$2;
+	MemorialDungeon.init = function init() {
+		this.draggable(".titlebar");
+		const root = this.getRoot();
+		const closeBtn = root.querySelector(".close");
+		closeBtn.addEventListener("mousedown", (e) => e.stopImmediatePropagation());
+		closeBtn.addEventListener("click", () => this.remove());
+		const destroy = root.querySelector(".destroy");
+		destroy.addEventListener("click", onDestroy);
+		initTextButton(destroy);
+	};
+	MemorialDungeon.onAppend = function onAppend() {
+		const y = _preferences$10.y < 0 ? Math.round(Renderer.height / 2) : _preferences$10.y;
+		this._host.style.left = `${_preferences$10.x}px`;
+		this._host.style.top = `${y}px`;
+		this.refresh();
+	};
+	MemorialDungeon.onRemove = function onRemove() {
+		_preferences$10.x = parseInt(this._host.style.left, 10);
+		_preferences$10.y = parseInt(this._host.style.top, 10);
+		_preferences$10.save();
+	};
+	/**
+	* Instance is queued (ZC_MEMORIALDUNGEON_SUBSCRIPTION_INFO)
+	*
+	* @param {string} name - instance name
+	* @param {number} priority - position in the queue
+	*/
+	MemorialDungeon.setStandby = function setStandby(name, priority) {
+		_data = {
+			state: STATE.STANDBY,
+			name,
+			priority,
+			destroyDate: 0,
+			enterDate: 0
+		};
+		this.append();
+	};
+	/**
+	* Queue position changed (ZC_MEMORIALDUNGEON_SUBSCRIPTION_NOTIFY)
+	*
+	* @param {number} priority
+	*/
+	MemorialDungeon.setPriority = function setPriority(priority) {
+		if (!_data) return;
+		_data.priority = priority;
+		if (this.__active) this.refresh();
+	};
+	/**
+	* Instance exists (ZC_MEMORIALDUNGEON_INFO)
+	*
+	* @param {string} name - instance name
+	* @param {number} destroyDate - unix time the instance ends (0 = no limit)
+	* @param {number} enterDate - unix time the instance ends if nobody enters (0 = someone is inside)
+	*/
+	MemorialDungeon.setInfo = function setInfo(name, destroyDate, enterDate) {
+		_data = {
+			state: enterDate ? STATE.AVAILABLE : STATE.PROGRESS,
+			name,
+			priority: 0,
+			destroyDate,
+			enterDate
+		};
+		this.append();
+	};
+	/**
+	* Entry time limit changed (ZC_MEMORIALDUNGEON_NOTIFY, type 0)
+	*
+	* @param {number} enterDate - unix time, 0 = someone entered
+	*/
+	MemorialDungeon.setEnterDate = function setEnterDate(enterDate) {
+		if (!_data || _data.state === STATE.STANDBY) return;
+		_data.enterDate = enterDate;
+		_data.state = enterDate ? STATE.AVAILABLE : STATE.PROGRESS;
+		if (this.__active) this.refresh();
+	};
+	/**
+	* Instance is gone
+	*/
+	MemorialDungeon.clear = function clear() {
+		_data = null;
+		this.remove();
+	};
+	/**
+	* @return {object|null} current instance
+	*/
+	MemorialDungeon.getData = function getData() {
+		return _data;
+	};
+	/**
+	* Draw the current instance
+	*/
+	MemorialDungeon.refresh = function refresh() {
+		const root = this.getRoot();
+		if (!root || !_data) return;
+		const name = root.querySelector(".name");
+		name.textContent = "";
+		const [before, after = ""] = DB.getMessage([
+			1337,
+			1338,
+			1339
+		][_data.state]).split("%s");
+		const span = document.createElement("span");
+		span.className = "md-name";
+		span.textContent = `[${_data.name}]`;
+		name.append(before, span, after);
+		const info = root.querySelector(".info");
+		info.textContent = "";
+		switch (_data.state) {
+			case STATE.STANDBY:
+				appendColored(info, DB.getMessage(1342).replace("%d", _data.priority));
+				break;
+			case STATE.AVAILABLE:
+				appendColored(info, DB.getMessage(1343).replace("%s", formatDate(_data.enterDate)));
+				break;
+			case STATE.PROGRESS: if (_data.destroyDate) {
+				const date = document.createElement("div");
+				date.className = "date";
+				date.textContent = formatDate(_data.destroyDate);
+				info.append(DB.getMessage(1344), date);
+			}
+		}
+		root.querySelector(".buttons").classList.toggle("visible", _data.state === STATE.AVAILABLE);
+	};
+	MemorialDungeon.needFocus = false;
+	MemorialDungeon_default = UIManager.addComponent(MemorialDungeon);
 }));
 // src/UI/Components/MapName/MapName.html?raw
 var MapName_default$2;
@@ -360251,6 +360486,82 @@ var init_PCGoldTimer = __esmMin((() => {
 	init_PacketStructure();
 	init_PCGoldTimer$1();
 }));
+// src/Engine/MapEngine/MemorialDungeon.js
+/**
+* Instance queued
+*
+* @param {object} pkt - PACKET.ZC.MEMORIALDUNGEON_SUBSCRIPTION_INFO
+*/
+function onSubscriptionInfo(pkt) {
+	MemorialDungeon_default.setStandby(pkt.MemorialDungeonName, pkt.PriorityOrderNum);
+}
+/**
+* Queue position changed, or the instance left the queue
+*
+* @param {object} pkt - PACKET.ZC.MEMORIALDUNGEON_SUBSCRIPTION_NOTIFY
+*/
+function onSubscriptionNotify(pkt) {
+	if ((pkt.PriorityOrderNum & 65535) === PRIORITY_CANCELED) {
+		if (MemorialDungeon_default.getData()) ChatBox_default.addText(DB.getMessage(1345), ChatBox_default.TYPE.INFO, ChatBox_default.FILTER.PUBLIC_LOG);
+		MemorialDungeon_default.clear();
+		return;
+	}
+	MemorialDungeon_default.setPriority(pkt.PriorityOrderNum);
+}
+/**
+* Instance created or (re)entered; also sent on every map load
+*
+* @param {object} pkt - PACKET.ZC.MEMORIALDUNGEON_INFO
+*/
+function onInfo(pkt) {
+	MemorialDungeon_default.setInfo(pkt.MemorialDungeonName, pkt.DestroyDate, pkt.EnterTimeOutDate);
+}
+/**
+* Entry limit changed, or the instance is gone
+*
+* @param {object} pkt - PACKET.ZC.MEMORIALDUNGEON_NOTIFY
+*/
+function onNotify(pkt) {
+	if (pkt.Type === NOTIFY.INFO) {
+		MemorialDungeon_default.setEnterDate(pkt.EnterLimitDate);
+		return;
+	}
+	const data = MemorialDungeon_default.getData();
+	const msg = NOTIFY_MSG[pkt.Type];
+	if (msg) ChatBox_default.addText(DB.getMessage(msg).replace("%s", data ? data.name : ""), ChatBox_default.TYPE.INFO, ChatBox_default.FILTER.PUBLIC_LOG);
+	MemorialDungeon_default.clear();
+}
+/**
+* Initialize
+*/
+function MemorialDungeonEngine() {
+	Network.hookPacket(PACKET.ZC.MEMORIALDUNGEON_SUBSCRIPTION_INFO, onSubscriptionInfo);
+	Network.hookPacket(PACKET.ZC.MEMORIALDUNGEON_SUBSCRIPTION_NOTIFY, onSubscriptionNotify);
+	Network.hookPacket(PACKET.ZC.MEMORIALDUNGEON_INFO, onInfo);
+	Network.hookPacket(PACKET.ZC.MEMORIALDUNGEON_NOTIFY, onNotify);
+}
+var PRIORITY_CANCELED, NOTIFY, NOTIFY_MSG;
+var init_MemorialDungeon = __esmMin((() => {
+	init_DBManager();
+	init_NetworkManager();
+	init_PacketStructure();
+	init_ChatBox();
+	init_MemorialDungeon$1();
+	PRIORITY_CANCELED = 65535;
+	NOTIFY = {
+		INFO: 0,
+		DESTROY_LIVE_TIMEOUT: 1,
+		DESTROY_ENTER_TIMEOUT: 2,
+		DESTROY_USER_REQUEST: 3,
+		CREATE_FAIL: 4
+	};
+	NOTIFY_MSG = {
+		[NOTIFY.DESTROY_LIVE_TIMEOUT]: 1346,
+		[NOTIFY.DESTROY_ENTER_TIMEOUT]: 1347,
+		[NOTIFY.DESTROY_USER_REQUEST]: 1348,
+		[NOTIFY.CREATE_FAIL]: 1333
+	};
+}));
 // src/Engine/MapEngine/Captcha.js
 /**
 * Reset captcha
@@ -361534,6 +361845,7 @@ var init_MapEngine = __esmMin((() => {
 	init_RodexIcon();
 	init_Roulette$1();
 	init_PCGoldTimer$1();
+	init_MemorialDungeon$1();
 	init_Refine();
 	init_Reputation();
 	init_PetInformations();
@@ -361583,6 +361895,7 @@ var init_MapEngine = __esmMin((() => {
 	init_Rodex();
 	init_Roulette();
 	init_PCGoldTimer();
+	init_MemorialDungeon();
 	init_Captcha();
 	init_Clan();
 	init_CashShop();
@@ -361726,6 +362039,7 @@ var init_MapEngine = __esmMin((() => {
 				MainEngine$5();
 				RouletteEngine();
 				MainEngine$4();
+				MemorialDungeonEngine();
 				MainEngine$3();
 				MainEngine$2();
 				if (Configs.get("enableCashShop")) MainEngine$1();
@@ -361756,6 +362070,7 @@ var init_MapEngine = __esmMin((() => {
 				RodexIcon_default.prepare();
 				Roulette_default.prepare();
 				PCGoldTimer_default.prepare();
+				MemorialDungeon_default.prepare();
 				Navigation_default.prepare();
 				CaptchaUpload_default.prepare();
 				CaptchaSelector_default.prepare();
