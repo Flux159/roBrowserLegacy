@@ -239825,6 +239825,7 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 		}
 		root.querySelectorAll(".upgradable").forEach((el) => el.classList.remove("upgradable"));
 		const entity = SessionStorage_default.Entity;
+		const previousJobId = skillJobId;
 		skillJobId = entity ? entity._job || entity.job : 0;
 		skillPosition = getSkillPosition(skillJobId);
 		skillDependencyTree.length = 0;
@@ -239850,16 +239851,32 @@ function createSkillList({ name, htmlText, cssText, hasTabs = false, showDescOnM
 		skillPosition.forEach((items, list) => {
 			Component.prepareSkillTree(items, list);
 		});
-		if (hasTabs) for (let i = 2; i <= 4; i++) {
-			const miniRows = root.querySelectorAll(`#minitab${i} tr`);
-			const bigSkills = root.querySelectorAll(`#positionSkills${i} .skill`);
-			const tabminil = root.querySelector(`#tabminil${i}`);
-			if (tabminil) tabminil.style.display = miniRows.length > 0 ? "" : "none";
-			const tabl = root.querySelector(`#tabl${i}`);
-			if (tabl) tabl.style.display = bigSkills.length > 0 ? "" : "none";
+		if (hasTabs) {
+			for (let i = 2; i <= 4; i++) {
+				const miniRows = root.querySelectorAll(`#minitab${i} tr`);
+				const bigSkills = root.querySelectorAll(`#positionSkills${i} .skill`);
+				const tabminil = root.querySelector(`#tabminil${i}`);
+				if (tabminil) tabminil.style.display = miniRows.length > 0 ? "" : "none";
+				const tabl = root.querySelector(`#tabl${i}`);
+				if (tabl) tabl.style.display = bigSkills.length > 0 ? "" : "none";
+			}
+			if (skillJobId !== previousJobId) selectCurrentJobTab(root);
 		}
 		onResetChoice(this);
 	};
+	/**
+	* Check the highest job tab that has skills (2nd-4th), else the 1st,
+	* in whichever view (mini or big) is shown
+	*/
+	function selectCurrentJobTab(root) {
+		let tab = 1;
+		for (let i = 4; i >= 2; i--) if (root.querySelectorAll(`#positionSkills${i} .skill`).length > 0) {
+			tab = i;
+			break;
+		}
+		const radio = root.querySelector(_preferences.mini ? `#tab-${tab}-mini` : `#tab-${tab}`);
+		if (radio) radio.checked = true;
+	}
 	function createSkillDependencyTree() {
 		skillPosition.forEach((items, list) => {
 			Object.entries(items).forEach(([skid, pos]) => {
