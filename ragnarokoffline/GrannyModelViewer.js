@@ -214192,7 +214192,7 @@ function pointInstances(first) {
 	gl.vertexAttribPointer(attribute.aAngleDepthShadowCap, 4, gl.FLOAT, false, STRIDE$1, base + 64);
 	gl.vertexAttribPointer(attribute.aSource, 3, gl.FLOAT, false, STRIDE$1, base + 80);
 }
-var mat4$24, FLOATS$1, STRIDE$1, SOURCE_OWN, SOURCE_INDEX, SOURCE_RGBA, PALETTE_NONE, PALETTE_OWN, QUEUE_SHADOW, QUEUE_MAIN, Queue$1, Run, _gl$4, _program$29, _vao, _quad, _instanceBuffer, _upload, _active$4, _queues, _modelView, _viewModel, _projection, _fogColor$1, _frame, _glState, SpriteBatch;
+var mat4$24, FLOATS$1, STRIDE$1, SOURCE_OWN, SOURCE_INDEX, SOURCE_RGBA, PALETTE_NONE, PALETTE_OWN, QUEUE_SHADOW, QUEUE_MAIN, Queue$1, Run, _gl$4, _program$29, _vao, _quad, _instanceBuffer, _upload, _active$4, _queues, _modelView$1, _viewModel, _projection, _fogColor$1, _frame, _glState, SpriteBatch;
 var init_SpriteBatch = __esmMin((() => {
 	init_WebGL();
 	init_gl_matrix();
@@ -214251,7 +214251,7 @@ var init_SpriteBatch = __esmMin((() => {
 	_upload = /* @__PURE__ */ new Float32Array(0);
 	_active$4 = false;
 	_queues = [new Queue$1(), new Queue$1()];
-	_modelView = /* @__PURE__ */ new Float32Array(16);
+	_modelView$1 = /* @__PURE__ */ new Float32Array(16);
 	_viewModel = /* @__PURE__ */ new Float32Array(16);
 	_projection = /* @__PURE__ */ new Float32Array(16);
 	_fogColor$1 = /* @__PURE__ */ new Float32Array(3);
@@ -214295,9 +214295,9 @@ var init_SpriteBatch = __esmMin((() => {
 		* recorded after it.
 		*/
 		static setFrame(modelView, projection, fog, zoom) {
-			_modelView.set(modelView);
+			_modelView$1.set(modelView);
 			_projection.set(projection);
-			mat4$24.invert(_viewModel, _modelView);
+			mat4$24.invert(_viewModel, _modelView$1);
 			_frame.fogUse = !!(fog.use && fog.exist);
 			_frame.fogNear = fog.near;
 			_frame.fogFar = fog.far;
@@ -214437,7 +214437,7 @@ var init_SpriteBatch = __esmMin((() => {
 			gl.useProgram(_program$29);
 			gl.bindVertexArray(_vao);
 			gl.uniformMatrix4fv(uniform.uProjectionMat, false, _projection);
-			gl.uniformMatrix4fv(uniform.uModelViewMat, false, _modelView);
+			gl.uniformMatrix4fv(uniform.uModelViewMat, false, _modelView$1);
 			gl.uniformMatrix4fv(uniform.uViewModelMat, false, _viewModel);
 			gl.uniform1f(uniform.uCameraZoom, _frame.zoom);
 			gl.uniform1i(uniform.uFogUse, _frame.fogUse);
@@ -223097,7 +223097,7 @@ var init_SkillEffect = __esmMin((() => {
 		hitEffectId: "ef_druid_ice_hit"
 	};
 	SkillEffect[SkillConst_default.DR_CUTTING_WIND] = {
-		effectId: "ef_druid_cutting_wind",
+		effectIdOnCaster: "ef_druid_cutting_wind",
 		hitEffectId: "ef_druid_cutting_wind_hit"
 	};
 	SkillEffect[SkillConst_default.DR_WIND_BOMB] = {
@@ -223124,12 +223124,11 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.KR_IRON_HOWLING] = { effectId: "ef_druid_iron_howling" };
 	SkillEffect[SkillConst_default.KR_SHARPEN_GUST] = {
-		effectId: "ef_druid_sharpen_gust",
+		effectIdOnCaster: "ef_druid_sharpen_gust",
 		hitEffectId: "ef_druid_hit_raptor"
 	};
 	SkillEffect[SkillConst_default.KR_SHARPEN_HAIL] = {
-		effectIdOnCaster: "ef_druid_sharpen_hail_shot",
-		effectId: "ef_druid_sharpen_hail",
+		effectId: ["ef_druid_sharpen_hail_shot", "ef_druid_sharpen_hail"],
 		hitEffectId: "ef_druid_hit_raptor"
 	};
 	SkillEffect[SkillConst_default.KR_TYPHOON_WING] = {
@@ -223209,15 +223208,15 @@ var init_SkillEffect = __esmMin((() => {
 		hitEffectId: "ef_druid_hit_wolf"
 	};
 	SkillEffect[SkillConst_default.AT_PINION_SHOT] = {
-		effectId: "ef_druid_pinion_shot",
+		effectIdOnCaster: "ef_druid_pinion_shot",
 		hitEffectId: "ef_druid_hit_raptor"
 	};
 	SkillEffect[SkillConst_default.AT_QUILL_SPEAR] = {
-		effectId: "ef_druid_quill_spear",
+		effectIdOnCaster: "ef_druid_quill_spear",
 		hitEffectId: "ef_druid_hit_raptor"
 	};
 	SkillEffect[SkillConst_default.AT_QUILL_SPEAR_S] = {
-		effectId: "ef_druid_quill_spear_s",
+		effectIdOnCaster: "ef_druid_quill_spear_s",
 		hitEffectId: "ef_druid_hit_raptor"
 	};
 	SkillEffect[SkillConst_default.AT_TEMPEST_FLAP] = {
@@ -223254,11 +223253,11 @@ var init_SkillEffect = __esmMin((() => {
 	};
 	SkillEffect[SkillConst_default.AT_ROARING_PIERCER] = {
 		beginCastEffectId: "ef_druid_thunder_cast",
-		effectId: "ef_druid_roaring_piercer_g",
+		effectIdOnCaster: "ef_druid_roaring_piercer_g",
 		hitEffectId: "ef_druid_thunder_hit_g"
 	};
 	SkillEffect[SkillConst_default.AT_ROARING_PIERCER_S] = {
-		effectId: "ef_druid_roaring_piercer_y",
+		effectIdOnCaster: "ef_druid_roaring_piercer_y",
 		hitEffectId: "ef_druid_thunder_hit_y"
 	};
 	SkillEffect[SkillConst_default.AT_ROARING_CHARGE] = {
@@ -255990,7 +255989,7 @@ function calculateAnimation(layer, keyIndex, result) {
 	}
 	return true;
 }
-var D3DBLEND, _program$23, _buffer$17, _spriteOffset, _users, _cornerX, _cornerY, PIXEL_TO_WORLD_Z, anim, StrEffect;
+var D3DBLEND, _program$23, _buffer$17, _spriteOffset, _users, _cornerX, _cornerY, _modelView, AIM_PIVOT_X, AIM_PIVOT_Y, PIXEL_TO_WORLD_Z, anim, StrEffect;
 var init_StrEffect = __esmMin((() => {
 	init_StrEffect$2();
 	init_StrEffect$1();
@@ -256003,6 +256002,9 @@ var init_StrEffect = __esmMin((() => {
 	_users = /* @__PURE__ */ new Set();
 	_cornerX = /* @__PURE__ */ new Float32Array(4);
 	_cornerY = /* @__PURE__ */ new Float32Array(4);
+	_modelView = null;
+	AIM_PIVOT_X = 320;
+	AIM_PIVOT_Y = 240;
 	PIXEL_TO_WORLD_Z = 1 / 5;
 	anim = {
 		frame: 0,
@@ -256090,6 +256092,7 @@ var init_StrEffect = __esmMin((() => {
 			}
 			const strFile = Client.loadFile(this.filename, null, null, { texturePath: this.texturePath });
 			if (strFile === null) return;
+			this.aimAngle = this.getAimAngle();
 			keyIndex = (tick - this.startTick) / 1e3 * strFile.fps;
 			if (this.persistent && strFile && strFile.maxKey) keyIndex = keyIndex % strFile.maxKey;
 			if (!this._lastValidAnim) this._lastValidAnim = {};
@@ -256114,6 +256117,29 @@ var init_StrEffect = __esmMin((() => {
 				this._lastValidAnim = {};
 			}
 			if (keyIndex >= strFile.maxKey) this.needCleanUp = true;
+		}
+		/**
+		* How far to turn an effect aimed between two entities, so it lines up
+		* with them on screen.
+		*
+		* `facing` is where the other entity sits in the file, in degrees (0 =
+		* right, 180 = left): the target for an effect on the caster, the caster
+		* for one on the target.
+		*
+		* @return {number} counter-clockwise turn in degrees, 0 when not aimed
+		*/
+		getAimAngle() {
+			const effect = this._Params?.effect;
+			const target = this._Params?.Inst?.otherPosition;
+			if (!effect?.rotateToTarget || !target || !this.position || !_modelView) return 0;
+			const x = target[0] - this.position[0];
+			const y = -(target[2] - this.position[2]);
+			const z = target[1] - this.position[1];
+			const m = _modelView;
+			const viewX = m[0] * x + m[4] * y + m[8] * z;
+			const viewY = m[1] * x + m[5] * y + m[9] * z;
+			if (!viewX && !viewY) return 0;
+			return Math.atan2(viewY, viewX) * 180 / Math.PI - (effect.facing || 0);
 		}
 		/**
 		* Setup geometries, send data to GPU
@@ -256141,6 +256167,14 @@ var init_StrEffect = __esmMin((() => {
 				_spriteOffset[0] = animat.pos[0] - 320 + (this.xOffset || 0) * PIXEL_TO_WORLD_Z * 35 * sizeScale;
 				_spriteOffset[1] = animat.pos[1] - 320 - (this.yOffset || 0) * PIXEL_TO_WORLD_Z * 35 * sizeScale;
 				verticalBase = 0;
+			} else if (this.aimAngle) {
+				const rad = this.aimAngle / 180 * Math.PI;
+				const cos = Math.cos(rad);
+				const sin = Math.sin(rad);
+				const x = animat.pos[0] - AIM_PIVOT_X;
+				const y = AIM_PIVOT_Y - animat.pos[1];
+				_spriteOffset[0] = x * cos - y * sin;
+				_spriteOffset[1] = -80 - (x * sin + y * cos);
 			} else {
 				_spriteOffset[0] = animat.pos[0] - 320;
 				_spriteOffset[1] = animat.pos[1] - 320;
@@ -256149,10 +256183,14 @@ var init_StrEffect = __esmMin((() => {
 			gl.uniform2fv(uniform.uSpriteOffset, _spriteOffset);
 			gl.uniform1f(uniform.uVerticalBase, verticalBase);
 			gl.uniform3fv(uniform.uSpritePosition, this.position);
-			gl.uniform1f(uniform.uSpriteAngle, animat.angle);
+			gl.uniform1f(uniform.uSpriteAngle, animat.angle - (this.aimAngle || 0));
 			gl.blendFunc(D3DBLEND[animat.srcalpha], D3DBLEND[animat.destalpha]);
 			gl.bindTexture(gl.TEXTURE_2D, material);
-			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+			if (this.aimAngle) {
+				gl.disable(gl.DEPTH_TEST);
+				gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+				gl.enable(gl.DEPTH_TEST);
+			} else gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 		}
 		/**
 		* Initialize StrEffect
@@ -256221,6 +256259,7 @@ var init_StrEffect = __esmMin((() => {
 		static beforeRender(gl, modelView, projection, fog, tick) {
 			const uniform = _program$23.uniform;
 			const attribute = _program$23.attribute;
+			_modelView = modelView;
 			gl.depthMask(false);
 			gl.useProgram(_program$23);
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer$17);
@@ -302475,13 +302514,17 @@ var init_EffectTable = __esmMin((() => {
 			file: "druid/dr_shooting_feather/shooting_feather/shooting_feather",
 			texturePath: "druid/dr_shooting_feather/shooting_feather/",
 			min: "druid/dr_shooting_feather/shooting_feather/min_shooting_feather",
-			wav: "effect/druid/dr_shooting_feather"
+			wav: "effect/druid/dr_shooting_feather",
+			rotateToTarget: true,
+			facing: 0
 		}],
 		ef_druid_shooting_feather_hit: [{
 			type: "STR",
 			file: "druid/dr_shooting_feather/shooting_feather_attack/shooting_feather_attack",
 			texturePath: "druid/dr_shooting_feather/shooting_feather_attack/",
-			min: "druid/dr_shooting_feather/shooting_feather_attack/min_shooting_feather_attack"
+			min: "druid/dr_shooting_feather/shooting_feather_attack/min_shooting_feather_attack",
+			rotateToTarget: true,
+			facing: 180
 		}],
 		ef_druid_flicking_tonado: [{
 			type: "STR",
@@ -302501,7 +302544,9 @@ var init_EffectTable = __esmMin((() => {
 			file: "druid/dr_low_flight/low_flight_horizon/low_flight_horizon",
 			texturePath: "druid/dr_low_flight/low_flight_horizon/",
 			min: "druid/dr_low_flight/low_flight_horizon/min_low_flight_horizon",
-			wav: "effect/druid/dr_low_flight"
+			wav: "effect/druid/dr_low_flight",
+			rotateToTarget: true,
+			facing: 0
 		}, {
 			type: "STR",
 			file: "druid/dr_low_flight/low_flight_bottom/low_flight_bottom",
@@ -302534,7 +302579,9 @@ var init_EffectTable = __esmMin((() => {
 			file: "druid/dr_cutting_wind/cutting_wind/cutting_wind",
 			texturePath: "druid/dr_cutting_wind/cutting_wind/",
 			min: "druid/dr_cutting_wind/cutting_wind/min_cutting_wind",
-			wav: "effect/druid/dr_cutting_wind"
+			wav: "effect/druid/dr_cutting_wind",
+			rotateToTarget: true,
+			facing: 180
 		}],
 		ef_druid_cutting_wind_hit: [{
 			type: "STR",
@@ -302632,7 +302679,9 @@ var init_EffectTable = __esmMin((() => {
 			file: "druid/kr_sharpen_gust/sharpen_gust/sharpen_gust",
 			texturePath: "druid/kr_sharpen_gust/sharpen_gust/",
 			min: "druid/kr_sharpen_gust/sharpen_gust/min_sharpen_gust",
-			wav: "effect/druid/kr_sharpen_gust"
+			wav: "effect/druid/kr_sharpen_gust",
+			rotateToTarget: true,
+			facing: 0
 		}, {
 			type: "STR",
 			file: "druid/kr_sharpen_gust/sharpen_gust_bottom/sharpen_gust_bottom",
@@ -302922,21 +302971,27 @@ var init_EffectTable = __esmMin((() => {
 			file: "druid/at_pinion_shot/pinion_shot/pinion_shot",
 			texturePath: "druid/at_pinion_shot/pinion_shot/",
 			min: "druid/at_pinion_shot/pinion_shot/min_pinion_shot",
-			wav: "effect/druid/at_pinion_shot"
+			wav: "effect/druid/at_pinion_shot",
+			rotateToTarget: true,
+			facing: 0
 		}],
 		ef_druid_quill_spear: [{
 			type: "STR",
 			file: "druid/at_quill_spear/quill_spear_3x7/quill_spear_3x7",
 			texturePath: "druid/at_quill_spear/quill_spear_3x7/",
 			min: "druid/at_quill_spear/quill_spear_3x7/min_quill_spear_3x7",
-			wav: "effect/druid/at_quill_spear"
+			wav: "effect/druid/at_quill_spear",
+			rotateToTarget: true,
+			facing: 0
 		}],
 		ef_druid_quill_spear_s: [{
 			type: "STR",
 			file: "druid/at_quill_spear/quill_spear_5x7/quill_spear_5x7",
 			texturePath: "druid/at_quill_spear/quill_spear_5x7/",
 			min: "druid/at_quill_spear/quill_spear_5x7/min_quill_spear_5x7",
-			wav: "effect/druid/at_quill_spear"
+			wav: "effect/druid/at_quill_spear",
+			rotateToTarget: true,
+			facing: 0
 		}],
 		ef_druid_tempest_flap: [{
 			type: "STR",
@@ -303057,14 +303112,18 @@ var init_EffectTable = __esmMin((() => {
 			file: "druid/at_roaring_piercer/roaring_piercer_g/roaring_piercer_g",
 			texturePath: "druid/at_roaring_piercer/roaring_piercer_g/",
 			min: "druid/at_roaring_piercer/roaring_piercer_g/min_roaring_piercer_g",
-			wav: "effect/druid/at_roaring_piercer_g"
+			wav: "effect/druid/at_roaring_piercer_g",
+			rotateToTarget: true,
+			facing: 180
 		}],
 		ef_druid_roaring_piercer_y: [{
 			type: "STR",
 			file: "druid/at_roaring_piercer/roaring_piercer_y/roaring_piercer_y",
 			texturePath: "druid/at_roaring_piercer/roaring_piercer_y/",
 			min: "druid/at_roaring_piercer/roaring_piercer_y/min_roaring_piercer_y",
-			wav: "effect/druid/at_roaring_piercer_y"
+			wav: "effect/druid/at_roaring_piercer_y",
+			rotateToTarget: true,
+			facing: 180
 		}],
 		ef_druid_roaring_charge: [{
 			type: "STR",
@@ -322942,6 +323001,27 @@ function loadBSONFile(filename, targetTable, onEnd) {
 	}, onEnd);
 }
 /**
+* Whether a skill's effects already draw this STR file.
+*
+* @param {object} skillEntry SkillEffect row, or undefined
+* @param {object} EffectTable
+* @param {string} file STR path without extension
+* @return {boolean}
+*/
+function skillPlaysFile(skillEntry, EffectTable, file) {
+	if (!skillEntry || !file) return false;
+	const wanted = file.toLowerCase();
+	for (const field in skillEntry) {
+		const value = skillEntry[field];
+		const names = Array.isArray(value) ? value : [value];
+		for (const name of names) {
+			const effects = typeof name === "string" ? EffectTable[name] : null;
+			if (Array.isArray(effects) && effects.some((effect) => (effect.file || "").toLowerCase() === wanted)) return true;
+		}
+	}
+	return false;
+}
+/**
 * Merge Ez2STREffect from BSON into EffectTable and SkillEffect
 */
 function mergeEz2Effects(EffectTable, SkillEffect) {
@@ -323038,7 +323118,7 @@ function mergeEz2Effects(EffectTable, SkillEffect) {
 			attachedEntity: true
 		}];
 		count++;
-		if (skillId) {
+		if (skillId && !skillPlaysFile(SkillEffect[skillId], EffectTable, EffectTable[effectName][0].file)) {
 			const skillEntry = SkillEffect[skillId] || (SkillEffect[skillId] = {});
 			const field = meta.field;
 			if (skillEntry[field]) {
