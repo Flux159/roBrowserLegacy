@@ -149430,8 +149430,11 @@ var init_StateIconMods = __esmMin((() => {
 	AFTER_MOD_NAMES = `
 if type(EFST_IDs) == "table" and type(__EFST_IDS_ORIGINAL) == "table" then
 	for k, v in pairs(EFST_IDs) do
-		if type(k) == "string" and type(v) == "number" and v >= 20000 and v <= 22999 and __EFST_IDS_ORIGINAL[k] == nil then
-			__EFST_IDS_ORIGINAL[k] = v
+		if type(k) == "string" and type(v) == "number" and v >= 20000 and v <= 22999 then
+			local ok, known = pcall(function() return __EFST_IDS_ORIGINAL[k] end)
+			if ok and known == nil then
+				rawset(__EFST_IDS_ORIGINAL, k, v)
+			end
 		end
 	end
 end
@@ -325181,6 +325184,7 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 				if (f.mod && f.stage === "efstids") await lua.doString(BEFORE_MOD_NAMES);
 				else if (f.mod) await lua.doString(BEFORE_MOD_ROWS);
 				lua.mountFile(f.name, buffer);
+				f.mounted = true;
 				if (f.mod) try {
 					await lua.doFile(f.name);
 				} catch (e) {
@@ -325207,7 +325211,7 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 		} catch (e) {
 			console.error("[loadStateIconInfo] Lua Error:", e);
 		} finally {
-			loadedBuffers.forEach((f) => lua.unmountFile(f.name));
+			loadedBuffers.forEach((f) => f.mounted && lua.unmountFile(f.name));
 			if (onEnd) onEnd();
 		}
 	}
