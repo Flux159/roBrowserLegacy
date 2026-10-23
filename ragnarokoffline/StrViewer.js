@@ -212325,12 +212325,21 @@ function render$17() {
 	if (Background._progress > -1) Background.setPercent(Background._progress);
 }
 /**
+* Length of each half of a transition. 0 reads as the default, so 1 ms is the
+* shortest a configuration can ask for: an instant transition.
+*
+* @returns {number} milliseconds
+*/
+function getTransitionDuration() {
+	return Configs.get("transitionDuration") ? Configs.get("transitionDuration") : 500;
+}
+/**
 * Play with the overlay
 *
 * @param {function} callback once the overlay hide the window
 */
 function transition(callback) {
-	const transitionDuration = Configs.get("transitionDuration") ? Configs.get("transitionDuration") : 500;
+	const transitionDuration = getTransitionDuration();
 	if (Background._overlayAnim) Background._overlayAnim.stop();
 	let duration = transitionDuration;
 	if (_overlay$2.parentNode) {
@@ -212554,6 +212563,10 @@ var init_Background = __esmMin((() => {
 		*/
 		static remove(callback) {
 			Background._imageId++;
+			if (!_container.parentNode && getTransitionDuration() <= 1) {
+				if (callback) callback();
+				return;
+			}
 			const removal = { zIndex: [_container.style.zIndex, _canvas.style.zIndex] };
 			Background._removal = removal;
 			_container.style.zIndex = "1008";
