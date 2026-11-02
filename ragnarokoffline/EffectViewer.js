@@ -251532,17 +251532,20 @@ function createQuest(config) {
 	* @param {number} huntID
 	*/
 	Quest.updateMissionHunt = function updateMissionHunt(hunt_info, questID, huntID) {
+		const countBefore = _questList[questID].hunt_list[huntID].huntCount;
 		if (hunt_info.huntIDCount) _questList[questID].hunt_list[huntID].huntIDCount = hunt_info.huntIDCount;
 		if (hunt_info.maxCount) _questList[questID].hunt_list[huntID].maxCount = hunt_info.maxCount;
 		if (hunt_info.huntCount) _questList[questID].hunt_list[huntID].huntCount = hunt_info.huntCount;
 		if (hunt_info.mobGID) _questList[questID].hunt_list[huntID].mobGID = hunt_info.mobGID;
-		const mob_name = _questList[questID].hunt_list[huntID].mobName;
-		const chat_quest_text = `Mission [${DB.getQuestInfo(questID).Title}], you killed [${mob_name}]. (${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount})`;
-		let self_msg;
-		if (_questList[questID].hunt_list[huntID].maxCount == _questList[questID].hunt_list[huntID].huntCount) self_msg = `${mob_name} [Completed]`;
-		else self_msg = `${mob_name} [${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount}]`;
-		ChatBox_default.addText(chat_quest_text, ChatBox_default.TYPE.ADMIN | ChatBox_default.TYPE.SELF, ChatBox_default.FILTER.QUEST);
-		if (SessionStorage_default.Entity) SessionStorage_default.Entity.dialog.set(self_msg, "yellow");
+		if (_questList[questID].hunt_list[huntID].huntCount !== countBefore) {
+			const mob_name = _questList[questID].hunt_list[huntID].mobName;
+			const chat_quest_text = `Mission [${DB.getQuestInfo(questID).Title}], you killed [${mob_name}]. (${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount})`;
+			let self_msg;
+			if (_questList[questID].hunt_list[huntID].maxCount == _questList[questID].hunt_list[huntID].huntCount) self_msg = `${mob_name} [Completed]`;
+			else self_msg = `${mob_name} [${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount}]`;
+			ChatBox_default.addText(chat_quest_text, ChatBox_default.TYPE.ADMIN | ChatBox_default.TYPE.SELF, ChatBox_default.FILTER.QUEST);
+			if (SessionStorage_default.Entity) SessionStorage_default.Entity.dialog.set(self_msg, "yellow");
+		}
 		if (questWindow) {
 			questWindow.ClearQuestList();
 			questWindow.setQuestList(_questList, _questNotShowList);
