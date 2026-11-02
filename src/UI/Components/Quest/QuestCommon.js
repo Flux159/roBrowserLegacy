@@ -322,6 +322,8 @@ export function createQuest(config) {
 	 * @param {number} huntID
 	 */
 	Quest.updateMissionHunt = function updateMissionHunt(hunt_info, questID, huntID) {
+		const countBefore = _questList[questID].hunt_list[huntID].huntCount;
+
 		if (hunt_info.huntIDCount) {
 			_questList[questID].hunt_list[huntID].huntIDCount = hunt_info.huntIDCount;
 		}
@@ -335,19 +337,25 @@ export function createQuest(config) {
 			_questList[questID].hunt_list[huntID].mobGID = hunt_info.mobGID;
 		}
 
-		const mob_name = _questList[questID].hunt_list[huntID].mobName;
-		const quest_info = DB.getQuestInfo(questID);
-		const chat_quest_text = `Mission [${quest_info.Title}], you killed [${mob_name}]. (${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount})`;
-		let self_msg;
-		if (_questList[questID].hunt_list[huntID].maxCount == _questList[questID].hunt_list[huntID].huntCount) {
-			self_msg = `${mob_name} [Completed]`;
-		} else {
-			self_msg = `${mob_name} [${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount}]`;
-		}
+		// The server sends every objective of the quest on each kill, not just
+		// the killed monster's. Only an objective whose count moved was killed:
+		// announcing the others put the last objective's text over the player's
+		// head on every kill ("Drainliar [Completed]" while hunting Zenorc).
+		if (_questList[questID].hunt_list[huntID].huntCount !== countBefore) {
+			const mob_name = _questList[questID].hunt_list[huntID].mobName;
+			const quest_info = DB.getQuestInfo(questID);
+			const chat_quest_text = `Mission [${quest_info.Title}], you killed [${mob_name}]. (${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount})`;
+			let self_msg;
+			if (_questList[questID].hunt_list[huntID].maxCount == _questList[questID].hunt_list[huntID].huntCount) {
+				self_msg = `${mob_name} [Completed]`;
+			} else {
+				self_msg = `${mob_name} [${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount}]`;
+			}
 
-		ChatBox.addText(chat_quest_text, ChatBox.TYPE.ADMIN | ChatBox.TYPE.SELF, ChatBox.FILTER.QUEST);
-		if (Session.Entity) {
-			Session.Entity.dialog.set(self_msg, 'yellow');
+			ChatBox.addText(chat_quest_text, ChatBox.TYPE.ADMIN | ChatBox.TYPE.SELF, ChatBox.FILTER.QUEST);
+			if (Session.Entity) {
+				Session.Entity.dialog.set(self_msg, 'yellow');
+			}
 		}
 		if (questWindow) {
 			questWindow.ClearQuestList();
