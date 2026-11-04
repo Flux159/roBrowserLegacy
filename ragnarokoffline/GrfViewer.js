@@ -286240,8 +286240,29 @@ var init_EffectTable = __esmMin((() => {
 			}
 		}],
 		45: [{
-			type: "FUNC",
-			attachedEntity: true
+			type: "3D",
+			file: "effect/pok3.tga",
+			attachedEntity: true,
+			blendMode: 2,
+			alphaMax: .7,
+			duration: 1800,
+			duplicate: 48,
+			timeBetweenDupli: 40,
+			fadeIn: true,
+			fadeOut: true,
+			sparkling: true,
+			sparkNumber: 2,
+			size: 9,
+			sizeRand: 4,
+			posxStartRand: 12,
+			posyStartRand: 12,
+			posxEndRand: 12,
+			posyEndRand: 12,
+			poszStartRand: 1,
+			poszStartRandMiddle: 1,
+			poszEndRand: 1,
+			poszEndRandMiddle: 2,
+			zIndex: 1
 		}],
 		47: [{
 			type: "3D",
