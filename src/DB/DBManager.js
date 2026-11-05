@@ -4472,6 +4472,27 @@ function loadTable(filename, separator, size, callback, onEnd, useCharPage = fal
 }
 
 /**
+ * Whether a CSV table is the Base64 kind newer clients ship (kRO's
+ * msgstringtable.csv): `<base64 key>,<base64 value>` on every line. Decided by
+ * its first entry. The end of the file says nothing: a value whose length is a
+ * multiple of three has no `=` padding, so a table that happened to end on one
+ * was read as tab-separated, and not one line of it loaded.
+ *
+ * @param {string} text - the file as a binary string
+ * @return {boolean}
+ */
+function isBase64CSV(text) {
+	for (const raw of text.split(/\r?\n/)) {
+		const line = raw.trim();
+		if (!line || line.startsWith('//')) {
+			continue;
+		}
+		return /^[A-Za-z0-9+/]+={0,2},[A-Za-z0-9+/]*={0,2}$/.test(line);
+	}
+	return false;
+}
+
+/**
  * Load CSV table with Base64-encoded columns
  * Can pick which columns to use for key/value
  * @param {string} filename - path to CSV
@@ -4488,7 +4509,6 @@ function loadCSV(filename, targetTable, keyIndex, valueIndex, onEnd) {
 
 			const bytes = data instanceof ArrayBuffer ? new Uint8Array(data) : data;
 			let text = '';
-			let isBase64 = true;
 
 			// Convert buffer to a raw "binary string".
 			// This prevents atob() from throwing "outside latin1 range" errors.
@@ -4497,9 +4517,9 @@ function loadCSV(filename, targetTable, keyIndex, valueIndex, onEnd) {
 			}
 
 			// Check if the file is Base64 encoded
-			if (!text.trimEnd().endsWith('=')) {
+			const isBase64 = isBase64CSV(text);
+			if (!isBase64) {
 				text = TextEncoding.decode(bytes, 'utf-8');
-				isBase64 = false;
 			}
 
 			// Split lines
