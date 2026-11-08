@@ -1004,7 +1004,7 @@ export default {
 		{
 			//EF_GLASSWALL	Blue Box
 			type: 'STR',
-			file: 'effect/safetywall',
+			file: 'safetywall',
 			wav: 'effect/ef_glasswall',
 			attachedEntity: false
 		}
@@ -12689,8 +12689,10 @@ export default {
 	705: [
 		{
 			//EF_ITEM316	Client Error (mobile_ef01.str)
+			// kRO dropped mobile_ef01.str; mobile_ef02 is its closest surviving art.
 			type: 'STR',
 			file: 'mobile_ef01',
+			fallback: ['mobile_ef02'],
 			attachedEntity: true
 		}
 	],
