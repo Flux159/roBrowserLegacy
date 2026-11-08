@@ -67,16 +67,17 @@ it('floats formatted status descriptions without focusing and dismisses them whe
 	expect(tooltip.style.display).toBe('none');
 });
 
-it('toggles trait stats once from either the arrow or its label', () => {
+it('starts with trait stats collapsed and toggles once from either the arrow or its label', () => {
 	document.body.innerHTML = '';
 	const component = createWinStats({ name: 'WinStatsV2', htmlText, cssText: '', hasTraits: true });
 	component.init();
 	const root = component.getRoot();
 	const panel = root.querySelector('.traits_component');
-	root.querySelector('.trait_text').click();
 	expect(panel.style.display).toBe('none');
 	root.querySelector('.view_traits').click();
 	expect(panel.style.display).toBe('');
 	root.querySelector('.trait_text').click();
 	expect(panel.style.display).toBe('none');
+	root.querySelector('.view_traits').click();
+	expect(panel.style.display).toBe('');
 });
