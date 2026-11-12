@@ -1219,6 +1219,17 @@ export function createPartyFriends(config) {
 	};
 
 	/**
+	 * The party members as the party packets left them (AID, characterName,
+	 * mapName, state 0 = online, class_, isDead, life), self included.
+	 * A copy: the gamepad support radial reads it every frame.
+	 *
+	 * @return {Array<object>}
+	 */
+	Component.getPartyMembers = function getPartyMembers() {
+		return _party.slice();
+	};
+
+	/**
 	 * Check if character is a group member
 	 *
 	 * @param {string} character name
@@ -1343,6 +1354,13 @@ export function createPartyFriends(config) {
 
 					ghostInner.style.width = `${node.offsetWidth}px`;
 					ghostInner.style.height = `${node.offsetHeight}px`;
+
+					// As large as the member it drags (UI/UIScale.js)
+					const scale = Component.scale;
+					if (scale !== 1) {
+						ghostInner.style.scale = String(scale);
+						ghostInner.style.transformOrigin = '0 0';
+					}
 				}
 			}
 
@@ -1616,8 +1634,10 @@ export function createPartyFriends(config) {
 			const extraX = -20;
 			const extraY = 25 + 21;
 
-			let w = Math.floor((Mouse.screen.x - left - extraX) / 20);
-			let h = Math.floor((Mouse.screen.y - top - extraY) / 20);
+			// Screen distance to window distance (UI/UIScale.js)
+			const scale = Component.scale;
+			let w = Math.floor(((Mouse.screen.x - left) / scale - extraX) / 20);
+			let h = Math.floor(((Mouse.screen.y - top) / scale - extraY) / 20);
 
 			// Maximum and minimum window size
 			w = Math.min(Math.max(w, 12), 13);

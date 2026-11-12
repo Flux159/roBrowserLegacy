@@ -111,7 +111,7 @@ export function createQuest(config) {
 
 			const activeList = root.querySelector('#active-quest-list');
 			if (activeList) {
-				activeList.style.display = '';
+				activeList.style.display = 'block';
 			}
 
 			const toggleBtn = root.querySelector('.toggle-quest-list');
@@ -131,7 +131,7 @@ export function createQuest(config) {
 
 			const activeList = root.querySelector('#active-quest-list');
 			if (activeList) {
-				activeList.style.display = '';
+				activeList.style.display = 'block';
 			}
 
 			this.draggable('.titlebar');
@@ -183,7 +183,7 @@ export function createQuest(config) {
 				}
 			});
 
-			root.querySelector('#active-quest-list').style.display = '';
+			root.querySelector('#active-quest-list').style.display = 'block';
 			root.querySelector('#inactive-quest-list').style.display = 'none';
 			root.querySelector('#all-quest-list').style.display = 'none';
 
@@ -204,7 +204,7 @@ export function createQuest(config) {
 			if (renewLayout) {
 				const activeList = root.querySelector('#active-quest-list');
 				if (activeList) {
-					activeList.style.display = '';
+					activeList.style.display = 'block';
 				}
 				const inactiveList = root.querySelector('#inactive-quest-list');
 				if (inactiveList) {
@@ -322,6 +322,8 @@ export function createQuest(config) {
 	 * @param {number} huntID
 	 */
 	Quest.updateMissionHunt = function updateMissionHunt(hunt_info, questID, huntID) {
+		const countBefore = _questList[questID].hunt_list[huntID].huntCount;
+
 		if (hunt_info.huntIDCount) {
 			_questList[questID].hunt_list[huntID].huntIDCount = hunt_info.huntIDCount;
 		}
@@ -335,19 +337,25 @@ export function createQuest(config) {
 			_questList[questID].hunt_list[huntID].mobGID = hunt_info.mobGID;
 		}
 
-		const mob_name = _questList[questID].hunt_list[huntID].mobName;
-		const quest_info = DB.getQuestInfo(questID);
-		const chat_quest_text = `Mission [${quest_info.Title}], you killed [${mob_name}]. (${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount})`;
-		let self_msg;
-		if (_questList[questID].hunt_list[huntID].maxCount == _questList[questID].hunt_list[huntID].huntCount) {
-			self_msg = `${mob_name} [Completed]`;
-		} else {
-			self_msg = `${mob_name} [${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount}]`;
-		}
+		// The server sends every objective of the quest on each kill, not just
+		// the killed monster's. Only an objective whose count moved was killed:
+		// announcing the others put the last objective's text over the player's
+		// head on every kill ("Drainliar [Completed]" while hunting Zenorc).
+		if (_questList[questID].hunt_list[huntID].huntCount !== countBefore) {
+			const mob_name = _questList[questID].hunt_list[huntID].mobName;
+			const quest_info = DB.getQuestInfo(questID);
+			const chat_quest_text = `Mission [${quest_info.Title}], you killed [${mob_name}]. (${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount})`;
+			let self_msg;
+			if (_questList[questID].hunt_list[huntID].maxCount == _questList[questID].hunt_list[huntID].huntCount) {
+				self_msg = `${mob_name} [Completed]`;
+			} else {
+				self_msg = `${mob_name} [${_questList[questID].hunt_list[huntID].huntCount}/${_questList[questID].hunt_list[huntID].maxCount}]`;
+			}
 
-		ChatBox.addText(chat_quest_text, ChatBox.TYPE.ADMIN | ChatBox.TYPE.SELF, ChatBox.FILTER.QUEST);
-		if (Session.Entity) {
-			Session.Entity.dialog.set(self_msg, 'yellow');
+			ChatBox.addText(chat_quest_text, ChatBox.TYPE.ADMIN | ChatBox.TYPE.SELF, ChatBox.FILTER.QUEST);
+			if (Session.Entity) {
+				Session.Entity.dialog.set(self_msg, 'yellow');
+			}
 		}
 		if (questWindow) {
 			questWindow.ClearQuestList();
@@ -597,19 +605,19 @@ export function createQuest(config) {
 			switch (_active_menu) {
 				case 'feature':
 					background_image = 'bg_quest2';
-					root.querySelector('#feature-quest-list').style.display = '';
+					root.querySelector('#feature-quest-list').style.display = 'block';
 					break;
 				case 'inactive':
 					background_image = 'bg_quest3';
-					root.querySelector('#inactive-quest-list').style.display = '';
+					root.querySelector('#inactive-quest-list').style.display = 'block';
 					break;
 				case 'cooldown':
 					background_image = 'bg_quest4';
-					root.querySelector('#cooldown-quest-list').style.display = '';
+					root.querySelector('#cooldown-quest-list').style.display = 'block';
 					break;
 				default:
 					background_image = 'bg_quest1';
-					root.querySelector('#active-quest-list').style.display = '';
+					root.querySelector('#active-quest-list').style.display = 'block';
 			}
 
 			Client.loadFile(`${DB.INTERFACE_PATH}renew_questui/${background_image}.bmp`, data => {
@@ -627,15 +635,15 @@ export function createQuest(config) {
 			switch (_active_menu) {
 				case 'inactive':
 					background_image = 'tab_que_02';
-					root.querySelector('#inactive-quest-list').style.display = '';
+					root.querySelector('#inactive-quest-list').style.display = 'block';
 					break;
 				case 'all':
 					background_image = 'tab_que_03';
-					root.querySelector('#all-quest-list').style.display = '';
+					root.querySelector('#all-quest-list').style.display = 'block';
 					break;
 				default:
 					background_image = 'tab_que_01';
-					root.querySelector('#active-quest-list').style.display = '';
+					root.querySelector('#active-quest-list').style.display = 'block';
 			}
 
 			Client.loadFile(`${DB.INTERFACE_PATH}basic_interface/${background_image}.bmp`, data => {

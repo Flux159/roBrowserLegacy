@@ -23,6 +23,7 @@ import MapPreferences from 'Preferences/Map.js';
 import CameraPreferences from 'Preferences/Camera.js';
 import Renderer from 'Renderer/Renderer.js';
 import Configs from 'Core/Configs.js';
+import PerfProbe from 'Core/PerfProbe.js';
 import EffectConst from 'DB/Effects/EffectConst.js';
 import StatusState from 'DB/Status/StatusState.js';
 import EntityManager from 'Renderer/EntityManager.js';
@@ -444,6 +445,51 @@ const CommandStore = {
 		}
 	},
 
+	ex: {
+		description: 'Blocks whispers from <Character Name>, or lists the blocked characters',
+		callback: function (text) {
+			const matches = text.match(/^ex\s+(.*\S)/);
+			if (matches) {
+				requestWhisperSetting(matches[1], 0);
+				return;
+			}
+
+			const pkt = new PACKET.CZ.REQ_WHISPER_LIST();
+			Network.sendPacket(pkt);
+		}
+	},
+
+	in: {
+		description: 'Allows whispers from <Character Name>',
+		callback: function (text) {
+			const matches = text.match(/^in\s+(.*\S)/);
+			if (matches) {
+				requestWhisperSetting(matches[1], 1);
+				return;
+			}
+
+			this.addText(DB.getMessage(44), this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+		}
+	},
+
+	exall: {
+		description: 'Blocks whispers from everyone',
+		callback: function () {
+			const pkt = new PACKET.CZ.SETTING_WHISPER_STATE();
+			pkt.type = 0;
+			Network.sendPacket(pkt);
+		}
+	},
+
+	inall: {
+		description: 'Allows whispers from everyone',
+		callback: function () {
+			const pkt = new PACKET.CZ.SETTING_WHISPER_STATE();
+			pkt.type = 1;
+			Network.sendPacket(pkt);
+		}
+	},
+
 	guild: {
 		description: "Creates a guild named <Guild Name>. This requires an Emperium to be in the creator's inventory",
 		callback: function (text) {
@@ -530,10 +576,10 @@ const CommandStore = {
 			Session.homCustomAI = !Session.homCustomAI;
 			if (Session.homCustomAI) {
 				HomunInformations.resetAI();
-				this.addText(DB.getMessage(1024), this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+				this.addText(DB.getMessage(1023), this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
 			} else {
 				HomunInformations.resetAI();
-				this.addText(DB.getMessage(1023), this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+				this.addText(DB.getMessage(1024), this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
 			}
 			return;
 		}
@@ -985,6 +1031,61 @@ if (Configs.get('development')) {
 	};
 }
 
+// Performance probe readout, when the configuration switches the probe on (Core/PerfProbe.js)
+if (Configs.get('perfProbe')) {
+	CommandStore.perf = {
+		description: 'Performance probe. Usage: /perf [reset|slow|overlay on|off]',
+		callback: function (text) {
+			const args = text.trim().split(/\s+/).slice(1);
+			const mode = (args[0] || '').toLowerCase();
+
+			if (!PerfProbe.enabled) {
+				this.addText('The performance probe is not running.', this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+				return;
+			}
+
+			if (!mode || mode === 'stats') {
+				const stats = PerfProbe.stats();
+				console.log('[PerfProbe] stats', stats);
+				this.addText(
+					`${stats.fps} fps over ${stats.drawingSeconds} s of drawing: frame p50 ${stats.frameMs.p50} / p99 ${stats.frameMs.p99} ms, ` +
+						`work ${stats.workMs.avg} ms, ${stats.drawCalls.avg} draws, ${stats.hitches} hitches`,
+					this.TYPE.INFO,
+					this.FILTER.PUBLIC_LOG
+				);
+				return;
+			}
+
+			if (mode === 'reset') {
+				PerfProbe.reset();
+				this.addText('Performance probe reset.', this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+				return;
+			}
+
+			if (mode === 'slow') {
+				const slow = PerfProbe.slowFrames();
+				const total = PerfProbe.stats().slowFrames;
+				console.table(slow);
+				this.addText(
+					total > slow.length
+						? `${total} frames over 33 ms since the last reset; the first ${slow.length} are listed.`
+						: `${slow.length} frames over 33 ms since the last reset.`,
+					this.TYPE.INFO,
+					this.FILTER.PUBLIC_LOG
+				);
+				return;
+			}
+
+			if (mode === 'overlay') {
+				PerfProbe.overlay((args[1] || 'on').toLowerCase() !== 'off');
+				return;
+			}
+
+			this.addText('Usage: /perf [reset|slow|overlay on|off]', this.TYPE.INFO, this.FILTER.PUBLIC_LOG);
+		}
+	};
+}
+
 /**
  * Load aliases
  */
@@ -999,6 +1100,22 @@ function loadAliases() {
 }
 
 loadAliases();
+
+/**
+ * Block or allow whispers from a character
+ *
+ * @param {string} name
+ * @param {number} type - 0 block, 1 allow
+ */
+function requestWhisperSetting(name, type) {
+	const pkt = new PACKET.CZ.SETTING_WHISPER_PC();
+	pkt.name = name;
+	pkt.type = type;
+	Network.sendPacket(pkt);
+
+	// The reply does not carry the name, and replies come back in request order
+	ChatBox.PrivateMessageStorage.blockNicks.push(name);
+}
 
 /**
  * Process command

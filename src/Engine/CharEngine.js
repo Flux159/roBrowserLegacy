@@ -20,6 +20,7 @@ import Network from 'Network/NetworkManager.js';
 import PACKETVER from 'Network/PacketVerManager.js';
 import PACKET from 'Network/PacketStructure.js';
 import UIManager from 'UI/UIManager.js';
+import UIVersionManager from 'UI/UIVersionManager.js';
 import Background from 'UI/Background.js';
 import PincodeWindow from 'UI/Components/PincodeWindow/PincodeWindow.js';
 import InputBox from 'UI/Components/InputBox/InputBox.js';
@@ -39,6 +40,12 @@ let _server = null;
  * @type {number} where to create character ?
  */
 let _creationSlot = 0;
+
+/**
+ * @type {object|null} char-list entry the player was built from before the
+ * client database had loaded, to build it again once it has
+ */
+let _charBeforeDB = null;
 
 /**
  * @type {number} times attempted to provide pin code.
@@ -100,8 +107,7 @@ class CharEngine {
 		});
 
 		//Select UI version
-		CharSelect.selectUIVersion();
-		CharCreate.selectUIVersion();
+		UIVersionManager.selectAllChar();
 
 		// Hook packets
 		Network.hookPacket(PACKET.HC.ACCEPT_ENTER_NEO_UNION, onConnectionAccepted);
@@ -127,10 +133,15 @@ class CharEngine {
 
 	/**
 	 * Reload Char-Select
+	 *
+	 * @param {function} [onBlack] - run once the fade has covered the screen
 	 */
-	static reload() {
+	static reload(onBlack) {
 		Network.close();
 		Background.setLoginBackground(() => {
+			if (onBlack) {
+				onBlack();
+			}
 			UIManager.removeComponents();
 			CharEngine.init(_server);
 		});
@@ -149,10 +160,8 @@ function onExitRequest() {
  * @param {object} pkt - PACKET.HC.ACCEPT_ENTER_NEO_UNION_LIST or PACKET.HC.ACCEPT_ENTER_NEO_UNION_LIST2
  */
 function onCharacterListChunk(pkt) {
-	const ChSel = CharSelect.getUI();
-	if (!ChSel) return;
 	pkt.charInfo.forEach(charInfo => {
-		ChSel.addCharacter(charInfo);
+		CharSelect.addCharacter(charInfo);
 	});
 }
 
@@ -194,15 +203,14 @@ function onConnectionAccepted(pkt) {
 	UIManager.getComponent('WinLoading').remove();
 
 	// Initialize window
-	const ChSel = CharSelect.getUI();
-	ChSel.onExitRequest = onExitRequest;
-	ChSel.onConnectRequest = onConnectRequest;
-	ChSel.onCreateRequest = onCreateRequest;
-	ChSel.onDeleteRequest = onDeleteRequest;
-	ChSel.onDeleteReqDelay = onDeleteReqDelay;
-	ChSel.onCancelDeleteRequest = onCancelDeleteRequest;
-	ChSel.append();
-	ChSel.setInfo(pkt);
+	CharSelect.onExitRequest = onExitRequest;
+	CharSelect.onConnectRequest = onConnectRequest;
+	CharSelect.onCreateRequest = onCreateRequest;
+	CharSelect.onDeleteRequest = onDeleteRequest;
+	CharSelect.onDeleteReqDelay = onDeleteReqDelay;
+	CharSelect.onCancelDeleteRequest = onCancelDeleteRequest;
+	CharSelect.append();
+	CharSelect.setInfo(pkt);
 
 	/**
 	 * In PACKETVERs < 20180124 that support pincode auth, we're supposed to
@@ -298,7 +306,7 @@ function onMapUnavailable(pkt) {
 		'ok',
 		() => {
 			UIManager.getComponent('WinLoading').remove();
-			CharSelect.getUI().append();
+			CharSelect.append();
 		},
 		true
 	);
@@ -313,7 +321,7 @@ function onRequestCharDel(pkt) {
 	}
 
 	// Just pass the packet info
-	CharSelect.getUI().reqdeleteAnswer(pkt);
+	CharSelect.reqdeleteAnswer(pkt);
 }
 
 /**
@@ -489,7 +497,7 @@ function onDeleteAnswer(pkt) {
 		// Birthday deletion result
 		result = typeof pkt.Result === 'undefined' ? -1 : pkt.Result;
 	}
-	CharSelect.getUI().deleteAnswer(result);
+	CharSelect.deleteAnswer(result);
 }
 
 /**
@@ -498,17 +506,15 @@ function onDeleteAnswer(pkt) {
  * @param {number} index - slot where to create character
  */
 function onCreateRequest(index) {
-	const ChSel = CharSelect.getUI();
-	const ChCre = CharCreate.getUI();
 	_creationSlot = index;
-	ChSel.remove();
-	ChCre.setAccountSex(Session.Sex);
-	ChCre.onCharCreationRequest = onCharCreationRequest;
-	ChCre.onExitRequest = function () {
-		ChCre.remove();
-		ChSel.append();
+	CharSelect.remove();
+	CharCreate.setAccountSex(Session.Sex);
+	CharCreate.onCharCreationRequest = onCharCreationRequest;
+	CharCreate.onExitRequest = function () {
+		CharCreate.remove();
+		CharSelect.append();
 	};
-	ChCre.append();
+	CharCreate.append();
 }
 
 /**
@@ -560,10 +566,9 @@ function onCharCreationRequest(name, Str, Agi, Vit, Int, Dex, Luk, hair, color, 
  * @param {object} pkt - PACKET.HC.ACCEPT_MAKECHAR
  */
 function onCreationSuccess(pkt) {
-	CharCreate.getUI().remove();
-	const ChSel = CharSelect.getUI();
-	ChSel.addCharacter(pkt.charinfo);
-	ChSel.append();
+	CharCreate.remove();
+	CharSelect.addCharacter(pkt.charinfo);
+	CharSelect.append();
 }
 
 /**
@@ -713,11 +718,11 @@ function onPincodeCheckSuccess(pkt) {
 					UIManager.showMessageBox(DB.getMessage(1891), 'ok');
 				}
 				PincodeWindow.resetUI();
-				CharSelect.getUI().setUIEnabled(true);
+				CharSelect.setUIEnabled(true);
 			}
 			break;
 		case 1: // ask for pin
-			CharSelect.getUI().setUIEnabled(false);
+			CharSelect.setUIEnabled(false);
 			PincodeWindow.selectInput(0);
 			if (_pincodeAttempts < 3) {
 				PincodeWindow.clearPin();
@@ -729,7 +734,7 @@ function onPincodeCheckSuccess(pkt) {
 			break;
 		case 2: // create new pin
 		case 4: // create new pin ??
-			CharSelect.getUI().setUIEnabled(false);
+			CharSelect.setUIEnabled(false);
 			UIManager.showMessageBox(DB.getMessage(1900), 'ok');
 			PincodeWindow.selectInput(0);
 			PincodeWindow.setUserSeed(pkt.Seed);
@@ -737,7 +742,7 @@ function onPincodeCheckSuccess(pkt) {
 			PincodeWindow.append();
 			break;
 		case 3: // pin must be changed
-			CharSelect.getUI().setUIEnabled(false);
+			CharSelect.setUIEnabled(false);
 			if (_pincodeAttempts < 3) {
 				UIManager.showMessageBox(DB.getMessage(2345), 'ok');
 				PincodeWindow.setUserSeed(pkt.Seed);
@@ -785,15 +790,34 @@ function onConnectRequest(entity) {
 	// Play sound
 	Sound.play('\xB9\xF6\xC6\xB0\xBC\xD2\xB8\xAE.wav');
 
-	CharSelect.getUI().remove();
+	CharSelect.remove();
 	UIManager.getComponent('WinLoading').append();
 	// The char-select list holds plain packet structures, build the player from it.
 	// Done here (instead of on char-list reception) so that characters delivered by
 	// any char-list packet, and freshly created ones, all end up with a Player.
-	Session.Entity = new Player(entity);
+	Session.Entity = buildPlayer(entity);
+	_charBeforeDB = DB.isLoaded ? null : entity;
 	const pkt = new PACKET.CH.SELECT_CHAR();
 	pkt.CharNum = entity.CharNum;
 	Network.sendPacket(pkt);
+}
+
+/**
+ * The player of a char-list entry
+ *
+ * @param {object} entity - char-list entry
+ * @return {Player}
+ */
+function buildPlayer(entity) {
+	const player = new Player(entity);
+
+	// Entity.set() leaves out the body style (alternative outfit), and the map server
+	// only has it in the char list: it does not send it to the player again.
+	if (entity.body > 0) {
+		player.body = entity.body;
+	}
+
+	return player;
 }
 
 /**
@@ -822,6 +846,15 @@ function onReceiveMapInfo(pkt) {
 			DB.startedLazyInit = true;
 		}
 		retryCount++;
+		// Every five seconds, not every hundred milliseconds: this is a
+		// breadcrumb for a bug report, not a progress bar.
+		if (retryCount % 50 === 0) {
+			console.warn(
+				'waiting for the client database: ' + DB.index + ' of ' + DB.count +
+				' loaded after ' + (retryCount / 10) + 's. If this does not move, a ' +
+				'file the database asked for never came back.'
+			);
+		}
 		if (retryCount > 600) {
 			UIManager.showMessageBox('Failed loading databases, please restart the game', 'ok', () => {
 				CharEngine.reload();
@@ -835,6 +868,17 @@ function onReceiveMapInfo(pkt) {
 	}
 	DB.startedLazyInit = false;
 	retryCount = 0;
+
+	// On a cold start the player was built before the database loaded (it
+	// starts above), when only the built-in HatTable/RobeTable were there: a
+	// headgear or garment look newer than those was not found and dropped, and
+	// the map server does not send our own look again. Build it once more now
+	// that the client's accessory and robe tables are in.
+	if (_charBeforeDB) {
+		Session.Entity = buildPlayer(_charBeforeDB);
+		_charBeforeDB = null;
+	}
+
 	Session.GID = pkt.GID;
 	MapEngine.init(pkt.addr.ip, pkt.addr.port, pkt.mapName);
 }

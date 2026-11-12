@@ -27,7 +27,6 @@ import StatusConst from 'DB/Status/StatusState.js';
 import SpriteRenderer from 'Renderer/SpriteRenderer.js';
 import Ground from 'Renderer/Map/Ground.js';
 import Altitude from 'Renderer/Map/Altitude.js';
-import Water from 'Renderer/Map/Water.js';
 import Session from 'Engine/SessionStorage.js';
 import DB from 'DB/DBManager.js';
 import GraphicsSettings from 'Preferences/Graphics.js';
@@ -47,6 +46,41 @@ import GR2ModelRenderer from 'Renderer/GR2/GR2ModelRenderer.js';
 // stepSize ≈ 4.6 maps cell-units to the official internal move units.
 const WALK_STEP_SIZE = 4.6;
 const WALK_DIST_TO_MOTION = WALK_STEP_SIZE * 0.37 * 4 * 25; // ≈ 170.2
+
+// ---------------------------------------------------------------------------
+// Trail snapshot buffer pool
+//
+// Trail snapshots persist across frames but are recycled FIFO as they age out.
+// Recycling their numeric buffers avoids allocating a vec3 / Int32Array /
+// Float32Array every time a snapshot is captured — which can happen at up to
+// ~30ms intervals per entity under fast-movement conditions.
+// ---------------------------------------------------------------------------
+const _snapshotPool = [];
+
+function acquireSnapshotBuffers() {
+	const buf = _snapshotPool.pop();
+	if (buf) return buf;
+	return {
+		position: new Float32Array(3),
+		_position: new Int32Array(2),
+		color: new Float32Array(4)
+	};
+}
+
+function releaseSnapshotBuffers(snapshot) {
+	// Soft cap: avoids unbounded growth if many distinct trails run concurrently.
+	if (_snapshotPool.length < 64) {
+		_snapshotPool.push({
+			position: snapshot.position,
+			_position: snapshot._position,
+			color: snapshot.color
+		});
+	}
+}
+
+// Scratch buffers reused for the duration of a single renderSecondBody() call.
+const _scratchPosition = new Float32Array(3);
+const _scratchColor = new Float32Array(4);
 
 /**
  * Render an Entity
@@ -89,6 +123,10 @@ function render(modelView, projection) {
 	this.boundingRect.y1 = -Infinity;
 	this.boundingRect.x2 = -Infinity;
 	this.boundingRect.y2 = Infinity;
+
+	// What the attachments draw this frame, for renderWaterDepth.
+	this.waterDepthAttachments = this._waterDepthAttachments || (this._waterDepthAttachments = []);
+	this.waterDepthAttachments.length = 0;
 
 	// Render it only if visible
 	if (this.effectColor[3]) {
@@ -287,6 +325,10 @@ const calculateBoundingRect = (function calculateBoundingRectClosure() {
 	};
 })();
 
+function isLookingBack(direction) {
+	return direction > 2 && direction < 6;
+}
+
 /**
  * Render Entity
  */
@@ -337,9 +379,11 @@ const renderEntity = (function renderEntityClosure() {
 			SpriteRenderer.position[2] = Altitude.getCellHeight(this.position[0], this.position[1]) + 0.05;
 
 			// Keep shadow on ground: depth test on, depth write off, disabledepthcorrection
+			SpriteRenderer.shadowQueue = true;
 			SpriteRenderer.runWithDepth(true, false, false, function () {
 				renderElement(self, self.files.shadow, 'shadow', _position, false);
 			});
+			SpriteRenderer.shadowQueue = false;
 		}
 
 		SpriteRenderer.position.set(self.position);
@@ -390,6 +434,15 @@ const renderEntity = (function renderEntityClosure() {
 											: COMPENSATION) >
 								self.bodyHeight + HEAD_SIZE
 							) {
+								if (
+									(self.action === self.ACTION.ATTACK ||
+										self.action === self.ACTION.ATTACK1 ||
+										self.action === self.ACTION.ATTACK2 ||
+										self.action === self.ACTION.ATTACK3) &&
+									!lookingFront
+								) {
+									return -450;
+								}
 								if (self.action === self.ACTION.SIT) {
 									return lookingFront ? -450 : RIDING_STATUS ? 1 : -100;
 								}
@@ -410,7 +463,7 @@ const renderEntity = (function renderEntityClosure() {
 						});
 					}
 
-					if (!(direction > 2 && direction < 6)) {
+					if (!isLookingBack(direction)) {
 						// looking front
 						if (Session.Playing == true && self.hasCart == true) {
 							cartidx = DB.isSuperNovice(self._job) ? 0 : self.CartNum;
@@ -434,7 +487,7 @@ const renderEntity = (function renderEntityClosure() {
 					SpriteRenderer.zIndex = 150;
 					if (
 						RIDING_STATUS &&
-						!(direction > 2 && direction < 6) &&
+						!isLookingBack(direction) &&
 						(self.action === self.ACTION.SIT || self.action === self.ACTION.WALK)
 					) {
 						SpriteRenderer.zIndex *= 2;
@@ -484,7 +537,7 @@ const renderEntity = (function renderEntityClosure() {
 						renderElement(self, self.files.accessory, 'head', _position, false);
 					}
 
-					if (direction > 2 && direction < 6) {
+					if (isLookingBack(direction)) {
 						// looking back
 
 						// Draw Robe
@@ -557,27 +610,74 @@ const renderEntity = (function renderEntityClosure() {
  * sound or trail state is touched. Only set for the non-player body pass;
  * entity types that already write depth never get a frame.
  */
+const _attachmentPosition = new Int32Array(2);
+
 function renderWaterDepth() {
 	const frame = this.waterDepthFrame;
+	const attachments = this.waterDepthAttachments;
 
-	if (!frame || this.hideEntity || !this.effectColor[3]) {
+	if (this.hideEntity || !this.effectColor[3] || (!frame && !(attachments && attachments.length))) {
 		return;
 	}
 
-	if (!Water.isSubmerged(this.position[0], this.position[1])) {
-		return;
-	}
-
+	// Every non-player sprite, not only those standing in water: none of them
+	// writes depth in the colour pass, so without this the water drawn next
+	// paints over any part of a sprite that has water *behind* it -- an NPC at
+	// a cliff edge above the sea (the captain on int_land) lost his head and
+	// shoulders to it. Transparent pixels are discarded, so only the
+	// silhouette writes depth; for a submerged sprite that is still what hides
+	// the part below the surface.
 	const self = this;
-	SpriteRenderer.position.set(this.position);
-	SpriteRenderer.position[2] = SpriteRenderer.position[2] + 0.2;
-	SpriteRenderer.zIndex = 150;
-	SpriteRenderer.runWithDepth(true, true, false, function () {
-		for (let i = 0, count = frame.layers.length; i < count; ++i) {
-			self.renderLayer(frame.layers[i], frame.spr, frame.pal, frame.size, frame.position, 'body', false);
+	// renderLayer grows boundingRect for every 'body' layer, in sprite-local
+	// units. By now renderGUI has already turned this frame's rect into the
+	// screen box picking tests against; redrawing the body here would mix
+	// local points back into it, and a monster standing in water could no
+	// longer be clicked. The depth pass must not change picking: keep the rect.
+	const rect = this.boundingRect;
+	const x1 = rect.x1,
+		y1 = rect.y1,
+		x2 = rect.x2,
+		y2 = rect.y2;
+	if (frame) {
+		SpriteRenderer.position.set(this.position);
+		SpriteRenderer.position[2] = SpriteRenderer.position[2] + 0.2;
+		SpriteRenderer.zIndex = 150;
+		SpriteRenderer.runWithDepth(true, true, false, function () {
+			for (let i = 0, count = frame.layers.length; i < count; ++i) {
+				self.renderLayer(frame.layers[i], frame.spr, frame.pal, frame.size, frame.position, 'body', false);
+			}
+		});
+	}
+
+	// Emotions and quest icons over the head, and anything else attached: the
+	// same problem as the body, for players too, whose bodies do write depth
+	// but whose attachments do not.
+	if (attachments && attachments.length) {
+		const alpha = this.effectColor[3];
+		for (let a = 0; a < attachments.length; ++a) {
+			const item = attachments[a];
+			SpriteRenderer.position[0] = item.position[0];
+			SpriteRenderer.position[1] = item.position[1];
+			SpriteRenderer.position[2] = item.position[2];
+			SpriteRenderer.depth = item.depth;
+			SpriteRenderer.zIndex = item.zIndex;
+			this.effectColor[3] = item.opacity;
+			_attachmentPosition[0] = item.x;
+			_attachmentPosition[1] = item.y;
+			SpriteRenderer.runWithDepth(true, true, false, function () {
+				for (let i = 0, count = item.layers.length; i < count; ++i) {
+					self.renderLayer(item.layers[i], item.spr, item.spr, 1.0, _attachmentPosition, false);
+				}
+			});
 		}
-	});
+		this.effectColor[3] = alpha;
+		SpriteRenderer.depth = 0.0;
+	}
 	SpriteRenderer.zIndex = 1;
+	rect.x1 = x1;
+	rect.y1 = y1;
+	rect.x2 = x2;
+	rect.y2 = y2;
 }
 
 /**
@@ -589,15 +689,14 @@ function renderWaterDepth() {
  * @param {object} files
  * @param {string} type
  * @param {number[]} _position
- * @param {object} options
+ * @param {boolean} enableHalo - halo type Assumptio (BL_DOUBLE_BODY)
+ * @param {boolean} enableTrail - trail behind the character (EF_MAKEBLUR)
+ * @param {number} blurType - 1 (standard) EF_MAKEBLUR , 3 (spaced) - EF_MAKEBLUR3, 4 (once), 5 (attack only) - EF_MAKEBLUR5
  */
-function renderSecondBody(entity, layers, spr, pal, files, type, _position, options = {}) {
-	// options:
-	// - options.enableHalo: boolean  -> halo type Assumptio (BL_DOUBLE_BODY)
-	// - options.enableTrail: boolean -> trail behind the character (EF_MAKEBLUR)
-	// - options.trailLength: number  -> number of ghosts to keep
-	// - options.blurType: number     -> 1 (standard) EF_MAKEBLUR , 3 (spaced) - EF_MAKEBLUR3, 4 (once), 5 (attack only) - EF_MAKEBLUR5
-	const { enableHalo = false, enableTrail = false, trailLength = 5, blurType = 1 } = options;
+function renderSecondBody(entity, layers, spr, pal, files, type, _position, enableHalo, enableTrail, blurType) {
+	// Positional arguments, not an options object: this runs for every layer of
+	// every entity each frame, and the object was garbage each time.
+	const trailLength = 5; // number of ghosts to keep
 
 	if (!enableHalo && !enableTrail) {
 		return;
@@ -690,26 +789,32 @@ function renderSecondBody(entity, layers, spr, pal, files, type, _position, opti
 		}
 
 		if (shouldCapture) {
+			const buffers = acquireSnapshotBuffers();
+			buffers.position.set(entity.position);
+			buffers._position.set(_position);
+			buffers.color.set(entity.effectColor);
+
 			trail.snapshots.unshift({
-				position: glMatrix.vec3.clone(entity.position),
+				position: buffers.position,
+				_position: buffers._position,
+				color: buffers.color,
 				tick: now,
-				layers: layers, // Reference current animation frames
+				layers: layers,
 				spr: spr,
-				pal: pal,
-				_position: new Int32Array(_position),
-				color: [...entity.effectColor]
+				pal: pal
 			});
 			trail.lastTick = now;
 
 			if (trail.snapshots.length > maxLen) {
-				trail.snapshots.pop();
+				const dropped = trail.snapshots.pop();
+				releaseSnapshotBuffers(dropped);
 			}
 		}
 
 		if (trail.snapshots.length) {
-			const originalPos = glMatrix.vec3.clone(SpriteRenderer.position);
+			_scratchPosition.set(SpriteRenderer.position);
 			const originalZ = SpriteRenderer.zIndex;
-			const originalColor = new Float32Array(entity.effectColor);
+			_scratchColor.set(entity.effectColor);
 
 			SpriteRenderer.runWithDepth(true, false, false, function () {
 				const duration = blurType === 4 || blurType === 3 ? 800 : 400; // Static image lasts longer
@@ -748,9 +853,9 @@ function renderSecondBody(entity, layers, spr, pal, files, type, _position, opti
 			});
 
 			// Restore global/entity state
-			SpriteRenderer.position.set(originalPos);
+			SpriteRenderer.position.set(_scratchPosition);
 			SpriteRenderer.zIndex = originalZ;
-			entity.effectColor.set(originalColor);
+			entity.effectColor.set(_scratchColor);
 		}
 	}
 }
@@ -861,7 +966,8 @@ const renderElement = (function renderElementClosure() {
 			(type !== 'shadow' && entity.getOpt3(StatusConst.Status.BERSERK)) ||
 			entity.getOpt3(StatusConst.Status.MARIONETTE);
 
-		if (hasBerserkOrMarionette) {
+		// BodyGlow marks a body drawn the same way (EF_WHITEBODY).
+		if (hasBerserkOrMarionette || (type !== 'shadow' && entity._additiveBody > 0)) {
 			isBlendModeOne = true;
 		}
 
@@ -874,10 +980,16 @@ const renderElement = (function renderElementClosure() {
 		const isEXPLOSIONSPIRITS = entity.getOpt3(StatusConst.Status.EXPLOSIONSPIRITS);
 		const isBERSERK = entity.getOpt3(StatusConst.Status.BERSERK);
 
-		renderSecondBody(entity, layers, spr, pal, files, type, _position, {
-			enableHalo: entity.getOpt3(StatusConst.Status.ASSUMPTIO) || !!entity._enableHalo,
-			enableTrail:
-				isENERGYCOAT ||
+		renderSecondBody(
+			entity,
+			layers,
+			spr,
+			pal,
+			files,
+			type,
+			_position,
+			entity.getOpt3(StatusConst.Status.ASSUMPTIO) || !!entity._enableHalo,
+			isENERGYCOAT ||
 				isBUNSIN ||
 				isHALLUCINATIONWALK ||
 				isQUICKEN ||
@@ -886,8 +998,8 @@ const renderElement = (function renderElementClosure() {
 				isBERSERK ||
 				!!entity._fastMoveTrail ||
 				!!entity._enableTrail,
-			blurType: isBUNSIN ? 5 : isHALLUCINATIONWALK ? 3 : entity._blurType || 1
-		});
+			isBUNSIN ? 5 : isHALLUCINATIONWALK ? 3 : entity._blurType || 1
+		);
 
 		// Render all frames
 		for (let i = 0, count = layers.length; i < count; ++i) {
@@ -1170,7 +1282,7 @@ function renderLayer(layer, spr, pal, size, pos, type, isBlendModeOne) {
 		SpriteRenderer.color[3] = layer.color[3];
 	}
 
-	// apply disapear
+	// apply disappear
 	if (this.remove_tick) {
 		SpriteRenderer.color[3] *= 1 - (Date.now() - this.remove_tick) / this.remove_delay;
 	}
@@ -1184,6 +1296,8 @@ function renderLayer(layer, spr, pal, size, pos, type, isBlendModeOne) {
 	SpriteRenderer.xSize = this.xSize;
 	SpriteRenderer.ySize = this.ySize;
 	SpriteRenderer.image.texture = frame.texture;
+	SpriteRenderer.image.spr = spr;
+	SpriteRenderer.image.frame = frame;
 
 	// Draw Sprite
 	SpriteRenderer.render(isBlendModeOne);

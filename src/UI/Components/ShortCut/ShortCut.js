@@ -32,6 +32,7 @@ import PACKETVER from 'Network/PacketVerManager.js';
 import SkillWindow from 'UI/Components/SkillList/SkillList.js';
 import htmlText from './ShortCut.html?raw';
 import cssText from './ShortCut.css?raw';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create Component
@@ -154,7 +155,7 @@ ShortCut.init = function init() {
 	// Add to item owner name update queue
 	DB.UpdateOwnerName.ShortCut = onUpdateOwnerName;
 
-	Inventory.getUI().onUpdateItem = onUpdateItem;
+	Inventory.onUpdateItem = onUpdateItem;
 };
 
 /**
@@ -171,7 +172,7 @@ ShortCut.onAppend = function onAppend() {
 	this.magnet.LEFT = _preferences.magnet_left;
 	this.magnet.RIGHT = _preferences.magnet_right;
 
-	SkillWindow.getUI().onUpdateSkill = onUpdateSkill;
+	SkillWindow.onUpdateSkill = onUpdateSkill;
 
 	// Initialize tooltips for empty slots
 	updateEmptySlotTooltips();
@@ -258,7 +259,7 @@ function getSkillOwner(id) {
 	if (id >= SkillId.MERCENARY_BEGIN && id <= SkillId.MERCENARY_LAST) {
 		return SkillListMH.mercenary;
 	}
-	return SkillWindow.getUI();
+	return SkillWindow;
 }
 
 ShortCut.useSkill = function useSkill(id, level) {
@@ -294,7 +295,7 @@ ShortCut.setList = function setList(list) {
 			}
 
 			if (skill && skill.level) {
-				ShortCut.addElement(i, true, list[i].ID, list[i].count || skill.level);
+				ShortCut.addElement(i, true, list[i].ID, slotSkillLevel(list[i].ID, list[i].count, skill.level));
 			} else {
 				if (!_list[i]) {
 					_list[i] = {};
@@ -364,7 +365,7 @@ ShortCut.updateAllTooltips = function updateAllTooltips() {
 			if (_list[i].isSkill && SkillInfo[_list[i].ID]) {
 				name = SkillInfo[_list[i].ID].SkillName;
 			} else if (_list[i].ID) {
-				const item = Inventory.getUI().getItemById(_list[i].ID);
+				const item = Inventory.getItemById(_list[i].ID);
 				if (item) {
 					name = DB.getItemName(item);
 				}
@@ -472,8 +473,18 @@ function onContainerMouseEnter(event) {
 		const host = ShortCut._host;
 		const hostRect = host.getBoundingClientRect();
 
-		tooltip.textContent = tooltipText;
+		tooltip.innerHTML = sanitizeHtml(tooltipText);
 		tooltip.classList.add('show');
+
+		// A scaled hotbar (UI/UIScale.js) clips its fixed children and moves
+		// them with it: show the tooltip in the top layer instead, at the same scale
+		const scale = ShortCut.scale;
+		if (scale !== 1 && typeof tooltip.showPopover === 'function') {
+			tooltip.setAttribute('popover', 'manual');
+			tooltip.showPopover();
+			tooltip.style.setProperty('scale', String(scale));
+			tooltip.style.setProperty('transform-origin', '0 0');
+		}
 
 		// Calculate tooltip dimensions
 		const tooltipRect = tooltip.getBoundingClientRect();
@@ -506,14 +517,37 @@ function onContainerMouseLeave() {
 	const tooltip = root.querySelector('.shortcut-tooltip');
 	if (tooltip) {
 		tooltip.classList.remove('show');
+		if (tooltip.hasAttribute('popover')) {
+			tooltip.hidePopover?.();
+			tooltip.removeAttribute('popover');
+			tooltip.style.removeProperty('scale');
+			tooltip.style.removeProperty('transform-origin');
+		}
 	}
+}
+
+/**
+ * Level a hotbar slot holding a skill shows, as the official client does:
+ * a skill whose level can be chosen (bSeperateLv) keeps the slot's level,
+ * up to the skill's level; any other skill follows the skill's level.
+ *
+ * @param {number} ID skill id
+ * @param {number} slotLevel level stored in the slot
+ * @param {number} level the skill's current level
+ * @return {number} level
+ */
+function slotSkillLevel(ID, slotLevel, level) {
+	if (!slotLevel || !level || !SkillInfo[ID]?.bSeperateLv) {
+		return level || slotLevel;
+	}
+	return Math.min(slotLevel, level);
 }
 
 ShortCut.setElement = function setElement(isSkill, ID, count) {
 	for (let i = 0, size = _list.length; i < size; ++i) {
 		if (_list[i] && _list[i].isSkill == isSkill && _list[i].ID === ID) {
-			if (isSkill && _list[i].count && _list[i].count <= count) {
-				ShortCut.addElement(i, isSkill, ID, _list[i].count);
+			if (isSkill && count) {
+				ShortCut.addElement(i, isSkill, ID, slotSkillLevel(ID, _list[i].count, count));
 			} else {
 				ShortCut.addElement(i, isSkill, ID, count);
 			}
@@ -530,7 +564,7 @@ function onResize(event) {
 	let lastHeight = 0;
 
 	function resizing() {
-		let h = Math.floor((Mouse.screen.y - top) / 34 + 1);
+		let h = Math.floor((Mouse.screen.y - top) / ShortCut.scale / 34 + 1);
 
 		// Maximum and minimum window size
 		h = Math.min(Math.max(h, 1), _rowCount);
@@ -594,7 +628,7 @@ ShortCut.addElement = function addElement(index, isSkill, ID, count) {
 		}
 	} else {
 		_list[index].count = count;
-		const item = Inventory.getUI().getItemById(ID);
+		const item = Inventory.getItemById(ID);
 
 		// Do not display items not in inventory
 		if (!item) {
@@ -753,21 +787,66 @@ ShortCut.removeElement = function removeElement(isSkill, ID, row, amount) {
 		return;
 	}
 
-	const root = ShortCut.getRoot();
-
 	for (let i = row * 9, count = Math.min(_list.length, row * 9 + 9); i < count; ++i) {
 		if (_list[i] && _list[i].isSkill == isSkill && _list[i].ID === ID && (!isSkill || _list[i].count == amount)) {
-			const container = root.querySelector(`.container[data-index="${i}"]`);
-			if (container) {
-				container.innerHTML = '';
-			}
-			_list[i].isSkill = 0;
-			_list[i].ID = 0;
-			_list[i].count = 0;
-
-			ShortCut.onChange(i, 0, 0, 0);
+			ShortCut.removeAt(i);
 		}
 	}
+};
+
+/**
+ * Empty one shortcut slot and tell the server
+ *
+ * @param {number} index of the slot
+ */
+ShortCut.removeAt = function removeAt(index) {
+	if (!_list[index]) {
+		return;
+	}
+
+	const container = ShortCut.getRoot().querySelector(`.container[data-index="${index}"]`);
+	if (container) {
+		container.innerHTML = '';
+	}
+	_list[index].isSkill = 0;
+	_list[index].ID = 0;
+	_list[index].count = 0;
+
+	ShortCut.onChange(index, 0, 0, 0);
+};
+
+/**
+ * What a drag payload would put in a shortcut slot
+ *
+ * @param {object} data drag payload ({ type, from, data })
+ * @return {{isSkill: boolean|number, ID: number, count: number}|null} null when it can't go in a slot
+ */
+ShortCut.fromDragData = function fromDragData(data) {
+	// Do not process others things than item and skill
+	if (!data || !data.data || (data.type !== 'item' && data.type !== 'skill')) {
+		return null;
+	}
+
+	const element = data.data;
+
+	switch (data.from) {
+		case 'SkillList':
+		case 'Guild':
+		case 'SkillListMH':
+			return {
+				isSkill: true,
+				ID: element.SKID,
+				count: element.selectedLevel ? element.selectedLevel : element.level
+			};
+
+		case 'Inventory':
+			return { isSkill: false, ID: element.ITID, count: 0 };
+
+		case 'ShortCut':
+			return { isSkill: element.isSkill, ID: element.ID, count: element.count };
+	}
+
+	return null;
 };
 
 /**
@@ -776,7 +855,7 @@ ShortCut.removeElement = function removeElement(isSkill, ID, row, amount) {
  * and skill window to save to shortcut ?
  */
 function onDrop(event, target) {
-	let data, element;
+	let data;
 	const index = parseInt(target.getAttribute('data-index'), 10);
 	const row = Math.floor(index / 9);
 
@@ -785,47 +864,18 @@ function onDrop(event, target) {
 
 	try {
 		data = JSON.parse(event.dataTransfer.getData('Text'));
-		element = data.data;
 	} catch (_e) {
 		return;
 	}
 
-	// Do not process others things than item and skill
-	if (data.type !== 'item' && data.type !== 'skill') {
+	const entry = ShortCut.fromDragData(data);
+	if (!entry) {
 		return;
 	}
 
-	switch (data.from) {
-		case 'SkillList':
-		case 'Guild':
-		case 'SkillListMH':
-			ShortCut.removeElement(
-				true,
-				element.SKID,
-				row,
-				element.selectedLevel ? element.selectedLevel : element.level
-			);
-			ShortCut.addElement(
-				index,
-				true,
-				element.SKID,
-				element.selectedLevel ? element.selectedLevel : element.level
-			);
-			ShortCut.onChange(index, true, element.SKID, element.selectedLevel ? element.selectedLevel : element.level);
-			break;
-
-		case 'Inventory':
-			ShortCut.removeElement(false, element.ITID, row);
-			ShortCut.addElement(index, false, element.ITID, 0);
-			ShortCut.onChange(index, false, element.ITID, 0);
-			break;
-
-		case 'ShortCut':
-			ShortCut.removeElement(element.isSkill, element.ID, row, element.isSkill ? element.count : null);
-			ShortCut.addElement(index, element.isSkill, element.ID, element.count);
-			ShortCut.onChange(index, element.isSkill, element.ID, element.count);
-			break;
-	}
+	ShortCut.removeElement(entry.isSkill, entry.ID, row, entry.isSkill ? entry.count : null);
+	ShortCut.addElement(index, entry.isSkill, entry.ID, entry.count);
+	ShortCut.onChange(index, entry.isSkill, entry.ID, entry.count);
 }
 
 /**
@@ -894,7 +944,7 @@ function onElementInfo(event, icon) {
 
 		ItemInfo.append();
 		ItemInfo.uid = _list[index].ID;
-		ItemInfo.setItem(Inventory.getUI().getItemById(_list[index].ID));
+		ItemInfo.setItem(Inventory.getItemById(_list[index].ID));
 	}
 }
 
@@ -927,9 +977,9 @@ function clickElement(index) {
 	}
 	// Use the item
 	else {
-		const item = Inventory.getUI().getItemById(_list[index].ID);
+		const item = Inventory.getItemById(_list[index].ID);
 		if (item) {
-			Inventory.getUI().useItem(item);
+			Inventory.useItem(item);
 		}
 	}
 }

@@ -24,6 +24,7 @@ import EntityManager from 'Renderer/EntityManager.js';
 import GridSelector from 'Renderer/Map/GridSelector.js';
 import Ground from 'Renderer/Map/Ground.js';
 import Altitude from 'Renderer/Map/Altitude.js';
+import MapHooks from 'Renderer/MapHooks.js';
 import Water from 'Renderer/Map/Water.js';
 import Models from 'Renderer/Map/Models.js';
 import AnimatedModels from 'Renderer/Map/AnimatedModels.js';
@@ -36,6 +37,9 @@ import EffectManager from 'Renderer/EffectManager.js';
 import SignboardManager from 'Renderer/SignboardManager.js';
 import ScreenEffectManager from 'Renderer/ScreenEffectManager.js';
 import Sky from 'Renderer/Effects/Sky.js';
+import WeatherTable from 'DB/Effects/WeatherEffect.js';
+import { addCustomMapWeather, customMapBgm } from 'DB/Map/CustomMaps.js';
+import Configs from 'Core/Configs.js';
 import Damage from 'Renderer/Effects/Damage.js';
 import GraphicsSettings from 'Preferences/Graphics.js';
 import MapPreferences from 'Preferences/Map.js';
@@ -55,9 +59,17 @@ import Blind from 'Renderer/Effects/Shaders/Blind.js';
 
 import Upsampling from 'Renderer/Effects/Shaders/Upsampling.js';
 import WebGL from 'Utils/WebGL.js';
+import PerfProbe from 'Core/PerfProbe.js';
 
 const mat4 = glMatrix.mat4;
 const _pos = new Uint16Array(2);
+
+/**
+ * Set while a loaded map's loading image fades out (onMapComplete). A map
+ * asked for meanwhile waits in _nextMap until the image is gone.
+ */
+let _revealing = false;
+let _nextMap = null;
 
 /**
  * @param {string} mapname
@@ -90,6 +102,7 @@ class MapRenderer {
 	 * @var {array} Sounds object list
 	 */
 	static sounds = null;
+	static lights = [];
 
 	/**
 	 * @var {array} Effects object list
@@ -100,6 +113,21 @@ class MapRenderer {
 	 * @var {array} is loading a map ?
 	 */
 	static loading = false;
+
+	/**
+	 * @var {number} id of the latest map load, bumped to cancel the one in progress
+	 */
+	static _loadId = 0;
+
+	/**
+	 * @var {number} worker request of the map load in progress, 0 when none
+	 */
+	static _loadRequest = 0;
+
+	/**
+	 * @var {Array<function>} worker results of the map load in progress, held until the fade is over
+	 */
+	static _fadeQueue = [];
 
 	/**
 	 * @var {Float32Array} diffuse Modified diffuse color
@@ -129,11 +157,20 @@ class MapRenderer {
 			return;
 		}
 
+		// The server can move us as soon as the last map has sent
+		// NOTIFY_ACTORINIT, which is before its loading image is gone.
+		if (_revealing) {
+			_nextMap = mapname;
+			return;
+		}
+
 		// Support for instance map
 		// Is it always 3 digits ?
 		mapname = mapname
-			.replace(/^(\d{3})(\d@)/, '$2') // 0061@tower   -> 1@tower
-			.replace(/^\d{3}#/, ''); // 003#prontera -> prontera
+			.replace(/^(\w{3})(\d@)/, '$2') // 0061@tower   -> 1@tower
+			.replace(/^\w{3}#/, ''); // 003#prontera -> prontera
+
+		const loadId = ++this._loadId;
 
 		// Clean objects
 		SoundManager.stop();
@@ -149,24 +186,60 @@ class MapRenderer {
 		if (oldMap !== newMap) {
 			this.loading = true;
 			BGM.stop();
+
+			if (PerfProbe.enabled) {
+				PerfProbe.mapStart(mapname);
+			}
 			this.currentMap = mapname;
 
 			// Parse the filename (ugly RO)
 			const filename = mapname.replace(/\.gat$/i, '.rsw');
 
-			Background.setLoading(function () {
-				// Hooking Thread
-				Thread.hook('MAP_PROGRESS', onProgressUpdate.bind(MapRenderer));
-				Thread.hook('MAP_WORLD', onWorldComplete.bind(MapRenderer));
-				Thread.hook('MAP_GROUND', onGroundComplete.bind(MapRenderer));
-				Thread.hook('MAP_ALTITUDE', onAltitudeComplete.bind(MapRenderer));
-				Thread.hook('MAP_MODELS', onModelsComplete.bind(MapRenderer));
-				Thread.hook('MAP_ANIMATED_MODEL', onAnimatedModelComplete.bind(MapRenderer));
+			// The worker starts on the map now, while the screen fades to the
+			// loading image, rather than after the fade. What it sends back
+			// waits until the fade is done and the old map is freed, and is
+			// dropped if the load is cancelled meanwhile (loadStep, loadEvent).
+			// A cancelled load queues nothing more, and cancelLoad empties the queue.
+			let faded = false;
+			const waiting = [];
+			this._fadeQueue = waiting;
+			const afterFade =
+				fn =>
+				(...args) => {
+					if (faded) {
+						fn(...args);
+					} else if (loadId === MapRenderer._loadId) {
+						waiting.push(() => fn(...args));
+					}
+				};
 
-				// Start Loading
+			// Hooking Thread
+			Thread.hook('MAP_PROGRESS', afterFade(loadEvent(onProgressUpdate)));
+			Thread.hook('MAP_WORLD', afterFade(loadEvent(onWorldComplete)));
+			Thread.hook('MAP_GROUND', afterFade(loadEvent(onGroundComplete)));
+			Thread.hook('MAP_ALTITUDE', afterFade(loadEvent(onAltitudeComplete)));
+			Thread.hook('MAP_MODELS', afterFade(loadEvent(onModelsComplete)));
+			Thread.hook('MAP_ANIMATED_MODEL', afterFade(loadEvent(onAnimatedModelComplete)));
+			Thread.hook(
+				'MAP_REPLACED_MODELS',
+				afterFade(loadEvent(models => MapHooks.modelsReady(Renderer.getContext(), models)))
+			);
+
+			// Start Loading
+			Thread.send('MAP_REPLACE_MODELS', MapHooks.modelNames());
+			MapRenderer._loadRequest = Thread.send('LOAD_MAP', filename, afterFade(loadStep(loadId, onMapComplete)));
+
+			Background.setLoading(() => {
+				// Cancelled while the loading screen was coming up
+				if (loadId !== MapRenderer._loadId) {
+					waiting.length = 0;
+					return;
+				}
+
 				MapRenderer.free();
 				Renderer.remove();
-				Thread.send('LOAD_MAP', filename, onMapComplete.bind(MapRenderer));
+				faded = true;
+				waiting.splice(0).forEach(fn => fn());
 			});
 
 			return;
@@ -176,17 +249,35 @@ class MapRenderer {
 		EntityManager.free();
 		Damage.free(gl);
 		EffectManager.free(gl);
+		// The map's signboards are added again once it is set up (MapEngine)
+		SignboardManager.free();
 		JoystickUI.onRestore();
 
 		// Basic TP
 		Mouse.intersect = false;
 		Background.remove(() => {
+			if (loadId !== MapRenderer._loadId) {
+				return;
+			}
+
 			MapRenderer.onLoad();
 			Sky.setUpCloudData();
 
 			Renderer.render(MapRenderer.onRender);
 			Mouse.intersect = true;
 		});
+	}
+
+	/**
+	 * Cancel the map load in progress, if any: its remaining steps do nothing
+	 */
+	static cancelLoad() {
+		this._loadId++;
+		this._loadRequest = 0;
+		this._fadeQueue.length = 0;
+		this.loading = false;
+		_revealing = false;
+		_nextMap = null;
 	}
 
 	/**
@@ -200,6 +291,7 @@ class MapRenderer {
 		GridSelector.free(gl);
 		Sounds.free();
 		Effects.free();
+		MapHooks.mapFree(gl);
 		Ground.free(gl);
 		Water.free(gl);
 		Models.free(gl);
@@ -212,14 +304,17 @@ class MapRenderer {
 		SoundManager.stop();
 		BGM.stop();
 
-		// Release WebGL resources for post-processing effects
-		PostProcess.clean(gl);
+		// Post-processing is kept for the next map (PostProcess.clean frees it).
+		// The illusion flip ends with the map, as cleaning it used to do.
+		VerticalFlip.setActive(false);
 
 		Mouse.intersect = false;
+		Cursor.setType(Cursor.ACTION.DEFAULT);
 
 		this.light = null;
 		this.water = null;
 		this.sounds = null;
+		this.lights = [];
 		this.effects = null;
 	}
 
@@ -234,7 +329,7 @@ class MapRenderer {
 
 		const fog = MapRenderer.fog;
 		fog.use = MapPreferences.fog;
-		const light = MapRenderer.light;
+		const light = MapHooks.light(MapRenderer.light);
 
 		let x, y;
 
@@ -250,8 +345,13 @@ class MapRenderer {
 		const projection = Camera.projection;
 		const normalMat = Camera.normalMat;
 
+		// What hooks draw is described in MapHooks.js.
+		const hooks = hookContext(gl, modelView, projection, normalMat, fog, light, tick);
+		MapHooks.stage('begin', hooks);
+
 		// Render Ground
 		Ground.render(gl, modelView, projection, normalMat, fog, light);
+		MapHooks.stage('ground', hooks);
 
 		// Spam map effects
 		Effects.spam(Session.Entity.position, tick);
@@ -297,10 +397,15 @@ class MapRenderer {
 		OccluderFade.beginFrame(gl, modelView, tick);
 		Models.render(gl, modelView, projection, normalMat, fog, light);
 		AnimatedModels.render(gl, modelView, projection, normalMat, fog, light, tick);
+		// Entities out of the view area, decided once for both the GR2 and the entity passes
+		EntityManager.cull();
+
 		// GR2 mobs render here with the opaque world models, before EntityManager.render below
 		// -- hence the 1-frame lag documented in GR2ModelRenderer.render (syncFromEntity reads the
 		// entity pose one frame stale). Ordering is intentional (opaque geometry pass).
 		GR2ModelRenderer.render(gl, modelView, projection, normalMat, fog, light, tick);
+
+		MapHooks.stage('models', hooks);
 
 		// Render transparent elements before ground
 		ScreenEffectManager.render(gl, modelView, projection, fog, tick, true);
@@ -314,7 +419,11 @@ class MapRenderer {
 		EntityManager.renderWaterDepth(gl, modelView, projection, fog);
 
 		// Rendering water (after sprites, billboard projection pushes it to back)
-		Water.render(gl, modelView, projection, fog, light, tick);
+		if (MapHooks.replaces('water')) {
+			MapHooks.stage('water', hooks);
+		} else {
+			Water.render(gl, modelView, projection, fog, light, tick);
+		}
 
 		// Third person see-through: translucent part of the models blocking
 		// the player, drawn over the entities so they stay visible through it
@@ -344,7 +453,18 @@ class MapRenderer {
 		// Clean up
 		MemoryManager.clean(gl, tick);
 
+		MapHooks.stage('end', hooks);
+
 		// Finalize frame with post-processing effects
+		PostProcess.scene = {
+			modelView,
+			projection,
+			light,
+			lights: MapRenderer.lights,
+			tick,
+			near: 1,
+			far: 1000
+		};
 		PostProcess.render(gl);
 	}
 
@@ -352,6 +472,33 @@ class MapRenderer {
 	 * Callback to execute once the map is loaded
 	 */
 	static onLoad() {}
+}
+
+/**
+ * Bind a map load step to its load, so that it does nothing once the load is cancelled
+ *
+ * @param {number} loadId
+ * @param {function} step
+ */
+function loadStep(loadId, step) {
+	return (...args) => {
+		if (loadId === MapRenderer._loadId) {
+			step.apply(MapRenderer, args);
+		}
+	};
+}
+
+/**
+ * Bind a worker event of map loading, so that it only reaches the load whose request sent it
+ *
+ * @param {function} step
+ */
+function loadEvent(step) {
+	return (data, request) => {
+		if (request === MapRenderer._loadRequest) {
+			step.call(MapRenderer, data);
+		}
+	};
 }
 
 /**
@@ -371,6 +518,9 @@ function onWorldComplete(data) {
 	this.water = data.water;
 	this.sounds = data.sound;
 	this.effects = data.effect;
+	// The map's point lights (RSW), which the original client bakes into the
+	// lightmap. Kept for post-process passes (PostProcess.scene.lights).
+	this.lights = data.lights || [];
 	this.diffuse = new Float32Array(this.light.diffuse);
 
 	// Set default env color
@@ -398,6 +548,46 @@ function onWorldComplete(data) {
 }
 
 /**
+ * What a hook gets each frame (MapHooks.js). One object, refreshed in place.
+ */
+const _hookContext = {};
+function hookContext(gl, modelView, projection, normalMat, fog, light, tick) {
+	const ctx = _hookContext;
+	ctx.gl = gl;
+	ctx.modelView = modelView;
+	ctx.projection = projection;
+	ctx.normalMat = normalMat;
+	ctx.fog = fog;
+	ctx.light = light;
+	ctx.tick = tick;
+	ctx.lightmap = MapPreferences.lightmap;
+	ctx.player = Session.Entity ? Session.Entity.position : null;
+	if (!ctx.drawScene) {
+		// The sky, ground and models again, with another camera, into
+		// whatever target is bound, depth tested.
+		ctx.drawScene = (view, proj) => {
+			const depthTest = gl.isEnabled(gl.DEPTH_TEST);
+			gl.enable(gl.DEPTH_TEST);
+			gl.depthMask(true);
+			Sky.render(gl, view, proj, ctx.fog, ctx.tick);
+			Ground.render(gl, view, proj, ctx.normalMat, ctx.fog, ctx.light);
+			Models.render(gl, view, proj, ctx.normalMat, ctx.fog, ctx.light);
+			AnimatedModels.render(gl, view, proj, ctx.normalMat, ctx.fog, ctx.light, ctx.tick);
+			if (!depthTest) {
+				gl.disable(gl.DEPTH_TEST);
+			}
+		};
+		// The map's models with the caller's program bound (aPosition,
+		// aTextureCoord; texture unit 0 holds each model's texture).
+		ctx.drawModelsDepth = program => Models.renderDepth(gl, program);
+		// Back to the scene's own target, cleared, after drawing elsewhere.
+		ctx.restoreTarget = () => PostProcess.prepare(gl);
+		ctx.createProgram = (vertex, fragment) => WebGL.createShaderProgram(gl, vertex, fragment);
+	}
+	return ctx;
+}
+
+/**
  * Received ground data from Thread
  */
 function onGroundComplete(data) {
@@ -408,6 +598,54 @@ function onGroundComplete(data) {
 
 	Ground.init(gl, data);
 	Water.init(gl, this.water);
+
+	// Point lights in world space, the same translation RSW models get
+	// (Loaders/Model.js). Colour is three 32-bit numbers the loader reads as
+	// integers: 0-255 from some tools, but floats (0-1) from others -- read as
+	// integers those are their bit patterns (0.2 is 1045220557), so anything
+	// far past 255 is taken as the float it is.
+	const asFloat = value => new Float32Array(Int32Array.of(value).buffer)[0];
+	this.lights.forEach(light => {
+		light.world = [light.pos[0] + data.width, light.pos[1], light.pos[2] + data.height];
+		const color = light.color.map(v => (Math.abs(v) > 65535 ? asFloat(v) : v));
+		const max = Math.max(color[0], color[1], color[2]);
+		const scale = max > 1 ? 255 : 1;
+		light.rgb = color.map(v => Math.min(Math.max(v / scale, 0), 1));
+		light.radius = light.range * 0.2;
+	});
+
+	// The map, for hooks (MapHooks.js). Read the live parts through the
+	// functions: textures and walk data may arrive after this.
+	MapHooks.mapReady(gl, {
+		name: stripMapExtension(this.currentMap),
+		width: data.width,
+		height: data.height,
+		// Per ground cell: top tile texture index (-1 none), the four corner
+		// heights, and the tile's middle in the atlas (xy) and lightmap (zw).
+		cellTexture: data.cellTexture,
+		cellHeights: data.cellHeights,
+		cellUv: data.cellUv,
+		// Per ground cell: the top tile's corners in the atlas (8: u, v of
+		// (x,y), (x+1,y), (x,y+1), (x+1,y+1)) and its lightmap rectangle
+		// (4: u1, v1, u2, v2), to find any point's texture exactly.
+		cellAtlas: data.cellAtlas,
+		cellLight: data.cellLight,
+		// The ground textures' names (CP949 bytes in a binary string).
+		textureNames: data.textureNames || [],
+		// The loaded ground texture files (URLs), at their own size: the
+		// atlas (groundTextures()) holds each at 256x256. Same order.
+		textureUrls: Array.isArray(data.textures) ? data.textures.slice() : [],
+		groundTextures: () => Ground.textures(),
+		water: () => Water.state(),
+		lights: this.lights,
+		altitude: {
+			TYPE: Altitude.TYPE,
+			width: () => Altitude.width,
+			height: () => Altitude.height,
+			cellType: (x, y) => Altitude.getCellType(x, y),
+			cellHeight: (x, y) => Altitude.getCellHeight(x, y)
+		}
+	});
 
 	// Initialize sounds
 	this.sounds.forEach(sound => {
@@ -466,12 +704,23 @@ function onAnimatedModelComplete(data) {
  * Register PostProcessing Modules in pass order
  */
 function registerPostProcessModules(gl) {
-	if (WebGL.detectBadWebGL(gl)) {
+	const badWebGL = WebGL.detectBadWebGL(gl);
+	if (badWebGL) {
 		GraphicsSettings.bloom = false;
-	} else {
+	}
+
+	// Registered once; they outlive map changes
+	if (PostProcess.isRegistered()) {
+		return;
+	}
+
+	if (!badWebGL) {
 		PostProcess.register(Bloom, gl);
 	}
 	PostProcess.register(GaussianBlur, gl);
+	// Passes a client plugin added (PostProcess.addExternal) go after the
+	// scene-wide blur and bloom, and before anti-aliasing and upsampling.
+	PostProcess.registerExternal(gl);
 	PostProcess.register(FXAA, gl);
 	PostProcess.register(CAS, gl);
 	PostProcess.register(Cartoon, gl);
@@ -487,6 +736,7 @@ function registerPostProcessModules(gl) {
  * Once the map finished to load
  */
 function onMapComplete(success, error) {
+	const loadId = MapRenderer._loadId;
 	const worldResource = this.currentMap.replace(/\.gat$/i, '.rsw');
 	const mapInfo = DB.getMap(worldResource);
 
@@ -497,7 +747,7 @@ function onMapComplete(success, error) {
 	}
 
 	// Play BGM
-	BGM.play((mapInfo && mapInfo.mp3) || '01.mp3');
+	BGM.play(customMapBgm(Configs.get('customMaps'), worldResource) || (mapInfo && mapInfo.mp3) || '01.mp3');
 
 	// Apply fog to map
 	this.fog.exist = !!(mapInfo && mapInfo.fog);
@@ -513,6 +763,8 @@ function onMapComplete(success, error) {
 	const gl = Renderer.getContext();
 
 	SpriteRenderer.init(gl);
+	// Maps the config gives a sky or weather of their own (custom maps).
+	addCustomMapWeather(WeatherTable, Configs.get('customMaps'));
 	Sky.init(gl, worldResource);
 	Damage.init(gl);
 	EffectManager.init(gl);
@@ -520,18 +772,41 @@ function onMapComplete(success, error) {
 	registerPostProcessModules(gl);
 	JoystickUI.onRestore();
 
-	// Starting to render
+	// Start the game now, behind the loading image, while the screen fades to
+	// black: the server sends the map's actors during the fade, and the first
+	// frames, with their set-up costs, are drawn before anyone can see them.
+	// Background.remove keeps the image over the game and its windows until
+	// the screen is black, so what the player sees is unchanged.
+	MapRenderer.loading = false;
+	_revealing = true;
+
+	MapRenderer.onLoad();
+	Sky.setUpCloudData();
+	ScreenEffectManager.startMapflagEffect(worldResource);
+
+	if (PerfProbe.enabled) {
+		PerfProbe.mapReady();
+	}
+
+	Renderer.show();
+	Renderer.render(MapRenderer.onRender);
+
+	// Display game
 	Background.remove(() => {
-		MapRenderer.loading = false;
+		// Cancelled during the fade: cancelLoad has already let go of it
+		if (loadId !== MapRenderer._loadId) {
+			return;
+		}
 
-		MapRenderer.onLoad();
-		Sky.setUpCloudData();
-		ScreenEffectManager.startMapflagEffect(worldResource);
+		_revealing = false;
 
-		// Display game
-		Renderer.show();
-		Renderer.render(MapRenderer.onRender);
 		Mouse.intersect = true;
+
+		if (_nextMap) {
+			const mapname = _nextMap;
+			_nextMap = null;
+			MapRenderer.setMap(mapname);
+		}
 	});
 }
 

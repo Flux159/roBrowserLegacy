@@ -13,17 +13,22 @@
 
 import 'UI/Elements/Elements.js';
 
+import Camera from 'Renderer/Camera.js';
 import Client from 'Core/Client.js';
 import DB from 'DB/DBManager.js';
 import GUIComponent from 'UI/GUIComponent.js';
 import Mouse from 'Controls/MouseEventHandler.js';
 import Preferences from 'Core/Preferences.js';
+import Entity from 'Renderer/Entity/Entity.js';
 import Renderer from 'Renderer/Renderer.js';
 import Session from 'Engine/SessionStorage.js';
+import SpriteRenderer from 'Renderer/SpriteRenderer.js';
 import SkillDescription from 'UI/Components/SkillDescription/SkillDescription.js';
 import SkillInfo from 'DB/Skills/SkillInfo.js';
+import SK from 'DB/Skills/SkillConst.js';
 import SkillTargetSelection from 'UI/Components/SkillTargetSelection/SkillTargetSelection.js';
 import SkillTreeView from 'DB/Skills/SkillTreeView.js';
+import { withoutHiddenSkills } from 'DB/Skills/SkillTreeMods.js';
 import { attachTouchDrag } from 'UI/TouchDrag.js';
 import {
 	createSkillUpgradeOrder,
@@ -40,6 +45,45 @@ function _escapeHTML(text) {
 
 function _isNumeric(val) {
 	return !isNaN(parseFloat(val)) && isFinite(val);
+}
+
+let _skillConstNames = null;
+
+/**
+ * The skill-constant names for an id, built once on the first miss: a skill
+ * tree refresh loads every row's icon, and almost all of them hit on Name.
+ */
+function skillConstNames(skillId) {
+	if (!_skillConstNames) {
+		_skillConstNames = new Map();
+		for (const [name, id] of Object.entries(SK)) {
+			if (!_skillConstNames.has(id)) {
+				_skillConstNames.set(id, []);
+			}
+			_skillConstNames.get(id).push(name);
+		}
+	}
+	return _skillConstNames.get(Number(skillId)) || [];
+}
+
+function loadSkillIcon(skill, skillId, onload) {
+	const primary = skill?.Name;
+	let names = null;
+	const load = index => {
+		if (index >= names.length) {
+			return;
+		}
+		Client.loadFile(`${DB.INTERFACE_PATH}item/${names[index]}.bmp`, onload, () => load(index + 1));
+	};
+	const fallback = () => {
+		names = skillConstNames(skillId).filter(name => name !== primary);
+		load(0);
+	};
+	if (primary) {
+		Client.loadFile(`${DB.INTERFACE_PATH}item/${primary}.bmp`, onload, fallback);
+	} else {
+		fallback();
+	}
 }
 
 export function createSkillList({
@@ -224,6 +268,11 @@ export function createSkillList({
 			});
 
 			container.addEventListener('click', e => {
+				// The level arrows sit inside the list row's name; they choose the level
+				// to cast at and must not also stage a skill point.
+				if (e.target.closest('.level button')) {
+					return;
+				}
 				const target = e.target.closest('.skillCol .skill .icon, .skill .name');
 				if (target) {
 					onRememberChoice(target, root);
@@ -301,6 +350,9 @@ export function createSkillList({
 		}
 
 		resize(this, _preferences.width, _preferences.height);
+		if (this.getRoot().querySelector('canvas.sitting')) {
+			Renderer.render(renderSitting);
+		}
 		this._host.style.top = `${Math.min(Math.max(0, _preferences.y), Renderer.height - 100)}px`;
 		this._host.style.left = `${Math.min(Math.max(0, _preferences.x), Renderer.width - 100)}px`;
 
@@ -315,6 +367,7 @@ export function createSkillList({
 		if (_btnLevelUp && _btnLevelUp.parentNode) {
 			_btnLevelUp.remove();
 		}
+		Renderer.stop(renderSitting);
 
 		_preferences.show = this.ui.is(':visible');
 		_preferences.y = parseInt(this._host.style.top, 10) || 0;
@@ -374,6 +427,7 @@ export function createSkillList({
 
 		// The skill tree follows the real job, never a transformation/disguise
 		const entity = Session.Entity;
+		const previousJobId = skillJobId;
 		skillJobId = entity ? entity._job || entity.job : 0;
 
 		skillPosition = getSkillPosition(skillJobId);
@@ -427,10 +481,35 @@ export function createSkillList({
 					tabl.style.display = bigSkills.length > 0 ? '' : 'none';
 				}
 			}
+
+			// Open on the current job's tab after login or a job change,
+			// not on the 1st job tab the HTML marks as checked
+			if (skillJobId !== previousJobId) {
+				selectCurrentJobTab(root);
+			}
 		}
 
 		onResetChoice(this);
 	};
+
+	/**
+	 * Check the highest job tab that has skills (2nd-4th), else the 1st,
+	 * in whichever view (mini or big) is shown
+	 */
+	function selectCurrentJobTab(root) {
+		let tab = 1;
+		for (let i = 4; i >= 2; i--) {
+			if (root.querySelectorAll(`#positionSkills${i} .skill`).length > 0) {
+				tab = i;
+				break;
+			}
+		}
+
+		const radio = root.querySelector(_preferences.mini ? `#tab-${tab}-mini` : `#tab-${tab}`);
+		if (radio) {
+			radio.checked = true;
+		}
+	}
 
 	function createSkillDependencyTree() {
 		skillPosition.forEach((items, list) => {
@@ -566,7 +645,10 @@ export function createSkillList({
 			}
 		}
 
-		positions[SkillTreeView[JobId]['list']] = SkillTreeView[JobId];
+		// A copy. The merge below writes into whatever is stored here, and
+		// these are the live SkillTreeView objects: merging an ancestor in
+		// place rewrites this job's own 'list' and 'beforeJob'.
+		positions[SkillTreeView[JobId]['list']] = { ...SkillTreeView[JobId] };
 
 		if (SkillTreeView[JobId]['beforeJob'] !== null) {
 			const beforeJob = SkillTreeView[JobId]['beforeJob'];
@@ -575,7 +657,7 @@ export function createSkillList({
 			});
 		}
 
-		return positions;
+		return withoutHiddenSkills(positions, JobId);
 	}
 
 	Component.addSkill = function addSkill(skill) {
@@ -593,6 +675,9 @@ export function createSkillList({
 			this.addSkillBig(skill);
 		}
 		this.addSkillMini(skill);
+		// A skill added in game (ZC_ADD_SKILL: a copied or granted one) is
+		// owned like the ones from the full list.
+		hasSkills[skill.SKID] = skill;
 	};
 
 	Component.prepareSkillTree = function prepareSkillTree(items, list) {
@@ -658,7 +743,7 @@ export function createSkillList({
 
 								miniBox.appendChild(miniTr);
 
-								Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, data => {
+								loadSkillIcon(sk, key, data => {
 									const img = miniTr.querySelector('.icon img');
 									if (img) {
 										img.src = data;
@@ -669,7 +754,7 @@ export function createSkillList({
 					}
 				}
 
-				Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, data => {
+				loadSkillIcon(sk, key, data => {
 					const img = element.querySelector('.icon img');
 					if (img) {
 						img.src = data;
@@ -754,10 +839,6 @@ export function createSkillList({
 						box.innerHTML = '';
 					}
 					box.appendChild(element);
-
-					if (skill.upgradable) {
-						box.classList.add('upgradable');
-					}
 				}
 			}
 		});
@@ -791,7 +872,9 @@ export function createSkillList({
 			}
 		}
 
-		Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, data => {
+		highlightUpgradable(root, skill);
+
+		loadSkillIcon(sk, skill.SKID, data => {
 			const img = element.querySelector('.icon img');
 			if (img) {
 				img.src = data;
@@ -872,7 +955,7 @@ export function createSkillList({
 
 		this.parseHTML.call(levelup);
 
-		Client.loadFile(`${DB.INTERFACE_PATH}item/${sk.Name}.bmp`, data => {
+		loadSkillIcon(sk, skill.SKID, data => {
 			const img = tr.querySelector('.icon img');
 			if (img) {
 				img.src = data;
@@ -932,6 +1015,7 @@ export function createSkillList({
 				levelupEl.style.display = skill.upgradable && _points ? '' : 'none';
 			}
 		});
+		highlightUpgradable(root, target);
 
 		this.onUpdateSkill(skill.SKID, skill.level);
 	};
@@ -977,6 +1061,7 @@ export function createSkillList({
 			levelups.forEach(lu => {
 				lu.style.display = _list[i].upgradable && amount ? '' : 'none';
 			});
+			highlightUpgradable(root, _list[i]);
 		}
 	};
 
@@ -985,6 +1070,122 @@ export function createSkillList({
 			document.body.appendChild(_btnLevelUp);
 		}
 	};
+
+	// Tree view: the player's own character, sitting and looking around,
+	// as the official client draws it in the lower left of the expanded window
+	const renderSitting = (function renderSittingClosure() {
+		// headDir per step: ahead, one way, ahead, the other way
+		const _look = [0, 1, 0, 2];
+		const _lookStep = 1000;
+		const _cleanColor = new Float32Array([1.0, 1.0, 1.0, 1.0]);
+		const _savedColor = new Float32Array(4);
+		const _animation = {
+			tick: 0,
+			frame: 0,
+			repeat: true,
+			play: true,
+			next: false,
+			delay: 0,
+			save: false
+		};
+		let _ctx = null;
+
+		// A riding character is drawn as its mount (Peco Peco, Dragon, Madogear, ...),
+		// but the window shows it on foot: a copy of it in its own class, with its look
+		const _lookProps = [
+			'head',
+			'headpalette',
+			'bodypalette',
+			'weapon',
+			'shield',
+			'accessory',
+			'accessory2',
+			'accessory3',
+			'robe'
+		];
+		let _onFoot = null;
+		let _onFootKey = '';
+
+		function onFoot(character) {
+			if (!character.costume) {
+				_onFoot = null;
+				_onFootKey = '';
+				return character;
+			}
+
+			const key = [character.GID, character._job, character.sex, character.body]
+				.concat(_lookProps.map(prop => character[prop]))
+				.join(',');
+			if (key !== _onFootKey) {
+				_onFoot = new Entity();
+				_onFoot.set({
+					GID: character.GID + '_SKILLTREE',
+					objecttype: Entity.TYPE_PC,
+					job: character._job,
+					sex: character.sex,
+					name: '',
+					hideShadow: true
+				});
+				_lookProps.forEach(prop => {
+					_onFoot[prop] = character[prop];
+				});
+				// The body style (alternative outfit)
+				if (character.body > 0 && character.body !== character._job) {
+					_onFoot.body = character.body;
+				}
+				_onFootKey = key;
+			}
+			return _onFoot;
+		}
+
+		return function renderSittingChar(tick) {
+			const root = Component.getRoot();
+			const contentbig = root.querySelector('.contentbig');
+			if (!Session.Entity || !contentbig || contentbig.style.display === 'none' || !Component.ui.is(':visible')) {
+				return;
+			}
+			const character = onFoot(Session.Entity);
+			if (!_ctx) {
+				_ctx = root.querySelector('canvas.sitting')?.getContext('2d');
+				if (!_ctx) {
+					return;
+				}
+			}
+
+			const direction = character.direction;
+			const headDir = character.headDir;
+			const action = character.action;
+			const animation = character.animation;
+
+			Camera.direction = 4;
+			character.direction = 4;
+			character.headDir = _look[Math.floor((tick || 0) / _lookStep) % _look.length];
+			character.action = character.ACTION.SIT;
+			character.animation = _animation;
+
+			_savedColor.set(character.effectColor);
+			character.effectColor.set(_cleanColor);
+
+			SpriteRenderer.bind2DContext(_ctx, _ctx.canvas.width / 2, _ctx.canvas.height - 10);
+			_ctx.clearRect(0, 0, _ctx.canvas.width, _ctx.canvas.height);
+			character.renderEntity();
+
+			character.direction = direction;
+			character.headDir = headDir;
+			character.action = action;
+			character.animation = animation;
+			character.effectColor.set(_savedColor);
+		};
+	})();
+
+	// Tree view: mark a skill's slot only while points can go into it,
+	// the same rule the list view uses for its level-up button
+	function highlightUpgradable(root, skill) {
+		const on = !!(skill.upgradable && _points);
+		root.querySelectorAll(`.skillCol > .skill.id${skill.SKID}`).forEach(element => {
+			element.parentElement.classList.toggle('upgradable', on);
+		});
+	}
 
 	function getSkillById(id) {
 		const count = _list.length;
@@ -1007,8 +1208,10 @@ export function createSkillList({
 			const extraX = -6;
 			const extraY = 32;
 
-			let w = Math.floor((Mouse.screen.x - left - extraX) / 32);
-			let h = Math.floor((Mouse.screen.y - top - extraY) / 32);
+			// Screen distance to window distance (UI/UIScale.js)
+			const scale = comp.scale;
+			let w = Math.floor(((Mouse.screen.x - left) / scale - extraX) / 32);
+			let h = Math.floor(((Mouse.screen.y - top) / scale - extraY) / 32);
 
 			w = Math.min(Math.max(w, 8), 8);
 			h = Math.min(Math.max(h, 4), 10);

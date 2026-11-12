@@ -18,6 +18,8 @@ import ItemType from 'DB/Items/ItemType.js';
 import JoystickShortcutMapper from './JoystickShortcutMapper.js';
 import JoystickInputService from './JoystickInputService.js';
 import SkillInfo from 'DB/Skills/SkillInfo.js';
+import ButtonMap from './JoystickButtonMap.js';
+import Category from './JoystickTargetCategory.js';
 
 let ui = null;
 
@@ -39,6 +41,11 @@ function setupUIHide() {
 
 	_mouseMoveHandler = event => {
 		if (!ui || !_isVisible()) {
+			return;
+		}
+
+		// A button held over the HUD is the start of dragging one of its icons
+		if (event.buttons && event.composedPath().includes(ui[0])) {
 			return;
 		}
 
@@ -99,7 +106,7 @@ function updateJoystickSlot(joystickSlotIndex, shortcutIndex) {
 			});
 		}
 	} else {
-		const inventoryItem = InventoryUI.getUI().getItemById(item.ID);
+		const inventoryItem = InventoryUI.getItemById(item.ID);
 		if (inventoryItem) {
 			const itemInfo = DB.getItemInfo(item.ID);
 			const fileName = inventoryItem.IsIdentified
@@ -149,10 +156,84 @@ function updateByIndex(index) {
 	}
 }
 
+/**
+ * Write the current physical button names into the HUD: group headers
+ * (LB, LT, ...) and the face-button labels on each slot cross.
+ */
+function relabel() {
+	const shadow = _getShadow();
+	if (!shadow) return;
+
+	const B = ButtonMap.BUTTON;
+	const groups = {
+		L1: ButtonMap.nameOf(B.LB),
+		L2: ButtonMap.nameOf(B.LT),
+		R1: ButtonMap.nameOf(B.RB),
+		R2: ButtonMap.nameOf(B.RT),
+		L1R1: ButtonMap.nameOf(B.LB) + '+' + ButtonMap.nameOf(B.RB)
+	};
+	const faces = {
+		top: ButtonMap.nameOf(B.Y),
+		left: ButtonMap.nameOf(B.X),
+		right: ButtonMap.nameOf(B.B),
+		bottom: ButtonMap.nameOf(B.A)
+	};
+
+	shadow.querySelectorAll('.group-container').forEach(group => {
+		const header = group.querySelector('.group-header');
+		if (header && groups[group.dataset.group]) {
+			header.textContent = groups[group.dataset.group];
+		}
+		Object.keys(faces).forEach(position => {
+			const label = group.querySelector('.slot.' + position + ' .key-label');
+			if (label) {
+				label.textContent = faces[position];
+			}
+		});
+	});
+}
+
+/**
+ * Show the right stick mode (aim line / cursor) next to the set indicator.
+ */
+function updateStickMode() {
+	const shadow = _getShadow();
+	if (!shadow) return;
+
+	const el = shadow.querySelector('.stick-mode');
+	if (el) {
+		// Only worth showing when aiming is switched on in the settings
+		const aim = ControlsSettings.joyAimEnabled && ControlsSettings.joyRightStickMode === 1;
+		el.style.display = ControlsSettings.joyAimEnabled ? '' : 'none';
+		el.textContent = aim ? 'Aim' : 'Cursor';
+		el.classList.toggle('aim', aim);
+	}
+}
+
+/**
+ * Show the target category (D-pad up / down) next to the stick mode.
+ */
+function updateCategory() {
+	const shadow = _getShadow();
+	if (!shadow) return;
+
+	const el = shadow.querySelector('.target-category');
+	if (el) {
+		el.textContent = Category.nameOf(Category.get());
+		el.classList.toggle('support', Category.isSupport());
+	}
+}
+
+Category.onChange(updateCategory);
+
 function sync() {
 	if (!ui) {
 		return;
 	}
+
+	relabel();
+	updateStickMode();
+	updateCategory();
 
 	const startIdx = SetManager.getCurrentSet() === 1 ? 0 : 20;
 	for (let i = 0; i < 20; i++) {
@@ -218,6 +299,10 @@ export default {
 	updateByIndex,
 	updateSetIndicator,
 	updateVisuals,
+	relabel,
+	updateStickMode,
+	updateCategory,
 	show,
-	hide
+	hide,
+	isVisible: _isVisible
 };

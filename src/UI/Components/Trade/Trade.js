@@ -20,6 +20,7 @@ import ChatBox from 'UI/Components/ChatBox/ChatBox.js';
 import { InventoryItemTransferPriority } from 'UI/Components/Inventory/InventoryItemTransfer.js';
 import htmlText from './Trade.html?raw';
 import cssText from './Trade.css?raw';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create Component
@@ -55,18 +56,6 @@ Trade.title = '';
  * Capture key events so the zeny input field works inside Shadow DOM
  */
 Trade.captureKeyEvents = true;
-
-/**
- * Escape HTML special characters
- *
- * @param {string} text
- * @returns {string}
- */
-function escapeHtml(text) {
-	const div = document.createElement('div');
-	div.appendChild(document.createTextNode(text));
-	return div.innerHTML;
-}
 
 /**
  * Initialize UI
@@ -258,7 +247,7 @@ Trade.addItemFromInventory = function addItemFromInventory(index, success) {
 		return;
 	}
 
-	const inventoryItem = Inventory.getUI().removeItem(index, _tmpCount[index]);
+	const inventoryItem = Inventory.removeItem(index, _tmpCount[index]);
 	const item = Object.assign({}, inventoryItem);
 	const it = DB.getItemInfo(item.ITID);
 	const idx = _send.push(item) - 1;
@@ -271,13 +260,13 @@ Trade.addItemFromInventory = function addItemFromInventory(index, success) {
 	itemDiv.innerHTML =
 		'<div class="icon"></div>' +
 		`<div class="amount"><span class="count">${_tmpCount[index] || 1}</span></div>` +
-		`<span class="name">${escapeHtml(DB.getItemName(item))}</span>`;
+		`<span class="name">${sanitizeHtml(DB.getItemName(item))}</span>`;
 	box.appendChild(itemDiv);
 
 	Client.loadFile(
 		`${DB.INTERFACE_PATH}item/${item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName}.bmp`,
 		data => {
-			const icon = root.querySelector(`.item[data-index="${idx}"] .icon`);
+			const icon = itemDiv.querySelector('.icon');
 			if (icon && icon.closest('.box.send')) {
 				icon.style.backgroundImage = `url(${data})`;
 			}
@@ -312,13 +301,13 @@ Trade.addItem = function addItem(item) {
 	itemDiv.innerHTML =
 		'<div class="icon"></div>' +
 		`<div class="amount">${item.count}</div>` +
-		`<span class="name">${escapeHtml(DB.getItemName(item))}</span>`;
+		`<span class="name">${sanitizeHtml(DB.getItemName(item))}</span>`;
 	box.appendChild(itemDiv);
 
 	Client.loadFile(
 		`${DB.INTERFACE_PATH}item/${item.IsIdentified ? it.identifiedResourceName : it.unidentifiedResourceName}.bmp`,
 		data => {
-			const icon = root.querySelector(`.item[data-index="${idx}"] .icon`);
+			const icon = itemDiv.querySelector('.icon');
 			if (icon && icon.closest('.box.recv')) {
 				icon.style.backgroundImage = `url(${data})`;
 			}
@@ -350,7 +339,7 @@ function onRequestAddItem(index, count) {
 	}
 
 	// You cannot trade more than 10 types of items per trade.
-	if (_send.length >= 10) {
+	if (index !== 0 && _send.length >= 10) {
 		ChatBox.addText(DB.getMessage(297), ChatBox.TYPE.ERROR, ChatBox.FILTER.PUBLIC_LOG);
 		return;
 	}
@@ -532,7 +521,7 @@ function onItemOver(itemEl) {
 	overlay.style.display = '';
 	overlay.style.top = `${posTop + 5}px`;
 	overlay.style.left = `${posLeft + 30}px`;
-	overlay.textContent = DB.getItemName(item);
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 
 	if (item.IsIdentified) {
 		overlay.classList.remove('grey');

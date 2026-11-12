@@ -300,7 +300,10 @@ function cleanRepeat(name, AID, effectID) {
 	const list = _list[name];
 
 	list.forEach(item => {
-		if ((!AID || item._Params.Init.ownerAID === AID) && (!effectID || effectIdList.includes(item.effectID))) {
+		if (
+			(!AID || item._Params.Init.ownerAID === AID) &&
+			(!effectID || effectIdList.includes(item._Params.Inst.effectID))
+		) {
 			if (item._Params.Inst.persistent) {
 				item._Params.Inst.persistent = false;
 			}
@@ -459,6 +462,9 @@ class EffectManager {
 					}
 
 					const effect = list[j];
+					if (effect.updateLifetime) {
+						effect.updateLifetime(tick);
+					}
 					const pos = effect._Params && effect._Params.Inst ? effect._Params.Inst.position : null;
 
 					// Culling: If effect has position, check distance
@@ -486,7 +492,7 @@ class EffectManager {
 								shouldRemove = true;
 							}
 
-							if (shouldRemove) {
+							if (shouldRemove || effect.needCleanUp) {
 								effect.needCleanUp = true;
 								culled = true;
 							} else {
@@ -497,7 +503,7 @@ class EffectManager {
 						}
 					}
 
-					if (!culled) {
+					if (!culled && !effect.needCleanUp) {
 						if (!effect.ready && effect.needInit) {
 							effect.init(gl);
 							effect.needInit = false;
@@ -648,8 +654,8 @@ class EffectManager {
 		Params.Inst.repeatEnd = Params.Init.repeatEnd ? Params.Init.repeatEnd : Params.effect.repeatEnd || 0; // Main has priority
 		Params.Inst.repeatDelay = Params.effect.repeatDelay ? Params.effect.repeatDelay : Params.Init.repeatDelay; // Instance has priority
 
-		// Play sound
-		if (Params.effect.wav) {
+		// BSON sound events repeat only when requested; legacy effects keep replaying.
+		if (Params.effect.wav && !(Params.Inst.noDelay && Params.effect.soundLoop === false)) {
 			filename = Params.effect.wav;
 
 			if (Params.effect.rand) {
@@ -1157,6 +1163,8 @@ class EffectManager {
 						Init: {
 							effectId: hatEffectID,
 							position: ownerEntity.position,
+							// So removeHatEffect can find what this spawns by owner.
+							ownerAID: ownerAID != null ? ownerAID : ownerEntity.GID,
 							ownerEntity: ownerEntity,
 							startTick: startTick,
 							duration: effectEntry.duration || 0,
@@ -1222,6 +1230,13 @@ class EffectManager {
 			if (info && info.type === 'effect' && info.effectTableId) {
 				attachments.remove(info.effectTableId);
 			}
+		}
+
+		// An effect-table hat effect can also be effects the manager draws
+		// itself, such as the coloured auras' FUNC parts, which no attachment
+		// holds. Without this they stayed after the item came off.
+		if (info && info.type === 'effect' && info.effectTableId) {
+			EffectManager.remove(null, ownerAID, info.effectTableId);
 		}
 
 		if (hatEffects) {

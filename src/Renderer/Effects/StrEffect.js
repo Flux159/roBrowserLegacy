@@ -11,10 +11,7 @@
 import _vertexShader from './StrEffect.vs?raw';
 import _fragmentShader from './StrEffect.fs?raw';
 import WebGL from 'Utils/WebGL.js';
-import glMatrix from 'Utils/gl-matrix.js';
 import Client from 'Core/Client.js';
-
-const mat4 = glMatrix.mat4;
 
 /**
  * Look up table D3DX => OPENGL
@@ -32,19 +29,40 @@ let _program = null;
 let _buffer = null;
 
 /**
- * @var {float[16]} buffer
+ * @var {Float32Array} scratchpad for sprite offset
  */
-const _bufferData = new Float32Array(4 * 4);
+const _spriteOffset = new Float32Array(2);
 
 /**
- * @var mat4 matrix to generate rotation
+ * The classes that share _program and _buffer: StrEffect and its subclasses
+ * (FootprintStrEffect). EffectManager keeps a list per class and calls the
+ * class's free() when its list empties, so the shared resources go only once
+ * no class is using them; freeing them for one class while another still draws
+ * leaves that one with a null program.
  */
-const _matrix = mat4.create();
+const _users = new Set();
 
 /**
- * @var {number} last angle
+ * @var {Float32Array} scratchpad for corner X positions
  */
-let _lastAngle = -1;
+const _cornerX = new Float32Array(4);
+
+/**
+ * @var {Float32Array} scratchpad for corner Y positions
+ */
+const _cornerY = new Float32Array(4);
+
+/**
+ * @var {mat4} model view of the frame being drawn, to aim effects at a target
+ */
+let _modelView = null;
+
+/**
+ * Centre of the art in kRO's newer STR files, which are laid out on a
+ * 640x480 canvas. An aimed effect turns about this point.
+ */
+const AIM_PIVOT_X = 320;
+const AIM_PIVOT_Y = 240;
 
 // Pixel to world conversion for attachment offsets
 const PIXEL_TO_WORLD_Z = 1.0 / 5.0;
@@ -257,6 +275,22 @@ class StrEffect {
 		this.ready = false;
 	}
 
+	/** Advance expiration even when distance culling skips drawing. */
+	updateLifetime(tick) {
+		if (this.needCleanUp || this.persistent || tick < this.startTick) {
+			return;
+		}
+		const endTick = this._Params?.Inst?.endTick;
+		if (endTick > 0 && tick >= endTick) {
+			this.needCleanUp = true;
+			return;
+		}
+		const strFile = Client.loadFile(this.filename, null, null, { texturePath: this.texturePath });
+		if (strFile && tick >= this.startTick + (strFile.maxKey / strFile.fps) * 1000) {
+			this.needCleanUp = true;
+		}
+	}
+
 	/**
 	 * Render in 3D effect
 	 *
@@ -264,6 +298,10 @@ class StrEffect {
 	 * @param {number} tick
 	 */
 	render(gl, tick) {
+		this.updateLifetime(tick);
+		if (this.needCleanUp || tick < this.startTick) {
+			return;
+		}
 		let layer;
 		let i, keyIndex;
 
@@ -282,6 +320,8 @@ class StrEffect {
 		if (strFile === null) {
 			return;
 		}
+
+		this.aimAngle = this.getAimAngle();
 
 		keyIndex = ((tick - this.startTick) / 1000) * strFile.fps;
 
@@ -333,6 +373,38 @@ class StrEffect {
 	}
 
 	/**
+	 * How far to turn an effect aimed between two entities, so it lines up
+	 * with them on screen.
+	 *
+	 * `facing` is where the other entity sits in the file, in degrees (0 =
+	 * right, 180 = left): the target for an effect on the caster, the caster
+	 * for one on the target.
+	 *
+	 * @return {number} counter-clockwise turn in degrees, 0 when not aimed
+	 */
+	getAimAngle() {
+		const effect = this._Params?.effect;
+		const target = this._Params?.Inst?.otherPosition;
+		if (!effect?.rotateToTarget || !target || !this.position || !_modelView) {
+			return 0;
+		}
+
+		// World offset in the shader's axes (x, -z, y), then into view space
+		const x = target[0] - this.position[0];
+		const y = -(target[2] - this.position[2]);
+		const z = target[1] - this.position[1];
+		const m = _modelView;
+		const viewX = m[0] * x + m[4] * y + m[8] * z;
+		const viewY = m[1] * x + m[5] * y + m[9] * z;
+
+		if (!viewX && !viewY) {
+			return 0;
+		}
+
+		return (Math.atan2(viewY, viewX) * 180) / Math.PI - (effect.facing || 0);
+	}
+
+	/**
 	 * Setup geometries, send data to GPU
 	 *
 	 * @param {object} webgl context
@@ -341,7 +413,6 @@ class StrEffect {
 	 */
 	renderAnimation(gl, material, animat) {
 		const uniform = _program.uniform;
-		const attribute = _program.attribute;
 
 		// Hat effects: Scale with entity size
 		let sizeScale = 1.0;
@@ -349,67 +420,61 @@ class StrEffect {
 			sizeScale = (this.ownerEntity.xSize + this.ownerEntity.ySize) / 2 / 5;
 		}
 
-		// Update geometries (apply size scaling only for attachments)
-		_bufferData[0] = animat.xy[0] * sizeScale;
-		_bufferData[1] = animat.xy[4] * sizeScale;
-		_bufferData[2] = 0; //anim.uv[0];
-		_bufferData[3] = 0; //anim.uv[1];
+		// TRIANGLE_STRIP: v0=(xy0,xy4) v1=(xy1,xy5) v2=(xy3,xy7) v3=(xy2,xy6)
+		_cornerX[0] = animat.xy[0] * sizeScale;
+		_cornerY[0] = animat.xy[4] * sizeScale;
+		_cornerX[1] = animat.xy[1] * sizeScale;
+		_cornerY[1] = animat.xy[5] * sizeScale;
+		_cornerX[2] = animat.xy[3] * sizeScale;
+		_cornerY[2] = animat.xy[7] * sizeScale;
+		_cornerX[3] = animat.xy[2] * sizeScale;
+		_cornerY[3] = animat.xy[6] * sizeScale;
+		gl.uniform4fv(uniform.uCornerX, _cornerX);
+		gl.uniform4fv(uniform.uCornerY, _cornerY);
 
-		_bufferData[4] = animat.xy[1] * sizeScale;
-		_bufferData[5] = animat.xy[5] * sizeScale;
-		_bufferData[6] = 1; //anim.uv[2];
-		_bufferData[7] = 0; //anim.uv[3];
-
-		_bufferData[8] = animat.xy[3] * sizeScale;
-		_bufferData[9] = animat.xy[7] * sizeScale;
-		_bufferData[10] = 0; //anim.uv[4];
-		_bufferData[11] = 1; //anim.uv[5];
-
-		_bufferData[12] = animat.xy[2] * sizeScale;
-		_bufferData[13] = animat.xy[6] * sizeScale;
-		_bufferData[14] = 1; //anim.uv[6];
-		_bufferData[15] = 1; //anim.uv[7];
-
-		if (animat.angle !== _lastAngle) {
-			mat4.identity(_matrix);
-			mat4.rotateZ(_matrix, _matrix, (-animat.angle / 180) * Math.PI);
-			_lastAngle = animat.angle;
-		}
-
-		const spriteOffset = new Float32Array(2);
 		let verticalBase = 0.5;
 
 		if (this.ownerEntity) {
 			// Attachment: center at (320,320), apply offsets, scale with entity
-			spriteOffset[0] = animat.pos[0] - 320 + (this.xOffset || 0) * PIXEL_TO_WORLD_Z * 35 * sizeScale;
+			_spriteOffset[0] = animat.pos[0] - 320 + (this.xOffset || 0) * PIXEL_TO_WORLD_Z * 35 * sizeScale;
 			// flip Y offset only
-			spriteOffset[1] = animat.pos[1] - 320 - (this.yOffset || 0) * PIXEL_TO_WORLD_Z * 35 * sizeScale;
+			_spriteOffset[1] = animat.pos[1] - 320 - (this.yOffset || 0) * PIXEL_TO_WORLD_Z * 35 * sizeScale;
 			verticalBase = 0.0;
+		} else if (this.aimAngle) {
+			// Turn the layout about the art's centre; STR y points down the screen
+			const rad = (this.aimAngle / 180) * Math.PI;
+			const cos = Math.cos(rad);
+			const sin = Math.sin(rad);
+			const x = animat.pos[0] - AIM_PIVOT_X;
+			const y = AIM_PIVOT_Y - animat.pos[1];
+			_spriteOffset[0] = x * cos - y * sin;
+			_spriteOffset[1] = AIM_PIVOT_Y - 320 - (x * sin + y * cos);
 		} else {
-			spriteOffset[0] = animat.pos[0] - 320;
-			spriteOffset[1] = animat.pos[1] - 320;
+			_spriteOffset[0] = animat.pos[0] - 320;
+			_spriteOffset[1] = animat.pos[1] - 320;
 		}
 
 		// Send effect parameters
 		gl.uniform4fv(uniform.uSpriteColor, animat.color);
-		gl.uniform2fv(uniform.uSpriteOffset, spriteOffset);
+		gl.uniform2fv(uniform.uSpriteOffset, _spriteOffset);
 		gl.uniform1f(uniform.uVerticalBase, verticalBase);
 		gl.uniform3fv(uniform.uSpritePosition, this.position);
-
-		gl.uniformMatrix4fv(uniform.uSpriteAngle, false, _matrix);
-
-		// Send new buffer
-		gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
-		gl.bufferSubData(gl.ARRAY_BUFFER, 0, _bufferData);
-
-		// Link attribute
-		gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 4 * 4, 0 * 4);
-		gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 4 * 4, 2 * 4);
+		gl.uniform1f(uniform.uSpriteAngle, animat.angle - (this.aimAngle || 0));
 
 		// Send texture and data
 		gl.blendFunc(D3DBLEND[animat.srcalpha], D3DBLEND[animat.destalpha]);
 		gl.bindTexture(gl.TEXTURE_2D, material);
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+		// An aimed effect stands at one entity and reaches the other. Turned
+		// towards the camera, it runs through the ground and the other entity
+		// in front of where it stands, which would hide part of it.
+		if (this.aimAngle) {
+			gl.disable(gl.DEPTH_TEST);
+			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+			gl.enable(gl.DEPTH_TEST);
+		} else {
+			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		}
 	}
 
 	/**
@@ -421,7 +486,7 @@ class StrEffect {
 		if (!_buffer) {
 			_buffer = gl.createBuffer();
 			gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
-			gl.bufferData(gl.ARRAY_BUFFER, _bufferData.byteLength, gl.DYNAMIC_DRAW);
+			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0]), gl.STATIC_DRAW);
 		}
 
 		if (!_program) {
@@ -442,6 +507,7 @@ class StrEffect {
 		D3DBLEND[14] = gl.CONSTANT_COLOR;
 		D3DBLEND[15] = gl.ONE_MINUS_CONSTANT_ALPHA;
 
+		_users.add(this);
 		this.ready = true;
 	}
 
@@ -451,6 +517,12 @@ class StrEffect {
 	 * @param {object} webgl context
 	 */
 	static free(gl) {
+		this.ready = false;
+		_users.delete(this);
+		if (_users.size) {
+			return;
+		}
+
 		if (_program) {
 			gl.deleteProgram(_program);
 			_program = null;
@@ -460,8 +532,6 @@ class StrEffect {
 			gl.deleteBuffer(_buffer);
 			_buffer = null;
 		}
-
-		this.ready = false;
 	}
 
 	/**
@@ -477,8 +547,13 @@ class StrEffect {
 		const uniform = _program.uniform;
 		const attribute = _program.attribute;
 
+		_modelView = modelView;
+
 		gl.depthMask(false);
 		gl.useProgram(_program);
+		gl.bindBuffer(gl.ARRAY_BUFFER, _buffer);
+		gl.vertexAttribPointer(attribute.aPosition, 2, gl.FLOAT, false, 0, 0);
+
 		gl.uniformMatrix4fv(uniform.uModelViewMat, false, modelView);
 		gl.uniformMatrix4fv(uniform.uProjectionMat, false, projection);
 
@@ -492,7 +567,6 @@ class StrEffect {
 
 		// Enable all attributes
 		gl.enableVertexAttribArray(attribute.aPosition);
-		gl.enableVertexAttribArray(attribute.aTextureCoord);
 
 		gl.activeTexture(gl.TEXTURE0);
 	}
@@ -506,7 +580,6 @@ class StrEffect {
 		gl.depthMask(true);
 
 		gl.disableVertexAttribArray(_program.attribute.aPosition);
-		gl.disableVertexAttribArray(_program.attribute.aTextureCoord);
 
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 	}

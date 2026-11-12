@@ -13,6 +13,7 @@ import Configs from 'Core/Configs.js';
 import Context from 'Core/Context.js';
 import Preferences from 'Core/Preferences.js';
 import GraphicsSettings from 'Preferences/Graphics.js';
+import MapPreferences from 'Preferences/Map.js';
 import Renderer from 'Renderer/Renderer.js';
 import UIManager from 'UI/UIManager.js';
 import GUIComponent from 'UI/GUIComponent.js';
@@ -84,6 +85,7 @@ GraphicsOption.init = function init() {
 
 	bindChange('.details', onUpdateQualityDetails);
 	bindChange('.cursor-option', onToggleGameCursor);
+	bindChange('.footprintmine', onToggleFootprintMine);
 	bindChange('.screensize', onUpdateScreenSize);
 	bindChange('.fpslimit', onUpdateFPSLimit);
 	bindChange('.fps', onToggleFPSDisplay);
@@ -92,6 +94,7 @@ GraphicsOption.init = function init() {
 	// Post-Processing
 	bindChange('.bloom', onToggleBloom);
 	bindChange('.bloom-intensity', onUpdateBloomIntensity);
+	bindChange('.smoothlight', onUpdateSmoothLight);
 	bindChange('.blur', onToggleBlur);
 	bindChange('.blur-intensity', onUpdateBlurIntensity);
 	bindChange('.blur-area', onUpdateBlurArea);
@@ -131,6 +134,7 @@ GraphicsOption.onAppend = function onAppend() {
 	root.querySelector('.details').value = GraphicsSettings.quality;
 	root.querySelector('.screensize').value = GraphicsSettings.screensize;
 	root.querySelector('.cursor-option').checked = GraphicsSettings.cursor;
+	root.querySelector('.footprintmine').checked = MapPreferences.footprintmine;
 	root.querySelector('.fpslimit').value = GraphicsSettings.fpslimit;
 	root.querySelector('.fps').checked = FPS._host ? FPS._host.style.display !== 'none' : false;
 	root.querySelector('.pixel-perfect').checked = GraphicsSettings.pixelPerfectSprites;
@@ -138,6 +142,7 @@ GraphicsOption.onAppend = function onAppend() {
 	// Post-Processing
 	root.querySelector('.bloom').checked = GraphicsSettings.bloom;
 	root.querySelector('.bloom-intensity').value = GraphicsSettings.bloomIntensity;
+	root.querySelector('.smoothlight').value = String(MapPreferences.smoothlight);
 	root.querySelector('.blur').checked = GraphicsSettings.blur;
 	root.querySelector('.blur-area').value = GraphicsSettings.blurArea;
 	root.querySelector('.blur-intensity').value = GraphicsSettings.blurIntensity;
@@ -253,6 +258,23 @@ function onToggleBloom() {
 function onUpdateBloomIntensity() {
 	GraphicsSettings.bloomIntensity = parseFloat(this.value);
 	GraphicsSettings.save();
+}
+
+/**
+ * Lighting: the same setting /smoothlight cycles. The ground shader reads it
+ * every frame, so it applies at once.
+ */
+function onUpdateSmoothLight() {
+	MapPreferences.smoothlight = parseInt(this.value, 10) || 0;
+	MapPreferences.save();
+}
+
+/**
+ * Footprints: draw only the player's own. Each trail checks it as it goes.
+ */
+function onToggleFootprintMine() {
+	MapPreferences.footprintmine = !!this.checked;
+	MapPreferences.save();
 }
 
 function onToggleBlur() {

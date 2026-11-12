@@ -30,6 +30,21 @@
 	cursor: pointer;
 }
 
+#JoystickUI .stick-mode,
+#JoystickUI .target-category {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 2px 8px;
+	color: #ccc;
+	font-family: sans-serif;
+	border-left: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+#JoystickUI .stick-mode.aim {
+	color: #ffd740;
+	font-weight: bold;
+}
+
 #JoystickUI .set-btn.active {
 	background-color: #d32f2f;
 	color: white;
@@ -86,6 +101,18 @@
 	align-items: center;
 	box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
 	transition: background 0.2s;
+}
+
+#JoystickUI .slot.drop-target {
+	background-color: rgba(255, 215, 64, 0.3);
+	border-color: #ffd740;
+	box-shadow: 0 0 6px rgba(255, 215, 64, 0.8);
+}
+
+/* While a skill or item is dragged the gaps between groups take the drop too,
+   so it doesn't fall through to the map */
+:host(.dragging) #JoystickUI {
+	pointer-events: auto;
 }
 
 #JoystickUI .slot:active {
@@ -176,4 +203,8 @@
 	text-shadow: 1px 1px 0px white;
 	text-align: right;
 	font-weight: bold;
+}
+
+#JoystickUI .target-category.support {
+	color: #9be29e;
 }

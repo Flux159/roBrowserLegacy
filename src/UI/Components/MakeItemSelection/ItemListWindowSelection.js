@@ -20,6 +20,7 @@ import Inventory from 'UI/Components/Inventory/Inventory.js';
 import 'UI/Elements/Elements.js';
 import htmlText from './ItemListWindowSelection.html?raw';
 import cssText from './ItemListWindowSelection.css?raw';
+import WheelSteps from 'UI/WheelSteps.js';
 
 /**
  * @var {Preference} structure to save
@@ -119,14 +120,14 @@ ItemListWindowSelection.init = function init() {
 
 	this.draggable(root.querySelector('.titlebar'));
 
-	this.setList(Inventory.getUI().list);
+	this.setList(Inventory.list);
 };
 
 /**
  * Apply preferences once append to body
  */
 ItemListWindowSelection.onAppend = function OnAppend() {
-	this.setList(Inventory.getUI().list);
+	this.setList(Inventory.list);
 	ConvertItems.append();
 };
 
@@ -511,19 +512,8 @@ function stopPropagation(event) {
  * Update scroll by block (32px)
  */
 function onScroll(event) {
-	let delta;
-
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) {
-			delta = -delta;
-		}
-	} else if (event.detail) {
-		delta = -event.detail;
-	}
-
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
-	return false;
+	WheelSteps.scrollRows(event, this, 32);
+	event.preventDefault();
 }
 
 /**
@@ -546,7 +536,7 @@ function onItemOver() {
 	overlay.style.display = 'block';
 	overlay.style.top = `${rect.top - hostRect.top - 10}px`;
 	overlay.style.left = `${rect.left - hostRect.left + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = _sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 
 	if (item.IsIdentified) {
 		overlay.classList.remove('grey');

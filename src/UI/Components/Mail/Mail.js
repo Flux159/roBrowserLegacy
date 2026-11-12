@@ -23,6 +23,7 @@ import GUIComponent from 'UI/GUIComponent.js';
 import 'UI/Elements/Elements.js';
 import htmlText from './Mail.html?raw';
 import cssText from './Mail.css?raw';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create Component
@@ -745,7 +746,8 @@ function onDrop(event) {
 		return;
 	}
 
-	if (data.type !== 'item' || data.from == 'Storage' || data.from == 'Mail') {
+	// A worn item cannot be attached; it has to come off first.
+	if (data.type !== 'item' || data.from == 'Storage' || data.from == 'Mail' || data.from == 'Equipment') {
 		return;
 	}
 
@@ -757,7 +759,7 @@ function onDrop(event) {
 			Mail.parseMailWinopen(1);
 
 			if (data.from == 'Inventory') {
-				Inventory.getUI().removeItem(item.index, parseInt(count, 10));
+				Inventory.removeItem(item.index, parseInt(count, 10));
 			}
 
 			Mail.parseMailSetattach(item.index, parseInt(count, 10));
@@ -769,7 +771,7 @@ function onDrop(event) {
 	}
 
 	if (data.from == 'Inventory') {
-		Inventory.getUI().removeItem(item.index, 1);
+		Inventory.removeItem(item.index, 1);
 	}
 	Mail.parseMailWinopen(1);
 
@@ -794,7 +796,7 @@ function onItemOver() {
 	const overlay = root.querySelector('.container_item .overlay');
 	if (overlay) {
 		overlay.style.display = 'block';
-		overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+		overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 
 		if (item.IsIdentified) {
 			overlay.classList.remove('grey');

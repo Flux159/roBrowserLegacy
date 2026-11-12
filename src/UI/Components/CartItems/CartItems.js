@@ -29,6 +29,8 @@ import cssText from './CartItems.css?raw';
 import Storage from 'UI/Components/Storage/Storage.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
 import Equipment from 'UI/Components/Equipment/Equipment.js';
+import WheelSteps from 'UI/WheelSteps.js';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create Component
@@ -94,7 +96,10 @@ CartItems.init = function Init() {
 
 	// on drop item
 	this._host.addEventListener('drop', onDrop);
-	this._host.addEventListener('dragover', e => e.stopImmediatePropagation());
+	this._host.addEventListener('dragover', e => {
+		e.stopImmediatePropagation();
+		e.preventDefault(); // without it the browser never fires 'drop' here
+	});
 
 	// Items event (delegation)
 	const content = root.querySelector('.container .content');
@@ -591,7 +596,7 @@ function onDrop(event) {
 					break;
 
 				case 'Inventory':
-					Inventory.getUI().reqMoveItemToCart(item.index, parseInt(count, 10));
+					Inventory.reqMoveItemToCart(item.index, parseInt(count, 10));
 					break;
 			}
 		};
@@ -604,7 +609,7 @@ function onDrop(event) {
 			break;
 
 		case 'Inventory':
-			Inventory.getUI().reqMoveItemToCart(item.index, 1);
+			Inventory.reqMoveItemToCart(item.index, 1);
 			break;
 	}
 
@@ -615,10 +620,9 @@ function onDrop(event) {
  * Block the scroll to move 32px at each move
  */
 function onScroll(event) {
-	const delta = event.deltaY > 0 ? -1 : 1;
 	const el = event.currentTarget;
 
-	el.scrollTop = Math.floor(el.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps.scrollRows(event, el, 32);
 
 	if (el._roScrollbarRestart) {
 		el._roScrollbarRestart();
@@ -659,7 +663,7 @@ function onItemOver(_e) {
 		overlay.style.display = 'block';
 		overlay.style.top = `${itemRect.top - rootRect.top}px`;
 		overlay.style.left = `${itemRect.left - rootRect.left + 35}px`;
-		overlay.textContent = `${DB.getItemName(item)}: ${item.count || 1}${quantity}`;
+		overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)}: ${item.count || 1}${quantity}`);
 
 		if (item.IsIdentified) {
 			overlay.classList.remove('grey');
@@ -761,10 +765,10 @@ function onItemInfo(event) {
 	ItemInfo.setItem(item);
 
 	// Check if there is an equipped item in the same location
-	const compareItem = Equipment.getUI().isInEquipList(item.location);
+	const compareItem = Equipment.isInEquipList(item.location);
 
 	// If a comparison item is found, display comparison
-	if (compareItem && Inventory.getUI().itemcomp) {
+	if (compareItem && Inventory.itemcomp) {
 		ItemCompare.prepare();
 		ItemCompare.append();
 		ItemCompare.uid = compareItem.ITID;
@@ -778,10 +782,14 @@ function onItemInfo(event) {
  * Alt Right Click Request Transfer
  */
 function transferItemToOtherUI(item) {
-	const storageUI = Storage.getUI();
-	const inventoryUI = Inventory.getUI();
-	const isStorageOpen = storageUI._host ? storageUI._host.style.display !== 'none' : false;
-	const isInventoryOpen = inventoryUI._host ? inventoryUI._host.style.display !== 'none' : false;
+	const storageUI = Storage;
+	const inventoryUI = Inventory;
+	const isStorageOpen = storageUI._host
+		? storageUI._host.isConnected && storageUI._host.style.display !== 'none'
+		: false;
+	const isInventoryOpen = inventoryUI._host
+		? inventoryUI._host.isConnected && inventoryUI._host.style.display !== 'none'
+		: false;
 
 	if (!item) {
 		return false;

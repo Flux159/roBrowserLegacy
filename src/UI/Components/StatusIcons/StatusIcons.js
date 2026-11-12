@@ -71,6 +71,13 @@ StatusIcons.onAppend = function onAppend() {
 };
 
 /**
+ * Drawn at another UI scale (UI/UIScale.js): fewer or more icons fit in a column
+ */
+StatusIcons.onScale = function onScale() {
+	resetElementsPosition();
+};
+
+/**
  * Stop rendering icons
  */
 StatusIcons.onRemove = function onRemove() {
@@ -91,13 +98,21 @@ StatusIcons.clean = function clean() {
 };
 
 /**
+ * Status icons a mod gives its own statuses: servers keep these numbers for
+ * mods (DB/Status/StateIconMods.js), and send the status's stacks as val1.
+ */
+const MOD_ICON_FIRST = 20000;
+const MOD_ICON_LAST = 22999;
+
+/**
  * Update icon on screen
  *
  * @param {number} status id
  * @param {number} enable/disable
  * @param {number} life time
+ * @param {number} [val1] - the status's first value; for a mod's icon, its stacks
  */
-StatusIcons.update = function update(index, state, life) {
+StatusIcons.update = function update(index, state, life, val1) {
 	// Not in DB, no icons...
 	if (!(index in StatusTable) || !StatusTable[index].icon) {
 		return;
@@ -123,6 +138,9 @@ StatusIcons.update = function update(index, state, life) {
 	if (life === 9999) {
 		_status[index].end = Infinity;
 	}
+
+	// A mod's icon shows how many stacks it holds, from two up.
+	_status[index].count = index >= MOD_ICON_FIRST && index <= MOD_ICON_LAST && val1 > 1 ? val1 : 0;
 
 	// Image already loaded.
 	//
@@ -213,8 +231,11 @@ function resetElementsPosition() {
 	let x = 0;
 	let y = 0;
 
+	// The screen height left below the icons, in window units (UI/UIScale.js)
+	const height = (Renderer.height - 166) / StatusIcons.scale;
+
 	for (let i = 0; i < count; ++i, y += 36) {
-		if (y > Renderer.height - 166) {
+		if (y > height) {
 			y = 0;
 			x += 45;
 		}
@@ -305,7 +326,8 @@ function createElement(index) {
 function addElement(element) {
 	const root = StatusIcons.getRoot();
 	const elements = root.querySelectorAll('.state');
-	const max = ((Renderer.height - 166) / 36) | 0;
+	// The screen height left below the icons, in window units (UI/UIScale.js)
+	const max = Math.max(1, ((Renderer.height - 166) / StatusIcons.scale / 36) | 0);
 	const count = elements.length;
 	const x = ((count / max) | 0) * 45;
 	const y = (count % max) * 36;
@@ -355,6 +377,18 @@ function renderStatus(status, now) {
 	ctx.arc(16, 16, 24, 1.5 * Math.PI, ((1.5 + perc * 2) % 2) * Math.PI);
 	ctx.lineTo(16, 16);
 	ctx.fill();
+
+	// The stacks, in the bottom right corner, as an item's amount is shown.
+	if (status.count) {
+		ctx.font = 'bold 11px Arial';
+		ctx.textAlign = 'right';
+		ctx.textBaseline = 'bottom';
+		ctx.lineWidth = 3;
+		ctx.strokeStyle = 'black';
+		ctx.strokeText(String(status.count), 31, 32);
+		ctx.fillStyle = 'white';
+		ctx.fillText(String(status.count), 31, 32);
+	}
 
 	if (status.time && status.timeTick + 1000 < now) {
 		status.timeTick = now;

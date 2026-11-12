@@ -31,11 +31,13 @@ export default Preferences.get(
 		lightmap: true,
 
 		/**
-		 * Posterize lightmap ?
+		 * How the map's baked light is drawn: 0 posterized into 16 steps, as the
+		 * original client does (visible bands across lit floors); 1 smooth;
+		 * 2 smooth with a slight gamma curve.
 		 *
-		 * Toggle using "/smoothlight" in the chatbox
+		 * Set in Graphics Settings, or cycle with "/smoothlight" in the chatbox.
 		 */
-		smoothlight: 0,
+		smoothlight: 1,
 
 		/**
 		 * Display effects ?
@@ -64,6 +66,14 @@ export default Preferences.get(
 		 * Toggle using "/aura" or "/aura2" in the chatbox
 		 */
 		aura: 1,
+
+		/**
+		 * Draw only the player's own footprint hat effects, as the official
+		 * client's "View my footprints only" does.
+		 *
+		 * Set in Graphics Settings.
+		 */
+		footprintmine: false,
 
 		/**
 		 * Display different font style ?

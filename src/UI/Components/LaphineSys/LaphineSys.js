@@ -21,6 +21,8 @@ import KEYS from 'Controls/KeyEventHandler.js';
 import htmlText from './LaphineSys.html?raw';
 import cssText from './LaphineSys.css?raw';
 import PACKET from 'Network/PacketStructure.js';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
+import whenDrawn from 'UI/WhenDrawn.js';
 
 /**
  * Create Component
@@ -199,7 +201,10 @@ LaphineSys.init = function init() {
 	});
 
 	// Setting scrollbar styles inside shadow DOM
-	Client.loadFiles(
+	// Fetched when the window is first drawn, not on entering the map
+	// (UI/WhenDrawn.js).
+	const loadFiles = (files, callback) => whenDrawn(this._host, () => Client.loadFiles(files, callback));
+	loadFiles(
 		[
 			DB.INTERFACE_PATH + 'lapine/scrollbar_bg_btm.bmp',
 			DB.INTERFACE_PATH + 'lapine/scrollbar_bg_mid.bmp',
@@ -277,14 +282,14 @@ function onOpenLaphineUI(pkt) {
  * Updates the Laphine UI with the current state information.
  */
 function onUpdateLaphineUI() {
-	const item = Inventory.getUI().getItemById(LaphineUIState.itemId);
+	const item = Inventory.getItemById(LaphineUIState.itemId);
 
 	if (!item) {
 		return false;
 	}
 
 	const root = _root();
-	root.querySelector('.item_text').textContent = DB.getItemName(item);
+	root.querySelector('.item_text').innerHTML = sanitizeHtml(DB.getItemName(item));
 	root.querySelector('.mat_info_list').textContent = LaphineUIState.needSourceString;
 	root.querySelector('.mat_count_needed').textContent = LaphineUIState.needCount;
 }
@@ -297,7 +302,7 @@ function onUpdateLaphineUI() {
  */
 function GetInventoryItemsById(id) {
 	const items = [];
-	const list = Inventory.getUI().list;
+	const list = Inventory.list;
 
 	for (let i = 0, count = list.length; i < count; ++i) {
 		if (list[i].ITID === id) {
@@ -414,7 +419,7 @@ function onItemSelect(e) {
 	}
 
 	const idx = parseInt(this.getAttribute('data-index'), 10);
-	const item = Inventory.getUI().getItemByIndex(idx);
+	const item = Inventory.getItemByIndex(idx);
 
 	if (!item) {
 		e.preventDefault();
@@ -451,7 +456,7 @@ function onSubmitItem() {
 		idx = parseInt(this.getAttribute('data-index'), 10);
 	}
 
-	const item = Inventory.getUI().getItemByIndex(idx);
+	const item = Inventory.getItemByIndex(idx);
 
 	if (!item) {
 		return;
@@ -568,7 +573,7 @@ function adjustSubmittedMatList() {
  */
 function onItemRemove() {
 	const idx = parseInt(this.getAttribute('data-index'), 10);
-	const item = Inventory.getUI().getItemByIndex(idx);
+	const item = Inventory.getItemByIndex(idx);
 
 	if (item) {
 		onRemoveItemSubmitList(item, this);
@@ -614,7 +619,7 @@ function updateAvailableMatList(itemId, itemIndex, countChange, increase) {
 
 	availableMatList.querySelectorAll('.item').forEach(el => {
 		const idx = parseInt(el.getAttribute('data-index'), 10);
-		const item = Inventory.getUI().getItemByIndex(idx);
+		const item = Inventory.getItemByIndex(idx);
 
 		if (item.ITID === itemId && idx === itemIndex) {
 			itemExists = true;
@@ -647,7 +652,7 @@ function updateAvailableMatList(itemId, itemIndex, countChange, increase) {
 	});
 
 	if (increase && !itemExists) {
-		const item = Inventory.getUI().getItemByIndex(itemIndex);
+		const item = Inventory.getItemByIndex(itemIndex);
 		if (item) {
 			const inventory_count = item.type === ItemType.WEAPON || item.type === ItemType.ARMOR ? 1 : item.count;
 			const sourceItem = LaphineUIState.sourceItems.find(si => si.id === itemId);
@@ -704,7 +709,7 @@ function onRequestSynthesis() {
  */
 function onItemOver() {
 	const idx = parseInt(this.getAttribute('data-index'), 10);
-	const item = Inventory.getUI().getItemByIndex(idx);
+	const item = Inventory.getItemByIndex(idx);
 
 	if (!item) {
 		return;
@@ -729,7 +734,7 @@ function onItemOver() {
 	overlay.style.display = 'block';
 	overlay.style.top = `${top}px`;
 	overlay.style.left = `${left}px`;
-	overlay.textContent = DB.getItemName(item);
+	overlay.innerHTML = sanitizeHtml(DB.getItemName(item));
 
 	if (item.IsIdentified) {
 		overlay.classList.remove('grey');
@@ -759,7 +764,7 @@ function stopPropagation(event) {
  */
 function onItemDragStart(event) {
 	const index = parseInt(this.getAttribute('data-index'), 10);
-	const item = Inventory.getUI().getItemByIndex(index);
+	const item = Inventory.getItemByIndex(index);
 
 	if (!item) {
 		return;
@@ -815,7 +820,8 @@ function onSubmitItemDrop(event) {
 		return;
 	}
 
-	if (data.type !== 'item') {
+	// A worn item has to come off before it can be exchanged.
+	if (data.type !== 'item' || data.from === 'Equipment') {
 		return;
 	}
 
@@ -878,7 +884,7 @@ function onItemInfo(event) {
 	event.preventDefault();
 
 	const idx = parseInt(this.getAttribute('data-index'), 10);
-	const item = Inventory.getUI().getItemByIndex(idx);
+	const item = Inventory.getItemByIndex(idx);
 
 	if (!item) {
 		return;
@@ -900,9 +906,9 @@ function onItemInfo(event) {
 	ItemInfo.uid = item.ITID;
 	ItemInfo.setItem(item);
 
-	const compareItem = Equipment.getUI().isInEquipList(item.location);
+	const compareItem = Equipment.isInEquipList(item.location);
 
-	if (compareItem && Inventory.getUI().itemcomp) {
+	if (compareItem && Inventory.itemcomp) {
 		ItemCompare.prepare();
 		ItemCompare.append();
 		ItemCompare.uid = compareItem.ITID;

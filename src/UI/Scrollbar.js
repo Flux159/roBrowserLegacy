@@ -11,6 +11,8 @@
 import Texture from 'Utils/Texture.js';
 import DB from 'DB/DBManager.js';
 import Client from 'Core/Client.js';
+import UIScale from 'UI/UIScale.js';
+import WheelSteps from 'UI/WheelSteps.js';
 
 /**
  * ScrollBar Namespace
@@ -169,8 +171,23 @@ class ScrollBar {
 	 * @param {HTMLElement} element
 	 */
 	static applyDOMScrollbar(element) {
+		if (!ScrollBar.complete) {
+			setTimeout(() => {
+				ScrollBar.applyDOMScrollbar(element);
+			}, 100);
+			return;
+		}
+
+		const shadowRoot = element.getRootNode();
+		if (shadowRoot instanceof ShadowRoot && !shadowRoot.querySelector('style[data-scrollbar]')) {
+			const scrollbarStyle = document.createElement('style');
+			scrollbarStyle.setAttribute('data-scrollbar', '');
+			scrollbarStyle.textContent = ScrollBar._cssText;
+			shadowRoot.appendChild(scrollbarStyle);
+		}
+
 		if (element._roScrollbarApplied) {
-			const wrapper = element.querySelector(':scope > .ro-custom-scrollbar');
+			const wrapper = Array.from(element.children).find(child => child.classList.contains('ro-custom-scrollbar'));
 			if (!wrapper) {
 				element._roScrollbarApplied = false;
 			} else {
@@ -188,21 +205,7 @@ class ScrollBar {
 			}
 		}
 
-		if (!ScrollBar.complete) {
-			setTimeout(() => {
-				ScrollBar.applyDOMScrollbar(element);
-			}, 100);
-			return;
-		}
-
 		element._roScrollbarApplied = true;
-		const shadowRoot = element.getRootNode();
-		if (shadowRoot instanceof ShadowRoot && !shadowRoot.querySelector('style[data-scrollbar]')) {
-			const scrollbarStyle = document.createElement('style');
-			scrollbarStyle.setAttribute('data-scrollbar', '');
-			scrollbarStyle.textContent = ScrollBar._cssText;
-			shadowRoot.appendChild(scrollbarStyle);
-		}
 
 		const skinName = element.dataset.scrollbarSkin || 'default';
 		const skin = ScrollBar.skins[skinName] || ScrollBar.skins['default'];
@@ -390,8 +393,14 @@ class ScrollBar {
 				return;
 			}
 
-			const delta = e.deltaY > 0 ? 1 : -1;
-			element.scrollTop += delta * 20;
+			// The window's own wheel handler already scrolled it by whole rows;
+			// adding this window-agnostic step too left the list between rows.
+			if (e.defaultPrevented) {
+				e.stopPropagation();
+				return;
+			}
+
+			element.scrollTop += WheelSteps.steps(e, element) * 20;
 
 			updateThumb();
 			e.preventDefault();
@@ -436,7 +445,8 @@ class ScrollBar {
 			const maxScrollTop = sh - h;
 			const maxThumbTop = trackHeight - thumbHeight;
 
-			const deltaY = e.clientY - startY;
+			// Pointer moves on screen; the thumb moves inside a window that may be scaled
+			const deltaY = (e.clientY - startY) / UIScale.ofElement(thumb);
 			const newThumbTop = Math.max(0, Math.min(startThumbY + deltaY, maxThumbTop));
 
 			const percentage = newThumbTop / maxThumbTop;

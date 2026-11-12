@@ -20,6 +20,7 @@ import MakeModelMessage from 'UI/Components/MakeItemSelection/ItemConvertSelecti
 import 'UI/Elements/Elements.js';
 import htmlText from './ConvertItems.html?raw';
 import cssText from './ConvertItems.css?raw';
+import WheelSteps from 'UI/WheelSteps.js';
 
 /**
  * @var {Preference} structure to save
@@ -494,19 +495,8 @@ function stopPropagation(event) {
  * Update scroll by block (32px)
  */
 function onScroll(event) {
-	let delta;
-
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) {
-			delta = -delta;
-		}
-	} else if (event.detail) {
-		delta = -event.detail;
-	}
-
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
-	return false;
+	WheelSteps.scrollRows(event, this, 32);
+	event.preventDefault();
 }
 
 /**
@@ -529,7 +519,7 @@ function onItemOver() {
 	overlay.style.display = 'block';
 	overlay.style.top = `${rect.top - hostRect.top - 10}px`;
 	overlay.style.left = `${rect.left - hostRect.left + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = _sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 
 	if (item.IsIdentified) {
 		overlay.classList.remove('grey');

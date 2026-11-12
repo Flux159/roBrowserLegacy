@@ -10440,6 +10440,14 @@ SkillInfo[SK.SU_CN_METEOR] = {
 	AttackRange: [9, 9, 9, 9, 9],
 	_NeedSkillList: [[SK.SU_SV_ROOTTWIST, 3]]
 };
+SkillInfo[SK.SU_CN_METEOR2] = {
+	Name: 'SU_CN_METEOR2',
+	SkillName: 'CN Meteor',
+	MaxLv: 5,
+	SpAmount: [0, 0, 0, 0, 0],
+	bSeperateLv: false,
+	AttackRange: [9, 9, 9, 9, 9]
+};
 SkillInfo[SK.SU_CN_POWDERING] = {
 	Name: 'SU_CN_POWDERING',
 	SkillName: 'CN Powdering',
@@ -10484,6 +10492,14 @@ SkillInfo[SK.SU_LUNATICCARROTBEAT] = {
 	bSeperateLv: true,
 	AttackRange: [9, 9, 9, 9, 9],
 	_NeedSkillList: [[SK.SU_SCAROFTAROU, 3]]
+};
+SkillInfo[SK.SU_LUNATICCARROTBEAT2] = {
+	Name: 'SU_LUNATICCARROTBEAT2',
+	SkillName: 'Lunatic Carrot Beat',
+	MaxLv: 5,
+	SpAmount: [0, 0, 0, 0, 0],
+	bSeperateLv: false,
+	AttackRange: [9, 9, 9, 9, 9]
 };
 SkillInfo[SK.SU_POWEROFSEA] = {
 	Name: 'SU_POWEROFSEA',

@@ -27,6 +27,7 @@ import InputBox from 'UI/Components/InputBox/InputBox.js';
 import ItemInfo from 'UI/Components/ItemInfo/ItemInfo.js';
 import CartItems from 'UI/Components/CartItems/CartItems.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
+import WheelSteps from 'UI/WheelSteps.js';
 
 export function createStorage(config) {
 	const {
@@ -57,6 +58,8 @@ export function createStorage(config) {
 	const _list = [];
 
 	let _openFilters = {};
+
+	let _searchTerm = '';
 
 	const _preferences = Preferences.get(
 		'Storage',
@@ -130,6 +133,20 @@ export function createStorage(config) {
 			if (searchBtn) {
 				searchBtn.addEventListener('mousedown', e => e.stopImmediatePropagation());
 				searchBtn.addEventListener('click', () => Component.onSearch());
+			}
+
+			// Enter is handled on the input itself, not in onKeyDown: that listener is
+			// on window and sees every Enter while the window is open, and ChatBox's
+			// runs first and takes focus to open the chat. Stopping here keeps both off it.
+			const searchInput = root.querySelector('#storage-search-input');
+			if (searchInput) {
+				searchInput.addEventListener('keydown', e => {
+					if (e.which === KEYS.ENTER || e.key === 'Enter') {
+						e.preventDefault();
+						e.stopPropagation();
+						Component.onEnterPressed();
+					}
+				});
 			}
 		}
 
@@ -212,7 +229,8 @@ export function createStorage(config) {
 
 		_preferences.y = parseInt(this._host.style.top, 10);
 		_preferences.x = parseInt(this._host.style.left, 10);
-		_preferences.height = Math.floor((this._host.getBoundingClientRect().height - (31 + 19 - 30)) / 32);
+		// Layout height: the window may be drawn scaled (UI/UIScale.js)
+		_preferences.height = Math.floor((this._host.offsetHeight - (31 + 19 - 30)) / 32);
 		_preferences.save();
 
 		if (hasFilters) {
@@ -248,6 +266,10 @@ export function createStorage(config) {
 			if (_openFilters[itemTab]) {
 				_openFilters[itemTab].addItem(item);
 			}
+		}
+
+		if (hasSearch && _openFilters[ItemType.SEARCH] && matchesSearch(item)) {
+			_openFilters[ItemType.SEARCH].addItem(item);
 		}
 
 		if (i > -1) {
@@ -383,12 +405,6 @@ export function createStorage(config) {
 				Component.onClosePressed();
 			}
 		}
-
-		if (hasSearch && (event.which === KEYS.ENTER || event.key === 'Enter')) {
-			if (typeof Component.onEnterPressed === 'function') {
-				Component.onEnterPressed();
-			}
-		}
 	};
 
 	if (hasSearch) {
@@ -398,11 +414,9 @@ export function createStorage(config) {
 			if (!searchInput) {
 				return;
 			}
-			const searchTerm = searchInput.value.toLowerCase();
+			_searchTerm = searchInput.value.toLowerCase();
 
-			const filteredItems = _list.filter(item => {
-				return DB.getItemName(item).toLowerCase().indexOf(searchTerm) > -1;
-			});
+			const filteredItems = _list.filter(matchesSearch);
 
 			if (!_openFilters[ItemType.SEARCH]) {
 				const newFilter = new StorageFilter(ItemType.SEARCH);
@@ -424,6 +438,13 @@ export function createStorage(config) {
 				_openFilters[ItemType.SEARCH].setItems('Search', filteredItems, ItemType.SEARCH);
 			}
 		};
+
+		// Enter in the search box calls this hook. Nothing ever defined it, so
+		// pressing Enter did nothing at all. Default it to the search, the way
+		// onClosePressed is defaulted below; an override can still replace it.
+		Component.onEnterPressed = function onEnterPressed() {
+			Component.onSearch();
+		};
 	}
 
 	function onResize() {
@@ -432,7 +453,8 @@ export function createStorage(config) {
 
 		function resizing() {
 			const extraY = 31 + 19 - 30;
-			let h = Math.floor((Mouse.screen.y - top - extraY) / 32);
+			// Screen distance to window distance (UI/UIScale.js)
+			let h = Math.floor(((Mouse.screen.y - top) / Component.scale - extraY) / 32);
 			h = Math.min(Math.max(h, 8), 17);
 
 			if (h === lastHeight) {
@@ -548,6 +570,10 @@ export function createStorage(config) {
 		}
 	}
 
+	function matchesSearch(item) {
+		return DB.getItemName(item).toLowerCase().includes(_searchTerm);
+	}
+
 	function getItemIndexById(index) {
 		for (let i = 0, count = _list.length; i < count; ++i) {
 			if (_list[i].index === index) {
@@ -558,17 +584,7 @@ export function createStorage(config) {
 	}
 
 	function onScroll(event, contentEl) {
-		let delta;
-
-		if (event.wheelDelta) {
-			delta = event.wheelDelta / 120;
-		} else if (event.detail) {
-			delta = -event.detail;
-		} else if (event.deltaY) {
-			delta = -event.deltaY / 100;
-		}
-
-		contentEl.scrollTop = Math.floor(contentEl.scrollTop / 32) * 32 - delta * 32;
+		WheelSteps.scrollRows(event, contentEl, 32);
 		event.preventDefault();
 	}
 
@@ -616,7 +632,8 @@ export function createStorage(config) {
 		const overlay = root.querySelector('.overlay');
 		if (overlay) {
 			overlay.textContent = title;
-			const height = Component._host.getBoundingClientRect().height;
+			// Layout height: the window may be drawn scaled (UI/UIScale.js)
+			const height = Component._host.offsetHeight;
 			overlay.style.top = `${height - 50}px`;
 			overlay.style.left = `${button.offsetLeft}px`;
 			overlay.style.display = '';
@@ -723,7 +740,7 @@ export function createStorage(config) {
 	}
 
 	Component.transferItemToOtherUI = function transferItemToOtherUI(item) {
-		const isInventoryOpen = Inventory.getUI().ui ? Inventory.getUI().ui.is(':visible') : false;
+		const isInventoryOpen = Inventory.ui ? Inventory.ui.is(':visible') : false;
 		const isCartOpen = CartItems.ui ? CartItems.ui.is(':visible') : false;
 
 		if (!item) {
@@ -739,6 +756,16 @@ export function createStorage(config) {
 		}
 
 		return true;
+	};
+
+	/**
+	 * The open tab (Component.TAB), its place among the tab buttons. The tabs
+	 * are drawn as one picture, so only this says which it is (gamepad LB / RB).
+	 *
+	 * @returns {number}
+	 */
+	Component.getTab = function getTab() {
+		return _preferences.tab;
 	};
 
 	Component.onClosePressed = function onClosedPressed() {};

@@ -238,8 +238,10 @@ WhisperBox.show = function show(nickname, bHasMessage) {
 	const offset = (this._spawnCounter % 10) * 20;
 	this._spawnCounter++;
 
-	instance._host.style.top = `${Math.min(Math.max(0, _preferences.y + offset), Renderer.height - 156)}px`;
-	instance._host.style.left = `${Math.min(Math.max(0, _preferences.x + offset), Renderer.width - 280)}px`;
+	// On-screen size: the window may be drawn scaled (UI/UIScale.js)
+	const scale = instance.scale;
+	instance._host.style.top = `${Math.min(Math.max(0, _preferences.y + offset), Renderer.height - 156 * scale)}px`;
+	instance._host.style.left = `${Math.min(Math.max(0, _preferences.x + offset), Renderer.width - 280 * scale)}px`;
 
 	this.instances[nickname] = instance;
 	return instance;
@@ -253,26 +255,12 @@ WhisperBox.show = function show(nickname, bHasMessage) {
  */
 WhisperBox.addText = function addText(nickname, text, color) {
 	const instance = this.instances[nickname] || this.show(nickname, true);
-	let override = false;
-
-	text = text.replace(/<ITEMLINK>.*?<\/ITEMLINK>|<ITEML>.*?<\/ITEML>|<ITEM>.*?<\/ITEM>/gi, match => {
-		const item = DB.parseItemLink(match);
-		if (!item) {
-			return match;
-		}
-		override = true;
-		return `<span data-item="${match}" class="item-link" style="color:#FFFF63; cursor:pointer;">&lt;${item.name}&gt;</span>`;
-	});
 
 	const contentEl = instance._contentEl;
 	const isAtBottom = contentEl.scrollHeight - contentEl.scrollTop <= contentEl.offsetHeight + 10;
 	const div = document.createElement('div');
 	div.style.color = color || '#ffffff';
-	if (override) {
-		div.innerHTML = text;
-	} else {
-		div.textContent = text;
-	}
+	div.innerHTML = ChatBox.messageToHTML(text);
 
 	contentEl.appendChild(div);
 
@@ -375,9 +363,11 @@ function initResizable(instance) {
 	}
 
 	const resize = e => {
+		// Screen distance to window distance (UI/UIScale.js)
 		const rect = instance._host.getBoundingClientRect();
-		const width = Math.max(150, e.pageX - rect.left);
-		const height = Math.max(100, e.pageY - rect.top);
+		const scale = instance.scale;
+		const width = Math.max(150, (e.pageX - rect.left) / scale);
+		const height = Math.max(100, (e.pageY - rect.top) / scale);
 
 		instance._host.style.width = `${width}px`;
 		instance._host.style.height = `${height}px`;

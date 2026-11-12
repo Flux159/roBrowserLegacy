@@ -11,12 +11,146 @@
 import FileManager from 'Core/FileManager.js';
 
 /**
+ * The files of one map load, each loaded once, by whichever step asks first.
+ * The map loads in steps (world, altitude, ground, ground textures, models,
+ * model textures), and each used to ask for its files only when the step
+ * before had finished: over a remote link, a round trip per step with the
+ * connection idle. Asking for a later step's files as soon as their names are
+ * known lets them arrive while the earlier steps still run; the steps still
+ * run in the same order.
+ *
+ * At most `limit` files load at once across all the steps, as when each step
+ * ran alone. A file a step is waiting for goes before one asked for early.
+ */
+class MapFiles {
+	/**
+	 * @param {number} limit - files loading at once
+	 */
+	constructor(limit) {
+		this.limit = limit;
+		this.running = 0;
+		this.closed = false;
+		this.files = new Map(); // filename to entry, until a step takes it
+		this.needed = []; // entries a step waits for
+		this.early = []; // entries asked for early
+	}
+
+	/**
+	 * Ask for a file before a step needs it.
+	 *
+	 * @param {string} filename
+	 * @returns {Promise} the loaded file
+	 */
+	request(filename) {
+		if (this.closed) {
+			return Promise.resolve(null);
+		}
+
+		let entry = this.files.get(filename);
+		if (!entry) {
+			entry = this._entry(filename);
+			this.files.set(filename, entry);
+			this.early.push(entry);
+			this._run();
+		}
+		return entry.promise;
+	}
+
+	/**
+	 * The file, for the one step that uses it. An image comes as a blob URL,
+	 * and Texture.load revokes it once the image has loaded, so two steps must
+	 * not share one: a texture the ground and a model both use would load for
+	 * whichever came first and never for the other. A later step that needs
+	 * the same file asks again, and gets its own.
+	 *
+	 * @param {string} filename
+	 * @returns {Promise} the loaded file
+	 */
+	take(filename) {
+		let entry = this.files.get(filename);
+		if (entry) {
+			this.files.delete(filename);
+			const index = this.early.indexOf(entry);
+			if (index !== -1) {
+				this.early.splice(index, 1);
+				this.needed.push(entry);
+			}
+		} else {
+			entry = this._entry(filename);
+			this.needed.push(entry);
+		}
+		this._run();
+		return entry.promise;
+	}
+
+	/**
+	 * The load is over, done or failed: ask for nothing more, and free the
+	 * blob URLs of files no step took, now or when they arrive.
+	 */
+	close() {
+		this.closed = true;
+		this.needed.length = 0;
+		this.early.length = 0;
+		for (const entry of this.files.values()) {
+			entry.dropped = true;
+			if (entry.done) {
+				release(entry.data);
+			}
+		}
+		this.files.clear();
+	}
+
+	_entry(filename) {
+		const entry = { filename, done: false, dropped: false, data: null };
+		entry.promise = new Promise(resolve => (entry.resolve = resolve));
+		return entry;
+	}
+
+	_run() {
+		while (!this.closed && this.running < this.limit) {
+			const entry = this.needed.shift() || this.early.shift();
+			if (!entry) {
+				return;
+			}
+
+			this.running++;
+			FileManager.load(entry.filename, data => {
+				this.running--;
+				entry.done = true;
+				entry.data = data;
+				if (entry.dropped) {
+					release(data);
+				}
+				entry.resolve(data);
+				this._run();
+			});
+		}
+	}
+}
+
+/**
+ * Free a loaded file no step will use.
+ *
+ * @param {*} data
+ */
+function release(data) {
+	if (typeof data === 'string' && data.startsWith('blob:')) {
+		URL.revokeObjectURL(data);
+	}
+}
+
+/**
  * Helper to load list
  *
  * @param {array} file list to load
  */
 class Loader {
-	constructor(list) {
+	/**
+	 * @param {Array} list of files to load
+	 * @param {MapFiles} requests - the map's files
+	 */
+	constructor(list, requests) {
+		this.requests = requests;
 		this.files = list;
 		this.list = list.slice(0);
 		this.offset = 0;
@@ -66,7 +200,7 @@ class Loader {
 		}
 
 		const filename = this.list.shift();
-		FileManager.load(filename, data => {
+		this.requests.take(filename).then(data => {
 			// Store the result
 			this.out[this.files.indexOf(filename)] = data;
 			this.offset++;
@@ -94,6 +228,19 @@ class Loader {
 		});
 	}
 }
+/**
+ * A file name as read from a map: CP949 bytes in a binary string. As text,
+ * for comparing with the names mods give (MapHooks).
+ */
+function decodeName(name) {
+	const text = String(name || '');
+	try {
+		return new TextDecoder('euc-kr').decode(Uint8Array.from(text, c => c.charCodeAt(0) & 0xff));
+	} catch {
+		return text;
+	}
+}
+
 /**
  * MapLoader constructor
  *
@@ -150,6 +297,8 @@ class MapLoader {
 		this.setProgress(0);
 
 		const loader = this;
+		// The same limit as Loader.parallelDownload
+		const requests = (this.requests = new MapFiles(6));
 		let world;
 
 		//  Get file path (if it's a copy of a file)
@@ -171,26 +320,43 @@ class MapLoader {
 			world = resourceWorld;
 			loader.setProgress(1);
 
+			// Ask for the ground now, while the altitude loads. Once it arrives,
+			// ask for its textures, which are needed first, then the models.
+			const ground = requests.request(`data\\${getFilePath(world.files.gnd)}`).then(resourceGround => {
+				for (const texture of resourceGround?.textures || []) {
+					requests.request(`data\\texture\\${texture}`);
+				}
+				for (const model of world.models) {
+					requests.request(`data\\model\\${model.filename}`);
+				}
+				return resourceGround;
+			});
+
 			// Load Altitude
-			FileManager.load(`data\\${getFilePath(world.files.gat)}`, onAltitudeReady);
+			requests.request(`data\\${getFilePath(world.files.gat)}`).then(altitude => {
+				if (onAltitudeReady(altitude)) {
+					ground.then(onGroundReady);
+				}
+			});
 		}
 
 		// Loading altitude
 		function onAltitudeReady(altitude) {
 			if (!altitude) {
+				requests.close();
 				loader.onload(false, `Can't find file "${world.files.gat}" !`);
-				return;
+				return false;
 			}
 
 			loader.setProgress(2);
 			loader.ondata('MAP_ALTITUDE', altitude.compile());
-
-			FileManager.load(`data\\${getFilePath(world.files.gnd)}`, onGroundReady);
+			return true;
 		}
 
 		// Load ground
 		function onGroundReady(ground) {
 			if (!ground) {
+				requests.close();
 				loader.onload(false, `Can't find file "${world.files.gnd}" !`);
 				return;
 			}
@@ -213,6 +379,10 @@ class MapLoader {
 			}
 
 			// Loading Gound and Water textures
+			// The names, before they become the loaded files' URLs: what the
+			// ground's textures are called says what a tile is (grass, for
+			// a hook that draws it: Renderer/MapHooks.js).
+			compiledGround.textureNames = compiledGround.textures.slice();
 			loader.loadGroundTextures(world, compiledGround, function onLoaded(waters, textures) {
 				world.water.images = waters;
 				compiledGround.textures = textures;
@@ -254,7 +424,7 @@ class MapLoader {
 		}
 
 		// Start loading
-		const loader = new Loader(textures);
+		const loader = new Loader(textures, this.requests);
 
 		// On progress
 		loader.onprogress = () => {
@@ -290,7 +460,7 @@ class MapLoader {
 			}
 		}
 
-		const loader = new Loader(files);
+		const loader = new Loader(files, this.requests);
 
 		// Update the progressbar
 		loader.onprogress = () => {
@@ -339,10 +509,33 @@ class MapLoader {
 		const progress = this.progress;
 		const models = [];
 		const animatedModels = [];
+		const replaced = [];
+		const replace = this.replaceModels;
 
 		bufferSize = 0;
 
 		for (i = 0, count = objects.length; i < count; ++i) {
+			// A hook draws this model in the client's place (MapHooks): send its
+			// placements and size, and leave it out of the merged mesh.
+			const name = decodeName(objects[i].filename)
+				.replace(/^data\\model\\/i, '')
+				.replace(/\\/g, '/')
+				.toLowerCase();
+			if (replace && replace.has(name)) {
+				const box = objects[i].box;
+				replaced.push({
+					name,
+					// Each placement maps the model's own space to the world. In
+					// it the model stands on the origin, centred, up being -y.
+					instances: objects[i].instances.map(matrix => Array.from(matrix)),
+					height: box.max[1] - box.min[1],
+					width: box.range[0] * 2,
+					depth: box.range[2] * 2
+				});
+				this.setProgress(progress + (((100 - progress) / count) * (i + 1)) / 2);
+				continue;
+			}
+
 			// Check if this model has animation - skip static compilation
 			if (objects[i].hasAnimation && objects[i].hasAnimation()) {
 				animatedModels.push(objects[i]);
@@ -372,6 +565,10 @@ class MapLoader {
 
 		// Store animated models for later
 		this._animatedModels = animatedModels;
+
+		if (replaced.length) {
+			this.ondata('MAP_REPLACED_MODELS', replaced);
+		}
 
 		// Merge mesh
 		this.mergeMeshes(models, bufferSize);
@@ -428,7 +625,7 @@ class MapLoader {
 		}
 
 		// Load texture
-		const loader = new Loader(textures);
+		const loader = new Loader(textures, this.requests);
 
 		// On Progress
 		loader.onprogress = (index, _count) => {
@@ -455,6 +652,7 @@ class MapLoader {
 				this.sendAnimatedModels(this._animatedModels);
 			}
 
+			this.requests.close();
 			this.onload(true);
 		};
 

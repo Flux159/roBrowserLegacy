@@ -22,6 +22,7 @@ import cssText from './WriteRodex.css?raw';
 import InputBox from 'UI/Components/InputBox/InputBox.js';
 import Rodex from 'UI/Components/Rodex/Rodex.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create Component
@@ -123,7 +124,7 @@ WriteRodex.characterInfo = function characterInfo(pkt) {
 
 	const baloon = root.querySelector('.baloon');
 	baloon.innerHTML = text;
-	baloon.style.display = '';
+	baloon.style.display = 'block';
 
 	const nameInput = root.querySelector('.name');
 	nameInput.type = 'none';
@@ -431,7 +432,7 @@ function onItemOver(event) {
 	overlay.style.display = '';
 	overlay.style.top = `${pos.top}px`;
 	overlay.style.left = `${pos.left + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${item.count || 1} ea`;
+	overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${item.count || 1} ea`);
 
 	if (item.IsIdentified) {
 		overlay.classList.remove('grey');

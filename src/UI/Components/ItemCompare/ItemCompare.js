@@ -25,6 +25,7 @@ import htmlText from './ItemCompare.html?raw';
 import cssText from './ItemCompare.css?raw';
 import ItemInfo from 'UI/Components/ItemInfo/ItemInfo.js';
 import Entity from 'Renderer/Entity/Entity.js';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * @let {Sprite,Action} objects
@@ -80,9 +81,10 @@ ItemCompare.onAppend = function onAppend() {
 	// Position ItemCompare next to ItemInfo
 	if (ItemInfo._host) {
 		const itemInfoRect = ItemInfo._host.getBoundingClientRect();
-		const itemInfoWidth = itemInfoRect.width;
+		// Its own on-screen width: the two windows may be drawn at different scales (UI/UIScale.js)
+		const width = this._host.getBoundingClientRect().width;
 		this._host.style.top = `${itemInfoRect.top ? itemInfoRect.top : 200}px`;
-		this._host.style.left = `${itemInfoRect.left ? itemInfoRect.left - itemInfoWidth : 200}px`;
+		this._host.style.left = `${itemInfoRect.left ? itemInfoRect.left - width : 200}px`;
 	}
 };
 
@@ -157,7 +159,7 @@ ItemCompare.setItem = function setItem(item) {
 		} else {
 			title.classList.remove('damaged');
 		}
-		title.textContent = itemName;
+		title.innerHTML = sanitizeHtml(itemName);
 	}
 
 	if (item.Options && item.IsIdentified) {
@@ -192,7 +194,8 @@ ItemCompare.setItem = function setItem(item) {
 
 	const descInner = root.querySelector('.description-inner');
 	if (descInner) {
-		descInner.textContent = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
+		const rawDesc = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
+		descInner.innerHTML = DB.formatMsgToHtml(DB.formatDescriptionTags(_escapeHTML(rawDesc)));
 	}
 
 	// Add view button (for cards)
@@ -259,6 +262,8 @@ ItemCompare.setItem = function setItem(item) {
 	}
 
 	if (descInner) {
+		const rawDesc = item.IsIdentified ? it.identifiedDescriptionName : it.unidentifiedDescriptionName;
+		descInner.innerHTML = DB.formatMsgToHtml(_escapeHTML(rawDesc));
 		resize(descInner.offsetHeight + 45);
 	}
 };
@@ -323,7 +328,8 @@ function onResize() {
 	let lastHeight = 0;
 
 	function resizing() {
-		const h = Math.floor(Mouse.screen.y - top);
+		// Screen distance to window distance (UI/UIScale.js)
+		const h = Math.floor((Mouse.screen.y - top) / ItemCompare.scale);
 		if (h === lastHeight) {
 			return;
 		}

@@ -37,12 +37,7 @@ import WinStats from 'UI/Components/WinStats/WinStats.js';
 import GraphicsSettings from 'Preferences/Graphics.js';
 import Inventory from 'UI/Components/Inventory/Inventory.js';
 import Entity from 'Renderer/Entity/Entity.js';
-
-function escapeHTML(str) {
-	const div = document.createElement('div');
-	div.textContent = str;
-	return div.innerHTML;
-}
+import { sanitizeHtml, truncateHtml } from 'Utils/HtmlHelper.js';
 
 function getFirstChildWithTagName(element, tagName) {
 	for (let i = 0; i < element.childNodes.length; i++) {
@@ -93,6 +88,8 @@ export function createEquipment({
 	titles = false,
 	costumeConfig = false,
 	damageSkin = false,
+	wordEllipsis = false,
+	floatingTooltips = false,
 	statsDefault = true
 }) {
 	const Component = new GUIComponent(name, cssText);
@@ -125,9 +122,58 @@ export function createEquipment({
 	let switchappend;
 	let switchUIopen;
 
+	function fitTabLabels() {
+		if (!wordEllipsis) return;
+		for (const link of Object.values(tabLinks)) {
+			const label = link.querySelector('span');
+			if (!label || !link.clientWidth) continue;
+			const text = (label.dataset.fullText ??= label.textContent);
+			label.textContent = text;
+			label.classList.remove('truncated');
+			delete link.dataset.tooltip;
+			if (label.scrollWidth <= label.clientWidth) continue;
+			link.dataset.tooltip = text;
+			label.classList.add('truncated');
+			const words = text.trim().split(/\s+/);
+			while (words.length > 1) {
+				words.pop();
+				label.textContent = words.join(' ') + '...';
+				if (label.scrollWidth <= label.clientWidth) break;
+			}
+		}
+	}
+
+	function showTooltip(target, text, itemName = false) {
+		const root = Component.getRoot();
+		const overlay = root.querySelector('.overlay');
+		if (!overlay || !text) return;
+		if (itemName) overlay.innerHTML = sanitizeHtml(text);
+		else overlay.textContent = text;
+		overlay.style.display = 'block';
+		const rect = target.getBoundingClientRect();
+		const scale = Component.scale;
+		if (floatingTooltips && typeof overlay.showPopover === 'function') {
+			// The top layer escapes other windows' stacking contexts, without focusing this window.
+			overlay.style.position = 'fixed';
+			overlay.style.transform = `scale(${scale})`;
+			overlay.showPopover();
+			const bounds = overlay.getBoundingClientRect();
+			overlay.style.left = `${Math.max(0, Math.min(rect.left, window.innerWidth - bounds.width))}px`;
+			overlay.style.top = `${Math.max(0, rect.top - bounds.height - 2 * scale)}px`;
+		} else {
+			const origin = (root.querySelector('#' + name) || root).getBoundingClientRect();
+			overlay.style.position = 'absolute';
+			overlay.style.left = `${(rect.left - origin.left) / scale - 22}px`;
+			overlay.style.top = `${(rect.top - origin.top) / scale - 22}px`;
+		}
+	}
+
 	Component.init = function init() {
 		const root = Component.getRoot();
 		const canvases = root.querySelectorAll('canvas');
+		// init() can run more than once; without this the contexts accumulate
+		// and the character is drawn once per stale entry.
+		_ctx.length = 0;
 		if (canvases[0]) _ctx.push(canvases[0].getContext('2d'));
 		if (canvases[1]) _ctx.push(canvases[1].getContext('2d'));
 
@@ -155,6 +201,22 @@ export function createEquipment({
 			if (idx === 0) tabLinks[id].className = 'tab selected';
 			idx++;
 		}
+
+		if (floatingTooltips) {
+			root.querySelectorAll('[data-tooltip-id]').forEach(button => {
+				button.dataset.tooltip = DB.getMessage(Number(button.dataset.tooltipId));
+			});
+			root.addEventListener('mouseover', e => {
+				const target = e.target.closest('[data-tooltip]');
+				if (target && !target.contains(e.relatedTarget)) showTooltip(target, target.dataset.tooltip);
+			});
+			root.addEventListener('mouseout', e => {
+				const target = e.target.closest('[data-tooltip]');
+				if (target && !target.contains(e.relatedTarget)) onEquipmentOut();
+			});
+		}
+		fitTabLabels();
+		if (wordEllipsis) document.fonts?.ready.then(fitTabLabels);
 
 		idx = 0;
 		for (const id in contentDivs) {
@@ -202,6 +264,7 @@ export function createEquipment({
 		const closeBtn = root.querySelector('.titlebar .close');
 		if (closeBtn) {
 			closeBtn.addEventListener('click', () => {
+				onEquipmentOut();
 				Component._host.style.display = 'none';
 				Renderer.stop(renderCharacter);
 				hideStatus();
@@ -210,13 +273,24 @@ export function createEquipment({
 
 		const removeOptBtn = root.querySelector('.removeOption');
 		if (removeOptBtn) removeOptBtn.addEventListener('mousedown', onRemoveOption);
+		const unequipAllBtn = root.querySelector('.remove_equip');
+		if (unequipAllBtn) unequipAllBtn.addEventListener('click', onUnequipAll);
+
 		const viewStatusBtn = root.querySelector('.view_status');
 		if (viewStatusBtn) viewStatusBtn.addEventListener('mousedown', toggleStatus);
 		const showEquipBtn = root.querySelector('.show_equip');
-		if (showEquipBtn) showEquipBtn.addEventListener('mousedown', toggleEquip);
+		if (showEquipBtn) {
+			showEquipBtn.addEventListener('click', toggleEquip);
+			const label = showEquipBtn.nextElementSibling;
+			if (label?.tagName === 'SPAN') label.addEventListener('click', toggleEquip);
+		}
 		if (costumeConfig) {
 			const showCostumeBtn = root.querySelector('.show_costume');
-			if (showCostumeBtn) showCostumeBtn.addEventListener('mousedown', toggleCostume);
+			if (showCostumeBtn) {
+				showCostumeBtn.addEventListener('click', toggleCostume);
+				const label = showCostumeBtn.nextElementSibling;
+				if (label?.tagName === 'SPAN') label.addEventListener('click', toggleCostume);
+			}
 		}
 		const cartBtn = root.querySelector('.cartitems');
 		if (cartBtn) cartBtn.addEventListener('click', onCartItems);
@@ -226,6 +300,8 @@ export function createEquipment({
 		}
 
 		if (titles) {
+			const titleList = root.querySelector('#title_list');
+			if (titleList) titleList.addEventListener('click', onTitleClick);
 			this.loadTitles();
 		}
 
@@ -233,8 +309,8 @@ export function createEquipment({
 		this._host.addEventListener('dragleave', onDragLeave);
 		this._host.addEventListener('drop', onDrop);
 
-		const content = root.querySelector('.content');
-		if (content) {
+		// Every tab (general, costume, ...) is its own .content table: bind them all, not only the first
+		root.querySelectorAll('.content').forEach(content => {
 			content.addEventListener('contextmenu', e => {
 				e.preventDefault();
 				const item = e.target.closest('.item');
@@ -252,7 +328,14 @@ export function createEquipment({
 				const btn = e.target.closest('button');
 				if (btn) onEquipmentOut();
 			});
-		}
+			content.addEventListener('dragstart', e => {
+				const item = e.target.closest('.item');
+				if (item) onEquipmentDragStart.call(item, e);
+			});
+			content.addEventListener('dragend', e => {
+				if (e.target.closest('.item')) onEquipmentDragEnd();
+			});
+		});
 
 		this.draggable('.titlebar');
 
@@ -263,23 +346,15 @@ export function createEquipment({
 		if (costumeConfig) {
 			const costumeBtn2 = root.querySelector('.show_costume');
 			if (costumeBtn2) costumeBtn2.style.display = 'none';
-			const costumeSpan = costumeBtn2 ? costumeBtn2.nextElementSibling : null;
-			if (costumeSpan && costumeSpan.tagName === 'SPAN') costumeSpan.style.display = 'none';
+			const costumeLabel = costumeBtn2 ? costumeBtn2.nextElementSibling : null;
+			if (costumeLabel) costumeLabel.style.display = 'none';
 		}
 
 		if (damageSkin) {
 			// Damage Skin Settings
+			// Each button's images, the picked one as data-active, are in the
+			// HTML and set up once with the rest of the window.
 			const skinButtons = root.querySelectorAll('#damageskin .skin-option');
-			skinButtons.forEach(btn => {
-				btn.setAttribute('data-background', 'showdamage/btn_damage.bmp');
-				btn.setAttribute('data-hover', 'showdamage/btn_damage_press.bmp');
-				btn.setAttribute('data-down', 'showdamage/btn_damage_pick.bmp');
-			});
-			if (this.parseHTML) {
-				skinButtons.forEach(btn => {
-					this.parseHTML.call(btn);
-				});
-			}
 			skinButtons.forEach(btn => {
 				btn.addEventListener('mousedown', function () {
 					const skinId = parseInt(this.getAttribute('data-skin'), 10);
@@ -313,6 +388,8 @@ export function createEquipment({
 		const selectedId = getHash(this.getAttribute('href'));
 		const root = Component.getRoot();
 
+		onEquipmentOut();
+
 		for (const id in contentDivs) {
 			if (id === selectedId) {
 				tabLinks[id].className = 'tab selected';
@@ -321,6 +398,11 @@ export function createEquipment({
 				tabLinks[id].className = 'tab';
 				if (contentDivs[id]) contentDivs[id].classList.add('content', 'hide');
 			}
+		}
+
+		const unequip = root.querySelector('.remove_equip');
+		if (unequip) {
+			unequip.style.display = selectedId === 'general' || selectedId === 'costume' ? '' : 'none';
 		}
 
 		currentTabId = selectedId;
@@ -352,30 +434,30 @@ export function createEquipment({
 				if (currentTabId !== 'general') {
 					const showEquipEl = root.querySelector('.show_equip');
 					if (showEquipEl) showEquipEl.style.display = 'none';
-					const showEquipSpan = showEquipEl ? showEquipEl.nextElementSibling : null;
-					if (showEquipSpan && showEquipSpan.tagName === 'SPAN') showEquipSpan.style.display = 'none';
+					const showEquipLabel = showEquipEl ? showEquipEl.nextElementSibling : null;
+					if (showEquipLabel) showEquipLabel.style.display = 'none';
 
 					if (currentTabId === 'costume') {
 						const costumeEl = root.querySelector('.show_costume');
 						if (costumeEl) costumeEl.style.display = '';
-						const costumeSpan = costumeEl ? costumeEl.nextElementSibling : null;
-						if (costumeSpan && costumeSpan.tagName === 'SPAN') costumeSpan.style.display = '';
+						const costumeLabel = costumeEl ? costumeEl.nextElementSibling : null;
+						if (costumeLabel) costumeLabel.style.display = '';
 					} else {
 						const costumeEl = root.querySelector('.show_costume');
 						if (costumeEl) costumeEl.style.display = 'none';
-						const costumeSpan = costumeEl ? costumeEl.nextElementSibling : null;
-						if (costumeSpan && costumeSpan.tagName === 'SPAN') costumeSpan.style.display = 'none';
+						const costumeLabel = costumeEl ? costumeEl.nextElementSibling : null;
+						if (costumeLabel) costumeLabel.style.display = 'none';
 					}
 				} else {
 					const showEquipEl = root.querySelector('.show_equip');
 					if (showEquipEl) showEquipEl.style.display = '';
-					const showEquipSpan = showEquipEl ? showEquipEl.nextElementSibling : null;
-					if (showEquipSpan && showEquipSpan.tagName === 'SPAN') showEquipSpan.style.display = '';
+					const showEquipLabel = showEquipEl ? showEquipEl.nextElementSibling : null;
+					if (showEquipLabel) showEquipLabel.style.display = '';
 
 					const costumeEl = root.querySelector('.show_costume');
 					if (costumeEl) costumeEl.style.display = 'none';
-					const costumeSpan = costumeEl ? costumeEl.nextElementSibling : null;
-					if (costumeSpan && costumeSpan.tagName === 'SPAN') costumeSpan.style.display = 'none';
+					const costumeLabel = costumeEl ? costumeEl.nextElementSibling : null;
+					if (costumeLabel) costumeLabel.style.display = 'none';
 				}
 			}
 		}
@@ -400,6 +482,7 @@ export function createEquipment({
 	}
 
 	Component.onAppend = function onAppend() {
+		fitTabLabels();
 		const hostRect = this._host.getBoundingClientRect();
 		this._host.style.top = `${Math.min(Math.max(0, _preferences.y), Renderer.height - hostRect.height)}px`;
 		this._host.style.left = `${Math.min(Math.max(0, _preferences.x), Renderer.width - hostRect.width)}px`;
@@ -416,7 +499,7 @@ export function createEquipment({
 
 		if (UIVersionManager.getEquipmentVersion() > 0) {
 			if (_preferences.stats && _preferences.show) {
-				const winStats = WinStats.getUI();
+				const winStats = WinStats;
 				winStats.embed(Component._host);
 			} else {
 				Client.loadFile(DB.INTERFACE_PATH + 'basic_interface/viewon.bmp', data => {
@@ -443,6 +526,7 @@ export function createEquipment({
 	};
 
 	Component.onRemove = function onRemove() {
+		onEquipmentOut();
 		if (UIVersionManager.getEquipmentVersion() > 0 && _btnLevelUp && _btnLevelUp.parentNode) {
 			_btnLevelUp.remove();
 		}
@@ -458,7 +542,7 @@ export function createEquipment({
 		_preferences.show = this._host.style.display !== 'none';
 		const panel = root.querySelector('.panel');
 		_preferences.reduce = panel ? panel.style.display === 'none' : false;
-		const winStats = WinStats.getUI();
+		const winStats = WinStats;
 		_preferences.stats = winStats.isEmbedded();
 		hideStatus();
 		_preferences.y = parseInt(this._host.style.top, 10);
@@ -469,15 +553,17 @@ export function createEquipment({
 	Component.toggle = function toggle() {
 		if (this._host.style.display === 'none') {
 			this._host.style.display = '';
+			fitTabLabels();
 			Renderer.render(renderCharacter);
 			if (UIVersionManager.getEquipmentVersion() > 0) {
 				if (_btnLevelUp && _btnLevelUp.parentNode) _btnLevelUp.remove();
 				if (_preferences.stats) {
-					WinStats.getUI().embed(Component._host);
+					WinStats.embed(Component._host);
 				}
 			}
 			this.focus();
 		} else {
+			onEquipmentOut();
 			this._host.style.display = 'none';
 			Renderer.stop(renderCharacter);
 			hideStatus();
@@ -529,17 +615,6 @@ export function createEquipment({
 			}
 		}
 
-		function add3Dots(string, limit) {
-			function stripHTML(str) {
-				const div = document.createElement('div');
-				div.innerHTML = str;
-				return div.textContent || div.innerText || '';
-			}
-			const text = stripHTML(string);
-			if (text.length > limit) return text.substring(0, limit) + '...';
-			return text;
-		}
-
 		const root = Component.getRoot();
 		const selector = getSelectorFromLocation(location);
 		const gradeInner = enchantGrade ? '<div class="grade"></div>' : '';
@@ -547,16 +622,16 @@ export function createEquipment({
 			cell.innerHTML =
 				'<div class="item" data-index="' +
 				item.index +
-				'">' +
+				'" draggable="true">' +
 				'<button>' +
 				gradeInner +
 				'</button>' +
 				'<span class="itemName">' +
-				escapeHTML(
-					add3Dots(
-						DB.getItemName(item, { showItemGrade: false, showItemSlots: false, showItemOptions: false }),
-						25
-					)
+				truncateHtml(
+					sanitizeHtml(
+						DB.getItemName(item, { showItemGrade: false, showItemSlots: false, showItemOptions: false })
+					),
+					25
 				) +
 				'</span>' +
 				'</div>';
@@ -577,12 +652,12 @@ export function createEquipment({
 			});
 		}
 
-		if (!Inventory.getUI().equippedItems.includes(item.index)) {
-			Inventory.getUI().equippedItems.push(item.index);
+		if (!Inventory.equippedItems.includes(item.index)) {
+			Inventory.equippedItems.push(item.index);
 		}
 
 		if (switchEquip && PACKETVER.value >= 20170621) {
-			if (!Inventory.getUI().isInEquipSwitchList(location)) {
+			if (!Inventory.isInEquipSwitchList(location)) {
 				SwitchEquip.equip(item, location, false);
 			}
 		}
@@ -624,7 +699,7 @@ export function createEquipment({
 	};
 
 	function hideStatus() {
-		const winStats = WinStats.getUI();
+		const winStats = WinStats;
 		if (winStats.isEmbedded()) {
 			winStats.unembed();
 		}
@@ -633,7 +708,7 @@ export function createEquipment({
 	function toggleStatus() {
 		const root = Component.getRoot();
 		const self = root.querySelector('.view_status');
-		const winStats = WinStats.getUI();
+		const winStats = WinStats;
 		const isVisible = winStats.isEmbedded();
 		const state = isVisible ? 'on' : 'off';
 
@@ -720,13 +795,13 @@ export function createEquipment({
 				const cartBtn = root.querySelector('.cartitems');
 
 				if (_lastState & HasAttachmentState || _hasCart) {
-					if (removeOpt) removeOpt.style.display = '';
+					if (removeOpt) removeOpt.style.display = 'block';
 				} else {
 					if (removeOpt) removeOpt.style.display = 'none';
 				}
 
 				if (_lastState & HasCartState || _hasCart) {
-					if (cartBtn) cartBtn.style.display = '';
+					if (cartBtn) cartBtn.style.display = 'block';
 				} else {
 					if (cartBtn) cartBtn.style.display = 'none';
 				}
@@ -839,6 +914,11 @@ export function createEquipment({
 				}
 			}
 		}
+		// preventDefault, not `return false`: a drop only fires on a target
+		// whose dragover cancelled the event, and a falsy return from an
+		// addEventListener callback cancels nothing. Without this the window
+		// is never a drop target and onDrop below never runs.
+		event.preventDefault();
 		event.stopImmediatePropagation();
 		return false;
 	}
@@ -859,6 +939,16 @@ export function createEquipment({
 		try {
 			data = JSON.parse(event.dataTransfer.getData('Text'));
 		} catch (_e) {
+			return false;
+		}
+
+		// Already worn: a drag that started here and ended here changes nothing.
+		if (data && data.type === 'item' && data.from === 'Equipment') {
+			Component.getRoot()
+				.querySelectorAll('td')
+				.forEach(td => {
+					td.style.backgroundImage = 'none';
+				});
 			return false;
 		}
 
@@ -901,12 +991,50 @@ export function createEquipment({
 		return false;
 	}
 
+	function onUnequipAll() {
+		for (const index of Object.keys(_list)) {
+			Component.onUnEquip(Number(index));
+		}
+		onEquipmentOut();
+	}
+
 	function onEquipmentUnEquip() {
 		const index = parseInt(this.getAttribute('data-index'), 10);
 		Component.onUnEquip(index);
-		const root = Component.getRoot();
-		const overlay = root.querySelector('.overlay');
-		if (overlay) overlay.style.display = 'none';
+		onEquipmentOut();
+	}
+
+	// Dragging a worn item onto the inventory takes it off, as double-clicking
+	// does; the inventory's onDrop recognises `from: 'Equipment'`. Same payload
+	// and drag image as an inventory item, so drop targets read it the same way.
+	function onEquipmentDragStart(event) {
+		const index = parseInt(this.getAttribute('data-index'), 10);
+		const item = _list[index];
+		if (!item) return;
+
+		const img = new Image();
+		const btn = this.querySelector('button');
+		const url = btn ? btn.style.backgroundImage.match(/\((.*?)\)/)?.[1]?.replace(/('|")/g, '') : '';
+		img.decoding = 'async';
+		img.src = url || '';
+
+		event.dataTransfer.setDragImage(img, 12, 12);
+		event.dataTransfer.setData(
+			'Text',
+			JSON.stringify(
+				(window._OBJ_DRAG_ = {
+					type: 'item',
+					from: 'Equipment',
+					data: item
+				})
+			)
+		);
+
+		onEquipmentOut();
+	}
+
+	function onEquipmentDragEnd() {
+		delete window._OBJ_DRAG_;
 	}
 
 	function onEquipmentOver() {
@@ -914,27 +1042,16 @@ export function createEquipment({
 		const item = _list[idx];
 		if (!item) return;
 
-		const root = Component.getRoot();
-		const overlay = root.querySelector('.overlay');
-		const rootEl = root.querySelector('#' + name) || root;
-		const btnRect = this.getBoundingClientRect();
-		const rootRect = rootEl.getBoundingClientRect();
-		const top = btnRect.top - rootRect.top;
-		const left = btnRect.left - rootRect.left;
-		if (!top && !left) return;
-
-		if (overlay) {
-			overlay.style.display = 'block';
-			overlay.style.top = `${top - 22}px`;
-			overlay.style.left = `${left - 22}px`;
-			overlay.textContent = DB.getItemName(item);
-		}
+		showTooltip(this, DB.getItemName(item), true);
 	}
 
 	function onEquipmentOut() {
 		const root = Component.getRoot();
 		const overlay = root.querySelector('.overlay');
-		if (overlay) overlay.style.display = 'none';
+		if (overlay) {
+			if (floatingTooltips && typeof overlay.hidePopover === 'function') overlay.hidePopover();
+			overlay.style.display = 'none';
+		}
 	}
 
 	Component.onUpdateOwnerName = function () {
@@ -943,7 +1060,12 @@ export function createEquipment({
 			const item = _list[index];
 			if (item.slot && [0x00ff, 0x00fe, 0xff00].includes(item.slot.card1)) {
 				root.querySelectorAll(`.item[data-index="${index}"] .itemName`).forEach(nameEl => {
-					nameEl.textContent = DB.getItemName(item);
+					nameEl.innerHTML = truncateHtml(
+						sanitizeHtml(
+							DB.getItemName(item, { showItemGrade: false, showItemSlots: false, showItemOptions: false })
+						),
+						25
+					);
 				});
 			}
 		}
@@ -985,6 +1107,16 @@ export function createEquipment({
 		};
 	}
 
+	function onTitleClick(e) {
+		const option = e.target.closest('.title-option');
+		if (option) {
+			e.preventDefault();
+			e.stopPropagation();
+			const titleId = parseInt(option.getAttribute('data-title'));
+			Component.selectTitle(titleId);
+		}
+	}
+
 	if (titles) {
 		Component.loadTitles = function () {
 			const root = Component.getRoot();
@@ -1000,28 +1132,20 @@ export function createEquipment({
 			removeEl.textContent = removeTitleText;
 			titleList.appendChild(removeEl);
 
-			const allTitles = DB.getAllTitles();
-			for (const titleId in allTitles) {
-				if (allTitles.hasOwnProperty(titleId)) {
-					const titleName = allTitles[titleId];
-					const selectedClass = parseInt(titleId) === _currentTitleId ? ' selected' : '';
+			// Only the titles the character owns: the map-server refuses the rest.
+			// Engine/MapEngine/Achievement.js keeps this list.
+			const ownedTitles = (Session.Achievement && Session.Achievement.titles) || [];
+			ownedTitles
+				.slice()
+				.sort((a, b) => a - b)
+				.forEach(titleId => {
+					const selectedClass = titleId === _currentTitleId ? ' selected' : '';
 					const titleEl = document.createElement('div');
 					titleEl.className = `title-option${selectedClass}`;
 					titleEl.setAttribute('data-title', titleId);
-					titleEl.textContent = titleName;
+					titleEl.textContent = DB.getTitleString(titleId);
 					titleList.appendChild(titleEl);
-				}
-			}
-
-			titleList.addEventListener('click', e => {
-				const option = e.target.closest('.title-option');
-				if (option) {
-					e.preventDefault();
-					e.stopPropagation();
-					const titleId = parseInt(option.getAttribute('data-title'));
-					Component.selectTitle(titleId);
-				}
-			});
+				});
 		};
 
 		Component.selectTitle = function (titleId) {
@@ -1038,38 +1162,17 @@ export function createEquipment({
 
 	if (damageSkin) {
 		Component.setDamageSkin = function setDamageSkin(skinId) {
-			const root = Component.getRoot();
-			const buttons = root.querySelectorAll('#damageskin .skin-option');
-			const buttonSelected = root.querySelector(`#damageskin .skin-option[data-skin="${skinId}"]`);
-
 			GraphicsSettings.damageSkin = skinId;
 			GraphicsSettings.save();
 
+			// The button's data-active image shows while it has the class
+			// "active", over its hover image, so the pick stays drawn when the
+			// pointer leaves it. Setting its background here instead raced the
+			// button's own image loads and was undone on mouseout.
+			const buttons = Component.getRoot().querySelectorAll('#damageskin .skin-option');
 			buttons.forEach(btn => {
-				btn.setAttribute('data-background', 'showdamage/btn_damage.bmp');
-				btn.setAttribute('data-hover', 'showdamage/btn_damage_press.bmp');
-				btn.setAttribute('data-down', 'showdamage/btn_damage_pick.bmp');
+				btn.classList.toggle('active', parseInt(btn.getAttribute('data-skin'), 10) === skinId);
 			});
-			if (this.parseHTML) {
-				buttons.forEach(btn => {
-					this.parseHTML.call(btn);
-				});
-			}
-
-			Client.loadFile(DB.INTERFACE_PATH + 'showdamage/btn_damage.bmp', data => {
-				buttons.forEach(btn => {
-					btn.style.backgroundImage = `url(${data})`;
-				});
-			});
-
-			if (buttonSelected) {
-				Client.loadFile(DB.INTERFACE_PATH + 'showdamage/btn_damage_pick.bmp', data => {
-					buttonSelected.style.backgroundImage = `url(${data})`;
-				});
-
-				buttonSelected.onmouseover = null;
-				buttonSelected.onmouseout = null;
-			}
 		};
 
 		Component.setDamageMotion = function setDamageMotion(motionId) {

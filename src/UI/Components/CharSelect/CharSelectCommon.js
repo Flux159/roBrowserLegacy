@@ -29,6 +29,8 @@ import StatusConst from 'DB/Status/StatusState.js';
 import Camera from 'Renderer/Camera.js';
 import UIManager from 'UI/UIManager.js';
 import GUIComponent from 'UI/GUIComponent.js';
+import ScreenHooks from 'UI/ScreenHooks.js';
+import ExitHooks from 'UI/ExitHooks.js';
 import 'UI/Elements/Elements.js';
 import PACKETVER from 'Network/PacketVerManager.js';
 
@@ -110,13 +112,51 @@ export function createCharSelect(config) {
 	let _bgInterval = null;
 
 	const render = gridLayout ? renderGrid : renderPaginated;
-	const moveCursorTo = gridLayout ? moveCursorToGrid : moveCursorToPaginated;
+	const moveCursorTo = index => {
+		(gridLayout ? moveCursorToGrid : moveCursorToPaginated)(index);
+		ScreenHooks.update('charSelect');
+	};
+
+	/**
+	 * What a plugin drawing this screen sees (UI/ScreenHooks.js). The
+	 * actions are the window's own buttons, acting on the selected slot.
+	 */
+	const _screen = {
+		get characters() {
+			return _list.slice();
+		},
+		get maxSlots() {
+			return _maxSlots;
+		},
+		get index() {
+			return _index;
+		},
+		get sex() {
+			return _sex;
+		},
+		get enabled() {
+			return !_disable_UI;
+		},
+		deleteReservation: deleteReservation && (!packetverGatedDelete || PACKETVER.value >= 20100803),
+		select: slot => moveCursorTo(slot),
+		play: () => connect(),
+		create: () => create(),
+		requestDelete: () => (_screen.deleteReservation ? reserve() : suppress()),
+		cancelDelete: () => _screen.deleteReservation && removedelete(),
+		confirmDelete: () => suppress(),
+		exit: () => cancel()
+	};
 
 	/**
 	 * Initialize UI
 	 */
 	Component.init = function init() {
 		const root = this.getRoot();
+
+		// init() runs again every time character select is re-entered; without
+		// this the contexts accumulate and each character is drawn once per
+		// stale entry.
+		_ctx.length = 0;
 
 		if (gridLayout) {
 			// Bind buttons
@@ -225,13 +265,16 @@ export function createCharSelect(config) {
 			_bgInterval = setInterval(changeBackgroundEverySecond, 250);
 			// Start rendering
 			Renderer.render(render);
+			ScreenHooks.show('charSelect', _screen, this._host);
 			return;
 		}
 
 		const root = this.getRoot();
 
-		this._host.style.top = `${(Renderer.height - hostHeight) / 2}px`;
-		this._host.style.left = `${(Renderer.width - 576) / 2}px`;
+		// Centered at its on-screen size (UI/UIScale.js)
+		const scale = this.scale;
+		this._host.style.top = `${(Renderer.height - hostHeight * scale) / 2}px`;
+		this._host.style.left = `${(Renderer.width - 576 * scale) / 2}px`;
 
 		_index = _preferences.index;
 
@@ -245,12 +288,16 @@ export function createCharSelect(config) {
 
 		// Start rendering
 		Renderer.render(render);
+
+		// A plugin may draw this screen instead
+		ScreenHooks.show('charSelect', _screen, this._host);
 	};
 
 	/**
 	 * Stop rendering
 	 */
 	Component.onRemove = function onRemove() {
+		ScreenHooks.hide('charSelect');
 		if (gridLayout) {
 			if (_bgInterval) {
 				clearInterval(_bgInterval);
@@ -546,13 +593,11 @@ export function createCharSelect(config) {
 			_list.push(character);
 			_slots[character.CharNum] = character;
 
-			_entitySlots[character.CharNum] = new Entity();
-			_entitySlots[character.CharNum].set(character);
-			_entitySlots[character.CharNum].effectState =
-				_entitySlots[character.CharNum]._effectState & ~StatusConst.EffectState.INVISIBLE;
-			_entitySlots[character.CharNum].hideShadow = true;
+			_entitySlots[character.CharNum] = createSlotEntity(character);
 
 			Component.updateCharSlot(character.CharNum);
+			ScreenHooks.update('charSelect');
+			redrawWithLookTables(character);
 			return;
 		}
 
@@ -569,10 +614,7 @@ export function createCharSelect(config) {
 		_list.push(character);
 		_slots[character.CharNum] = character;
 
-		_entitySlots[character.CharNum] = new Entity();
-		_entitySlots[character.CharNum].set(character);
-		_entitySlots[character.CharNum].effectState =
-			_entitySlots[character.CharNum]._effectState & ~StatusConst.EffectState.INVISIBLE;
+		_entitySlots[character.CharNum] = createSlotEntity(character);
 
 		if (deleteReservation && (!packetverGatedDelete || PACKETVER.value >= 20100803)) {
 			if (_slots[character.CharNum].DeleteDate && Math.floor(_index / 3) === Math.floor(character.CharNum / 3)) {
@@ -593,7 +635,82 @@ export function createCharSelect(config) {
 				});
 			}
 		}
+		ScreenHooks.update('charSelect');
+		redrawWithLookTables(character);
 	};
+
+	/**
+	 * The entity drawn for a character slot.
+	 *
+	 * @param {object} character data
+	 * @return {Entity}
+	 */
+	function createSlotEntity(character) {
+		const entity = new Entity();
+		entity.set(character);
+		// Entity.set() leaves out the body style (alternative outfit).
+		if (character.body > 0) {
+			entity.body = character.body;
+		}
+		entity.effectState = entity._effectState & ~StatusConst.EffectState.INVISIBLE;
+		if (gridLayout) {
+			entity.hideShadow = true;
+		}
+		return entity;
+	}
+
+	/**
+	 * On a cold start the character list arrives before the client's database
+	 * has loaded (it otherwise starts only on entering the map), when only the
+	 * built-in HatTable/RobeTable are there: a headgear or garment look newer
+	 * than those is not found and the preview is drawn without it. Load just
+	 * those two tables and build the previews again. Not the whole database:
+	 * its item tables are parsed on this thread and froze the screen for
+	 * seconds.
+	 *
+	 * @param {object} character data
+	 */
+	let _lookTablesRequested = false;
+	function redrawWithLookTables(character) {
+		if (DB.isLoaded || _lookTablesRequested || !lookNeedsTables(character)) {
+			return;
+		}
+		_lookTablesRequested = true;
+		DB.loadLookTables()
+			.catch(error => console.error('[CharSelect] headgear and garment tables:', error))
+			.finally(() => {
+				for (let i = 0; i < _entitySlots.length; ++i) {
+					const old = _entitySlots[i];
+					if (!old || !_slots[i]) {
+						continue;
+					}
+					const entity = createSlotEntity(_slots[i]);
+					entity.setAction({
+						action: old.action,
+						frame: 0,
+						play: true,
+						repeat: true
+					});
+					_entitySlots[i] = entity;
+				}
+				ScreenHooks.update('charSelect');
+			});
+	}
+
+	/**
+	 * Whether a character wears a headgear or garment the built-in tables
+	 * have no sprite for.
+	 *
+	 * @param {object} character data
+	 * @return {boolean}
+	 */
+	function lookNeedsTables(character) {
+		const hats = [character.accessory, character.accessory2, character.accessory3];
+		return (
+			hats.some(id => id > 0 && !DB.getHatPath(id, character.sex)) ||
+			(character.Robe > 0 && !DB.getRobePath(character.Robe, character.job, character.sex))
+		);
+	}
 
 	/**
 	 * Disable or Enable the UI.
@@ -602,6 +719,7 @@ export function createCharSelect(config) {
 	 */
 	Component.setUIEnabled = function setUIEnabled(value) {
 		_disable_UI = !value;
+		ScreenHooks.update('charSelect');
 	};
 
 	/**
@@ -657,6 +775,7 @@ export function createCharSelect(config) {
 					'ok',
 					'cancel',
 					() => {
+						ExitHooks.emit('login', 'charSelect');
 						Component.onExitRequest();
 						Component.clearAllSlots();
 					},
@@ -669,6 +788,7 @@ export function createCharSelect(config) {
 					'ok',
 					'cancel',
 					() => {
+						ExitHooks.emit('login', 'charSelect');
 						Component.onExitRequest();
 					},
 					null
@@ -818,6 +938,7 @@ export function createCharSelect(config) {
 	 */
 	function requestdelete(index, timer) {
 		const root = Component.getRoot();
+		ScreenHooks.update('charSelect');
 
 		if (gridLayout) {
 			// Make it sit
@@ -880,6 +1001,7 @@ export function createCharSelect(config) {
 
 			// Delete here as well? Though server should tell us this
 			_slots[_index].DeleteDate = 0;
+			ScreenHooks.update('charSelect');
 
 			if (gridLayout) {
 				// Make it stand

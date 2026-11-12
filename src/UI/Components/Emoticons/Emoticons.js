@@ -20,6 +20,7 @@ import ChatBox from 'UI/Components/ChatBox/ChatBox.js';
 import htmlText from './Emoticons.html?raw';
 import cssText from './Emoticons.css?raw';
 import ShortCuts from 'UI/Components/ShortCuts/ShortCuts.js';
+import whenDrawn from 'UI/WhenDrawn.js';
 
 /**
  * Create Component
@@ -86,7 +87,10 @@ Emoticons.init = function init() {
 	const root = this.getRoot();
 	const contentEl = root.querySelector('.content');
 
-	Client.loadFiles(
+	// Fetched when the window is first drawn, not on entering the map
+	// (UI/WhenDrawn.js).
+	const loadFiles = (files, callback) => whenDrawn(this._host, () => Client.loadFiles(files, callback));
+	loadFiles(
 		['data/sprite/\xc0\xcc\xc6\xd1\xc6\xae/emotion.act', 'data/sprite/\xc0\xcc\xc6\xd1\xc6\xae/emotion.spr'],
 		(act, spr) => {
 			_action = act;
@@ -232,20 +236,18 @@ function onSelectEmoticon(canvas) {
 	const idx = canvas.getAttribute('data-index');
 	const cmd = EmoticonsDB.names[idx];
 	if (cmd && ShortCuts.ui.is(':visible')) {
-		if (ShortCuts.ui.find('.input_macro_focus').length) {
-			ShortCuts.ui
-				.find('.input_macro_focus')
-				.val('/' + cmd)
-				.select();
+		const macroInput = ShortCuts.getRoot().querySelector('.input_macro_focus');
+		if (macroInput) {
+			macroInput.value = '/' + cmd;
+			macroInput.select();
 			return;
 		}
 	}
 
 	if (cmd) {
-		ChatBox.ui
-			.find('.input .message')
-			.html('/' + cmd)
-			.focus();
+		const message = ChatBox.getRoot().querySelector('.input .message');
+		message.textContent = '/' + cmd;
+		message.focus();
 	}
 }
 
@@ -258,7 +260,9 @@ function onPlayEmoticon(canvas) {
 	const idx = canvas.getAttribute('data-index');
 	const cmd = EmoticonsDB.names[idx];
 
-	ChatBox.ui.find('.input .message').html('/' + cmd);
+	if (!cmd) return;
+
+	ChatBox.getRoot().querySelector('.input .message').textContent = '/' + cmd;
 	ChatBox.submit();
 }
 
@@ -273,6 +277,9 @@ function refreshList(contentEl) {
 	const pos = [0, 0];
 
 	contentEl.innerHTML = '';
+	if (!_action) {
+		return; // Still loading: drawn once it has.
+	}
 
 	while (index < end) {
 		const canvas = document.createElement('canvas');

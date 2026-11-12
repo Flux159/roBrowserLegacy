@@ -52,7 +52,14 @@ class AttachmentManager {
 
 		attachment.startTick = attachment.startTick || Renderer.tick || Date.now();
 		attachment.opacity = !isNaN(attachment.opacity) ? attachment.opacity : 1.0;
-		attachment.direction = attachment.hasOwnProperty('frame') ? false : true;
+		// An explicit `direction` decides: spamSprite passes the EffectTable flag
+		// ("the sprite will inherit character's direction"), which used to be
+		// overwritten here. Without one, a caller that names a frame wants that
+		// fixed action -- even when its lookup came back undefined, as an unknown
+		// emotion or quest icon does, which must not start following the camera.
+		if (typeof attachment.direction !== 'boolean') {
+			attachment.direction = !attachment.hasOwnProperty('frame');
+		}
 		attachment.frame = attachment.frame || 0;
 		attachment.depth = attachment.depth || 0.0;
 		attachment.head = attachment.head || false;
@@ -170,7 +177,15 @@ class AttachmentManager {
 	 * Render attachments filtered by renderBefore flag
 	 */
 	_renderFiltered(tick, renderBeforeEntity) {
-		if (!this.list.some(item => item.renderBefore === renderBeforeEntity)) {
+		// A loop, not list.some(): a callback closure per entity per frame is garbage.
+		let any = false;
+		for (let i = 0; i < this.list.length; ++i) {
+			if (this.list[i].renderBefore === renderBeforeEntity) {
+				any = true;
+				break;
+			}
+		}
+		if (!any) {
 			return;
 		}
 
@@ -243,6 +258,11 @@ class AttachmentManager {
 		}
 
 		// Render STR attachment
+		// Duration applies to STR and sprite attachments, including looping ones.
+		if (attachment.duration > 0 && tick - attachment.startTick >= attachment.duration) {
+			return true;
+		}
+
 		if (attachment.isStr && attachment.strEffect) {
 			const strEffect = attachment.strEffect;
 			// dynamic access to Renderer to avoid cycle
@@ -257,6 +277,8 @@ class AttachmentManager {
 				}
 
 				if (gl) {
+					// Sprites batched so far go first, as they would have drawn first
+					SpriteRenderer.flushBatch();
 					// Pass true for disableDepthTest since this is an entity attachment
 					StrEffect.beforeRender(gl, Camera.modelView, Camera.projection, _defaultFog, tick, true);
 					strEffect.render(gl, tick);
@@ -338,6 +360,23 @@ class AttachmentManager {
 		// Render layers with depth ordering (renderBefore behind, normal in front)
 		const self = this;
 		const zIdx = attachment.renderBefore ? 1 : 500;
+
+		// Kept for the depth-only pass before the water (renderWaterDepth):
+		// attachments write no depth here either, so an emotion or quest icon
+		// above a head with water behind it was painted over by the water.
+		const recorded = this.entity.waterDepthAttachments;
+		if (recorded) {
+			recorded.push({
+				layers,
+				spr,
+				x: _position[0],
+				y: _position[1],
+				depth: SpriteRenderer.depth,
+				zIndex: zIdx,
+				opacity: attachment.opacity,
+				position: [SpriteRenderer.position[0], SpriteRenderer.position[1], SpriteRenderer.position[2]]
+			});
+		}
 
 		SpriteRenderer.runWithDepth(true, false, false, function () {
 			SpriteRenderer.zIndex = zIdx;

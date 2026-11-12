@@ -20,9 +20,10 @@ import _vertexShader from './SwirlingAura.vs?raw';
 import _fragmentShader from './SwirlingAura.fs?raw';
 import WebGL from 'Utils/WebGL.js';
 import glMatrix from 'Utils/gl-matrix.js';
-import Client from 'Core/Client.js';
 import Altitude from 'Renderer/Map/Altitude.js';
 import SpriteRenderer from 'Renderer/SpriteRenderer.js';
+import { auraBlend, auraUniform, beginAuraBlend, endAuraBlend } from 'Renderer/Effects/AuraBlend.js';
+import AuraBatch, { sharedTexture, freeSharedTextures } from 'Renderer/Effects/AuraBatch.js';
 
 const mat4 = glMatrix.mat4;
 
@@ -46,6 +47,28 @@ const STRIDE = 5; // x, y, z, u, v
 const VERTICES_PER_BAND = E_DIVISION * 2;
 
 /**
+ * Every aura's bands, drawn together (AuraBatch.js), and the textures they share.
+ */
+const _batch = new AuraBatch({ fog: true, discardClear: true, discardBlack: true });
+const _textures = new Map();
+
+/**
+ * The band's triangles, the same for every band: two per division,
+ * (base, top, next base) and (top, next top, next base).
+ */
+const BAND_INDICES = (function () {
+	const indices = [];
+	for (let k = 0; k < E_DIVISION - 1; k++) {
+		const i0 = k * 2; // Base of current
+		const i1 = k * 2 + 1; // Top of current
+		const i2 = k * 2 + 2; // Base of next
+		const i3 = k * 2 + 3; // Top of next
+		indices.push(i0, i1, i2, i1, i3, i2);
+	}
+	return new Uint16Array(indices);
+})();
+
+/**
  * SwirlingAura constructor
  *
  * Creates THREE bands as per original inspiration game:
@@ -54,7 +77,10 @@ const VERTICES_PER_BAND = E_DIVISION * 2;
  * - GI[2]: RotStart=180°, max_height=11, distance=4.3, rise_angle=45°
  */
 class SwirlingAura {
-	constructor(position, textureName, tick, sizeType) {
+	/**
+	 * @param {object} color optional tint from AuraTiers.auraColor, over the blue or green
+	 */
+	constructor(position, textureName, tick, sizeType, color) {
 		this.position = position;
 		this.textureName = textureName;
 		this.tick = tick;
@@ -68,6 +94,9 @@ class SwirlingAura {
 			this.color = { r: 100 / 255, g: 255 / 255, b: 100 / 255 };
 		} else {
 			this.color = { r: 100 / 255, g: 100 / 255, b: 255 / 255 };
+		}
+		if (color) {
+			this.color = color;
 		}
 
 		// Alpha from original inspiration game: alphaB = 120
@@ -94,6 +123,7 @@ class SwirlingAura {
 
 		// Vertex data for a single band (GC evasion uses dynamic vertex data)
 		this.vertices = new Float32Array(VERTICES_PER_BAND * STRIDE);
+		this.rgba = [0, 0, 0, 0];
 
 		// Vertex buffers for each band
 		this.buffers = null;
@@ -174,25 +204,19 @@ class SwirlingAura {
 	}
 
 	/**
-	 * Generate index buffer
-	 */
-	generateIndices() {
-		const indices = [];
-		for (let k = 0; k < E_DIVISION - 1; k++) {
-			const i0 = k * 2; // Base of current
-			const i1 = k * 2 + 1; // Top of current
-			const i2 = k * 2 + 2; // Base of next
-			const i3 = k * 2 + 3; // Top of next
-			// Two triangles: (i0, i1, i2) and (i1, i3, i2)
-			indices.push(i0, i1, i2, i1, i3, i2);
-		}
-		return new Uint16Array(indices);
-	}
-
-	/**
 	 * Initialize instance
 	 */
 	init(gl) {
+		sharedTexture(_textures, gl, this.textureName, texture => {
+			this.texture = texture;
+			this.ready = true;
+		});
+	}
+
+	/**
+	 * The band buffers, for drawing without the batch
+	 */
+	createBuffers(gl) {
 		// Create vertex buffers for each band
 		this.buffers = [];
 		for (let i = 0; i < this.bands.length; i++) {
@@ -204,19 +228,10 @@ class SwirlingAura {
 		}
 
 		// Create shared index buffer
-		const indices = this.generateIndices();
 		this.indexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
-		this.indexCount = indices.length;
-
-		// Load texture
-		Client.loadFile(`data/texture/effect/${this.textureName}`, buffer => {
-			WebGL.texture(gl, buffer, texture => {
-				this.texture = texture;
-				this.ready = true;
-			});
-		});
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, BAND_INDICES, gl.STATIC_DRAW);
+		this.indexCount = BAND_INDICES.length;
 	}
 
 	/**
@@ -246,6 +261,14 @@ class SwirlingAura {
 		// Get ground height
 		const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
 
+		if (_batch.active) {
+			this.record(tick, groundZ);
+			return;
+		}
+		if (!this.buffers) {
+			this.createBuffers(gl);
+		}
+
 		// Build model matrix
 		mat4.identity(_modelMatrix);
 		mat4.translate(_modelMatrix, _modelMatrix, [this.position[0] + 0.5, -groundZ, this.position[1] + 0.5]);
@@ -260,6 +283,7 @@ class SwirlingAura {
 		const elapsed = tick - this.tick;
 		const process = elapsed / RAG_TICK_MS;
 
+		beginAuraBlend(gl, this.color, 'alpha');
 		SpriteRenderer.runWithDepth(true, false, false, function () {
 			// Render each band
 			for (let ec = 0; ec < self.bands.length; ec++) {
@@ -285,7 +309,7 @@ class SwirlingAura {
 				gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, STRIDE * 4, 3 * 4);
 
 				// Set color and alpha
-				gl.uniform4f(uniform.uColor, self.color.r, self.color.g, self.color.b, self.alphaB);
+				gl.uniform4f(uniform.uColor, ...auraUniform(self.color, self.alphaB, 'alpha'));
 				gl.uniform1f(uniform.uZIndex, 0.01 + ec * 0.001);
 
 				// Draw
@@ -293,6 +317,44 @@ class SwirlingAura {
 				gl.drawElements(gl.TRIANGLES, self.indexCount, gl.UNSIGNED_SHORT, 0);
 			}
 		});
+		endAuraBlend(gl, this.color);
+	}
+
+	/**
+	 * Record the three bands in the batch, as render draws them
+	 */
+	record(tick, groundZ) {
+		const process = (tick - this.tick) / 25;
+		const blend = auraBlend(this.color, 'alpha');
+		const color = auraUniform(this.color, this.alphaB, 'alpha', this.rgba);
+		const x = this.position[0] + 0.5;
+		const y = -groundZ;
+		const z = this.position[1] + 0.5;
+
+		for (let ec = 0; ec < this.bands.length; ec++) {
+			const band = this.bands[ec];
+			if (!band.life) {
+				continue;
+			}
+			band.rotStart = (band.initialRotStart + process * band.spinSpeed) % 360;
+			this.updateHeightProfile(band, process);
+			this.fillBandMesh(band);
+			_batch.mesh(
+				this.texture,
+				blend,
+				this.vertices,
+				VERTICES_PER_BAND,
+				BAND_INDICES,
+				x,
+				y,
+				z,
+				color[0],
+				color[1],
+				color[2],
+				color[3],
+				0.01 + ec * 0.001
+			);
+		}
 	}
 
 	/**
@@ -313,6 +375,8 @@ class SwirlingAura {
 			gl.deleteProgram(_program);
 			_program = null;
 		}
+		_batch.free(gl);
+		freeSharedTextures(_textures, gl);
 		this.ready = false;
 	}
 
@@ -336,12 +400,15 @@ class SwirlingAura {
 
 		gl.activeTexture(gl.TEXTURE0);
 		gl.uniform1i(uniform.uDiffuse, 0);
+
+		_batch.begin(gl, modelView, projection, fog);
 	}
 
 	/**
 	 * After render cleanup
 	 */
 	static afterRender(gl) {
+		_batch.flush(gl);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 		gl.disableVertexAttribArray(_program.attribute.aPosition);

@@ -177,6 +177,7 @@ function free() {
 
 	_list.length = 0;
 	_gidMap.clear();
+	_over = null;
 	_pickList.length = 0;
 	_renderSortDirty = true;
 	_pickSortDirty = true;
@@ -350,6 +351,42 @@ function isCulled(culling, entity) {
 }
 
 /**
+ * Hide the entity overlays while culled, show them back once drawn
+ *
+ * @param {Entity} entity
+ * @param {boolean} culled
+ */
+function setCulled(entity, culled) {
+	if (entity.culled === culled) {
+		return;
+	}
+
+	entity.culled = culled;
+
+	const display = culled ? 'none' : '';
+	entity.life.canvas.style.display = display;
+	entity.emblem.canvas.style.display = display;
+	entity.display.canvas.style.display = display;
+	entity.dialog.canvas.style.display = display;
+	entity.cast.canvas.style.display = display;
+	if (entity.room.node) {
+		entity.room.node.ui[0].style.display = display;
+	}
+}
+
+/**
+ * Decide, once per frame and before any pass draws, which entities are out of
+ * the view area: their overlays are hidden and every pass skips them
+ */
+function cull() {
+	const culling = getCulling();
+
+	for (let i = 0, count = _list.length; i < count; ++i) {
+		setCulled(_list[i], isCulled(culling, _list[i]));
+	}
+}
+
+/**
  * Render all entities (picking or not)
  *
  * @param {object} gl webgl context
@@ -361,7 +398,6 @@ function isCulled(culling, entity) {
  * Infos: RO Game doesn't seems to render ambiant and diffuse on Sprites
  */
 function render(gl, modelView, projection, fog, renderEffects) {
-	let i, count;
 	const tick = Date.now();
 
 	// Stop rendering if no units to render (should never happened...)
@@ -380,10 +416,25 @@ function render(gl, modelView, projection, fog, renderEffects) {
 
 	// Use program
 	SpriteRenderer.bind3DContext(gl, modelView, projection, fog);
-
-	const culling = getCulling();
+	SpriteRenderer.beginBatch(gl);
 
 	// Rendering
+	try {
+		renderList(modelView, projection, renderEffects, tick);
+	} finally {
+		SpriteRenderer.endBatch();
+	}
+
+	// Clean program
+	SpriteRenderer.unbind(gl);
+}
+
+/**
+ * The entity loop of render()
+ */
+function renderList(modelView, projection, renderEffects, tick) {
+	let i, count;
+
 	for (i = 0, count = _list.length; i < count; ++i) {
 		if (
 			(_list[i].objecttype != _list[i].constructor.TYPE_EFFECT && !renderEffects) ||
@@ -407,15 +458,12 @@ function render(gl, modelView, projection, fog, renderEffects) {
 				_pickSortDirty = true;
 				continue;
 			}
-			if (isCulled(culling, _list[i])) {
+			if (_list[i].culled) {
 				continue;
 			}
 			_list[i].render(modelView, projection);
 		}
 	}
-
-	// Clean program
-	SpriteRenderer.unbind(gl);
 }
 
 /**
@@ -433,13 +481,11 @@ function renderWaterDepth(gl, modelView, projection, fog) {
 		return;
 	}
 
-	const culling = getCulling();
-
 	SpriteRenderer.bind3DContext(gl, modelView, projection, fog);
 	gl.colorMask(false, false, false, false);
 
 	for (let i = 0, count = _list.length; i < count; ++i) {
-		if (!isCulled(culling, _list[i])) {
+		if (!_list[i].culled) {
 			_list[i].renderWaterDepth();
 		}
 	}
@@ -528,7 +574,8 @@ function getClosestEntity(sourceEntity, type) {
 			entity.GID !== sourceEntity.GID &&
 			entity.objecttype === type &&
 			entity.action !== entity.ACTION.DIE &&
-			entity.remove_tick === 0
+			entity.remove_tick === 0 &&
+			!isHidden(entity)
 		) {
 			const dx = entity.position[0] - srcX;
 			const dy = entity.position[1] - srcY;
@@ -582,7 +629,8 @@ function getLowestHpEntity(sourceEntity, type) {
 			entity.life &&
 			entity.life.hp > 0 &&
 			entity.action !== entity.ACTION.DIE &&
-			entity.remove_tick === 0
+			entity.remove_tick === 0 &&
+			!isHidden(entity)
 		) {
 			const dx = entity.position[0] - srcX;
 			const dy = entity.position[1] - srcY;
@@ -599,6 +647,63 @@ function getLowestHpEntity(sourceEntity, type) {
 	});
 
 	return lowestHpEntity;
+}
+
+/**
+ * Returns entities of the given type(s) sorted by straight-line distance from
+ * the source entity, closest first. Same filters as getClosestEntity: not
+ * self, right type, alive, not pending removal, not hidden, within view
+ * range.
+ *
+ * Straight-line (dx*dx + dy*dy), not PathFinding.search: running A* for
+ * every nearby mob on every cycle step is too expensive, and visual
+ * distance order is what the player expects when cycling targets.
+ *
+ * @param {entity} source entity
+ * @param {number|Array<number>} entity type, or list of types, to look for
+ */
+function getEntitiesSortedByDistance(sourceEntity, type) {
+	const types = Array.isArray(type) ? type : [type];
+	const srcX = sourceEntity.position[0];
+	const srcY = sourceEntity.position[1];
+	const view_range = GraphicsSettings.performanceMode ? GraphicsSettings.viewArea : 20;
+	const viewRangeSq = view_range * view_range;
+
+	const candidates = [];
+
+	_list.forEach(entity => {
+		if (
+			entity.GID !== sourceEntity.GID &&
+			types.includes(entity.objecttype) &&
+			entity.action !== entity.ACTION.DIE &&
+			entity.remove_tick === 0 &&
+			!isHidden(entity)
+		) {
+			const dx = entity.position[0] - srcX;
+			const dy = entity.position[1] - srcY;
+			const distSq = dx * dx + dy * dy;
+			if (distSq <= viewRangeSq) {
+				candidates.push({ entity: entity, distSq: distSq });
+			}
+		}
+	});
+
+	candidates.sort((a, b) => a.distSq - b.distSq);
+
+	return candidates.map(c => c.entity);
+}
+
+/**
+ * Whether the entity is hidden from the player (Hiding, Cloaking, Chase
+ * Walk, invisible, Shadow Form, Camouflage, Stealth Field): the closest
+ * and lowest-HP picks and the sorted list leave it out, as a mouse cannot
+ * click it either.
+ *
+ * @param {entity} entity
+ * @return {boolean}
+ */
+function isHidden(entity) {
+	return typeof entity.isVisible === 'function' && !entity.isVisible();
 }
 
 /**
@@ -663,12 +768,14 @@ const EntityManager = {
 
 	getClosestEntity: getClosestEntity,
 	getLowestHpEntity: getLowestHpEntity,
+	getEntitiesSortedByDistance: getEntitiesSortedByDistance,
 
 	storeLife: storeLife,
 	getLife: getLife,
 	removeLife: removeLife,
 	clearLifeCache: clearLifeCache,
 
+	cull: cull,
 	render: render,
 	renderWaterDepth: renderWaterDepth,
 	intersect: intersect,

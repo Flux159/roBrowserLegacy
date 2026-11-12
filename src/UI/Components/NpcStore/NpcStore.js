@@ -28,6 +28,9 @@ import Inventory from 'UI/Components/Inventory/Inventory.js';
 import { InventoryItemTransferPriority } from 'UI/Components/Inventory/InventoryItemTransfer.js';
 import htmlText from './NpcStore.html?raw';
 import cssText from './NpcStore.css?raw';
+import { onItemDoubleClick } from 'UI/ItemDoubleClick.js';
+import WheelSteps from 'UI/WheelSteps.js';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create NPC Store component
@@ -179,12 +182,8 @@ NpcStore.init = function init() {
 				onItemInfo.call(icon, e);
 			}
 		});
-		content.addEventListener('dblclick', e => {
-			const item = e.target.closest('.item');
-			if (item) {
-				onItemSelected.call(item);
-			}
-		});
+		// Counted per item rather than by the browser: see UI/ItemDoubleClick.js.
+		onItemDoubleClick(content, '.item', item => onItemSelected.call(item));
 		content.addEventListener('mousedown', e => {
 			const item = e.target.closest('.item');
 			if (item) {
@@ -441,7 +440,24 @@ NpcStore.setList = function setList(items) {
 				if (!('index' in items[i])) {
 					items[i].index = i;
 				}
-				items[i].count = items[i].count || Infinity;
+				// Market shops send their remaining stock as `qty`. Keep it in
+				// `maxCount`, the purchase cap transferItem already honours for buying
+				// stores, and leave `count` infinite: `count` doubles as "how many to
+				// move by default", so filling it with the stock made the quantity prompt
+				// default to the whole stall, and made non-stackable items skip the
+				// prompt and buy the stall outright. A qty of 0 means sold out, which
+				// addItem drops; rAthena sends -1 for unlimited stock, which reads back
+				// as 0xFFFFFFFF.
+				if (
+					_type === NpcStore.Type.MARKETSHOP &&
+					typeof items[i].qty === 'number' &&
+					items[i].qty !== 0xffffffff
+				) {
+					items[i].maxCount = items[i].qty;
+					items[i].count = items[i].qty === 0 ? 0 : Infinity;
+				} else {
+					items[i].count = items[i].count || Infinity;
+				}
 				items[i].IsIdentified = true;
 				out = Object.assign({}, items[i]);
 				out.count = 0;
@@ -463,7 +479,7 @@ NpcStore.setList = function setList(items) {
 				out.count = 0;
 
 				addItem(content, items[i]);
-				it = Inventory.getUI().getItemById(items[i].ITID);
+				it = Inventory.getItemById(items[i].ITID);
 
 				if (it) {
 					item = Object.assign({}, it);
@@ -504,12 +520,10 @@ NpcStore.setList = function setList(items) {
 		case NpcStore.Type.SELL: {
 			const InventoryVersion = UIManager.getComponent('Inventory').name;
 			for (i = 0, count = items.length; i < count; ++i) {
-				it = Inventory.getUI().getItemByIndex(items[i].index);
+				it = Inventory.getItemByIndex(items[i].index);
 
 				const condition =
-					InventoryVersion !== 'InventoryV0'
-						? it && (!Inventory.getUI().npcsalelock || it.PlaceETCTab < 1)
-						: it;
+					InventoryVersion !== 'InventoryV0' ? it && (!Inventory.npcsalelock || it.PlaceETCTab < 1) : it;
 
 				if (condition) {
 					item = Object.assign({}, it);
@@ -660,6 +674,25 @@ function prettyZeny(val, useStyle) {
 }
 
 /**
+ * Text for an item's amount column. A market shop's remaining stock lives in
+ * `maxCount`, because its `count` has to stay infinite (see setList).
+ *
+ * @param {Item} item info
+ * @returns {string} amount to display, empty when there is no amount to show
+ */
+function amountColumn(item) {
+	if (isFinite(item.count)) {
+		return String(item.count);
+	}
+
+	if (_type === NpcStore.Type.MARKETSHOP && typeof item.maxCount === 'number') {
+		return String(item.maxCount);
+	}
+
+	return '';
+}
+
+/**
  * Add item to the list
  *
  * @param {Element} content element
@@ -690,7 +723,8 @@ function addItem(content, item) {
 			_type === NpcStore.Type.BUYING_STORE && !content.classList.contains('contentAvailable') ? ' ea.' : '';
 		const amountEl = element.querySelector('.amount');
 		if (amountEl) {
-			amountEl.textContent = isFinite(item.count) ? item.count + amountText : '';
+			const amount = amountColumn(item);
+			amountEl.textContent = amount === '' ? '' : amount + amountText;
 		}
 		return;
 	}
@@ -708,16 +742,22 @@ function addItem(content, item) {
 			price += ' -> ' + prettyZeny(item.overchargeprice);
 		}
 
-		const buyingClass = _type === NpcStore.Type.BUYING_STORE ? ' amountBuying' : '';
+		const amountClass =
+			_type === NpcStore.Type.BUYING_STORE
+				? ' amountBuying'
+				: _type === NpcStore.Type.MARKETSHOP
+					? ' amountStock'
+					: '';
 		amountText = _type === NpcStore.Type.BUYING_STORE ? ' ea.' : '';
+		const amount = amountColumn(item);
 		const html =
 			`<div class="item" draggable="true" data-index="${item.index}">` +
 			`<div class="icon"></div>` +
-			`<div class="amount${buyingClass}">` +
-			(isFinite(item.count) ? item.count : _type === NpcStore.Type.BUYING_STORE ? 0 : '') +
+			`<div class="amount${amountClass}">` +
+			(amount === '' && _type === NpcStore.Type.BUYING_STORE ? 0 : amount) +
 			amountText +
 			`</div>` +
-			`<div class="name">${_escapeHTML(DB.getItemName(item))}</div>` +
+			`<div class="name">${sanitizeHtml(DB.getItemName(item))}</div>` +
 			`<div class="price">${price}</div>` +
 			`<div class="unity">Z</div>` +
 			`</div>`;
@@ -730,10 +770,10 @@ function addItem(content, item) {
 			` data-viewSprite="${item.viewSprite}">` +
 			`<div class="icon"></div>` +
 			`<div class="amount">${isFinite(item.count) ? item.count : ''}</div>` +
-			`<div class="name">${_escapeHTML(DB.getItemName(item))}</div>` +
+			`<div class="name">${sanitizeHtml(DB.getItemName(item))}</div>` +
 			`<div class="currency_icon" data-item="${item.currencyITID}"></div>` +
 			`<div class="currency_amount">${item.currencyamount}</div>` +
-			`<div class="currency_nameOverlay">${_escapeHTML(DB.getItemName(currency_item))} ${item.currencyamount} ea</div>` +
+			`<div class="currency_nameOverlay">${sanitizeHtml(DB.getItemName(currency_item))} ${item.currencyamount} ea</div>` +
 			`</div>`;
 		content.insertAdjacentHTML('beforeend', html);
 	} else if (_type === NpcStore.Type.BARTER_MARKET_EXTENDED) {
@@ -767,7 +807,7 @@ function addItem(content, item) {
 			`<div class="icon"></div>` +
 			`</div>` +
 			`<div class="amount">${isFinite(item.count) ? item.count : ''}</div>` +
-			`<div class="name">${_escapeHTML(DB.getItemName(item))}</div>` +
+			`<div class="name">${sanitizeHtml(DB.getItemName(item))}</div>` +
 			`<div class="currency_section">${currencySlotsHTML}</div>` +
 			`<div class="expanded_price">${item.price}z</div>` +
 			`<div class="expanded_currency_nameOverlay">${currencyOverlay}</div>` +
@@ -797,7 +837,7 @@ function addItem(content, item) {
 			`<div class="item itemAvailable" draggable="true" data-index="${item.index}">` +
 			`<div class="icon"></div>` +
 			`<div class="amount">${isFinite(item.count) ? item.count : ''}</div>` +
-			`<div class="nameOverlay">${_escapeHTML(DB.getItemName(item))}</div>` +
+			`<div class="nameOverlay">${sanitizeHtml(DB.getItemName(item))}</div>` +
 			`</div>`;
 		content.insertAdjacentHTML('beforeend', html);
 	}
@@ -897,6 +937,10 @@ const transferItem = (function () {
 		tmpItem.count = inputItem.count - outputItem.count;
 		tmpItem.price = inputItem.price;
 		tmpItem.index = inputItem.index;
+		// A market shop shows its remaining stock from `maxCount`, so count that down
+		// as items move into the purchase window.
+		tmpItem.maxCount =
+			typeof inputItem.maxCount === 'number' ? inputItem.maxCount - outputItem.count : inputItem.maxCount;
 	};
 
 	return function (fromContent, toContent, isAdding, index, count) {
@@ -905,6 +949,23 @@ const transferItem = (function () {
 		const root = NpcStore.getRoot();
 
 		if (isAdding) {
+			// A market shop's `count` is infinite, so the stall size is the real cap.
+			const available =
+				_type === NpcStore.Type.MARKETSHOP && typeof inputItem.maxCount === 'number'
+					? Math.min(inputItem.count, inputItem.maxCount)
+					: inputItem.count;
+
+			// Asking for more than the shop has moves what it has, so the cost check
+			// below has to price the amount that will actually move. Pricing the whole
+			// request turns away a purchase the player can afford.
+			if (isFinite(available)) {
+				count = Math.min(count, available - outputItem.count);
+			}
+
+			if (count < 1) {
+				return;
+			}
+
 			if (
 				(_type === NpcStore.Type.BUY ||
 					_type === NpcStore.Type.VENDING_STORE ||
@@ -916,7 +977,7 @@ const transferItem = (function () {
 			}
 
 			const originalCount = outputItem.count;
-			outputItem.count = Math.min(outputItem.count + count, inputItem.count);
+			outputItem.count = Math.min(outputItem.count + count, available);
 
 			if (_type === NpcStore.Type.BARTER_MARKET) {
 				const inputCurrency = root.querySelector(`.InputWindow .item[data-index="${index}"]`);
@@ -1160,17 +1221,7 @@ function onItemFocus() {
  * Update scroll by block (32px)
  */
 function onScroll(event) {
-	let delta;
-
-	if (event.deltaY) {
-		delta = event.deltaY > 0 ? -1 : 1;
-	} else if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-	} else if (event.detail) {
-		delta = -event.detail;
-	}
-
-	this.scrollTop = Math.floor(this.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps.scrollRows(event, this, 32);
 	event.preventDefault();
 }
 

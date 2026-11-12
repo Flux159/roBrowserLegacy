@@ -26,6 +26,9 @@ import Vending from 'UI/Components/Vending/Vending.js';
 import htmlText from './VendingShop.html?raw';
 import cssText from './VendingShop.css?raw';
 import VendingReport from 'UI/Components/VendingReport/VendingReport.js';
+import { onItemDoubleClick } from 'UI/ItemDoubleClick.js';
+import WheelSteps from 'UI/WheelSteps.js';
+import { htmlToText, sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 /**
  * Create Component
@@ -123,12 +126,8 @@ VendingShop.init = function init() {
 				onItemInfo(e, itemEl);
 			}
 		});
-		content.addEventListener('dblclick', e => {
-			const itemEl = e.target.closest('.item');
-			if (itemEl) {
-				onItemUsed(e, itemEl);
-			}
-		});
+		// Counted per item rather than by the browser: see UI/ItemDoubleClick.js.
+		onItemDoubleClick(content, '.item', (itemEl, e) => onItemUsed(e, itemEl));
 	}
 
 	this.draggable('.titlebar');
@@ -162,6 +161,24 @@ VendingShop.onAppend = function onAppend() {
  */
 VendingShop.setType = function setType(type) {
 	_type = type;
+};
+
+/** Apply a buyer notification by item ID, rather than its inventory index. */
+VendingShop.updateBuyingItem = function updateBuyingItem(itemId, count) {
+	if (_type !== VendingShop.Type.BUYING_LIST || count <= 0) {
+		return;
+	}
+	const item = this.getItemById(itemId);
+	if (item) {
+		this.updateItem(item.index, item.count - count);
+	}
+};
+
+/** The server already closed this store; do not send a second close request. */
+VendingShop.closeBuyingStore = function closeBuyingStore() {
+	if (_type === VendingShop.Type.BUYING_LIST) {
+		this.remove();
+	}
 };
 
 /**
@@ -348,7 +365,9 @@ VendingShop.removeItem = function removeItem(index, count) {
 		return null;
 	}
 
-	const msg = DB.getMessage(231).replace('%s', DB.getItemName(item)).replace('%d', count);
+	const msg = DB.getMessage(231)
+		.replace('%s', htmlToText(DB.getItemName(item)))
+		.replace('%d', count);
 	ChatBox.addText(msg, ChatBox.TYPE.BLUE, ChatBox.FILTER.PUBLIC_LOG);
 
 	const root = this.getRoot();
@@ -516,20 +535,7 @@ function onDrop(event) {
  * Block the scroll to move 32px at each move
  */
 function onScroll(event) {
-	let delta;
-
-	if (event.wheelDelta) {
-		delta = event.wheelDelta / 120;
-		if (window.opera) {
-			delta = -delta;
-		}
-	} else if (event.detail) {
-		delta = -event.detail;
-	} else if (event.deltaY) {
-		delta = -event.deltaY / 100;
-	}
-
-	event.currentTarget.scrollTop = Math.floor(event.currentTarget.scrollTop / 32) * 32 - delta * 32;
+	WheelSteps.scrollRows(event, event.currentTarget, 32);
 	event.stopImmediatePropagation();
 	event.preventDefault();
 }
@@ -553,7 +559,7 @@ function onItemOver(itemEl, root) {
 	overlay.style.display = '';
 	overlay.style.top = `${itemEl.offsetTop}px`;
 	overlay.style.left = `${itemEl.offsetLeft + 35}px`;
-	overlay.textContent = `${DB.getItemName(item)} ${prettyZeny(item.price, false)} ${DB.getMessage(2328)}`;
+	overlay.innerHTML = sanitizeHtml(`${DB.getItemName(item)} ${prettyZeny(item.price, false)} ${DB.getMessage(2328)}`);
 
 	if (item.IsIdentified) {
 		overlay.classList.remove('grey');

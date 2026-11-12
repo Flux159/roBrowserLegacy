@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => {
 	const ids = {
 		NOVICE: 0,
+		BASH: 5,
 		CRUSADER: 14,
 		DIVINE_PROTECTION: 22,
 		DEMON_BANE: 23,
@@ -12,6 +13,12 @@ const mocks = vi.hoisted(() => {
 	};
 
 	const skillInfo = {
+		[ids.BASH]: {
+			Name: 'SM_BASH',
+			SkillName: 'Bash',
+			MaxLv: 10,
+			bSeperateLv: true
+		},
 		[ids.FAITH]: {
 			Name: 'CR_TRUST',
 			SkillName: 'Faith',
@@ -98,11 +105,34 @@ const mocks = vi.hoisted(() => {
 		parseHTML() {}
 	}
 
+	// Records what a copy of the player was given and what it drew
+	class MockEntity {
+		static TYPE_PC = 0;
+
+		static made = [];
+
+		constructor() {
+			this.ACTION = { IDLE: 0, SIT: 2 };
+			this.effectColor = new Float32Array([1, 1, 1, 1]);
+			this.drawn = [];
+			MockEntity.made.push(this);
+		}
+
+		set(unit) {
+			Object.assign(this, unit);
+		}
+
+		renderEntity() {
+			this.drawn.push({ job: this.job, action: this.action, head: this.head, robe: this.robe });
+		}
+	}
+
 	return {
 		ids,
 		skillInfo,
 		skillTreeView,
 		MockGUIComponent,
+		MockEntity,
 		session: {
 			Character: { job: ids.CRUSADER },
 			Entity: { _job: ids.CRUSADER }
@@ -137,7 +167,10 @@ vi.mock('Core/Preferences.js', () => ({
 		}
 	}
 }));
-vi.mock('Renderer/Renderer.js', () => ({ default: { width: 1200, height: 800 } }));
+vi.mock('Renderer/Renderer.js', () => ({ default: { width: 1200, height: 800, render: vi.fn(), stop: vi.fn() } }));
+vi.mock('Renderer/Entity/Entity.js', () => ({ default: mocks.MockEntity }));
+vi.mock('Renderer/Camera.js', () => ({ default: { direction: 0 } }));
+vi.mock('Renderer/SpriteRenderer.js', () => ({ default: { bind2DContext: vi.fn() } }));
 vi.mock('Controls/MouseEventHandler.js', () => ({ default: { screen: { x: 0, y: 0 } } }));
 vi.mock('UI/GUIComponent.js', () => ({ default: mocks.MockGUIComponent }));
 vi.mock('UI/UIManager.js', () => ({
@@ -167,6 +200,7 @@ vi.mock('UI/Components/SkillDescription/SkillDescription.js', () => ({
 }));
 
 const { createSkillList } = await import('UI/Components/SkillList/SkillListCommon.js');
+const { default: Renderer } = await import('Renderer/Renderer.js');
 
 function getFixtureHTML() {
 	const cells = positions => positions.map(position => `<div class="skillCol s${position}"></div>`).join('');
@@ -186,10 +220,12 @@ function getFixtureHTML() {
 				<table id="minitab2"></table>
 			</div>
 			<div class="contentbig">
+				<canvas class="sitting" width="80" height="100"></canvas>
 				<input type="radio" id="tab-1" class="tab-switch" checked />
 				<input type="radio" id="tab-2" class="tab-switch" />
 				<div id="positionSkills1">${cells([0, 7, 14, 21, 28])}</div>
 				<div id="positionSkills2">${cells([0, 7, 14, 21, 28])}</div>
+				<div id="etcBIG5">${cells([0])}</div>
 			</div>
 			<div class="footer">
 				<span class="skpoints_count"></span>
@@ -306,5 +342,196 @@ describe('SkillListV2 prerequisite planning', () => {
 
 		component.toggle();
 		expect(getTreeSkill(root, mocks.ids.HEAL).querySelector('.current').textContent).toBe('0');
+	});
+});
+
+describe('SkillListV2 sitting character', () => {
+	it('draws the player sitting and gives their state back', () => {
+		const ctx = { canvas: { width: 60, height: 100 }, clearRect: vi.fn() };
+		vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(ctx);
+		const drawn = [];
+		const animation = { frame: 3 };
+		const effectColor = new Float32Array([1, 1, 1, 0.5]);
+		mocks.session.Entity = {
+			_job: mocks.ids.CRUSADER,
+			ACTION: { IDLE: 0, SIT: 2 },
+			action: 0,
+			direction: 6,
+			headDir: 1,
+			animation,
+			effectColor,
+			renderEntity() {
+				drawn.push({
+					action: this.action,
+					direction: this.direction,
+					headDir: this.headDir,
+					alpha: this.effectColor[3]
+				});
+			}
+		};
+
+		const component = createComponent();
+		component.onAppend();
+		const render = Renderer.render.mock.calls.at(-1)[0];
+		render(0);
+		render(1000);
+		render(2000);
+		render(3000);
+
+		expect(drawn.map(d => d.headDir)).toEqual([0, 1, 0, 2]);
+		expect(drawn[0]).toEqual({ action: 2, direction: 4, headDir: 0, alpha: 1 });
+		expect(mocks.session.Entity).toMatchObject({ action: 0, direction: 6, headDir: 1, animation });
+		expect(effectColor[3]).toBe(0.5);
+
+		component.onRemove();
+		expect(Renderer.stop).toHaveBeenCalledWith(render);
+	});
+
+	it('draws a riding player on foot, without the mount', () => {
+		const PECO_CRUSADER = 4015;
+		const ctx = { canvas: { width: 60, height: 100 }, clearRect: vi.fn() };
+		vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(ctx);
+		mocks.MockEntity.made.length = 0;
+		const player = {
+			GID: 150000,
+			_job: mocks.ids.CRUSADER,
+			job: PECO_CRUSADER,
+			costume: PECO_CRUSADER,
+			sex: 1,
+			body: 0,
+			head: 5,
+			headpalette: 2,
+			bodypalette: 0,
+			robe: 20,
+			ACTION: { IDLE: 0, SIT: 2 },
+			action: 0,
+			direction: 6,
+			headDir: 1,
+			animation: {},
+			effectColor: new Float32Array([1, 1, 1, 1]),
+			renderEntity: vi.fn()
+		};
+		mocks.session.Entity = player;
+
+		const component = createComponent();
+		component.onAppend();
+		const render = Renderer.render.mock.calls.at(-1)[0];
+		render(0);
+		render(1000);
+
+		expect(player.renderEntity).not.toHaveBeenCalled();
+		expect(mocks.MockEntity.made).toHaveLength(1);
+		expect(mocks.MockEntity.made[0].drawn).toEqual([
+			{ job: mocks.ids.CRUSADER, action: 2, head: 5, robe: 20 },
+			{ job: mocks.ids.CRUSADER, action: 2, head: 5, robe: 20 }
+		]);
+
+		// Off the mount: the player is drawn again
+		player.costume = 0;
+		player.job = mocks.ids.CRUSADER;
+		render(2000);
+		expect(player.renderEntity).toHaveBeenCalledTimes(1);
+
+		component.onRemove();
+	});
+});
+
+describe('SkillListV2 upgradable highlight', () => {
+	beforeEach(() => {
+		document.body.innerHTML = '';
+	});
+
+	const slot = (root, position) => root.querySelector(`#positionSkills2 .s${position}`);
+
+	it('highlights nothing without skill points', () => {
+		const root = createComponent({ faith: 0, points: 0 }).getRoot();
+
+		expect(root.querySelectorAll('.upgradable')).toHaveLength(0);
+	});
+
+	it('highlights upgradable skills once points arrive and clears them when spent', () => {
+		const component = createComponent({ faith: 10, points: 0 });
+		const root = component.getRoot();
+
+		component.setPoints(3);
+		expect(slot(root, 0).classList.contains('upgradable')).toBe(false);
+		expect(slot(root, 7).classList.contains('upgradable')).toBe(true);
+
+		component.setPoints(0);
+		expect(root.querySelectorAll('.upgradable')).toHaveLength(0);
+	});
+
+	it('clears the highlight when a skill reaches its max level', () => {
+		const component = createComponent({ points: 5 });
+		const root = component.getRoot();
+
+		expect(slot(root, 7).classList.contains('upgradable')).toBe(true);
+
+		component.updateSkill({ SKID: mocks.ids.CURE, level: 1, type: 1, upgradable: false, spcost: 15 });
+		expect(slot(root, 7).classList.contains('upgradable')).toBe(false);
+	});
+});
+
+describe('SkillListV2 skills added in game', () => {
+	beforeEach(() => {
+		document.body.innerHTML = '';
+	});
+
+	const etcSkill = root => root.querySelector(`#etcBIG5 .skill.id${mocks.ids.BASH}`);
+
+	it('stages no points for a copied skill the server marks not upgradable', () => {
+		const component = createComponent();
+		const root = component.getRoot();
+		component.onIncreaseSkill = vi.fn();
+
+		// Plagiarism: ZC_ADD_SKILL, outside the job's tree, upgradable 0
+		component.addSkill({ SKID: mocks.ids.BASH, level: 5, type: 1, upgradable: 0, spcost: 8 });
+		etcSkill(root).querySelector('.icon').click();
+		etcSkill(root).querySelector('.icon').click();
+
+		expect(etcSkill(root).querySelector('.current').textContent).toBe('5');
+		expect(root.querySelector('.skpoints_count').textContent).toBe('10');
+
+		root.querySelector('.apply').click();
+		expect(component.onIncreaseSkill).not.toHaveBeenCalled();
+
+		root.querySelector('.reset').click();
+		expect(etcSkill(root).classList.contains('disabled')).toBe(false);
+		expect(etcSkill(root).querySelector('.current').textContent).toBe('5');
+	});
+
+	it('counts the level of a skill added in game as owned', () => {
+		const component = createComponent();
+		const root = component.getRoot();
+
+		component.addSkill({ SKID: mocks.ids.BASH, level: 3, type: 1, upgradable: 1, spcost: 8 });
+		etcSkill(root).querySelector('.icon').click();
+
+		expect(etcSkill(root).querySelector('.current').textContent).toBe('4');
+		expect(root.querySelector('.skpoints_count').textContent).toBe('9/10');
+
+		root.querySelector('.reset').click();
+		expect(etcSkill(root).classList.contains('disabled')).toBe(false);
+		expect(etcSkill(root).querySelector('.current').textContent).toBe('3');
+	});
+});
+
+describe('SkillListV2 level arrows', () => {
+	beforeEach(() => {
+		document.body.innerHTML = '';
+	});
+
+	it('choose the cast level in the list row without staging a skill point', () => {
+		const component = createComponent();
+		const root = component.getRoot();
+
+		component.updateSkill({ SKID: mocks.ids.HEAL, level: 5, type: 1, upgradable: 1, spcost: 13 });
+		const row = root.querySelector(`#minitab2 .skill.id${mocks.ids.HEAL}`);
+		row.querySelector('.currentDown').click();
+		row.querySelector('.currentDown').click();
+
+		expect(component.getSkillById(mocks.ids.HEAL).selectedLevel).toBe(3);
+		expect(row.querySelector('.level').textContent).toBe('Lv : 3 / 5');
+		expect(root.querySelector('.skpoints_count').textContent).toBe('10');
 	});
 });

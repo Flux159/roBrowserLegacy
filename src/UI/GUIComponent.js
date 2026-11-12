@@ -15,6 +15,8 @@ import UIPreferences from 'Preferences/UI.js';
 import Session from 'Engine/SessionStorage.js';
 import Targa from 'Loaders/Targa.js';
 import ClampToViewport from 'UI/ClampToViewport.js';
+import UIScale from 'UI/UIScale.js';
+import whenDrawn from 'UI/WhenDrawn.js';
 
 /**
  * Heavy modules loaded lazily to keep viewer bundles lightweight.
@@ -55,6 +57,78 @@ function _ensureDeps() {
 	return _depsPromise;
 }
 
+let _noCursorStyles;
+let _noCursorMedia = 'not all';
+
+function _supportsStyleQueries() {
+	const probe = document.createElement('div');
+	probe.innerHTML = '<style>@container style(--ro-probe: 1) { i { color: rgb(1, 2, 3); } }</style><i></i>';
+	probe.style.setProperty('--ro-probe', '1');
+	document.body.appendChild(probe);
+	const supported = getComputedStyle(probe.lastChild).color === 'rgb(1, 2, 3)';
+	probe.remove();
+	return supported;
+}
+
+function _syncNoCursorStyles() {
+	const media = document.body.classList.contains('custom-cursor') ? 'all' : 'not all';
+	if (media === _noCursorMedia) {
+		return;
+	}
+	_noCursorMedia = media;
+	for (let i = 0; i < _noCursorStyles.length; i++) {
+		_noCursorStyles[i].media = media;
+	}
+}
+
+/**
+ * Hides the native cursor in a shadow root where CSS style queries are
+ * missing, following body.custom-cursor; null where Common.css handles it.
+ * remove() lets go of it, so a closed window is not held.
+ *
+ * @param {ShadowRoot} shadow
+ * @return {?HTMLStyleElement}
+ */
+function _addNoCursorFallback(shadow) {
+	if (_noCursorStyles === undefined) {
+		_noCursorStyles = _supportsStyleQueries() ? null : [];
+		if (_noCursorStyles) {
+			_syncNoCursorStyles();
+			new MutationObserver(_syncNoCursorStyles).observe(document.body, {
+				attributes: true,
+				attributeFilter: ['class']
+			});
+		}
+	}
+	if (!_noCursorStyles) {
+		return null;
+	}
+
+	// `media` rather than `disabled`: a style element's sheet, and with it
+	// `disabled`, is rebuilt each time the window is appended again.
+	const style = document.createElement('style');
+	style.setAttribute('data-no-cursor', '');
+	style.media = _noCursorMedia;
+	style.textContent = '* { cursor: none !important; }';
+	shadow.appendChild(style);
+	_noCursorStyles.push(style);
+	return style;
+}
+
+function _trackNoCursorStyle(style) {
+	style.media = _noCursorMedia;
+	if (_noCursorStyles.indexOf(style) === -1) {
+		_noCursorStyles.push(style);
+	}
+}
+
+function _untrackNoCursorStyle(style) {
+	const index = _noCursorStyles.indexOf(style);
+	if (index !== -1) {
+		_noCursorStyles.splice(index, 1);
+	}
+}
+
 /**
  * Snap cache shared across all draggable instances (same as UIComponent)
  */
@@ -68,6 +142,32 @@ const MouseMode = Object.freeze({
 	STOP: 1, // Block scene intersection when mouse is over the UI
 	FREEZE: 2 // Block scene intersection while UI is alive
 });
+
+/**
+ * STOP-mode guards that think the pointer is over their window, each by the
+ * function that checks it still is.
+ *
+ * A browser fires no mouseenter or mouseleave while a drag is under way, so
+ * dragging an item out of a window left its guard entered, and the map took no
+ * clicks until the pointer passed over that window again. Every trade starts
+ * that way. No mousemove fires during a drag either, so the first one after a
+ * dragstart comes once it is over, and that asks every entered guard.
+ */
+const _enteredGuards = new Set();
+let _dragged = false;
+if (typeof window !== 'undefined') {
+	window.addEventListener('dragstart', () => (_dragged = true), true);
+	window.addEventListener(
+		'mousemove',
+		() => {
+			if (_dragged) {
+				_dragged = false;
+				_enteredGuards.forEach(check => check());
+			}
+		},
+		true
+	);
+}
 
 /**
  * A clickable a component has marked as refusing the click
@@ -88,6 +188,14 @@ const CSS_NUMBER = {
 	widows: true,
 	zoom: true
 };
+
+/**
+ * The FREEZE-mode components open now. The map gets its clicks back only when
+ * the last one closes, so a window opened over another (an InputBox over a
+ * shop) cannot unfreeze it.
+ * @type {Set<GUIComponent>}
+ */
+const _frozenBy = new Set();
 
 class GUIComponent {
 	/**
@@ -172,6 +280,9 @@ class GUIComponent {
 		commonStyle.textContent = CommonCSS;
 		this._shadow.appendChild(commonStyle);
 
+		// Hide native cursor where style queries are missing
+		this._noCursorStyle = _addNoCursorFallback(this._shadow);
+
 		// Inject component CSS (hot-reloadable)
 		const compStyle = document.createElement('style');
 		compStyle.setAttribute('data-component', this.name);
@@ -189,7 +300,8 @@ class GUIComponent {
 		}
 
 		// Process legacy data-* attributes (background, hover, down, text, etc.)
-		this._processAllDataAttrs();
+		// Text now; each image when its node is first drawn.
+		this._processAllDataAttrs(true);
 
 		// Create jQuery compatibility proxy
 		this._createUIProxy();
@@ -205,6 +317,7 @@ class GUIComponent {
 		this._setupMouseMode();
 
 		this._host.remove();
+		whenDrawn.suspend(this._host);
 	}
 
 	// ─── Lifecycle: append ─────────────────────────────────
@@ -233,6 +346,10 @@ class GUIComponent {
 		}
 
 		parent.appendChild(this._host);
+		whenDrawn.resume(this._host);
+		if (this._noCursorStyle) {
+			_trackNoCursorStyle(this._noCursorStyle);
+		}
 
 		// Bind keydown
 		if (this.onKeyDown) {
@@ -241,10 +358,15 @@ class GUIComponent {
 
 		// Freeze mode
 		if (this.mouseMode === MouseMode.FREEZE) {
+			_frozenBy.add(this);
 			Mouse.intersect = false;
 			Session.FreezeUI = true;
+			_EntityManager?.setOverEntity(null);
 			_Cursor?.setType(_Cursor?.ACTION?.DEFAULT ?? 0);
 		}
+
+		// Draw at its UI scale before it places itself
+		UIScale.attach(this);
 
 		// Hook
 		if (this.onAppend) {
@@ -304,11 +426,22 @@ class GUIComponent {
 
 			// Detach from DOM
 			this._host.remove();
+			UIScale.detach(this);
+			whenDrawn.suspend(this._host);
+			if (this._noCursorStyle) {
+				_untrackNoCursorStyle(this._noCursorStyle);
+			}
 
-			// Freeze mode cleanup
+			// Freeze mode cleanup: only once no frozen window is left. A shop
+			// asks for an amount in an InputBox, and both freeze; closing the
+			// InputBox used to hand the map its clicks back while the shop was
+			// still open, so pressing Buy also walked to where it was pressed.
 			if (this.mouseMode === MouseMode.FREEZE) {
-				Mouse.intersect = true;
-				Session.FreezeUI = false;
+				_frozenBy.delete(this);
+				if (_frozenBy.size === 0) {
+					Mouse.intersect = true;
+					Session.FreezeUI = false;
+				}
 			}
 
 			// Scrollbar observer cleanup
@@ -317,6 +450,16 @@ class GUIComponent {
 				this.__scrollbarObserver = null;
 			}
 		}
+	}
+
+	/**
+	 * The factor this window is drawn at (UI/UIScale.js); 1 unless a plugin
+	 * scaled it. Screen distances divided by it are distances in the window.
+	 *
+	 * @return {number}
+	 */
+	get scale() {
+		return UIScale.of(this);
 	}
 
 	// ─── Focus / zIndex management ─────────────────────────
@@ -400,6 +543,9 @@ class GUIComponent {
 		// Always inherit behavioral properties
 		cloned.mouseMode = this.mouseMode;
 		cloned.needFocus = this.needFocus;
+
+		// Scaled as the window it copies (UI/UIScale.js): every WhisperBox, whatever its name
+		cloned.scaleName = this.scaleName || this.name;
 
 		if (full) {
 			for (const key of Object.keys(this)) {
@@ -543,6 +689,8 @@ class GUIComponent {
 		if (!handleEl) return this;
 
 		const onStart = event => {
+			if (component.canStartDrag && !component.canStartDrag(event)) return;
+			component.cancelDrag();
 			if (event.type === 'touchstart') {
 				Mouse.screen.x = event.touches[0].pageX;
 				Mouse.screen.y = event.touches[0].pageY;
@@ -552,8 +700,10 @@ class GUIComponent {
 
 			const x = host.offsetLeft - Mouse.screen.x;
 			const y = host.offsetTop - Mouse.screen.y;
-			const width = host.offsetWidth;
-			const height = host.offsetHeight;
+			// On-screen size: a scaled window (UI/UIScale.js) is larger than its layout box
+			const hostRect = host.getBoundingClientRect();
+			const width = hostRect.width;
+			const height = hostRect.height;
 
 			// Build snap cache from other active components
 			_snapCache = [];
@@ -579,11 +729,13 @@ class GUIComponent {
 						continue;
 					}
 
+					// On-screen box: a scaled window (UI/UIScale.js) is larger than its layout box
+					const rect = el.getBoundingClientRect();
 					_snapCache.push({
-						left: el.offsetLeft,
-						top: el.offsetTop,
-						right: el.offsetLeft + el.offsetWidth,
-						bottom: el.offsetTop + el.offsetHeight
+						left: rect.left,
+						top: rect.top,
+						right: rect.right,
+						bottom: rect.bottom
 					});
 				}
 			}
@@ -596,14 +748,25 @@ class GUIComponent {
 			let currentOpacity = 1.0;
 			let lastMx = Mouse.screen.x;
 			let lastMy = Mouse.screen.y;
+			const startMx = lastMx,
+				startMy = lastMy;
+			let moved = false;
 
 			// Stop drag on mouseup / touchend
-			const onEnd = ev => {
+			const onEnd = (ev, cancelled = false) => {
 				if (ev.type === 'touchend' || ev.which === 1 || ev.isTrigger) {
 					cancelAnimationFrame(drag);
 					window.removeEventListener('mouseup', onEnd);
 					window.removeEventListener('touchend', onEnd);
 					_snapCache = [];
+					window.removeEventListener('blur', cancel);
+					component._cancelDrag = null;
+					component.onDragStop?.(ev, { moved, cancelled });
+					if (cancelled) {
+						host.style.opacity = '1';
+						host.style.transition = '';
+						return;
+					}
 
 					if (component.gridSnap) {
 						const gw = component.gridSnap.width;
@@ -647,6 +810,9 @@ class GUIComponent {
 				}
 			};
 
+			const cancel = () => onEnd({ isTrigger: true }, true);
+			component._cancelDrag = cancel;
+			if (component.canStartDrag) window.addEventListener('blur', cancel);
 			window.addEventListener('mouseup', onEnd);
 			window.addEventListener('touchend', onEnd);
 
@@ -660,12 +826,21 @@ class GUIComponent {
 					drag = requestAnimationFrame(dragging);
 					return;
 				}
+				if (component.canStartDrag && !component.canStartDrag(event)) {
+					cancel();
+					return;
+				}
+				if (!moved && Math.hypot(mx - startMx, my - startMy) < (component.dragThreshold || 0)) {
+					drag = requestAnimationFrame(dragging);
+					return;
+				}
+				moved = true;
 				lastMx = mx;
 				lastMy = my;
 
 				let x_ = mx + x;
 				let y_ = my + y;
-				currentOpacity = Math.max(currentOpacity - 0.02, 0.7);
+				currentOpacity = component.dragOpacity ?? Math.max(currentOpacity - 0.02, 0.7);
 
 				// Reset magnet
 				if (component.magnet) {
@@ -746,9 +921,25 @@ class GUIComponent {
 			};
 			drag = requestAnimationFrame(dragging);
 		};
+		this._dragHandleDisposers ||= new Set();
+		this._dragHandleDisposers.add(() => {
+			handleEl.removeEventListener('mousedown', onStart);
+			handleEl.removeEventListener('touchstart', onStart);
+		});
 		handleEl.addEventListener('mousedown', onStart);
 		handleEl.addEventListener('touchstart', onStart);
 		return this;
+	}
+
+	cancelDrag() {
+		this._cancelDrag?.();
+	}
+
+	// Ephemeral components release handles that may have been moved into another view.
+	disposeDragging() {
+		this.cancelDrag();
+		this._dragHandleDisposers?.forEach(dispose => dispose());
+		this._dragHandleDisposers?.clear();
 	}
 
 	// ─── Mouse intersection setup ──────────────────────────
@@ -843,16 +1034,35 @@ class GUIComponent {
 		});
 	}
 
+	/**
+	 * Tell the window's mouse guard the pointer has left.
+	 *
+	 * Hiding is display:none, and a browser fires no mouseleave for an element
+	 * that disappears under the pointer. A STOP-mode window hidden while hovered
+	 * kept the map from taking clicks until it was shown and left again.
+	 */
+	_releaseMouse() {
+		(this.__mouseStopBlock || this._host).dispatchEvent(new Event('mouseleave'));
+	}
+
 	_setupMouseMode() {
 		const element = this.__mouseStopBlock || this._host;
 		if (this.mouseMode === GUIComponent.MouseMode.STOP) {
 			let _intersect;
 			let _enter = 0;
 
+			// The leave a drag swallowed, once the pointer is seen elsewhere.
+			const check = () => {
+				if (_enter > 0 && !(element.isConnected && element.matches(':hover'))) {
+					element.dispatchEvent(new Event('mouseleave'));
+				}
+			};
+
 			element.addEventListener('mouseenter', () => {
 				if (_enter === 0) {
 					_intersect = Mouse.intersect;
 					_enter++;
+					_enteredGuards.add(check);
 					if (_intersect) {
 						Mouse.intersect = false;
 						_Cursor?.setType(_Cursor?.ACTION?.DEFAULT ?? 0);
@@ -864,6 +1074,7 @@ class GUIComponent {
 			element.addEventListener('mouseleave', () => {
 				if (_enter > 0) {
 					_enter--;
+					_enteredGuards.delete(check);
 					if (_enter === 0 && _intersect) {
 						if (!Session.FreezeUI) {
 							Mouse.intersect = true;
@@ -877,6 +1088,7 @@ class GUIComponent {
 			element.addEventListener('x_remove', () => {
 				if (_enter > 0) {
 					_enter = 0;
+					_enteredGuards.delete(check);
 					if (_intersect) {
 						Mouse.intersect = true;
 						_EntityManager?.setOverEntity(null);
@@ -903,6 +1115,8 @@ class GUIComponent {
 		}
 
 		if (this.mouseMode !== GUIComponent.MouseMode.CROSS) {
+			// A UI press must not reach the map, even if an older hover guard restored intersection.
+			element.addEventListener('mousedown', event => event.stopPropagation());
 			element.addEventListener('touchstart', e => e.stopImmediatePropagation());
 		}
 		// Shadow DOM cursor events (clickable hover detection)
@@ -945,7 +1159,12 @@ class GUIComponent {
 			setTimeout(() => checkScrollbars(root), 150);
 			setTimeout(() => checkScrollbars(root), 500);
 
-			// Re-apply on visibility or content changes
+			// Re-apply on visibility or content changes. A window appended while
+			// already open (the NPC dialog does it for every line) replaces its
+			// observer rather than adding one, or they pile up for the session.
+			if (self.__scrollbarObserver) {
+				self.__scrollbarObserver.disconnect();
+			}
 			const observer = new MutationObserver(mutations => {
 				let needsCheck = false;
 				for (const mutation of mutations) {
@@ -983,10 +1202,18 @@ class GUIComponent {
 	 * Process legacy data-* attributes on a single DOM element.
 	 * Handles: data-background, data-hover, data-down, data-active, data-text, data-preload.
 	 * Static so it can be called from anywhere (e.g. dynamically created buttons).
+	 *
+	 * @param {HTMLElement} node
+	 * @param {object} [options]
+	 * @param {boolean} [options.text] - set the localized text
+	 * @param {boolean} [options.images] - fetch the images
+	 * @param {string} [options.deferredFrom] - the node's inline background
+	 *   when its images were deferred: a different one set since then by the
+	 *   window itself stays
 	 */
-	static processDataAttrs(node) {
+	static processDataAttrs(node, { text = true, images = true, deferredFrom } = {}) {
 		if (!_Client || !_DB) {
-			_ensureDeps().then(() => GUIComponent.processDataAttrs(node));
+			_ensureDeps().then(() => GUIComponent.processDataAttrs(node, { text, images, deferredFrom }));
 			return;
 		}
 		const background = node.dataset.background;
@@ -1018,9 +1245,11 @@ class GUIComponent {
 		};
 
 		// Localized text
-		if (msgId && _DB?.getMessage(msgId, '')) {
+		if (text && msgId && _DB?.getMessage(msgId, '')) {
 			node.textContent = _DB?.getMessage(msgId, '');
 		}
+
+		if (!images) return;
 
 		// Default background
 		if (background) {
@@ -1035,7 +1264,16 @@ class GUIComponent {
 						console.error(e.message);
 					}
 				}
+				node.classList.remove('no-texture');
+				// Fetched late, the window may have set its own background
+				// meanwhile (a mini layout, a selected tab): that one stays.
+				if (deferredFrom !== undefined && node.style.backgroundImage !== deferredFrom) return;
 				updateBg();
+			}, () => {
+				// Not every client's data has every window's textures (iRO's
+				// 2026 data has no bank/ folder). Mark the node so a window's
+				// CSS can draw it without one instead of leaving it see-through.
+				node.classList.add('no-texture');
 			});
 		}
 
@@ -1061,9 +1299,13 @@ class GUIComponent {
 				}
 			});
 
+			// Kept when the window is removed: remove() fires x_remove on every
+			// node, but a window reuses its nodes when it is appended again, and
+			// nothing processes them a second time. Disconnecting here froze each
+			// data-active image after the window's first removal, such as on a
+			// map change. The observer goes with the node when the node goes.
 			observer.observe(node, { attributes: true, attributeFilter: ['class'] });
 
-			node.addEventListener('x_remove', () => observer.disconnect(), { once: true });
 			if (!node._roActiveObserver) {
 				node._roActiveObserver = observer;
 			}
@@ -1116,15 +1358,27 @@ class GUIComponent {
 	/**
 	 * Walk the shadow DOM and process all elements with data-* attributes.
 	 * Called once during prepare().
+	 *
+	 * @param {boolean} [deferImages] - set the text now, and fetch each
+	 *   node's images when it is first drawn (UI/WhenDrawn.js)
 	 */
-	_processAllDataAttrs() {
+	_processAllDataAttrs(deferImages = false) {
 		const root = this._shadow || this._host;
 		if (!root) return;
 
 		const selector = '[data-background],[data-hover],[data-down],[data-active],[data-text],[data-preload]';
 		const nodes = root.querySelectorAll(selector);
 		for (const node of nodes) {
-			GUIComponent.processDataAttrs(node);
+			if (!deferImages) {
+				GUIComponent.processDataAttrs(node);
+				continue;
+			}
+			GUIComponent.processDataAttrs(node, { images: false });
+			const { background, hover, down, active, preload } = node.dataset;
+			if (background || hover || down || active || preload) {
+				const deferredFrom = node.style.backgroundImage;
+				whenDrawn(node, () => GUIComponent.processDataAttrs(node, { text: false, deferredFrom }));
+			}
 		}
 	}
 
@@ -1245,6 +1499,7 @@ class GUIComponent {
 			},
 			hide() {
 				host.style.display = 'none';
+				component._releaseMouse();
 				return proxy;
 			},
 			toggle() {
@@ -1253,6 +1508,7 @@ class GUIComponent {
 					component._fixPositionOverflow();
 				} else {
 					host.style.display = 'none';
+					component._releaseMouse();
 				}
 				return proxy;
 			},

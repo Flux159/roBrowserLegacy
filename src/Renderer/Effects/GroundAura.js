@@ -10,9 +10,10 @@
 import _vertexShader from './GroundAura.vs?raw';
 import _fragmentShader from './GroundAura.fs?raw';
 import WebGL from 'Utils/WebGL.js';
-import Client from 'Core/Client.js';
 import Altitude from 'Renderer/Map/Altitude.js';
 import SpriteRenderer from 'Renderer/SpriteRenderer.js';
+import { auraBlend, auraUniform, beginAuraBlend, endAuraBlend } from 'Renderer/Effects/AuraBlend.js';
+import AuraBatch, { sharedTexture, freeSharedTextures } from 'Renderer/Effects/AuraBatch.js';
 
 /**
  * @var {WebGLProgram}
@@ -23,6 +24,23 @@ let _program;
  * @var {WebGLBuffer}
  */
 let _buffer;
+
+/**
+ * Every aura's quads, drawn together (AuraBatch.js), and the textures they share.
+ */
+const _batch = new AuraBatch({ discardClear: true, darken: true });
+const _textures = new Map();
+
+/**
+ * The quad's triangles, as generateGroundQuad lays them out: corners
+ * (-,-) (+,-) (-,+), then (+,-) (+,+) (-,+).
+ */
+const GROUND_ORDER = [0, 1, 3, 1, 2, 3];
+
+/**
+ * A quad's corners, for the batch: x, z in the unit quad.
+ */
+const GROUND_CORNERS = [-0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, 0.5];
 
 /**
  * Generate a flat quad on the XZ plane (Y=0, horizontal)
@@ -78,9 +96,19 @@ function calculateSize(self, aura, auraAngle, i) {
  * GroundAura constructor
  */
 class GroundAura {
-	constructor(position, size, distance, textureName, tick) {
+	/**
+	 * @param {object} color optional tint from AuraTiers.auraColor; white when left out
+	 * @param {object} [fallback] makes `textureName` a ready-coloured texture
+	 *   with alpha, drawn as it is (the client's pikapika_<colour>.tga for a hat
+	 *   aura); {textureName, color} is drawn instead by a client without it
+	 */
+	constructor(position, size, distance, textureName, tick, color, fallback) {
+		this.color = color || { r: 1, g: 1, b: 1, dark: false };
 		this.position = position;
 		this.textureName = textureName;
+		this.fallback = fallback || null;
+		// See AuraBlend.js: pikapika2.bmp has no alpha, a ready-coloured texture does.
+		this.shape = this.fallback ? 'alpha' : 'brightness';
 		this.tick = tick;
 		this.distance = distance;
 		this.size = size;
@@ -112,18 +140,41 @@ class GroundAura {
 		this.sinCache = {};
 		this._lastTick = tick;
 		this._accumTime = 0;
+
+		this.worldPos = [0, 0, 0];
+		this.rgba = [0, 0, 0, 0];
+		this.points = [
+			[0, 0, 0],
+			[0, 0, 0],
+			[0, 0, 0],
+			[0, 0, 0]
+		];
 	}
 
 	/**
 	 * Initialize instance
 	 */
 	init(gl) {
-		Client.loadFile(`data/texture/effect/${this.textureName}`, buffer => {
-			WebGL.texture(gl, buffer, texture => {
+		const onerror = () => {
+			if (!this.fallback) {
+				return;
+			}
+			this.textureName = this.fallback.textureName;
+			this.color = this.fallback.color;
+			this.fallback = null;
+			this.shape = 'brightness';
+			this.init(gl);
+		};
+		sharedTexture(
+			_textures,
+			gl,
+			this.textureName,
+			texture => {
 				this.texture = texture;
 				this.ready = true;
-			});
-		});
+			},
+			onerror
+		);
 	}
 
 	/**
@@ -135,8 +186,6 @@ class GroundAura {
 
 	render(gl, tick) {
 		const uniform = _program.uniform;
-
-		gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
 		const RAG_TICK_MS = 25;
 		const dt = Math.min(tick - (this._lastTick || tick), 250);
@@ -175,10 +224,20 @@ class GroundAura {
 		const groundZ = Altitude.getCellHeight(this.position[0], this.position[1]);
 
 		// World position with small lift to avoid z-fighting
-		const worldPos = [this.position[0], this.position[1], groundZ + 0.05];
+		const worldPos = this.worldPos;
+		worldPos[0] = this.position[0];
+		worldPos[1] = this.position[1];
+		worldPos[2] = groundZ + 0.05;
 
+		if (_batch.active) {
+			this.record(worldPos);
+			return;
+		}
+
+		gl.bindTexture(gl.TEXTURE_2D, this.texture);
 		gl.uniform3fv(uniform.uWorldPosition, worldPos);
 		const self = this;
+		beginAuraBlend(gl, this.color, this.shape);
 		SpriteRenderer.runWithDepth(true, false, false, function () {
 			for (let i = 0; i < self.aura.length; i++) {
 				if (!self.aura[i].life) {
@@ -190,12 +249,55 @@ class GroundAura {
 				// Set uniforms - size in SpriteRenderer units (shader converts to world units)
 				gl.uniform2f(uniform.uSize, self.aura[i].size[0], self.aura[i].size[1]);
 				gl.uniform1f(uniform.uAngle, (auraAngle * Math.PI) / 180);
-				gl.uniform4f(uniform.uColor, 1.0, 1.0, 1.0, 0.8);
+				gl.uniform4f(uniform.uColor, ...auraUniform(self.color, 0.8, self.shape));
+				gl.uniform1i(uniform.uDarken, !!(self.color && self.color.dark && self.shape !== 'alpha'));
 				gl.uniform1f(uniform.uZIndex, 1 + i);
 
 				gl.drawArrays(gl.TRIANGLES, 0, 6);
 			}
 		});
+		endAuraBlend(gl, this.color);
+	}
+
+	/**
+	 * Record the quads in the batch, placed as GroundAura.vs places them
+	 */
+	record(worldPos) {
+		const blend = auraBlend(this.color, this.shape);
+		const color = auraUniform(this.color, 0.8, this.shape, this.rgba);
+
+		for (let i = 0; i < this.aura.length; i++) {
+			if (!this.aura[i].life) {
+				continue;
+			}
+
+			// Size in SpriteRenderer units to world units, as the shader does
+			const sizeX = this.aura[i].size[0] / 35.0;
+			const sizeY = this.aura[i].size[1] / 35.0;
+			const angle = (i * 23 * Math.PI) / 180;
+			const cos = Math.cos(angle);
+			const sin = Math.sin(angle);
+
+			for (let k = 0; k < 4; k++) {
+				const x = GROUND_CORNERS[k * 2] * sizeX;
+				const z = GROUND_CORNERS[k * 2 + 1] * sizeY;
+				this.points[k][0] = worldPos[0] + 0.5 + (x * cos - z * sin);
+				this.points[k][1] = -worldPos[2];
+				this.points[k][2] = worldPos[1] + 0.5 + (x * sin + z * cos);
+			}
+
+			_batch.quad(
+				this.texture,
+				blend,
+				this.points,
+				GROUND_ORDER,
+				color[0],
+				color[1],
+				color[2],
+				color[3],
+				(1 + i) * 0.01
+			);
+		}
 	}
 
 	/**
@@ -225,6 +327,8 @@ class GroundAura {
 			gl.deleteBuffer(_buffer);
 			_buffer = null;
 		}
+		_batch.free(gl);
+		freeSharedTextures(_textures, gl);
 		this.ready = false;
 	}
 
@@ -256,12 +360,15 @@ class GroundAura {
 		gl.enableVertexAttribArray(attribute.aTextureCoord);
 		gl.vertexAttribPointer(attribute.aPosition, 3, gl.FLOAT, false, 5 * 4, 0);
 		gl.vertexAttribPointer(attribute.aTextureCoord, 2, gl.FLOAT, false, 5 * 4, 3 * 4);
+
+		_batch.begin(gl, modelView, projection, fog);
 	}
 
 	/**
 	 * After render cleanup
 	 */
 	static afterRender(gl) {
+		_batch.flush(gl);
 		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 		gl.disableVertexAttribArray(_program.attribute.aPosition);

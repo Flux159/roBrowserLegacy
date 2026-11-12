@@ -18,6 +18,7 @@
  */
 
 import DB from 'DB/DBManager.js';
+import PackageSelection from 'UI/Components/PackageSelection/PackageSelection.js';
 import ItemType from 'DB/Items/ItemType.js';
 import Network from 'Network/NetworkManager.js';
 import PACKET from 'Network/PacketStructure.js';
@@ -47,6 +48,7 @@ import Mail from 'UI/Components/Mail/Mail.js';
 import WriteRodex from 'UI/Components/Rodex/WriteRodex.js';
 import { attachTouchDrag } from 'UI/TouchDrag.js';
 import { transferInventoryItemStack } from './InventoryItemTransfer.js';
+import { htmlToText } from 'Utils/HtmlHelper.js';
 
 function _sanitizeHtml(str) {
 	const whitelist = ['font', 'i', 'b'];
@@ -69,6 +71,7 @@ function _sanitizeHtml(str) {
  * @param {string} config.cssText                  Version CSS
  * @param {number} config.defaultHeight            Default `height` preference value
  * @param {boolean} [config.resizableHeight]       V0: two-dimensional resize (width + height)
+ * @param {number} [config.extraRows]              Extra rows above the default pixel height
  * @param {boolean} [config.tabSprite]             V0: tab highlight via tab_itm sprite (no `selected` class)
  * @param {boolean} [config.favoriteTab]           V1+: favorite tab, footer tools, item compare, count separator
  * @param {boolean} [config.equipSwitch]           V2+: equipment switch list and icons
@@ -86,6 +89,7 @@ export function createInventory(config) {
 		cssText,
 		defaultHeight,
 		resizableHeight = false,
+		extraRows = 0,
 		tabSprite = false,
 		favoriteTab = false,
 		equipSwitch = false,
@@ -114,7 +118,8 @@ export function createInventory(config) {
 		Component.equipswitchlist = [];
 	}
 
-	let _realSize = 0;
+	let _reduced = false;
+	let _height = 0;
 	let lockOverlayTimeout;
 
 	const prefDefaults = {
@@ -401,10 +406,8 @@ export function createInventory(config) {
 		this.magnet.LEFT = _preferences.magnet_left;
 		this.magnet.RIGHT = _preferences.magnet_right;
 
-		_realSize = _preferences.reduce ? 0 : this._host.getBoundingClientRect().height;
-		const miniBtnAppend = root.querySelector('.titlebar .mini');
-		if (miniBtnAppend) {
-			miniBtnAppend.dispatchEvent(new Event('mousedown'));
+		if (root.querySelector('.titlebar .mini')) {
+			setReduced(!!_preferences.reduce);
 		}
 	};
 
@@ -426,13 +429,15 @@ export function createInventory(config) {
 
 		// Save preferences
 		_preferences.show = this._host.style.display !== 'none';
-		_preferences.reduce = !!_realSize;
+		_preferences.reduce = _reduced;
 		_preferences.y = parseInt(this._host.style.top, 10);
 		_preferences.x = parseInt(this._host.style.left, 10);
-		const hostRect = this._host.getBoundingClientRect();
-		_preferences.width = Math.floor((hostRect.width - (23 + 16 + 16 - 30)) / 32);
+		// Layout size: the window may be drawn scaled (UI/UIScale.js)
+		_preferences.width = Math.floor((this._host.offsetWidth - (23 + 16 + 16 - 30)) / 32);
 		if (resizableHeight) {
-			_preferences.height = Math.floor((hostRect.height - (31 + 19 - 30)) / 32);
+			_preferences.height = _height;
+		} else if (extraRows) {
+			_preferences.height = _height || defaultHeight;
 		}
 		_preferences.magnet_top = this.magnet.TOP;
 		_preferences.magnet_bottom = this.magnet.BOTTOM;
@@ -464,7 +469,7 @@ export function createInventory(config) {
 				break;
 		}
 
-		const basicInfoUI = BasicInfo.getUI();
+		const basicInfoUI = BasicInfo;
 		if (basicInfoUI._host) {
 			const changeUI = basicInfoUI.getRoot().querySelector('#item .btn_overlay');
 			if (changeUI) {
@@ -490,7 +495,7 @@ export function createInventory(config) {
 			this._host.style.display = 'none';
 		}
 
-		const basicInfoUI = BasicInfo.getUI();
+		const basicInfoUI = BasicInfo;
 		if (basicInfoUI._host) {
 			const changeUI = basicInfoUI.getRoot().querySelector('#item .btn_overlay');
 			if (changeUI) {
@@ -522,11 +527,19 @@ export function createInventory(config) {
 		}
 
 		if (resizableHeight) {
-			height = Math.min(Math.max(height, 2), 5);
+			_height = Math.min(Math.max(height, 2), 5);
 			this._host.style.width = `${27 + 16 + 16 + width * 32}px`;
-			this._host.style.height = `${31 + 4 + 27 + height * 32}px`;
+			this._host.style.height = expandedHeight();
 		} else {
 			this._host.style.width = `${23 + 16 + 16 + width * 32}px`;
+			if (extraRows) {
+				const currentHeight = height ?? (_height || defaultHeight);
+				const rows = Math.min(Math.max(Math.round((currentHeight - defaultHeight) / 32), 0), extraRows);
+				_height = defaultHeight + rows * 32;
+				if (!_reduced) {
+					this._host.style.height = expandedHeight();
+				}
+			}
 		}
 
 		this.updateScroll();
@@ -554,7 +567,11 @@ export function createInventory(config) {
 				const hostRect = hostEl.getBoundingClientRect();
 
 				if (itemRect.bottom < hostRect.bottom && hostEl.scrollTop > 0) {
-					hostEl.scrollTop = Math.max(0, hostEl.scrollTop - (hostRect.bottom - itemRect.bottom));
+					// Screen distance to window distance (UI/UIScale.js)
+					hostEl.scrollTop = Math.max(
+						0,
+						hostEl.scrollTop - (hostRect.bottom - itemRect.bottom) / Component.scale
+					);
 				}
 			}
 
@@ -603,6 +620,16 @@ export function createInventory(config) {
 			}
 		}
 		return null;
+	};
+
+	/**
+	 * The open tab (Component.TAB), its place among the tab buttons. V0 draws
+	 * it as one picture, so only this says which it is (gamepad LB / RB).
+	 *
+	 * @returns {number}
+	 */
+	Component.getTab = function getTab() {
+		return _preferences.tab;
 	};
 
 	/**
@@ -657,7 +684,7 @@ export function createInventory(config) {
 	};
 
 	function countLabel() {
-		return Component.list.length + Equipment.getUI().getNumber() + (favoriteTab ? ' / ' : '');
+		return Component.list.length + Equipment.getNumber() + (favoriteTab ? ' / ' : '');
 	}
 
 	/**
@@ -677,7 +704,7 @@ export function createInventory(config) {
 			// Mark as new item
 			Component.newItems.push(item.index);
 
-			const basicInfoUI = BasicInfo.getUI();
+			const basicInfoUI = BasicInfo;
 			if (basicInfoUI._host) {
 				const changeUI = basicInfoUI.getRoot().querySelector('#item .btn_overlay');
 				if (changeUI) {
@@ -761,7 +788,7 @@ export function createInventory(config) {
 		}
 
 		if (item.WearState && item.type !== ItemType.AMMO && item.type !== ItemType.CARD) {
-			Equipment.getUI().equip(item, item.WearState);
+			Equipment.equip(item, item.WearState);
 			return false;
 		}
 
@@ -867,16 +894,15 @@ export function createInventory(config) {
 			return null;
 		}
 
-		if (item.count) {
+		// An entry removed whole keeps its count, for the callers that put it back
+		if (item.count > count) {
 			item.count -= count;
-			if (item.count > 0) {
-				const countEl = root.querySelector(`.item[data-index="${item.index}"] .count`);
-				if (countEl) {
-					countEl.textContent = item.count;
-				}
-				this.onUpdateItem(item.ITID, item.count);
-				return item;
+			const countEl = root.querySelector(`.item[data-index="${item.index}"] .count`);
+			if (countEl) {
+				countEl.textContent = item.count;
 			}
+			this.onUpdateItem(item.ITID, item.count);
+			return item;
 		}
 
 		this.list.splice(this.list.indexOf(item), 1);
@@ -943,8 +969,15 @@ export function createInventory(config) {
 	 */
 	Component.useItem = function UseItem(item) {
 		switch (item.type) {
-			case ItemType.HEALING:
 			case ItemType.USABLE:
+				// rAthena exposes delay-consume boxes as usable items on the wire.
+				if (PACKETVER.value >= 20220216 && DB.getItemPackage(item.ITID).length) {
+					PackageSelection.open(item, Component);
+				} else {
+					Component.onUseItem(item.index);
+				}
+				break;
+			case ItemType.HEALING:
 			case ItemType.CASH:
 				Component.onUseItem(item.index);
 				break;
@@ -952,6 +985,7 @@ export function createInventory(config) {
 				Component.onUseCard(item.index);
 				break;
 			case ItemType.DELAYCONSUME:
+				PackageSelection.open(item, Component);
 				break;
 			case ItemType.WEAPON:
 			case ItemType.ARMOR:
@@ -990,24 +1024,38 @@ export function createInventory(config) {
 	function onResize() {
 		const top = Component._host.offsetTop;
 		const left = Component._host.offsetLeft;
+		const startY = Mouse.screen.y;
+		const startHeight = Component._host.offsetHeight;
 		let lastWidth = 0;
 		let lastHeight = 0;
 
 		function resizing() {
 			const extraX = 23 + 16 + 16 - 30;
 
-			let w = Math.floor((Mouse.screen.x - left - extraX) / 32);
+			// Screen distance to window distance (UI/UIScale.js)
+			const scale = Component.scale;
+			let w = Math.floor(((Mouse.screen.x - left) / scale - extraX) / 32);
 			w = Math.min(Math.max(w, 6), resizableHeight ? 8 : 9);
 
 			if (resizableHeight) {
 				const extraY = 31 + 19 - 30;
-				let h = Math.floor((Mouse.screen.y - top - extraY) / 32);
+				let h = Math.floor(((Mouse.screen.y - top) / scale - extraY) / 32);
 				h = Math.min(Math.max(h, 2), 5);
 
 				if (w === lastWidth && h === lastHeight) {
 					return;
 				}
 
+				Component.resize(w, h);
+				lastWidth = w;
+				lastHeight = h;
+			} else if (extraRows) {
+				const rows = Math.min(
+					Math.max(Math.round((startHeight - defaultHeight + (Mouse.screen.y - startY) / scale) / 32), 0),
+					extraRows
+				);
+				const h = defaultHeight + rows * 32;
+				if (w === lastWidth && h === lastHeight) return;
 				Component.resize(w, h);
 				lastWidth = w;
 				lastHeight = h;
@@ -1077,22 +1125,35 @@ export function createInventory(config) {
 	 * Hide/show inventory's content
 	 */
 	function onToggleReduction() {
-		const root = Component.getRoot();
-		const panel = root.querySelector('.panel');
+		setReduced(!_reduced);
+	}
 
-		if (_realSize) {
-			if (panel) {
-				panel.style.display = 'flex';
-			}
-			Component._host.style.height = `${_realSize}px`;
-			_realSize = 0;
-		} else {
-			_realSize = Component._host.getBoundingClientRect().height;
-			Component._host.style.height = '17px';
-			if (panel) {
-				panel.style.display = 'none';
-			}
+	/**
+	 * Collapse the window to its titlebar, or give it back its full height
+	 *
+	 * @param {boolean} reduced
+	 */
+	function setReduced(reduced) {
+		const panel = Component.getRoot().querySelector('.panel');
+
+		_reduced = reduced;
+		if (panel) {
+			panel.style.display = reduced ? 'none' : 'flex';
 		}
+		Component._host.style.height = reduced ? '17px' : expandedHeight();
+	}
+
+	/**
+	 * Full height of the window: V0 sizes it from its rows, a window with extra
+	 * rows from the height chosen (pixels), the others from their CSS
+	 *
+	 * @returns {string}
+	 */
+	function expandedHeight() {
+		if (resizableHeight) {
+			return `${31 + 4 + 27 + _height * 32}px`;
+		}
+		return extraRows ? `${_height || defaultHeight}px` : '';
 	}
 
 	/**
@@ -1131,6 +1192,13 @@ export function createInventory(config) {
 			data = JSON.parse(event.dataTransfer.getData('Text'));
 			item = data.data;
 		} catch (_e) {
+			return false;
+		}
+
+		// Dragged off the equipment window: take it off. Ahead of the quantity
+		// prompt below, because equipped ammunition is a stack and comes off whole.
+		if (data.type === 'item' && data.from === 'Equipment') {
+			Equipment.getUI().onUnEquip(item.index);
 			return false;
 		}
 
@@ -1212,8 +1280,10 @@ export function createInventory(config) {
 
 		if (overlay) {
 			overlay.style.display = 'block';
-			overlay.style.top = `${itemRect.top - rootRect.top}px`;
-			overlay.style.left = `${itemRect.left - rootRect.left + 35}px`;
+			// Screen distance to window distance (UI/UIScale.js)
+			const scale = Component.scale;
+			overlay.style.top = `${(itemRect.top - rootRect.top) / scale}px`;
+			overlay.style.left = `${(itemRect.left - rootRect.left) / scale + 35}px`;
 			overlay.innerHTML = _sanitizeHtml(`${DB.getItemName(item)}: ${item.count || 1}${quantity}`);
 
 			if (item.IsIdentified) {
@@ -1310,7 +1380,7 @@ export function createInventory(config) {
 		ItemInfo.setItem(item);
 
 		if (favoriteTab) {
-			const compareItem = Equipment.getUI().isInEquipList(item.location);
+			const compareItem = Equipment.isInEquipList(item.location);
 
 			if (compareItem && Component.itemcomp) {
 				ItemCompare.prepare();
@@ -1331,9 +1401,13 @@ export function createInventory(config) {
 			return true;
 		}
 
-		const storageUI = Storage.getUI();
-		const isStorageOpen = storageUI._host ? storageUI._host.style.display !== 'none' : false;
-		const isCartOpen = CartItems._host ? CartItems._host.style.display !== 'none' : false;
+		const storageUI = Storage;
+		const isStorageOpen = storageUI._host
+			? storageUI._host.isConnected && storageUI._host.style.display !== 'none'
+			: false;
+		const isCartOpen = CartItems._host
+			? CartItems._host.isConnected && CartItems._host.style.display !== 'none'
+			: false;
 
 		if (!item) {
 			return false;
@@ -1568,7 +1642,11 @@ export function createInventory(config) {
 			});
 
 			SwitchEquip.equip(item, item.location, true);
-			ChatBox.addText(DB.getItemName(item) + ' ' + DB.getMessage(3143), ChatBox.TYPE.BLUE, ChatBox.FILTER.ITEM);
+			ChatBox.addText(
+				htmlToText(DB.getItemName(item)) + ' ' + DB.getMessage(3143),
+				ChatBox.TYPE.BLUE,
+				ChatBox.FILTER.ITEM
+			);
 		};
 
 		Component.removeItemFromSwitch = function (index) {
@@ -1595,12 +1673,12 @@ export function createInventory(config) {
 				this.equipswitchlist.splice(existingItemIndex, 1);
 
 				ChatBox.addText(
-					DB.getItemName(item) + ' ' + DB.getMessage(3144),
+					htmlToText(DB.getItemName(item)) + ' ' + DB.getMessage(3144),
 					ChatBox.TYPE.BLUE,
 					ChatBox.FILTER.ITEM
 				);
 
-				Equipment.getUI().equipItemsToSwitch();
+				Equipment.equipItemsToSwitch();
 				Component.equipAllFromSwitchList();
 			}
 		};
@@ -1649,7 +1727,7 @@ export function createInventory(config) {
 							return false;
 						}
 
-						const itemname = DB.getItemName(item);
+						const itemname = htmlToText(DB.getItemName(item));
 						const root = Component.getRoot();
 						const mcntEl = root.querySelector('.mcnt');
 						const currentlimit = mcntEl ? parseInt(mcntEl.textContent, 10) : 100;

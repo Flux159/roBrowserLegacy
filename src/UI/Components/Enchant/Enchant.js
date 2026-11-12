@@ -24,6 +24,7 @@ import Inventory from 'UI/Components/Inventory/Inventory.js';
 import KEYS from 'Controls/KeyEventHandler.js';
 import htmlText from './Enchant.html?raw';
 import cssText from './Enchant.css?raw';
+import { sanitizeHtml } from 'Utils/HtmlHelper.js';
 
 const Enchant = new GUIComponent('Enchant', cssText);
 
@@ -278,7 +279,7 @@ function showHoverOverlay(text, identified, target) {
 	}
 	const hostRect = Enchant._host.getBoundingClientRect();
 	const targetRect = target.getBoundingClientRect();
-	overlay.textContent = text;
+	overlay.innerHTML = sanitizeHtml(text);
 	Object.assign(overlay.style, {
 		top: targetRect.top - hostRect.top + 'px',
 		left: targetRect.left - hostRect.left + 35 + 'px'
@@ -812,7 +813,7 @@ function hasEnoughMaterials(materials) {
 	if (!materials || !materials.length) {
 		return true;
 	}
-	const inventoryUI = Inventory.getUI && Inventory.getUI();
+	const inventoryUI = Inventory;
 	if (!inventoryUI || !inventoryUI.getItemById) {
 		return false;
 	}
@@ -852,7 +853,7 @@ function renderMaterials(materials) {
 	if (!materials || !materials.length) {
 		return;
 	}
-	const inventoryUI = Inventory.getUI && Inventory.getUI();
+
 	materials.forEach(mat => {
 		const entry = document.createElement('div');
 		entry.className = 'material';
@@ -866,8 +867,8 @@ function renderMaterials(materials) {
 		const label = matId ? getItemDisplayName(matId, mat.base) : mat.base || 'Unknown';
 		let current = 0;
 		const required = Number(mat.count) || 0;
-		if (matId && inventoryUI && inventoryUI.getItemById) {
-			const inventoryItem = inventoryUI.getItemById(matId);
+		if (matId && Inventory.getItemById) {
+			const inventoryItem = Inventory.getItemById(matId);
 			current = inventoryItem ? inventoryItem.count : 0;
 		}
 		nameEl.textContent = label;
@@ -958,8 +959,7 @@ function renderItemList() {
 		return;
 	}
 
-	const inventoryUI = Inventory.getUI && Inventory.getUI();
-	const items = inventoryUI && inventoryUI.list ? inventoryUI.list : [];
+	const items = Inventory && Inventory.list ? Inventory.list : [];
 	let selectedIndex = EnchantState.item ? EnchantState.item.index : 0;
 	let selectedValid = false;
 	const candidates = [];
@@ -1009,7 +1009,7 @@ function renderItemList() {
 			showItemOptions: false
 		});
 
-		name.textContent = itemName;
+		name.innerHTML = sanitizeHtml(itemName);
 		info.appendChild(name);
 		info.appendChild(grade);
 
@@ -1398,8 +1398,7 @@ function validateItem(item) {
 }
 
 function getInventoryItemByIndex(index) {
-	const inventoryUI = Inventory.getUI && Inventory.getUI();
-	return inventoryUI && inventoryUI.getItemByIndex ? inventoryUI.getItemByIndex(index) : null;
+	return Inventory.getItemByIndex(index);
 }
 
 function resolveItemContext(target) {
@@ -1548,8 +1547,7 @@ function onItemSelect(event) {
 	if (isNaN(index)) {
 		return;
 	}
-	const inventoryUI = Inventory.getUI && Inventory.getUI();
-	const item = inventoryUI && inventoryUI.getItemByIndex ? inventoryUI.getItemByIndex(index) : null;
+	const item = Inventory.getItemByIndex(index);
 	if (!item) {
 		return;
 	}

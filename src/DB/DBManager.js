@@ -16,13 +16,16 @@ import ClassTable from './Jobs/JobNameTable.js';
 import PaletteTable from './Jobs/PalNameTable.js';
 import WeaponAction from './Jobs/WeaponAction.js';
 import WeaponJobTable from './Jobs/WeaponJobTable.js';
+import ShieldJobTable from './Jobs/ShieldJobTable.js';
 import BabyTable from './Jobs/BabyTable.js';
 import HairIndexTable from './Jobs/HairIndexTable.js';
 import MonsterTable from './Monsters/MonsterTable.js';
+import BodyFallbackTable from './Monsters/BodyFallbackTable.js';
 import MonsterNameTable from './Monsters/MonsterNameTable.js';
 import PetIllustration from './Pets/PetIllustration.js';
 import PetAction from './Pets/PetAction.js';
 import ItemTable from './Items/ItemTable.js';
+import { loadItemPackages } from 'DB/Items/ItemPackages.js';
 import HatTable from './Items/HatTable.js';
 import ShieldTable from './Items/ShieldTable.js';
 import WeaponTable from './Items/WeaponTable.js';
@@ -37,11 +40,13 @@ import SKID from './Skills/SkillConst.js';
 import SkillInfo from './Skills/SkillInfo.js';
 import SkillTreeView from './Skills/SkillTreeView.js';
 import { resetSkillTree, keepBuiltInSkills } from './Skills/SkillTreeMerge.js';
+import { resetHiddenSkills, hideSkill, placeSkill } from './Skills/SkillTreeMods.js';
 import JobHitSoundTable from './Jobs/JobHitSoundTable.js';
 import WeaponTrailTable from './Items/WeaponTrailTable.js';
 import TownInfo from './TownInfo.js';
 import StatusInfo from './Status/StatusInfo.js';
 import SC from './Status/StatusConst.js';
+import { stateIconFiles, BEFORE_MOD_NAMES, AFTER_MOD_NAMES, BEFORE_MOD_ROWS } from './Status/StateIconMods.js';
 import XmlParse from 'Vendors/xmlparse.js';
 import Base62 from 'Utils/Base62.js';
 import { BSON } from 'bson';
@@ -50,10 +55,14 @@ import PetHungryState from './Pets/PetHungryState.js';
 import PetFriendlyState from './Pets/PetFriendlyState.js';
 import PetMessageConst from './Pets/PetMessageConst.js';
 import MapInfo from './Map/MapTable.js';
+import { mergeSignboards } from './Map/SignboardMerge.js';
 import Network from 'Network/NetworkManager.js';
 import PACKET from 'Network/PacketStructure.js';
 import PACKETVER from 'Network/PacketVerManager.js';
 import MemoryManager from 'Core/MemoryManager.js';
+import { escapeHtml } from 'Utils/HtmlHelper.js';
+import LenientEnums from 'DB/LenientEnums.js';
+import LuaModuleLoader from 'Core/LuaModuleLoader.js';
 
 //Pet
 //MapName
@@ -62,10 +71,25 @@ import MemoryManager from 'Core/MemoryManager.js';
  * @type {Object} lua instance
  */
 let lua;
+/** @type {Promise|null} DB.loadLookTables, once started */
+let lookTables = null;
+let itemPackages = new Map();
 let HO_AI;
 let MER_AI;
 let default_HO_AI;
 let default_MER_AI;
+
+/**
+ * Whether the archive ships the halter-lead mounts' own palettes; undefined
+ * until it answers.
+ */
+let mountPalettes;
+
+/**
+ * The sentinel request on its way, if any; `stale` once DB.init has loaded
+ * another client, whose archive it was not asked of.
+ */
+let mountPalettesProbe = null;
 
 /**
  * @const {Array} message string
@@ -291,6 +315,18 @@ class DB {
 		DB.count = 0;
 		DB.index = 0;
 
+		// The client loaded after a server switch may be another archive: ask
+		// it again, and drop the previous answer the file cache keeps by name.
+		// A request still on its way would land in the file cache under that
+		// name: it is dropped once it lands instead.
+		LuaModuleLoader.clearCache();
+		mountPalettes = undefined;
+		if (mountPalettesProbe) {
+			mountPalettesProbe.stale = true;
+		} else {
+			MemoryManager.remove(null, DB.getBodyPalPath(JobId.PIG_CREATOR, 1, 0));
+		}
+
 		// Callback
 		let index = 0,
 			count = 0;
@@ -332,14 +368,22 @@ class DB {
 			true
 		);
 		const loadmsg = onLoad();
+		const readMsgString = (_index, val) => {
+			MsgStringTable[_index] = val;
+		};
+		const loadMsgStringCSV = () =>
+			loadCSV('data/msgstringtable.csv', MsgStringTable, 0, 1, loadmsg);
 		loadTable(
 			'data/msgstringtable.txt',
 			'#',
 			1,
-			(_index, val) => {
-				MsgStringTable[_index] = val;
-			},
-			() => loadCSV('data/msgstringtable.csv', MsgStringTable, 0, 1, loadmsg),
+			readMsgString,
+			// An empty msgstringtable.txt is a miss, not an answer: newer clients
+			// keep the file and put the table under a second name.
+			() =>
+				MsgStringTable.length
+					? loadMsgStringCSV()
+					: loadTable('data/msgstringtablel.txt', '#', 1, readMsgString, loadMsgStringCSV, true),
 			true
 		);
 
@@ -357,8 +401,31 @@ class DB {
 	static isLoaded = false;
 	static count = 0;
 	static index = 0;
+
+	/**
+	 * The headgear and garment sprite names alone, without the rest of the
+	 * database: what character select needs to draw a look newer than the
+	 * built-in HatTable/RobeTable. They take a few milliseconds, where
+	 * lazyInit's item tables hold the page for seconds. lazyInit loads them
+	 * again with everything else.
+	 *
+	 * @return {Promise} settled once both tables are in or have failed
+	 */
+	static loadLookTables() {
+		if (!lookTables) {
+			lookTables = (async () => {
+				if (!lua) {
+					await startLua();
+				}
+				await Promise.all([new Promise(loadHatTable), new Promise(loadRobeTable)]);
+			})();
+		}
+		return lookTables;
+	}
 	static async lazyInit() {
 		console.log('Loading DB files...');
+		// Its tables are read into the Lua state startLua is about to replace.
+		await lookTables?.catch(() => {});
 		await startLua();
 		// Callback
 		DB.index = 0;
@@ -387,6 +454,22 @@ class DB {
 		}
 		// TODO: load these load files by PACKETVER
 		if (Configs.get('loadLua')) {
+			itemPackages = new Map();
+			if (PACKETVER.value >= 20220216) {
+				const done = onLoad();
+				loadItemPackages(
+					lua,
+					DB.LUA_PATH,
+					PACKETVER.value,
+					Client.loadFile.bind(Client),
+					value => userStringDecoder.decode(value, userCharpage),
+					Configs.get('itemPackageSupplement')
+				)
+					.then(packages => {
+						itemPackages = packages;
+					})
+					.finally(done);
+			}
 			// Item
 			let iteminfoNames = [];
 			const customII = Configs.get('customItemInfo', []);
@@ -400,27 +483,18 @@ class DB {
 				tryLoadLuaAliases(loadItemInfo, iteminfoNames, null, onLoad());
 			}
 
-			loadLuaTable(
-				[DB.LUA_PATH + 'datainfo/accessoryid.lub', DB.LUA_PATH + 'datainfo/accname.lub'],
-				'AccNameTable',
-				function (json) {
-					Object.assign(HatTable, json);
-				},
-				onLoad()
-			);
-			loadLuaTable(
-				[DB.LUA_PATH + 'datainfo/spriterobeid.lub', DB.LUA_PATH + 'datainfo/spriterobename.lub'],
-				'RobeNameTable',
-				function (json) {
-					Object.assign(RobeTable, json);
-				},
-				onLoad()
-			);
+			loadHatTable(onLoad());
+			loadRobeTable(onLoad());
 
 			if (PACKETVER.value >= 20141008) {
-				loadLuaTable(
+				// JobNameTable's values are sprite names, not display text: the
+				// mercenaries' are Korean (여\활용병), so decoding them with a Korean
+				// charpage made Unicode Hangul and the body sprite 404'd, leaving
+				// only the head. Load it as a resource table, like accname/robename.
+				loadLuaTableWithCustom(
 					[DB.LUA_PATH + 'datainfo/npcidentity.lub', DB.LUA_PATH + 'datainfo/jobname.lub'],
 					'JobNameTable',
+					'monster',
 					function (json) {
 						Object.assign(MonsterTable, json);
 					},
@@ -434,16 +508,20 @@ class DB {
 								onLoad()
 							);
 						});
-					}
+					},
+					true
 				);
 			} else {
-				loadLuaTable(
+				loadLuaTableWithCustom(
 					[DB.LUA_PATH + 'datainfo/npcidentity.lub', DB.LUA_PATH + 'datainfo/jobname.lub'],
 					'JobNameTable',
+					'monster',
 					function (json) {
 						Object.assign(MonsterTable, json);
 					},
-					onLoad()
+					onLoad(),
+					null,
+					true
 				);
 			}
 
@@ -458,7 +536,14 @@ class DB {
 			loadItemDBTable(DB.LUA_PATH + 'ItemDBNameTbl.lub', null, onLoad());
 
 			// Weapon tables
-			loadWeaponTable(DB.LUA_PATH + 'datainfo/weapontable.lub', null, onLoad());
+			// customLuaTables.weapon: further weapon tables, after the base, in order.
+			const onWeaponEnd = onLoad();
+			const customWeapons = customLuaTables('weapon');
+			const loadCustomWeapon = (index = 0) =>
+				index < customWeapons.length
+					? loadWeaponTable(customWeapons[index], null, () => loadCustomWeapon(index + 1))
+					: onWeaponEnd();
+			loadWeaponTable(DB.LUA_PATH + 'datainfo/weapontable.lub', null, () => loadCustomWeapon());
 
 			// Title tables
 			if (PACKETVER.value >= 20170208) {
@@ -503,8 +588,8 @@ class DB {
 										});
 									});
 								}
-								// Skill Lua finished
-								onSkillEnd();
+								// Skill Lua finished, then the mods' rows
+								loadCustomSkillTables(onSkillEnd);
 							});
 						});
 					}
@@ -611,10 +696,19 @@ class DB {
 
 			// EntitySignBoard
 			const onSignBoardEnd = onLoad();
-			loadSignBoardList(DB.LUA_PATH + 'SignBoardList.lub', null, () => {
-				// this is not official, its a translation file
-				loadSignBoardData('SystemEN/Sign_Data.lub', null, onSignBoardEnd);
-			});
+			// customSignBoardList: further signboard tables, loaded after the base
+			// in the order given. Each adds its signs to what came before, and a
+			// sign on a cell that already has one replaces it, so a mod can put an
+			// icon over its own NPC without carrying the whole table.
+			const customSignBoardList = Configs.get('customSignBoardList', []);
+			// Emptied first, because the tables are merged: a second load (another
+			// server) must not keep the first one's signs.
+			SignBoardTable = {};
+			const loadCustomSignBoardList = (index = 0) =>
+				index < customSignBoardList.length
+					? loadSignBoardList(customSignBoardList[index], null, () => loadCustomSignBoardList(index + 1))
+					: loadSignBoardData('SystemEN/Sign_Data.lub', null, onSignBoardEnd); // this is not official, its a translation file
+			loadSignBoardList(DB.LUA_PATH + 'SignBoardList.lub', null, () => loadCustomSignBoardList());
 
 			// CheckAttendance
 			if (Configs.get('enableCheckAttendance') && PACKETVER.value >= 20180307) {
@@ -623,24 +717,53 @@ class DB {
 
 			// Quest
 			const onQuestEnd = onLoad();
+			// customQuestInfo: further quest tables, loaded after the base in the
+			// order given. Each registers its quests by id over what came before,
+			// so one can add a quest or reword an existing one without carrying
+			// the whole table.
+			const customQuestInfo = Configs.get('customQuestInfo', []);
+			const loadCustomQuestInfo = (index = 0) =>
+				index < customQuestInfo.length
+					? loadQuestInfo(customQuestInfo[index], null, () => loadCustomQuestInfo(index + 1))
+					: onQuestEnd();
 			tryLoadLuaAliases(loadQuestInfo, getSystemAliases('System/OngoingQuestInfoList.lub'), null, () => {
 				// this is not official, its a translation file
-				loadQuestInfo('SystemEN/OngoingQuests.lub', null, onQuestEnd);
+				loadQuestInfo('SystemEN/OngoingQuests.lub', null, () => loadCustomQuestInfo());
 			});
 
 			// TODO: System/RecommendedQuests.lub
 
 			// Achievements
 			if (Configs.get('enableAchievements') && PACKETVER.value >= 20150513) {
-				loadLuaValue(
-					'System/achievement_list.lub',
-					'achievement_tbl',
-					function (json) {
-						if (json) {
-							Object.assign(AchievementTable, json);
-						}
-					},
-					onLoad()
+				const onAchievementEnd = onLoad();
+				const addAchievements = json => {
+					if (json) {
+						Object.assign(AchievementTable, json);
+					}
+				};
+				// customAchievementInfo: further achievement tables, loaded after the
+				// base in the order given. Each sets its achievements by id over what
+				// came before, so one can add an achievement or reword an existing one
+				// without carrying the whole table.
+				const customAchievementInfo = Configs.get('customAchievementInfo', []);
+				const loadCustomAchievementInfo = (index = 0) => {
+					if (!Array.isArray(customAchievementInfo) || index >= customAchievementInfo.length) {
+						onAchievementEnd();
+						return;
+					}
+					// Every table is read from the same Lua global, so a file that does
+					// not set it would hand back the table before it a second time.
+					try {
+						lua.doStringSync('achievement_tbl = nil');
+					} catch (error) {
+						console.error('[customAchievementInfo] ', error);
+					}
+					loadLuaValue(customAchievementInfo[index], 'achievement_tbl', addAchievements, () =>
+						loadCustomAchievementInfo(index + 1)
+					);
+				};
+				loadLuaValue('System/achievement_list.lub', 'achievement_tbl', addAchievements, () =>
+					loadCustomAchievementInfo()
 				);
 			}
 
@@ -1285,6 +1408,39 @@ class DB {
 	}
 
 	/**
+	 * Bodies to try, in order, when the one getBodyPath names fails to load.
+	 *
+	 * The client's data can lack a file its own tables still name (iRO 2026-09
+	 * dropped 4_m_drzonda01, the Zonda teleporters). An NPC or monster is never
+	 * left without a body: first the stand-ins BodyFallbackTable lists for that
+	 * id, then the body getBodyPath already draws for an id it does not know
+	 * (1_ETC_01 for an NPC), or for a monster the Poring a missing 3D model gets.
+	 * Players, homunculi and mercenaries get none.
+	 *
+	 * @param {number|string} id entity
+	 * @param {boolean} sex
+	 * @return {Array<string>} paths without extension, never the body's own
+	 */
+	static getBodyFallbackPaths(id, sex) {
+		const own = DB.getBodyPath(id, sex);
+		if (!own || DB.isPlayer(id) || DB.isHomunculus(id) || DB.isMercenary(id) || typeof id !== 'number') {
+			return [];
+		}
+
+		const ids = (BodyFallbackTable[id] || []).concat(DB.isNPC(id) ? 46 : 1002);
+		const paths = [];
+
+		for (const alt of ids) {
+			const path = DB.getBodyPath(alt, sex);
+			if (path && path !== own && !/\.gr2$/i.test(path) && !paths.includes(path)) {
+				paths.push(path);
+			}
+		}
+
+		return paths;
+	}
+
+	/**
 	 * @return {string} path of admin clothes
 	 * @param {boolean} sex
 	 */
@@ -1295,6 +1451,41 @@ class DB {
 			'/\xbf\xee\xbf\xb5\xc0\xda_' +
 			SexTable[sex]
 		);
+	}
+
+	/**
+	 * Whether the archive ships the halter-lead mounts' own palettes, read off
+	 * a file only those archives have: asked once per archive.
+	 *
+	 * @param {function} onAnswer - called once the archive answers, if it has not yet
+	 * @return {boolean|undefined} undefined until the archive answers
+	 */
+	static hasMountPalettes(onAnswer) {
+		if (mountPalettes === undefined) {
+			const sentinel = DB.getBodyPalPath(JobId.PIG_CREATOR, 1, 0);
+			if (!mountPalettesProbe) {
+				mountPalettesProbe = { stale: false };
+			}
+			const probe = mountPalettesProbe;
+			const answer = present => {
+				if (probe === mountPalettesProbe) {
+					mountPalettesProbe = null;
+					if (probe.stale) {
+						// It answered for the previous client: onAnswer asks this one.
+						MemoryManager.remove(null, sentinel);
+					} else {
+						mountPalettes = present;
+					}
+				}
+				onAnswer();
+			};
+			Client.loadFile(
+				sentinel,
+				() => answer(true),
+				() => answer(false)
+			);
+		}
+		return mountPalettes;
 	}
 
 	/**
@@ -2032,7 +2223,7 @@ class DB {
 			return DB.getWeaponPath(id, job, sex);
 		}
 
-		const baseClass = WeaponJobTable[job] || WeaponJobTable[0];
+		const baseClass = ShieldJobTable[job] || ShieldJobTable[0];
 
 		// ItemID to View Id
 		if (id in ItemTable && 'ClassNum' in ItemTable[id]) {
@@ -2064,7 +2255,13 @@ class DB {
 
 		const baseClass = WeaponJobTable[job] || WeaponJobTable[0];
 
-		id = DB.getWeaponType(id);
+		// A look id that weapontable.lub names is drawn under that name. The
+		// official ones are all below WeaponType.MAX, which getWeaponType passes
+		// through; a mod's own look needs a higher id, which getWeaponType would
+		// turn into its base weapon type (or an unrelated item's ClassNum), so
+		// the mod's sprite was never asked for. Attack motions still come from
+		// the base type, through getWeaponType(id, true) and Expansion_Weapon_IDs.
+		id = id >= WeaponType.MAX && WeaponTable[id] !== undefined ? id : DB.getWeaponType(id);
 
 		// TODO: CHECK IF THIS IS CORRECT
 		if (leftid) {
@@ -2080,8 +2277,9 @@ class DB {
 			}
 		}
 
+		// Doram weapons live in the doram folder, like their bodies, not the human one
 		return (
-			'data/sprite/\xc0\xce\xb0\xa3\xc1\xb7/' +
+			(DB.isDoram(job) ? 'data/sprite/\xb5\xb5\xb6\xf7\xc1\xb7/' : 'data/sprite/\xc0\xce\xb0\xa3\xc1\xb7/') +
 			baseClass +
 			'/' +
 			baseClass +
@@ -2309,6 +2507,11 @@ class DB {
 		return weaponType == WeaponType.KATAR;
 	}
 
+	/** Selection groups supplied by the client's package table. */
+	static getItemPackage(itemid) {
+		return itemPackages.get(itemid) || [];
+	}
+
 	/**
 	 * Get back informations from id
 	 *
@@ -2434,7 +2637,12 @@ class DB {
 					const GID = (item.slot.card4 << 16) + item.slot.card3;
 					name = '<font color="red" class="owner-' + GID + '">Unknown</font>';
 					if (DB.CNameTable[GID] && DB.CNameTable[GID] !== 'Unknown') {
-						name = '<font color="#87cefa" class="owner-' + GID + '">' + DB.CNameTable[GID] + '</font>';
+						name =
+							'<font color="#87cefa" class="owner-' +
+							GID +
+							'">' +
+							escapeHtml(DB.CNameTable[GID]) +
+							'</font>';
 					} else {
 						DB.UpdateOwnerName[GID] = function (pkt) {
 							delete DB.UpdateOwnerName[pkt.GID];
@@ -2579,7 +2787,7 @@ class DB {
 	 * @param {number} skill id
 	 */
 	static getSkillDescription(id) {
-		return SkillDescription[id] || '...';
+		return ModSkillDescription[id] || SkillDescription[id] || '...';
 	}
 
 	/**
@@ -3263,6 +3471,8 @@ class DB {
 
 			case JobId.GUNSLINGER:
 			case JobId.NINJA:
+			case JobId.DRUID:
+			case JobId.DRUID_B:
 			case JobId.TAEKWON:
 				return 'Expanded_First_Class';
 
@@ -3299,6 +3509,8 @@ class DB {
 			case JobId.LINKER:
 			case JobId.KAGEROU:
 			case JobId.OBORO:
+			case JobId.KARNOS:
+			case JobId.KARNOS_B:
 			case JobId.REBELLION:
 				return 'Expanded_Second_Class';
 
@@ -3364,6 +3576,7 @@ class DB {
 			case JobId.NIGHT_WATCH:
 			case JobId.HYPER_NOVICE:
 			case JobId.SPIRIT_HANDLER:
+			case JobId.ALITEA:
 			case JobId.SKY_EMPEROR2:
 				return 'Fourth_Class';
 
@@ -3906,6 +4119,32 @@ class DB {
 	}
 
 	/**
+	 * Convert the tags item descriptions carry into HTML, on text that has
+	 * already been escaped. Each is <TAG>shown text<INFO>data</INFO></TAG>:
+	 * NAVI becomes a .navi-link (data-navi-info, data-navi-name); URL and
+	 * TIPBOX, which roBrowser has nowhere to open, keep their text. Anything
+	 * else in angle brackets, such as "Energy <Guardian Dragon>", stays text.
+	 *
+	 * @param {string} html - escaped description
+	 * @returns {string} html with the tags converted
+	 */
+	static formatDescriptionTags(html) {
+		return html.replace(
+			/&lt;(NAVI|URL|TIPBOX)&gt;([\s\S]*?)&lt;INFO&gt;([\s\S]*?)&lt;\/INFO&gt;&lt;\/\1&gt;/g,
+			(match, tag, text, info) => {
+				if (tag !== 'NAVI') {
+					return text;
+				}
+				// A colour code in the tag (^4D4DFF[Battle Trainer Subino]^000000)
+				// is formatted here, so its spans close inside the link, and kept
+				// out of the attributes, where formatMsgToHtml would write markup.
+				const attr = value => value.replace(/\^[0-9a-fA-F]{6}/g, '').replace(/"/g, '&quot;');
+				return `<span class="navi-link" data-navi-info="${attr(info)}" data-navi-name="${attr(text)}">${DB.formatMsgToHtml(text)}</span>`;
+			}
+		);
+	}
+
+	/**
 	 * Get pet data by job ID
 	 *
 	 * @param {number} jobID - Job ID
@@ -3991,6 +4230,15 @@ class DB {
 	}
 
 	/**
+	 * Get a footprint hat effect's entry from footprinteffectinfo.lub
+	 * @param {number} id - Hateffect ID
+	 * @returns {Object|null} footprint info or null if not found
+	 */
+	static getFootprintEffect(id) {
+		return FootPrintEffectInfo[id] || null;
+	}
+
+	/**
 	 * Get the CashShopBannerTable
 	 *
 	 * @returns {Array} CashShopBannerTable
@@ -4001,6 +4249,7 @@ class DB {
 }
 
 async function startLua() {
+	LuaModuleLoader.clearCache();
 	const wasmUrl = (await import('Vendors/liblua5.1.wasm?url')).default;
 	const CLua = (await import('Vendors/wasmoon-lua5.1.js')).default;
 	const [l, ha, ma, dha, dma] = await Promise.all([
@@ -4010,11 +4259,76 @@ async function startLua() {
 		CLua.Lua.create({ customWasmUri: wasmUrl }),
 		CLua.Lua.create({ customWasmUri: wasmUrl })
 	]);
-	lua = l;
-	HO_AI = ha;
-	MER_AI = ma;
-	default_HO_AI = dha;
-	default_MER_AI = dma;
+	lua = oneRunAtATime(LuaModuleLoader.setup(l));
+	HO_AI = LuaModuleLoader.setup(ha, {
+		searchPaths: [
+			'./?.lua',
+			'./?.lub',
+			'AI/USER_AI/?.lua',
+			'AI/USER_AI/?.lub',
+			'AI/?.lua',
+			'AI/?.lub',
+			...LuaModuleLoader.DEFAULT_SEARCH_PATHS
+		]
+	});
+	MER_AI = LuaModuleLoader.setup(ma, {
+		searchPaths: [
+			'./?.lua',
+			'./?.lub',
+			'AI/USER_AI/?.lua',
+			'AI/USER_AI/?.lub',
+			'AI/?.lua',
+			'AI/?.lub',
+			...LuaModuleLoader.DEFAULT_SEARCH_PATHS
+		]
+	});
+	default_HO_AI = LuaModuleLoader.setup(dha, {
+		searchPaths: [
+			'./?.lua',
+			'./?.lub',
+			'AI/?.lua',
+			'AI/?.lub',
+			'AI/USER_AI/?.lua',
+			'AI/USER_AI/?.lub',
+			...LuaModuleLoader.DEFAULT_SEARCH_PATHS
+		]
+	});
+	default_MER_AI = LuaModuleLoader.setup(dma, {
+		searchPaths: [
+			'./?.lua',
+			'./?.lub',
+			'AI/?.lua',
+			'AI/?.lub',
+			'AI/USER_AI/?.lua',
+			'AI/USER_AI/?.lub',
+			...LuaModuleLoader.DEFAULT_SEARCH_PATHS
+		]
+	});
+}
+
+/**
+ * Runs a state's files and strings one after another, never two at once.
+ *
+ * wasmoon keeps each run's thread on the state's stack and removes it by
+ * index when the run ends. Two runs started in the same task end out of
+ * order, the wrong slot is removed, and every later call into the state fails
+ * with "memory access out of bounds". Files loaded from the network start in
+ * separate tasks, but a cached file is handed back at once: character select
+ * loads the headgear and garment tables, lazyInit asks for them again, both
+ * start together, and not one table loads after that.
+ *
+ * @param {object} state Lua instance
+ * @return {object} the same instance
+ */
+function oneRunAtATime(state) {
+	const run = state.callByteCode.bind(state);
+	let last = Promise.resolve();
+	state.callByteCode = loader => {
+		const result = last.then(() => run(loader));
+		last = result.catch(() => {});
+		return result;
+	};
+	return state;
 }
 
 function loadFontFromClient(fontPath) {
@@ -4035,41 +4349,41 @@ function loadFontFromClient(fontPath) {
 					style.textContent = `
 							@font-face {  
 								font-family: 'SCDream';  
-								src: url('${fontUrl6}') format('opentype');  
+								src: url('${fontUrl4}') format('opentype');
 								font-weight: 100; /* Thin */  
 								font-style: normal;  
 							}  
 							
 							@font-face {  
 								font-family: 'SCDream';  
-								src: url('${fontUrl6}') format('opentype');  
+								src: url('${fontUrl4}') format('opentype');
 								font-weight: 200; /* Extra Light */  
 								font-style: normal;  
 							}  
 							
 							@font-face {  
 								font-family: 'SCDream';  
-								src: url('${fontUrl6}') format('opentype');  
+								src: url('${fontUrl4}') format('opentype');
 								font-weight: 300; /* Light */  
 								font-style: normal;  
 							}  											
 							@font-face {  
 								font-family: 'SCDream';  
-								src: url('${fontUrl6}') format('opentype');  
+								src: url('${fontUrl4}') format('opentype');
 								font-weight: 400; /* Normal */  
 								font-style: normal;  
 							}  
 							
 							@font-face {  
 								font-family: 'SCDream';  
-								src: url('${fontUrl4}') format('opentype');  
+								src: url('${fontUrl6}') format('opentype');
 								font-weight: 700; /* Bold */  
 								font-style: normal;  
 							}
 								
 							@font-face {  
 								font-family: 'SCDream';  
-								src: url('${fontUrl4}') format('opentype');  
+								src: url('${fontUrl6}') format('opentype');
 								font-weight: 900; /* Black/Bolder */  
 								font-style: normal;  
 							}  								
@@ -4412,6 +4726,32 @@ const HARDCODED_FIELD_MAPPING = {
 };
 
 /**
+ * Whether a skill's effects already draw this STR file.
+ *
+ * @param {object} skillEntry SkillEffect row, or undefined
+ * @param {object} EffectTable
+ * @param {string} file STR path without extension
+ * @return {boolean}
+ */
+function skillPlaysFile(skillEntry, EffectTable, file) {
+	if (!skillEntry || !file) {
+		return false;
+	}
+	const wanted = file.toLowerCase();
+	for (const field in skillEntry) {
+		const value = skillEntry[field];
+		const names = Array.isArray(value) ? value : [value];
+		for (const name of names) {
+			const effects = typeof name === 'string' ? EffectTable[name] : null;
+			if (Array.isArray(effects) && effects.some(effect => (effect.file || '').toLowerCase() === wanted)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
  * Merge Ez2STREffect from BSON into EffectTable and SkillEffect
  */
 function mergeEz2Effects(EffectTable, SkillEffect) {
@@ -4549,7 +4889,8 @@ function mergeEz2Effects(EffectTable, SkillEffect) {
 				xOffset: entry.PosX || 0,
 				yOffset: entry.PosY || 0,
 				wav: entry.SoundPath ? entry.SoundPath.replace(/\\/g, '/').replace(/\.wav$/i, '') : null,
-				delayLate: entry.StartDelayTime || 0,
+				soundLoop: entry.IsSoundLoop == null ? undefined : !!entry.IsSoundLoop,
+				delayStart: entry.StartDelayTime || 0,
 				repeat: !!entry.IsInfinite,
 				attachedEntity: true
 			}
@@ -4557,7 +4898,9 @@ function mergeEz2Effects(EffectTable, SkillEffect) {
 		count++;
 
 		// Pass 6: SkillEffect Mapping with differentiated fields
-		if (skillId) {
+		// A skill that already plays this file, from a hand-written entry, would
+		// draw it twice.
+		if (skillId && !skillPlaysFile(SkillEffect[skillId], EffectTable, EffectTable[effectName][0].file)) {
 			const skillEntry = SkillEffect[skillId] || (SkillEffect[skillId] = {});
 			const field = meta.field;
 
@@ -4877,15 +5220,20 @@ function loadTownInfoFile(filename, callback, onEnd) {
 				const ctx = lua.ctx;
 
 				// create AddTownInfo required functions in context
+				const updatedMaps = new Set();
 				ctx.AddTownInfo = function AddTownInfo(mapName, name, X, Y, TYPE) {
 					mapName = userStringDecoder.decode(mapName);
-					TownInfo[mapName] = [];
+					if (!updatedMaps.has(mapName)) {
+						TownInfo[mapName] = [];
+						updatedMaps.add(mapName);
+					}
 					TownInfo[mapName].push({
 						Name: userStringDecoder.decode(name, userCharpage),
 						X: X,
 						Y: Y,
 						Type: TYPE
 					});
+					return 1;
 				};
 				// mount file
 				lua.mountFile(filename, buffer);
@@ -5126,6 +5474,15 @@ function loadItemInfo(filename, callback, onEnd) {
 				console.log('Loading file "' + filename + '"...');
 				// check if file is ArrayBuffer and convert to Uint8Array if necessary
 				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
+				// A table saved as UTF-8 -- what a text editor writes -- rather than in
+				// the client's codepage. Decided once for the whole file: a table in
+				// the codepage almost never survives strict UTF-8 decoding, while one
+				// short string easily could.
+				const utf8 = isUtf8Table(buffer);
+				const displayText = bytes =>
+					utf8 ? userStringDecoder.decode(bytes, 'utf-8') : userStringDecoder.decode(bytes, userCharpage);
+				const resourceText = bytes =>
+					utf8 ? userStringDecoder.decode(utf8ResourceBytes(bytes)) : userStringDecoder.decode(bytes);
 				// get context, a proxy. It will be used to interact with lua conveniently
 				const ctx = lua.ctx;
 
@@ -5141,10 +5498,10 @@ function loadItemInfo(filename, callback, onEnd) {
 				) => {
 					ItemTable[ItemID] = {
 						...(typeof ItemTable[ItemID] === 'object' && ItemTable[ItemID]),
-						unidentifiedDisplayName: userStringDecoder.decode(unidentifiedDisplayName, userCharpage),
-						unidentifiedResourceName: userStringDecoder.decode(unidentifiedResourceName),
-						identifiedDisplayName: userStringDecoder.decode(identifiedDisplayName, userCharpage),
-						identifiedResourceName: userStringDecoder.decode(identifiedResourceName),
+						unidentifiedDisplayName: displayText(unidentifiedDisplayName),
+						unidentifiedResourceName: resourceText(unidentifiedResourceName),
+						identifiedDisplayName: displayText(identifiedDisplayName),
+						identifiedResourceName: resourceText(identifiedResourceName),
 						unidentifiedDescriptionName: [],
 						identifiedDescriptionName: [],
 						EffectID: null,
@@ -5156,11 +5513,11 @@ function loadItemInfo(filename, callback, onEnd) {
 					return 1;
 				};
 				ctx.AddItemUnidentifiedDesc = (ItemID, v) => {
-					ItemTable[ItemID].unidentifiedDescriptionName.push(userStringDecoder.decode(v, userCharpage));
+					ItemTable[ItemID].unidentifiedDescriptionName.push(displayText(v));
 					return 1;
 				};
 				ctx.AddItemIdentifiedDesc = (ItemID, v) => {
-					ItemTable[ItemID].identifiedDescriptionName.push(userStringDecoder.decode(v, userCharpage));
+					ItemTable[ItemID].identifiedDescriptionName.push(displayText(v));
 					return 1;
 				};
 				ctx.AddItemEffectInfo = (ItemID, EffectID) => {
@@ -5175,6 +5532,9 @@ function loadItemInfo(filename, callback, onEnd) {
 					ItemTable[ItemID].PackageID = PackageID;
 					return 1;
 				};
+				// A table is what this file defines, not what the previous one left
+				// behind. Empty rather than nil, so `tbl[30000] = {...}` still works.
+				lua.doStringSync('tbl = {} tbl_custom = {} tbl_override = {}');
 				// mount file
 				lua.mountFile(filename, buffer);
 				// execute file
@@ -5184,43 +5544,61 @@ function loadItemInfo(filename, callback, onEnd) {
 				// doing this way we avoid to have to load the other file
 				// on my tests dont care if the main() is on itemInfo.lub or itemInfo_f.lub the content is always the same
 				lua.doStringSync(`
+						function item_is_described(DESC)
+							if type(DESC) ~= "table" then
+								return false
+							end
+							if type(DESC.identifiedDescriptionName) == "table" and #DESC.identifiedDescriptionName > 0 then
+								return true
+							end
+							return type(DESC.identifiedDisplayName) == "string" and DESC.identifiedDisplayName ~= ""
+						end
 						function main_item()
-							_processedItems = _processedItems or {} 
-							for ItemID, DESC in pairs(tbl) do
-								if not _processedItems[ItemID] and #DESC.identifiedDescriptionName > 0 then
-									_processedItems[ItemID] = true 
-									result, msg = AddItem(ItemID, DESC.unidentifiedDisplayName, DESC.unidentifiedResourceName, DESC.identifiedDisplayName, DESC.identifiedResourceName, DESC.slotCount, DESC.ClassNum)
-									if not result then
-										return false, msg
-									end
-									for k, v in pairs(DESC.unidentifiedDescriptionName) do
-										result, msg = AddItemUnidentifiedDesc(ItemID, v)
-										if not result then
-											return false, msg
-										end
-									end
-									for k, v in pairs(DESC.identifiedDescriptionName) do
-										result, msg = AddItemIdentifiedDesc(ItemID, v)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.EffectID then
-										result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.costume then
-										result, msg = AddItemIsCostume(ItemID, DESC.costume)
-										if not result then
-											return false, msg
-										end
-									end
-									if nil ~= DESC.PackageID then
-										result, msg = AddItemPackageID(ItemID, DESC.PackageID)
-										if not result then
-											return false, msg
+							_processedItems = _processedItems or {}
+							-- tbl_custom and tbl_override are the custom item tables official
+							-- clients and translations write (itemInfo_C.lua). An override
+							-- is read first so it wins over the entry it replaces.
+							local sources = { tbl_override, tbl, tbl_custom }
+							for s = 1, 3 do
+								local source = sources[s]
+								if type(source) == "table" then
+									for ItemID, DESC in pairs(source) do
+										if not _processedItems[ItemID] and item_is_described(DESC) then
+											_processedItems[ItemID] = true
+											result, msg = AddItem(ItemID, DESC.unidentifiedDisplayName or "", DESC.unidentifiedResourceName or "", DESC.identifiedDisplayName or "", DESC.identifiedResourceName or "", DESC.slotCount, DESC.ClassNum)
+											if not result then
+												return false, msg
+											end
+											for k, v in pairs(DESC.unidentifiedDescriptionName or {}) do
+												result, msg = AddItemUnidentifiedDesc(ItemID, v)
+												if not result then
+													return false, msg
+												end
+											end
+											for k, v in pairs(DESC.identifiedDescriptionName or {}) do
+												result, msg = AddItemIdentifiedDesc(ItemID, v)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.EffectID then
+												result, msg = AddItemEffectInfo(ItemID, DESC.EffectID)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.costume then
+												result, msg = AddItemIsCostume(ItemID, DESC.costume)
+												if not result then
+													return false, msg
+												end
+											end
+											if nil ~= DESC.PackageID then
+												result, msg = AddItemPackageID(ItemID, DESC.PackageID)
+												if not result then
+													return false, msg
+												end
+											end
 										end
 									end
 								end
@@ -5244,6 +5622,48 @@ function loadItemInfo(filename, callback, onEnd) {
 				onEnd(false);
 			}
 		});
+}
+
+/**
+ * Whether an item table is UTF-8 text with something beyond ASCII in it.
+ *
+ * @param {Uint8Array} bytes
+ * @returns {boolean}
+ */
+function isUtf8Table(bytes) {
+	if (!bytes.some(b => b > 0x7f)) {
+		return false;
+	}
+	try {
+		new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
+/**
+ * The bytes a resource name from a UTF-8 item table stands for.
+ *
+ * Resource names become file paths, and the client's files are named in its
+ * codepage read one byte to a character. So Hangul is put back into CP949, and
+ * a character below U+0100 -- a name already spelled the way paths appear on
+ * disk, as in `»¡°£Æ÷¼Ç` -- is the byte it already represents.
+ *
+ * @param {Uint8Array} bytes - UTF-8 encoded resource name
+ * @returns {Uint8Array}
+ */
+function utf8ResourceBytes(bytes) {
+	const out = [];
+	for (const ch of userStringDecoder.decode(bytes, 'utf-8')) {
+		const code = ch.codePointAt(0);
+		if (code < 0x100) {
+			out.push(code);
+		} else {
+			out.push(...userStringDecoder.encode(ch, 'windows-949'));
+		}
+	}
+	return Uint8Array.from(out);
 }
 
 /**
@@ -6047,6 +6467,10 @@ function loadHatEffectInfo(onEnd) {
 
 					pngLeft: info.PngFile_Left ? decodeLuaString(info.PngFile_Left) : null,
 					pngRight: info.PngFile_Right ? decodeLuaString(info.PngFile_Right) : null,
+					// hateffect_f.lub's defaults, and its spelling of Aplha.
+					pngScale: info.Scale ?? 5,
+					pngAlpha: info.Aplha ?? 250,
+					pngDuration: info.Duration ?? 10,
 
 					strBottomLeft: info.StrFile_Bottom_Left ? decodeLuaString(info.StrFile_Bottom_Left) : null,
 					strBottomRight: info.StrFile_Bottom_Right ? decodeLuaString(info.StrFile_Bottom_Right) : null,
@@ -6054,8 +6478,10 @@ function loadHatEffectInfo(onEnd) {
 					strTopLeft: info.StrFile_Top_Left ? decodeLuaString(info.StrFile_Top_Left) : null,
 					strTopRight: info.StrFile_Top_Right ? decodeLuaString(info.StrFile_Top_Right) : null,
 
-					scaleBottom: info.Scale_Bottom ?? 0,
-					scaleTop: info.Scale_Top ?? 0,
+					// hateffect_f.lub's defaults: GetFootprintStrScale gives 0.05 for
+					// either scale a footprint leaves out. 0 is a value, and hides it.
+					scaleBottom: info.Scale_Bottom ?? 0.05,
+					scaleTop: info.Scale_Top ?? 0.05,
 					heightTop: info.Height_Top ?? 0,
 
 					stride: info.Stride ?? 50,
@@ -6129,6 +6555,10 @@ function loadHatEffectInfo(onEnd) {
 				await LoadHatEffectInfo();
 			} catch (e) {
 				console.error('[HatEffect] ID load error', e);
+				// Returning without this leaves the database loading forever.
+				if (typeof onEnd === 'function') {
+					onEnd();
+				}
 				return;
 			} finally {
 				lua.unmountFile('hateffectids.lub');
@@ -6166,7 +6596,10 @@ function loadSignBoardData(filename, callback, onEnd) {
 
 				// create required functions in context
 				ctx.AddSignBoardData = (key, translation) => {
-					const decoded_key = key && key.length > 1 ? userStringDecoder.decode(key) : null;
+					// Decoded as SignBoardList.lub decodes its descriptions, which is what
+					// the key is looked up by: under another codepage the Korean key
+					// comes out different and no signboard is ever translated.
+					const decoded_key = key && key.length > 1 ? userStringDecoder.decode(key, userCharpage) : null;
 					const decoded_translation =
 						translation && translation.length > 1 ? userStringDecoder.decode(translation) : null;
 					SignBoardTranslatedTable[decoded_key] = decoded_translation;
@@ -6256,6 +6689,11 @@ function loadSignBoardList(filename, callback, onEnd) {
 				// mount file
 				lua.mountFile('SignBoardList.lub', buffer);
 
+				// Cleared first: the tables share one Lua state, and a file that
+				// failed to define its own would otherwise add the previous
+				// file's signs a second time.
+				lua.doStringSync('SignBoardList = nil');
+
 				// execute file
 				await lua.doFile('SignBoardList.lub');
 
@@ -6280,7 +6718,9 @@ function loadSignBoardList(filename, callback, onEnd) {
                         main_SignBoardList()
 					`);
 
-				SignBoardTable = preprocessSignboardData(signBoardList);
+				// Merged over what earlier tables loaded rather than replacing it,
+				// so customSignBoardList can add to the base.
+				mergeSignboards(signBoardList, SignBoardTable);
 			} catch (error) {
 				console.error('[loadSignBoardList] Error: ', error);
 			} finally {
@@ -6292,29 +6732,6 @@ function loadSignBoardList(filename, callback, onEnd) {
 		},
 		onEnd
 	);
-}
-
-/**
- * Preprocesses an array of signboard objects and organizes them into a nested dictionary.
- *
- * @param {Array} signboardArray - The array of signboard objects.
- * @return {Object} The nested dictionary containing the preprocessed signboard data.
- */
-function preprocessSignboardData(signboardArray) {
-	const signboardDict = {};
-
-	for (const signboard of signboardArray) {
-		const { mapname, x, y } = signboard;
-		if (!signboardDict[mapname]) {
-			signboardDict[mapname] = {};
-		}
-		if (!signboardDict[mapname][x]) {
-			signboardDict[mapname][x] = {};
-		}
-		signboardDict[mapname][x][y] = signboard;
-	}
-
-	return signboardDict;
 }
 
 /**
@@ -6483,7 +6900,9 @@ function loadSkillInfoList(filename, callback, onEnd) {
 						SkillName: userStringDecoder.decode(skillName, userCharpage),
 						MaxLv: maxLv,
 						SpAmount: toArray(spAmount),
-						bSeperateLv: bSeperateLv,
+						// Absent (nil) is not "no": the pre-renewal translation's table leaves it
+						// out of most skills, Fire Bolt among them, and its level arrows went with it.
+						bSeperateLv: bSeperateLv ?? SkillInfo[skillId]?.bSeperateLv ?? false,
 						AttackRange: toArray(attackRange),
 						SkillScale: skillScale,
 						NeedSkillList: {},
@@ -6495,6 +6914,17 @@ function loadSkillInfoList(filename, callback, onEnd) {
 
 				ctx.AddSkillRequirement = (skillId, requiredSkillId, requiredLevel) => {
 					SkillInfo[skillId]._NeedSkillList.push([requiredSkillId, requiredLevel]);
+					return 1;
+				};
+
+				// A job's own list replaces the generic one, even when it is empty:
+				// Rogue learns Vulture's Eye without Archer's Owl's Eye 3
+				// (`NeedSkillList = { [JOBID.JT_ROGUE] = {} }`). Declared before its
+				// entries are added, so an empty list is still there.
+				ctx.AddJobSkillRequirementList = (skillId, jobId) => {
+					if (!SkillInfo[skillId].NeedSkillList[jobId]) {
+						SkillInfo[skillId].NeedSkillList[jobId] = [];
+					}
 					return 1;
 				};
 
@@ -6538,7 +6968,7 @@ function loadSkillInfoList(filename, callback, onEnd) {
 								local skillName = skillData.SkillName or ""  
 								local maxLv = skillData.MaxLv or 1  
 								local spAmount = skillData.SpAmount or {}  
-								local bSeperateLv = skillData.bSeperateLv or false  
+								local bSeperateLv = skillData.bSeperateLv
 								local attackRange = skillData.AttackRange or {}  
 								local skillScale = skillData.SkillScale or {}  
 
@@ -6558,6 +6988,7 @@ function loadSkillInfoList(filename, callback, onEnd) {
 								if skillData.NeedSkillList then  
 									for jobId, reqList in pairs(skillData.NeedSkillList) do  
 										if reqList then  
+											AddJobSkillRequirementList(skillId, jobId)
 											for _, req in ipairs(reqList) do  
 												if req[1] and req[2] then  
 													AddJobSkillRequirement(skillId, jobId, req[1], req[2])  
@@ -6791,20 +7222,219 @@ function loadSkillTreeViewData(filename, callback, onEnd) {
 }
 
 /**
+ * The mods' skill descriptions, by skill id, read before the client's own
+ * (getSkillDescription). Kept apart: the client's table is put in place when
+ * its file has loaded, which can be after the mods' have.
+ */
+const ModSkillDescription = {};
+
+/**
+ * customSkillId, customSkillInfoList, customSkillDescript and
+ * customSkillTreeView: the mods' rows of the four skill tables, read after
+ * the client's, in mod order. Each is a list of files shaped like the
+ * client's own -- skillid.lub, skillinfolist.lub, skilldescript.lub,
+ * skilltreeview.lub -- holding only a mod's rows: its new skills, and stock
+ * ones it changes. Every mod's names come first, so the other tables can use
+ * a mod's new SKID entries.
+ *
+ * A mod's skilltreeview.lub may also take skills out of a job's window, for
+ * the skills its server no longer teaches:
+ *
+ *   SKILL_TREEVIEW_HIDE = { [JOBID.JT_GUILLOTINE_CROSS] = { SKID.GC_DARKILLUSION } }
+ *
+ * @param {function} onEnd - once every table has been read, or has failed
+ */
+function loadCustomSkillTables(onEnd) {
+	resetHiddenSkills();
+	for (const id of Object.keys(ModSkillDescription)) {
+		delete ModSkillDescription[id];
+	}
+	const steps = [
+		['customSkillId', loadCustomSkillId],
+		['customSkillInfoList', loadCustomSkillInfoList],
+		['customSkillDescript', loadCustomSkillDescript],
+		['customSkillTreeView', loadCustomSkillTreeView]
+	].flatMap(([key, load]) => {
+		const files = Configs.get(key, []);
+		return Array.isArray(files) ? files.map(file => [load, file]) : [];
+	});
+	const next = (index = 0) => {
+		if (index >= steps.length) {
+			onEnd();
+			return;
+		}
+		const [load, file] = steps[index];
+		load(
+			file,
+			once(() => next(index + 1))
+		);
+	};
+	next();
+}
+
+/** The names a mod's skillid.lub gives its skills, into SKID. */
+function loadCustomSkillId(filename, onEnd) {
+	loadLuaValue(
+		filename,
+		'SKID',
+		json => {
+			if (json && typeof json === 'object') {
+				for (const [name, id] of Object.entries(json)) {
+					if (typeof id === 'number' && id > 0) {
+						SKID[name] = id;
+					}
+				}
+			}
+		},
+		onEnd
+	);
+}
+
+/** A mod's skillinfolist.lub: each skill it lists replaces the client's entry. */
+function loadCustomSkillInfoList(filename, onEnd) {
+	// Not the client's table again, if the mod's file has none.
+	lua.doStringSync('SKILL_INFO_LIST = nil');
+	loadSkillInfoList(filename, null, onEnd);
+}
+
+/**
+ * Run a mod's skill table with SKID and JOBID as the client's tables see
+ * them, a name nobody defined reading as 0. `globals` are cleared first, so
+ * a file that leaves one out does not see the previous file's.
+ */
+async function runCustomSkillTable(filename, buffer, globals) {
+	const ctx = lua.ctx;
+	const jobIdWithJT = { ...JobId };
+	for (const [key, value] of Object.entries(JobId)) {
+		jobIdWithJT[`JT_${key}`] = value;
+	}
+	ctx.JOBID = jobIdWithJT;
+	ctx.SKID = SKID;
+	await lua.doString(`
+		for _, name in ipairs({ ${globals.map(name => `"${name}"`).join(', ')} }) do _G[name] = nil end
+		for name, unknown in pairs({ SKID = 0, JOBID = -1 }) do
+			local known = _G[name]
+			_G[name] = setmetatable({}, { __index = function(t, k) local id = known[k] return id ~= nil and id or unknown end })
+		end
+	`);
+	lua.mountFile(filename, buffer);
+	try {
+		await lua.doFile(filename);
+	} finally {
+		lua.unmountFile(filename);
+	}
+}
+
+/** A mod's skilldescript.lub: each skill it describes replaces the client's text. */
+function loadCustomSkillDescript(filename, onEnd) {
+	Client.loadFile(
+		filename,
+		async function (file) {
+			try {
+				console.log('Loading file "' + filename + '"...');
+				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
+				await runCustomSkillTable(filename, buffer, ['SKILL_DESCRIPT']);
+				const table = {};
+				lua.ctx.addCustomSkillDescript = (skillId, line) => {
+					table[skillId] = (table[skillId] || '') + userStringDecoder.decode(line, userCharpage) + '\n';
+					return 1;
+				};
+				lua.doStringSync(`
+					for skillId, lines in pairs(SKILL_DESCRIPT or {}) do
+						if type(lines) == "table" then
+							for _, line in ipairs(lines) do addCustomSkillDescript(skillId, line) end
+						else
+							addCustomSkillDescript(skillId, lines)
+						end
+					end
+				`);
+				Object.assign(ModSkillDescription, table);
+			} catch (error) {
+				console.error(`[loadCustomSkillDescript] ${filename}: `, error);
+			} finally {
+				onEnd();
+			}
+		},
+		onEnd
+	);
+}
+
+/**
+ * A mod's skilltreeview.lub: SKILL_TREEVIEW_FOR_JOB places its skills in
+ * jobs' windows (a skill already on a slot it takes moves to a free one), and
+ * SKILL_TREEVIEW_HIDE takes skills out of them.
+ */
+function loadCustomSkillTreeView(filename, onEnd) {
+	Client.loadFile(
+		filename,
+		async function (file) {
+			try {
+				console.log('Loading file "' + filename + '"...');
+				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
+				await runCustomSkillTable(filename, buffer, ['SKILL_TREEVIEW_FOR_JOB', 'SKILL_TREEVIEW_HIDE']);
+				// A name the client does not know reads as -1 (a job) or 0 (a skill).
+				const known = (jobId, skillId) => {
+					if (Number(jobId) >= 0 && Number(skillId) > 0) {
+						return true;
+					}
+					console.error(`[loadCustomSkillTreeView] ${filename}: an unknown job or skill name; left out`);
+					return false;
+				};
+				lua.ctx.placeCustomSkill = (jobId, pos, skillId) => {
+					if (known(jobId, skillId) && !placeSkill(SkillTreeView, jobId, pos, skillId)) {
+						console.error(`[loadCustomSkillTreeView] ${filename}: no skill tree for job ${jobId}`);
+					}
+					return 1;
+				};
+				lua.ctx.hideCustomSkill = (jobId, skillId) => {
+					if (known(jobId, skillId)) {
+						hideSkill(jobId, skillId);
+					}
+					return 1;
+				};
+				lua.doStringSync(`
+					for jobId, skills in pairs(SKILL_TREEVIEW_FOR_JOB or {}) do
+						for pos, skillId in pairs(skills) do placeCustomSkill(jobId, pos, skillId) end
+					end
+					for jobId, skills in pairs(SKILL_TREEVIEW_HIDE or {}) do
+						for _, skillId in ipairs(skills) do hideCustomSkill(jobId, skillId) end
+					end
+				`);
+			} catch (error) {
+				console.error(`[loadCustomSkillTreeView] ${filename}: `, error);
+			} finally {
+				onEnd();
+			}
+		},
+		onEnd
+	);
+}
+
+/**
  * Load State Icon Info (StatusInfo) from Lua files
  * Loads efstids.lub, stateiconimginfo.lub, and stateiconinfo.lub sequentially,
  * synchronizing EFST_IDs with StatusConst and populating the StatusInfo table.
+ *
+ * customEfstIds, customStateIconImgInfo and customStateIconInfo: the mods'
+ * rows of the three tables, read after the client's, in mod order. Each is a
+ * list of files shaped like the client's own, holding only a mod's rows: the
+ * names of its own status icons (EFST_IDs.EFST_X = 20000, numbers in the
+ * range servers keep for mods), their pictures (in data/texture/effect/) and
+ * their tooltips, or new pictures and tooltips for stock icons. Every mod's
+ * names come first, so its other rows can use them; a later mod's row wins.
+ * A mod's file that fails to load is left out.
  *
  * @param {string} basePath - Directory path (e.g., DB.LUA_PATH + 'stateicon/')
  * @param {function} callback - (Unused/Legacy)
  * @param {function} onEnd - Function to run when done
  */
 function loadStateIconInfo(basePath, callback, onEnd) {
-	const files = ['efstids.lub', 'stateiconimginfo.lub', 'stateiconinfo.lub'];
+	const dirPath = basePath.endsWith('/') ? basePath : basePath + '/';
+
+	// The client's three files and the mods' (DB/Status/StateIconMods.js).
+	const files = stateIconFiles(dirPath, Configs.get.bind(Configs));
 
 	const loadedBuffers = [];
-
-	const dirPath = basePath.endsWith('/') ? basePath : basePath + '/';
 
 	function loadNext(index) {
 		if (index >= files.length) {
@@ -6812,17 +7442,22 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 			return;
 		}
 
-		const fullPath = dirPath + files[index];
-		console.log('Loading file "' + fullPath + '"...');
+		const file = files[index];
+		console.log('Loading file "' + file.path + '"...');
 
 		Client.loadFile(
-			fullPath,
+			file.path,
 			function (data) {
-				loadedBuffers.push({ name: files[index], data: data });
+				loadedBuffers.push(Object.assign({ data: data }, file));
 				loadNext(index + 1);
 			},
 			function () {
-				console.error('[loadStateIconInfo] - Failed to load ' + fullPath);
+				if (file.mod) {
+					console.error("[loadStateIconInfo] - Failed to load a mod's table, left out: " + file.path);
+					loadNext(index + 1);
+					return;
+				}
+				console.error('[loadStateIconInfo] - Failed to load ' + file.path);
 				if (onEnd) {
 					onEnd();
 				}
@@ -6888,30 +7523,6 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 				return 1;
 			};
 
-			for (let i = 0; i < loadedBuffers.length; i++) {
-				const f = loadedBuffers[i];
-				const buffer = f.data instanceof ArrayBuffer ? new Uint8Array(f.data) : f.data;
-				lua.mountFile(f.name, buffer);
-				await lua.doFile(f.name);
-
-				// This prevents the 'table index is nil' crash in stateiconimginfo.lub.
-				// return SC.BLANK on nil
-				if (f.name === 'efstids.lub') {
-					await lua.doString(`
-							if EFST_IDs then
-								__EFST_IDS_ORIGINAL = EFST_IDs 
-
-								EFST_IDs = setmetatable({}, {
-									__index = function(t, k)
-										local id = __EFST_IDS_ORIGINAL[k]
-										return id ~= nil and id or -1
-									end
-								})
-							end
-						`);
-				}
-			}
-
 			lua.doStringSync(`
 					function extract_status_info()
 						-- Sync StatusConst (SC) with the full list of EFST_IDs from the original table
@@ -6967,12 +7578,71 @@ function loadStateIconInfo(basePath, callback, onEnd) {
 						end
 					end
 
-					extract_status_info()
 				`);
+
+			for (let i = 0; i < loadedBuffers.length; i++) {
+				const f = loadedBuffers[i];
+				const buffer = f.data instanceof ArrayBuffer ? new Uint8Array(f.data) : f.data;
+
+				// A mod's file sets the client's table names to its own rows:
+				// keep the client's, and take only the mod's rows from them.
+				if (f.mod && f.stage === 'efstids') {
+					await lua.doString(BEFORE_MOD_NAMES);
+				} else if (f.mod) {
+					await lua.doString(BEFORE_MOD_ROWS);
+				}
+
+				lua.mountFile(f.name, buffer);
+				f.mounted = true;
+				if (f.mod) {
+					// One mod's broken file is left out on its own: an error here
+					// would otherwise end the loop before the client's own
+					// pictures and tooltips are read.
+					try {
+						await lua.doFile(f.name);
+					} catch (e) {
+						console.error(`[loadStateIconInfo] ${f.name} left out:`, e);
+						if (f.stage === 'efstids') {
+							await lua.doString('EFST_IDs = __MOD_EFST_SAVE');
+						}
+						continue;
+					}
+				} else {
+					await lua.doFile(f.name);
+				}
+
+				if (f.mod && f.stage === 'efstids') {
+					await lua.doString(AFTER_MOD_NAMES);
+				}
+				// The client's pictures and tooltips are read together once both
+				// have run; each mod's file on its own.
+				if (f.mod ? f.stage !== 'efstids' : f.stage === 'stateiconinfo') {
+					lua.doStringSync('extract_status_info()');
+				}
+
+				// This prevents the 'table index is nil' crash in stateiconimginfo.lub.
+				// return SC.BLANK on nil
+				if (!f.mod && f.stage === 'efstids') {
+					await lua.doString(`
+							if EFST_IDs then
+								__EFST_IDS_ORIGINAL = EFST_IDs 
+
+								EFST_IDs = setmetatable({}, {
+									__index = function(t, k)
+										local id = __EFST_IDS_ORIGINAL[k]
+										return id ~= nil and id or -1
+									end
+								})
+							end
+						`);
+				}
+			}
 		} catch (e) {
 			console.error('[loadStateIconInfo] Lua Error:', e);
 		} finally {
-			loadedBuffers.forEach(f => lua.unmountFile(f.name));
+			// An error part way leaves the later files unmounted: unlinking one
+			// would throw past onEnd, and the client would wait for it forever.
+			loadedBuffers.forEach(f => f.mounted && lua.unmountFile(f.name));
 			if (onEnd) {
 				onEnd();
 			}
@@ -6992,9 +7662,122 @@ function loadStateIconInfo(basePath, callback, onEnd) {
  *
  * @author alisonrag
  */
-function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
+/**
+ * customLuaTables: tables a mod adds rows to, instead of replacing the whole
+ * file. `Configs.get('customLuaTables')` is an object of lists:
+ *
+ *   accessory: [[idfile, namefile], ...]   headgear looks   (accessoryid / accname)
+ *   robe:      [[idfile, namefile], ...]   garment looks    (spriterobeid / spriterobename)
+ *   monster:   [[idfile, namefile], ...]   monster sprites  (npcidentity / jobname)
+ *   weapon:    [file, ...]                 weapon looks     (weapontable)
+ *
+ * Each is loaded after the base table, in order, and merged over it by id --
+ * the counterpart of customItemInfo and customQuestInfo for the view tables.
+ *
+ * @param {string} key
+ * @return {Array}
+ */
+function customLuaTables(key) {
+	const all = Configs.get('customLuaTables', {});
+	const list = all && typeof all === 'object' ? all[key] : null;
+	return Array.isArray(list) ? list : [];
+}
+
+/**
+ * loadLuaTable, then each customLuaTables[key] pair after it.
+ *
+ * A mod's rows must land after the base's, or the base would overwrite them,
+ * so each table starts when the one before it has been parsed or has failed.
+ * `onEnd` waits for the whole chain: loadLuaTable on its own calls onEnd as
+ * soon as it has *started*, which let the game place the player before a
+ * mod's headgear row existed -- the look was looked up, not found, and never
+ * shown. A table that fails says so in the console and the chain goes on.
+ */
+/** Headgear sprite names (accessoryid, accname) into HatTable. */
+function loadHatTable(onEnd) {
+	loadLuaTableWithCustom(
+		[DB.LUA_PATH + 'datainfo/accessoryid.lub', DB.LUA_PATH + 'datainfo/accname.lub'],
+		'AccNameTable',
+		'accessory',
+		function (json) {
+			Object.assign(HatTable, json);
+		},
+		onEnd,
+		null,
+		true
+	);
+}
+
+/** Garment sprite names (spriterobeid, spriterobename) into RobeTable. */
+function loadRobeTable(onEnd) {
+	loadLuaTableWithCustom(
+		[DB.LUA_PATH + 'datainfo/spriterobeid.lub', DB.LUA_PATH + 'datainfo/spriterobename.lub'],
+		'RobeNameTable',
+		'robe',
+		function (json) {
+			Object.assign(RobeTable, json);
+		},
+		onEnd,
+		null,
+		true
+	);
+}
+
+function loadLuaTableWithCustom(file_list, table_name, key, callback, onEnd, contextFunc, isResourceTable = false) {
+	const custom = customLuaTables(key);
+	const next = index => {
+		if (index >= custom.length) {
+			onEnd.call();
+			return;
+		}
+		const advance = once(() => next(index + 1));
+		loadLuaTable(
+			custom[index],
+			table_name,
+			function (json) {
+				callback.call(null, json);
+				advance();
+			},
+			function () {},
+			null,
+			isResourceTable,
+			advance
+		);
+	};
+	const start = once(() => next(0));
+	loadLuaTable(
+		file_list,
+		table_name,
+		function (json) {
+			callback.call(null, json);
+			start();
+		},
+		function () {},
+		contextFunc,
+		isResourceTable,
+		start
+	);
+}
+
+/** fn, callable once; later calls do nothing. */
+function once(fn) {
+	let called = false;
+	return (...args) => {
+		if (!called) {
+			called = true;
+			fn(...args);
+		}
+	};
+}
+
+function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc, isResourceTable = false, onError = null) {
 	const id_filename = file_list[0];
 	const value_table_filename = file_list[1];
+	// Told when the table will not arrive: a file missing, or a Lua error.
+	const fail = typeof onError === 'function' ? onError : function () {};
+	// An entry naming something the id file's lists lack is left out, not
+	// the whole table (LenientEnums).
+	let lenient = null;
 
 	try {
 		console.log('Loading file "' + id_filename + '"...');
@@ -7004,13 +7787,19 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
 				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 				// mount file
 				lua.mountFile(id_filename, buffer);
-				// execute file
+				// execute file, noting the lists of names it defines
+				lenient = LenientEnums.mark(lua);
 				await lua.doFile(id_filename);
+				LenientEnums.defined(lua, lenient);
 				loadValueTable();
 			} catch (hException) {
 				console.error(`(${id_filename}) error: `, hException);
+				if (lenient) {
+					LenientEnums.finish(lua, lenient, id_filename);
+				}
+				fail(hException);
 			}
-		});
+		}, () => fail(new Error(`${id_filename} not found`)));
 
 		function loadValueTable() {
 			console.log('Loading file "' + value_table_filename + '"...');
@@ -7021,11 +7810,20 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
 					// mount file
 					lua.mountFile(value_table_filename, buffer);
 					// execute file
-					await lua.doFile(value_table_filename);
+					LenientEnums.begin(lua, lenient);
+					try {
+						await lua.doFile(value_table_filename);
+					} finally {
+						LenientEnums.finish(lua, lenient, value_table_filename);
+					}
 					parseTable();
 				} catch (hException) {
 					console.error(`(${value_table_filename}) error: `, hException);
+					fail(hException);
 				}
+			}, () => {
+				LenientEnums.finish(lua, lenient, value_table_filename);
+				fail(new Error(`${value_table_filename} not found`));
 			});
 		}
 
@@ -7038,7 +7836,12 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
 
 			// create context function
 			ctx.addKeyAndValueToTable = (key, value) => {
-				table[key] = userStringDecoder.decode(value, userCharpage);
+				// Resource-name tables (accname, robename) hold GRF sprite filenames, not
+				// display text. They must stay as raw EUC-KR byte-strings so the paths built
+				// in getHatPath/getRobePath match the files -- decoding with the charpage
+				// turns them into Unicode Hangul and every sprite request 404s. Display
+				// tables (job names, skill descriptions...) still decode with the charpage.
+				table[key] = userStringDecoder.decode(value, isResourceTable ? null : userCharpage);
 				return 1;
 			};
 
@@ -7085,6 +7888,7 @@ function loadLuaTable(file_list, table_name, callback, onEnd, contextFunc) {
 		}
 	} catch (e) {
 		console.error('error: ', e);
+		fail(e);
 	} finally {
 		onEnd.call();
 	}
@@ -7187,6 +7991,16 @@ function loadLuaValue(file_path, variable_name, callback, onEnd) {
 				if (onEnd) {
 					onEnd.call();
 				}
+			}
+		},
+		// Without this the failure is dropped, onEnd never runs, and the whole
+		// database stays "loading" forever -- stranding the player at character
+		// select with no way to reach the map server.
+		function () {
+			console.error(`(${file_path}) could not be read; skipping`);
+			callback.call(null, null);
+			if (onEnd) {
+				onEnd.call();
 			}
 		});
 	} catch (e) {
@@ -7297,7 +8111,13 @@ function loadPetInfo(filename, callback, onEnd) {
 				const buffer = file instanceof ArrayBuffer ? new Uint8Array(file) : file;
 
 				lua.mountFile(filename, buffer);
-				await lua.doFile(filename);
+				// Its pets are keyed by npcidentity.lub's jobtbl (LenientEnums).
+				const lenient = LenientEnums.begin(lua, null, ['jobtbl']);
+				try {
+					await lua.doFile(filename);
+				} finally {
+					LenientEnums.finish(lua, lenient, filename);
+				}
 
 				// Read Lua table
 				const readLuaTable = tableName => {
