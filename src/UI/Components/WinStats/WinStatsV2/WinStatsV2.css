@@ -1,6 +1,6 @@
 :host {
 	width: 280px;
-	height: 130px;
+	height: 140px;
 	top: 200px;
 	left: 200px;
 }
@@ -53,7 +53,7 @@
 }
 
 #WinStats .panel {
-	height: 235px;
+	height: 140px;
 }
 #WinStats .common_stats {
 	height: 123px;
